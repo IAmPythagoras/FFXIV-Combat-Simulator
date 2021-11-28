@@ -80,19 +80,13 @@ class Fight:
                     player.updateTimer(TimeUnit)
                     player.updateCD(TimeUnit)
                     player.updateLock() #Update the lock on the player to see if it's state changes
-
-
-                for player in self.PlayerList:
-                    for CDCheck in player.EffectCDList:
-                        CDCheck(player, self.Enemy)
-
                 CheckFinalLock = True
                 for player in self.PlayerList:
                     CheckFinalLock = player.TrueLock and CheckFinalLock
 
-                #if CheckFinalLock: 
-                    #print("The Fight finishes at: " + str(TimeStamp))
-                    #break
+                if CheckFinalLock: 
+                    print("The Fight finishes at: " + str(TimeStamp))
+                    break
 
 
                 #update timestamp
