@@ -287,7 +287,7 @@ def AFUICheck(Player,Enemy):
 def EnochianLostCheck(Player,Enemy):
 
     if(Player.AstralFireStack == 0 and Player.UmbralIceStack == 0):
-        Player.EffectList.remove(Enochian)
+        Player.EffectList.remove(EnochianEffect)
         Player.Enochian = False
 
 def SwiftCastCheck(Player, Enemy):
@@ -427,8 +427,8 @@ B4 = BLMSpell(7, True, 2.46, 2.19, 300, 800, False, True, ApplyBlizzard4, [ManaR
 
 #DOT
 
-T3 = BLMSpell(8, True, 2.19, 2.19, 40, 400, False, False, ApplyThunder3, [ManaRequirement])
-T3DOT = DOTSpell(9, 30)
+T3 = BLMSpell(8, True, 2.19, 2.19, 70, 400, False, False, ApplyThunder3, [ManaRequirement])
+T3DOT = DOTSpell(9, 40)
 #Special Damage Spell
 
 Xeno = BLMSpell(10, True, 0.3, 2.19, 700, 0, False, False, ApplyPolyglot, [PolyglotRequirement])
