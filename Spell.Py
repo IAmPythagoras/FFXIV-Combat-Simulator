@@ -75,7 +75,6 @@ class DOTSpell(Spell):
         #print("The dot Timer is :  " + str(self.DOTTimer))
         if(self.DOTTimer <= 0):
             #Apply DOT
-            print("Hey we casted the DOT!")
             tempSpell  = self.Cast(Player, Enemy)#Cast the DOT
             tempSpell.CastFinal(Player, Enemy)
             self.DOTTimer = 3
