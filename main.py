@@ -1,18 +1,20 @@
 from Fight import *
 from Spell import *
+
 from Enemy import *
+from Spell import Bloodspiller
 
 
 Dummy = Enemy()
 
-BLMAction = [T3]
+Action = [F3, Eno, T3, F4, F4]
 PrePull = []
 Event = Fight([], Dummy)
-DRKAction = [Unmend, EdgeShadow, BloodWeapon, HardSlash, FloodShadow, SyphonStrike, EdgeShadow, Souleater, LivingShadow, HardSlash]
+DRKAction = [Delirium, Bloodspiller, Quietus, Bloodspiller, LivingShadow]
 
-DRKPlayer = DarkKnight(2.36, DRKAction, [], [DarksideEffect],Event)
-BLMPlayer = BlackMage(2.17, BLMAction, [], [AstralFire, UmbralIce], Event)
-Event.PlayerList = [BLMPlayer]
+DRKPlayer = DarkKnight(2.43, DRKAction, [], [DarksideEffect], Event)
 
-Event.SimulateFight(0.01, 50)
+Event.PlayerList = [DRKPlayer]
+
+Event.SimulateFight(0.01, 100)
 

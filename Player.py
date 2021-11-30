@@ -58,30 +58,25 @@ class BlackMage(Player):
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight):
         super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight)
 
+        #Special
+        self.AstralFireStack = 0
+        self.UmbralIceStack = 0
+        self.Enochian = False
+        self.PolyglotStack = 0
+        self.AFUITimer = 0
+        self.UmbralHeartStack = 0
 
         #Prock
         self.T3Prock = False
         self.F3Prock = False
-        self.Paradox = False
-        self.Enochian = False
 
-        #Ability Effect Stack
+        #Ability Effect
         self.SharpCastStack = 0
         self.TripleCastStack = 0
         self.SwiftCastStack = 0
-        self.AstralFireStack = 0
-        self.UmbralIceStack = 0
-        self.PolyglotStack = 0
-        self.UmbralHeartStack = 0
-
-        #Ability Timer
         self.T3Timer = 0
         self.F3Timer = 0
         self.LeyLinesTimer = 0
-        self.TripleCastTimer = 0
-        self.SwiftCastTimer = 0
-        self.SharpCastTimer = 0
-        self.AFUITimer = 0
 
         #Ability CD
         self.LeyLinesCD = 0
@@ -91,7 +86,6 @@ class BlackMage(Player):
         self.EnochianCD = 0
         self.ManaFrontCD = 0
         self.TransposeCD = 0
-        self.AmplifierCD = 0
     
     def updateCD(self, time):
         if (self.LeyLinesCD > 0) : self.LeyLinesCD = max(0,self.LeyLinesCD - time)
@@ -101,18 +95,12 @@ class BlackMage(Player):
         if (self.EnochianCD > 0) :self.EnochianCD = max(0,self.EnochianCD - time)
         if (self.ManaFrontCD > 0) :self.ManaFrontCD = max(0,self.ManaFrontCD - time)
         if (self.TransposeCD > 0) :self.TransposeCD = max(0,self.TransposeCD - time)
-        if (self.AmplifierCD > 0) :self.AmplifierCD = max(0,self.AmplifierCD - time)
 
     def updateTimer(self, time):
         super().updateTimer(time)
         if (self.LeyLinesTimer > 0) : self.LeyLinesTimer = max(0,self.LeyLinesTimer - time)
         if (self.T3Timer > 0) : self.T3Timer = max(0,self.T3Timer - time)
         if (self.AFUITimer > 0) : self.AFUITimer = max(0, self.AFUITimer-time)
-        if (self.TripleCastTimer > 0) : self.TripleCastTimer = max(0, self.TripleCastTimer-time)
-        if (self.SwiftCastTimer > 0) : self.SwiftCastTimer = max(0, self.SwiftCastTimer-time)
-        if (self.SharpCastTimer > 0) : self.SharpCastTimer = max(0, self.SharpCastTimer-time)
-        if (self.F3Timer > 0) : self.F3Timer = max(0, self.F3Timer-time)
-
 
 #########################################
 ########## DARK KNIGHT PLAYER ###########
@@ -132,17 +120,16 @@ class DarkKnight(Player):
         self.BloodWeaponTimer = 0       #Duration of Blood Weapon buff.
         self.DeliriumStacks = 0         #Stacks of Delirium.
         self.DeliriumTimer = 0          #Duration of Delirium stacks.
-        self.SaltedTimer = 0            #Salted Earth duration, required to use Salt and Darkness.
-        self.ShadowbringerStacks = 2    #Stacks of Shadowbringer
-        self.PlungeStacks = 2           #Stacks of Plunge
+        self.SaltedEarthTimer = 0       #Salted Earth duration, required to use Salt and Darkness.
+        self.ShadowbringerCharges = 2   #Charges of Shadowbringer
+        self.PlungeCharges = 2          #Charges of Plunge
         self.DarkArts = False           #Dark Arts Gauge, activates when TBN breaks.
 
         #Cooldowns for all abilities, starting at 0 and adjusted by Apply.
 
         self.BloodWeaponCD = 0          #60s
         self.DeliriumCD = 0             #60s
-        self.EdgeShadowCD = 0           #2s
-        self.FloodShadowCD = 0          #2s
+        self.EdgeShadowCD = 0           #2s     Shares a CD with Flood.
         self.CarveSpitCD = 0            #60s
         self.AbyssalDrainCD = 0         #60s
         self.SaltedEarthCD = 0          #90s
@@ -155,7 +142,6 @@ class DarkKnight(Player):
         if (self.BloodWeaponCD > 0) : self.BloodWeaponCD = max(0,self.BloodWeaponCD - time)
         if (self.DeliriumCD > 0) :self.DeliriumCD = max(0,self.DeliriumCD - time)
         if (self.EdgeShadowCD > 0) :self.EdgeShadowCD = max(0,self.EdgeShadowCD - time)
-        if (self.FloodShadowCD > 0) :self.FloodShadowCD = max(0,self.FloodShadowCD - time)
         if (self.CarveSpitCD > 0) :self.CarveSpitCD = max(0,self.CarveSpitCD - time)
         if (self.AbyssalDrainCD > 0) :self.AbyssalDrainCD = max(0,self.AbyssalDrainCD - time)
         if (self.SaltedEarthCD > 0) :self.SaltedEarthCD = max(0,self.SaltedEarthCD - time)
@@ -166,6 +152,12 @@ class DarkKnight(Player):
 
     def updateTimer(self, time):
         super().updateTimer(time)
+
+        if (self.DarksideTimer > 0) : self.DarksideTimer = max(0,self.DarksideTimer - time)
+        if (self.BloodWeaponTimer > 0) : self.BloodWeaponTimer = max(0,self.BloodWeaponTimer - time)
+        if (self.DeliriumTimer > 0) : self.DeliriumTimer = max(0,self.DeliriumTimer - time)
+        if (self.SaltedEarthTimer > 0) : self.SaltedEarthTimer = max(0, self.SaltedEarthTimer-time)
+
 
 class Esteem(Player):
     #A class for Living Shadow pet, summoned by Living Shadow.
@@ -180,6 +172,5 @@ class Esteem(Player):
 
     def updateTimer(self, time):
         super().updateTimer(time)
-
         
 

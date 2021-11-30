@@ -44,6 +44,7 @@ class Fight:
                                 #If we in here, then we can cast the next spell
 
                                 player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)#Cast the spell
+                                print("Spell with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(TimeStamp) )
                                 #Locking the player
                                 player.Casting = True
                                 player.CastingLockTimer = player.CastingSpell.CastTime
@@ -58,11 +59,11 @@ class Fight:
 
                             if(not (player.oGCDLock or player.Casting)):
                                 #Then we can cast the oGCD
-
                                 player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)
                                 player.CastingSpell.CastFinal(player, self.Enemy)
                                 player.oGCDLock = True
-                                player.oGCDLockTimer = 0.5
+                                player.oGCDLockTimer = player.CastingSpell.CastTime
+                                print("oGCD with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(TimeStamp) )
 
 
                     
@@ -73,6 +74,9 @@ class Fight:
                 for player in self.PlayerList:
                     for DOT in player.DOTList:
                         DOT.CheckDOT(player,self.Enemy, TimeUnit)
+                for player in self.PlayerList:
+                    for CDCheck in player.EffectCDList:
+                        CDCheck(player, self.Enemy)
 
                 #We will now update any timer each player and the enemy has
 
@@ -80,23 +84,17 @@ class Fight:
                     player.updateTimer(TimeUnit)
                     player.updateCD(TimeUnit)
                     player.updateLock() #Update the lock on the player to see if it's state changes
-
-
-                for player in self.PlayerList:
-                    for CDCheck in player.EffectCDList:
-                        CDCheck(player, self.Enemy)
-
                 CheckFinalLock = True
                 for player in self.PlayerList:
                     CheckFinalLock = player.TrueLock and CheckFinalLock
 
-                #if CheckFinalLock: 
-                    #print("The Fight finishes at: " + str(TimeStamp))
-                    #break
+                if CheckFinalLock: 
+                    print("The Fight finishes at: " + str(TimeStamp))
+                    break
 
 
                 #update timestamp
-                #if(math.floor(TimeStamp*100)%10 == 0) : print(str(TimeStamp))
+                #if(math.floor(TimeStamp*1000)%100 == 0) : print(str(TimeStamp))
                 TimeStamp += TimeUnit
 
             self.PrintResult(TimeStamp)

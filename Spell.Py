@@ -31,6 +31,7 @@ class Spell:
         for Effect in Enemy.EffectList:
             Effect(Enemy, tempSpell)#Changes tempSpell
 
+
         #Checks if we meet the spell requirement
         for Requirement in tempSpell.Requirement:
             if(not Requirement(player, self)) : #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
@@ -51,7 +52,6 @@ class Spell:
         #This will include substracting the mana (it has been verified before that the mana was enough)
         
         print("Current MP: " + str(player.Mana))
-        #print("Current Blood: " + str(player.Blood))
 
         player.TotalPotency+= self.Potency
         Enemy.TotalPotency+= self.Potency  #Doing Damage
@@ -70,9 +70,9 @@ class DOTSpell(Spell):
     def __init__(self, id, Potency):
         super().__init__(id, False, 0, 0, Potency,  0, empty, [empty])
         #Note that here Potency is the potency of the dot, not of the ability
-        self.DOTTimer = 0   #This represents the timer of the dot, and it will apply at each 3 seconds
+        self.DOTTimer = 3   #This represents the timer of the dot, and it will apply at each 3 seconds
     def CheckDOT(self, Player, Enemy, TimeUnit):
-        #print("The dot Timer is :  " + str(self.DOTTimer))
+        
         if(self.DOTTimer <= 0):
             #Apply DOT
             tempSpell  = self.Cast(Player, Enemy)#Cast the DOT
@@ -99,26 +99,24 @@ class BLMSpell(Spell):
 
 
 #Requirement
-def AmplifierRequirement(Player, Spell):
-    return Player.AmplifierCD <= 0
 
 def EnochianOnRequirement(player, Spell):
     return player.Enochian
 
 def ManaRequirement(player, Spell):
     if player.Mana >= Spell.ManaCost :
-        player.Mana -= Spell.ManaCost   #ManaRequirement is the only Requirement that actually removes Ressources
+        player.Mana -= Spell.ManaCost
         return True
     return False
 
 def AstralFireRequirement(player, Spell):
     return player.AstralFireStack >= 1
 
-def UmbralIceRequirement(Player, Spell):
-    return Player.UmbralIceStack >= 1
-
 def PolyglotRequirement(Player, Spell):
-    return Player.PolyglotStack >= 1
+    if Player.PolyglotStack >= 1 :
+        Player.PolyglotStack -= 1
+        return True
+    return False
 
 def FireSpellRequirement(Player, Spell):
     return Player.AstralFireStack >=1
@@ -127,28 +125,41 @@ def IceSpellRequirement(Player, Spell):
     return Player.UmbralIceStack >=1
 
 def LeyLinesRequirement(Player, Spell):
-    return Player.LeyLinesCD <= 0
+    if Player.LeyLinesCD <= 0 :
+        Player.LeyLinesCD = 90
+        return True
+    return False
 
 def TripleCastRequirement(Player, Spell):
-    return Player.TripleCastCD <= 0
+    if Player.TripleCastCD <= 0:
+        Player.TripleCastCD = 60
+        return True
+    return False
 
 def SharpCastRequirement(Player, Spell):
-    return Player.SharpCastCD <= 0
+    if Player.SharpCastCD <= 0:
+        Player.SharpCastCD = 30
+        return True
+    return False
 
 def SwiftCastRequirement(Player, Spell):
-    return Player.SwiftCastCD <= 0
+    if Player.SwiftCastCD <= 0:
+        Player.SwiftCasCD = 60
+        return True
+    return False
 
 def EnochianRequirement(Player, Spell):
     return (Player.EnochianCD == 0) and ((Player.AstralFireStack >= 1) or (Player.UmbralIceStack >= 1))
 
 def ManaFrontRequirement(Player, Spell):
-    return (Player.ManaFrontCD <= 0)
+    if (Player.ManaFrontCD <= 0):
+        Player.ManaFrontCD == 180
+        return True
+    return False
 
 def TransposeRequirement(Player, Spell):
-    return (Player.TransposeCD <= 0)
-
-def ParadoxRequirement(Player, Spell):
-    return Player.Paradox
+    if (Player.TransposeCD <= 0):
+        Player.TransposeCD = 5
 
 #Effect of spells
 def AstralFire(Player, Spell):
@@ -212,38 +223,33 @@ def TripleCastEffect(Player,Spell):
     Spell.CastTime=0
     Player.TripleCastStack-=1
 
+    if (Player.TripleCastStack == 0):
+        Player.EffectList.remove(TripleCastEffect)
+
 def SwiftCastEffect(Player, Spell):
     Spell.CastTime=0
-    Player.SwiftCastStack = 0
+    Player.EffectList.remove(SwiftCastEffect)
 
 def SharpCastEffect(Player,Spell):
 
-    if(Spell.id == 8):#Id 0 is T3
+    if(Spell.id == 16):#Id 0 is T3
         Player.T3Prock = 1
         Player.SharpCastStack = 0
         Player.EffectList.remove(SharpCastEffect)
-        Player.EffectList.append(T3ProckEffect)
-    elif(Spell.id == 1): #Fire 1
+        return T3ProckEffect
+    elif(Spell.id == 0): #Fire 1
         Player.F3Prock == 1
         Player.SharpCastStack = 0
         Player.EffectList.remove(SharpCastEffect)
-        Player.EffectList.append(F3ProckEffect)
+        return F3ProckEffect
 
 def T3ProckEffect(Player, Spell):
 
-    if(Spell.id == 8 and Player.T3Prock == 1):
+    if(Spell.id == 16):
         Spell.CastTime = 0
+        Spell.Potency = 320
         Spell.ManaCost = 0
         Player.T3Prock = 0
-
-        #Finding Multiplying bonus so far
-
-        Mult = Spell.Potency/40 #40 is based potency of Thunder 3
-
-        NewBonus = 280 * Mult #To find new bonus
-
-        Spell.Potency += NewBonus
-
         Player.EffectList.remove(T3ProckEffect)
         
 def F3ProckEffect(Player, Spell):
@@ -251,7 +257,6 @@ def F3ProckEffect(Player, Spell):
     if (Spell.id == 2):
         Spell.CastTime = 0
         Spell.ManaCost = 0
-        Player.EffectList.remove(F3ProckEffect)
 
 def UmbralHeartEffect(Player, Spell):
     if(not isinstance(Spell, BLMSpell)) : return False
@@ -274,8 +279,8 @@ def CheckLeyLines(Player,Enemy):
 def Thunder3DotCheck(Player,Enemy):
     if(Player.T3Timer <= 0):
         Player.DOTList.remove(T3DOT)
-        Player.EffectCDList.remove(Thunder3DotCheck)
         Player.T3Timer = 0
+        return Thunder3DotCheck
 
 def AFUICheck(Player,Enemy):
 
@@ -289,39 +294,15 @@ def EnochianLostCheck(Player,Enemy):
         Player.EffectList.remove(EnochianEffect)
         Player.Enochian = False
 
-def SwiftCastCheck(Player, Enemy):
-    if (Player.SwiftCastTimer <= 0 or Player.SwiftCastStack == 0):
-        Player.SwiftCastTimer = 0
-        Player.SwiftCastStack = 0
-        Player.Effect.remove(SwiftCastEffect)
-        Player.EffectCDList.remove(SwiftCastCheck)
-
-def TripleCastCheck(Player, Enemy):
-    if (Player.TripleCastTimer <= 0 or Player.TripleCastStack == 0):
-        Player.TripleCastTimer = 0
-        Player.TripleCastStack = 0
-        Player.Effect.remove(TripleCastEffect)
-        Player.EffectCDList.remove(TripleCastCheck)
-
-def SharpCastCheck(Player, Enemy):
-    if (Player.SharpCastTimer <= 0 or Player.SharpCastStack == 0) : 
-        Player.SharpCastStack = 0
-        Player.SharCastTimer = 0
-        Player.EffectList.remove(SharpCastEffect)
-        Player.EffectCDList.remove(SharpCastCheck)
-
 #Applying Effect of Spell
 
 def empty(Player, Enemy):#If no effect
     return True
 
-def ResetAFUITimer(Player, Enemy):
-    Player.AFUITimer = 15
-
 def AddAstralFire1(Player, Enemy):#Adds one Astral Fire
 
-    if(Player.AstralFireStack >=0 and Player.UmbralIceStack == 0):
-        Player.AstralFireStack = min(3, Player.AstralFireStack + 1)
+    if(Player.AstralFireStack >=0 and Player.AstralFireStack <3 and Player.UmbralIceStack == 0):
+        Player.AstralFireStack+=1
         Player.AFUITimer = 15
     elif (Player.AstralFireStack == 0 and Player.UmbralIceStack >=1):
         Player.AstralFireStack = 0
@@ -345,16 +326,13 @@ def ApplyEnochian(Player,Enemy):
 
 def ApplySwiftCast(Player,Enemy):
     Player.SwiftCastCD = 60
-    Player.SwiftCastStack = 1
-    Player.SwiftCastTimer = 15
+    Player.SwiftCasStack = 1
     Player.EffectList.append(SwiftCastEffect)
-    Player.EffectCDList.append(SwiftCastCheck)
 
 def ApplyTripleCast(Player,Enemy):
     Player.TripleCastCD = 60
     Player.TripleCastStack = 3
     Player.EffectList.append(TripleCastEffect)
-    Player.EffectCDList.append(TripleCastCheck)
 
 def ApplyLeyLines(Player,Enemy):
     Player.LeyLinesCD = 90
@@ -366,21 +344,18 @@ def ApplySharpCast(Player,Enemy):
     Player.SharpCastCD = 30
     Player.SharpCastStack = 1
     Player.EffectList.append(SharpCastEffect)
-    Player.EffectCDList.append(SharpCastCheck)
 
 def ApplyManaFront(Player,Enemy):
     Player.ManaFrontCD = 180
     Player.Mana = min(10000, Player.Mana + 3000)
     #Add mana
 
-def ApplyBlizzard4(Player,Enemy):
+def AddUmbralHeartStack(Player,Enemy):
     Player.UmbralHeartStack = 3
-    Player.Paradox = True
+    Player.EffectList.append(UmbralHeartEffect)
 
 def ApplyThunder3(Player,Enemy):
     Player.DOTList.append(T3DOT)
-    Player.EffectCDList.append(Thunder3DotCheck)
-    Player.T3Timer = 24
 
 def ApplyTranspose(Player, Enemy):
     
@@ -391,38 +366,28 @@ def ApplyTranspose(Player, Enemy):
         Player.UmbralIceStack = 1
         Player.AstralFireStack = 0
 
-    Player.TransposeCD = 5
-
-def ApplyPolyglot(Player, Enemy):
-    Player.PolyglotStack -= 1
-
-def ApplyParadox(Player, Enemy):
-    ResetAFUITimer(Player, Enemy)
-    Player.Paradox = False
-
-def ApplyAmplifier(Player, Enemy):
-    Player.PolyglotStack = min(2, Player.PolyglotStack + 1)
-    Player.AmplifierCD = 120
-
 #Special Effect of Spells when casted
 
 def DespairCast(Player, Enemy):
     Player.Mana = 0
 
+def Thunder3Cast(Player, Enemy):
+    Player.DOTList.append(T3DOT)
+    Player.EffectCDList.append(Thunder3DotCheck)
 
 #List of Black Mage Spells
 
 F1 = BLMSpell(1, True, 2.19, 2.19, 180, 800, True, False, AddAstralFire1, [ManaRequirement])
 #F2 = BLMAbility(1, True, 2.17, 2.17, 140, 200, True, False, empty, ManaCheck)#Will not used, so whatever
 F3 = BLMSpell(2, True, 3.07, 2.19, 240, 2000, True, False, AddAstralFire3, [ManaRequirement])
-F4 = BLMSpell(3, True, 2.46, 2.19, 300, 800, True, False, empty, [ManaRequirement, EnochianOnRequirement, AstralFireRequirement])
-Despair = BLMSpell(4, True, 2.63, 2.19, 380, 800, True, False, DespairCast, [ManaRequirement, EnochianOnRequirement, AstralFireRequirement])
+F4 = BLMSpell(3, True, 2.46, 2.19, 300, 800, True, False, empty, [ManaRequirement, EnochianOnRequirement])
+Despair = BLMSpell(4, True, 2.63, 2.19, 380, 800, True, False, DespairCast, [ManaRequirement, EnochianOnRequirement])
 
 #Ice Spell
 #B1 = BLMSpell(5, True, 2.19, 2.19, 180, 400, False, True, AddUmbralIce1, ManaCheck)#Not used so whatever
 #B2 = BLMAbility(6, True, 2.17, 2.17, 140, 200, False, True, empty, ManaCheck)#AOE so not used
 B3 = BLMSpell(6, True, 3.07, 2.19, 240, 800, False, True, AddUmbralIce3, [ManaRequirement])
-B4 = BLMSpell(7, True, 2.46, 2.19, 300, 800, False, True, ApplyBlizzard4, [ManaRequirement, EnochianOnRequirement, UmbralIceRequirement])
+B4 = BLMSpell(7, True, 2.46, 2.19, 300, 800, False, True, AddUmbralHeartStack, [ManaRequirement, EnochianOnRequirement])
 
 #DOT
 
@@ -430,7 +395,7 @@ T3 = BLMSpell(8, True, 2.19, 2.19, 70, 400, False, False, ApplyThunder3, [ManaRe
 T3DOT = DOTSpell(9, 40)
 #Special Damage Spell
 
-Xeno = BLMSpell(10, True, 0.3, 2.19, 700, 0, False, False, ApplyPolyglot, [PolyglotRequirement])
+Xeno = BLMSpell(10, True, 0.3, 2.19, 750, 0, False, False, empty, [PolyglotRequirement])
 
 #Boosting Ability
 
@@ -442,10 +407,7 @@ Ley = BLMSpell(15, False, 0.5, 0, 0, 0, False, False, ApplyLeyLines, [LeyLinesRe
 Transpo = BLMSpell(16, False, 0, 0, 0, 0, False, False, ApplyTranspose, [TransposeRequirement])
 Mana = BLMSpell(17, False, 0.5, 0, 0, 0, False, False, ApplyManaFront, [ManaFrontRequirement])
 
-#EndWalker Spell
 
-Para = BLMSpell(18, True, 2.17, 2.17, 510, 1600, False, False, ApplyParadox, [ManaFrontRequirement, ParadoxRequirement])
-Amp = BLMSpell(19, False, 0.5, 0, 0, 0, False, False, ApplyAmplifier, [AmplifierRequirement])
 
 
 #########################################
@@ -454,7 +416,7 @@ Amp = BLMSpell(19, False, 0.5, 0, 0, 0, False, False, ApplyAmplifier, [Amplifier
 
 class DRKSkill(Spell):
     #A class for Dark Knight Skills containing all the relevant weaponskills/spells, cooldowns,
-    #as well as their effects and requirements. Will not consider out of combo actions.
+    #as well as their effects and requirements. For now does not consider out of combo actions.
 
     def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, BloodCost, Effect, Requirement):
         super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
@@ -468,8 +430,9 @@ def DarksideEffect(Player, Spell):
 #Requirements for each Skill and Ability.
 
 def BloodRequirement(Player, Spell):
-    if Player.DeliriumStacks != 0:      #Checks if DRK has Delirium stacks, if yes, then nullifies BloodCost.
-        Spell.BloodCost = 0
+    print("Delirium stacks: "+ str(Player.DeliriumStacks))
+    if Player.DeliriumStacks > 0 and (Spell.id == 4 or Spell.id == 5):
+        Spell.BloodCost = 0             #Checks if DRK has Delirium stacks. If yes, the cost of Bloodspiller/Quietus is nullified.
         Player.DeliriumStacks -= 1
         return True
     elif Player.Blood >= 50:            #If no Delirium stacks, checks if DRK has at least 50 Blood Gauge.
@@ -489,16 +452,16 @@ def EdgeShadowRequirement(Player, Spell):
             return True
     return False
 
-def FloodShadowRequirement(Player, Spell):
-    if Player.FloodShadowCD <= 0 :
-        Player.FloodShadowCD = 2
-        if Player.DarkArts:
-            Spell.ManaCost = 0
-            Player.DarkArts = False
-            return True
-        elif Player.Mana >= Spell.ManaCost:
-            Player.Mana -= Spell.ManaCost
-            return True
+def BloodWeaponRequirement(Player, Spell):
+    if Player.BloodWeaponCD <= 0 :
+        Player.BloodWeaponCD = 60
+        return True
+    return False
+
+def DeliriumRequirement(Player, Spell):
+    if Player.DeliriumCD <= 0 :
+        Player.DeliriumCD = 60
+        return True
     return False
 
 def CarveSpitRequirement(Player, Spell):
@@ -520,40 +483,42 @@ def SaltedEarthRequirement(Player, Spell):
     return False
 
 def SaltDarknessRequirement(Player, Spell):
-    if Player.SaltedTimer > 0:
+    if Player.SaltedEarthTimer > 0:
         return True
     return False
 
 def ShadowbringerRequirement(Player, Spell):
-    if Player.DarksideTimer > 0:
+    if Player.DarksideTimer > 0 and Player.ShadowbringerCharges > 0:
         return True
     return False
 
 def PlungeRequirement(Player, Spell):
-    if Player.PlungeStacks > 0:
-        Player.PlungeStacks -= 1
-
-
+    if Player.PlungeCharges > 0:
+        return True
+    return False
 
 #Effect functions that persist after action use
 
 def BloodWeaponEffect(Player, Spell):
+    print("Blood Weapon active")
     if Spell.GCD:
         Player.Mana = min(Player.Mana + 600, 10000)
         Player.Blood = min(100, Player.Blood + 10)
 
+
 def DeliriumEffect(Player, Spell):
-    if (Spell.id == 4 or 5):
-        Player.DeliriumStacks -= 1
+    print("Delirium active")
+    if Spell.id == 4 or Spell.id == 5:
         Player.Mana = min(Player.Mana + 200, 10000)
 
-    if (Player.DeliriumStacks == 0):
+    if Player.DeliriumStacks == 0:
         Player.EffectList.remove(DeliriumEffect)
 
 #Cooldown checks
 
 def BloodWeaponCheck(Player, Spell):
     if Player.BloodWeaponTimer <= 0:                                #Removes effect once duration has finished.
+        Player.BloodWeaponTimer = 0
         Player.EffectList.remove(BloodWeaponEffect)
         Player.EffectCDList.remove(BloodWeaponCheck)
 
@@ -562,21 +527,27 @@ def DeliriumCheck(Player, Spell):
         Player.EffectList.remove(DeliriumEffect)
         Player.EffectCDList.remove(DeliriumCheck)
 
+def SaltedEarthCheck(Player, Spell):
+    if Player.SaltedEarthTimer <= 0:
+        Player.DOTList.remove(SaltedEarthDOT)                       #Removes effect once duration has finished.
+        Player.SaltedEarthTimer = 0
+        Player.EffectCDList.remove(SaltedEarthCheck)
+
 
 #Apply effects that happen upon action use
 
 def ApplySyphonEffect(Player, Spell):
     Player.Mana = min(Player.Mana + 600, 10000)
-    print('+600 MP')
+    print('+600 MP restored by Syphon Strike')
 
 def ApplySoulEaterEffect(Player, Spell):
     Player.Blood = min(100, Player.Blood + 20)
-    print('+20 Blood')
+    print('+20 Blood gained by Souleater')
 
 def ApplyBloodWeaponEffect(Player, Spell):
     Player.BloodWeaponCD = 60                       #Puts Blood Weapon on a 60s cooldown.
     Player.EffectList.append(BloodWeaponEffect)
-    Player.BloodWeaponTimer = 10                    #Adds 10s to Blood Weapon buff timer.
+    Player.BloodWeaponTimer = 10.7                  #Adds 10.7s to Blood Weapon buff timer. The extra 0.7s is due to a quirk of this buff's timing.
     Player.EffectCDList.append(BloodWeaponCheck)
 
 def ApplyDeliriumEffect(Player, Spell):
@@ -597,56 +568,61 @@ def ApplyFloodShadowEffect(Player, Spell):
 def ApplyCarveSpitEffect(Player, Spell):
     Player.Mana += 600
 
-#def ApplyAbyssalDrainEffect(Player, Spell):
-#       Player.HP +=               Cure potency of 200.
-
 def ApplySaltedEarth(Player, Spell):
-    Player.SaltedTimer = 15
+    Player.SaltedEarthTimer = 15
+    Player.DOTList.append(SaltedEarthDOT)
+    Player.SaltedEarthCD = 90
+
+def ApplySaltDarknessEffect(Player, Spell):
+    Player.SaltDarknessCD = 15
 
 def SummonLivingShadow(Player, Spell):
     Actions = [PDelay, PAbyssalDrain, PPlunge, PQuietus, PShadowbringer, PEdgeShadow, PBloodspiller, PCarveSpit]
-    Pet = Esteem(2.36,Actions,[],[],Player.CurrentFight)
+    Pet = Esteem(2.36,Actions,[],[],Player.CurrentFight)    #Creates a Player of class Esteem and adds it to the current fight.
     Player.CurrentFight.PlayerList.append(Pet)
     print("Esteem enters the battlefield.")
 
-
-#def ApplyPlungeEffect(Player, Skill):
-#    Player.Plunge
+def ApplyPlungeEffect(Player, Spell):
+    if Player.PlungeCharges == 2:
+        Player.PlungeCD = 30
+    Player.PlungeCD = 30
 
 
 #Weaponskills ie GCDs
+Lock = 0.75
 
-HardSlash = DRKSkill(1, True, 0.5, 2.4, 200, 0, 0, empty, [])
-SyphonStrike = DRKSkill(2, True, 0.5, 2.43, 270, 0, 0, ApplySyphonEffect, [])
-Souleater = DRKSkill(3, True, 0.5, 2.43, 330, 0, 0, ApplySoulEaterEffect, [])
-Bloodspiller = DRKSkill(4, True, 0.5, 2.43, 500, 0, 50, empty, [BloodRequirement])
-Quietus = DRKSkill(5, True, 0.5, 2.43, 200, 0, 50, empty, [BloodRequirement])
-Unmend = DRKSkill(6, True, 0.5, 2.50, 150, 0, 0, empty, [])
+HardSlash = DRKSkill(1, True, Lock, 2.43, 200, 0, 0, empty, [])
+SyphonStrike = DRKSkill(2, True, Lock, 2.43, 270, 0, 0, ApplySyphonEffect, [])
+Souleater = DRKSkill(3, True, Lock, 2.43, 330, 0, 0, ApplySoulEaterEffect, [])
+Bloodspiller = DRKSkill(4, True, Lock, 2.43, 500, 0, 50, empty, [BloodRequirement])
+Quietus = DRKSkill(5, True, Lock, 2.43, 200, 0, 50, empty, [BloodRequirement])
+Unmend = DRKSkill(6, True, Lock, 2.50, 150, 0, 0, empty, [])
 
 #Buffs
 
-BloodWeapon = DRKSkill(7, False, 0.5, 0, 0, 0, 0, ApplyBloodWeaponEffect, [])
-Delirium = DRKSkill(8, False, 0.5, 0, 0, 0, 0, ApplyDeliriumEffect, [])
+BloodWeapon = DRKSkill(7, False, Lock, 0, 0, 0, 0, ApplyBloodWeaponEffect, [BloodWeaponRequirement])
+Delirium = DRKSkill(8, False, Lock, 0, 0, 0, 0, ApplyDeliriumEffect, [DeliriumRequirement])
 
 #Abilities
 
-EdgeShadow = DRKSkill(9, False, 0.5, 0, 400, 3000, 0, ApplyEdgeShadowEffect, [EdgeShadowRequirement])
-FloodShadow = DRKSkill(10, False, 0.5, 0, 160, 3000, 0, ApplyFloodShadowEffect, [FloodShadowRequirement])
-CarveSpit = DRKSkill(11, False, 0.5, 0, 360, 0, 0, ApplyCarveSpitEffect, [CarveSpitRequirement])
-AbyssalDrain = DRKSkill(12, False, 0.5, 0, 150, 0, 0, empty, [AbyssalDrainRequirement])
-#SaltedEarth = DRKSkill(13, False, 0.5, 0, 60, 0, 0, ApplySaltedEarth, [SaltedEarthRequirement]) #Ground target DOT, ticks once upon placement
-#SaltDarkness = DRKSkill(14, False, 0.5, 0, 500, 0, 0, 0, empty, [SaltDarknessRequirement])
-#Shadowbringer = DRKSkill(15, False, 0.5, 0, 600, 0, 0, empty, [ShadowbringerRequirement])
-LivingShadow = DRKSkill(16, False, 0.5, 0, 0, 0, 50, SummonLivingShadow, [BloodRequirement])
-#Plunge = DRKSkill(17, False, 0.7, 0, 150, 0, 0, ApplyPlungeEffect, [PlungeRequirement])
+EdgeShadow = DRKSkill(9, False, Lock, 0, 400, 3000, 0, ApplyEdgeShadowEffect, [EdgeShadowRequirement])
+FloodShadow = DRKSkill(10, False, Lock, 0, 160, 3000, 0, ApplyFloodShadowEffect, [EdgeShadowRequirement])
+CarveSpit = DRKSkill(11, False, Lock, 0, 360, 0, 0, ApplyCarveSpitEffect, [CarveSpitRequirement])
+AbyssalDrain = DRKSkill(12, False, Lock, 0, 150, 0, 0, empty, [AbyssalDrainRequirement])
+SaltedEarth = DRKSkill(13, False, Lock, 0, 50, 0, 0, ApplySaltedEarth, [SaltedEarthRequirement]) #Ground target DOT, ticks once upon placement.
+SaltedEarthDOT = DOTSpell(14, 50)
+SaltDarkness = DRKSkill(15, False, Lock, 0, 500, 0, 0, empty, [SaltDarknessRequirement])
+Shadowbringer = DRKSkill(16, False, Lock, 0, 600, 0, 0, empty, [ShadowbringerRequirement])
+LivingShadow = DRKSkill(17, False, Lock, 0, 0, 0, 50, SummonLivingShadow, [BloodRequirement])
+Plunge = DRKSkill(18, False, 0.7, 0, 150, 0, 0, ApplyPlungeEffect, [PlungeRequirement])
 
 #List of Abilities performed by Living Shadow.
 
-PAbyssalDrain = DRKSkill(18, True, 0.5, 2.36, 300, 0, 0, empty, [])
-PPlunge = DRKSkill(19, True, 0.5, 2.36, 300, 0, 0, empty, [])
-PQuietus = DRKSkill(20, True, 0.5, 2.36, 300, 0, 0, empty, [])
-PShadowbringer = DRKSkill(21, True, 0.5, 2.36, 450, 0, 0, empty, [])
-PEdgeShadow = DRKSkill(22, True, 0.5, 2.36, 300, 0, 0, empty, [])
-PBloodspiller = DRKSkill(23, True, 0.5, 2.36, 300, 0, 0, empty, [])
-PCarveSpit = DRKSkill(24, True, 0.5, 2.36, 300, 0, 0, empty, [])
-PDelay = DRKSkill(25, True, 0, 4.50, 0, 0, 0, empty, [])
+PAbyssalDrain = DRKSkill(19, True, 0.5, 2.36, 300, 0, 0, empty, [])
+PPlunge = DRKSkill(20, True, 0.5, 2.36, 300, 0, 0, empty, [])
+PQuietus = DRKSkill(21, True, 0.5, 2.36, 300, 0, 0, empty, [])
+PShadowbringer = DRKSkill(22, True, 0.5, 2.36, 450, 0, 0, empty, [])
+PEdgeShadow = DRKSkill(23, True, 0.5, 2.36, 300, 0, 0, empty, [])
+PBloodspiller = DRKSkill(24, True, 0.5, 2.36, 300, 0, 0, empty, [])
+PCarveSpit = DRKSkill(25, True, 0.5, 2.36, 300, 0, 0, empty, [])
+PDelay = DRKSkill(26, True, 0, 4.50, 0, 0, 0, empty, [])    #6s animation before it starts attacking.
