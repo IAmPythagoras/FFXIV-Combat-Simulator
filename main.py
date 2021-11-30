@@ -2,6 +2,7 @@ from Fight import *
 from Spell import *
 
 from Enemy import *
+from Spell import Bloodspiller
 
 
 Dummy = Enemy()
@@ -9,9 +10,9 @@ Dummy = Enemy()
 Action = [F3, Eno, T3, F4, F4]
 PrePull = []
 Event = Fight([], Dummy)
-DRKAction = [HardSlash, SaltedEarth]
+DRKAction = [Delirium, Bloodspiller, Quietus, Bloodspiller, LivingShadow]
 
-DRKPlayer = DarkKnight(2.36, DRKAction, [], [DarksideEffect],Event)
+DRKPlayer = DarkKnight(2.43, DRKAction, [], [DarksideEffect], Event)
 
 Event.PlayerList = [DRKPlayer]
 

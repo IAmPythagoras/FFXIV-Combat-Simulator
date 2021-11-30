@@ -35,7 +35,8 @@ class Spell:
         #Checks if we meet the spell requirement
         for Requirement in tempSpell.Requirement:
             if(not Requirement(player, self)) : #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
-                print(str(self.id))
+                print("Failed to cast the spell : " + str(self.id))
+                print("The Requirement that failed was : " + str(Requirement.__name__))
                 raise FailedToCast("Failed to cast the spell")
         return tempSpell
 
@@ -51,7 +52,6 @@ class Spell:
         #This will include substracting the mana (it has been verified before that the mana was enough)
         
         print("Current MP: " + str(player.Mana))
-        print("Current Blood: " + str(player.Blood))
 
         player.TotalPotency+= self.Potency
         Enemy.TotalPotency+= self.Potency  #Doing Damage
@@ -415,7 +415,7 @@ Mana = BLMSpell(17, False, 0.5, 0, 0, 0, False, False, ApplyManaFront, [ManaFron
 
 class DRKSkill(Spell):
     #A class for Dark Knight Skills containing all the relevant weaponskills/spells, cooldowns,
-    #as well as their effects and requirements. Will not consider out of combo actions.
+    #as well as their effects and requirements. For now does not consider out of combo actions.
 
     def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, BloodCost, Effect, Requirement):
         super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
@@ -429,8 +429,9 @@ def DarksideEffect(Player, Spell):
 #Requirements for each Skill and Ability.
 
 def BloodRequirement(Player, Spell):
-    if Player.DeliriumStacks != 0:      #Checks if DRK has Delirium stacks, if yes, then nullifies BloodCost.
-        Spell.BloodCost = 0
+    print("Delirium stacks: "+ str(Player.DeliriumStacks))
+    if Player.DeliriumStacks > 0 and (Spell.id == 4 or Spell.id == 5):
+        Spell.BloodCost = 0             #Checks if DRK has Delirium stacks. If yes, the cost of Bloodspiller/Quietus is nullified.
         Player.DeliriumStacks -= 1
         return True
     elif Player.Blood >= 50:            #If no Delirium stacks, checks if DRK has at least 50 Blood Gauge.
@@ -450,16 +451,16 @@ def EdgeShadowRequirement(Player, Spell):
             return True
     return False
 
-def FloodShadowRequirement(Player, Spell):
-    if Player.FloodShadowCD <= 0 :
-        Player.FloodShadowCD = 2
-        if Player.DarkArts:
-            Spell.ManaCost = 0
-            Player.DarkArts = False
-            return True
-        elif Player.Mana >= Spell.ManaCost:
-            Player.Mana -= Spell.ManaCost
-            return True
+def BloodWeaponRequirement(Player, Spell):
+    if Player.BloodWeaponCD <= 0 :
+        Player.BloodWeaponCD = 60
+        return True
+    return False
+
+def DeliriumRequirement(Player, Spell):
+    if Player.DeliriumCD <= 0 :
+        Player.DeliriumCD = 60
+        return True
     return False
 
 def CarveSpitRequirement(Player, Spell):
@@ -486,37 +487,37 @@ def SaltDarknessRequirement(Player, Spell):
     return False
 
 def ShadowbringerRequirement(Player, Spell):
-    if Player.DarksideTimer > 0:
+    if Player.DarksideTimer > 0 and Player.ShadowbringerCharges > 0:
         return True
     return False
 
 def PlungeRequirement(Player, Spell):
-    if Player.PlungeStacks > 0:
-        Player.PlungeStacks -= 1
-
+    if Player.PlungeCharges > 0:
+        return True
+    return False
 
 #Effect functions that persist after action use
 
 def BloodWeaponEffect(Player, Spell):
+    print("Blood Weapon active")
     if Spell.GCD:
         Player.Mana = min(Player.Mana + 600, 10000)
-        print('+600 MP')
         Player.Blood = min(100, Player.Blood + 10)
-        print('+10 Blood')
+
 
 def DeliriumEffect(Player, Spell):
-    if (Spell.id == 4 or 5):
-        Player.DeliriumStacks -= 1
+    print("Delirium active")
+    if Spell.id == 4 or Spell.id == 5:
         Player.Mana = min(Player.Mana + 200, 10000)
-        print('+200 MP')
 
-    if (Player.DeliriumStacks == 0):
+    if Player.DeliriumStacks == 0:
         Player.EffectList.remove(DeliriumEffect)
 
 #Cooldown checks
 
 def BloodWeaponCheck(Player, Spell):
     if Player.BloodWeaponTimer <= 0:                                #Removes effect once duration has finished.
+        Player.BloodWeaponTimer = 0
         Player.EffectList.remove(BloodWeaponEffect)
         Player.EffectCDList.remove(BloodWeaponCheck)
 
@@ -536,16 +537,16 @@ def SaltedEarthCheck(Player, Spell):
 
 def ApplySyphonEffect(Player, Spell):
     Player.Mana = min(Player.Mana + 600, 10000)
-    print('+600 MP')
+    print('+600 MP restored by Syphon Strike')
 
 def ApplySoulEaterEffect(Player, Spell):
     Player.Blood = min(100, Player.Blood + 20)
-    print('+20 Blood')
+    print('+20 Blood gained by Souleater')
 
 def ApplyBloodWeaponEffect(Player, Spell):
     Player.BloodWeaponCD = 60                       #Puts Blood Weapon on a 60s cooldown.
     Player.EffectList.append(BloodWeaponEffect)
-    Player.BloodWeaponTimer = 10                    #Adds 10s to Blood Weapon buff timer.
+    Player.BloodWeaponTimer = 10.7                  #Adds 10.7s to Blood Weapon buff timer. The extra 0.7s is due to a quirk of this buff's timing.
     Player.EffectCDList.append(BloodWeaponCheck)
 
 def ApplyDeliriumEffect(Player, Spell):
@@ -566,9 +567,6 @@ def ApplyFloodShadowEffect(Player, Spell):
 def ApplyCarveSpitEffect(Player, Spell):
     Player.Mana += 600
 
-#def ApplyAbyssalDrainEffect(Player, Spell):
-#       Player.HP +=               Cure potency of 200.
-
 def ApplySaltedEarth(Player, Spell):
     Player.SaltedEarthTimer = 15
     Player.DOTList.append(SaltedEarthDOT)
@@ -583,37 +581,39 @@ def SummonLivingShadow(Player, Spell):
     Player.CurrentFight.PlayerList.append(Pet)
     print("Esteem enters the battlefield.")
 
-
-#def ApplyPlungeEffect(Player, Skill):
-#    Player.Plunge
+def ApplyPlungeEffect(Player, Spell):
+    if Player.PlungeCharges == 2:
+        Player.PlungeCD = 30
+    Player.PlungeCD = 30
 
 
 #Weaponskills ie GCDs
+Lock = 0.75
 
-HardSlash = DRKSkill(1, True, 0.5, 2.4, 200, 0, 0, empty, [])
-SyphonStrike = DRKSkill(2, True, 0.5, 2.43, 270, 0, 0, ApplySyphonEffect, [])
-Souleater = DRKSkill(3, True, 0.5, 2.43, 330, 0, 0, ApplySoulEaterEffect, [])
-Bloodspiller = DRKSkill(4, True, 0.5, 2.43, 500, 0, 50, empty, [BloodRequirement])
-Quietus = DRKSkill(5, True, 0.5, 2.43, 200, 0, 50, empty, [BloodRequirement])
-Unmend = DRKSkill(6, True, 0.5, 2.50, 150, 0, 0, empty, [])
+HardSlash = DRKSkill(1, True, Lock, 2.43, 200, 0, 0, empty, [])
+SyphonStrike = DRKSkill(2, True, Lock, 2.43, 270, 0, 0, ApplySyphonEffect, [])
+Souleater = DRKSkill(3, True, Lock, 2.43, 330, 0, 0, ApplySoulEaterEffect, [])
+Bloodspiller = DRKSkill(4, True, Lock, 2.43, 500, 0, 50, empty, [BloodRequirement])
+Quietus = DRKSkill(5, True, Lock, 2.43, 200, 0, 50, empty, [BloodRequirement])
+Unmend = DRKSkill(6, True, Lock, 2.50, 150, 0, 0, empty, [])
 
 #Buffs
 
-BloodWeapon = DRKSkill(7, False, 0.5, 0, 0, 0, 0, ApplyBloodWeaponEffect, [])
-Delirium = DRKSkill(8, False, 0.5, 0, 0, 0, 0, ApplyDeliriumEffect, [])
+BloodWeapon = DRKSkill(7, False, Lock, 0, 0, 0, 0, ApplyBloodWeaponEffect, [BloodWeaponRequirement])
+Delirium = DRKSkill(8, False, Lock, 0, 0, 0, 0, ApplyDeliriumEffect, [DeliriumRequirement])
 
 #Abilities
 
-EdgeShadow = DRKSkill(9, False, 0.5, 0, 400, 3000, 0, ApplyEdgeShadowEffect, [EdgeShadowRequirement])
-FloodShadow = DRKSkill(10, False, 0.5, 0, 160, 3000, 0, ApplyFloodShadowEffect, [FloodShadowRequirement])
-CarveSpit = DRKSkill(11, False, 0.5, 0, 360, 0, 0, ApplyCarveSpitEffect, [CarveSpitRequirement])
-AbyssalDrain = DRKSkill(12, False, 0.5, 0, 150, 0, 0, empty, [AbyssalDrainRequirement])
-SaltedEarth = DRKSkill(13, False, 0.5, 0, 50, 0, 0, ApplySaltedEarth, [SaltedEarthRequirement]) #Ground target DOT, ticks once upon placement
-SaltedEarthDOT = DOTSpell(14, 50)   #The actual Salted Earth DOT
-SaltDarkness = DRKSkill(15, False, 0.5, 0, 500, 0, 0, empty, [SaltDarknessRequirement])
-Shadowbringer = DRKSkill(16, False, 0.5, 0, 600, 0, 0, empty, [ShadowbringerRequirement])
-LivingShadow = DRKSkill(17, False, 0.5, 0, 0, 0, 50, SummonLivingShadow, [BloodRequirement])
-#Plunge = DRKSkill(18, False, 0.7, 0, 150, 0, 0, ApplyPlungeEffect, [PlungeRequirement])
+EdgeShadow = DRKSkill(9, False, Lock, 0, 400, 3000, 0, ApplyEdgeShadowEffect, [EdgeShadowRequirement])
+FloodShadow = DRKSkill(10, False, Lock, 0, 160, 3000, 0, ApplyFloodShadowEffect, [EdgeShadowRequirement])
+CarveSpit = DRKSkill(11, False, Lock, 0, 360, 0, 0, ApplyCarveSpitEffect, [CarveSpitRequirement])
+AbyssalDrain = DRKSkill(12, False, Lock, 0, 150, 0, 0, empty, [AbyssalDrainRequirement])
+SaltedEarth = DRKSkill(13, False, Lock, 0, 50, 0, 0, ApplySaltedEarth, [SaltedEarthRequirement]) #Ground target DOT, ticks once upon placement.
+SaltedEarthDOT = DOTSpell(14, 50)
+SaltDarkness = DRKSkill(15, False, Lock, 0, 500, 0, 0, empty, [SaltDarknessRequirement])
+Shadowbringer = DRKSkill(16, False, Lock, 0, 600, 0, 0, empty, [ShadowbringerRequirement])
+LivingShadow = DRKSkill(17, False, Lock, 0, 0, 0, 50, SummonLivingShadow, [BloodRequirement])
+Plunge = DRKSkill(18, False, 0.7, 0, 150, 0, 0, ApplyPlungeEffect, [PlungeRequirement])
 
 #List of Abilities performed by Living Shadow.
 
