@@ -626,3 +626,6 @@ PEdgeShadow = DRKSkill(23, True, 0.5, 2.36, 300, 0, 0, empty, [])
 PBloodspiller = DRKSkill(24, True, 0.5, 2.36, 300, 0, 0, empty, [])
 PCarveSpit = DRKSkill(25, True, 0.5, 2.36, 300, 0, 0, empty, [])
 PDelay = DRKSkill(26, True, 0, 4.50, 0, 0, 0, empty, [])    #6s animation before it starts attacking.
+
+
+print("bruh")
