@@ -10,7 +10,7 @@ Dummy = Enemy()
 Action = [F3, Eno, T3, F4, F4]
 PrePull = []
 Event = Fight([], Dummy)
-DRKAction = [Delirium, Bloodspiller, Quietus, Bloodspiller, LivingShadow]
+DRKAction = [Delirium, Bloodspiller, Quietus, Bloodspiller]
 
 DRKPlayer = DarkKnight(2.43, DRKAction, [], [DarksideEffect], Event)
 
