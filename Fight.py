@@ -1,5 +1,6 @@
 import math
 
+
 class NoMoreAction(Exception):#Exception called if a spell fails to cast
     pass
 
@@ -28,7 +29,6 @@ class Fight:
             #It will increment in TimeUnit up to a maximum of TimeLimit (there can be other reasons the Fight ends)
             #It will check weither a player can cast its NextSpell, and if it can it will call the relevant functions
             #However, no direct computation is done in this function, it simply orchestrates the whole thing
-
             TimeStamp = 0   #Keep track of the time
             while(TimeStamp <= TimeLimit):
 
@@ -46,6 +46,7 @@ class Fight:
                                 player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)#Cast the spell
                                 print("Spell with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(TimeStamp) )
                                 #Locking the player
+
                                 player.Casting = True
                                 player.CastingLockTimer = player.CastingSpell.CastTime
                                 player.GCDLock = True
@@ -75,6 +76,7 @@ class Fight:
                     for DOT in player.DOTList:
                         DOT.CheckDOT(player,self.Enemy, TimeUnit)
                 for player in self.PlayerList:
+                    #print(player.EffectCDList)
                     for CDCheck in player.EffectCDList:
                         CDCheck(player, self.Enemy)
 

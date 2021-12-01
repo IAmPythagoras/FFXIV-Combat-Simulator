@@ -1,6 +1,10 @@
 import copy
 from Player import *
 
+
+
+
+
 class FailedToCast(Exception):#Exception called if a spell fails to cast
     pass
 
@@ -30,10 +34,9 @@ class Spell:
             Effect(player, tempSpell)#Changes tempSpell
         for Effect in Enemy.EffectList:
             Effect(Enemy, tempSpell)#Changes tempSpell
-
         #Checks if we meet the spell requirement
         for Requirement in tempSpell.Requirement:
-            if(not Requirement(player, self)) : #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
+            if(not Requirement(player, tempSpell)) : #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
                 print("Failed to cast the spell : " + str(self.id))
                 print("The Requirement that failed was : " + str(Requirement.__name__))
                 raise FailedToCast("Failed to cast the spell")
@@ -56,10 +59,9 @@ class Spell:
         player.TotalPotency+= self.Potency
         Enemy.TotalPotency+= self.Potency  #Doing Damage
 
-
         #Will update the NextSpell of the player
 
-        player.NextSpell+=1
+        if (not (isinstance(self, DOTSpell))) : player.NextSpell+=1
         if (player.NextSpell == len(player.ActionSet)):#Checks if no more spell to do
             player.TrueLock = True
 
@@ -96,7 +98,6 @@ class BLMSpell(Spell):
         self.IsIce = IsIce
 
 #The following will be all relevant Black Mage spell, requirement check, effect, etc.
-
 
 #Requirement
 def AmplifierRequirement(Player, Spell):
@@ -149,6 +150,9 @@ def TransposeRequirement(Player, Spell):
 
 def ParadoxRequirement(Player, Spell):
     return Player.Paradox
+
+def EnoughTimeRequirement(Player, Spell):
+    return Player.AFUITimer >= Spell.CastTime
 
 #Effect of spells
 def AstralFire(Player, Spell):
@@ -209,8 +213,10 @@ def EnochianEffect(Player, Spell):
     Spell.Potency*=1.15
 
 def TripleCastEffect(Player,Spell):
+    #print("Applied triple")
     Spell.CastTime=0
     Player.TripleCastStack-=1
+    #print("SpellCT : " +str(Spell.CastTime))
 
 def SwiftCastEffect(Player, Spell):
     Spell.CastTime=0
@@ -221,12 +227,10 @@ def SharpCastEffect(Player,Spell):
     if(Spell.id == 8):#Id 0 is T3
         Player.T3Prock = 1
         Player.SharpCastStack = 0
-        Player.EffectList.remove(SharpCastEffect)
         Player.EffectList.append(T3ProckEffect)
     elif(Spell.id == 1): #Fire 1
         Player.F3Prock == 1
         Player.SharpCastStack = 0
-        Player.EffectList.remove(SharpCastEffect)
         Player.EffectList.append(F3ProckEffect)
 
 def T3ProckEffect(Player, Spell):
@@ -238,9 +242,9 @@ def T3ProckEffect(Player, Spell):
 
         #Finding Multiplying bonus so far
 
-        Mult = Spell.Potency/40 #40 is based potency of Thunder 3
+        Mult = Spell.Potency/70 #40 is based potency of Thunder 3
 
-        NewBonus = 280 * Mult #To find new bonus
+        NewBonus = 320 * Mult #To find new bonus
 
         Spell.Potency += NewBonus
 
@@ -278,15 +282,18 @@ def Thunder3DotCheck(Player,Enemy):
         Player.T3Timer = 0
 
 def AFUICheck(Player,Enemy):
-
+    
     if(Player.AFUITimer <= 0):
+        Player.AFUITimer = 0
         Player.AstralFireStack = 0
         Player.UmbralIceStack = 0
+        Player.EffectCDList.remove(AFUICheck)
 
 def EnochianLostCheck(Player,Enemy):
 
-    if(Player.AstralFireStack == 0 and Player.UmbralIceStack == 0):
+    if(Player.AFUITimer == 0):
         Player.EffectList.remove(EnochianEffect)
+        Player.EffectCDList.remove(EnochianLostCheck)
         Player.Enochian = False
 
 def SwiftCastCheck(Player, Enemy):
@@ -298,15 +305,16 @@ def SwiftCastCheck(Player, Enemy):
 
 def TripleCastCheck(Player, Enemy):
     if (Player.TripleCastTimer <= 0 or Player.TripleCastStack == 0):
+        #print("Removed Tripe")
         Player.TripleCastTimer = 0
         Player.TripleCastStack = 0
-        Player.Effect.remove(TripleCastEffect)
+        Player.EffectList.remove(TripleCastEffect)
         Player.EffectCDList.remove(TripleCastCheck)
 
 def SharpCastCheck(Player, Enemy):
     if (Player.SharpCastTimer <= 0 or Player.SharpCastStack == 0) : 
         Player.SharpCastStack = 0
-        Player.SharCastTimer = 0
+        Player.SharpCastTimer = 0
         Player.EffectList.remove(SharpCastEffect)
         Player.EffectCDList.remove(SharpCastCheck)
 
@@ -315,10 +323,8 @@ def CheckSharpCast(Player, Enemy):
     if Player.SharpCastCD <= 0:
         if Player.SharpCastCharges == 0:
             Player.SharpCastCD = 30
-            print("A new stack has been added, now at 1 stack")
         if Player.SharpCastCharges == 1:
             Player.EffectCDList.remove(CheckSharpCast)
-            print("now at 2 stacks")
         Player.SharpCastCharges +=1
 
 
@@ -335,26 +341,32 @@ def AddAstralFire1(Player, Enemy):#Adds one Astral Fire
 
     if(Player.AstralFireStack >=0 and Player.UmbralIceStack == 0):
         Player.AstralFireStack = min(3, Player.AstralFireStack + 1)
+        if Player.AFUITimer <= 0: Player.EffectCDList.append(AFUICheck)
         Player.AFUITimer = 15
     elif (Player.AstralFireStack == 0 and Player.UmbralIceStack >=1):
         Player.AstralFireStack = 0
         Player.UmbralIceStack = 0
+        Player.AFUITimer = 0
 
 def AddAstralFire3(Player, Enemy):#Astral Fire 3
     Player.AstralFireStack = 3
     Player.UmbralIceStack = 0
+    if Player.AFUITimer <= 0: Player.EffectCDList.append(AFUICheck)
     Player.AFUITimer = 15
 
 def AddUmbralIce3(Player, Enemy):#Add Umbral Ice 3
     Player.UmbralIceStack = 3
     Player.AstralFireStack = 0
+    if Player.AFUITimer <= 0: Player.EffectCDList.append(AFUICheck)
     Player.AFUITimer = 15
 
 def ApplyEnochian(Player,Enemy):
-    Player.Enochian = True
     Player.EnochianCD = 30
-    Player.EffectList.append(EnochianEffect)
-    Player.EffectCDList.append(EnochianLostCheck)
+    if not Player.Enochian : #Only add effect is
+        #print('added enochian')
+        Player.EffectList.append(EnochianEffect)
+        Player.EffectCDList.append(EnochianLostCheck)
+        Player.Enochian = True
 
 def ApplySwiftCast(Player,Enemy):
     Player.SwiftCastCD = 60
@@ -366,6 +378,7 @@ def ApplySwiftCast(Player,Enemy):
 def ApplyTripleCast(Player,Enemy):
     Player.TripleCastCD = 60
     Player.TripleCastStack = 3
+    Player.TripleCastTimer = 15
     Player.EffectList.append(TripleCastEffect)
     Player.EffectCDList.append(TripleCastCheck)
 
@@ -379,6 +392,7 @@ def ApplySharpCast(Player,Enemy):
     if Player.SharpCastCharges == 2 : Player.SharpCastCD = 30
     Player.SharpCastStack = 1
     Player.SharpCastCharges -= 1
+    Player.SharpCastTimer = 15
     Player.EffectCDList.append(CheckSharpCast)  #To check charges
     Player.EffectCDList.append(SharpCastCheck)  #To check if to remove effect
     Player.EffectList.append(SharpCastEffect)
@@ -393,8 +407,8 @@ def ApplyBlizzard4(Player,Enemy):
     Player.Paradox = True
 
 def ApplyThunder3(Player,Enemy):
-    Player.DOTList.append(T3DOT)
-    Player.EffectCDList.append(Thunder3DotCheck)
+    if (not (T3DOT in Player.DOTList) ): Player.DOTList.append(T3DOT)
+    if (not (Thunder3DotCheck in Player.EffectCDList) ): Player.EffectCDList.append(Thunder3DotCheck)
     Player.T3Timer = 24
 
 def ApplyTranspose(Player, Enemy):
@@ -435,14 +449,14 @@ def WaitAbility(time):
 F1 = BLMSpell(1, True, 2.19, 2.19, 180, 800, True, False, AddAstralFire1, [ManaRequirement])
 #F2 = BLMAbility(1, True, 2.17, 2.17, 140, 200, True, False, empty, ManaCheck)#Will not used, so whatever
 F3 = BLMSpell(2, True, 3.07, 2.19, 240, 2000, True, False, AddAstralFire3, [ManaRequirement])
-F4 = BLMSpell(3, True, 2.46, 2.19, 300, 800, True, False, empty, [ManaRequirement, EnochianOnRequirement, AstralFireRequirement])
-Despair = BLMSpell(4, True, 2.63, 2.19, 380, 800, True, False, DespairCast, [ManaRequirement, EnochianOnRequirement, AstralFireRequirement])
+F4 = BLMSpell(3, True, 2.46, 2.19, 300, 800, True, False, empty, [ManaRequirement, EnochianOnRequirement, AstralFireRequirement, EnoughTimeRequirement])
+Despair = BLMSpell(4, True, 2.63, 2.19, 380, 800, True, False, DespairCast, [ManaRequirement, EnochianOnRequirement, AstralFireRequirement, EnoughTimeRequirement])
 
 #Ice Spell
 #B1 = BLMSpell(5, True, 2.19, 2.19, 180, 400, False, True, AddUmbralIce1, ManaCheck)#Not used so whatever
 #B2 = BLMAbility(6, True, 2.17, 2.17, 140, 200, False, True, empty, ManaCheck)#AOE so not used
 B3 = BLMSpell(6, True, 3.07, 2.19, 240, 800, False, True, AddUmbralIce3, [ManaRequirement])
-B4 = BLMSpell(7, True, 2.46, 2.19, 300, 800, False, True, ApplyBlizzard4, [ManaRequirement, EnochianOnRequirement, UmbralIceRequirement])
+B4 = BLMSpell(7, True, 2.46, 2.19, 300, 800, False, True, ApplyBlizzard4, [ManaRequirement, EnochianOnRequirement, UmbralIceRequirement, EnoughTimeRequirement])
 
 #DOT
 
@@ -490,7 +504,7 @@ def DarksideEffect(Player, Spell):
 #Requirements for each Skill and Ability.
 
 def BloodRequirement(Player, Spell):
-    print("Delirium stacks: "+ str(Player.DeliriumStacks))
+    #print("Delirium stacks: "+ str(Player.DeliriumStacks))
     if Player.DeliriumStacks > 0 and (Spell.id == 4 or Spell.id == 5):
         Spell.BloodCost = 0             #Checks if DRK has Delirium stacks. If yes, the cost of Bloodspiller/Quietus is nullified.
         Player.DeliriumStacks -= 1
@@ -560,14 +574,14 @@ def PlungeRequirement(Player, Spell):
 #Effect functions that persist after action use
 
 def BloodWeaponEffect(Player, Spell):
-    print("Blood Weapon active")
+    #print("Blood Weapon active")
     if Spell.GCD:
         Player.Mana = min(Player.Mana + 600, 10000)
         Player.Blood = min(100, Player.Blood + 10)
 
 
 def DeliriumEffect(Player, Spell):
-    print("Delirium active")
+    #print("Delirium active")
     if Spell.id == 4 or Spell.id == 5:
         Player.Mana = min(Player.Mana + 200, 10000)
 
@@ -598,11 +612,11 @@ def SaltedEarthCheck(Player, Spell):
 
 def ApplySyphonEffect(Player, Spell):
     Player.Mana = min(Player.Mana + 600, 10000)
-    print('+600 MP restored by Syphon Strike')
+    #print('+600 MP restored by Syphon Strike')
 
 def ApplySoulEaterEffect(Player, Spell):
     Player.Blood = min(100, Player.Blood + 20)
-    print('+20 Blood gained by Souleater')
+    #print('+20 Blood gained by Souleater')
 
 def ApplyBloodWeaponEffect(Player, Spell):
     Player.BloodWeaponCD = 60                       #Puts Blood Weapon on a 60s cooldown.
@@ -640,7 +654,7 @@ def SummonLivingShadow(Player, Spell):
     Actions = [PDelay, PAbyssalDrain, PPlunge, PQuietus, PShadowbringer, PEdgeShadow, PBloodspiller, PCarveSpit]
     Pet = Esteem(2.36,Actions,[],[],Player.CurrentFight)    #Creates a Player of class Esteem and adds it to the current fight.
     Player.CurrentFight.PlayerList.append(Pet)
-    print("Esteem enters the battlefield.")
+    #print("Esteem enters the battlefield.")
 
 def ApplyPlungeEffect(Player, Spell):
     if Player.PlungeCharges == 2:

@@ -3,17 +3,18 @@ class Player:
     #This class will contain any relevant information to the player. It will be the mother of all other Player
 
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight):
-
         self.GCDTimer = GCDTimer    #How long a GCD is
         self.ActionSet = ActionSet  #Known Action List
         self.EffectList = EffectList    #Normally Empty, can has some effects initially
         self.PrePullSet = PrePullSet    #Prepull action list
         self.EffectCDList = []          #List of Effect for which we have to check if the have ended
+        self.EffectCDList = [ManaRegenCheck]
         self.DOTList = []
         self.NextSpell = 0
         self.CastingSpell = []
         self.CastingTarget = []
         self.CurrentFight = CurrentFight
+        self.ManaTick = 3
 
         self.TrueLock = False   #Used to know when a player has finished all of its ActionSet
         self.Casting = False    #used to know if an action is possible
@@ -34,6 +35,7 @@ class Player:
         if (self.GCDLockTimer > 0) : self.GCDLockTimer = max(0, self.GCDLockTimer-time)
         if (self.oGCDLockTimer > 0) : self.oGCDLockTimer = max(0, self.oGCDLockTimer-time)
         if (self.CastingLockTimer > 0) : self.CastingLockTimer = max(0, self.CastingLockTimer-time)
+        if (self.ManaTick > 0) : self.ManaTick = max(0, self.ManaTick-time)
 
     def updateLock(self):
         if (self.GCDLockTimer <= 0):
@@ -50,15 +52,20 @@ class Player:
         if (self.CastingLockTimer <= 0):
             self.CastingLockTimer = 0
             self.Casting = False
-            
+
+def ManaRegenCheck(Player, Enemy):  #This function is there by default
+    if Player.ManaTick <= 0:
+        Player.ManaTick = 3
+        Player.Mana = min(10000, Player.Mana + 200)
+
 
 class BlackMage(Player):
     #This class will be blackmage object and will be the one used to simulate a black mage
 
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight):
         super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight)
-
-         #Prock
+        self.EffectCDList = [BLMManaRegenCheck]
+        #Prock
         self.T3Prock = False
         self.F3Prock = False
         self.Paradox = False
@@ -114,6 +121,21 @@ class BlackMage(Player):
         if (self.SwiftCastTimer > 0) : self.SwiftCastTimer = max(0, self.SwiftCastTimer-time)
         if (self.SharpCastTimer > 0) : self.SharpCastTimer = max(0, self.SharpCastTimer-time)
         if (self.F3Timer > 0) : self.F3Timer = max(0, self.F3Timer-time)
+
+
+def BLMManaRegenCheck(Player, Enemy):   #Mana Regen Stuff
+    if Player.ManaTick <= 0:
+        Player.ManaTick = 3
+        if Player.UmbralIceStack >= 1:
+            if(Player.UmbralIceStack == 1):
+                Player.Mana = min(10000, Player.Mana + 3200)
+            if(Player.UmbralIceStack == 2):
+                Player.Mana = min(10000, Player.Mana + 4700)
+            if(Player.UmbralIceStack == 3):
+                Player.Mana = min(10000, Player.Mana + 6200)
+
+        #print("Player now " + str(Player.Mana) + " mana  ")
+        #print("player has : " + str(Player.UmbralIceStack))
 
 #########################################
 ########## DARK KNIGHT PLAYER ###########

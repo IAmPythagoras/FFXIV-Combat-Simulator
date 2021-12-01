@@ -1,5 +1,2 @@
-x = [1,1]
-
-x.remove(1)
-
-print(x)
+x = [1,2]
+print(2 in x)
