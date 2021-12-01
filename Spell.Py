@@ -518,11 +518,21 @@ def SaltedEarthCheck(Player, Spell):
         Player.SaltedEarthTimer = 0
         Player.EffectCDList.remove(SaltedEarthCheck)
 
-def PlungeCheck(Player, Spell):
-    if Player.PlungeCD == 0:
-        Player.PlungeCharges += 1
-    if Player.PlungeCharges == 2:
-        Player.EffectCDList.remove(PlungeCheck)
+def CheckShadowbringerCharge(Player, Enemy):
+    if Player.ShadowbringerCD <= 0:
+        if Player.ShadowbringerCharges == 0:
+            Player.ShadowbringerCD = 30
+        if Player.ShadowbringerCharges == 1:
+            Player.EffectCDList.remove(CheckShadowbringerCharge)
+        Player.ShadowbringerCharges +=1
+
+def CheckPlungeCharge(Player, Enemy):
+    if Player.PlungeCD <= 0:
+        if Player.PlungeCharges == 0:
+            Player.PlungeCD = 30
+        if Player.PlungeCharges == 1:
+            Player.EffectCDList.remove(CheckPlungeCharge)
+        Player.PlungeCharges +=1
 
 
 #Apply effects that happen upon action use
@@ -566,16 +576,23 @@ def ApplySaltedEarth(Player, Spell):
 def ApplySaltDarknessEffect(Player, Spell):
     Player.SaltDarknessCD = 15
 
+def SpendShadowbringer(Player, Spell):
+    if Player.ShadowbringerCharges == 2 :
+        Player.ShadowbringerCD = 60
+    Player.ShadowbringerCharges -= 1
+    Player.EffectCDList.append(CheckShadowbringerCharge)
+
 def SummonLivingShadow(Player, Spell):
     Actions = [PDelay, PAbyssalDrain, PPlunge, PQuietus, PShadowbringer, PEdgeShadow, PBloodspiller, PCarveSpit]
-    Pet = Esteem(2.36,Actions,[],[],Player.CurrentFight)    #Creates a Player of class Esteem and adds it to the current fight.
+    Pet = Esteem(2.36,Actions,[],[],Player.CurrentFight)
     Player.CurrentFight.PlayerList.append(Pet)
     print("Esteem enters the battlefield.")
 
-def ApplyPlungeEffect(Player, Spell):
-    if Player.PlungeCharges == 2:
+def SpendPlunge(Player,Enemy):
+    if Player.PlungeCharges == 2 :
         Player.PlungeCD = 30
-    Player.PlungeCD = 30
+    Player.PlungeCharges -= 1
+    Player.EffectCDList.append(CheckPlungeCharge)
 
 
 #List of Weaponskills and Spells used by a Dark Knight Player.
@@ -602,9 +619,9 @@ AbyssalDrain = DRKSkill(12, False, Lock, 0, 150, 0, 0, ApplyAbyssalDrainEffect, 
 SaltedEarth = DRKSkill(13, False, Lock, 0, 50, 0, 0, ApplySaltedEarth, [SaltedEarthRequirement]) #Ground target DOT, ticks once upon placement.
 SaltedEarthDOT = DOTSpell(14, 50)
 SaltDarkness = DRKSkill(15, False, Lock, 0, 500, 0, 0, empty, [SaltDarknessRequirement])
-Shadowbringer = DRKSkill(16, False, Lock, 0, 600, 0, 0, empty, [ShadowbringerRequirement])
+Shadowbringer = DRKSkill(16, False, Lock, 0, 600, 0, 0, SpendShadowbringer, [ShadowbringerRequirement])
 LivingShadow = DRKSkill(17, False, Lock, 0, 0, 0, 50, SummonLivingShadow, [BloodRequirement])
-Plunge = DRKSkill(18, False, Lock, 0, 150, 0, 0, ApplyPlungeEffect, [PlungeRequirement])
+Plunge = DRKSkill(18, False, Lock, 0, 150, 0, 0, SpendPlunge, [PlungeRequirement])
 
 #List of Abilities performed by Living Shadow.
 
