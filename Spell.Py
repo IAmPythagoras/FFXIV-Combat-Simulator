@@ -213,14 +213,14 @@ def EnochianEffect(Player, Spell):
     Spell.Potency*=1.15
 
 def TripleCastEffect(Player,Spell):
-    #print("Applied triple")
-    Spell.CastTime=0
-    Player.TripleCastStack-=1
-    #print("SpellCT : " +str(Spell.CastTime))
+    if (not Spell.CastTime == 0):
+        Spell.CastTime=0
+        Player.TripleCastStack-=1
 
 def SwiftCastEffect(Player, Spell):
-    Spell.CastTime=0
-    Player.SwiftCastStack = 0
+    if (not Spell.CastTime == 0):
+        Spell.CastTime=0
+        Player.SwiftCastStack = 0
 
 def SharpCastEffect(Player,Spell):
 
@@ -300,7 +300,7 @@ def SwiftCastCheck(Player, Enemy):
     if (Player.SwiftCastTimer <= 0 or Player.SwiftCastStack == 0):
         Player.SwiftCastTimer = 0
         Player.SwiftCastStack = 0
-        Player.Effect.remove(SwiftCastEffect)
+        Player.EffectList.remove(SwiftCastEffect)
         Player.EffectCDList.remove(SwiftCastCheck)
 
 def TripleCastCheck(Player, Enemy):
@@ -437,6 +437,7 @@ def ApplyAmplifier(Player, Enemy):
 
 def DespairCast(Player, Enemy):
     Player.Mana = 0
+    ResetAFUITimer(Player, Enemy)
 
 #Function to generate WAIT
 def WaitAbility(time):

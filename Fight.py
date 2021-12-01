@@ -24,12 +24,13 @@ class Fight:
 
 
 
-    def SimulateFight(self, TimeUnit, TimeLimit):
+    def SimulateFight(self, TimeUnit, TimeLimit, FightCD):
             #This function will Simulate the fight given the enemy and player list of this Fight
             #It will increment in TimeUnit up to a maximum of TimeLimit (there can be other reasons the Fight ends)
             #It will check weither a player can cast its NextSpell, and if it can it will call the relevant functions
             #However, no direct computation is done in this function, it simply orchestrates the whole thing
             TimeStamp = 0   #Keep track of the time
+            start = False
             while(TimeStamp <= TimeLimit):
 
                 for player in self.PlayerList:
@@ -98,6 +99,15 @@ class Fight:
                 #update timestamp
                 #if(math.floor(TimeStamp*1000)%100 == 0) : print(str(TimeStamp))
                 TimeStamp += TimeUnit
+
+
+                FightCD -= TimeUnit
+                if FightCD <= 0 and not start:
+                    TimeStamp = 0
+                    start = True
+                    print("==========================================================================================")
+                    print("FIGHT START")
+                    print("==========================================================================================")
 
             self.PrintResult(TimeStamp)
             
