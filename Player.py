@@ -14,7 +14,7 @@ class Player:
         self.CastingSpell = []
         self.CastingTarget = []
         self.CurrentFight = CurrentFight
-        self.ManaTick = 3
+        self.ManaTick = 1.5
 
         self.TrueLock = False   #Used to know when a player has finished all of its ActionSet
         self.Casting = False    #used to know if an action is possible
@@ -88,6 +88,7 @@ class BlackMage(Player):
         self.SwiftCastTimer = 0
         self.SharpCastTimer = 0
         self.AFUITimer = 0
+        self.PotionTimer = 0
 
         #Charges
         self.SharpCastCharges = 2
@@ -122,6 +123,7 @@ class BlackMage(Player):
         if (self.SwiftCastTimer > 0) : self.SwiftCastTimer = max(0, self.SwiftCastTimer-time)
         if (self.SharpCastTimer > 0) : self.SharpCastTimer = max(0, self.SharpCastTimer-time)
         if (self.F3Timer > 0) : self.F3Timer = max(0, self.F3Timer-time)
+        if (self.PotionTimer > 0) : self.PotionTimer = max(0, self.PotionTimer-time)
 
 
 def BLMManaRegenCheck(Player, Enemy):   #Mana Regen Stuff

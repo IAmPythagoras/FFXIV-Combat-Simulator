@@ -82,7 +82,7 @@ class DOTSpell(Spell):
             self.DOTTimer = 3
         else:
             self.DOTTimer = max(0, self.DOTTimer-TimeUnit)
-
+#Function to generate Waiting
 def WaitAbility(time):
     return Spell(-1, True, time, time, 0, 0, empty, [])
 
@@ -209,7 +209,7 @@ def LeyLinesEffect(Player, Spell):
     Spell.RecastTime*=0.85
 
 def EnochianEffect(Player, Spell):
-    if (Player.AstralFireStack >= 1 or Player.UmbralIceStack >= 1) : Spell.Potency*=1.15
+    if (Player.AstralFireStack >= 1 or Player.UmbralIceStack >= 1) : Spell.Potency*=1.2
 
 def TripleCastEffect(Player,Spell):
     if (not Spell.CastTime == 0) and (Spell.GCD):
@@ -228,7 +228,7 @@ def SharpCastEffect(Player,Spell):
         Player.T3Prock = 1
         Player.SharpCastStack = 0
         Player.EffectList.append(T3ProckEffect)
-    elif(Spell.id == 1): #Fire 1
+    elif(Spell.id == 1 or Spell.id == 18): #Fire 1
         Player.F3Prock == 1
         Player.SharpCastStack = 0
         Player.EffectList.append(F3ProckEffect)
@@ -266,6 +266,10 @@ def UmbralHeartEffect(Player, Spell):
     elif(Player.UmbralHeartStack <= 0):
         Player.UmbralHeartStack = 0
         Player.EffectList.remove(UmbralHeartEffect)
+
+
+def PotionEffect(Player, Spell):
+    Spell.Potency *= 1.1
 
 #Function that will check if an effect has ended
 
@@ -335,6 +339,13 @@ def CheckTripleCastCharges(Player, Enemy):
         elif Player.SharpCastCharges == 1:
             Player.EffectCDList.remove(CheckTripleCastCharges)
         Player.TripleCastCarges += 1
+
+def CheckPotion(Player, Enemy):
+
+    if(Player.PotionTimer <= 0): 
+        Player.EffectList.remove(PotionEffect)
+        Player.EffectCDList.remove(CheckPotion)
+        print("Potion Effect out =========================================================================================")
 
 #Applying Effect of Spell
 
@@ -443,15 +454,20 @@ def ApplyAmplifier(Player, Enemy):
     Player.PolyglotStack = min(2, Player.PolyglotStack + 1)
     Player.AmplifierCD = 120
 
+def ApplyBlizzard3(Player, Enemy):
+    if(Player.AstralFireStack == 3) : Player.Paradox = True
+    AddUmbralIce3(Player, Enemy)
+
+def ApplyPotion(Player, Enemy):
+    Player.PotionTimer = 30
+    Player.EffectList.append(PotionEffect)
+    Player.EffectCDList.append(CheckPotion)
+
 #Special Effect of Spells when casted
 
 def DespairCast(Player, Enemy):
     Player.Mana = 0
     ResetAFUITimer(Player, Enemy)
-
-#Function to generate WAIT
-def WaitAbility(time):
-    return Spell(-1, True, time, time, 0, 0, empty, [])
 
 
 #List of Black Mage Spell
@@ -466,7 +482,7 @@ Despair = BLMSpell(4, True, 3, 2.5, 340, 800, True, False, DespairCast, [ManaReq
 #Ice Spell
 #B1 = BLMSpell(5, True, 2.19, 2.19, 180, 400, False, True, AddUmbralIce1, ManaCheck)#Not used so whatever
 #B2 = BLMAbility(6, True, 2.17, 2.17, 140, 200, False, True, empty, ManaCheck)#AOE so not used
-B3 = BLMSpell(6, True, 3.5, 2.5, 240, 800, False, True, AddUmbralIce3, [ManaRequirement])
+B3 = BLMSpell(6, True, 3.5, 2.5, 240, 800, False, True, ApplyBlizzard3, [ManaRequirement])
 B4 = BLMSpell(7, True, 2.5, 2.5, 300, 800, False, True, ApplyBlizzard4, [ManaRequirement, UmbralIceRequirement, EnoughTimeRequirement])
 
 #DOT
@@ -489,10 +505,12 @@ Mana = BLMSpell(17, False, 0.5, 0, 0, 0, False, False, ApplyManaFront, [ManaFron
 
 #EndWalker Spell
 
-Para = BLMSpell(18, True, 2.5, 2.5, 500, 1600, False, False, ApplyParadox, [ManaFrontRequirement, ParadoxRequirement])
+Para = BLMSpell(18, True, 2.5, 2.5, 500, 1600, False, False, ApplyParadox, [ManaRequirement, ParadoxRequirement])
 Amp = BLMSpell(19, False, 0.5, 0, 0, 0, False, False, ApplyAmplifier, [AmplifierRequirement])
 
+#Potions
 
+Potion = BLMSpell(20, False, 0.5, 0, 0, 0, False, False, ApplyPotion, [])
 
 
 #########################################
