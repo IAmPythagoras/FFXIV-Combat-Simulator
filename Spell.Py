@@ -103,8 +103,8 @@ class BLMSpell(Spell):
 def AmplifierRequirement(Player, Spell):
     return Player.AmplifierCD <= 0
 
-def EnochianOnRequirement(player, Spell):
-    return player.Enochian
+# def EnochianOnRequirement(player, Spell):
+#     return player.Enochian
 
 def ManaRequirement(player, Spell):
     if player.Mana >= Spell.ManaCost :
@@ -131,7 +131,7 @@ def LeyLinesRequirement(Player, Spell):
     return Player.LeyLinesCD <= 0
 
 def TripleCastRequirement(Player, Spell):
-    return Player.TripleCastCD <= 0
+    return Player.TripleCastCharges > 0
 
 def SharpCastRequirement(Player, Spell):
     return Player.SharpCastCharges > 0
@@ -139,8 +139,8 @@ def SharpCastRequirement(Player, Spell):
 def SwiftCastRequirement(Player, Spell):
     return Player.SwiftCastCD <= 0
 
-def EnochianRequirement(Player, Spell):
-    return (Player.EnochianCD == 0) and ((Player.AstralFireStack >= 1) or (Player.UmbralIceStack >= 1))
+# def EnochianRequirement(Player, Spell):
+#     return (Player.EnochianCD == 0) and ((Player.AstralFireStack >= 1) or (Player.UmbralIceStack >= 1))
 
 def ManaFrontRequirement(Player, Spell):
     return (Player.ManaFrontCD <= 0)
@@ -210,10 +210,11 @@ def LeyLinesEffect(Player, Spell):
     Spell.RecastTime*=0.85
 
 def EnochianEffect(Player, Spell):
-    Spell.Potency*=1.15
+    if (Player.AstralFireStack >= 1 or Player.UmbralIceStack >= 1) : Spell.Potency*=1.15
 
 def TripleCastEffect(Player,Spell):
-    if (not Spell.CastTime == 0):
+    if (not Spell.CastTime == 0) and (Spell.GCD):
+        print("Applied TripleCastEffect on : " + str(Spell.id))
         Spell.CastTime=0
         Player.TripleCastStack-=1
 
@@ -258,7 +259,7 @@ def F3ProckEffect(Player, Spell):
         Player.EffectList.remove(F3ProckEffect)
 
 def UmbralHeartEffect(Player, Spell):
-    if(not isinstance(Spell, BLMSpell)) : return False
+    if (not (isinstance(Spell, BLMSpell))) : return False
     if(Player.UmbralHeartStack >= 1 and Spell.IsFire and Player.AstralFireStack >= 1):
         if(Spell.id != 5):
             Spell.ManaCost/=2
@@ -272,6 +273,7 @@ def UmbralHeartEffect(Player, Spell):
 def CheckLeyLines(Player,Enemy):
     if(Player.LeyLinesTimer <= 0):
         Player.EffectList.remove(LeyLinesEffect)
+        Player.EffectCDList.remove(CheckLeyLines)
         Player.LeyLinesTimer = 0
         return CheckLeyLines
 
@@ -289,12 +291,12 @@ def AFUICheck(Player,Enemy):
         Player.UmbralIceStack = 0
         Player.EffectCDList.remove(AFUICheck)
 
-def EnochianLostCheck(Player,Enemy):
+# def EnochianLostCheck(Player,Enemy):
 
-    if(Player.AFUITimer == 0):
-        Player.EffectList.remove(EnochianEffect)
-        Player.EffectCDList.remove(EnochianLostCheck)
-        Player.Enochian = False
+#     if(Player.AFUITimer == 0):
+#         Player.EffectList.remove(EnochianEffect)
+#         Player.EffectCDList.remove(EnochianLostCheck)
+#         Player.Enochian = False
 
 def SwiftCastCheck(Player, Enemy):
     if (Player.SwiftCastTimer <= 0 or Player.SwiftCastStack == 0):
@@ -323,11 +325,17 @@ def CheckSharpCast(Player, Enemy):
     if Player.SharpCastCD <= 0:
         if Player.SharpCastCharges == 0:
             Player.SharpCastCD = 30
-        if Player.SharpCastCharges == 1:
+        elif Player.SharpCastCharges == 1:
             Player.EffectCDList.remove(CheckSharpCast)
         Player.SharpCastCharges +=1
 
-
+def CheckTripleCastCharges(Player, Enemy):
+    if Player.TripleCastCD <= 0:
+        if Player.TripleCastCharges == 0:
+            Player.TripleCastCD = 60
+        elif Player.SharpCastCharges == 1:
+            Player.EffectCDList.remove(CheckTripleCastCharges)
+        Player.TripleCastCarges += 1
 
 #Applying Effect of Spell
 
@@ -360,13 +368,13 @@ def AddUmbralIce3(Player, Enemy):#Add Umbral Ice 3
     if Player.AFUITimer <= 0: Player.EffectCDList.append(AFUICheck)
     Player.AFUITimer = 15
 
-def ApplyEnochian(Player,Enemy):
-    Player.EnochianCD = 30
-    if not Player.Enochian : #Only add effect is
-        #print('added enochian')
-        Player.EffectList.append(EnochianEffect)
-        Player.EffectCDList.append(EnochianLostCheck)
-        Player.Enochian = True
+# def ApplyEnochian(Player,Enemy):
+#     Player.EnochianCD = 30
+#     if not Player.Enochian : #Only add effect is
+#         #print('added enochian')
+#         Player.EffectList.append(EnochianEffect)
+#         Player.EffectCDList.append(EnochianLostCheck)
+#         Player.Enochian = True
 
 def ApplySwiftCast(Player,Enemy):
     Player.SwiftCastCD = 60
@@ -376,14 +384,16 @@ def ApplySwiftCast(Player,Enemy):
     Player.EffectCDList.append(SwiftCastCheck)
 
 def ApplyTripleCast(Player,Enemy):
-    Player.TripleCastCD = 60
+    if Player.TripleCastCharges == 2 : Player.TripleCastCD = 60
+    Player.TripleCastCharges -= 1
     Player.TripleCastStack = 3
     Player.TripleCastTimer = 15
-    Player.EffectList.append(TripleCastEffect)
-    Player.EffectCDList.append(TripleCastCheck)
+    if (not (TripleCastEffect in Player.EffectList) ): Player.EffectList.append(TripleCastEffect)
+    if (not (TripleCastCheck in Player.EffectCDList) ) : Player.EffectCDList.append(TripleCastCheck)
+    if (not (CheckTripleCastCharges in Player.EffectCDList) ) : Player.EffectCDList.append(CheckTripleCastCharges)
 
 def ApplyLeyLines(Player,Enemy):
-    Player.LeyLinesCD = 90
+    Player.LeyLinesCD = 120
     Player.LeyLinesTimer = 30
     Player.EffectList.append(LeyLinesEffect)
     Player.EffectCDList.append(CheckLeyLines)
@@ -404,12 +414,13 @@ def ApplyManaFront(Player,Enemy):
 
 def ApplyBlizzard4(Player,Enemy):
     Player.UmbralHeartStack = 3
+    Player.EffectList.append(UmbralHeartEffect)
     Player.Paradox = True
 
 def ApplyThunder3(Player,Enemy):
     if (not (T3DOT in Player.DOTList) ): Player.DOTList.append(T3DOT)
     if (not (Thunder3DotCheck in Player.EffectCDList) ): Player.EffectCDList.append(Thunder3DotCheck)
-    Player.T3Timer = 24
+    Player.T3Timer = 30
 
 def ApplyTranspose(Player, Enemy):
     
@@ -447,29 +458,29 @@ def WaitAbility(time):
 #List of Black Mage Spell
 
 
-F1 = BLMSpell(1, True, 2.19, 2.19, 180, 800, True, False, AddAstralFire1, [ManaRequirement])
+F1 = BLMSpell(1, True, 2.5, 2.5, 180, 800, True, False, AddAstralFire1, [ManaRequirement])
 #F2 = BLMAbility(1, True, 2.17, 2.17, 140, 200, True, False, empty, ManaCheck)#Will not used, so whatever
-F3 = BLMSpell(2, True, 3.07, 2.19, 240, 2000, True, False, AddAstralFire3, [ManaRequirement])
-F4 = BLMSpell(3, True, 2.46, 2.19, 300, 800, True, False, empty, [ManaRequirement, EnochianOnRequirement, AstralFireRequirement, EnoughTimeRequirement])
-Despair = BLMSpell(4, True, 2.63, 2.19, 380, 800, True, False, DespairCast, [ManaRequirement, EnochianOnRequirement, AstralFireRequirement, EnoughTimeRequirement])
+F3 = BLMSpell(2, True, 3.5, 2.5, 240, 2000, True, False, AddAstralFire3, [ManaRequirement])
+F4 = BLMSpell(3, True, 2.8, 2.5, 300, 800, True, False, empty, [ManaRequirement, AstralFireRequirement, EnoughTimeRequirement])
+Despair = BLMSpell(4, True, 3, 2.5, 340, 800, True, False, DespairCast, [ManaRequirement, AstralFireRequirement, EnoughTimeRequirement])
 
 #Ice Spell
 #B1 = BLMSpell(5, True, 2.19, 2.19, 180, 400, False, True, AddUmbralIce1, ManaCheck)#Not used so whatever
 #B2 = BLMAbility(6, True, 2.17, 2.17, 140, 200, False, True, empty, ManaCheck)#AOE so not used
-B3 = BLMSpell(6, True, 3.07, 2.19, 240, 800, False, True, AddUmbralIce3, [ManaRequirement])
-B4 = BLMSpell(7, True, 2.46, 2.19, 300, 800, False, True, ApplyBlizzard4, [ManaRequirement, EnochianOnRequirement, UmbralIceRequirement, EnoughTimeRequirement])
+B3 = BLMSpell(6, True, 3.5, 2.5, 240, 800, False, True, AddUmbralIce3, [ManaRequirement])
+B4 = BLMSpell(7, True, 2.5, 2.5, 300, 800, False, True, ApplyBlizzard4, [ManaRequirement, UmbralIceRequirement, EnoughTimeRequirement])
 
 #DOT
 
-T3 = BLMSpell(8, True, 2.19, 2.19, 70, 400, False, False, ApplyThunder3, [ManaRequirement])
-T3DOT = DOTSpell(9, 40)
+T3 = BLMSpell(8, True, 2.5, 2.5, 50, 400, False, False, ApplyThunder3, [ManaRequirement])
+T3DOT = DOTSpell(9, 35)
 #Special Damage Spell
 
-Xeno = BLMSpell(10, True, 0.3, 2.19, 700, 0, False, False, ApplyPolyglot, [PolyglotRequirement])
+Xeno = BLMSpell(10, True, 0.7, 2.5, 660, 0, False, False, ApplyPolyglot, [PolyglotRequirement])
 
 #Boosting Ability
 
-Eno = BLMSpell(11, False, 0.5, 0, 0, 0, False, False, ApplyEnochian, [EnochianRequirement])
+#Eno = BLMSpell(11, False, 0.5, 0, 0, 0, False, False, ApplyEnochian, [EnochianRequirement])    #Removed since no longer necessary in Endwalker
 Swift = BLMSpell(12, False, 0.5, 0, 0, 0, False, False, ApplySwiftCast, [SwiftCastRequirement])
 Triple = BLMSpell(13, False, 0.5, 0, 0, 0, False, False, ApplyTripleCast, [TripleCastRequirement])
 Sharp = BLMSpell(14, False, 0.5, 0, 0, 0, False, False, ApplySharpCast, [SharpCastRequirement])
@@ -479,7 +490,7 @@ Mana = BLMSpell(17, False, 0.5, 0, 0, 0, False, False, ApplyManaFront, [ManaFron
 
 #EndWalker Spell
 
-Para = BLMSpell(18, True, 2.17, 2.17, 510, 1600, False, False, ApplyParadox, [ManaFrontRequirement, ParadoxRequirement])
+Para = BLMSpell(18, True, 2.5, 2.5, 500, 1600, False, False, ApplyParadox, [ManaFrontRequirement, ParadoxRequirement])
 Amp = BLMSpell(19, False, 0.5, 0, 0, 0, False, False, ApplyAmplifier, [AmplifierRequirement])
 
 

@@ -91,6 +91,7 @@ class BlackMage(Player):
 
         #Charges
         self.SharpCastCharges = 2
+        self.TripleCastCharges = 2
 
         #Ability CD
         self.LeyLinesCD = 0
