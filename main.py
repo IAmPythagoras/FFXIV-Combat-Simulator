@@ -11,7 +11,7 @@ Action2 = [WaitAbility(3), Sharp, WaitAbility(8), F3, T3, F4, Triple, F4, Ley, F
 Action3 = [Triple, Triple]
 PrePull = []
 Event = Fight([], Dummy)
-DRKAction = [Delirium, Bloodspiller, Quietus, Bloodspiller, LivingShadow]
+DRKAction = [EdgeShadow, Shadowbringer, Shadowbringer,]
 
 DRKPlayer = DarkKnight(2.43, DRKAction, [], [DarksideEffect], Event)
 BLMPlayer = BlackMage(2.5, Action, [], [AstralFire, UmbralIce, EnochianEffect], Event)

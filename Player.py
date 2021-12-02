@@ -165,9 +165,9 @@ class DarkKnight(Player):
 
         self.BloodWeaponCD = 0          #60s
         self.DeliriumCD = 0             #60s
-        self.EdgeShadowCD = 0           #2s     Shares a CD with Flood.
-        self.CarveSpitCD = 0            #60s
-        self.AbyssalDrainCD = 0         #60s
+        self.EdgeShadowCD = 0           #1s     Shares a CD with FloodShadow.
+        self.CarveSpitCD = 0            #60s    Shares a CD with AbyssalDrain.
+        self.AbyssalDrainCD = 0         #60s    Shares a CD with CarveSpit.
         self.SaltedEarthCD = 0          #90s
         self.SaltDarknessCD = 0         #15s
         self.ShadowbringerCD = 0        #60s charge
