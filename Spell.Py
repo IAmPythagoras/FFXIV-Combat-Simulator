@@ -81,9 +81,8 @@ class DOTSpell(Spell):
         else:
             self.DOTTimer = max(0, self.DOTTimer-TimeUnit)
 
-
-
-
+def WaitAbility(time):
+    return Spell(-1, True, time, time, 0, 0, empty, [])
 
 class BLMSpell(Spell):
     #This class will be all BlackMage Ability
@@ -495,11 +494,10 @@ def DeliriumEffect(Player, Spell):
     print("Delirium active")
     if Spell.id == 4 or Spell.id == 5:
         Player.Mana = min(Player.Mana + 200, 10000)
-
     if Player.DeliriumStacks == 0:
         Player.EffectList.remove(DeliriumEffect)
 
-#Cooldown checks
+#Cooldown checks to remove effect and restore charges
 
 def BloodWeaponCheck(Player, Spell):
     if Player.BloodWeaponTimer <= 0:
@@ -539,11 +537,9 @@ def CheckPlungeCharge(Player, Enemy):
 
 def ApplySyphonEffect(Player, Spell):
     Player.Mana = min(Player.Mana + 600, 10000)
-    print('+600 MP restored by Syphon Strike')
 
 def ApplySoulEaterEffect(Player, Spell):
     Player.Blood = min(100, Player.Blood + 20)
-    print('+20 Blood gained by Souleater')
 
 def ApplyBloodWeaponEffect(Player, Spell):
     Player.BloodWeaponCD = 60                     
@@ -560,18 +556,21 @@ def ApplyDeliriumEffect(Player, Spell):
 
 def ApplyEdgeShadowEffect(Player, Spell):
     Player.DarksideTimer = min(60, Player.DarksideTimer + 30)
-    Player.EdgeShadowCD = 2
+    Player.EdgeShadowCD = 1
 
 def ApplyCarveSpitEffect(Player, Spell):
+    Player.CarveSpitCD = 60
+    Player.AbyssalDrainCD = 60
     Player.Mana = min(Player.Mana + 600, 10000)
 
 def ApplyAbyssalDrainEffect(Player, Spell):
     Player.AbyssalDrainCD = 60
+    Player.CarveSpitCD = 60
 
 def ApplySaltedEarth(Player, Spell):
+    Player.SaltedEarthCD = 90
     Player.SaltedEarthTimer = 15
     Player.DOTList.append(SaltedEarthDOT)
-    Player.SaltedEarthCD = 90
 
 def ApplySaltDarknessEffect(Player, Spell):
     Player.SaltDarknessCD = 15
@@ -596,13 +595,14 @@ def SpendPlunge(Player,Enemy):
 
 
 #List of Weaponskills and Spells used by a Dark Knight Player.
-Lock = 0.75            #Fixed value for animation lock.
+DRKGCD = 2.43           #GCD speed
+Lock = 0.75             #Fixed value for animation lock.
 
-HardSlash = DRKSkill(1, True, Lock, 2.43, 200, 0, 0, empty, [])
-SyphonStrike = DRKSkill(2, True, Lock, 2.43, 270, 0, 0, ApplySyphonEffect, [])
-Souleater = DRKSkill(3, True, Lock, 2.43, 330, 0, 0, ApplySoulEaterEffect, [])
-Bloodspiller = DRKSkill(4, True, Lock, 2.43, 500, 0, 50, empty, [BloodRequirement])
-Quietus = DRKSkill(5, True, Lock, 2.43, 200, 0, 50, empty, [BloodRequirement])
+HardSlash = DRKSkill(1, True, Lock, DRKGCD, 170, 0, 0, empty, [])
+SyphonStrike = DRKSkill(2, True, Lock, DRKGCD, 260, 0, 0, ApplySyphonEffect, [])
+Souleater = DRKSkill(3, True, Lock, DRKGCD, 340, 0, 0, ApplySoulEaterEffect, [])
+Bloodspiller = DRKSkill(4, True, Lock, DRKGCD, 500, 0, 50, empty, [BloodRequirement])
+Quietus = DRKSkill(5, True, Lock, DRKGCD, 200, 0, 50, empty, [BloodRequirement])
 Unmend = DRKSkill(6, True, Lock, 2.50, 150, 0, 0, empty, [])
 
 #List of Buffs used by a Dark Knight Player.
@@ -612,9 +612,9 @@ Delirium = DRKSkill(8, False, Lock, 0, 0, 0, 0, ApplyDeliriumEffect, [DeliriumRe
 
 #List of Abilities used by a Dark Knight Player.
 
-EdgeShadow = DRKSkill(9, False, Lock, 0, 400, 3000, 0, ApplyEdgeShadowEffect, [EdgeShadowRequirement])
+EdgeShadow = DRKSkill(9, False, Lock, 0, 460, 3000, 0, ApplyEdgeShadowEffect, [EdgeShadowRequirement])
 FloodShadow = DRKSkill(10, False, Lock, 0, 160, 3000, 0, ApplyEdgeShadowEffect, [EdgeShadowRequirement])
-CarveSpit = DRKSkill(11, False, Lock, 0, 360, 0, 0, ApplyCarveSpitEffect, [CarveSpitRequirement])
+CarveSpit = DRKSkill(11, False, Lock, 0, 510, 0, 0, ApplyCarveSpitEffect, [CarveSpitRequirement])
 AbyssalDrain = DRKSkill(12, False, Lock, 0, 150, 0, 0, ApplyAbyssalDrainEffect, [AbyssalDrainRequirement])
 SaltedEarth = DRKSkill(13, False, Lock, 0, 50, 0, 0, ApplySaltedEarth, [SaltedEarthRequirement]) #Ground target DOT, ticks once upon placement.
 SaltedEarthDOT = DOTSpell(14, 50)
@@ -635,4 +635,4 @@ PCarveSpit = DRKSkill(25, True, 0.5, 2.36, 300, 0, 0, empty, [])
 PDelay = DRKSkill(26, True, 0, 4.50, 0, 0, 0, empty, [])    #6s animation before it starts attacking.
 
 
-print("bruh")
+print("feelsbad for drk man")
