@@ -54,7 +54,6 @@ class Spell:
         #This will include substracting the mana (it has been verified before that the mana was enough)
         
         print("Current MP: " + str(player.Mana))
-        #print("Current Blood: " + str(player.Blood))
 
         player.TotalPotency+= self.Potency
         Enemy.TotalPotency+= self.Potency  #Doing Damage
@@ -209,7 +208,7 @@ def LeyLinesEffect(Player, Spell):
     Spell.RecastTime*=0.85
 
 def EnochianEffect(Player, Spell):
-    if (Player.AstralFireStack >= 1 or Player.UmbralIceStack >= 1) : Spell.Potency*=1.15
+    if (Player.AstralFireStack >= 1 or Player.UmbralIceStack >= 1) : Spell.Potency*=1.2
 
 def TripleCastEffect(Player,Spell):
     if (not Spell.CastTime == 0) and (Spell.GCD):
@@ -449,10 +448,6 @@ def DespairCast(Player, Enemy):
     Player.Mana = 0
     ResetAFUITimer(Player, Enemy)
 
-#Function to generate WAIT
-def WaitAbility(time):
-    return Spell(-1, True, time, time, 0, 0, empty, [])
-
 
 #List of Black Mage Spell
 
@@ -568,6 +563,12 @@ def PlungeRequirement(Player, Spell):
     if Player.PlungeCharges > 0: return True
     return False
 
+def TBNRequirement(Player, Spell):
+    if Player.Mana >= Spell.ManaCost:
+        Player.Mana -= Spell.ManaCost
+        return True
+    return False
+
 #Effect functions that persist after action use
 
 def BloodWeaponEffect(Player, Spell):
@@ -675,11 +676,14 @@ def SummonLivingShadow(Player, Spell):
     Player.CurrentFight.PlayerList.append(Pet)
     #print("Esteem enters the battlefield.")
 
-def SpendPlunge(Player,Enemy):
+def SpendPlunge(Player,Spell):
     if Player.PlungeCharges == 2 :
         Player.PlungeCD = 30
     Player.PlungeCharges -= 1
     Player.EffectCDList.append(CheckPlungeCharge)
+
+def ApplyDarkArts(Player, Spell):
+    Player.DarkArts = True
 
 
 #List of Weaponskills and Spells used by a Dark Knight Player.
@@ -711,6 +715,8 @@ Shadowbringer = DRKSkill(16, False, Lock, 0, 600, 0, 0, SpendShadowbringer, [Sha
 LivingShadow = DRKSkill(17, False, Lock, 0, 0, 0, 50, SummonLivingShadow, [BloodRequirement])
 Plunge = DRKSkill(18, False, Lock, 0, 150, 0, 0, SpendPlunge, [PlungeRequirement])
 
+TBN = DRKSkill(27, False, Lock, 0, 0, 3000, 0, ApplyDarkArts, [TBNRequirement])     #Simply makes the next EdgeShadow free for now.
+
 #List of Abilities performed by Living Shadow.
 
 PAbyssalDrain = DRKSkill(19, True, 0.5, 2.36, 300, 0, 0, empty, [])
@@ -723,4 +729,4 @@ PCarveSpit = DRKSkill(25, True, 0.5, 2.36, 300, 0, 0, empty, [])
 PDelay = DRKSkill(26, True, 0, 4.50, 0, 0, 0, empty, [])    #6s animation before it starts attacking.
 
 
-print("feelsbad for drk man")
+#print("feelsbad for drk man")
