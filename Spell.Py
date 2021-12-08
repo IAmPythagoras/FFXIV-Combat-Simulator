@@ -579,10 +579,30 @@ def BloodWeaponEffect(Player, Spell):
 
 def DeliriumEffect(Player, Spell):
     #print("Delirium active")
-    if Spell.id == 4 or Spell.id == 5:
+    if Spell.id == 4:
         Player.Mana = min(Player.Mana + 200, 10000)
+    elif Spell.id == 5:
+        Player.Mana = min(Player.Mana + 500, 10000)
     if Player.DeliriumStacks == 0:
         Player.EffectList.remove(DeliriumEffect)
+
+def HardSlashEffect(Player, Spell):
+    if Spell.id == 2:
+        Multiplier = Spell.Potency/120
+        BonusDmg = 140 * Multiplier
+        Spell.Potency += BonusDmg
+        Player.Mana = min(Player.Mana + 600, 10000)
+    if (Spell.id == 2) or (Spell.id == 3) or (Spell.id == 1):
+        Player.EffectList.remove(HardSlashEffect)
+
+def SyphonStrikeEffect(Player, Spell):
+    if Spell.id == 3:
+        Multiplier = Spell.Potency/120
+        BonusDmg = 220 * Multiplier
+        Spell.Potency += BonusDmg
+        Player.Blood = min(100, Player.Blood + 20)
+    if (Spell.id == 2) or (Spell.id == 3) or (Spell.id == 1):
+        Player.EffectList.remove(SyphonStrikeEffect)
 
 #Cooldown checks to remove effect and restore charges
 
@@ -622,13 +642,11 @@ def CheckPlungeCharge(Player, Enemy):
 
 #Apply effects that happen upon action use
 
-def ApplySyphonEffect(Player, Spell):
-    Player.Mana = min(Player.Mana + 600, 10000)
-    #print('+600 MP restored by Syphon Strike')
+def ApplyHardSlashEffect(Player, Spell):
+    Player.EffectList.append(HardSlashEffect)
 
-def ApplySoulEaterEffect(Player, Spell):
-    Player.Blood = min(100, Player.Blood + 20)
-    #print('+20 Blood gained by Souleater')
+def ApplySyphonEffect(Player, Spell):
+    Player.EffectList.append(SyphonStrikeEffect)
 
 def ApplyBloodWeaponEffect(Player, Spell):
     Player.BloodWeaponCD = 60                     
@@ -687,12 +705,12 @@ def ApplyDarkArts(Player, Spell):
 
 
 #List of Weaponskills and Spells used by a Dark Knight Player.
-DRKGCD = 2.43           #GCD speed
+DRKGCD = 2.41           #GCD speed
 Lock = 0.75             #Fixed value for animation lock.
 
-HardSlash = DRKSkill(1, True, Lock, DRKGCD, 170, 0, 0, empty, [])
-SyphonStrike = DRKSkill(2, True, Lock, DRKGCD, 260, 0, 0, ApplySyphonEffect, [])
-Souleater = DRKSkill(3, True, Lock, DRKGCD, 340, 0, 0, ApplySoulEaterEffect, [])
+HardSlash = DRKSkill(1, True, Lock, DRKGCD, 170, 0, 0, ApplyHardSlashEffect, [])
+SyphonStrike = DRKSkill(2, True, Lock, DRKGCD, 120, 0, 0, ApplySyphonEffect, [])
+Souleater = DRKSkill(3, True, Lock, DRKGCD, 120, 0, 0, empty, [])
 Bloodspiller = DRKSkill(4, True, Lock, DRKGCD, 500, 0, 50, empty, [BloodRequirement])
 Quietus = DRKSkill(5, True, Lock, DRKGCD, 200, 0, 50, empty, [BloodRequirement])
 Unmend = DRKSkill(6, True, Lock, 2.50, 150, 0, 0, empty, [])

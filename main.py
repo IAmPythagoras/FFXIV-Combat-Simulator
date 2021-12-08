@@ -13,6 +13,7 @@ from Spell import Bloodspiller
 from Spell import CarveSpit
 from Spell import Shadowbringer
 from Spell import SaltDarkness
+from Spell import HardSlashEffect
 
 
 Dummy = Enemy()
@@ -27,7 +28,9 @@ Event = Fight([], Dummy)
 DRKOpener1 = [Unmend, TBN, BloodWeapon, HardSlash, EdgeShadow, SyphonStrike, EdgeShadow, Souleater, LivingShadow, SaltedEarth, HardSlash, SyphonStrike, Delirium,  Bloodspiller, EdgeShadow, CarveSpit, Bloodspiller, EdgeShadow, Shadowbringer, Bloodspiller, EdgeShadow, Shadowbringer, Souleater
 , SaltDarkness]
 
-DRKPlayer = DarkKnight(2.43, DRKOpener1, [], [DarksideEffect], Event)
+DRK123 = [HardSlash, EdgeShadow, Unmend, SyphonStrike, Souleater]
+
+DRKPlayer = DarkKnight(2.43, DRK123, [], [DarksideEffect], Event)
 BLMPlayer = BlackMage(2.5, Action, [], [AstralFire, UmbralIce, EnochianEffect], Event)
 Event.PlayerList = [DRKPlayer]
 Event.SimulateFight(0.01, 100, 0)  
