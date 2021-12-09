@@ -7,8 +7,7 @@ class Player:
         self.ActionSet = ActionSet  #Known Action List
         self.EffectList = EffectList    #Normally Empty, can has some effects initially
         self.PrePullSet = PrePullSet    #Prepull action list
-        self.EffectCDList = []          #List of Effect for which we have to check if the have ended
-        self.EffectCDList = [ManaRegenCheck]
+        self.EffectCDList = [ManaRegenCheck]       #List of Effect for which we have to check if the have ended
         self.DOTList = []
         self.NextSpell = 0
         self.CastingSpell = []
@@ -24,7 +23,7 @@ class Player:
         self.oGCDLockTimer = 0
         self.GCDLockTimer = 0
 
-        self.Mana = 10000
+        self.Mana = 100000
         self.HP = 1000  #Could be changed
         
         self.TotalPotency = 0
@@ -68,8 +67,9 @@ class BlackMage(Player):
         #Prock
         self.T3Prock = False
         self.F3Prock = False
-        self.Paradox = False
+        self.Paradox = True
         self.Enochian = False
+        self.SharpCastGoThroughOnce = False
 
         #Ability Effect Stack
         self.SharpCastStack = 0
@@ -77,7 +77,7 @@ class BlackMage(Player):
         self.SwiftCastStack = 0
         self.AstralFireStack = 0
         self.UmbralIceStack = 0
-        self.PolyglotStack = 0
+        self.PolyglotStack = 1
         self.UmbralHeartStack = 0
 
         #Ability Timer
