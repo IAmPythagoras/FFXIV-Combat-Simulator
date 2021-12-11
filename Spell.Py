@@ -468,7 +468,8 @@ def ApplyParadox(Player, Enemy):
         ResetAFUITimer(Player, Enemy)
 
 
-
+def AddPolyglot(Player, Enemy):
+    Player.PolyglotStack = min(2, Player.PolyglotStack + 1)
 
 
 def ApplyAmplifier(Player, Enemy):
@@ -483,6 +484,10 @@ def ApplyPotion(Player, Enemy):
     Player.PotionTimer = 30
     Player.EffectList.append(PotionEffect)
     Player.EffectCDList.append(CheckPotion)
+
+
+def GiveF3Prock(Player, Enemy):
+    Player.EffectList.append(F3ProckEffect)
 
 #Special Effect of Spells when casted
 
@@ -527,13 +532,21 @@ Mana = BLMSpell(17, False, 0.5, 0, 0, 0, False, False, ApplyManaFront, [ManaFron
 
 #EndWalker Spell
 
-Para = BLMSpell(18, True, GCD, GCD, 500, 1600, False, False, ApplyParadox, [ManaRequirement, ParadoxRequirement])
+Para = BLMSpell(18, True, GCD, GCD, 500, 1600, False, False, ApplyParadox, [ManaRequirement])
 Amp = BLMSpell(19, False, 0.5, 0, 0, 0, False, False, ApplyAmplifier, [AmplifierRequirement])
 
 #Potions
 
 Potion = BLMSpell(20, False, 0.5, 0, 0, 0, False, False, ApplyPotion, [])
 
+
+#Special Effects
+
+B3Starter = BLMSpell(6, True, LONGGCD, GCD, 0, 0, False, True, ApplyBlizzard3, [])
+F3Starter = BLMSpell(2, True, LONGGCD, GCD, 0, 0, True, False, AddAstralFire3, [ManaRequirement])
+PolyglotStarter = BLMSpell(21, False, 0, 0, 0, 0, False, False, AddPolyglot, [])
+Thunder3Starter = BLMSpell(22, False, 0, 0, 0, 0, False, False, ApplyThunder3, [])
+F3ProckStarter = BLMSpell(23, False, 0, 0, 0, 0, False, False, GiveF3Prock, [])
 
 #########################################
 ########## DARK KNIGHT SKILLS ###########
