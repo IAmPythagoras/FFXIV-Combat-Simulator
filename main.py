@@ -2,6 +2,18 @@
 from Fight import *
 from Spell import *
 from Enemy import *
+from Spell import Souleater
+from Spell import LivingShadow
+from Spell import SaltedEarth
+from Spell import HardSlash
+from Spell import EdgeShadow
+from Spell import SyphonStrike
+from Spell import Delirium
+from Spell import Bloodspiller
+from Spell import CarveSpit
+from Spell import Shadowbringer
+from Spell import SaltDarkness
+from Spell import HardSlashEffect
 
 
 Dummy = Enemy()
@@ -82,10 +94,14 @@ Test3 = [B3Starter, F3, Triple, F4, Swift, F4, F4, F4, Despair, Transpo, Para, S
 Action3 = [Triple, Triple]
 PrePull = []
 Event = Fight([], Dummy)
-DRKAction = [EdgeShadow, Shadowbringer, Shadowbringer,]
 
 DRKPlayer = DarkKnight(2.43, DRKAction, [], [DarksideEffect], Event)
 BLMPlayer = BlackMage(2.33, Line13, [], [AstralFire, UmbralIce, EnochianEffect], Event)
 Event.PlayerList = [BLMPlayer]
+
+DRKOpener1 = [Unmend, TBN, BloodWeapon, HardSlash, EdgeShadow, SyphonStrike, EdgeShadow, Souleater, LivingShadow, SaltedEarth, HardSlash, SyphonStrike, Delirium,  Bloodspiller, EdgeShadow, CarveSpit, Bloodspiller, EdgeShadow, Shadowbringer, Bloodspiller, EdgeShadow, Shadowbringer, Souleater
+, SaltDarkness]
+
+DRK123 = [HardSlash, EdgeShadow, Unmend, SyphonStrike, Souleater]
 Event.SimulateFight(0.01, 100, 0)  
 
