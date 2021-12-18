@@ -2,18 +2,6 @@
 from Fight import *
 from Spell import *
 from Enemy import *
-from Spell import Souleater
-from Spell import LivingShadow
-from Spell import SaltedEarth
-from Spell import HardSlash
-from Spell import EdgeShadow
-from Spell import SyphonStrike
-from Spell import Delirium
-from Spell import Bloodspiller
-from Spell import CarveSpit
-from Spell import Shadowbringer
-from Spell import SaltDarkness
-from Spell import HardSlashEffect
 
 
 Dummy = Enemy()
@@ -31,13 +19,17 @@ Opener2 = [WaitAbility(3), Sharp, WaitAbility(8), B3, T3, B4, F3, Triple, F4, Le
 Opener3 = [Sharp, WaitAbility(11.23), F3, Amp, T3, F4, Triple, F4, Potion, F4, Ley, F4, Triple, Despair, Mana, F4, Sharp, Despair, Transpo, Para, Xeno, F3, F4, F4, F4, F4, T3, Swift, Despair]
 #288.74 potency/sec, Would have to look for mana tick (needs mana to be at least 7200)
 
-Opener4 = [Sharp, WaitAbility(11.23), F3, T3, F4, Triple, F4, Potion,F4, Amp, Ley, F4, Triple, Despair, Mana, F4, Sharp, Despair, Transpo, Para, F3, F4, F4, F4, F4, F4, T3, Swift, Despair, Transpo, Xeno, Xeno, F3, F4, F4, F4, Para, F4, Despair]
+Opener4 = [Sharp, WaitAbility(11.23), F3, T3, F4, Triple, F4, Potion,F4, Amp, Ley, F4, Triple, Despair, Mana, F4, Sharp, Despair, Transpo, Para, Xeno, F3, F4, F4, F4, F4, F4, T3, Swift, Despair, Transpo, Para, Xeno, F3, F4, F4, F4, F4, Despair]
 #323.90 potency/second
 Eksu = [Sharp, WaitAbility(11.23), F3, T3, F4, Triple, F4, Potion,F4, Amp, Ley, F4, Triple, Despair, Mana, F4, Sharp, Despair, Transpo, Para, F3, F4, F4, F4, F4, F4, T3, Swift, Despair, B3, Para]
 #320.870 Potency/second
 EksuOpenerMod = [Sharp, WaitAbility(11.5), F3, T3, F4, Triple, F4, Potion, F4, Amp, Ley, F4, Triple, Despair, Mana, F4, Sharp, Despair, Transpo, Para, F3, F4, F4, F4, T3, Swift, Despair, B3, Para]
 
-Opener5 = [Sharp,WaitAbility(12.17), F1, F3, Transpo, Para, F3, Triple, F4,Potion, F4, Amp,Ley, F4, Swift, F4, Triple, F4, Despair, Mana, F4, Despair, Transpo, Para, Sharp, T3, F3, F4, F4, F4, F4, F4, Despair, Transpo, Xeno, Xeno, F3, F4, F4, F4, Para, F4, Despair ]
+Opener5 = [Sharp,WaitAbility(12.17), F1, F3, Transpo, Para, Potion, F3, Triple, F4, Ley, F4, Amp, F4, Swift, F4, Triple, F4, Despair, Mana, F4, Despair, Xeno, Transpo, Para, Xeno, F3, F4, F4, F4, F4, Despair ]
+
+Opener6 = [Sharp, WaitAbility(12.17), F3, Sharp, T3, F4, Triple, F4, Potion,F4, Amp, Ley, F4, Triple, Despair, Mana, F4, Sharp, Despair, Transpo, Para, Xeno, F3, F4, F4, F4, F4, F4, T3, Swift, Despair, Transpo, Para, Xeno, F3, F4, F4, F4, F4, Despair]
+
+
 
 
 #Lines Testing
@@ -79,10 +71,16 @@ Line12 = [F3Starter, PolyglotStarter, Thunder3Starter,F3ProckStarter,Transpo,Wai
 #Variation of line11 where we do two Xeno in Ice phase to get 2 gcd and be sure to have full mana and use paradox in Fire phase to allow for one more
 #fire 4
 
-Line13 = [F3Starter, Thunder3Starter, Transpo, Para, Sharp, T3, F3,  F4, F4, F4, F4, Despair, Xeno]
 
 
-Line14 = [F3Starter, Thunder3Starter, Transpo, Xeno, Sharp, T3, F3,  F4, F4, F4, Para, F4, Despair]
+Line13 = [F3Starter, Thunder3Starter, F4, F4, F4, F4, Despair]
+
+Line14 = [F3Starter, Thunder3Starter, F4, F4, F4, F4, Para, Despair]
+
+
+
+
+
 
 
 #Testing Fire/ice Rotation
@@ -94,14 +92,10 @@ Test3 = [B3Starter, F3, Triple, F4, Swift, F4, F4, F4, Despair, Transpo, Para, S
 Action3 = [Triple, Triple]
 PrePull = []
 Event = Fight([], Dummy)
+DRKAction = [EdgeShadow, Shadowbringer, Shadowbringer,]
 
 DRKPlayer = DarkKnight(2.43, DRKAction, [], [DarksideEffect], Event)
-BLMPlayer = BlackMage(2.33, Line13, [], [AstralFire, UmbralIce, EnochianEffect], Event)
-Event.PlayerList = [BLMPlayer]
-
-DRKOpener1 = [Unmend, TBN, BloodWeapon, HardSlash, EdgeShadow, SyphonStrike, EdgeShadow, Souleater, LivingShadow, SaltedEarth, HardSlash, SyphonStrike, Delirium,  Bloodspiller, EdgeShadow, CarveSpit, Bloodspiller, EdgeShadow, Shadowbringer, Bloodspiller, EdgeShadow, Shadowbringer, Souleater
-, SaltDarkness]
-
-DRK123 = [HardSlash, EdgeShadow, Unmend, SyphonStrike, Souleater]
+BLMPlayer = BlackMage(2.5, Line13, [], [AstralFire, UmbralIce, EnochianEffect], Event)
+Event.PlayerList = [BLMPlayer, DRKPlayer]
 Event.SimulateFight(0.01, 100, 0)  
 
