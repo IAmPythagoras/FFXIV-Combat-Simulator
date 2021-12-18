@@ -29,12 +29,13 @@ class Spell:
         #the player and the enemy have
 
         #Will apply each effect the player currently has on the spell
-
+        #print("Effect List : " + str(player.EffectList))
         for Effect in player.EffectList:
             Effect(player, tempSpell)#Changes tempSpell
         for Effect in Enemy.EffectList:
             Effect(Enemy, tempSpell)#Changes tempSpell
         #Checks if we meet the spell requirement
+
         for Requirement in tempSpell.Requirement:
             if(not Requirement(player, tempSpell)) : #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
                 print("Failed to cast the spell : " + str(self.id))
@@ -46,14 +47,15 @@ class Spell:
 
 
     def CastFinal(self, player, Enemy):
-        print("##################################")
-        print("Potency of spell: " + str(self.Potency))
-        print("Spell has finally been cast: " + str(self.id))
+        #print("##################################")
+        #print("Potency of spell: " + str(self.Potency))
+        #print("Spell has finally been cast: " + str(self.id))
 
         self.Effect(player, Enemy)#Put effects on Player and/or Enemy
         #This will include substracting the mana (it has been verified before that the mana was enough)
         
-        print("Current MP: " + str(player.Mana))
+        #print("Current MP: " + str(player.Mana))
+        #print("Current Blood: " + str(player.Blood))
 
         player.TotalPotency+= self.Potency
         Enemy.TotalPotency+= self.Potency  #Doing Damage
@@ -81,7 +83,7 @@ class DOTSpell(Spell):
             self.DOTTimer = 3
         else:
             self.DOTTimer = max(0, self.DOTTimer-TimeUnit)
-
+#Function to generate Waiting
 def WaitAbility(time):
     return Spell(-1, True, time, time, 0, 0, empty, [])
 
@@ -202,6 +204,9 @@ def UmbralIce(Player, Spell):
             Spell.ManaCost = 0
             Spell.CastTime *= 0.5
             Spell.Potency *= 0.7
+    elif(Spell.id == 18 and Stack >= 1): #Paradox
+        Spell.ManaCost = 0
+        Spell.CastTime = 0
 
 def LeyLinesEffect(Player, Spell):
     Spell.CastTime*=0.85
@@ -212,7 +217,7 @@ def EnochianEffect(Player, Spell):
 
 def TripleCastEffect(Player,Spell):
     if (not Spell.CastTime == 0) and (Spell.GCD):
-        print("Applied TripleCastEffect on : " + str(Spell.id))
+        #print("Applied TripleCastEffect on : " + str(Spell.id))
         Spell.CastTime=0
         Player.TripleCastStack-=1
 
@@ -227,34 +232,39 @@ def SharpCastEffect(Player,Spell):
         Player.T3Prock = 1
         Player.SharpCastStack = 0
         Player.EffectList.append(T3ProckEffect)
-    elif(Spell.id == 1): #Fire 1
+        Player.SharpCastGoThroughOnce = False
+    elif(Spell.id == 1 or (Spell.id == 18 and Player.AstralFireStack >= 1)): #Fire 1
         Player.F3Prock == 1
         Player.SharpCastStack = 0
         Player.EffectList.append(F3ProckEffect)
+        Player.SharpCastGoThroughOnce = False
 
 def T3ProckEffect(Player, Spell):
 
-    if(Spell.id == 8 and Player.T3Prock == 1):
+    if(Spell.id == 8 and Player.T3Prock == 1 and Player.SharpCastGoThroughOnce):
         Spell.CastTime = 0
         Spell.ManaCost = 0
         Player.T3Prock = 0
 
         #Finding Multiplying bonus so far
 
-        Mult = Spell.Potency/70 #40 is based potency of Thunder 3
+        Mult = Spell.Potency/50 #40 is based potency of Thunder 3
 
-        NewBonus = 320 * Mult #To find new bonus
+        NewBonus = 350 * Mult #To find new bonus
 
         Spell.Potency += NewBonus
 
         Player.EffectList.remove(T3ProckEffect)
         
+    Player.SharpCastGoThroughOnce = True
 def F3ProckEffect(Player, Spell):
 
-    if (Spell.id == 2):
+    if (Spell.id == 2 and Player.SharpCastGoThroughOnce):
         Spell.CastTime = 0
         Spell.ManaCost = 0
         Player.EffectList.remove(F3ProckEffect)
+
+    Player.SharpCastGoThroughOnce = True
 
 def UmbralHeartEffect(Player, Spell):
     if (not (isinstance(Spell, BLMSpell))) : return False
@@ -265,6 +275,11 @@ def UmbralHeartEffect(Player, Spell):
     elif(Player.UmbralHeartStack <= 0):
         Player.UmbralHeartStack = 0
         Player.EffectList.remove(UmbralHeartEffect)
+
+
+def PotionEffect(Player, Spell):
+    Spell.Potency *= 1.1
+
 
 #Function that will check if an effect has ended
 
@@ -284,6 +299,7 @@ def Thunder3DotCheck(Player,Enemy):
 def AFUICheck(Player,Enemy):
     
     if(Player.AFUITimer <= 0):
+        #print("LOST AFUI ============================")
         Player.AFUITimer = 0
         Player.AstralFireStack = 0
         Player.UmbralIceStack = 0
@@ -333,7 +349,14 @@ def CheckTripleCastCharges(Player, Enemy):
             Player.TripleCastCD = 60
         elif Player.SharpCastCharges == 1:
             Player.EffectCDList.remove(CheckTripleCastCharges)
-        Player.TripleCastCarges += 1
+        Player.TripleCastCharges += 1
+
+def CheckPotion(Player, Enemy):
+
+    if(Player.PotionTimer <= 0): 
+        Player.EffectList.remove(PotionEffect)
+        Player.EffectCDList.remove(CheckPotion)
+        #print("Potion Effect out =========================================================================================")
 
 #Applying Effect of Spell
 
@@ -400,7 +423,7 @@ def ApplySharpCast(Player,Enemy):
     if Player.SharpCastCharges == 2 : Player.SharpCastCD = 30
     Player.SharpCastStack = 1
     Player.SharpCastCharges -= 1
-    Player.SharpCastTimer = 15
+    Player.SharpCastTimer = 30
     Player.EffectCDList.append(CheckSharpCast)  #To check charges
     Player.EffectCDList.append(SharpCastCheck)  #To check if to remove effect
     Player.EffectList.append(SharpCastEffect)
@@ -435,12 +458,34 @@ def ApplyPolyglot(Player, Enemy):
     Player.PolyglotStack -= 1
 
 def ApplyParadox(Player, Enemy):
-    ResetAFUITimer(Player, Enemy)
     Player.Paradox = False
+    if(Player.UmbralIceStack >= 1):
+        ResetAFUITimer(Player, Enemy)
+        Player.UmbralIceStack = min(3, Player.UmbralIceStack + 1)
+    elif(Player.AstralFireStack >= 1):
+        ResetAFUITimer(Player, Enemy)
+
+
+def AddPolyglot(Player, Enemy):
+    Player.PolyglotStack = min(2, Player.PolyglotStack + 1)
+
 
 def ApplyAmplifier(Player, Enemy):
     Player.PolyglotStack = min(2, Player.PolyglotStack + 1)
     Player.AmplifierCD = 120
+
+def ApplyBlizzard3(Player, Enemy):
+    if(Player.AstralFireStack == 3) : Player.Paradox = True
+    AddUmbralIce3(Player, Enemy)
+
+def ApplyPotion(Player, Enemy):
+    Player.PotionTimer = 30
+    Player.EffectList.append(PotionEffect)
+    Player.EffectCDList.append(CheckPotion)
+
+
+def GiveF3Prock(Player, Enemy):
+    Player.EffectList.append(F3ProckEffect)
 
 #Special Effect of Spells when casted
 
@@ -451,26 +496,27 @@ def DespairCast(Player, Enemy):
 
 #List of Black Mage Spell
 
-
-F1 = BLMSpell(1, True, 2.5, 2.5, 180, 800, True, False, AddAstralFire1, [ManaRequirement])
+GCD = 2.33
+LONGGCD = 3.27
+F1 = BLMSpell(1, True, GCD, GCD, 180, 800, True, False, AddAstralFire1, [ManaRequirement])
 #F2 = BLMAbility(1, True, 2.17, 2.17, 140, 200, True, False, empty, ManaCheck)#Will not used, so whatever
-F3 = BLMSpell(2, True, 3.5, 2.5, 240, 2000, True, False, AddAstralFire3, [ManaRequirement])
-F4 = BLMSpell(3, True, 2.8, 2.5, 300, 800, True, False, empty, [ManaRequirement, AstralFireRequirement, EnoughTimeRequirement])
-Despair = BLMSpell(4, True, 3, 2.5, 340, 800, True, False, DespairCast, [ManaRequirement, AstralFireRequirement, EnoughTimeRequirement])
+F3 = BLMSpell(2, True, LONGGCD, GCD, 240, 2000, True, False, AddAstralFire3, [ManaRequirement])
+F4 = BLMSpell(3, True, 2.61, GCD, 300, 800, True, False, empty, [ManaRequirement, AstralFireRequirement, EnoughTimeRequirement])
+Despair = BLMSpell(4, True, 2.8, GCD, 340, 800, True, False, AddAstralFire1, [ManaRequirement, AstralFireRequirement, EnoughTimeRequirement])
 
 #Ice Spell
 #B1 = BLMSpell(5, True, 2.19, 2.19, 180, 400, False, True, AddUmbralIce1, ManaCheck)#Not used so whatever
 #B2 = BLMAbility(6, True, 2.17, 2.17, 140, 200, False, True, empty, ManaCheck)#AOE so not used
-B3 = BLMSpell(6, True, 3.5, 2.5, 240, 800, False, True, AddUmbralIce3, [ManaRequirement])
-B4 = BLMSpell(7, True, 2.5, 2.5, 300, 800, False, True, ApplyBlizzard4, [ManaRequirement, UmbralIceRequirement, EnoughTimeRequirement])
+B3 = BLMSpell(6, True, LONGGCD, GCD, 240, 800, False, True, ApplyBlizzard3, [ManaRequirement])
+B4 = BLMSpell(7, True, GCD, GCD, 300, 800, False, True, ApplyBlizzard4, [ManaRequirement, UmbralIceRequirement, EnoughTimeRequirement])
 
 #DOT
 
-T3 = BLMSpell(8, True, 2.5, 2.5, 50, 400, False, False, ApplyThunder3, [ManaRequirement])
+T3 = BLMSpell(8, True, GCD, GCD, 50, 400, False, False, ApplyThunder3, [ManaRequirement])
 T3DOT = DOTSpell(9, 35)
 #Special Damage Spell
 
-Xeno = BLMSpell(10, True, 0.7, 2.5, 660, 0, False, False, ApplyPolyglot, [PolyglotRequirement])
+Xeno = BLMSpell(10, True, 0.7, GCD, 660, 0, False, False, ApplyPolyglot, [PolyglotRequirement])
 
 #Boosting Ability
 
@@ -484,11 +530,21 @@ Mana = BLMSpell(17, False, 0.5, 0, 0, 0, False, False, ApplyManaFront, [ManaFron
 
 #EndWalker Spell
 
-Para = BLMSpell(18, True, 2.5, 2.5, 500, 1600, False, False, ApplyParadox, [ManaFrontRequirement, ParadoxRequirement])
+Para = BLMSpell(18, True, GCD, GCD, 500, 1600, False, False, ApplyParadox, [ManaRequirement])
 Amp = BLMSpell(19, False, 0.5, 0, 0, 0, False, False, ApplyAmplifier, [AmplifierRequirement])
 
+#Potions
+
+Potion = BLMSpell(20, False, 0.5, 0, 0, 0, False, False, ApplyPotion, [])
 
 
+#Special Effects
+
+B3Starter = BLMSpell(6, True, LONGGCD, GCD, 0, 0, False, True, ApplyBlizzard3, [])
+F3Starter = BLMSpell(2, True, LONGGCD, GCD, 0, 0, True, False, AddAstralFire3, [ManaRequirement])
+PolyglotStarter = BLMSpell(21, False, 0, 0, 0, 0, False, False, AddPolyglot, [])
+Thunder3Starter = BLMSpell(22, False, 0, 0, 0, 0, False, False, ApplyThunder3, [])
+F3ProckStarter = BLMSpell(23, False, 0, 0, 0, 0, False, False, GiveF3Prock, [])
 
 #########################################
 ########## DARK KNIGHT SKILLS ###########
@@ -692,6 +748,7 @@ def SummonLivingShadow(Player, Spell):
     Actions = [PDelay, PAbyssalDrain, PPlunge, PQuietus, PShadowbringer, PEdgeShadow, PBloodspiller, PCarveSpit]
     Pet = Esteem(2.36,Actions,[],[],Player.CurrentFight)
     Player.CurrentFight.PlayerList.append(Pet)
+    Player.EsteemPointer = Pet
     #print("Esteem enters the battlefield.")
 
 def SpendPlunge(Player,Spell):

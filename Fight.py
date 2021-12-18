@@ -1,5 +1,7 @@
 import math
 
+from Player import DarkKnight
+
 
 class NoMoreAction(Exception):#Exception called if a spell fails to cast
     pass
@@ -18,6 +20,9 @@ class Fight:
         for player in self.PlayerList:
             print("The Total Potency done by player " + str(type(player)) + " was : " + str(player.TotalPotency))
             print("This same player had a Potency Per Second of: " + str(player.TotalPotency/time))
+            print("This same Player had an average of " + str(player.TotalPotency/player.NextSpell) + " Potency/Spell")
+            print("This same Player had an average of " + str(player.TotalPotency/(time/player.GCDTimer)) + " Potency/GCD")
+            print("=======================================================")
         
         print("The Enemy has received a total potency of: " + str(self.Enemy.TotalPotency))
         print("The Potency Per Second on the Enemy is: " + str(self.Enemy.TotalPotency/time))
@@ -45,7 +50,7 @@ class Fight:
                                 #If we in here, then we can cast the next spell
 
                                 player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)#Cast the spell
-                                print("Spell with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(TimeStamp) )
+                                #print("Spell with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(TimeStamp) )
                                 #Locking the player
 
                                 player.Casting = True
@@ -65,7 +70,7 @@ class Fight:
                                 player.CastingSpell.CastFinal(player, self.Enemy)
                                 player.oGCDLock = True
                                 player.oGCDLockTimer = player.CastingSpell.CastTime
-                                print("oGCD with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(TimeStamp) )
+                                #print("oGCD with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(TimeStamp) )
 
 
                     
@@ -105,9 +110,15 @@ class Fight:
                 if FightCD <= 0 and not start:
                     TimeStamp = 0
                     start = True
-                    print("==========================================================================================")
-                    print("FIGHT START")
-                    print("==========================================================================================")
+                    #print("==========================================================================================")
+                    #print("FIGHT START")
+                    #print("==========================================================================================")
+
+            
+            for Player in self.PlayerList:
+                if isinstance(Player, DarkKnight):
+                    Player.TotalPotency += Player.EsteemPointer.TotalPotency
+                    self.PlayerList.remove(Player.EsteemPointer)
 
             self.PrintResult(TimeStamp)
             
