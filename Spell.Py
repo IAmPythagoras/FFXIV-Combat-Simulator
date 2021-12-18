@@ -29,14 +29,12 @@ class Spell:
         #the player and the enemy have
 
         #Will apply each effect the player currently has on the spell
-        print("Effect List : " + str(player.EffectList))
+        #print("Effect List : " + str(player.EffectList))
         for Effect in player.EffectList:
             Effect(player, tempSpell)#Changes tempSpell
         for Effect in Enemy.EffectList:
             Effect(Enemy, tempSpell)#Changes tempSpell
         #Checks if we meet the spell requirement
-
-        if(tempSpell.id == 2) : print("CAST TIME OF FIRE3 IS : " + str(tempSpell.CastTime))
 
         for Requirement in tempSpell.Requirement:
             if(not Requirement(player, tempSpell)) : #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
@@ -49,14 +47,14 @@ class Spell:
 
 
     def CastFinal(self, player, Enemy):
-        print("##################################")
-        print("Potency of spell: " + str(self.Potency))
-        print("Spell has finally been cast: " + str(self.id))
+        #print("##################################")
+        #print("Potency of spell: " + str(self.Potency))
+        #print("Spell has finally been cast: " + str(self.id))
 
         self.Effect(player, Enemy)#Put effects on Player and/or Enemy
         #This will include substracting the mana (it has been verified before that the mana was enough)
         
-        print("Current MP: " + str(player.Mana))
+        #print("Current MP: " + str(player.Mana))
         #print("Current Blood: " + str(player.Blood))
 
         player.TotalPotency+= self.Potency
@@ -219,7 +217,7 @@ def EnochianEffect(Player, Spell):
 
 def TripleCastEffect(Player,Spell):
     if (not Spell.CastTime == 0) and (Spell.GCD):
-        print("Applied TripleCastEffect on : " + str(Spell.id))
+        #print("Applied TripleCastEffect on : " + str(Spell.id))
         Spell.CastTime=0
         Player.TripleCastStack-=1
 
@@ -301,7 +299,7 @@ def Thunder3DotCheck(Player,Enemy):
 def AFUICheck(Player,Enemy):
     
     if(Player.AFUITimer <= 0):
-        print("LOST AFUI ============================")
+        #print("LOST AFUI ============================")
         Player.AFUITimer = 0
         Player.AstralFireStack = 0
         Player.UmbralIceStack = 0
@@ -351,14 +349,14 @@ def CheckTripleCastCharges(Player, Enemy):
             Player.TripleCastCD = 60
         elif Player.SharpCastCharges == 1:
             Player.EffectCDList.remove(CheckTripleCastCharges)
-        Player.TripleCastCarges += 1
+        Player.TripleCastCharges += 1
 
 def CheckPotion(Player, Enemy):
 
     if(Player.PotionTimer <= 0): 
         Player.EffectList.remove(PotionEffect)
         Player.EffectCDList.remove(CheckPotion)
-        print("Potion Effect out =========================================================================================")
+        #print("Potion Effect out =========================================================================================")
 
 #Applying Effect of Spell
 
