@@ -748,6 +748,7 @@ def SummonLivingShadow(Player, Spell):
     Actions = [PDelay, PAbyssalDrain, PPlunge, PQuietus, PShadowbringer, PEdgeShadow, PBloodspiller, PCarveSpit]
     Pet = Esteem(2.36,Actions,[],[],Player.CurrentFight)
     Player.CurrentFight.PlayerList.append(Pet)
+    Player.EsteemPointer = Pet
     #print("Esteem enters the battlefield.")
 
 def SpendPlunge(Player,Spell):

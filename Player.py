@@ -153,6 +153,7 @@ class DarkKnight(Player):
         #Special
         self.DarksideTimer = 0          #Darkside Gauge, starts at 0 with a max duration of 60s.
         self.Blood = 0                  #Blood Gauge, starts at 0 with a max of 100 units.
+        self.EsteemPointer = None
 
         #Stacks and Ability timers
         self.BloodWeaponTimer = 0       #Duration of Blood Weapon buff.

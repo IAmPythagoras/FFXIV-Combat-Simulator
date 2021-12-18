@@ -1,5 +1,7 @@
 import math
 
+from Player import DarkKnight
+
 
 class NoMoreAction(Exception):#Exception called if a spell fails to cast
     pass
@@ -111,6 +113,12 @@ class Fight:
                     #print("==========================================================================================")
                     #print("FIGHT START")
                     #print("==========================================================================================")
+
+            
+            for Player in self.PlayerList:
+                if isinstance(Player, DarkKnight):
+                    Player.TotalPotency += Player.EsteemPointer.TotalPotency
+                    self.PlayerList.remove(Player.EsteemPointer)
 
             self.PrintResult(TimeStamp)
             
