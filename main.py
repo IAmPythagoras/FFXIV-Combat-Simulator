@@ -2,14 +2,6 @@
 from Fight import *
 from Spell import *
 from Enemy import *
-from Spell import EdgeShadow
-from Spell import BloodWeapon
-from Spell import HardSlash
-from Spell import SyphonStrike
-from Spell import Souleater
-from Spell import LivingShadow
-from Spell import SaltDarkness
-from Spell import SaltedEarth
 
 
 Dummy = Enemy()
@@ -37,7 +29,9 @@ Opener5 = [Sharp,WaitAbility(12.17), F1, F3, Transpo, Para, Potion, F3, Triple, 
 
 Opener6 = [Sharp, WaitAbility(12.17), F3, Sharp, T3, F4, Triple, F4, Potion,F4, Amp, Ley, F4, Triple, Despair, Mana, F4, Sharp, Despair, Transpo, Para, Xeno, F3, F4, F4, F4, F4, F4, T3, Swift, Despair, Transpo, Para, Xeno, F3, F4, F4, F4, F4, Despair]
 
+Opener7 = [Sharp, WaitAbility(11.23), F3, T3, F4, Triple, F4, Potion, F4, Amp, Ley, F4, Triple, Despair, Mana, F4, Swift, Despair, Transpo, Para, Xeno, T3, F3, F4, F4, F4, Despair, Xeno, Transpo, Para]
 
+HinakoOpener = [Sharp, WaitAbility(11.23), B3, T3, B4, F3, Triple, F4, Swift, Sharp, F4, Amp, Ley, F4, Potion, F4, F4, Para, F4, Xeno, Triple, Despair, Mana, F4, Sharp, Despair, Transpo, Para, T3, Xeno, Transpo, F3, F4, F4, F4, F4, Despair]
 
 
 #Lines Testing
@@ -79,12 +73,7 @@ Line12 = [F3Starter, PolyglotStarter, Thunder3Starter,F3ProckStarter,Transpo,Wai
 #Variation of line11 where we do two Xeno in Ice phase to get 2 gcd and be sure to have full mana and use paradox in Fire phase to allow for one more
 #fire 4
 
-
-
-Line13 = [F3Starter, Thunder3Starter, F4, F4, F4, F4, Despair]
-
-Line14 = [F3Starter, Thunder3Starter, F4, F4, F4, F4, Para, Despair]
-
+Line13 = [F3Starter, Transpo, Para, Swift, F3, F4, F4, F4, Despair]
 
 
 
@@ -101,9 +90,10 @@ Action3 = [Triple, Triple]
 PrePull = []
 Event = Fight([], Dummy)
 DRKAction = [Unmend, EdgeShadow, BloodWeapon, HardSlash, EdgeShadow, SyphonStrike, Souleater, LivingShadow, SaltedEarth]
-
+NINAction = [Suiton, Kassatsu, SpinningEdge, Potion,GustSlash,  Mug, Bunshin, AeolianEdge, TrickAttack, SpinningEdge, DWD, Hyosho, Raiton, TenChiJin, Meisui, Raiju, Bhavacakra, Raiju, Bhavacakra, Raiton, Raiju]
 DRKPlayer = DarkKnight(2.41, DRKAction, [], [DarksideEffect], Event)
-BLMPlayer = BlackMage(2.5, Line13, [], [AstralFire, UmbralIce, EnochianEffect], Event)
-Event.PlayerList = [BLMPlayer, DRKPlayer]
-Event.SimulateFight(0.01, 100, 0)  
+BLMPlayer = BlackMage(2.5, HinakoOpener, [], [AstralFire, UmbralIce, EnochianEffect], Event)
+NinjaPlayer = Ninja(2.5, NINAction, [], [AutoEffect, NinjutsuTimerEffect], Event)
+Event.PlayerList = [NinjaPlayer, BLMPlayer]
+Event.SimulateFight(0.01, 100, 90)  
 
