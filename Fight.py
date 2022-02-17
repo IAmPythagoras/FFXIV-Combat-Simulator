@@ -22,6 +22,7 @@ class Fight:
             print("This same player had a Potency Per Second of: " + str(player.TotalPotency/time))
             print("This same Player had an average of " + str(player.TotalPotency/player.NextSpell) + " Potency/Spell")
             print("This same Player had an average of " + str(player.TotalPotency/(time/player.GCDTimer)) + " Potency/GCD")
+            print("The DPS is : " + str(ComputeDamage(player, player.TotalPotency/time)))
             print("=======================================================")
         
         print("The Enemy has received a total potency of: " + str(self.Enemy.TotalPotency))
@@ -127,5 +128,48 @@ class Fight:
 
 
 
+def ComputeDamage(Player, PPS):
+    #This function will compute the DPS given the stats of a player
 
+    levelMod = 1900
+    baseMain = 390  
+    baseSub = 400
+    JobMod = 115
 
+    MainStat = Player.Stat["MainStat"] * 1.05 #Assuming we have 5% bonus on stats
+
+    Damage=math.floor(PPS*(Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))*(100+math.floor((MainStat-baseMain)*195/baseMain))/100)
+    Damage=math.floor(Damage*(1000+math.floor(140*(Player.Stat["Det"]-baseMain)/levelMod))/1000)
+    Damage=math.floor(Damage*(1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000)
+    Damage=math.floor(Damage*(1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000/100)
+
+    #This is only for Black mage 
+
+    Damage = math.floor(Damage * 1.3)#Magic and mend
+    Damage = math.floor(Damage * 1.2)#Enochian Will not be counted
+
+    CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000
+    CritDamage = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000
+
+    DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000
+    #DetDamage = (1000+math.floor(140*(Player.Stat["Det"]-baseMain)/levelMod))/1000
+
+    return Damage * ((1+(DHRate/4))*(1+(CritRate*CritDamage)))
+"""
+    // Pulled from Orinx's Gear Comparison Sheet with slight modifications
+function Damage(Potency, WD, JobMod, MainStat,Det, Crit, DH,SS,TEN, hasBrd, hasDrg, hasSch, hasDnc, classNum) {
+  
+  MainStat=Math.floor(MainStat*(1+0.01*classNum));
+  var Damage=Math.floor(Potency*(WD+Math.floor(baseMain*JobMod/1000))*(100+Math.floor((MainStat-baseMain)*195/baseMain))/100);
+  Damage=Math.floor(Damage*(1000+Math.floor(140*(Det-baseMain)/levelMod))/1000);
+  Damage=Math.floor(Damage*(1000+Math.floor(100*(TEN-baseSub)/levelMod))/1000);
+  Damage=Math.floor(Damage*(1000+Math.floor(130*(SS-baseSub)/levelMod))/1000/100);
+  Damage=Math.floor(Damage*magicAndMend)
+  Damage=Math.floor(Damage*enochian)
+  var CritDamage=CalcCritDamage(Crit)
+  var CritRate=CalcCritRate(Crit) + (hasDrg ? battleLitanyAvg : 0) + (hasSch ? chainStratAvg : 0) + (hasDnc ? devilmentAvg : 0) + (hasBrd ? brdCritAvg : 0);
+  var DHRate=CalcDHRate(DH) + (hasBrd ? battleVoiceAvg + brdDhAvg : 0) + (hasDnc ? devilmentAvg : 0);
+  return Damage * ((1+(DHRate/4))*(1+(CritRate*CritDamage)))                                                                                                                               
+}
+
+"""

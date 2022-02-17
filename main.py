@@ -75,6 +75,17 @@ Line12 = [F3Starter, PolyglotStarter, Thunder3Starter,F3ProckStarter,Transpo,Wai
 
 Line13 = [F3Starter, Transpo, Para, Swift, F3, F4, F4, F4, Despair]
 
+Line14 = [F3ProckStarter, F3Starter, B3, B4, Para, Transpo, F3, F4, F4, F4 , Para, F4, F4, F4, Despair]
+
+Line15 = [F3ProckStarter, F3Starter, Transpo, Para, Xeno, WaitAbility(1.5), Transpo, F3, F4, F4, F4, Despair]
+
+
+
+
+#Stat
+
+BLMStat = {"MainStat": 2571, "WD":120, "Det" : 1422, "Ten" : 390, "SS": 2171, "Crit" : 715, "DH" : 1454}
+
 
 
 
@@ -92,8 +103,9 @@ Event = Fight([], Dummy)
 DRKAction = [Unmend, EdgeShadow, BloodWeapon, HardSlash, EdgeShadow, SyphonStrike, Souleater, LivingShadow, SaltedEarth]
 NINAction = [Suiton, Kassatsu, SpinningEdge, Potion,GustSlash,  Mug, Bunshin, AeolianEdge, TrickAttack, SpinningEdge, DWD, Hyosho, Raiton, TenChiJin, Meisui, Raiju, Bhavacakra, Raiju, Bhavacakra, Raiton, Raiju]
 DRKPlayer = DarkKnight(2.41, DRKAction, [], [DarksideEffect], Event)
-BLMPlayer = BlackMage(2.5, HinakoOpener, [], [AstralFire, UmbralIce, EnochianEffect], Event)
+BLMPlayer = BlackMage(2.5, Line15, [], [AstralFire, UmbralIce], Event)
+BLMPlayer.Stat = BLMStat
 NinjaPlayer = Ninja(2.5, NINAction, [], [AutoEffect, NinjutsuTimerEffect], Event)
-Event.PlayerList = [NinjaPlayer, BLMPlayer]
-Event.SimulateFight(0.01, 100, 90)  
+Event.PlayerList = [BLMPlayer]
+Event.SimulateFight(0.01, 100, 0)  
 

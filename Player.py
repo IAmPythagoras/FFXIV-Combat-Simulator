@@ -28,6 +28,9 @@ class Player:
         
         self.TotalPotency = 0
 
+
+        self.Stat = {}
+
     def updateTimer(self, time):
         #print("Updated Timer : " + str(self.oGCDLockTimer))
         #print(str(self.GCDLock) + str(self.oGCDLock) + str(self.Casting))
