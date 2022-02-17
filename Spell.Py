@@ -506,13 +506,13 @@ def DespairCast(Player, Enemy):
 
 #List of Black Mage Spell
 
-GCD = 2.33
-LONGGCD = 3.27
+GCD = 2.50
+LONGGCD = 3.50
 F1 = BLMSpell(1, True, GCD, GCD, 180, 800, True, False, AddAstralFire1, [ManaRequirement])
 #F2 = BLMAbility(1, True, 2.17, 2.17, 140, 200, True, False, empty, ManaCheck)#Will not used, so whatever
 F3 = BLMSpell(2, True, LONGGCD, GCD, 240, 2000, True, False, AddAstralFire3, [ManaRequirement])
-F4 = BLMSpell(3, True, 2.61, GCD, 300, 800, True, False, empty, [ManaRequirement, AstralFireRequirement, EnoughTimeRequirement])
-Despair = BLMSpell(4, True, 2.8, GCD, 340, 800, True, False, AddAstralFire1, [ManaRequirement, AstralFireRequirement, EnoughTimeRequirement])
+F4 = BLMSpell(3, True, 2.8, GCD, 300, 800, True, False, empty, [ManaRequirement, AstralFireRequirement, EnoughTimeRequirement])
+Despair = BLMSpell(4, True, 3.0, GCD, 340, 800, True, False, AddAstralFire1, [ManaRequirement, AstralFireRequirement, EnoughTimeRequirement])
 
 #Ice Spell
 #B1 = BLMSpell(5, True, 2.19, 2.19, 180, 400, False, True, AddUmbralIce1, ManaCheck)#Not used so whatever

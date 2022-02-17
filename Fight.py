@@ -146,7 +146,7 @@ def ComputeDamage(Player, PPS):
     #This is only for Black mage 
 
     Damage = math.floor(Damage * 1.3)#Magic and mend
-    Damage = math.floor(Damage * 1.2)#Enochian Will not be counted
+    Damage = math.floor(Damage * 1.2)#Enochian
 
     CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000
     CritDamage = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000

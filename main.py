@@ -29,9 +29,10 @@ Opener5 = [Sharp,WaitAbility(12.17), F1, F3, Transpo, Para, Potion, F3, Triple, 
 
 Opener6 = [Sharp, WaitAbility(12.17), F3, Sharp, T3, F4, Triple, F4, Potion,F4, Amp, Ley, F4, Triple, Despair, Mana, F4, Sharp, Despair, Transpo, Para, Xeno, F3, F4, F4, F4, F4, F4, T3, Swift, Despair, Transpo, Para, Xeno, F3, F4, F4, F4, F4, Despair]
 
-Opener7 = [Sharp, WaitAbility(11.23), F3, T3, F4, Triple, F4, Potion, F4, Amp, Ley, F4, Triple, Despair, Mana, F4, Swift, Despair, Transpo, Para, Xeno, T3, F3, F4, F4, F4, Despair, Xeno, Transpo, Para]
+Opener7 = [Sharp, WaitAbility(16.5), F3, T3, F4, Triple, F4, Potion, F4, Amp, Ley, F4, Triple, Despair, Mana, F4, Swift, Despair, Transpo, Para, Xeno, T3, F3, F4, F4, F4, Despair, Xeno, Transpo, Para]
 
 HinakoOpener = [Sharp, WaitAbility(11.23), B3, T3, B4, F3, Triple, F4, Swift, Sharp, F4, Amp, Ley, F4, Potion, F4, F4, Para, F4, Xeno, Triple, Despair, Mana, F4, Sharp, Despair, Transpo, Para, T3, Xeno, Transpo, F3, F4, F4, F4, F4, Despair]
+
 
 
 #Lines Testing
@@ -84,8 +85,8 @@ Line15 = [F3ProckStarter, F3Starter, Transpo, Para, Xeno, WaitAbility(1.5), Tran
 
 #Stat
 
-BLMStat = {"MainStat": 2571, "WD":120, "Det" : 1422, "Ten" : 390, "SS": 2171, "Crit" : 715, "DH" : 1454}
-
+#BLMStat = {"MainStat": 2571, "WD":120, "Det" : 1422, "Ten" : 390, "SS": 2171, "Crit" : 715, "DH" : 1454} BIS
+BLMStat = {"MainStat": 2537, "WD":117, "Det" : 1568, "Ten" : 400, "SS": 1970, "Crit" : 527, "DH" : 1676}
 
 
 
@@ -103,9 +104,9 @@ Event = Fight([], Dummy)
 DRKAction = [Unmend, EdgeShadow, BloodWeapon, HardSlash, EdgeShadow, SyphonStrike, Souleater, LivingShadow, SaltedEarth]
 NINAction = [Suiton, Kassatsu, SpinningEdge, Potion,GustSlash,  Mug, Bunshin, AeolianEdge, TrickAttack, SpinningEdge, DWD, Hyosho, Raiton, TenChiJin, Meisui, Raiju, Bhavacakra, Raiju, Bhavacakra, Raiton, Raiju]
 DRKPlayer = DarkKnight(2.41, DRKAction, [], [DarksideEffect], Event)
-BLMPlayer = BlackMage(2.5, Line15, [], [AstralFire, UmbralIce], Event)
+BLMPlayer = BlackMage(2.5, Opener7, [], [AstralFire, UmbralIce], Event)
 BLMPlayer.Stat = BLMStat
 NinjaPlayer = Ninja(2.5, NINAction, [], [AutoEffect, NinjutsuTimerEffect], Event)
 Event.PlayerList = [BLMPlayer]
-Event.SimulateFight(0.01, 100, 0)  
+Event.SimulateFight(0.01, 100, 20)  
 
