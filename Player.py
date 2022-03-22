@@ -2,7 +2,7 @@ class Player:
 
     #This class will contain any relevant information to the player. It will be the mother of all other Player
 
-    def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight):
+    def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
         self.GCDTimer = GCDTimer    #How long a GCD is
         self.ActionSet = ActionSet  #Known Action List
         self.EffectList = EffectList    #Normally Empty, can has some effects initially
@@ -11,9 +11,9 @@ class Player:
         self.DOTList = []
         self.NextSpell = 0
         self.CastingSpell = []
-        self.CastingTarget = []
+        #self.CastingTarget = []
         self.CurrentFight = CurrentFight
-        self.ManaTick = 1.5
+        self.ManaTick = 1.5 #Starts Mana tick at this value
 
         self.TrueLock = False   #Used to know when a player has finished all of its ActionSet
         self.Casting = False    #used to know if an action is possible
@@ -23,13 +23,16 @@ class Player:
         self.oGCDLockTimer = 0
         self.GCDLockTimer = 0
 
-        self.Mana = 100000
+        self.Mana = 10000 #Starting mana
         self.HP = 1000  #Could be changed
         
         self.TotalPotency = 0
+        self.TotalDamage = 0    
 
+        self.Stat = Stat #Stats of the player
 
-        self.Stat = {}
+        self.MultDPSBonus = 1   #Mult bonus for DPS (Ex: BLM.MultDPSBonus = 1.3 * 1.2 -> Enochian * Magik and Mend)
+
 
     def updateTimer(self, time):
         #print("Updated Timer : " + str(self.oGCDLockTimer))
@@ -67,8 +70,8 @@ def ManaRegenCheck(Player, Enemy):  #This function is there by default
 class BlackMage(Player):
     #This class will be blackmage object and will be the one used to simulate a black mage
 
-    def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight):
-        super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight)
+    def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
+        super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
         self.EffectCDList = [BLMManaRegenCheck]
         #Prock
         self.T3Prock = False
@@ -109,6 +112,9 @@ class BlackMage(Player):
         self.ManaFrontCD = 0
         self.TransposeCD = 0
         self.AmplifierCD = 0
+
+
+        self.MultDPSBonus = 1.3 * 1.2   #Mult bonus for DPS, Magik and Mend * Enochian
     
     def updateCD(self, time):
         if (self.LeyLinesCD > 0) : self.LeyLinesCD = max(0,self.LeyLinesCD - time)
@@ -218,8 +224,6 @@ class Esteem(Player):
     def updateTimer(self, time):
         super().updateTimer(time)
         
-
-
 
 #########################################
 ########## NINJA PLAYER #################

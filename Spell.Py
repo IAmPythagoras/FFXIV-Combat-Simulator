@@ -1,6 +1,6 @@
 import copy
 from Player import *
-
+from Fight import ComputeDamage
 
 
 
@@ -68,7 +68,13 @@ class Spell:
         #print("Current Blood: " + str(player.Blood))
 
         player.TotalPotency+= self.Potency
-        Enemy.TotalPotency+= self.Potency  #Doing Damage
+        Enemy.TotalPotency+= self.Potency  #Adding Potency
+
+        Damage = ComputeDamage(player, self.Potency, Enemy.Bonus)    #Damage computation
+
+        player.TotalDamage += Damage
+        Enemy.TotalDamage += Damage #Adding Damage
+
 
         #Will update the NextSpell of the player
 
@@ -287,8 +293,8 @@ def UmbralHeartEffect(Player, Spell):
         Player.EffectList.remove(UmbralHeartEffect)
 
 
-def PotionEffect(Player, Spell):
-    Spell.Potency *= 1.1
+def PotionEffect(Player, Spell):    #This effect is only so it can be seen
+    pass
 
 
 #Function that will check if an effect has ended
@@ -366,6 +372,7 @@ def CheckPotion(Player, Enemy):
     if(Player.PotionTimer <= 0): 
         Player.EffectList.remove(PotionEffect)
         Player.EffectCDList.remove(CheckPotion)
+        Player.Stat["MainStat"] /= 1.1 #Reset MainStat
         #print("Potion Effect out =========================================================================================")
 
 #Applying Effect of Spell
@@ -449,7 +456,7 @@ def ApplyBlizzard4(Player,Enemy):
     Player.Paradox = True
 
 def ApplyThunder3(Player,Enemy):
-    if (not (T3DOT in Player.DOTList) ): Player.DOTList.append(T3DOT)
+    if (not (T3DOT in Player.DOTList) ): Player.DOTList.append(copy.deepcopy(T3DOT))
     if (not (Thunder3DotCheck in Player.EffectCDList) ): Player.EffectCDList.append(Thunder3DotCheck)
     Player.T3Timer = 30
 
@@ -490,6 +497,7 @@ def ApplyBlizzard3(Player, Enemy):
 
 def ApplyPotion(Player, Enemy):
     Player.PotionTimer = 30
+    Player.Stat["MainStat"] *= 1.1
     Player.EffectList.append(PotionEffect)
     Player.EffectCDList.append(CheckPotion)
 
@@ -920,6 +928,7 @@ def ApplyArmorCrush(Player, Enemy):
 
 def ApplyTrickAttack(Player, Enemy):
     Player.TrickAttackCd = 60
+    Enemy.Bonus *= 1.05
     #Set up a timer for the Enemy on trick attack
     Enemy.EffectList.append(TrickAttackEffect)
 
@@ -976,9 +985,9 @@ def RaitonStacksEffect(Player, Spell):
 
 
 def TrickAttackEffect(Player, Spell):
-    Spell.Potency *= 1.05
-
-    if(Player.TrickAttackTimer <= 0): Player.CurrentFight.Enemy.EffectList.remove(TrickAttackEffect)
+    if(Player.TrickAttackTimer <= 0): 
+        Player.CurrentFight.Enemy.EffectList.remove(TrickAttackEffect)
+        Player.CurrentFight.Enemy.Bonus /= 1.05
 
 def SpinningEdgeEffect(Player, Spell):
     if (Spell.id == 1):

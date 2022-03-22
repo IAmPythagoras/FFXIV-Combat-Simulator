@@ -1,0 +1,6 @@
+
+- Add Stats to Players Class
+
+- Generalise DPS computation
+
+- Add code to compute 5% bonus

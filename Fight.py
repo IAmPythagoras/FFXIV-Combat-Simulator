@@ -1,4 +1,5 @@
 import math
+from Enemy import Enemy
 
 from Player import DarkKnight
 
@@ -22,11 +23,12 @@ class Fight:
             print("This same player had a Potency Per Second of: " + str(player.TotalPotency/time))
             print("This same Player had an average of " + str(player.TotalPotency/player.NextSpell) + " Potency/Spell")
             print("This same Player had an average of " + str(player.TotalPotency/(time/player.GCDTimer)) + " Potency/GCD")
-            print("The DPS is : " + str(ComputeDamage(player, player.TotalPotency/time)))
+            print("The DPS is : " + str(player.TotalDamage / time))
             print("=======================================================")
         
         print("The Enemy has received a total potency of: " + str(self.Enemy.TotalPotency))
         print("The Potency Per Second on the Enemy is: " + str(self.Enemy.TotalPotency/time))
+        print("The Enemy's total DPS is " + str(self.Enemy.TotalDamage / time))
 
 
 
@@ -40,6 +42,7 @@ class Fight:
             while(TimeStamp <= TimeLimit):
 
                 for player in self.PlayerList:
+                    #print("MainStat : " + str(player.Stat["MainStat"]))
                     #Will first Check if the NextSpell is a GCD or not
                     if(not player.TrueLock):#If it is we do nothing
                         if(player.ActionSet[player.NextSpell].GCD):
@@ -64,7 +67,7 @@ class Fight:
 
                         else:
                             #Is an oGCD
-
+                            
                             if(not (player.oGCDLock or player.Casting)):
                                 #Then we can cast the oGCD
                                 player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)
@@ -80,6 +83,9 @@ class Fight:
                 #Will then let the enemy add the Dots damage
 
                 for player in self.PlayerList:
+                    #print(player.DOTList)
+                    #print(player)
+                    #print("============")
                     for DOT in player.DOTList:
                         DOT.CheckDOT(player,self.Enemy, TimeUnit)
                 for player in self.PlayerList:
@@ -93,9 +99,11 @@ class Fight:
                     player.updateTimer(TimeUnit)
                     player.updateCD(TimeUnit)
                     player.updateLock() #Update the lock on the player to see if it's state changes
+
+
                 CheckFinalLock = True
                 for player in self.PlayerList:
-                    CheckFinalLock = player.TrueLock and CheckFinalLock
+                    CheckFinalLock = player.TrueLock and CheckFinalLock #If all player's TrueLock is true, then CheckFinalLock will be True
 
                 if CheckFinalLock: 
                     print("The Fight finishes at: " + str(TimeStamp))
@@ -103,7 +111,6 @@ class Fight:
 
 
                 #update timestamp
-                #if(math.floor(TimeStamp*1000)%100 == 0) : print(str(TimeStamp))
                 TimeStamp += TimeUnit
 
 
@@ -116,9 +123,13 @@ class Fight:
                     #print("==========================================================================================")
 
             
+
+            #Post fight computations
+
+
             for Player in self.PlayerList:
                 if isinstance(Player, DarkKnight):
-                    Player.TotalPotency += Player.EsteemPointer.TotalPotency
+                    Player.TotalPotency += Player.EsteemPointer.TotalPotency    #Adds every damage done by Esteem to the dark knight
                     self.PlayerList.remove(Player.EsteemPointer)
 
             self.PrintResult(TimeStamp)
@@ -128,7 +139,7 @@ class Fight:
 
 
 
-def ComputeDamage(Player, PPS):
+def ComputeDamage(Player, DPS, EnemyBonus):
     #This function will compute the DPS given the stats of a player
 
     levelMod = 1900
@@ -136,23 +147,22 @@ def ComputeDamage(Player, PPS):
     baseSub = 400
     JobMod = 115
 
-    MainStat = Player.Stat["MainStat"] * 1.05 #Assuming we have 5% bonus on stats
+    MainStat = Player.Stat["MainStat"] * 1.05 #Assuming we have 5% bonus on stats due to team (could add code to compute it)
 
-    Damage=math.floor(PPS*(Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))*(100+math.floor((MainStat-baseMain)*195/baseMain))/100)
-    Damage=math.floor(Damage*(1000+math.floor(140*(Player.Stat["Det"]-baseMain)/levelMod))/1000)
-    Damage=math.floor(Damage*(1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000)
-    Damage=math.floor(Damage*(1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000/100)
+    Damage=math.floor(DPS*(Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))*(100+math.floor((MainStat-baseMain)*195/baseMain))/100)
+
+    Damage=math.floor(Damage*(1000+math.floor(140*(Player.Stat["Det"]-baseMain)/levelMod))/1000)#Determination damage
+    Damage=math.floor(Damage*(1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000)#Tenacity damage
+    Damage=math.floor(Damage*(1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000/100)#Spell/Skill speed damage bonus
 
     #This is only for Black mage 
 
-    Damage = math.floor(Damage * 1.3)#Magic and mend
-    Damage = math.floor(Damage * 1.2)#Enochian
+    Damage = math.floor(Player.MultDPSBonus * Damage * EnemyBonus)
 
     CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000
     CritDamage = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000
 
     DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000
-    #DetDamage = (1000+math.floor(140*(Player.Stat["Det"]-baseMain)/levelMod))/1000
 
     return Damage * ((1+(DHRate/4))*(1+(CritRate*CritDamage)))
 """
