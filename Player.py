@@ -1,3 +1,6 @@
+from asyncio.windows_events import NULL
+
+
 class Player:
 
     #This class will contain any relevant information to the player. It will be the mother of all other Player
@@ -22,6 +25,7 @@ class Player:
         self.CastingLockTimer = 0
         self.oGCDLockTimer = 0
         self.GCDLockTimer = 0
+        self.PotionTimer = 0
 
         self.Mana = 10000 #Starting mana
         self.HP = 1000  #Could be changed
@@ -97,7 +101,6 @@ class BlackMage(Player):
         self.SwiftCastTimer = 0
         self.SharpCastTimer = 0
         self.AFUITimer = 0
-        self.PotionTimer = 0
 
         #Charges
         self.SharpCastCharges = 2
@@ -115,6 +118,7 @@ class BlackMage(Player):
 
 
         self.MultDPSBonus = 1.3 * 1.2   #Mult bonus for DPS, Magik and Mend * Enochian
+        self.T3 = None
     
     def updateCD(self, time):
         if (self.LeyLinesCD > 0) : self.LeyLinesCD = max(0,self.LeyLinesCD - time)
@@ -159,8 +163,8 @@ def BLMManaRegenCheck(Player, Enemy):   #Mana Regen Stuff
 class DarkKnight(Player):
     #A class for Dark Knight Players containing all effects and cooldowns relevant to the job.
 
-    def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight):
-        super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight)
+    def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
+        super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
 
         #Special
         self.DarksideTimer = 0          #Darkside Gauge, starts at 0 with a max duration of 60s.
@@ -232,8 +236,8 @@ class Esteem(Player):
 
 class Ninja(Player):
 
-    def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight):
-        super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight)
+    def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
+        super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
         
         #Gauge
         self.HutonGauge = 60 #Assumes we start with 60 sec of Huton
@@ -291,4 +295,42 @@ class Ninja(Player):
         if (self.KamaitachiTimer > 0) : self.KamaitachiTimer = max(0,self.KamaitachiTimer - time)
 
 
+#########################################
+########## SCHOLAR PLAYER ###############
+#########################################
 
+class Scholar(Player):
+
+    def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
+        super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
+
+        self.AetherFlowStack = 0
+
+        self.AetherFlowCD = 0
+        self.ChainStratagemCD = 0
+        self.EnergyDrainCD = 0
+        self.SwiftCastCD = 0
+        self.LucidDreamingCD = 0
+        self.DissipationCD = 0
+
+        self.BiolysisTimer = 0
+        self.Biolysis = None
+
+        self.LucidDreamingTimer = 0
+        self.ChainStratagemTimer = 0
+
+
+    def updateCD(self, time):
+        if (self.AetherFlowCD > 0) : self.AetherFlowCD = max(0,self.AetherFlowCD - time)
+        if (self.ChainStratagemCD > 0) : self.ChainStratagemCD = max(0,self.ChainStratagemCD - time)
+        if (self.EnergyDrainCD > 0) : self.EnergyDrainCD = max(0,self.EnergyDrainCD - time)
+        if (self.SwiftCastCD > 0) : self.SwiftCastCD = max(0,self.SwiftCastCD - time)
+        if (self.LucidDreamingCD > 0) : self.LucidDreamingCD = max(0,self.LucidDreamingCD - time)
+
+    def updateTimer(self, time):
+        super().updateTimer(time)
+        if (self.BiolysisTimer > 0) : self.BiolysisTimer = max(0,self.BiolysisTimer - time)
+        if (self.LucidDreamingTimer > 0) : self.LucidDreamingTimer = max(0,self.LucidDreamingTimer - time)
+        if (self.ChainStratagemTimer > 0) : self.ChainStratagemTimer = max(0,self.ChainStratagemTimer - time)
+
+        

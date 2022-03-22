@@ -308,7 +308,7 @@ def CheckLeyLines(Player,Enemy):
 
 def Thunder3DotCheck(Player,Enemy):
     if(Player.T3Timer <= 0):
-        Player.DOTList.remove(T3DOT)
+        Player.DOTList.remove(Player.T3)
         Player.EffectCDList.remove(Thunder3DotCheck)
         Player.T3Timer = 0
 
@@ -456,7 +456,9 @@ def ApplyBlizzard4(Player,Enemy):
     Player.Paradox = True
 
 def ApplyThunder3(Player,Enemy):
-    if (not (T3DOT in Player.DOTList) ): Player.DOTList.append(copy.deepcopy(T3DOT))
+    if (not (Player.T3 in Player.DOTList) ): 
+        Player.T3 = copy.deepcopy(T3DOT)
+        Player.DOTList.append(Player.T3)
     if (not (Thunder3DotCheck in Player.EffectCDList) ): Player.EffectCDList.append(Thunder3DotCheck)
     Player.T3Timer = 30
 
@@ -1059,3 +1061,75 @@ Autos = NinjaDOT(-1, 100)
 
 #Special
 Hide = NinjaSpell(16, False, False, 0, 0, 0, 0, ApplyHide, [])
+
+
+
+
+
+#########################################
+########## SCHOLAR PLAYER ###############
+#########################################
+
+ScholarGCD = 2.5
+ScholarCast = 1.5
+
+class ScholarSpell(Spell):
+
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+        
+        
+def ApplyBiolysis(Player, Enemy):
+    if (not (Player.Biolysis in Player.DOTList)):
+        Player.Biolysis = copy.deepcopy(BiolysisDOT)
+        Player.DOTList.append(Player.Biolysis)
+    Player.BiolysisTimer = 30
+
+def ApplyAetherflow(Player, Enemy):
+    Player.Mana = min(10000, Player.Mana + 2000)
+    Player.AetherFlowStack = 3
+    Player.AetherFlowCD = 60
+
+def ApplyChainStratagem(Player, Enemy):
+    Player.ChainStratagemCD = 120
+    Player.ChainStratagemTimer = 15
+    Enemy.ChainStratagem = True
+    Player.EffectCDList.append(CheckChainStratagem)
+
+def ApplyEnergyDrain(Player, Enemy):
+    Player.EnergyDrainCD = 1
+    Player.AetherFlowStack -= 1
+
+def ApplyDissipation(Player, Enemy):
+    Player.DissipationCD = 180
+    Player.AetherFlowStack = 3
+#====================================
+
+def AetherflowRequirement(Player, Spell):
+    return Player.AetherFlowCD <= 0
+
+def ChainStratagemRequirement(Player, Spell):
+    return Player.ChainStratagemCD <= 0
+
+def AetherStackRequirement(Player, Spell):
+    return Player.AetherFlowStack > 0
+
+def DissipationRequirement(Player, Spell):
+    return Player.DissipationCD <= 0
+#====================================
+
+def CheckChainStratagem(Player, Enemy):
+    if Player.ChainStratagemTimer <= 0:
+        Player.ChainStratagemTimer = 0
+        Enemy.ChainStratagem = False
+        print("ChainStratagem is over")
+        Player.EffectCDList.remove(CheckChainStratagem)
+
+Broil = ScholarSpell(1, True, ScholarCast, ScholarGCD, 295,  400, empty, [ManaRequirement])
+Ruin = ScholarSpell(2, True, 0, ScholarGCD, 220,  400, empty, [ManaRequirement])
+Biolysis = ScholarSpell(3, True, 0, ScholarGCD, 0, 400, ApplyBiolysis, [ManaRequirement])
+BiolysisDOT = DOTSpell(4, 70)
+Aetherflow = ScholarSpell(5, False, 0, Lock, 0, 0, ApplyAetherflow, [AetherflowRequirement])
+Dissipation = ScholarSpell(8, False, 0, Lock, 0, 0, ApplyDissipation, [DissipationRequirement])
+ChainStratagem = ScholarSpell(6, False, 0, Lock, 0, 0, ApplyChainStratagem, [ChainStratagemRequirement])
+EnergyDrain = ScholarSpell(7, False, 0, Lock, 100, 0, ApplyEnergyDrain, [AetherStackRequirement])

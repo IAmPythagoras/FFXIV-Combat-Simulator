@@ -5,4 +5,5 @@ class Enemy:
         self.TotalPotency = 0
         self.TotalDamage = 0
         self.Bonus = 1  #Mult bonus on DPS (Ex: Trickattack)
+        self.ChainStratagem = False
 

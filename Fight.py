@@ -160,6 +160,9 @@ def ComputeDamage(Player, DPS, EnemyBonus):
     Damage = math.floor(Player.MultDPSBonus * Damage * EnemyBonus)
 
     CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000
+
+    if Player.CurrentFight.Enemy.ChainStratagem: CritRate += 0.1    #If ChainStratagem is active, increase crit
+
     CritDamage = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000
 
     DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000
