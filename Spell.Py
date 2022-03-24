@@ -28,8 +28,9 @@ class Spell:
         self.ManaCost = ManaCost
         self.CastTime = CastTime
         self.RecastTime = RecastTime
-        self.Effect = Effect
+        self.Effect = [Effect]
         self.Requirement = Requirement
+        self.DPSBonus = 1
 
     def Cast(self, player, Enemy):
         #This function will cast the spell given by the Fight, it will apply whatever effects it has and do its potency
@@ -61,7 +62,9 @@ class Spell:
         #print("Potency of spell: " + str(self.Potency))
         #print("Spell has finally been cast: " + str(self.id))
 
-        self.Effect(player, Enemy)#Put effects on Player and/or Enemy
+        
+        for Effect in self.Effect:
+            Effect(player, Enemy)#Put effects on Player and/or Enemy
         #This will include substracting the mana (it has been verified before that the mana was enough)
         
         #print("Current MP: " + str(player.Mana))
@@ -70,7 +73,7 @@ class Spell:
         player.TotalPotency+= self.Potency
         Enemy.TotalPotency+= self.Potency  #Adding Potency
 
-        Damage = ComputeDamage(player, self.Potency, Enemy.Bonus)    #Damage computation
+        Damage = ComputeDamage(player, self.Potency, Enemy.Bonus, self.DPSBonus)    #Damage computation
 
         player.TotalDamage += Damage
         Enemy.TotalDamage += Damage #Adding Damage
@@ -1122,7 +1125,6 @@ def CheckChainStratagem(Player, Enemy):
     if Player.ChainStratagemTimer <= 0:
         Player.ChainStratagemTimer = 0
         Enemy.ChainStratagem = False
-        print("ChainStratagem is over")
         Player.EffectCDList.remove(CheckChainStratagem)
 
 Broil = ScholarSpell(1, True, ScholarCast, ScholarGCD, 295,  400, empty, [ManaRequirement])
@@ -1133,3 +1135,241 @@ Aetherflow = ScholarSpell(5, False, 0, Lock, 0, 0, ApplyAetherflow, [AetherflowR
 Dissipation = ScholarSpell(8, False, 0, Lock, 0, 0, ApplyDissipation, [DissipationRequirement])
 ChainStratagem = ScholarSpell(6, False, 0, Lock, 0, 0, ApplyChainStratagem, [ChainStratagemRequirement])
 EnergyDrain = ScholarSpell(7, False, 0, Lock, 100, 0, ApplyEnergyDrain, [AetherStackRequirement])
+
+#########################################
+########## REDMAGE PLAYER ###############
+#########################################
+
+
+class RedmageSpell(Spell):
+
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, BlackCost, WhiteCost):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+
+        self.BlackCost = BlackCost
+        self.WhiteCost = WhiteCost
+
+        self.Effect += [ApplyDualCast]  #Add dual cast to any apply effect
+
+#Special
+
+def Addmana(Player, WhiteMana, BlackMana):
+    Player.WhiteMana = min(100, Player.WhiteMana + WhiteMana)
+    Player.BlackMana = min(100, Player.BlackMana + BlackMana)
+
+def Removemana(Player, WhiteMana, BlackMana):
+    Player.WhiteMana = max(0, Player.WhiteMana - WhiteMana)
+    Player.BlackMana = max(0, Player.BlackMana - BlackMana)
+
+#Requirement
+def RDMManaRequirement(Player, Spell):
+    return Spell.ManaCost <= Player.Mana and Spell.BlackCost <= Player.BlackMana and Spell.WhiteCost <= Player.WhiteMana
+
+def ManaficationRequirement(Player, Spell):
+    return Player.ManaficationCD <= 0
+
+def EmboldenRequirement(Player, Spell):
+    return Player.EmboldenCD <= 0
+
+def AccelerationRequirement(Player, Spell):
+    return Player.AccelerationStack >= 1
+
+def FlecheRequirement(Player, Spell):
+    return Player.FlecheCD <= 0
+
+def ContreRequirement(Player, Spell):
+    return Player.ContreCD <= 0
+
+def EngagementRequirement(Player, Spell):
+    return Player.EngagementStack > 0
+
+def CorpsRequirement(Player, Spell):
+    return Player.CorpsStack > 0
+
+#Combo Action Requirements
+
+def ZwerchhauRequirement(Player, Spell):
+    return Player.Zwerchhau
+
+def RedoublementRequirement(Player, Spell):
+    return Player.Redoublement
+
+def VerholyRequirement(Player, Spell):
+    return Player.Verholy
+
+def ScorchRequirement(Player, Spell):
+    return Player.Scorch
+
+def ResolutionRequirement(Player, Spell):
+    return Player.Resolution
+
+
+
+#Apply
+
+def ApplyDualCast(Player, Enemy):
+    Player.DualCast = not Player.DualCast
+
+def ApplyJolt(Player, Enemy):
+    Addmana(Player, 2, 2)
+
+def ApplyVerfire(Player, Enemy):
+    Addmana(Player, 0, 5)
+
+def ApplyVerstone(Player,Enemy):
+    Addmana(Player, 5, 0)
+
+def ApplyVerareao(Player, Enemy):
+    Addmana(Player, 6, 0)
+
+def ApplyVerthunder(Player, Enemy):
+    Addmana(Player, 0, 6)
+
+def ApplyManafication(Player, Enemy):
+    Player.ManaficationStack = 6
+    Player.ManaficationCD = 110
+    Player.EffectList.append(ManaficationEffect)
+    Addmana(Player, 50, 50)
+
+def ApplyEmbolden(Player, Enemy):
+    Enemy.Bonus *= 1.05 #5% DPS boost for everyone. I put buff on Boss, but could put it on every other player
+    Player.EmboldenTimer = 20
+    Player.EmboldenCD = 120
+    Player.EffectCDList.append(EmboldenCheck)
+
+def ApplyAcceleration(Player, Enemy):
+    if Player.AccelerationStack == 2:
+         Player.AccelerationCD = 55
+         Player.EffectCDList.append(AccelerationStackCheck)
+    Player.EffectList.append(AccelerationEffect)
+    Player.AccelerationStack -= 1
+
+def ApplyFleche(Player, Enemy):
+    Player.FlecheCD = 25
+
+def ApplyContre(Player, Enemy):
+    Player.ContreCD = 35
+
+def ApplyEngagement(Player, Enemy):
+    if Player.EngagementStack == 2:
+        Player.EngagementCD = 35
+        Player.EffectCDList.append(EngagementStackCheck)
+    Player.EngagementStack -= 1
+
+def ApplyCorps(Player, Enemy):
+    if Player.CorpsStack == 2:
+        Player.CorpsCD = 35
+        Player.EffectCDList.append(CorpsStackCheck)
+    Player.CorpsStack -= 1
+
+
+
+
+#Combo Action Apply
+
+def ApplyRiposte(Player, Enemy):
+    Removemana(Player, 20, 20)
+    Player.Zwerchhau = True
+
+def ApplyZwerchhau(Player, Enemy):
+    Removemana(Player, 15, 15)
+    Player.Redoublement = True
+    Player.Zwerchhau = False
+
+def ApplyRedoublement(Player, Enemy):
+    Removemana(Player, 15, 15)
+    Player.Verholy = True
+    Player.Redoublement = False
+
+def ApplyVerholy(Player, Enemy):
+    Addmana(Player, 11, 0)
+    Player.Scorch = True
+    Player.Verholy = False
+
+def ApplyScorch(Player, Enemy):
+    Addmana(Player, 4, 4)
+    Player.Resolution = True
+    Player.Scorch = False
+
+def ApplyResolution(Player, Enemy):
+    Addmana(Player, 4, 4)
+    Player.Resolution = False
+
+
+#Effect
+
+def DualCastEffect(Player, Spell):
+    if Player.DualCast: Spell.CastTime = 0 #Insta cast half of the spells, will be put by default for RedMage
+
+def ManaficationEffect(Player, Spell):
+    if Spell.GCD : #Only affect if GCD
+        Player.ManaficationStack -= 1
+        Spell.DPSBonus *= 1.05 #5% boost on magic damage
+        if Player.ManaficationStack == 0: Player.EffectList.remove(ManaficationEffect)  #If no stack remove it
+
+def AccelerationEffect(Player, Spell):
+    if Spell.id == 3: 
+        Spell.CastTime = 0    #Will have to cast how this interacts with Dual cast
+        Player.EffectList.remove(Acceleration)
+
+#Check
+
+def EmboldenCheck(Player, Enemy):
+    if Player.EmboldenTimer <= 0:
+        Player.EmboldenTimer = 0
+        Enemy.Bonus /= 1.05 #Removing 5% dps increase
+        Player.EffectCDList.remove(EmboldenCheck)
+
+def AccelerationStackCheck(Player, Enemy):
+    if Player.AccelerationCD <= 0:
+        Player.AccelerationStack += 1
+
+        if Player.AccelerationStack == 2:
+            Player.EffectCDList.remove(AccelerationStackCheck)
+        else:
+            Player.AccelerationCD = 55
+
+def EngagementStackCheck(Player, Enemy):
+    if Player.EngagementCD <= 0:
+        Player.EngagementStack += 1
+
+        if Player.EngagementStack == 2:
+            Player.EffectCDList.remove(EngagementStackCheck)
+        else:
+            Player.EngagementCD = 35
+
+def CorpsStackCheck(Player, Enemy):
+    if Player.CorpsCD <= 0:
+        Player.CorpsStack += 1
+
+        if Player.CorpsStack == 2:
+            Player.EffectCDList.remove(CorpsStackCheck)
+        else:
+            Player.CorpsCD = 35
+
+Jolt = RedmageSpell(0, True, 2, 2.5,310, 200, ApplyJolt, [ManaRequirement], 0, 0 )
+Verfire = RedmageSpell(1, True, 2, 2.5, 330, 200, ApplyVerfire, [ManaRequirement], 0, 0)
+Verstone = RedmageSpell(2, True, 2, 2.5, 330, 200, ApplyVerstone, [ManaRequirement], 0, 0)
+Verthunder = RedmageSpell(3, True, 5, 2.5, 380, 300, ApplyVerthunder, [ManaRequirement], 0, 0)
+Verareao = RedmageSpell(3, True, 5, 2.5, 380, 300, ApplyVerareao, [ManaRequirement], 0, 0)
+
+#All melee actions are assumed to be enchanted
+#Combo actions
+Riposte = RedmageSpell(4, True, Lock, 1.5, 220, 0, ApplyRiposte, [ManaRequirement], 20,20)
+Zwerchhau = RedmageSpell(5, True, Lock, 1.5, 290, 0, ApplyZwerchhau, [ManaRequirement, ZwerchhauRequirement], 15, 15)
+Redoublement = RedmageSpell(6, True, Lock, 1.5, 470, 0, ApplyRedoublement, [ManaRequirement, RedoublementRequirement], 15, 15)
+Verholy = RedmageSpell(7, True, Lock, 2.5, 580, 400, ApplyVerholy, [ManaRequirement, VerholyRequirement], 0, 0)
+Scorch = RedmageSpell(8, True, Lock, 2.5, 680, 400, ApplyScorch, [ManaRequirement, ScorchRequirement], 0, 0)
+Resolution = RedmageSpell(9, True, Lock, 2.5, 750, 400, ApplyResolution, [ManaRequirement, ApplyResolution], 0, 0)
+
+#For now combo action cannot be cancelled by doing something else
+
+Manafication = RedmageSpell(10, False, 0, Lock, 0, 0, ApplyManafication, [ManaficationRequirement], 0, 0)
+Embolden = RedmageSpell(11, False, 0, Lock, 0, 0, ApplyEmbolden, [EmboldenRequirement], 0, 0)
+Acceleration = RedmageSpell(12, False, 0, Lock, 0, 0, ApplyAcceleration, [AccelerationRequirement], 0, 0)
+
+Fleche = RedmageSpell(13, False, 0, Lock, 460, 0, ApplyFleche, [FlecheRequirement], 0, 0)
+Contre = RedmageSpell(14, False, 0, Lock, 360, 0, ApplyContre, [ContreRequirement], 0, 0)
+Engagement = RedmageSpell(15, False, 0, Lock, 180, 0, ApplyEngagement, [EngagementRequirement], 0, 0)
+Corps = RedmageSpell(16, False, 0, Lock, 130, 0, ApplyCorps, [CorpsRequirement], 0, 0)
+

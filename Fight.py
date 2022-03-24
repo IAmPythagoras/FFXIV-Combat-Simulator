@@ -139,7 +139,7 @@ class Fight:
 
 
 
-def ComputeDamage(Player, DPS, EnemyBonus):
+def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
     #This function will compute the DPS given the stats of a player
 
     levelMod = 1900
@@ -157,7 +157,7 @@ def ComputeDamage(Player, DPS, EnemyBonus):
 
     #This is only for Black mage 
 
-    Damage = math.floor(Player.MultDPSBonus * Damage * EnemyBonus)
+    Damage = math.floor(Player.MultDPSBonus * Damage * EnemyBonus * SpellBonus)
 
     CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000
 
