@@ -342,8 +342,6 @@ class Redmage(Player):
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
         super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
 
-        self.EffectList += [DualCastEffect] #By default
-
         self.BlackMana = 0
         self.WhiteMana = 0
         
@@ -366,7 +364,7 @@ class Redmage(Player):
         #self.AccelerationTimer = 0
 
         #stack
-        self.ManaficationStack = 2
+        self.AccelerationStack = 2
         self.EngagementStack = 2
         self.CorpsStack = 2
 
@@ -380,6 +378,8 @@ class Redmage(Player):
         self.Verholy = False
         self.Scorch = False
         self.Resolution = False
+
+        self.MultDPSBonus = 1.3 #magik and mend
 
     def updateCD(self, time):
         if (self.EmboldenCD > 0) : self.AetherFlowCD = max(0,self.EmboldenCD - time)

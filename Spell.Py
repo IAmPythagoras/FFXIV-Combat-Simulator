@@ -38,7 +38,7 @@ class Spell:
         tempSpell = copy.deepcopy(self)
         #Creating a tempSpell which will have its values changed according that what effect
         #the player and the enemy have
-
+        #print("Status of DualCast : " + str(player.DualCast))
         #Will apply each effect the player currently has on the spell
         #print("Effect List : " + str(player.EffectList))
         for Effect in player.EffectList:
@@ -232,7 +232,7 @@ def LeyLinesEffect(Player, Spell):
     Spell.RecastTime*=0.85
 
 def EnochianEffect(Player, Spell):
-    if (Player.AstralFireStack >= 1 or Player.UmbralIceStack >= 1) : Spell.Potency*=1.2
+    if (Player.AstralFireStack >= 1 or Player.UmbralIceStack >= 1) : Spell.Potency*=1
 
 def TripleCastEffect(Player,Spell):
     if (not Spell.CastTime == 0) and (Spell.GCD):
@@ -421,7 +421,7 @@ def ApplySwiftCast(Player,Enemy):
     Player.SwiftCastCD = 60
     Player.SwiftCastStack = 1
     Player.SwiftCastTimer = 15
-    Player.EffectList.append(SwiftCastEffect)
+    Player.EffectList.insert(0,SwiftCastEffect)
     Player.EffectCDList.append(SwiftCastCheck)
 
 def ApplyTripleCast(Player,Enemy):
@@ -503,7 +503,7 @@ def ApplyBlizzard3(Player, Enemy):
 def ApplyPotion(Player, Enemy):
     Player.PotionTimer = 30
     Player.Stat["MainStat"] *= 1.1
-    Player.EffectList.append(PotionEffect)
+    Player.EffectList.insert(0,PotionEffect)
     Player.EffectCDList.append(CheckPotion)
 
 
@@ -1148,9 +1148,6 @@ class RedmageSpell(Spell):
 
         self.BlackCost = BlackCost
         self.WhiteCost = WhiteCost
-
-        self.Effect += [ApplyDualCast]  #Add dual cast to any apply effect
-
 #Special
 
 def Addmana(Player, WhiteMana, BlackMana):
@@ -1207,9 +1204,6 @@ def ResolutionRequirement(Player, Spell):
 
 #Apply
 
-def ApplyDualCast(Player, Enemy):
-    Player.DualCast = not Player.DualCast
-
 def ApplyJolt(Player, Enemy):
     Addmana(Player, 2, 2)
 
@@ -1228,7 +1222,7 @@ def ApplyVerthunder(Player, Enemy):
 def ApplyManafication(Player, Enemy):
     Player.ManaficationStack = 6
     Player.ManaficationCD = 110
-    Player.EffectList.append(ManaficationEffect)
+    Player.EffectList.insert(0,ManaficationEffect)
     Addmana(Player, 50, 50)
 
 def ApplyEmbolden(Player, Enemy):
@@ -1241,7 +1235,7 @@ def ApplyAcceleration(Player, Enemy):
     if Player.AccelerationStack == 2:
          Player.AccelerationCD = 55
          Player.EffectCDList.append(AccelerationStackCheck)
-    Player.EffectList.append(AccelerationEffect)
+    Player.EffectList.insert(0,AccelerationEffect)
     Player.AccelerationStack -= 1
 
 def ApplyFleche(Player, Enemy):
@@ -1299,7 +1293,14 @@ def ApplyResolution(Player, Enemy):
 #Effect
 
 def DualCastEffect(Player, Spell):
-    if Player.DualCast: Spell.CastTime = 0 #Insta cast half of the spells, will be put by default for RedMage
+    if Spell.CastTime != 0 and  Spell.GCD and Spell.id != -1:   #Want to make sure the spell will affect Dualcast, id != -1 is to make sure this is not WaitAbility
+        #print("Spell satisfies DualCast")
+        #print("Spell is : " + str(Spell.id))
+        #print("CastTime : " + str(Spell.CastTime))
+        if Player.DualCast:
+            Spell.CastTime = 0 #Insta cast half of the spells, will be put by default for RedMage
+            Player.DualCast = False #Remove Dualcast
+        else: Player.DualCast = True    #Give Dual cast
 
 def ManaficationEffect(Player, Spell):
     if Spell.GCD : #Only affect if GCD
@@ -1308,9 +1309,9 @@ def ManaficationEffect(Player, Spell):
         if Player.ManaficationStack == 0: Player.EffectList.remove(ManaficationEffect)  #If no stack remove it
 
 def AccelerationEffect(Player, Spell):
-    if Spell.id == 3: 
+    if Spell.id == 3 and not (SwiftCastEffect in Player.EffectList): 
         Spell.CastTime = 0    #Will have to cast how this interacts with Dual cast
-        Player.EffectList.remove(Acceleration)
+        Player.EffectList.remove(AccelerationEffect)
 
 #Check
 
@@ -1351,16 +1352,16 @@ Jolt = RedmageSpell(0, True, 2, 2.5,310, 200, ApplyJolt, [ManaRequirement], 0, 0
 Verfire = RedmageSpell(1, True, 2, 2.5, 330, 200, ApplyVerfire, [ManaRequirement], 0, 0)
 Verstone = RedmageSpell(2, True, 2, 2.5, 330, 200, ApplyVerstone, [ManaRequirement], 0, 0)
 Verthunder = RedmageSpell(3, True, 5, 2.5, 380, 300, ApplyVerthunder, [ManaRequirement], 0, 0)
-Verareao = RedmageSpell(3, True, 5, 2.5, 380, 300, ApplyVerareao, [ManaRequirement], 0, 0)
+Verareo = RedmageSpell(3, True, 5, 2.5, 380, 300, ApplyVerareao, [ManaRequirement], 0, 0)
 
 #All melee actions are assumed to be enchanted
 #Combo actions
-Riposte = RedmageSpell(4, True, Lock, 1.5, 220, 0, ApplyRiposte, [ManaRequirement], 20,20)
-Zwerchhau = RedmageSpell(5, True, Lock, 1.5, 290, 0, ApplyZwerchhau, [ManaRequirement, ZwerchhauRequirement], 15, 15)
-Redoublement = RedmageSpell(6, True, Lock, 1.5, 470, 0, ApplyRedoublement, [ManaRequirement, RedoublementRequirement], 15, 15)
-Verholy = RedmageSpell(7, True, Lock, 2.5, 580, 400, ApplyVerholy, [ManaRequirement, VerholyRequirement], 0, 0)
-Scorch = RedmageSpell(8, True, Lock, 2.5, 680, 400, ApplyScorch, [ManaRequirement, ScorchRequirement], 0, 0)
-Resolution = RedmageSpell(9, True, Lock, 2.5, 750, 400, ApplyResolution, [ManaRequirement, ApplyResolution], 0, 0)
+Riposte = RedmageSpell(4, True, 0, 1.5, 220, 0, ApplyRiposte, [ManaRequirement], 20,20)
+Zwerchhau = RedmageSpell(5, True, 0, 1.5, 290, 0, ApplyZwerchhau, [ManaRequirement, ZwerchhauRequirement], 15, 15)
+Redoublement = RedmageSpell(6, True, 0, 2.5, 470, 0, ApplyRedoublement, [ManaRequirement, RedoublementRequirement], 15, 15)
+Verholy = RedmageSpell(7, True, 0, 2.5, 580, 400, ApplyVerholy, [ManaRequirement, VerholyRequirement], 0, 0)
+Scorch = RedmageSpell(8, True, 0, 2.5, 680, 400, ApplyScorch, [ManaRequirement, ScorchRequirement], 0, 0)
+Resolution = RedmageSpell(9, True, 0, 2.5, 750, 400, ApplyResolution, [ManaRequirement, ResolutionRequirement], 0, 0)
 
 #For now combo action cannot be cancelled by doing something else
 
