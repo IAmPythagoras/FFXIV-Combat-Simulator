@@ -1,5 +1,4 @@
 Remaining Jobs to implement:
--RDM
 -SMN
 -WHM
 -AST
@@ -19,10 +18,10 @@ Already Done:
 -SCH
 -DRK
 -NIN
-
+-RDM
 
 Other Stuff to do:
--Implement Graph of DPS and Potency/sec
+-Implement Graph of DPS and Potency/sec - DONE
 -Make UI? 
 -Add AI to optimize?
 -Add heals

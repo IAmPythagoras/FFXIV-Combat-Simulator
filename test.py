@@ -1,2 +1,3 @@
-x = [1,2]
-print(2 in x)
+x = 8.0
+
+print(x%1)

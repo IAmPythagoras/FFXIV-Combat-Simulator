@@ -38,6 +38,16 @@ class Player:
         self.MultDPSBonus = 1   #Mult bonus for DPS (Ex: BLM.MultDPSBonus = 1.3 * 1.2 -> Enochian * Magik and Mend)
 
 
+
+        #Used for DPS graph and Potency/S graph
+
+        self.DPSGraph = []
+        self.PotencyGraph = []
+
+
+
+
+
     def updateTimer(self, time):
         #print("Updated Timer : " + str(self.oGCDLockTimer))
         #print(str(self.GCDLock) + str(self.oGCDLock) + str(self.Casting))

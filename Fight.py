@@ -1,6 +1,7 @@
 import math
+from sqlite3 import Timestamp
 from Enemy import Enemy
-
+import matplotlib.pyplot as plt
 from Player import DarkKnight
 
 
@@ -15,8 +16,25 @@ class Fight:
     def __init__(self, PlayerList, Enemy):
         self.PlayerList = PlayerList
         self.Enemy = Enemy
+        self.ShowGraph = True
+    def PrintResult(self, time, TimeStamp):
 
-    def PrintResult(self, time):
+
+        fig, axs = plt.subplots(1, 2, constrained_layout=True)
+        axs[0].set_ylabel("DPS")
+        axs[0].set_xlabel("Time (s)")
+        axs[0].set_title("DPS over time")
+        axs[0].spines["top"].set_alpha(0.0)
+        axs[0].spines["right"].set_alpha(0.0)
+        axs[0].set_facecolor("lightgrey")
+        axs[1].set_ylabel("PPS")
+        axs[1].set_xlabel("Time (s)")
+        axs[1].set_title("PPS over time")
+        axs[1].spines["top"].set_alpha(0.0)
+        axs[1].spines["right"].set_alpha(0.0)
+        axs[1].set_facecolor("lightgrey")
+
+        fig.suptitle("DPS and PPS values over time.")
 
         for player in self.PlayerList:
             print("The Total Potency done by player " + str(type(player)) + " was : " + str(player.TotalPotency))
@@ -25,10 +43,22 @@ class Fight:
             print("This same Player had an average of " + str(player.TotalPotency/(time/player.GCDTimer)) + " Potency/GCD")
             print("The DPS is : " + str(player.TotalDamage / time))
             print("=======================================================")
+
+            #Plot part
+
+            
+
+            axs[0].plot(TimeStamp,player.DPSGraph, label=str(type(player)))
+            axs[1].plot(TimeStamp,player.PotencyGraph, label=str(type(player)))
         
         print("The Enemy has received a total potency of: " + str(self.Enemy.TotalPotency))
         print("The Potency Per Second on the Enemy is: " + str(self.Enemy.TotalPotency/time))
         print("The Enemy's total DPS is " + str(self.Enemy.TotalDamage / time))
+        axs[0].legend()
+        axs[1].legend()
+        axs[0].grid()
+        axs[1].grid()
+        if self.ShowGraph: plt.show()
 
 
 
@@ -39,6 +69,9 @@ class Fight:
             #However, no direct computation is done in this function, it simply orchestrates the whole thing
             TimeStamp = 0   #Keep track of the time
             start = False
+
+            timeValue = []  #Used for graph
+
             while(TimeStamp <= TimeLimit):
 
                 for player in self.PlayerList:
@@ -109,10 +142,19 @@ class Fight:
                     print("The Fight finishes at: " + str(TimeStamp))
                     break
 
+                
+                if start:
+                    #If the fight has started, will sample DPS values at certain time
+                    if (TimeStamp%1 == 0.3 or TimeStamp%1 == 0.0 or TimeStamp%1 == 0.6 or TimeStamp%1 == 0.9) and TimeStamp >= 3:#last thing is to ensure no division by zero and also to have no spike at the begining
+                        #Only sample each 1/2 second
+                        timeValue+= [TimeStamp]
+                        for Player in self.PlayerList:
+                            Player.DPSGraph += [round(Player.TotalDamage/TimeStamp, 2)] #Rounding the value to 2 digits
+                            Player.PotencyGraph += [round(Player.TotalPotency/TimeStamp, 2)]
 
                 #update timestamp
                 TimeStamp += TimeUnit
-
+                TimeStamp = round(TimeStamp, 2)
 
                 FightCD -= TimeUnit
                 if FightCD <= 0 and not start:
@@ -132,7 +174,7 @@ class Fight:
                     Player.TotalPotency += Player.EsteemPointer.TotalPotency    #Adds every damage done by Esteem to the dark knight
                     self.PlayerList.remove(Player.EsteemPointer)
 
-            self.PrintResult(TimeStamp)
+            self.PrintResult(TimeStamp, timeValue)
             
 
 
