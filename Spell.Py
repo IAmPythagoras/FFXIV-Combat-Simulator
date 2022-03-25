@@ -1374,3 +1374,51 @@ Contre = RedmageSpell(14, False, 0, Lock, 360, 0, ApplyContre, [ContreRequiremen
 Engagement = RedmageSpell(15, False, 0, Lock, 180, 0, ApplyEngagement, [EngagementRequirement], 0, 0)
 Corps = RedmageSpell(16, False, 0, Lock, 130, 0, ApplyCorps, [CorpsRequirement], 0, 0)
 
+#########################################
+########## MACHINIST PLAYER #############
+#########################################
+
+
+class MachinistSpell(Spell):
+
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, WeaponSkill):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+
+        self.Weaponskill = WeaponSkill #Boolean Variable
+
+
+#Requirement
+
+def WildfireRequirement(Player, Spell):
+    return Player.WildfireCD <= 0
+
+
+#Apply
+
+def ApplyWildfire(Player, Enemy):
+    Player.WildfireCD = 120
+    Player.WildfireTimer = 10
+    Player.EffectList.append(WildFireEffect)
+    Player.EffectCDList.append(WildFireCheck)
+
+#Effect
+
+def WildFireEffect(Player, Spell):
+    if Spell.Weaponskill : Player.WildfireStack +=1
+
+#Check
+
+def WildFireCheck(Player, Enemy):
+    if Player.WildfireTimer <= 0:
+        Player.WildfireTimer = 0
+
+        WildfireOff = MachinistSpell(1, False, 0, 0, 150 * Player.WildfireStack, 0, empty, [ManaRequirement], False)
+        #Temporary Spell that will be put in front of the Queue
+        Player.ActionSet.insert(0, WildfireOff) #Insert in queue, will be instantly executed
+        Player.WildfireStack = 0
+        Player.EffectList.remove(WildFireEffect)
+        Player.EffectCDList.remove(WildFireCheck)
+
+
+
+Wildfire = MachinistSpell(0, False, 0, Lock, 0, 0, ApplyWildfire, [WildfireRequirement], False)
