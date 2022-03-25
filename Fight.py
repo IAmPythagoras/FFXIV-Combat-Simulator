@@ -2,7 +2,7 @@ import math
 from sqlite3 import Timestamp
 from Enemy import Enemy
 import matplotlib.pyplot as plt
-from Player import DarkKnight
+from Player import DarkKnight, Machinist
 
 
 class NoMoreAction(Exception):#Exception called if a spell fails to cast
@@ -194,20 +194,28 @@ def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
     Damage=math.floor(DPS*(Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))*(100+math.floor((MainStat-baseMain)*195/baseMain))/100)
 
     Damage=math.floor(Damage*(1000+math.floor(140*(Player.Stat["Det"]-baseMain)/levelMod))/1000)#Determination damage
-    Damage=math.floor(Damage*(1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000)#Tenacity damage
-    Damage=math.floor(Damage*(1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000/100)#Spell/Skill speed damage bonus
 
-    #This is only for Black mage 
+    Damage=math.floor(Damage*(1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000)#Tenacity damage
+
+    Damage=math.floor(Damage*(1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000/100)#Spell/Skill speed damage bonus
 
     Damage = math.floor(Player.MultDPSBonus * Damage * EnemyBonus * SpellBonus)
 
     CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000
 
-    if Player.CurrentFight.Enemy.ChainStratagem: CritRate += 0.1    #If ChainStratagem is active, increase crit
-
     CritDamage = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000
 
     DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000
+
+    if Player.CurrentFight.Enemy.ChainStratagem: CritRate += 0.1    #If ChainStratagem is active, increase crit
+
+    if isinstance(Player, Machinist):   #Then if machinist, has to check if direct crit guarantee
+        if Player.Reassemble and Player.ActionSet[Player.NextSpell].WeaponSkill:    #Checks if reassemble is on and if its a weapon skill
+            CritRate = 1
+            DHRate = 1
+            Player.Reassemble = False #Uses Reassemble
+             
+
 
     return Damage * ((1+(DHRate/4))*(1+(CritRate*CritDamage)))
 """

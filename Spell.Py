@@ -1348,20 +1348,20 @@ def CorpsStackCheck(Player, Enemy):
         else:
             Player.CorpsCD = 35
 
-Jolt = RedmageSpell(0, True, 2, 2.5,310, 200, ApplyJolt, [ManaRequirement], 0, 0 )
-Verfire = RedmageSpell(1, True, 2, 2.5, 330, 200, ApplyVerfire, [ManaRequirement], 0, 0)
-Verstone = RedmageSpell(2, True, 2, 2.5, 330, 200, ApplyVerstone, [ManaRequirement], 0, 0)
-Verthunder = RedmageSpell(3, True, 5, 2.5, 380, 300, ApplyVerthunder, [ManaRequirement], 0, 0)
-Verareo = RedmageSpell(3, True, 5, 2.5, 380, 300, ApplyVerareao, [ManaRequirement], 0, 0)
+Jolt = RedmageSpell(0, True, 2, 2.5,310, 200, ApplyJolt, [RDMManaRequirement], 0, 0 )
+Verfire = RedmageSpell(1, True, 2, 2.5, 330, 200, ApplyVerfire, [RDMManaRequirement], 0, 0)
+Verstone = RedmageSpell(2, True, 2, 2.5, 330, 200, ApplyVerstone, [RDMManaRequirement], 0, 0)
+Verthunder = RedmageSpell(3, True, 5, 2.5, 380, 300, ApplyVerthunder, [RDMManaRequirement], 0, 0)
+Verareo = RedmageSpell(3, True, 5, 2.5, 380, 300, ApplyVerareao, [RDMManaRequirement], 0, 0)
 
 #All melee actions are assumed to be enchanted
 #Combo actions
-Riposte = RedmageSpell(4, True, 0, 1.5, 220, 0, ApplyRiposte, [ManaRequirement], 20,20)
-Zwerchhau = RedmageSpell(5, True, 0, 1.5, 290, 0, ApplyZwerchhau, [ManaRequirement, ZwerchhauRequirement], 15, 15)
-Redoublement = RedmageSpell(6, True, 0, 2.5, 470, 0, ApplyRedoublement, [ManaRequirement, RedoublementRequirement], 15, 15)
-Verholy = RedmageSpell(7, True, 0, 2.5, 580, 400, ApplyVerholy, [ManaRequirement, VerholyRequirement], 0, 0)
-Scorch = RedmageSpell(8, True, 0, 2.5, 680, 400, ApplyScorch, [ManaRequirement, ScorchRequirement], 0, 0)
-Resolution = RedmageSpell(9, True, 0, 2.5, 750, 400, ApplyResolution, [ManaRequirement, ResolutionRequirement], 0, 0)
+Riposte = RedmageSpell(4, True, 0, 1.5, 220, 0, ApplyRiposte, [RDMManaRequirement], 20,20)
+Zwerchhau = RedmageSpell(5, True, 0, 1.5, 290, 0, ApplyZwerchhau, [RDMManaRequirement, ZwerchhauRequirement], 15, 15)
+Redoublement = RedmageSpell(6, True, 0, 2.5, 470, 0, ApplyRedoublement, [RDMManaRequirement, RedoublementRequirement], 15, 15)
+Verholy = RedmageSpell(7, True, 0, 2.5, 580, 400, ApplyVerholy, [RDMManaRequirement, VerholyRequirement], 0, 0)
+Scorch = RedmageSpell(8, True, 0, 2.5, 680, 400, ApplyScorch, [RDMManaRequirement, ScorchRequirement], 0, 0)
+Resolution = RedmageSpell(9, True, 0, 2.5, 750, 400, ApplyResolution, [RDMManaRequirement, ResolutionRequirement], 0, 0)
 
 #For now combo action cannot be cancelled by doing something else
 
@@ -1386,12 +1386,40 @@ class MachinistSpell(Spell):
 
         self.Weaponskill = WeaponSkill #Boolean Variable
 
+#Special
 
+def AddGauge(Player, Battery, Heat):
+    Player.BatteryGauge = min(100, Player.BatteryGauge + Battery)
+    Player.HeatGauge = min(100, Player.HeatGauge + Heat)
+
+def RemoveGauge(Player, Battery, Heat):
+    Player.BatteryGauge = max(0, Player.BatteryGauge - Battery)
+    Player.HeatGauge = max(0, Player.HeatGauge - Heat)
 #Requirement
 
 def WildfireRequirement(Player, Spell):
     return Player.WildfireCD <= 0
 
+def AirAnchorRequirement(Player, Spell):
+    return Player.AirAnchorCD <= 0
+
+def BarrelStabilizerRequirement(Player, Spell):
+    return Player.BarrelStabilizerCD <= 0
+
+def HyperchargeRequirement(Player, Spell):
+    return Player.HyperchargeCD <= 0 and Player.HeatGauge >= 50
+
+def ReassembleRequirement(Player, Spell):
+    return Player.ReassembleStack > 0
+
+def GaussRoundRequirement(Player, Spell):
+    return Player.GaussRoundStack > 0
+
+def RicochetRequirement(Player, Spell):
+    return Player.RicochetStack > 0
+
+def DrillRequirement(Player, Spell):
+    return Player.DrillCD <= 0
 
 #Apply
 
@@ -1401,24 +1429,137 @@ def ApplyWildfire(Player, Enemy):
     Player.EffectList.append(WildFireEffect)
     Player.EffectCDList.append(WildFireCheck)
 
+def ApplyAirAnchor(Player, Enemy):
+    AddGauge(Player, 20, 0)
+    Player.AirAnchorCD = 40
+
+def ApplyBarrelStabilizer(Player, Enemy):
+    AddGauge(Player, 0, 50)
+    Player.BarrelStabilizerCD = 120
+
+def ApplyHeatBlast(Player, Enemy):
+    Player.GaussRoundCD = max(0, Player.GaussRoundCD - 15)
+    Player.Ricochet = max(0, Player.Ricochet - 15)
+
+def ApplyHypercharge(Player, Enemy):
+    Player.HyperchargeTimer = 10
+    Player.HyperchargeCD = 10
+    RemoveGauge(Player, 0, 50)#cost
+    Player.EffectList.append(HyperchargeEffect)
+    Player.EffectCDList.append(HyperchargeCheck)
+
+def ApplyReassemble(Player, Enemy):
+    if Player.ReassembleStack == 2:
+        Player.EffectCDList.append(ReassembleStackCheck)
+        Player.ReassembleCD = 55
+    Player.ReassembleStack -= 1
+    Player.Reassemble = True
+    
+def ApplyGaussRound(Player, Enemy):
+    if Player.GaussRoundStack == 3:
+        Player.EffectCDList.append(GaussRoundStackCheck)
+        Player.GaussRoundCD = 30
+    Player.GaussRoundStack -= 1
+
+def ApplyRicochet(Player, Enemy):
+    if Player.RicochetStack == 3:
+        Player.EffectCDList.append(RicochetStackCheck)
+        Player.RicochetCD = 30
+    Player.RicochetStack -= 1
+
+def ApplyDrill(Player, Enemy):
+    Player.DrillCD = 20
+
+#Combo Actions
+
+def ApplySplitShot(Player, Enemy):
+    AddGauge(Player, 0, 5)
+    Player.EffectList.append(SplitShotEffect)
+
+def ApplySlugShot(Player, Enemy):
+    AddGauge(Player, 0, 5)
+    Player.EffectList.append(SlugShotEffect)
+
+def ApplyCleanShot(Player, Enemy):
+    AddGauge(Player, 10, 5)
+
+
 #Effect
 
 def WildFireEffect(Player, Spell):
     if Spell.Weaponskill : Player.WildfireStack +=1
 
+def HyperchargeEffect(Player, Spell):
+    if Spell.WeaponSkill : Spell.Potency += 20
+
+#Combo Actions effect
+
+def SplitShotEffect(Player, Spell):
+    if Spell.id == 5:
+
+        Spell.Potency =+ 160
+        Player.EffectList.remove(SplitShotEffect)
+
+def SlugShotEffect(Player, Spell):
+    if Spell.id == 6:
+
+        Spell.Potency += 250
+        Player.EffectList.remove(SlugShotEffect)
+
 #Check
 
 def WildFireCheck(Player, Enemy):
     if Player.WildfireTimer <= 0:
-        Player.WildfireTimer = 0
 
-        WildfireOff = MachinistSpell(1, False, 0, 0, 150 * Player.WildfireStack, 0, empty, [ManaRequirement], False)
+        WildfireOff = MachinistSpell(1, False, 0, 0, 150 * Player.WildfireStack, 0, empty, [], False)
         #Temporary Spell that will be put in front of the Queue
         Player.ActionSet.insert(0, WildfireOff) #Insert in queue, will be instantly executed
         Player.WildfireStack = 0
         Player.EffectList.remove(WildFireEffect)
         Player.EffectCDList.remove(WildFireCheck)
 
+def HyperchargeCheck(Player, Enemy):
+    if Player.HyperchargeTimer <= 0:
+        Player.EffectList.remove(HyperchargeEffect)
+        Player.EffectCDList.remove(HyperchargeCheck)
+
+def ReassembleStackCheck(Player, Enemy):
+    if Player.ReassembleCD <= 0:
+        if Player.ReassembleStack == 1:
+            Player.EffectCDList.remove(ReassembleStackCheck)
+        else:
+            Player.ReassembleCD = 55
+        Player.ReassembleStack +=1
+
+def GaussRoundStackCheck(Player, Enemy):
+    if Player.GaussRoundCD <= 0:
+        if Player.GaussRoundStack == 2:
+            Player.EffectCDList.remove(GaussRoundStackCheck)
+        else:
+            Player.GaussRoundCD = 30
+        Player.GaussRoundStack +=1
+
+def RicochetStackCheck(Player, Enemy):
+    if Player.RicochetCD <= 0:
+        if Player.RicochetStack == 2:
+            Player.EffectCDList.remove(RicochetStackCheck)
+        else:
+            Player.RicochetCD = 30
+        Player.RicochetStack +=1
+
 
 
 Wildfire = MachinistSpell(0, False, 0, Lock, 0, 0, ApplyWildfire, [WildfireRequirement], False)
+AirAnchor = MachinistSpell(2, False, 0, Lock, 570, 0, ApplyAirAnchor, [AirAnchorRequirement], True)
+BarrelStabilizer = MachinistSpell(3, False, 0, Lock, 0, 0, ApplyBarrelStabilizer, [BarrelStabilizerRequirement], False)
+HeatBlast = MachinistSpell(7, True, Lock, 1.5, 170, 0, ApplyHeatBlast, [], True)
+Hypercharge = MachinistSpell(8, False, 0, Lock, 0, 0, ApplyHypercharge, [HyperchargeRequirement], False)
+Reassamble = MachinistSpell(9, False, 0, Lock, 0, 0, ApplyReassemble, [ReassembleRequirement], False)
+GaussRound = MachinistSpell(10, False, 0, Lock, 120, 0, ApplyGaussRound, [GaussRoundRequirement], False)
+Ricochet = MachinistSpell(11, False, 0, Lock, 120, 0, ApplyRicochet, [RicochetRequirement], False)
+Drill = MachinistSpell(12, False, 0, Lock, 570, 0, ApplyDrill, [DrillRequirement], True)
+#Combo Action
+
+SplitShot = MachinistSpell(4, True, Lock, 2.5, 200, 0, ApplySplitShot, [], True)
+SlugShot = MachinistSpell(5, True, Lock, 2.5, 120, 0, ApplySlugShot, [], True )
+CleanShot = MachinistSpell(6, True, Lock, 2.5, 110, 0, ApplyCleanShot, [], True)

@@ -437,12 +437,14 @@ class Machinist(Player):
 
         #Timer
         self.WildFireTimer = 0
+        self.HyperchargeTimer = 0
 
         #Stacks
         self.GaussRoundStack = 3
         self.ReassembleStack = 2
         self.RicochetStack = 3
         self.WideFirestack = 0  #Used to know how many weaponskills have hit during Wildfire
+        self.Reassemble = False
 
         #Combo Action
         self.SlugShot = False
@@ -465,4 +467,4 @@ class Machinist(Player):
     def updateTimer(self, time):
         super().updateTimer(time)
         if (self.WildFireTimer > 0) : self.WildFireTimer = max(0,self.WildFireTimer - time)
-
+        if (self.HyperchargeTimer > 0) : self.HyperchargeTimer = max(0,self.HyperchargeTimer - time)
