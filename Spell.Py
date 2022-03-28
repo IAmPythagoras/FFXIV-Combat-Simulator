@@ -1,4 +1,5 @@
 import copy
+from math import fabs
 from Player import *
 from Fight import ComputeDamage
 
@@ -69,13 +70,16 @@ class Spell:
         
         #print("Current MP: " + str(player.Mana))
         #print("Current Blood: " + str(player.Blood))
-
-        player.TotalPotency+= self.Potency
-        Enemy.TotalPotency+= self.Potency  #Adding Potency
-
         Damage = ComputeDamage(player, self.Potency, Enemy.Bonus, self.DPSBonus)    #Damage computation
 
-        player.TotalDamage += Damage
+        if isinstance(player, Queen):
+            player.Master.TotalPotency+= self.Potency
+            player.Master.TotalDamage += Damage
+        else:
+            player.TotalPotency+= self.Potency
+            player.TotalDamage += Damage
+        
+        Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage
 
 
@@ -558,7 +562,7 @@ Amp = BLMSpell(19, False, 0.5, 0, 0, 0, False, False, ApplyAmplifier, [Amplifier
 
 #Potions
 
-Potion = BLMSpell(20, False, 0.5, 0, 0, 0, False, False, ApplyPotion, [])
+Potion = BLMSpell(-2, False, 0.5, 0, 0, 0, False, False, ApplyPotion, [])
 
 
 #Special Effects
@@ -1384,7 +1388,7 @@ class MachinistSpell(Spell):
     def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, WeaponSkill):
         super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
 
-        self.Weaponskill = WeaponSkill #Boolean Variable
+        self.WeaponSkill = WeaponSkill #Boolean Variable
 
 #Special
 
@@ -1397,8 +1401,8 @@ def RemoveGauge(Player, Battery, Heat):
     Player.HeatGauge = max(0, Player.HeatGauge - Heat)
 #Requirement
 
-def WildfireRequirement(Player, Spell):
-    return Player.WildfireCD <= 0
+def WildFireRequirement(Player, Spell):
+    return Player.WildFireCD <= 0
 
 def AirAnchorRequirement(Player, Spell):
     return Player.AirAnchorCD <= 0
@@ -1421,11 +1425,20 @@ def RicochetRequirement(Player, Spell):
 def DrillRequirement(Player, Spell):
     return Player.DrillCD <= 0
 
+def OverdriveRequirement(Player, Spell):
+    return Player.Overdrive
+
+def ChainSawRequirement(Player, Spell):
+    return Player.ChainSawCD <= 0
+
+def AutomatonRequirement(Player, Spell):
+    return (not Player.Overdrive) and Player.BatteryGauge >= 50
+
 #Apply
 
-def ApplyWildfire(Player, Enemy):
-    Player.WildfireCD = 120
-    Player.WildfireTimer = 10
+def ApplyWildFire(Player, Enemy):
+    Player.WildFireCD = 120
+    Player.WildFireTimer = 10
     Player.EffectList.append(WildFireEffect)
     Player.EffectCDList.append(WildFireCheck)
 
@@ -1439,7 +1452,7 @@ def ApplyBarrelStabilizer(Player, Enemy):
 
 def ApplyHeatBlast(Player, Enemy):
     Player.GaussRoundCD = max(0, Player.GaussRoundCD - 15)
-    Player.Ricochet = max(0, Player.Ricochet - 15)
+    Player.RicochetCD = max(0, Player.RicochetCD - 15)
 
 def ApplyHypercharge(Player, Enemy):
     Player.HyperchargeTimer = 10
@@ -1470,6 +1483,27 @@ def ApplyRicochet(Player, Enemy):
 def ApplyDrill(Player, Enemy):
     Player.DrillCD = 20
 
+def ApplyOverdrive(Player, Enemy):
+    Player.Overdrive = False
+    Player.Queen.ActionSet.insert(0,Collider)
+    Player.Queen.ActionSet.insert(0,Bunker)
+
+def ApplyChainSaw(Player, Enemy):
+    AddGauge(Player, 20, 0)
+    Player.ChainSawCD = 60
+
+def ApplyAutomaton(Player, Enemy):
+    Player.AutomatonQueenCD = 6
+    RemoveGauge(Player, 50, 0)
+    if Player.Queen == None : Queen(Player, 10)#Creating new queen
+    #Will have to depend on battery Gauge
+    #Timer is set at 10 so we can have 2 GCD to do finisher move if reaches before
+    Player.Queen.EffectCDList.append(QueenCheck)
+    Player.Queen.ActionSet.append(WaitAbility(10.5))
+
+def ApplyCollider(Queen, Enemy):#Called on queen
+    Queen.Master.QueenOnField = False
+
 #Combo Actions
 
 def ApplySplitShot(Player, Enemy):
@@ -1483,11 +1517,10 @@ def ApplySlugShot(Player, Enemy):
 def ApplyCleanShot(Player, Enemy):
     AddGauge(Player, 10, 5)
 
-
 #Effect
 
 def WildFireEffect(Player, Spell):
-    if Spell.Weaponskill : Player.WildfireStack +=1
+    if Spell.WeaponSkill : Player.WildFireStack +=1
 
 def HyperchargeEffect(Player, Spell):
     if Spell.WeaponSkill : Spell.Potency += 20
@@ -1509,14 +1542,15 @@ def SlugShotEffect(Player, Spell):
 #Check
 
 def WildFireCheck(Player, Enemy):
-    if Player.WildfireTimer <= 0:
+    if Player.WildFireTimer <= 0:
 
-        WildfireOff = MachinistSpell(1, False, 0, 0, 150 * Player.WildfireStack, 0, empty, [], False)
+        WildFireOff = MachinistSpell(1, False, 0, 0, 150 * Player.WildFireStack, 0, empty, [], False)
         #Temporary Spell that will be put in front of the Queue
-        Player.ActionSet.insert(0, WildfireOff) #Insert in queue, will be instantly executed
-        Player.WildfireStack = 0
+        Player.ActionSet.insert(0, WildFireOff) #Insert in queue, will be instantly executed
+        Player.WildFireStack = 0
         Player.EffectList.remove(WildFireEffect)
         Player.EffectCDList.remove(WildFireCheck)
+        print("WILDFIRE HAS GONE OUT")
 
 def HyperchargeCheck(Player, Enemy):
     if Player.HyperchargeTimer <= 0:
@@ -1547,19 +1581,38 @@ def RicochetStackCheck(Player, Enemy):
             Player.RicochetCD = 30
         Player.RicochetStack +=1
 
+def QueenCheck(Player, Enemy):#This will be called on the queen
+    #print("we in")
+    if Player.Timer <= 0: 
+        Player.Master.Overdrive = False
+        Player.ActionSet.insert(0,Collider)
+        Player.ActionSet.insert(0,Bunker)
+        Player.EffectCDList.remove(QueenCheck)
+        #print("QUEEN IS DOING FINISHER")
 
-
-Wildfire = MachinistSpell(0, False, 0, Lock, 0, 0, ApplyWildfire, [WildfireRequirement], False)
-AirAnchor = MachinistSpell(2, False, 0, Lock, 570, 0, ApplyAirAnchor, [AirAnchorRequirement], True)
+Wildfire = MachinistSpell(0, False, 0, Lock, 0, 0, ApplyWildFire, [WildFireRequirement], False)
+AirAnchor = MachinistSpell(2, True, 0, 2.5, 570, 0, ApplyAirAnchor, [AirAnchorRequirement], True)
 BarrelStabilizer = MachinistSpell(3, False, 0, Lock, 0, 0, ApplyBarrelStabilizer, [BarrelStabilizerRequirement], False)
 HeatBlast = MachinistSpell(7, True, Lock, 1.5, 170, 0, ApplyHeatBlast, [], True)
 Hypercharge = MachinistSpell(8, False, 0, Lock, 0, 0, ApplyHypercharge, [HyperchargeRequirement], False)
-Reassamble = MachinistSpell(9, False, 0, Lock, 0, 0, ApplyReassemble, [ReassembleRequirement], False)
+Reassemble = MachinistSpell(9, False, 0, Lock, 0, 0, ApplyReassemble, [ReassembleRequirement], False)
 GaussRound = MachinistSpell(10, False, 0, Lock, 120, 0, ApplyGaussRound, [GaussRoundRequirement], False)
 Ricochet = MachinistSpell(11, False, 0, Lock, 120, 0, ApplyRicochet, [RicochetRequirement], False)
-Drill = MachinistSpell(12, False, 0, Lock, 570, 0, ApplyDrill, [DrillRequirement], True)
+Drill = MachinistSpell(12, True, 0, 2.5, 570, 0, ApplyDrill, [DrillRequirement], True)
+ChainSaw = MachinistSpell(17, True, 0, 2.5, 570, 0, ApplyChainSaw, [ChainSawRequirement], True)
 #Combo Action
 
 SplitShot = MachinistSpell(4, True, Lock, 2.5, 200, 0, ApplySplitShot, [], True)
 SlugShot = MachinistSpell(5, True, Lock, 2.5, 120, 0, ApplySlugShot, [], True )
 CleanShot = MachinistSpell(6, True, Lock, 2.5, 110, 0, ApplyCleanShot, [], True)
+
+
+#Queen's Ability
+
+#These abilities will write into the Queen's ability list.
+#If they are not done the queen will do them automatically
+Automaton = MachinistSpell(14, False, 0, Lock, 0, 0, ApplyAutomaton, [AutomatonRequirement], False)
+Overdrive = MachinistSpell(13, False, 0, Lock, 0, 0, ApplyOverdrive, [OverdriveRequirement], False)
+#These will be casted by the machinist, so they have no damage. Their only effect is to add into Queen's Queue
+Bunker = MachinistSpell(15, True, 0, 2.5, 650, 0, empty, [], False)   #Triggered by Overdrive
+Collider = MachinistSpell(16, True, 0 , 2.5, 750, 0, ApplyCollider, [], False)  #Spell Queen will cast

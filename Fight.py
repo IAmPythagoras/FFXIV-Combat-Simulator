@@ -1,8 +1,7 @@
 import math
-from sqlite3 import Timestamp
 from Enemy import Enemy
 import matplotlib.pyplot as plt
-from Player import DarkKnight, Machinist
+from Player import DarkKnight, Machinist, Queen
 
 
 class NoMoreAction(Exception):#Exception called if a spell fails to cast
@@ -173,6 +172,8 @@ class Fight:
                 if isinstance(Player, DarkKnight):
                     Player.TotalPotency += Player.EsteemPointer.TotalPotency    #Adds every damage done by Esteem to the dark knight
                     self.PlayerList.remove(Player.EsteemPointer)
+                elif isinstance(Player, Queen):
+                    self.PlayerList.remove(Player)
 
             self.PrintResult(TimeStamp, timeValue)
             
@@ -209,11 +210,13 @@ def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
 
     if Player.CurrentFight.Enemy.ChainStratagem: CritRate += 0.1    #If ChainStratagem is active, increase crit
 
-    if isinstance(Player, Machinist):   #Then if machinist, has to check if direct crit guarantee
-        if Player.Reassemble and Player.ActionSet[Player.NextSpell].WeaponSkill:    #Checks if reassemble is on and if its a weapon skill
+    if isinstance(Player, Machinist): 
+        #print(Player.ActionSet[Player.NextSpell])  #Then if machinist, has to check if direct crit guarantee
+        if Player.ActionSet[Player.NextSpell].id != -1 and Player.ActionSet[Player.NextSpell].id != -2 and Player.Reassemble and Player.ActionSet[Player.NextSpell].WeaponSkill:    #Checks if reassemble is on and if its a weapon skill
             CritRate = 1
             DHRate = 1
             Player.Reassemble = False #Uses Reassemble
+
              
 
 
