@@ -72,7 +72,7 @@ class Spell:
         #print("Current Blood: " + str(player.Blood))
         Damage = ComputeDamage(player, self.Potency, Enemy.Bonus, self.DPSBonus)    #Damage computation
 
-        if isinstance(player, Queen):
+        if isinstance(player, Queen) or isinstance(player, Esteem):
             player.Master.TotalPotency+= self.Potency
             player.Master.TotalDamage += Damage
         else:
@@ -773,7 +773,7 @@ def SpendShadowbringer(Player, Spell):
 
 def SummonLivingShadow(Player, Spell):
     Actions = [PDelay, PAbyssalDrain, PPlunge, PQuietus, PShadowbringer, PEdgeShadow, PBloodspiller, PCarveSpit]
-    Pet = Esteem(2.36,Actions,[],[],Player.CurrentFight)
+    Pet = Esteem(2.5,Actions,[],[],Player.CurrentFight,Player)
     Player.CurrentFight.PlayerList.append(Pet)
     Player.EsteemPointer = Pet
     #print("Esteem enters the battlefield.")

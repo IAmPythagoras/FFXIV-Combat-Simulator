@@ -225,10 +225,11 @@ class DarkKnight(Player):
 class Esteem(Player):
     #A class for Living Shadow pet, summoned by Living Shadow.
 
-    def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight):
-        super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight)
+    def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight,Master):
+        super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight,Master.Stat)
 
         self.Blood = 0
+        self.Master = Master
 
     def updateCD(self, time):
         pass
