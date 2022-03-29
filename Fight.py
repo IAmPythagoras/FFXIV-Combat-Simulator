@@ -2,7 +2,7 @@ import math
 from Enemy import Enemy
 import matplotlib.pyplot as plt
 from Player import DarkKnight, Machinist, Queen
-
+import numpy as np
 
 class NoMoreAction(Exception):#Exception called if a spell fails to cast
     pass
@@ -54,10 +54,12 @@ class Fight:
         print("The Enemy has received a total potency of: " + str(self.Enemy.TotalPotency))
         print("The Potency Per Second on the Enemy is: " + str(self.Enemy.TotalPotency/time))
         print("The Enemy's total DPS is " + str(self.Enemy.TotalDamage / time))
+        axs[0].xaxis.grid(True)
+        axs[1].xaxis.grid(True)
+        axs[0].xaxis.set_ticks(np.arange(2.5, max(TimeStamp)+1, 2.5))
+        axs[1].xaxis.set_ticks(np.arange(2.5, max(TimeStamp)+1, 2.5))
         axs[0].legend()
         axs[1].legend()
-        axs[0].grid()
-        axs[1].grid()
         if self.ShowGraph: plt.show()
 
 
