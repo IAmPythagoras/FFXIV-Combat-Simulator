@@ -12,13 +12,17 @@ Remaining Jobs to implement:
 -RPR
 -BRD
 -DNC
--MCH
 Already Done:
+-MCH (have to fix bug, more under)
 -BLM
 -SCH
 -DRK
--NIN
+-NIN (fix bugs)
 -RDM
+
+
+Missing 40 Potency from MCH opener, maybe from Hypercharge?
+
 
 Other Stuff to do:
 -Implement Graph of DPS and Potency/sec - DONE

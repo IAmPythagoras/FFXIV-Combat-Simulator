@@ -16,6 +16,7 @@ class Fight:
         self.PlayerList = PlayerList
         self.Enemy = Enemy
         self.ShowGraph = True
+        self.TimeStamp = 0
     def PrintResult(self, time, TimeStamp):
 
 
@@ -66,12 +67,12 @@ class Fight:
             #It will increment in TimeUnit up to a maximum of TimeLimit (there can be other reasons the Fight ends)
             #It will check weither a player can cast its NextSpell, and if it can it will call the relevant functions
             #However, no direct computation is done in this function, it simply orchestrates the whole thing
-            TimeStamp = 0   #Keep track of the time
+            self.TimeStamp = 0   #Keep track of the time
             start = False
 
             timeValue = []  #Used for graph
 
-            while(TimeStamp <= TimeLimit):
+            while(self.TimeStamp <= TimeLimit):
 
                 for player in self.PlayerList:
                     #print("MainStat : " + str(player.Stat["MainStat"]))
@@ -86,7 +87,7 @@ class Fight:
                                 #If we in here, then we can cast the next spell
 
                                 player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)#Cast the spell
-                                #print("Spell with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(TimeStamp) )
+                                #print("Spell with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(self.self.TimeStamp) )
                                 #Locking the player
 
                                 player.Casting = True
@@ -106,7 +107,7 @@ class Fight:
                                 player.CastingSpell.CastFinal(player, self.Enemy)
                                 player.oGCDLock = True
                                 player.oGCDLockTimer = player.CastingSpell.CastTime
-                                #print("oGCD with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(TimeStamp) )
+                                #print("oGCD with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(self.TimeStamp) )
 
 
                     
@@ -138,26 +139,26 @@ class Fight:
                     CheckFinalLock = player.TrueLock and CheckFinalLock #If all player's TrueLock is true, then CheckFinalLock will be True
 
                 if CheckFinalLock: 
-                    print("The Fight finishes at: " + str(TimeStamp))
+                    print("The Fight finishes at: " + str(self.TimeStamp))
                     break
 
                 
                 if start:
                     #If the fight has started, will sample DPS values at certain time
-                    if (TimeStamp%1 == 0.3 or TimeStamp%1 == 0.0 or TimeStamp%1 == 0.6 or TimeStamp%1 == 0.9) and TimeStamp >= 3:#last thing is to ensure no division by zero and also to have no spike at the begining
+                    if (self.TimeStamp%1 == 0.3 or self.TimeStamp%1 == 0.0 or self.TimeStamp%1 == 0.6 or self.TimeStamp%1 == 0.9) and self.TimeStamp >= 3:#last thing is to ensure no division by zero and also to have no spike at the begining
                         #Only sample each 1/2 second
-                        timeValue+= [TimeStamp]
+                        timeValue+= [self.TimeStamp]
                         for Player in self.PlayerList:
-                            Player.DPSGraph += [round(Player.TotalDamage/TimeStamp, 2)] #Rounding the value to 2 digits
-                            Player.PotencyGraph += [round(Player.TotalPotency/TimeStamp, 2)]
+                            Player.DPSGraph += [round(Player.TotalDamage/self.TimeStamp, 2)] #Rounding the value to 2 digits
+                            Player.PotencyGraph += [round(Player.TotalPotency/self.TimeStamp, 2)]
 
-                #update timestamp
-                TimeStamp += TimeUnit
-                TimeStamp = round(TimeStamp, 2)
+                #update self.TimeStamp
+                self.TimeStamp += TimeUnit
+                self.TimeStamp = round(self.TimeStamp, 2)
 
                 FightCD -= TimeUnit
                 if FightCD <= 0 and not start:
-                    TimeStamp = 0
+                    self.TimeStamp = 0
                     start = True
                     #print("==========================================================================================")
                     #print("FIGHT START")
@@ -175,7 +176,7 @@ class Fight:
                 elif isinstance(Player, Queen):
                     self.PlayerList.remove(Player)
 
-            self.PrintResult(TimeStamp, timeValue)
+            self.PrintResult(self.TimeStamp, timeValue)
             
 
 

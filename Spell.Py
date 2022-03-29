@@ -951,6 +951,9 @@ def ApplyKassatsu(Player, Enemy):
 def ApplyRaiju(Player, Enemy):
     Player.NinkiGauge = min(100, Player.NinkiGauge + 5)
 
+def ApplyKamaitachi(Player, Enemy):
+    Player.NinkiGauge = min(100, Player.NinkiGauge + 10)
+
 def NinjutsuTimerEffect(Player, Enemy):
     if(Player.NinjutsuStack != 2):
         if(Player.NinjutsuCd <= 0):
@@ -963,7 +966,7 @@ def NinjutsuTimerEffect(Player, Enemy):
 
 def BunshinEffect(Player, Spell):
 
-    if(Spell.WeaponSkill):
+    if isinstance(Spell,NinjaSpell) and (Spell.WeaponSkill):
         #It will be assumed that each ability are melee, so simply adding the flat bonus of 160 potency, it will be pushed onto the array, so first
 
         Spell.Potency += 160
@@ -1044,7 +1047,7 @@ Meisui = NinjaSpell(13, False,False, Lock, 0, 0, 0, ApplyMeisui, [MeisuiRequirem
 #Only implementing those we will realistically use
 Raiton = NinjaSpell(7, False,True, 2*Lock, NinjaGCD + 2*Lock, 650,0, ApplyRaiton, [NinjutsuRequirement])
 Suiton = NinjaSpell(8, False,True,2*Lock, NinjaGCD + 2*Lock, 500,0, ApplySuiton, [NinjutsuRequirement])
-Hyosho = NinjaSpell(9, False,True,2*Lock, NinjaGCD + 2*Lock, 1200,0, empty, [HyoshoRequirement])
+Hyosho = NinjaSpell(9, False,True,2*Lock, NinjaGCD + 2*Lock, 1200,0, empty, []) #HyoshoRequirement
 TenChiJin = NinjaSpell(15, False, False, 4*Lock, 0, 450 + 650 + 500, 0,ApplyTenChiJin, [TenChiJinRequirement])
 #Tenchijin will be assumed to be Ten-Chi-Jin (since optimal)
 
@@ -1053,7 +1056,7 @@ Raiju = NinjaSpell(10, True,True, Lock, NinjaGCD, 560, 0, ApplyRaiju, [RaijuRequ
 
 #Bunshin
 Bunshin = NinjaSpell(14, False, False, Lock, 0, 0, 0, ApplyBunshin, [BunshinRequirement, NinkiRequirement])
-
+Kamaitachi = NinjaSpell(15, False, True, 0, NinjaGCD, 550, 0, ApplyKamaitachi, [])
 
 class NinjaDOT(DOTSpell):
 
@@ -1455,7 +1458,7 @@ def ApplyHeatBlast(Player, Enemy):
     Player.RicochetCD = max(0, Player.RicochetCD - 15)
 
 def ApplyHypercharge(Player, Enemy):
-    Player.HyperchargeTimer = 10
+    Player.HyperchargeTimer = 8
     Player.HyperchargeCD = 10
     RemoveGauge(Player, 0, 50)#cost
     Player.EffectList.append(HyperchargeEffect)
@@ -1520,7 +1523,7 @@ def ApplyCleanShot(Player, Enemy):
 #Effect
 
 def WildFireEffect(Player, Spell):
-    if Spell.WeaponSkill : Player.WildFireStack +=1
+    if isinstance(Spell, MachinistSpell) and Spell.WeaponSkill : Player.WildFireStack +=1
 
 def HyperchargeEffect(Player, Spell):
     if Spell.WeaponSkill : Spell.Potency += 20
@@ -1539,6 +1542,7 @@ def SlugShotEffect(Player, Spell):
         Spell.Potency += 250
         Player.EffectList.remove(SlugShotEffect)
 
+
 #Check
 
 def WildFireCheck(Player, Enemy):
@@ -1546,14 +1550,14 @@ def WildFireCheck(Player, Enemy):
 
         WildFireOff = MachinistSpell(1, False, 0, 0, 150 * Player.WildFireStack, 0, empty, [], False)
         #Temporary Spell that will be put in front of the Queue
-        Player.ActionSet.insert(0, WildFireOff) #Insert in queue, will be instantly executed
+        Player.ActionSet.insert(Player.NextSpell+1, WildFireOff) #Insert in queue, will be instantly executed
         Player.WildFireStack = 0
         Player.EffectList.remove(WildFireEffect)
         Player.EffectCDList.remove(WildFireCheck)
-        print("WILDFIRE HAS GONE OUT")
 
 def HyperchargeCheck(Player, Enemy):
     if Player.HyperchargeTimer <= 0:
+        print("Hypercharge went off at : " + str(Player.CurrentFight.TimeStamp))
         Player.EffectList.remove(HyperchargeEffect)
         Player.EffectCDList.remove(HyperchargeCheck)
 
@@ -1582,13 +1586,11 @@ def RicochetStackCheck(Player, Enemy):
         Player.RicochetStack +=1
 
 def QueenCheck(Player, Enemy):#This will be called on the queen
-    #print("we in")
     if Player.Timer <= 0: 
         Player.Master.Overdrive = False
-        Player.ActionSet.insert(0,Collider)
-        Player.ActionSet.insert(0,Bunker)
+        Player.ActionSet.insert(Player.NextSpell+1,Bunker)
+        Player.ActionSet.insert(Player.NextSpell+2,Collider)
         Player.EffectCDList.remove(QueenCheck)
-        #print("QUEEN IS DOING FINISHER")
 
 Wildfire = MachinistSpell(0, False, 0, Lock, 0, 0, ApplyWildFire, [WildFireRequirement], False)
 AirAnchor = MachinistSpell(2, True, 0, 2.5, 570, 0, ApplyAirAnchor, [AirAnchorRequirement], True)
