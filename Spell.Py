@@ -1382,7 +1382,7 @@ Engagement = RedmageSpell(15, False, 0, Lock, 180, 0, ApplyEngagement, [Engageme
 Corps = RedmageSpell(16, False, 0, Lock, 130, 0, ApplyCorps, [CorpsRequirement], 0, 0)
 
 #########################################
-########## MACHINIST PLAYER #############
+########## MACHINIST SPELL  #############
 #########################################
 
 
@@ -1618,3 +1618,132 @@ Overdrive = MachinistSpell(13, False, 0, Lock, 0, 0, ApplyOverdrive, [OverdriveR
 #These will be casted by the machinist, so they have no damage. Their only effect is to add into Queen's Queue
 Bunker = MachinistSpell(15, True, 0, 2.5, 650, 0, empty, [], False)   #Triggered by Overdrive
 Collider = MachinistSpell(16, True, 0 , 2.5, 750, 0, ApplyCollider, [], False)  #Spell Queen will cast
+
+
+
+#########################################
+########## WARRIOR Spell  ###############
+#########################################
+
+
+class WarriorSpell(Spell):
+
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+
+
+
+#Special
+
+def AddBeast(Player, Gauge):
+    Player.BeastGauge = min(100, Player.BeastGauge + Gauge)
+
+def RemoveBeast(Player, Gauge):
+    Player.BeastGauge -= Gauge #Caanot go under 0 cuz verify if enough gauge
+
+#Requirement
+
+def UpheavalRequirement(Player, Spell):
+    return Player.UpheavalCD == 0
+
+def OnslaughtRequirement(Player, Spell):
+    return Player.OnslaughtStack >= 1
+
+def InfuriateRequirement(Player, Spell):
+    return Player.InfuriateStack >= 1
+
+def InnerReleaseRequirement(Player, Spell):
+    return Player.InnerReleaseCD == 0
+
+def PrimalRendRequirement(Player, Spell):
+    return Player.PrimalRendTimer > 0
+
+#Apply
+
+#Combo Action
+
+def ApplyHeavySwing(Player, Enemy):
+    if not (HeavySwingEffect in Player.EffectList) : Player.EffectList.append(HeavySwingEffect)
+
+def ApplyMaim(Player, Enemy):
+    if not (MaimEffect in Player.EffectList) : Player.EffectList.append(MaimEffect)
+
+def ApplyStormEye(Player, Enemy):
+    Player.SurgingTempestTimer = min(60, Player.SurgingTempestTimer + 30)
+
+def ApplyUpheaval(Player, Enemy):
+    Player.UpheavalCD = 30
+
+def ApplyOnslaught(Player, Enemy):
+    if Player.OnslaughtStack == 3:
+        #Then we have to add check
+        Player.EffectCDList.append(OnslaughtStackCheck)
+        Player.OnslaughtCD = 30
+    Player.OnslaughtStack -= 1
+
+def ApplyInfuriate(Player, Enemy):
+    AddBeast(Player, 50)
+    if Player.InfuriateStack == 2:
+        Player.EffectCDList.append(InfuriateStackCheck)
+
+    Player.InfuriateStack -= 1
+
+def ApplyInnerRelease(Player, Enemy):
+    AddBeast(Player, 10)
+    Player.PrimalRendTimer = 30 #Primal rend ready
+    Player.InnerReleaseStack = 3
+    Player.InnerReleaseCD = 60
+
+def ApplyPrimalRend(Player, Enemy):
+    Player.InnerReleaseStack += 1 #To allow for Direct Crit
+    Player.PrimalRendTimer = 0
+
+#Effect
+
+#Combo Action
+
+def HeavySwingEffect(Player, Spell):
+    if Spell.id == 2:
+        Spell.Potency += 150
+        Player.EffectList.remove(HeavySwingEffect)
+
+def MaimEffect(Player, Spell):
+    if Spell.id == 3:
+        Spell.Potency += 280
+        Player.EffectList.remove(MaimEffect)
+
+
+#Check
+
+def OnslaughtStackCheck(Player, Enemy):
+    if Player.OnslaughtCD <= 0:
+        if Player.OnslaughtStack == 2:
+            Player.EffectCDList.remove(OnslaughtStackCheck)
+        else:
+            Player.OnslaughtCD = 30
+        Player.OnslaughtStack += 1
+
+def InfuriateStackCheck(Player, Enemy):
+    if Player.InfuriateCD <= 0:
+        if Player.InfuriateStack == 1:
+            Player.EffectCDList.remove(InfuriateStackCheck)
+        else:
+            Player.InfuriateCD = 30
+        Player.InfuriateStack += 1
+    
+
+#Combo Action
+HeavySwing = WarriorSpell(1, True, Lock, 2.5, 200, 0, ApplyHeavySwing, [])
+Maim = WarriorSpell(2, True, Lock, 2.5, 130, 0, ApplyMaim, [])
+StormEye = WarriorSpell(3, True, Lock, 2.5, 120, 0, ApplyStormEye, [])
+#Missing Storm's path
+
+#oGCD
+Upheaval = WarriorSpell(4, False, Lock, 0, 350, 0, ApplyUpheaval, [UpheavalRequirement])
+Onslaught = WarriorSpell(5, False, Lock, 0, 150, 0, ApplyOnslaught, [OnslaughtRequirement])
+Infuriate = WarriorSpell(6, False, Lock, 0, 0, 0, ApplyInfuriate, [InfuriateRequirement])
+InnerRelease = WarriorSpell(7, False, Lock, 0, 0, 0, ApplyInnerRelease, [InnerReleaseRequirement])
+
+
+#GCD
+PrimalRend = WarriorSpell(8, True, Lock, 2.5, 700, 0, ApplyPrimalRend, [PrimalRendRequirement])

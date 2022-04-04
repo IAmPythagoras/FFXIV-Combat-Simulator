@@ -218,10 +218,12 @@ def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
         if Player.ActionSet[Player.NextSpell].id != -1 and Player.ActionSet[Player.NextSpell].id != -2 and Player.Reassemble and Player.ActionSet[Player.NextSpell].WeaponSkill:    #Checks if reassemble is on and if its a weapon skill
             CritRate = 1
             DHRate = 1
-            Player.Reassemble = False #Uses Reassemble
-
-             
-
+            Player.Reassemble = False #Uses Reassemble       
+    elif isinstance(Player, Warrior):
+        if Player.InnerReleaseStack >= 1:
+            CritRate = 1#If inner release weaponskill
+            DHRate = 1
+            Player.InnerReleaseStack -= 1
 
     return Damage * ((1+(DHRate/4))*(1+(CritRate*CritDamage)))
 """

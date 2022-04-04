@@ -498,3 +498,47 @@ class Queen(Player):
     def updateTimer(self, time):
         super().updateTimer(time)
         if (self.Timer > 0) : self.Timer = max(0,self.Timer - time)
+
+
+#########################################
+########## WARRIOR PLAYER ###############
+#########################################
+
+
+class Warrior(Player):
+
+    def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
+        super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
+
+        #Buffs
+        self.SurgingTempest = False #If surging tempest is on, set to true
+
+        #Gauge
+        self.BeastGauge = 0
+
+        #Stack
+        self.InnerReleaseStack = 0
+        self.OnslaughtStack = 3
+        self.InfuriateStack = 2
+
+        #Timer
+        self.SurgingTempestTimer = 0
+        self.PrimalRendTimer = 0
+        self.NascentChaosTimer = 0
+
+        #CD
+        self.InfuriateCD = 0
+        self.UpheavalCD = 0
+        self.InnerReleaseCD = 0
+        self.OnslaughtCD = 0
+
+    def updateCD(self, time):
+        if (self.ChainSawCD > 0) : self.ChainSawCD = max(0,self.ChainSawCD - time)
+ 
+
+    def updateTimer(self, time):
+        super().updateTimer(time)
+        if (self.WildFireTimer > 0) : self.WildFireTimer = max(0,self.WildFireTimer - time)
+
+
+
