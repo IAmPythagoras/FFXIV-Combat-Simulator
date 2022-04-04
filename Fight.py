@@ -1,7 +1,7 @@
 import math
 from Enemy import Enemy
 import matplotlib.pyplot as plt
-from Player import DarkKnight, Machinist, Queen
+from Player import *
 import numpy as np
 
 class NoMoreAction(Exception):#Exception called if a spell fails to cast

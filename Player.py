@@ -518,6 +518,7 @@ class Warrior(Player):
 
         #Stack
         self.InnerReleaseStack = 0
+        self.NoBeastCostStack = 0
         self.OnslaughtStack = 3
         self.InfuriateStack = 2
 
@@ -533,12 +534,17 @@ class Warrior(Player):
         self.OnslaughtCD = 0
 
     def updateCD(self, time):
-        if (self.ChainSawCD > 0) : self.ChainSawCD = max(0,self.ChainSawCD - time)
+        if (self.InfuriateCD > 0) : self.InfuriateCD = max(0,self.InfuriateCD - time)
+        if (self.UpheavalCD > 0) : self.UpheavalCD = max(0,self.UpheavalCD - time)
+        if (self.InnerReleaseCD > 0) : self.InnerReleaseCD = max(0,self.InnerReleaseCD - time)
+        if (self.OnslaughtCD > 0) : self.OnslaughtCD = max(0,self.OnslaughtCD - time)
  
 
     def updateTimer(self, time):
         super().updateTimer(time)
-        if (self.WildFireTimer > 0) : self.WildFireTimer = max(0,self.WildFireTimer - time)
+        if (self.SurgingTempestTimer > 0) : self.SurgingTempestTimer = max(0,self.SurgingTempestTimer - time)
+        if (self.PrimalRendTimer > 0) : self.PrimalRendTimer = max(0,self.PrimalRendTimer - time)
+        if (self.NascentChaosTimer > 0) : self.NascentChaosTimer = max(0,self.NascentChaosTimer - time)
 
 
 

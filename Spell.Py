@@ -1,5 +1,4 @@
 import copy
-from math import fabs
 from Player import *
 from Fight import ComputeDamage
 
@@ -1632,9 +1631,10 @@ def BeastGaugeRequirement(Player, Spell):
 class WarriorSpell(Spell):
 
     def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, Cost):
-        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, Cost)
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
 
-        self.Requirement += [BeastGaugeRequirement]
+        self.Requirement += [BeastGaugeRequirement] 
+        self.Cost = Cost
 
 #Special
 
@@ -1674,9 +1674,11 @@ def ApplyHeavySwing(Player, Enemy):
 
 def ApplyMaim(Player, Enemy):
     if not (MaimEffect in Player.EffectList) : Player.EffectList.append(MaimEffect)
+    AddBeast(Player, 10)
 
 def ApplyStormEye(Player, Enemy):
     Player.SurgingTempestTimer = min(60, Player.SurgingTempestTimer + 30)
+    AddBeast(Player, 10)
 
 def ApplyStormPath(Player, Enemy):
     AddBeast(Player, 20)
@@ -1700,9 +1702,11 @@ def ApplyInfuriate(Player, Enemy):
     Player.NascentChaosTimer = 30
 
 def ApplyInnerRelease(Player, Enemy):
-    AddBeast(Player, 10)
+    Player.EffectList.append(InnerReleaseEffect)
+    Player.SurgingTempestTimer = min(60, Player.SurgingTempestTimer + 10)
     Player.PrimalRendTimer = 30 #Primal rend ready
     Player.InnerReleaseStack = 3
+    Player.NoBeastCostStack = 3
     Player.InnerReleaseCD = 60
 
 def ApplyPrimalRend(Player, Enemy):
@@ -1715,6 +1719,18 @@ def ApplyInnerChaos(Player, Enemy):
     Player.NascentChaosTimer = 0
 
 #Effect
+
+def InnerReleaseEffect(Player, Spell):
+    if isinstance(Spell, WarriorSpell) and Spell.Cost != 0:
+        Player.NoBeastCostStack -= 1
+        Spell.Cost = 0
+        if Player.NoBeastCostStack == 0: Player.EffectList.remove(InnerReleaseEffect)
+
+def SurgingTempestEffect(Player, Spell):
+    if Player.SurgingTempestTimer > 0 : 
+        Player.MultDPSBonus *= 1.1
+        Player.EffectCDList.append(SurgingTempestCheck)
+        Player.EffectList.remove(SurgingTempestEffect)
 
 #Combo Action
 
@@ -1730,6 +1746,12 @@ def MaimEffect(Player, Spell):
 
 
 #Check
+
+def SurgingTempestCheck(Player, Enemy):
+    if Player.SurgingTempestTimer <= 0: 
+        Player.MultDPSBonus /= 1.1
+        Player.EffectList.append(SurgingTempestEffect)
+        Player.EffectCDList.remove(SurgingTempestCheck)
 
 def OnslaughtStackCheck(Player, Enemy):
     if Player.OnslaughtCD <= 0:
@@ -1765,4 +1787,5 @@ InnerRelease = WarriorSpell(7, False, Lock, 0, 0, 0, ApplyInnerRelease, [InnerRe
 #GCD
 PrimalRend = WarriorSpell(8, True, Lock, 2.5, 700, 0, ApplyPrimalRend, [PrimalRendRequirement],0)
 FellCleave = WarriorSpell(9, True, Lock, 2.5, 460, 0, empty, [],50)
-InnerChaos = WarriorSpell(10, True, Lock, 2.5, 650, ApplyInnerChaos, [InnerChaosRequirement], 50)
+InnerChaos = WarriorSpell(10, True, Lock, 2.5, 650,0, ApplyInnerChaos, [InnerChaosRequirement], 50)
+Tomahawk = WarriorSpell(12, True, Lock, 2.5, 150, 0, empty, [], 0)
