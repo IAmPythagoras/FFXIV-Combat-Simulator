@@ -1,10 +1,8 @@
 Remaining Jobs to implement:
 -SMN
--WHM
 -AST
 -SGE
 -GNB
--WAR
 -PLD
 -SAM
 -DRG
@@ -19,6 +17,8 @@ Already Done:
 -DRK
 -NIN (fix bugs)
 -RDM
+-WAR
+-WHM
 
 
 Missing 40 Potency from MCH opener, maybe from Hypercharge?
