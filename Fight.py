@@ -118,7 +118,6 @@ class Fight:
                 #Will then let the enemy add the Dots damage
 
                 for player in self.PlayerList:
-                    #print(player.DOTList)
                     #print(player)
                     #print("============")
                     for DOT in player.DOTList:

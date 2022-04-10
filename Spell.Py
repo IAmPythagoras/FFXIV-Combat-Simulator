@@ -1,4 +1,5 @@
 import copy
+
 from Player import *
 from Fight import ComputeDamage
 
@@ -93,7 +94,7 @@ class Spell:
 class DOTSpell(Spell):
     #Represents DOT
     def __init__(self, id, Potency):
-        super().__init__(id, False, 0, 0, Potency,  0, empty, [empty])
+        super().__init__(id, False, 0, 0, Potency,  0, empty, [])
         #Note that here Potency is the potency of the dot, not of the ability
         self.DOTTimer = 0   #This represents the timer of the dot, and it will apply at each 3 seconds
     def CheckDOT(self, Player, Enemy, TimeUnit):
@@ -1092,6 +1093,7 @@ def ApplyBiolysis(Player, Enemy):
     if (not (Player.Biolysis in Player.DOTList)):
         Player.Biolysis = copy.deepcopy(BiolysisDOT)
         Player.DOTList.append(Player.Biolysis)
+        Player.EffectCDList.append(CheckBiolysis)
     Player.BiolysisTimer = 30
 
 def ApplyAetherflow(Player, Enemy):
@@ -1132,6 +1134,12 @@ def CheckChainStratagem(Player, Enemy):
         Player.ChainStratagemTimer = 0
         Enemy.ChainStratagem = False
         Player.EffectCDList.remove(CheckChainStratagem)
+
+def CheckBiolysis(Player, Enemy):
+    if Player.BiolysisTimer <= 0 : 
+        Player.DOTList.remove(Player.Biolysis)
+        Player.Biolysis = None
+        Player.EffectCDList.remove(CheckBiolysis)
 
 Broil = ScholarSpell(1, True, ScholarCast, ScholarGCD, 295,  400, empty, [ManaRequirement])
 Ruin = ScholarSpell(2, True, 0, ScholarGCD, 220,  400, empty, [ManaRequirement])
@@ -1789,3 +1797,83 @@ PrimalRend = WarriorSpell(8, True, Lock, 2.5, 700, 0, ApplyPrimalRend, [PrimalRe
 FellCleave = WarriorSpell(9, True, Lock, 2.5, 460, 0, empty, [],50)
 InnerChaos = WarriorSpell(10, True, Lock, 2.5, 650,0, ApplyInnerChaos, [InnerChaosRequirement], 50)
 Tomahawk = WarriorSpell(12, True, Lock, 2.5, 150, 0, empty, [], 0)
+
+
+#########################################
+########## WHITEMAGE PLAYER #############
+#########################################
+
+
+class WhitemageSpell(Spell):
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+
+#Requirement
+
+def PresenceOfMindRequirement(Player, Spell):
+    return Player.PresenceOfMindCD <= 0
+
+def AssizeRequirement(Player, Spell):
+    return Player.AssizeCD <= 0
+
+def ThinAirRequirement(Player, Spell):
+    return Player.ThinAirCD <= 0
+
+#Apply
+
+def ApplyDia(Player, Enemy):
+    Player.DiaTimer = 30
+
+    if (Player.Dia == None) : 
+        Player.Dia = copy.deepcopy(DiaDOT)
+        Player.EffectCDList.append(CheckDia)
+        Player.DOTList.append(Player.Dia)
+
+def ApplyAssize(Player, Enemy):
+    Player.Mana = min(10000, Player.Mana + 500)
+    Player.AssizeCD = 45
+
+def ApplyThinAir(Player, Enemy):
+    Player.ThinAirCD = 60
+    Player.EffectList.append(ThinAirEffect)
+
+def ApplyPresenceOfMind(Player, Enemy):
+    Player.PresenceOfMindCD = 120
+    Player.PresenceOfMindTimer = 15
+    Player.EffectList.append(PresenceOfMindEffect)
+    Player.EffectCDList.append(CheckPresenceOfMind)
+
+#Effect
+
+def ThinAirEffect(Player, Spell):
+    Spell.ManaCost = 0
+    Player.EffectList.remove(ThinAirEffect)
+
+def PresenceOfMindEffect(Player, Spell):
+    Spell.CastTime *= 0.8
+    Spell.RecastTime *= 0.8
+
+#Check
+
+def CheckDia(Player, Enemy):
+    if Player.DiaTimer <= 0:
+        Player.DOTList.remove(Player.Dia)
+        Player.Dia = None
+        Player.EffectCDList.remove(CheckDia)
+
+def CheckPresenceOfMind(Player, Enemy):
+    if Player.PresenceOfMindTimer <= 0:
+        Player.EffectList.remove(PresenceOfMindEffect)
+        Player.EffectCDList.remove(CheckPresenceOfMind)
+
+
+
+#GCD
+Glare = WhitemageSpell(0, True, 1.5, 2.5, 310, 400, empty, [])
+Dia = WhitemageSpell(1, True, Lock, 2.5, 0, 400, ApplyDia, [])
+DiaDOT = DOTSpell(5, 60)
+
+#OGCD
+Assize = WhitemageSpell(2, False, Lock, Lock, 400, 0, ApplyAssize, [AssizeRequirement])
+ThinAir = WhitemageSpell(3, False, Lock, Lock, 0, 0, ApplyThinAir, [ThinAirRequirement])
+PresenceOfMind = WhitemageSpell(4, False, Lock, Lock, 0, 0, ApplyPresenceOfMind, [PresenceOfMindRequirement])
