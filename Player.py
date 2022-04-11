@@ -591,3 +591,28 @@ class Warrior(Player):
 
 
 
+#########################################
+########## SAMURAI PLAYER ###############
+#########################################
+
+
+class Samurai(Player):
+
+    def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
+        super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
+
+        #Buffs
+        self.Fugetsu = False #13% DPS bonus
+        self.Fuka = False #13% lest cast/recast time
+
+        #Gauge
+        self.KenkiGauge = 0
+        self.Sen = False
+        self.Ka = False
+        self.Getsu = False
+        self.MeditationGauge = 0
+        
+
+        #Timer
+        self.FugetsuTimer = 0
+        self.FukaTimer = 0

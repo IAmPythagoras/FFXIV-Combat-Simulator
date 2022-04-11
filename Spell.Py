@@ -1,5 +1,7 @@
 import copy
 
+from pkg_resources import fixup_namespace_packages
+
 from Player import *
 from Fight import ComputeDamage
 
@@ -1877,3 +1879,109 @@ DiaDOT = DOTSpell(5, 60)
 Assize = WhitemageSpell(2, False, Lock, Lock, 400, 0, ApplyAssize, [AssizeRequirement])
 ThinAir = WhitemageSpell(3, False, Lock, Lock, 0, 0, ApplyThinAir, [ThinAirRequirement])
 PresenceOfMind = WhitemageSpell(4, False, Lock, Lock, 0, 0, ApplyPresenceOfMind, [PresenceOfMindRequirement])
+
+
+
+#########################################
+########## SAMURAI PLAYER ###############
+#########################################
+
+
+class SamuraiSpell(Spell):
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, Effect, Requirement, KenkiCost):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, 0, Effect, Requirement)
+
+        self.KenkiCost = KenkiCost
+        self.Requirement += [KenkiRequirement]
+
+#Special
+def AddKenki(Player, Add):
+    Player.KenkiGauge = min(100, Player.KenkiGauge + Add)
+
+
+#Requirement
+
+def KenkiRequirement(Player, Spell): #By default present in Samurai spell requirements
+    return Spell.KenkiCost >= Player.KenkiGauge
+
+#Apply
+
+def ApplyHakaze(Player, Enemy):
+    AddKenki(Player, 5)
+    if not (HakazeEffect in Player.EffectList) : Player.EffectList.append(HakazeEffect)
+
+def ApplyJinpu(Player, Enemy):
+    if not (JinpuEffect in Player.EffectList) : Player.EffectList.append(JinpuEffect)
+
+def ApplyShifu(Player, Enemy):
+    if not (ShifuEffect in Player.EffectList) : Player.EffectList.append(ShifuEffect)
+
+#Combo Action Effect
+
+def HakazeEffect(Player, Spell):
+    if Spell.id == Jinpu.id:
+        Player.FugetsuTimer = 40
+        AddKenki(Player, 5)
+        Spell.Potency += 160
+        if not Player.Fugetsu:
+            Player.Fugetsu = True
+            Player.MultDPSBonus *= 1.13
+            Player.EffectCDList.append(FugetsuCheck)
+            Player.EffectList.remove(HakazeEffect)
+    elif Spell.id == Shifu.id:
+        Spell.Potency += 160
+        if not (FukaEffect in Player.EffectList) : Player.EffectList.append(FukaEffect)
+        if not (FukaCheck in Player.EffectCDList) : Player.EffectCDList.append(FukaCheck)
+        Player.FukaTimer = 40
+        AddKenki(Player, 5)
+        Player.EffectList.remove(HakazeEffect)
+    elif Spell.id == Yukikaze.id:
+        Spell.Potency += 180
+        AddKenki(Player, 15)
+        Player.Setsu = True
+        Player.EffectList.remove(HakazeEffect)
+
+
+def ShifuEffect(Player, Spell):
+    if Spell.id == Kasha.id:
+        Spell.Potency += 210
+        AddKenki(Player, 10)
+        Player.Ka = True
+        Player.EffectList.remove(ShifuEffect)
+
+def JinpuEffect(Player, Spell):
+    if Spell.id == Gekko.id: 
+        Spell.Potency +=210
+        AddKenki(Player, 10)
+        Player.Getsu = True
+        Player.EffectList.remove(JinpuEffect)
+
+def FukaEffect(Player, Spell):
+    Spell.CastTime *= 0.87
+    Spell.RecastTime *= 0.87
+
+
+#Effect Check
+
+def FukaCheck(Player, Enemy):
+    if Player.FukaTimer <= 0:
+        Player.EffectList.remove(FukaEffect)
+        Player.EffectCDList.remove(FukaCheck)
+
+
+def FugetsuCheck(Player, Enemy):
+    if Player.FugetsuTimer <= 0:
+        Player.Fugetsu = False
+        Player.MultDPSBonus /= 1.13
+        Player.EffectCDList.remove(FugetsuCheck)
+
+
+#GCD
+#Combo Actions
+
+Hakaze = SamuraiSpell(1, True, Lock, 2.5, 200, ApplyHakaze, [], 0 )
+Jinpu = SamuraiSpell(2, True, Lock, 2.5, 120, ApplyJinpu, [], 0)
+Gekko = SamuraiSpell(3, True, Lock, 2.5, 170, empty, [], 0)
+Shifu = SamuraiSpell(4, True, Lock, 2.5, 120, empty, [], 0)
+Kasha = SamuraiSpell(5, True, Lock, 2.5, 170, empty, [], 0)
+Yukikaze = SamuraiSpell(6, True, Lock, 2.5, 120, empty, [], 0)

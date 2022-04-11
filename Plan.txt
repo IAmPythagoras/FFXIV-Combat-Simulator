@@ -26,6 +26,8 @@ Missing 40 Potency from MCH opener, maybe from Hypercharge?
 
 Other Stuff to do:
 -Implement Graph of DPS and Potency/sec - DONE
+-Optimize computaiton (Remove DPS computation for no potency spell and remove ManaRequirement if not necessary)
+-Add Autos
 -Make UI? 
 -Add AI to optimize?
 -Add heals
