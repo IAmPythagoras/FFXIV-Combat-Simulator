@@ -604,6 +604,7 @@ class Samurai(Player):
         #Buffs
         self.Fugetsu = False #13% DPS bonus
         self.Fuka = False #13% lest cast/recast time
+        self.DirectCrit = False
 
         #Gauge
         self.KenkiGauge = 0
@@ -612,7 +613,27 @@ class Samurai(Player):
         self.Getsu = False
         self.MeditationGauge = 0
         
+        #Ready
+        self.OgiNamikiriReady = False
+        self.KaeshiNamikiriReady = False
 
         #Timer
         self.FugetsuTimer = 0
         self.FukaTimer = 0
+        self.HiganbanaTimer = 0
+        
+
+        #CD
+        self.MeikyoCD = 0
+        self.IkishotenCD = 0
+        self.KaeshiCD = 0
+        self.SeneiCD = 0
+        
+        #stack
+        self.MeikyoStack = 2
+
+        #EffectStack
+        self.Meikyo = 0
+
+        #DOT
+        self.Higanbana = None

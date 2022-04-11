@@ -223,6 +223,11 @@ def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
             CritRate = 1#If inner release weaponskill
             DHRate = 1
             Player.InnerReleaseStack -= 1
+    elif isinstance(Player, Samurai):
+        if Player.DirectCrit:
+            CritRate = 1
+            DHRate = 1
+            Player.DirectCrit = False
 
     return Damage * ((1+(DHRate/4))*(1+(CritRate*CritDamage)))
 """
