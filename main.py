@@ -45,6 +45,6 @@ WARPlayer = Warrior(2.5, WAROpener, [], [SurgingTempestEffect], Event, WARStat)
 WHMPlayer = Whitemage(2.5, WHMOpener, [], [], Event, WHMStat)
 SAMPlayer = Samurai(2.5, SAMOpener, [], [], Event, SAMStat)
 #NinjaPlayer = Ninja(2.5, NINAction, [], [AutoEffect, NinjutsuTimerEffect], Event)
-Event.PlayerList = [BLMPlayer, SCHPlayer, RDMPlayer, MCHPlayer ,DRKPlayer,WARPlayer,WHMPlayer,SAMPlayer] #BLMPlayer, SCHPlayer, RDMPlayer, MCHPlayer ,DRKPlayer,WARPlayer,WHMPlayer
+Event.PlayerList = [SAMPlayer] #BLMPlayer, SCHPlayer, RDMPlayer, MCHPlayer ,DRKPlayer,WARPlayer,WHMPlayer
 Event.SimulateFight(0.01, 100, 20)
 
