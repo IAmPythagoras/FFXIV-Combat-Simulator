@@ -266,6 +266,7 @@ class Ninja(Player):
         self.KassatsuTimer = 0
         self.MeisuiTimer = 0
         self.TrickAttackTimer = 0
+        self.MugTimer = 0
 
         #Ninjutsu Stacks
         self.NinjutsuStack = 2
@@ -302,6 +303,7 @@ class Ninja(Player):
         if (self.SuitonTimer > 0) : self.SuitonTimer = max(0,self.SuitonTimer - time)
         if (self.BunshinTimer > 0) : self.BunshinTimer = max(0,self.BunshinTimer - time)
         if (self.KamaitachiTimer > 0) : self.KamaitachiTimer = max(0,self.KamaitachiTimer - time)
+        if (self.MugTimer > 0) : self.MugTimer = max(0,self.MugTimer - time)
 
 
 #########################################

@@ -941,13 +941,16 @@ def ApplyArmorCrush(Player, Enemy):
 
 def ApplyTrickAttack(Player, Enemy):
     Player.TrickAttackCd = 60
-    Enemy.Bonus *= 1.05
-    #Set up a timer for the Enemy on trick attack
-    Enemy.EffectList.append(TrickAttackEffect)
+    Enemy.Bonus *= 1.1
+    Player.TrickAttackTimer = 15
+    Player.EffectCDList.append(TrickAttackEffect)
 
 def ApplyMug(Player, Enemy):
     Player.NinkiGauge = min(100, Player.NinkiGauge + 40)
     Player.MugCd = 120
+    Player.MultDPSBonus *= 1.05
+    Player.MugTimer = 20
+    Player.EffectCDList.append(MugCheck)
 
 def ApplyKassatsu(Player, Enemy):
     Player.KassatsuTimer = 15
@@ -1000,10 +1003,10 @@ def RaitonStacksEffect(Player, Spell):
         Player.EffectList.remove(RaitonStacksEffect)
 
 
-def TrickAttackEffect(Player, Spell):
+def TrickAttackEffect(Player, Enemy):
     if(Player.TrickAttackTimer <= 0): 
-        Player.CurrentFight.Enemy.EffectList.remove(TrickAttackEffect)
-        Player.CurrentFight.Enemy.Bonus /= 1.05
+        Player.EffectCDList.remove(TrickAttackEffect)
+        Enemy.Bonus /= 1.1
 
 def SpinningEdgeEffect(Player, Spell):
     if (Spell.id == 1):
@@ -1013,11 +1016,11 @@ def SpinningEdgeEffect(Player, Spell):
 
 def GustSlashEffect(Player,Spell):
     if (Spell.id == 2):
-        Spell.Potency = AddFlatBonus(180, Spell.Potency, 220)
+        Spell.Potency += 260
         Player.NinkiGauge = min(100, Player.NinkiGauge + 15)
         Player.EffectList.remove(GustSlashEffect)
     elif(Spell.id == 3):
-        Spell.Potency  = AddFlatBonus(180, Spell.Potency, 200)
+        Spell.Potency += 240
         Player.NinkiGauge = min(100, Player.NinkiGauge + 15)
         Player.EffectList.remove(GustSlashEffect)
 
@@ -1027,7 +1030,12 @@ def AutoEffect(Player, Spell):
 
 
 
+#Check
 
+def MugCheck(Player, Enemy):
+    if Player.MugTimer <= 0:
+        Player.MultDPSBonus /= 1.05
+        Player.EffectCDList.remove(MugCheck)
 
 
 #Ability
@@ -1044,9 +1052,8 @@ TrickAttack = NinjaSpell(4, False,False, Lock, 0, 400, 0, ApplyTrickAttack, [Tri
 Mug = NinjaSpell(5, False,False, Lock, 0, 150, 0, ApplyMug, [MugRequirement])
 Kassatsu = NinjaSpell(6, False,False, Lock, 0, 0, 0, ApplyKassatsu, [KassatsuRequirement])
 DWD = NinjaSpell(11, False,False, Lock, 0, 450, 0, ApplyDWD, [DWDRequirement]) #Dream Within a Dream
-Bhavacakra = NinjaSpell(12, False,False, Lock, 0, 400,0, ApplyBhavacakra, [NinkiRequirement])
+Bhavacakra = NinjaSpell(12, False,False, Lock, 0, 350,0, ApplyBhavacakra, [NinkiRequirement])
 Meisui = NinjaSpell(13, False,False, Lock, 0, 0, 0, ApplyMeisui, [MeisuiRequirement])
-#test = NinjaSpell(id, WS, GCD, CT, RT, PO, MANA, E, R)
 #Ninjutsu
 #Only implementing those we will realistically use
 Raiton = NinjaSpell(7, False,True, 2*Lock, NinjaGCD + 2*Lock, 650,0, ApplyRaiton, [NinjutsuRequirement])
@@ -1060,7 +1067,7 @@ Raiju = NinjaSpell(10, True,True, Lock, NinjaGCD, 560, 0, ApplyRaiju, [RaijuRequ
 
 #Bunshin
 Bunshin = NinjaSpell(14, False, False, Lock, 0, 0, 0, ApplyBunshin, [BunshinRequirement, NinkiRequirement])
-Kamaitachi = NinjaSpell(15, False, True, 0, NinjaGCD, 550, 0, ApplyKamaitachi, [])
+Kamaitachi = NinjaSpell(15, False, True, 0, NinjaGCD, 600, 0, ApplyKamaitachi, [])
 
 class NinjaDOT(DOTSpell):
 
@@ -1899,6 +1906,7 @@ class SamuraiSpell(Spell):
 #Special
 def AddKenki(Player, Add):
     Player.KenkiGauge = min(100, Player.KenkiGauge + Add)
+    print("Kenki Gauge : " + str(Player.KenkiGauge))
 
 
 #Requirement

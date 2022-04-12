@@ -1,8 +1,30 @@
-
-from Fight import *
-from Player import BlackMage, Scholar, Redmage
-from Spell import *
 from Enemy import *
+from Fight import *
+
+from Jobs.Base_Spell import *
+from Jobs.Base_Player import *
+
+print(Spell)
+
+from Jobs.BlackMage_Spell import *
+from Jobs.Scholar_Spell import *
+from Jobs.Redmage_Spell import *
+from Jobs.Machinist_Spell import *
+from Jobs.Ninja_Spell import *
+from Jobs.DarkKnight_Spell import *
+from Jobs.Warrior_Spell import *
+from Jobs.Whitemage_Spell import *
+from Jobs.Samurai_Spell import *
+
+from Jobs.BlackMage_Player import *
+from Jobs.Scholar_Player import *
+from Jobs.Redmage_Player import *
+from Jobs.Machinist_Player import *
+from Jobs.Ninja_Player import *
+from Jobs.DarkKnight_Player import *
+from Jobs.Warrior_Player import *
+from Jobs.Whitemage_Player import *
+from Jobs.Samurai_Player import *
 
 
 Dummy = Enemy()
@@ -33,7 +55,7 @@ NINOpener = [WaitAbility(18.5), Suiton, Kassatsu, SpinningEdge, Potion, GustSlas
 DRKOpener = [WaitAbility(19.25), BloodWeapon, HardSlash, EdgeShadow, Delirium, SyphonStrike, Potion, Souleater, LivingShadow, SaltedEarth, HardSlash, Shadowbringer, EdgeShadow, Bloodspiller, CarveSpit, Plunge, Bloodspiller, Shadowbringer, EdgeShadow, SyphonStrike, Plunge, EdgeShadow, HardSlash, SyphonStrike, Souleater,HardSlash, SyphonStrike, Souleater,HardSlash, SyphonStrike, Souleater,HardSlash, SyphonStrike]
 WAROpener = [WaitAbility(20), Tomahawk, Infuriate, HeavySwing, Maim, WaitAbility(1),Potion, StormEye, InnerChaos, Upheaval, InnerRelease, PrimalRend, Onslaught, FellCleave,Onslaught, FellCleave,Onslaught, FellCleave, Infuriate, InnerChaos, HeavySwing,Maim, StormPath, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, Upheaval, StormEye]
 WHMOpener = [WaitAbility(17), Potion, WaitAbility(1), Glare, Dia, Glare, Glare, Swift, Glare, Assize, PresenceOfMind, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Dia, Glare, Glare, Glare, Glare ]
-SAMOpener = [WaitAbility(11), Meikyo, WaitAbility(8.25), Gekko, Potion, Kasha, Ikishoten, Yukikaze, Midare, Kaeshi, Senei, Meikyo, Gekko, Higanbana, Kasha, OgiNamikiri, KaeshiNamikiri, Shoha, Gekko, Shinten, Hakaze, Yukikaze, Midare, Kaeshi, Hakaze, Yukikaze, Hakaze, Jinpu]
+SAMOpener = [WaitAbility(11), Meikyo, WaitAbility(8.25), Gekko, Potion, Kasha, Ikishoten, Yukikaze,Shinten, Midare,Shinten, Kaeshi, Senei, Meikyo, Gekko, Higanbana, Kasha, OgiNamikiri, KaeshiNamikiri, Shoha, Gekko, Shinten, Hakaze, Yukikaze, Midare, Kaeshi, Hakaze, Yukikaze, Shinten,Hakaze, Jinpu]
 
 BLMPlayer = BlackMage(2.5, BLMOpener, [], [AstralFire, UmbralIce], Event, BLMStat)
 SCHPlayer = Scholar(2.5, SCHOpener, [], [], Event, SCHStat)
