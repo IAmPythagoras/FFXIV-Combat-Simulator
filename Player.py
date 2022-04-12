@@ -180,6 +180,7 @@ class DarkKnight(Player):
         self.EsteemPointer = None
 
         #Stacks and Ability timers
+        self.BloodWeaponStacks = 0
         self.BloodWeaponTimer = 0       #Duration of Blood Weapon buff.
         self.DeliriumStacks = 0         #Stacks of Delirium.
         self.DeliriumTimer = 0          #Duration of Delirium stacks.
@@ -187,7 +188,6 @@ class DarkKnight(Player):
         self.ShadowbringerCharges = 2   #Charges of Shadowbringer
         self.PlungeCharges = 2          #Charges of Plunge
         self.DarkArts = False           #Dark Arts Gauge, activates when TBN breaks.
-
         #Cooldowns for all abilities, starting at 0 and adjusted by Apply.
 
         self.BloodWeaponCD = 0          #60s

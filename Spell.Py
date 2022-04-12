@@ -661,12 +661,10 @@ def BloodWeaponEffect(Player, Spell):
 
 def DeliriumEffect(Player, Spell):
     #print("Delirium active")
-    if Spell.id == 4:
+    if Spell.id == Bloodspiller.id:
         Player.Mana = min(Player.Mana + 200, 10000)
-    elif Spell.id == 5:
+    elif Spell.id == Quietus.id:
         Player.Mana = min(Player.Mana + 500, 10000)
-    if Player.DeliriumStacks == 0:
-        Player.EffectList.remove(DeliriumEffect)
 
 def HardSlashEffect(Player, Spell):
     if Spell.id == 2:
@@ -689,8 +687,7 @@ def SyphonStrikeEffect(Player, Spell):
 #Cooldown checks to remove effect and restore charges
 
 def BloodWeaponCheck(Player, Spell):
-    if Player.BloodWeaponTimer <= 0:
-        Player.BloodWeaponTimer = 0
+    if Player.BloodWeaponTimer <= 0 or Player.BloodWeaponStacks == 0:
         Player.EffectList.remove(BloodWeaponEffect)
         Player.EffectCDList.remove(BloodWeaponCheck)
 
@@ -733,7 +730,8 @@ def ApplySyphonEffect(Player, Spell):
 def ApplyBloodWeaponEffect(Player, Spell):
     Player.BloodWeaponCD = 60                     
     Player.EffectList.append(BloodWeaponEffect)
-    Player.BloodWeaponTimer = 10.7                  #The extra 0.7s is due to a quirk of this buff's timing.
+    Player.BloodWeaponStacks = 5
+    Player.BloodWeaponTimer = 15
     Player.EffectCDList.append(BloodWeaponCheck)
 
 def ApplyDeliriumEffect(Player, Spell):
@@ -745,7 +743,14 @@ def ApplyDeliriumEffect(Player, Spell):
 
 def ApplyEdgeShadowEffect(Player, Spell):
     Player.DarksideTimer = min(60, Player.DarksideTimer + 30)
-    Player.EdgeShadowCD = 1
+    if not (CheckEdgeShadow in Player.EffectCDList):
+        Player.MultDPSBonus *= 1.1
+        Player.EffectCDList.append(CheckEdgeShadow)
+
+def CheckEdgeShadow(Player, Enemy):
+    if Player.DarksideTimer <= 0:
+        Player.MultDPSBonus /= 1.1
+        Player.EffectCDList.remove(CheckEdgeShadow)
 
 def ApplyCarveSpitEffect(Player, Spell):
     Player.CarveSpitCD = 60
