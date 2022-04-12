@@ -1146,8 +1146,8 @@ def CheckBiolysis(Player, Enemy):
         Player.EffectCDList.remove(CheckBiolysis)
 
 Broil = ScholarSpell(1, True, ScholarCast, ScholarGCD, 295,  400, empty, [ManaRequirement])
-Ruin = ScholarSpell(2, True, 0, ScholarGCD, 220,  400, empty, [ManaRequirement])
-Biolysis = ScholarSpell(3, True, 0, ScholarGCD, 0, 400, ApplyBiolysis, [ManaRequirement])
+Ruin = ScholarSpell(2, True, 0, ScholarGCD, 220,  300, empty, [ManaRequirement])
+Biolysis = ScholarSpell(3, True, 0, ScholarGCD, 0, 300, ApplyBiolysis, [ManaRequirement])
 BiolysisDOT = DOTSpell(4, 70)
 Aetherflow = ScholarSpell(5, False, 0, Lock, 0, 0, ApplyAetherflow, [AetherflowRequirement])
 Dissipation = ScholarSpell(8, False, 0, Lock, 0, 0, ApplyDissipation, [DissipationRequirement])
@@ -1559,7 +1559,7 @@ def SlugShotEffect(Player, Spell):
 def WildFireCheck(Player, Enemy):
     if Player.WildFireTimer <= 0:
 
-        WildFireOff = MachinistSpell(1, False, 0, 0, 150 * Player.WildFireStack, 0, empty, [], False)
+        WildFireOff = MachinistSpell(1, False, 0, 0, 200 * Player.WildFireStack, 0, empty, [], False)
         #Temporary Spell that will be put in front of the Queue
         Player.ActionSet.insert(Player.NextSpell+1, WildFireOff) #Insert in queue, will be instantly executed
         Player.WildFireStack = 0
@@ -1568,7 +1568,7 @@ def WildFireCheck(Player, Enemy):
 
 def HyperchargeCheck(Player, Enemy):
     if Player.HyperchargeTimer <= 0:
-        print("Hypercharge went off at : " + str(Player.CurrentFight.TimeStamp))
+        #print("Hypercharge went off at : " + str(Player.CurrentFight.TimeStamp))
         Player.EffectList.remove(HyperchargeEffect)
         Player.EffectCDList.remove(HyperchargeCheck)
 
@@ -1604,15 +1604,15 @@ def QueenCheck(Player, Enemy):#This will be called on the queen
         Player.EffectCDList.remove(QueenCheck)
 
 Wildfire = MachinistSpell(0, False, 0, Lock, 0, 0, ApplyWildFire, [WildFireRequirement], False)
-AirAnchor = MachinistSpell(2, True, 0, 2.5, 570, 0, ApplyAirAnchor, [AirAnchorRequirement], True)
+AirAnchor = MachinistSpell(2, True, 0, 2.5, 580, 0, ApplyAirAnchor, [AirAnchorRequirement], True)
 BarrelStabilizer = MachinistSpell(3, False, 0, Lock, 0, 0, ApplyBarrelStabilizer, [BarrelStabilizerRequirement], False)
-HeatBlast = MachinistSpell(7, True, Lock, 1.5, 170, 0, ApplyHeatBlast, [], True)
+HeatBlast = MachinistSpell(7, True, Lock, 1.5, 180, 0, ApplyHeatBlast, [], True)
 Hypercharge = MachinistSpell(8, False, 0, Lock, 0, 0, ApplyHypercharge, [HyperchargeRequirement], False)
 Reassemble = MachinistSpell(9, False, 0, Lock, 0, 0, ApplyReassemble, [ReassembleRequirement], False)
 GaussRound = MachinistSpell(10, False, 0, Lock, 120, 0, ApplyGaussRound, [GaussRoundRequirement], False)
 Ricochet = MachinistSpell(11, False, 0, Lock, 120, 0, ApplyRicochet, [RicochetRequirement], False)
-Drill = MachinistSpell(12, True, 0, 2.5, 570, 0, ApplyDrill, [DrillRequirement], True)
-ChainSaw = MachinistSpell(17, True, 0, 2.5, 570, 0, ApplyChainSaw, [ChainSawRequirement], True)
+Drill = MachinistSpell(12, True, 0, 2.5, 580, 0, ApplyDrill, [DrillRequirement], True)
+ChainSaw = MachinistSpell(17, True, 0, 2.5, 580, 0, ApplyChainSaw, [ChainSawRequirement], True)
 #Combo Action
 
 SplitShot = MachinistSpell(4, True, Lock, 2.5, 200, 0, ApplySplitShot, [], True)
@@ -1627,8 +1627,8 @@ CleanShot = MachinistSpell(6, True, Lock, 2.5, 110, 0, ApplyCleanShot, [], True)
 Automaton = MachinistSpell(14, False, 0, Lock, 0, 0, ApplyAutomaton, [AutomatonRequirement], False)
 Overdrive = MachinistSpell(13, False, 0, Lock, 0, 0, ApplyOverdrive, [OverdriveRequirement], False)
 #These will be casted by the machinist, so they have no damage. Their only effect is to add into Queen's Queue
-Bunker = MachinistSpell(15, True, 0, 2.5, 650, 0, empty, [], False)   #Triggered by Overdrive
-Collider = MachinistSpell(16, True, 0 , 2.5, 750, 0, ApplyCollider, [], False)  #Spell Queen will cast
+Bunker = MachinistSpell(15, True, 0, 2.5, 680, 0, empty, [], False)   #Triggered by Overdrive
+Collider = MachinistSpell(16, True, 0 , 2.5, 780, 0, ApplyCollider, [], False)  #Spell Queen will cast
 
 
 

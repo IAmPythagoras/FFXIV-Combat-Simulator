@@ -219,7 +219,7 @@ def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
             DHRate = 1
             Player.Reassemble = False #Uses Reassemble       
     elif isinstance(Player, Warrior):
-        if Player.InnerReleaseStack >= 1:
+        if Player.InnerReleaseStack >= 1 and (Player.ActionSet[Player.NextSpell].id == 9 or Player.ActionSet[Player.NextSpell].id == 8):
             CritRate = 1#If inner release weaponskill
             DHRate = 1
             Player.InnerReleaseStack -= 1
