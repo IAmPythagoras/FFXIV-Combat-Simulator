@@ -17,6 +17,8 @@ NINStat = {"MainStat": 2555, "WD":120, "Det" : 1749, "Ten" : 400, "SS": 400, "Cr
 DRKStat = {"MainStat": 2521, "WD":120, "Det" : 1680, "Ten" : 539, "SS": 650, "Crit" : 2343, "DH" : 976}
 WARStat = {"MainStat": 2521, "WD":120, "Det" : 2130, "Ten" : 1018, "SS": 400, "Crit" : 2240, "DH" : 400}
 WHMStat = {"MainStat": 2571, "WD":120, "Det" : 1830, "Ten" : 400, "SS": 489, "Crit" : 2301, "DH" : 940}
+SAMStat = {"MainStat": 2563, "WD":120, "Det" : 1654, "Ten" : 400, "SS": 579, "Crit" : 2310, "DH" : 1217}
+
 
 Event = Fight([], Dummy)
 
@@ -31,7 +33,7 @@ NINOpener = [WaitAbility(18.5), Suiton, Kassatsu, SpinningEdge, Potion, GustSlas
 DRKOpener = [WaitAbility(19.25), BloodWeapon, HardSlash, EdgeShadow, Delirium, SyphonStrike, Potion, Souleater, LivingShadow, SaltedEarth, HardSlash, Shadowbringer, EdgeShadow, Bloodspiller, CarveSpit, Plunge, Bloodspiller, Shadowbringer, EdgeShadow, SyphonStrike, Plunge, EdgeShadow, HardSlash, SyphonStrike, Souleater,HardSlash, SyphonStrike, Souleater,HardSlash, SyphonStrike, Souleater,HardSlash, SyphonStrike]
 WAROpener = [WaitAbility(20), Tomahawk, Infuriate, HeavySwing, Maim, WaitAbility(1),Potion, StormEye, InnerChaos, Upheaval, InnerRelease, PrimalRend, Onslaught, FellCleave,Onslaught, FellCleave,Onslaught, FellCleave, Infuriate, InnerChaos, HeavySwing,Maim, StormPath, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, Upheaval, StormEye]
 WHMOpener = [WaitAbility(17), Potion, WaitAbility(1), Glare, Dia, Glare, Glare, Swift, Glare, Assize, PresenceOfMind, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Dia, Glare, Glare, Glare, Glare ]
-
+SAMOpener = [WaitAbility(11), Meikyo, WaitAbility(8.25), Gekko, Potion, Kasha, Ikishoten, Yukikaze, Midare, Kaeshi, Senei, Meikyo, Gekko, Higanbana, Kasha, OgiNamikiri, KaeshiNamikiri, Shoha, Gekko, Shinten, Hakaze, Yukikaze, Midare, Kaeshi ]
 
 BLMPlayer = BlackMage(2.5, BLMOpener, [], [AstralFire, UmbralIce], Event, BLMStat)
 SCHPlayer = Scholar(2.5, SCHOpener, [], [], Event, SCHStat)
@@ -41,7 +43,8 @@ NINPlayer = Ninja(2.5, NINOpener, [], [], Event, NINStat)
 DRKPlayer = DarkKnight(2.5, DRKOpener, [], [], Event, DRKStat)
 WARPlayer = Warrior(2.5, WAROpener, [], [SurgingTempestEffect], Event, WARStat)
 WHMPlayer = Whitemage(2.5, WHMOpener, [], [], Event, WHMStat)
+SAMPlayer = Samurai(2.5, SAMOpener, [], [], Event, SAMStat)
 #NinjaPlayer = Ninja(2.5, NINAction, [], [AutoEffect, NinjutsuTimerEffect], Event)
-Event.PlayerList = [BLMPlayer, SCHPlayer, RDMPlayer, MCHPlayer ,DRKPlayer,WARPlayer,WHMPlayer] #BLMPlayer, SCHPlayer, RDMPlayer, MCHPlayer ,DRKPlayer,WARPlayer
+Event.PlayerList = [SAMPlayer] #BLMPlayer, SCHPlayer, RDMPlayer, MCHPlayer ,DRKPlayer,WARPlayer,WHMPlayer
 Event.SimulateFight(0.01, 100, 20)  
 

@@ -608,7 +608,7 @@ class Samurai(Player):
 
         #Gauge
         self.KenkiGauge = 0
-        self.Sen = False
+        self.Setsu = False
         self.Ka = False
         self.Getsu = False
         self.MeditationGauge = 0
@@ -637,3 +637,16 @@ class Samurai(Player):
 
         #DOT
         self.Higanbana = None
+
+    def updateCD(self, time):
+        if (self.MeikyoCD > 0) : self.MeikyoCD = max(0,self.MeikyoCD - time)
+        if (self.IkishotenCD > 0) : self.IkishotenCD = max(0,self.IkishotenCD - time)
+        if (self.KaeshiCD > 0) : self.KaeshiCD = max(0,self.KaeshiCD - time)
+        if (self.SeneiCD > 0) : self.SeneiCD = max(0,self.SeneiCD - time)
+ 
+
+    def updateTimer(self, time):
+        super().updateTimer(time)
+        if (self.FugetsuTimer > 0) : self.FugetsuTimer = max(0,self.FugetsuTimer - time)
+        if (self.FukaTimer > 0) : self.FukaTimer = max(0,self.FukaTimer - time)
+        if (self.HiganbanaTimer > 0) : self.HiganbanaTimer = max(0,self.HiganbanaTimer - time)

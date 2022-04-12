@@ -1899,7 +1899,7 @@ def AddKenki(Player, Add):
 #Requirement
 
 def KenkiRequirement(Player, Spell): #By default present in Samurai spell requirements
-    return Spell.KenkiCost >= Player.KenkiGauge
+    return Spell.KenkiCost <= Player.KenkiGauge
 
 def MeikyoRequirement(Player, Spell):
     return Player.MeikyoStack > 0
@@ -1914,7 +1914,7 @@ def SeneiRequirement(Player, Spell):
     return Player.SeneiCD <= 0
 
 def OgiNamikiriRequirement(Player, Spell):
-    return Player.OginamikiriReady
+    return Player.OgiNamikiriReady
 
 def KaeshiNamikiriRequirement(Player, Spell):
     return Player.KaeshiNamikiriReady
@@ -1923,11 +1923,14 @@ def ShohaRequirement(Player, Spell):
     return Player.MeditationGauge == 3
 
 def MidareRequirement(Player, Spell):
-    return Player.Sen and Player.Ka and Player.Getsu
+    print(Player.Setsu)
+    print(Player.Ka)
+    print(Player.Getsu)
+    return Player.Setsu and Player.Ka and Player.Getsu
 
 def HiganbanaRequirement(Player, Spell):
     i = 0
-    if Player.Sen : i +=1
+    if Player.Setsu : i +=1
     if Player.Ka : i+=1
     if Player.Getsu : i +=1
     return i == 1
@@ -1951,15 +1954,18 @@ def ApplyMeikyo(Player, Enemy):
     Player.MeikyoStack -= 1
     Player.EffectList.append(MeikyoEffect)
     Player.EffectCDList.append(MeikyoCheck) #Could be a problem if do it before finishing 3 weaponskills
+    Player.Meikyo = 3
+
 
 def ApplyIkishoten(Player, Enemy):
     AddKenki(Player, 50)
     Player.IkishotenCD = 120
-    Player.IgoNamikiriReady = True
+    Player.OgiNamikiriReady = True
 
 def ApplyMidare(Player, Enemy):
     Player.MeditationGauge = min(3, Player.MeditationGauge + 1)
     Player.DirectCrit = True
+    Player.Setsu, Player.Ka, Player.Getsu = False, False, False
 
 def ApplyKaeshi(Player, Enemy):
     Player.DirectCrit = True
@@ -1977,18 +1983,19 @@ def ApplyHiganbana(Player, Enemy):
     Player.MeditationGauge = min(3, Player.MeditationGauge + 1)
 
 
-    if Player.Sen : Player.Sen = False
+    if Player.Setsu : Player.Setsu = False
     if Player.Ka : Player.Ka = False
     if Player.Getsu : Player.Getsu = False
 
 def ApplyOgiNamikiri(Player, Enemy):
+    print("hey")
     Player.KaeshiNamikiriReady = True
     Player.OgiNamikiriReady = False
     Player.DirectCrit = True
     Player.MeditationGauge = min(3, Player.MeditationGauge + 1)
 
 def ApplyKaeshiNamikiri(Player, Enemy):
-    Player.OgiNamikiriReady = False
+    Player.KaeshiNamikiriReady = False
     Player.DirectCrit = True
 
 def ApplyShoha(Player, Enemy):
@@ -2096,7 +2103,7 @@ def HiganbanaCheck(Player, Enemy):
         Player.EffectCDList.remove(HiganbanaCheck)
 
 def MeikyoCheck(Player, Enemy):
-    if Player.MeikyoStack == 0:
+    if Player.Meikyo == 0:
         Player.EffectList.remove(MeikyoEffect)
         Player.EffectCDList.remove(MeikyoCheck)
 
@@ -2113,7 +2120,7 @@ def MeikyoStackCheck(Player, Enemy):
 
 #GCD
 Midare = SamuraiSpell(9, True, 1.3, 2.5, 600, ApplyMidare, [MidareRequirement], 0)
-Kaeshi = SamuraiSpell(10, True, 1.3, 2.5, 600, ApplyKaeshi, [KaeshiRequirement], 0)
+Kaeshi = SamuraiSpell(10, True, 1.3, 2.5, 600, ApplyKaeshi, [], 0)
 OgiNamikiri = SamuraiSpell(13, True, 1.8, 2.5, 800, ApplyOgiNamikiri, [OgiNamikiriRequirement], 0)
 KaeshiNamikiri = SamuraiSpell(14, True, 1.3, 1, 800, ApplyKaeshiNamikiri, [KaeshiNamikiriRequirement], 0)
 
