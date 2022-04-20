@@ -1,0 +1,44 @@
+Remaining Jobs to implement:
+-SMN
+-AST
+-SGE
+-GNB
+-PLD
+-SAM
+-DRG
+-MNK
+-RPR
+-BRD
+-DNC
+Already Done:
+-MCH (have to fix bug, more under)
+-BLM
+-SCH
+-DRK
+-NIN (fix bugs)
+-RDM
+-WAR
+-WHM
+
+
+Missing 40 Potency from MCH opener, maybe from Hypercharge?
+
+
+Other Stuff to do:
+-implement Lucid Dreaming
+-Fix blackmage
+-Implement Graph of DPS and Potency/sec - DONE
+-Optimize computation (Remove DPS computation for no potency spell and remove ManaRequirement if not necessary)
+-Add Autos
+-Make UI? 
+-Add AI to optimize?
+-Add heals
+-Add HP
+-Add Enemy Ability
+-Add Timeline
+-Discord Bot?
+-Finish Adding all job
+-Damage for tanks?
+-Make classes for Casters/Melee/Tanks/Ranged (For similar classes)
+-Add scaling GCD
+-Add Live Option (checks what spell you are doing and tells you Average DPS you should have)
