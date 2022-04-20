@@ -25,6 +25,7 @@ Missing 40 Potency from MCH opener, maybe from Hypercharge?
 
 
 Other Stuff to do:
+-implement auto-attack
 -implement Lucid Dreaming
 -Fix blackmage
 -Implement Graph of DPS and Potency/sec - DONE

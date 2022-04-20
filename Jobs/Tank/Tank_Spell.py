@@ -38,3 +38,12 @@ class DRKSkill(TankSpell):
         super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
 
         self.BloodCost = BloodCost
+#########################################
+########## PALADIN SKILLS  ##############
+#########################################
+
+class PaladinSpell(TankSpell):
+
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+
