@@ -8,7 +8,7 @@ import copy
 #Special
 def AddKenki(Player, Add):
     Player.KenkiGauge = min(100, Player.KenkiGauge + Add)
-    print("Kenki Gauge : " + str(Player.KenkiGauge))
+    #print("Kenki Gauge : " + str(Player.KenkiGauge))
 
 
 #Requirement
@@ -38,9 +38,9 @@ def ShohaRequirement(Player, Spell):
     return Player.MeditationGauge == 3
 
 def MidareRequirement(Player, Spell):
-    print(Player.Setsu)
-    print(Player.Ka)
-    print(Player.Getsu)
+    #print(Player.Setsu)
+    #print(Player.Ka)
+    #print(Player.Getsu)
     return Player.Setsu and Player.Ka and Player.Getsu
 
 def HiganbanaRequirement(Player, Spell):
@@ -103,7 +103,7 @@ def ApplyHiganbana(Player, Enemy):
     if Player.Getsu : Player.Getsu = False
 
 def ApplyOgiNamikiri(Player, Enemy):
-    print("hey")
+    #print("hey")
     Player.KaeshiNamikiriReady = True
     Player.OgiNamikiriReady = False
     Player.DirectCrit = True
