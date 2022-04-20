@@ -3,10 +3,10 @@ from Enemy import Enemy
 import matplotlib.pyplot as plt
 import numpy as np
 
-from Jobs.DarkKnight_Player import Esteem, DarkKnight
-from Jobs.Machinist_Player import Queen, Machinist
-from Jobs.Warrior_Player import Warrior
-from Jobs.Samurai_Player import Samurai
+from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem, DarkKnight
+from Jobs.Ranged.Machinist.Machinist_Player import Queen, Machinist
+from Jobs.Tank.Warrior.Warrior_Player import Warrior
+from Jobs.Melee.Samurai.Samurai_Player import Samurai
 
 class NoMoreAction(Exception):#Exception called if a spell fails to cast
     pass
@@ -90,6 +90,8 @@ class Fight:
                             #So check if Animation Lock, if Casting or if GCDLock
                             if(not (player.oGCDLock or player.GCDLock or player.Casting)):
                                 #If we in here, then we can cast the next spell
+                                #print(player)
+                                #input("is casting gcd at : " + str(self.TimeStamp))
 
                                 player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)#Cast the spell
                                 #print("Spell with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(self.self.TimeStamp) )

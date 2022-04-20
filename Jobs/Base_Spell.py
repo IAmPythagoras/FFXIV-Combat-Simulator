@@ -1,8 +1,8 @@
 import copy
 
 from Fight import ComputeDamage
-from Jobs.Machinist_Player import Queen
-from Jobs.DarkKnight_Player import Esteem, DarkKnight
+from Jobs.Ranged.Machinist.Machinist_Player import Queen
+from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
 
 
 class FailedToCast(Exception):#Exception called if a spell fails to cast

@@ -1,30 +1,31 @@
 from Enemy import *
 from Fight import *
 
-from Jobs.Base_Spell import *
-from Jobs.Base_Player import *
+from Jobs.Base_Spell import WaitAbility, Potion
 
+from Jobs.Caster.Caster_Spell import SwiftCast
+from Jobs.Caster.Blackmage.BlackMage_Spell import * 
+from Jobs.Caster.Redmage.Redmage_Spell import *
+from Jobs.Caster.Blackmage.BlackMage_Player import * 
+from Jobs.Caster.Redmage.Redmage_Player import *
 
-from Jobs.BlackMage_Spell import * 
-from Jobs.Scholar_Spell import *
-from Jobs.Redmage_Spell import *
-from Jobs.Machinist_Spell import *
-from Jobs.Ninja_Spell import *
-from Jobs.DarkKnight_Spell import *
-from Jobs.Warrior_Spell import *
-from Jobs.Whitemage_Spell import *
-from Jobs.Samurai_Spell import *
+from Jobs.Healer.Scholar.Scholar_Spell import *
+from Jobs.Healer.Whitemage.Whitemage_Spell import *
+from Jobs.Healer.Scholar.Scholar_Player import *
+from Jobs.Healer.Whitemage.Whitemage_Player import *
 
-from Jobs.BlackMage_Player import *
-from Jobs.Scholar_Player import *
-from Jobs.Redmage_Player import *
-from Jobs.Machinist_Player import *
-from Jobs.Ninja_Player import *
-from Jobs.DarkKnight_Player import *
-from Jobs.Warrior_Player import *
-from Jobs.Whitemage_Player import *
-from Jobs.Samurai_Player import *
+from Jobs.Ranged.Machinist.Machinist_Spell import *
+from Jobs.Ranged.Machinist.Machinist_Player import *
 
+from Jobs.Tank.DarkKnight.DarkKnight_Spell import *
+from Jobs.Tank.Warrior.Warrior_Spell import *
+from Jobs.Tank.DarkKnight.DarkKnight_Player import *
+from Jobs.Tank.Warrior.Warrior_Player import *
+
+from Jobs.Melee.Samurai.Samurai_Spell import *
+from Jobs.Melee.Ninja.Ninja_Spell import *
+from Jobs.Melee.Samurai.Samurai_Player import *
+from Jobs.Melee.Ninja.Ninja_Player import *
 
 Dummy = Enemy()
 
@@ -40,20 +41,18 @@ WARStat = {"MainStat": 2521, "WD":120, "Det" : 2130, "Ten" : 1018, "SS": 400, "C
 WHMStat = {"MainStat": 2571, "WD":120, "Det" : 1830, "Ten" : 400, "SS": 489, "Crit" : 2301, "DH" : 940}
 SAMStat = {"MainStat": 2563, "WD":120, "Det" : 1654, "Ten" : 400, "SS": 579, "Crit" : 2310, "DH" : 1217}
 
-
 Event = Fight([], Dummy)
-
 
 #DRKPlayer = DarkKnight(2.41, DRKAction, [], [DarksideEffect], Event)
 
-BLMOpener = [Sharp, WaitAbility(16.5), F3, T3, F4, Triple, F4, Potion, F4, Amp, Ley, F4, Triple, Despair, Mana, F4, Swift, Despair, Transpo, Para, Xeno, T3, F3, F4, F4, F4, Despair, Xeno, Transpo, Para]
-SCHOpener = [WaitAbility(17), Potion, WaitAbility(1), Broil, Biolysis, Aetherflow, Broil, Swift, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Broil, Broil, Broil, Broil]
-RDMOpener = [WaitAbility(15), Verthunder, Verareo, Swift, Acceleration, Verthunder, Potion, Verthunder, Embolden, Manafication, Riposte, Fleche, Zwerchhau, Contre, Redoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verfire, Verthunder, Verstone, Verareo, Verfire, Verthunder,Verfire, Verthunder,Verfire,Fleche]
+BLMOpener = [Sharp, WaitAbility(16.5), F3, T3, F4, Triple, F4, Potion, F4, Amp, Ley, F4, Triple, Despair, Mana, F4, SwiftCast, Despair, Transpo, Para, Xeno, T3, F3, F4, F4, F4, Despair, Xeno, Transpo, Para]
+SCHOpener = [WaitAbility(17), Potion, WaitAbility(1), Broil, Biolysis, Aetherflow, Broil, SwiftCast, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Broil, Broil, Broil, Broil]
+RDMOpener = [WaitAbility(15), Verthunder, Verareo, SwiftCast, Acceleration, Verthunder, Potion, Verthunder, Embolden, Manafication, Riposte, Fleche, Zwerchhau, Contre, Redoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verfire, Verthunder, Verstone, Verareo, Verfire, Verthunder,Verfire, Verthunder,Verfire,Fleche]
 MCHOpener = [WaitAbility(15), Reassemble, WaitAbility(2.25), Potion, WaitAbility(1.5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, Reassemble, WaitAbility(1), Wildfire, ChainSaw, Automaton,WaitAbility(1), Hypercharge, HeatBlast, Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet, Drill, SplitShot,GaussRound, SlugShot,Ricochet,CleanShot,GaussRound,SplitShot, SlugShot,CleanShot,SlugShot]
 NINOpener = [WaitAbility(18.5), Suiton, Kassatsu, SpinningEdge, Potion, GustSlash, Mug, Bunshin, AeolianEdge, WaitAbility(1.75), TrickAttack, Kamaitachi, Hyosho, Raiton, TenChiJin, Meisui, Raiju, Bhavacakra,Raiju, Bhavacakra, SpinningEdge, Raiton, Raiju]
 DRKOpener = [WaitAbility(19.25), BloodWeapon, HardSlash, EdgeShadow, Delirium, SyphonStrike, Potion, Souleater, LivingShadow, SaltedEarth, HardSlash, Shadowbringer, EdgeShadow, Bloodspiller, CarveSpit, Plunge, Bloodspiller, Shadowbringer, EdgeShadow, SyphonStrike, Plunge, EdgeShadow, HardSlash, SyphonStrike, Souleater,HardSlash, SyphonStrike, Souleater,HardSlash, SyphonStrike, Souleater,HardSlash, SyphonStrike]
 WAROpener = [WaitAbility(20), Tomahawk, Infuriate, HeavySwing, Maim, WaitAbility(1),Potion, StormEye, InnerChaos, Upheaval, InnerRelease, PrimalRend, Onslaught, FellCleave,Onslaught, FellCleave,Onslaught, FellCleave, Infuriate, InnerChaos, HeavySwing,Maim, StormPath, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, Upheaval, StormEye]
-WHMOpener = [WaitAbility(17), Potion, WaitAbility(1), Glare, Dia, Glare, Glare, Swift, Glare, Assize, PresenceOfMind, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Dia, Glare, Glare, Glare, Glare ]
+WHMOpener = [WaitAbility(17), Potion, WaitAbility(1), Glare, Dia, Glare, Glare, SwiftCast, Glare, Assize, PresenceOfMind, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Dia, Glare, Glare, Glare, Glare ]
 SAMOpener = [WaitAbility(11), Meikyo, WaitAbility(8.25), Gekko, Potion, Kasha, Ikishoten, Yukikaze,Shinten, Midare,Shinten, Kaeshi, Senei, Meikyo, Gekko, Higanbana, Kasha, OgiNamikiri, KaeshiNamikiri, Shoha, Gekko, Shinten, Hakaze, Yukikaze, Midare, Kaeshi, Hakaze, Yukikaze, Shinten,Hakaze, Jinpu]
 
 BLMPlayer = BlackMage(2.5, BLMOpener, [], [AstralFire, UmbralIce], Event, BLMStat)

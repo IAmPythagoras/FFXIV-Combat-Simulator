@@ -11,7 +11,6 @@ class Player:
         self.DOTList = []
         self.NextSpell = 0
         self.CastingSpell = []
-        #self.CastingTarget = []
         self.CurrentFight = CurrentFight
         self.ManaTick = 1.5 #Starts Mana tick at this value
 
@@ -46,8 +45,7 @@ class Player:
 
 
     def updateTimer(self, time):
-        #print("Updated Timer : " + str(self.oGCDLockTimer))
-        #print(str(self.GCDLock) + str(self.oGCDLock) + str(self.Casting))
+        #input("Update called at : " + str(self.CurrentFight.TimeStamp))
         if (self.GCDLockTimer > 0) : self.GCDLockTimer = max(0, self.GCDLockTimer-time)
         if (self.oGCDLockTimer > 0) : self.oGCDLockTimer = max(0, self.oGCDLockTimer-time)
         if (self.CastingLockTimer > 0) : self.CastingLockTimer = max(0, self.CastingLockTimer-time)
