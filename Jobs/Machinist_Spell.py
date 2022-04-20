@@ -1,14 +1,10 @@
 #########################################
 ########## MACHINIST SPELL  #############
 #########################################
-
-
-class MachinistSpell(Spell):
-
-    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, WeaponSkill):
-        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
-
-        self.WeaponSkill = WeaponSkill #Boolean Variable
+from Jobs.Base_Spell import MachinistSpell, DOTSpell, empty, ManaRequirement
+from Jobs.Machinist_Player import Queen
+from Jobs.Base_Spell import WaitAbility
+Lock = 0.75
 
 #Special
 

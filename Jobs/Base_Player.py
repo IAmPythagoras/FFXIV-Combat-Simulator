@@ -73,3 +73,12 @@ def ManaRegenCheck(Player, Enemy):  #This function is there by default
     if Player.ManaTick <= 0:
         Player.ManaTick = 3
         Player.Mana = min(10000, Player.Mana + 200)
+
+
+
+
+
+
+
+
+

@@ -2,6 +2,8 @@
 ########## SCHOLAR PLAYER ###############
 #########################################
 
+from Jobs.Base_Player import Player
+
 class Scholar(Player):
 
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):

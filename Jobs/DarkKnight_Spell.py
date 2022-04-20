@@ -1,15 +1,10 @@
 #########################################
 ########## DARK KNIGHT SKILLS ###########
 #########################################
-
-class DRKSkill(Spell):
-    #A class for Dark Knight Skills containing all the relevant weaponskills/spells, cooldowns,
-    #as well as their effects and requirements. For now does not consider out of combo actions.
-
-    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, BloodCost, Effect, Requirement):
-        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
-
-        self.BloodCost = BloodCost
+from Jobs.Base_Spell import DRKSkill, DOTSpell, empty, ManaRequirement
+import copy
+from Jobs.DarkKnight_Player import Esteem
+Lock = 0.75
 
 def DarksideEffect(Player, Spell):
     if Player.DarksideTimer > 0:

@@ -2,17 +2,12 @@
 ########## WARRIOR Spell  ###############
 #########################################
 
+from Jobs.Base_Spell import WarriorSpell, empty, ManaRequirement
+Lock = 0.75
+
 def BeastGaugeRequirement(Player, Spell):
     RemoveBeast(Player, Spell.Cost)
     return Player.BeastGauge >= 0
-
-class WarriorSpell(Spell):
-
-    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, Cost):
-        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
-
-        self.Requirement += [BeastGaugeRequirement] 
-        self.Cost = Cost
 
 #Special
 

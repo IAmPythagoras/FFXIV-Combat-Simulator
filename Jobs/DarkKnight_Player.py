@@ -1,7 +1,7 @@
 #########################################
 ########## DARK KNIGHT PLAYER ###########
 #########################################
-
+from Jobs.Base_Player import Player
 class DarkKnight(Player):
     #A class for Dark Knight Players containing all effects and cooldowns relevant to the job.
 

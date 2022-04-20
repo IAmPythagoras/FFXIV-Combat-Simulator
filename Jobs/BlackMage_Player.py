@@ -1,7 +1,7 @@
 #########################################
 ########## BLACK MAGE PLAYER ############
 #########################################
-
+from Jobs.Base_Player import Player
 class BlackMage(Player):
     #This class will be blackmage object and will be the one used to simulate a black mage
 

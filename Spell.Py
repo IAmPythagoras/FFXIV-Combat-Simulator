@@ -1660,9 +1660,6 @@ class WarriorSpell(Spell):
 def AddBeast(Player, Gauge):
     Player.BeastGauge = min(100, Player.BeastGauge + Gauge)
 
-def RemoveBeast(Player, Gauge):
-    Player.BeastGauge -= Gauge #Caanot go under 0 cuz verify if enough gauge
-
 #Requirement
 
 def UpheavalRequirement(Player, Spell):
@@ -1910,9 +1907,6 @@ def AddKenki(Player, Add):
 
 
 #Requirement
-
-def KenkiRequirement(Player, Spell): #By default present in Samurai spell requirements
-    return Spell.KenkiCost <= Player.KenkiGauge
 
 def MeikyoRequirement(Player, Spell):
     return Player.MeikyoStack > 0

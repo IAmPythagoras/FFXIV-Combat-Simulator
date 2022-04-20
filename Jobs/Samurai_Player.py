@@ -2,6 +2,7 @@
 ########## SAMURAI PLAYER ###############
 #########################################
 
+from Jobs.Base_Player import Player
 
 class Samurai(Player):
 

@@ -1,8 +1,12 @@
 import math
 from Enemy import Enemy
 import matplotlib.pyplot as plt
-from Player import *
 import numpy as np
+
+from Jobs.DarkKnight_Player import Esteem, DarkKnight
+from Jobs.Machinist_Player import Queen, Machinist
+from Jobs.Warrior_Player import Warrior
+from Jobs.Samurai_Player import Samurai
 
 class NoMoreAction(Exception):#Exception called if a spell fails to cast
     pass
@@ -19,7 +23,8 @@ class Fight:
         self.TimeStamp = 0
     def PrintResult(self, time, TimeStamp):
 
-
+        print(self.PlayerList)
+        input()
         fig, axs = plt.subplots(1, 2, constrained_layout=True)
         axs[0].set_ylabel("DPS")
         axs[0].set_xlabel("Time (s)")
@@ -48,6 +53,7 @@ class Fight:
 
             
 
+            print(player)
             axs[0].plot(TimeStamp,player.DPSGraph, label=str(type(player)))
             axs[1].plot(TimeStamp,player.PotencyGraph, label=str(type(player)))
         
@@ -169,13 +175,22 @@ class Fight:
 
             #Post fight computations
 
-
-            for Player in self.PlayerList:
+            #print("LIST========================================================")
+            print(self.PlayerList)
+            input()
+            for Player in self.PlayerList:  
+                print(Player)
+                input(isinstance(Player, Queen))
+               # print(Player)
+                #print(isinstance(Player, DarkKnight))
                 if isinstance(Player, DarkKnight):
                     Player.TotalPotency += Player.EsteemPointer.TotalPotency    #Adds every damage done by Esteem to the dark knight
-                    self.PlayerList.remove(Player.EsteemPointer)
-                elif isinstance(Player, Queen):
+                if isinstance(Player, Queen):
+                    #print("removed queen=========================================")
                     self.PlayerList.remove(Player)
+                if isinstance(Player, Esteem):
+                    self.PlayerList.remove(Player)
+                
 
             self.PrintResult(self.TimeStamp, timeValue)
             

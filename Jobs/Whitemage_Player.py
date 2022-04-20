@@ -2,6 +2,8 @@
 ########## WHITEMAGE PLAYER #############
 #########################################
 
+from Jobs.Base_Player import Player
+
 class Whitemage(Player):
 
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):

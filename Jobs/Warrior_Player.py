@@ -2,6 +2,7 @@
 ########## WARRIOR PLAYER ###############
 #########################################
 
+from Jobs.Base_Player import Player
 
 class Warrior(Player):
 

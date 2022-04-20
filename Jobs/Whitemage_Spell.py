@@ -1,11 +1,9 @@
 #########################################
 ########## WHITEMAGE PLAYER #############
 #########################################
-
-
-class WhitemageSpell(Spell):
-    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
-        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+from Jobs.Base_Spell import WhitemageSpell, DOTSpell, empty, ManaRequirement
+import copy
+Lock = 0.75
 
 #Requirement
 

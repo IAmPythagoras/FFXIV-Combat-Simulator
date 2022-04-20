@@ -1,15 +1,9 @@
 #########################################
 ########## REDMAGE PLAYER ###############
 #########################################
-
-
-class RedmageSpell(Spell):
-
-    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, BlackCost, WhiteCost):
-        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
-
-        self.BlackCost = BlackCost
-        self.WhiteCost = WhiteCost
+from Jobs.Base_Spell import RedmageSpell, empty, ManaRequirement
+from Jobs.BlackMage_Spell import SwiftCastEffect
+Lock = 0.75
 #Special
 
 def Addmana(Player, WhiteMana, BlackMana):

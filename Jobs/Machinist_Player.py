@@ -1,7 +1,7 @@
 #########################################
 ########## MACHINIST PLAYER #############
 #########################################
-
+from Jobs.Base_Player import Player
 
 class Machinist(Player):
     

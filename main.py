@@ -4,9 +4,8 @@ from Fight import *
 from Jobs.Base_Spell import *
 from Jobs.Base_Player import *
 
-print(Spell)
 
-from Jobs.BlackMage_Spell import *
+from Jobs.BlackMage_Spell import * 
 from Jobs.Scholar_Spell import *
 from Jobs.Redmage_Spell import *
 from Jobs.Machinist_Spell import *
@@ -67,6 +66,6 @@ WARPlayer = Warrior(2.5, WAROpener, [], [SurgingTempestEffect], Event, WARStat)
 WHMPlayer = Whitemage(2.5, WHMOpener, [], [], Event, WHMStat)
 SAMPlayer = Samurai(2.5, SAMOpener, [], [], Event, SAMStat)
 #NinjaPlayer = Ninja(2.5, NINAction, [], [AutoEffect, NinjutsuTimerEffect], Event)
-Event.PlayerList = [SAMPlayer] #BLMPlayer, SCHPlayer, RDMPlayer, MCHPlayer ,DRKPlayer,WARPlayer,WHMPlayer
+Event.PlayerList = [BLMPlayer, SCHPlayer, RDMPlayer, MCHPlayer ,DRKPlayer,WARPlayer,WHMPlayer,SAMPlayer] #BLMPlayer, SCHPlayer, RDMPlayer, MCHPlayer ,DRKPlayer,WARPlayer,WHMPlayer,SAMPlayer
 Event.SimulateFight(0.01, 100, 20)
 

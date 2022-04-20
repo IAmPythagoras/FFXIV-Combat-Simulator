@@ -2,14 +2,9 @@
 ########## SAMURAI PLAYER ###############
 #########################################
 
-
-class SamuraiSpell(Spell):
-    def __init__(self, id, GCD, CastTime, RecastTime, Potency, Effect, Requirement, KenkiCost):
-        super().__init__(id, GCD, CastTime, RecastTime, Potency, 0, Effect, Requirement)
-
-        self.KenkiCost = KenkiCost
-        self.Requirement += [KenkiRequirement]
-
+from Jobs.Base_Spell import SamuraiSpell, DOTSpell, empty, ManaRequirement
+Lock = 0.75
+import copy
 #Special
 def AddKenki(Player, Add):
     Player.KenkiGauge = min(100, Player.KenkiGauge + Add)

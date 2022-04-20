@@ -1,13 +1,8 @@
 #########################################
 ########## NINJA PLAYER #################
 #########################################
-
-class NinjaSpell(Spell):
-
-    def __init__(self, id, WeaponSkill, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
-        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
-        self.WeaponSkill = WeaponSkill
-
+from Jobs.Base_Spell import NinjaSpell, DOTSpell, empty, ManaRequirement
+Lock = 0.75
 
 #Requirement
 def TenChiJinRequirement(Player, Spell):

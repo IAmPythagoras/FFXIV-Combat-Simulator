@@ -1,16 +1,6 @@
-from Base_Spell import *
-
-class BLMSpell(Spell):
-    #This class will be all BlackMage Ability
-    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, IsFire, IsIce, Effect, Requirement):
-        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)#Calls constructor of Spell
-
-        #BLM specific part
-
-        self.IsFire = IsFire
-        self.IsIce = IsIce
-
-#The following will be all relevant Black Mage spell, requirement check, effect, etc.
+from Jobs.Base_Spell import BLMSpell, DOTSpell, empty, ManaRequirement
+import copy
+Lock = 0.75
 
 #Requirement
 def AmplifierRequirement(Player, Spell):

@@ -1,6 +1,13 @@
+import copy
+
+from Fight import ComputeDamage
+from Jobs.Machinist_Player import Queen
+from Jobs.DarkKnight_Player import Esteem, DarkKnight
+
+
 class FailedToCast(Exception):#Exception called if a spell fails to cast
     pass
-print("hey")
+
 class Spell:
     #This class is any Spell, it will have some subclasses to take Job similar spell, etc.
 
@@ -90,6 +97,12 @@ class DOTSpell(Spell):
             self.DOTTimer = max(0, self.DOTTimer-TimeUnit)
 #Function to generate Waiting
 
+def ManaRequirement(player, Spell):
+    if player.Mana >= Spell.ManaCost :
+        player.Mana -= Spell.ManaCost   #ManaRequirement is the only Requirement that actually removes Ressources
+        return True
+    return False
+
 def empty(Player, Enemy):
     pass
 
@@ -109,3 +122,122 @@ def PotionCheck(Player, Enemy):
         Player.EffectCDList.remove(PotionCheck)
 
 Potion = Spell(-2, False, 1, 1, 0, 0, ApplyPotion, [])
+
+
+#########################################
+########## BLACKMAGE SPELL ##############
+#########################################
+class BLMSpell(Spell):
+    #This class will be all BlackMage Ability
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, IsFire, IsIce, Effect, Requirement):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)#Calls constructor of Spell
+
+        #BLM specific part
+
+        self.IsFire = IsFire
+        self.IsIce = IsIce
+
+
+#########################################
+########## DARK KNIGHT SKILLS ###########
+#########################################
+
+class DRKSkill(Spell):
+    #A class for Dark Knight Skills containing all the relevant weaponskills/spells, cooldowns,
+    #as well as their effects and requirements. For now does not consider out of combo actions.
+
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, BloodCost, Effect, Requirement):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+
+        self.BloodCost = BloodCost
+
+#########################################
+########## NINJA SPELL  #################
+#########################################
+
+class NinjaSpell(Spell):
+
+    def __init__(self, id, WeaponSkill, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+        self.WeaponSkill = WeaponSkill
+
+
+#########################################
+########## SCHOLAR SPELL  ###############
+#########################################
+
+class ScholarSpell(Spell):
+
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+
+#########################################
+########## REDMAGE SPELL ################
+#########################################
+
+
+class RedmageSpell(Spell):
+
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, BlackCost, WhiteCost):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+
+        self.BlackCost = BlackCost
+        self.WhiteCost = WhiteCost
+
+#########################################
+########## MACHINIST SPELL  #############
+#########################################
+
+
+class MachinistSpell(Spell):
+
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, WeaponSkill):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+
+        self.WeaponSkill = WeaponSkill #Boolean Variable
+
+
+#########################################
+########## WARRIOR Spell  ###############
+#########################################
+
+def BeastGaugeRequirement(Player, Spell):
+    RemoveBeast(Player, Spell.Cost)
+    return Player.BeastGauge >= 0
+
+class WarriorSpell(Spell):
+
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, Cost):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+
+        self.Requirement += [BeastGaugeRequirement] 
+        self.Cost = Cost
+
+def RemoveBeast(Player, Gauge):
+    Player.BeastGauge -= Gauge #Caanot go under 0 cuz verify if enough gauge
+
+
+#########################################
+########## WHITEMAGE SPELL ##############
+#########################################
+
+
+class WhitemageSpell(Spell):
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+
+
+#########################################
+########## SAMURAI PLAYER ###############
+#########################################
+
+
+class SamuraiSpell(Spell):
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, Effect, Requirement, KenkiCost):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, 0, Effect, Requirement)
+
+        self.KenkiCost = KenkiCost
+        self.Requirement += [KenkiRequirement]
+
+def KenkiRequirement(Player, Spell): #By default present in Samurai spell requirements
+    return Spell.KenkiCost <= Player.KenkiGauge

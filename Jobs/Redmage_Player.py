@@ -1,6 +1,7 @@
 #########################################
 ########## REDMAGE PLAYER ###############
 #########################################
+from Jobs.Base_Player import Player
 
 class Redmage(Player):
 

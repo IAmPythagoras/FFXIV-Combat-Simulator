@@ -1,7 +1,7 @@
 #########################################
 ########## NINJA PLAYER #################
 #########################################
-
+from Jobs.Base_Player import Player
 
 class Ninja(Player):
 
