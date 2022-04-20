@@ -11,6 +11,9 @@ All players are assumed to be BiS and I ask it to do the opener I could find on 
 
 The program will output a text of each player's damage and a graph showing the DPS over time.
 
+Note that the outputed DPS will be lower than expected, since some players are not doing damage over the whole duration. This is
+simply for example's sake.
+
 ![outpout3](https://user-images.githubusercontent.com/62820030/164307505-a1ae397b-98cb-4d0b-8e96-bd32c76b0e70.PNG)
 
 
