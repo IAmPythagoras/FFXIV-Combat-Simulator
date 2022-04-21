@@ -18,7 +18,7 @@ def ApplySwiftCast(Player, Enemy):
 def SwiftCastEffect(Player, Spell):
     if Spell.GCD and Spell.CastTime != 0: 
         Spell.CastTime = 0
-        Player.EffectList.remove(SwiftCastEffect)
+        Player.EffectToRemove.append(SwiftCastEffect)
 
 SwiftCast = CasterSpell(1, False,0, Lock, 0, 0, ApplySwiftCast, [SwiftCastRequirement])
 

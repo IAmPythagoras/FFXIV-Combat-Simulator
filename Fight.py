@@ -131,6 +131,12 @@ class Fight:
                     #print(player.EffectCDList)
                     for CDCheck in player.EffectCDList:
                         CDCheck(player, self.Enemy)
+                    for remove in player.EffectToRemove:
+                        player.EffectCDList.remove(remove) #Removing relevant spell
+
+                    player.EffectToRemove = []
+                
+
 
                 #We will now update any timer each player and the enemy has
 

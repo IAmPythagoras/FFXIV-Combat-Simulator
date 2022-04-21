@@ -33,7 +33,7 @@ class Player:
 
         self.MultDPSBonus = 1   #Mult bonus for DPS (Ex: BLM.MultDPSBonus = 1.3 * 1.2 -> Enochian * Magik and Mend)
 
-
+        self.EffectToRemove = []
 
         #Used for DPS graph and Potency/S graph
 

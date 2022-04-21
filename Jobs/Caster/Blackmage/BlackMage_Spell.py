@@ -142,36 +142,26 @@ def T3ProckEffect(Player, Spell):
         Spell.CastTime = 0
         Spell.ManaCost = 0
         Player.T3Prock = 0
-
-        #Finding Multiplying bonus so far
-
-        Mult = Spell.Potency/50 #40 is based potency of Thunder 3
-
-        NewBonus = 350 * Mult #To find new bonus
-
-        Spell.Potency += NewBonus
-
-        Player.EffectList.remove(T3ProckEffect)
+        Spell.Potency += 350
         
     Player.SharpCastGoThroughOnce = True
+
 def F3ProckEffect(Player, Spell):
 
     if (Spell.id == 2 and Player.SharpCastGoThroughOnce):
         Spell.CastTime = 0
         Spell.ManaCost = 0
-        Player.EffectList.remove(F3ProckEffect)
 
     Player.SharpCastGoThroughOnce = True
 
 def UmbralHeartEffect(Player, Spell):
     if (not (isinstance(Spell, BLMSpell))) : return False
+
     if(Player.UmbralHeartStack >= 1 and Spell.IsFire and Player.AstralFireStack >= 1):
         if(Spell.id != 5):
             Spell.ManaCost/=2
             Player.UmbralHeartStack-=1
-    elif(Player.UmbralHeartStack <= 0):
-        Player.UmbralHeartStack = 0
-        Player.EffectList.remove(UmbralHeartEffect)
+        #Player.EffectList.remove(UmbralHeartEffect)
 
 
 def PotionEffect(Player, Spell):    #This effect is only so it can be seen
@@ -263,6 +253,7 @@ def AddAstralFire3(Player, Enemy):#Astral Fire 3
     Player.UmbralIceStack = 0
     if Player.AFUITimer <= 0: Player.EffectCDList.append(AFUICheck)
     Player.AFUITimer = 15
+    if F3ProckEffect in Player.EffectList : Player.EffectList.remove(F3ProckEffect)
 
 def AddUmbralIce3(Player, Enemy):#Add Umbral Ice 3
     Player.UmbralIceStack = 3
@@ -301,7 +292,6 @@ def ApplyManaFront(Player,Enemy):
 
 def ApplyBlizzard4(Player,Enemy):
     Player.UmbralHeartStack = 3
-    Player.EffectList.append(UmbralHeartEffect)
     Player.Paradox = True
 
 def ApplyThunder3(Player,Enemy):
@@ -309,6 +299,9 @@ def ApplyThunder3(Player,Enemy):
         Player.T3 = copy.deepcopy(T3DOT)
         Player.DOTList.append(Player.T3)
     if (not (Thunder3DotCheck in Player.EffectCDList) ): Player.EffectCDList.append(Thunder3DotCheck)
+
+    if T3ProckEffect in Player.EffectList : Player.EffectList.remove(T3ProckEffect)
+
     Player.T3Timer = 30
 
 def ApplyTranspose(Player, Enemy):

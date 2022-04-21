@@ -65,14 +65,12 @@ def ApplyCircleScorn(Player, Enemy):
     Player.CircleScornTimer = 15
     Player.EffectCDList.append(CircleScornDOTCheck)
 
-def ApplyFastBlade(Player, Enemy):
-    if not (FastBladeCombo in Player.EffectList) : Player.EffectList.append(FastBladeCombo)
-
 def ApplyRequestACat(Player, Enemy):
     Player.RequestACatCD = 60
     Player.RequestACat = True
     Player.RequestACatStack = 5
     Player.EffectList.append(RequestACatEffect)
+    Player.EffectCDList.append(RequestACatCheck)
 
 def ApplyBladeFaith(Player, Enemy):
     Player.BladeFaith = False
@@ -88,8 +86,13 @@ def ApplyBladeValor(Player, Enemy):
 def ApplyConfetti(Player, Enemy):
     Player.RequestACatStack = 0
     Player.RequestACatStack = False
-    Player.EffectList.remove(RequestACatEffect)
     Player.BladeFaith = True
+
+#Combo Action
+
+def ApplyFastBlade(Player, Enemy):
+    if not (FastBladeCombo in Player.EffectList) : Player.EffectList.append(FastBladeCombo)
+
 
 #Effect
 
@@ -98,10 +101,6 @@ def RequestACatEffect(Player, Spell):
         Spell.Potency += 270
         Player.RequestACatStack -= 1
 
-        if Player.RequestACatStack == 0:
-            Player.RequestACat = False
-            Player.EffectList.remove(RequestACatEffect)
-            Player.BladeFaith = True
 
 
 #Combo Action
@@ -109,14 +108,14 @@ def RequestACatEffect(Player, Spell):
 def FastBladeCombo(Player, Spell):
     if Spell.id == RiotBlade.id:
         Spell.Potency += 130
-        Player.EffectList.remove(FastBladeCombo)
+        Player.EffectToRemove.append(FastBladeCombo)
         Player.EffectList.append(RiotBladeCombo)
 
 def RiotBladeCombo(Player, Spell):
     if Spell.id == RoyalAuthority.id:
         Spell.Potency += 290
         Player.SwordOathStack += 3
-        Player.EffectList.remove(RiotBladeCombo)
+        Player.EffectToRemove.append(RiotBladeCombo)
     elif Spell.id == GoringBlade.id:
         #Apply dot
         if Player.GoringDOT != None:
@@ -124,21 +123,28 @@ def RiotBladeCombo(Player, Spell):
             Player.EffectCDList.append(GoringDOTCheck)
             Player.DOTList.append(Player.GoringDOT)
         Player.GoringDOTTimer = 21
-        Player.EffectList.remove(RiotBladeCombo)
         Spell.Potency += 150
+        Player.EffectToRemove.append(RiotBladeCombo)
 
 
 #Check
 
+def RequestACatCheck(Player, Enemy):
+    if Player.RequestACatStack == 0:
+        Player.RequestACat = False
+        Player.EffectList.remove(RequestACatEffect)
+        Player.EffectToRemove.append(RequestACatCheck)
+        Player.BladeFaith = True
+
 def FightOrFlightCheck(Player, Enemy):
     if Player.FightOrFlighTimer <= 0:
         Player.MultDPSBonus /= 1.25
-        Player.EffectCDList.remove(FightOrFlightCheck)
+        Player.EffectToRemove.append(FightOrFlightCheck)
 
 def InterveneStackCheck(Player, Enemy):
     if Player.InterveneCD <= 0:
         if Player.InterveneStack == 1:
-            Player.EffectCDList.remove(InterveneStackCheck)
+            Player.EffectToRemove.append(InterveneStackCheck)
         else:
             Player.InterveneCD = 30
         Player.InterveneStack += 1
@@ -147,12 +153,12 @@ def CircleScornDOTCheck(Player, Enemy):
     if Player.CircleScornTimer <= 0:
         Player.DOTList.remove(Player.CircleScornDOT)
         Player.CircleScornDOT = None
-        Player.EffectCDList.remove(CircleScornDOTCheck)
+        Player.EffectToRemove.append(CircleScornDOTCheck)
 
 def GoringDOTCheck(Player, Enemy):
     if Player.GoringDOTTimer <= 0:
         Player.DOTList.remove(Player.GoringDOT)
-        Player.EffectCDList.remove(GoringDOTCheck)
+        Player.EffectToRemove.append(GoringDOTCheck)
         Player.GoringDOT = None
 
 

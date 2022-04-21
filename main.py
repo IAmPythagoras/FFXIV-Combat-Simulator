@@ -62,7 +62,7 @@ SAMOpener = [WaitAbility(11), Meikyo, WaitAbility(8.25), Gekko, Potion, Kasha, I
 PLDOpener = [WaitAbility(18), FastBlade, FightOrFlight, RiotBlade, GoringBlade, FastBlade, Potion, RiotBlade, CircleScorn, Intervene, RoyalAuthority, Expiacion, RequestACat, Atonement, Intervene, Atonement, Atonement, FastBlade, RiotBlade, GoringBlade, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti, WaitAbility(1.75),CircleScorn, BladeFaith, WaitAbility(1.75), Expiacion,BladeTruth, BladeValor ]
 
 
-BLMPlayer = BlackMage(2.5, BLMOpener, [], [AstralFire, UmbralIce], Event, BLMStat)
+BLMPlayer = BlackMage(2.5, BLMOpener, [], [AstralFire, UmbralIce,UmbralHeartEffect], Event, BLMStat)
 SCHPlayer = Scholar(2.5, SCHOpener, [], [], Event, SCHStat)
 RDMPlayer = Redmage(2.5, RDMOpener, [], [DualCastEffect], Event, RDMStat)
 MCHPlayer = Machinist(2.5, MCHOpener, [], [], Event, MCHStat)
@@ -73,6 +73,6 @@ WHMPlayer = Whitemage(2.5, WHMOpener, [], [], Event, WHMStat)
 SAMPlayer = Samurai(2.5, SAMOpener, [], [], Event, SAMStat)
 PLDPlayer = Paladin(2.5, PLDOpener, [], [], Event, PLDStat)
 #NinjaPlayer = Ninja(2.5, NINAction, [], [AutoEffect, NinjutsuTimerEffect], Event)
-Event.PlayerList = [BLMPlayer, SCHPlayer, RDMPlayer, MCHPlayer ,DRKPlayer,WHMPlayer,SAMPlayer,PLDPlayer] #BLMPlayer, SCHPlayer, RDMPlayer, MCHPlayer ,DRKPlayer,WARPlayer,WHMPlayer,SAMPlayer
+Event.PlayerList = [BLMPlayer, SCHPlayer, RDMPlayer, MCHPlayer ,DRKPlayer,WHMPlayer,SAMPlayer,WARPlayer] #BLMPlayer, SCHPlayer, RDMPlayer, MCHPlayer ,DRKPlayer,WARPlayer,WHMPlayer,SAMPlayer
 Event.SimulateFight(0.01, 100, 20)
 

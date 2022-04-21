@@ -55,13 +55,13 @@ def CheckChainStratagem(Player, Enemy):
     if Player.ChainStratagemTimer <= 0:
         Player.ChainStratagemTimer = 0
         Enemy.ChainStratagem = False
-        Player.EffectCDList.remove(CheckChainStratagem)
+        Player.EffectToRemove.append(CheckChainStratagem)
 
 def CheckBiolysis(Player, Enemy):
     if Player.BiolysisTimer <= 0 : 
         Player.DOTList.remove(Player.Biolysis)
         Player.Biolysis = None
-        Player.EffectCDList.remove(CheckBiolysis)
+        Player.EffectToRemove.append(CheckBiolysis)
 
 Broil = ScholarSpell(1, True, ScholarCast, ScholarGCD, 295,  400, empty, [ManaRequirement])
 Ruin = ScholarSpell(2, True, 0, ScholarGCD, 220,  300, empty, [ManaRequirement])
