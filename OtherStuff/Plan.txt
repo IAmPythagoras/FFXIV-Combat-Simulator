@@ -25,6 +25,8 @@ Missing 40 Potency from MCH opener, maybe from Hypercharge?
 
 
 Other Stuff to do:
+-make more efficient by removing cost in Requirement
+-fix removing from list as we loop through them.
 -implement auto-attack
 -implement Lucid Dreaming
 -Fix blackmage
