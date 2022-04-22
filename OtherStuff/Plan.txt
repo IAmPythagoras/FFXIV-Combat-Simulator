@@ -2,8 +2,7 @@ Remaining Jobs to implement:
 -SMN
 -AST
 -SGE
--GNB
--PLD
+-GNB (in work)
 -SAM
 -DRG
 -MNK
@@ -19,6 +18,7 @@ Already Done:
 -RDM
 -WAR
 -WHM
+-PLD (ADD blade of valor dot)
 
 
 Missing 40 Potency from MCH opener, maybe from Hypercharge?
@@ -26,7 +26,7 @@ Missing 40 Potency from MCH opener, maybe from Hypercharge?
 
 Other Stuff to do:
 -make more efficient by removing cost in Requirement
--fix removing from list as we loop through them.
+-fix removing from list as we loop through them. DONE
 -implement auto-attack
 -implement Lucid Dreaming
 -Fix blackmage

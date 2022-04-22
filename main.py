@@ -17,9 +17,12 @@ from Jobs.Healer.Whitemage.Whitemage_Player import *
 from Jobs.Ranged.Machinist.Machinist_Spell import *
 from Jobs.Ranged.Machinist.Machinist_Player import *
 
+
+from Jobs.Tank.Gunbreaker.Gunbreaker_Spell import *
 from Jobs.Tank.DarkKnight.DarkKnight_Spell import *
 from Jobs.Tank.Warrior.Warrior_Spell import *
 from Jobs.Tank.Paladin.Paladin_Spell import *
+from Jobs.Tank.Gunbreaker.Gunbreaker_Player import *
 from Jobs.Tank.DarkKnight.DarkKnight_Player import *
 from Jobs.Tank.Warrior.Warrior_Player import *
 from Jobs.Tank.Paladin.Paladin_Player import *
@@ -44,7 +47,7 @@ WARStat = {"MainStat": 2521, "WD":120, "Det" : 2130, "Ten" : 1018, "SS": 400, "C
 WHMStat = {"MainStat": 2571, "WD":120, "Det" : 1830, "Ten" : 400, "SS": 489, "Crit" : 2301, "DH" : 940}
 SAMStat = {"MainStat": 2563, "WD":120, "Det" : 1654, "Ten" : 400, "SS": 579, "Crit" : 2310, "DH" : 1217}
 PLDStat = {"MainStat": 2502, "WD":120, "Det" : 1680, "Ten" : 527, "SS": 650, "Crit" : 2319, "DH" : 1012}
-
+GNBStat = {"MainStat": 2517, "WD":120, "Det" : 1612, "Ten" : 527, "SS": 950, "Crit" : 2205, "DH" : 868}
 
 Event = Fight([], Dummy)
 
@@ -60,7 +63,7 @@ WAROpener = [WaitAbility(20), Tomahawk, Infuriate, HeavySwing, Maim, WaitAbility
 WHMOpener = [WaitAbility(17), Potion, WaitAbility(1), Glare, Dia, Glare, Glare, SwiftCast, Glare, Assize, PresenceOfMind, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Dia, Glare, Glare, Glare, Glare ]
 SAMOpener = [WaitAbility(11), Meikyo, WaitAbility(8.25), Gekko, Potion, Kasha, Ikishoten, Yukikaze,Shinten, Midare,Shinten, Kaeshi, Senei, Meikyo, Gekko, Higanbana, Kasha, OgiNamikiri, KaeshiNamikiri, Shoha, Gekko, Shinten, Hakaze, Yukikaze, Midare, Kaeshi, Hakaze, Yukikaze, Shinten,Hakaze, Jinpu]
 PLDOpener = [WaitAbility(18), FastBlade, FightOrFlight, RiotBlade, GoringBlade, FastBlade, Potion, RiotBlade, CircleScorn, Intervene, RoyalAuthority, Expiacion, RequestACat, Atonement, Intervene, Atonement, Atonement, FastBlade, RiotBlade, GoringBlade, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti, WaitAbility(1.75),CircleScorn, BladeFaith, WaitAbility(1.75), Expiacion,BladeTruth, BladeValor ]
-
+GNBOpener = [WaitAbility(20), KeenEdge, BrutalShell, Potion, SolidBarrel, NoMercy, GnashingFang, Bloodfest, JugularRip, DoubleDown, BlastingZone, BowShock, SonicBreak, RoughDivide, SavageClaw, AbdomenTear, RoughDivide, WickedTalon, EyeGouge, BurstStrike, Hypervelocity, KeenEdge, BrutalShell, SolidBarrel]
 
 BLMPlayer = BlackMage(2.5, BLMOpener, [], [AstralFire, UmbralIce,UmbralHeartEffect], Event, BLMStat)
 SCHPlayer = Scholar(2.5, SCHOpener, [], [], Event, SCHStat)
@@ -72,7 +75,8 @@ WARPlayer = Warrior(2.5, WAROpener, [], [SurgingTempestEffect], Event, WARStat)
 WHMPlayer = Whitemage(2.5, WHMOpener, [], [], Event, WHMStat)
 SAMPlayer = Samurai(2.5, SAMOpener, [], [], Event, SAMStat)
 PLDPlayer = Paladin(2.5, PLDOpener, [], [], Event, PLDStat)
+GNBPlayer = Gunbreaker(2.5, GNBOpener, [], [], Event, GNBStat)
 #NinjaPlayer = Ninja(2.5, NINAction, [], [AutoEffect, NinjutsuTimerEffect], Event)
-Event.PlayerList = [BLMPlayer, SCHPlayer, RDMPlayer, MCHPlayer ,DRKPlayer,WHMPlayer,SAMPlayer,WARPlayer] #BLMPlayer, SCHPlayer, RDMPlayer, MCHPlayer ,DRKPlayer,WARPlayer,WHMPlayer,SAMPlayer
+Event.PlayerList = [GNBPlayer] #BLMPlayer, SCHPlayer, RDMPlayer, MCHPlayer ,DRKPlayer,WARPlayer,WHMPlayer,SAMPlayer
 Event.SimulateFight(0.01, 100, 20)
 
