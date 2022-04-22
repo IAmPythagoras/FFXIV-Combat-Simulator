@@ -3,7 +3,7 @@ import copy
 from Fight import ComputeDamage
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
 from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
-
+Lock = 0.75
 
 class FailedToCast(Exception):#Exception called if a spell fails to cast
     pass
@@ -129,5 +129,6 @@ def PotionCheck(Player, Enemy):
         Player.EffectCDList.remove(PotionCheck)
 
 Potion = Spell(-2, False, 1, 1, 0, 0, ApplyPotion, [])
+
 
 

@@ -26,13 +26,10 @@ Missing 40 Potency from MCH opener, maybe from Hypercharge?
 
 Other Stuff to do:
 -make more efficient by removing cost in Requirement
--fix removing from list as we loop through them. DONE
 -implement auto-attack
 -implement Lucid Dreaming
 -Fix blackmage
--Implement Graph of DPS and Potency/sec - DONE
 -Optimize computation (Remove DPS computation for no potency spell and remove ManaRequirement if not necessary)
--Add Autos
 -Make UI? 
 -Add AI to optimize?
 -Add heals
@@ -42,6 +39,5 @@ Other Stuff to do:
 -Discord Bot?
 -Finish Adding all job
 -Damage for tanks?
--Make classes for Casters/Melee/Tanks/Ranged (For similar classes)
 -Add scaling GCD
 -Add Live Option (checks what spell you are doing and tells you Average DPS you should have)

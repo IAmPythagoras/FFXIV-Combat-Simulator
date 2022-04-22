@@ -32,6 +32,7 @@ class Player:
         self.Stat = Stat #Stats of the player
 
         self.MultDPSBonus = 1   #Mult bonus for DPS (Ex: BLM.MultDPSBonus = 1.3 * 1.2 -> Enochian * Magik and Mend)
+        self.GCDReduction = 1 #Mult GCD reduction based on Spell Speed or Skill Speed (computed before fight)
 
         self.EffectToRemove = []
 

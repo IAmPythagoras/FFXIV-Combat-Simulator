@@ -23,6 +23,14 @@ from Jobs.Healer.Astrologian.Astrologian_Player import Astrologian
 class NoMoreAction(Exception):#Exception called if a spell fails to cast
     pass
 
+
+#GCDReduction Effect
+
+def GCDReductionEffect(Player, Spell):
+    if Spell.GCD:
+        Spell.CastTime *= Player.GCDReduction
+        Spell.RecastTime *= Player.GCDReduction
+
 class Fight:
 
     #This class will be the environment in which the fight happens. It will hold a list of players, an enemy, etc.
@@ -101,6 +109,13 @@ class Fight:
             start = False
 
             timeValue = []  #Used for graph
+
+
+            #Will first compute each player's GCD reduction value based on their Spell Speed or Skill Speed Value
+
+            for Player in self.PlayerList:
+                Player.GCDReduction = (1000 - (130 * (Player.Stat["SS"]-400) / 1900))/1000
+                Player.EffectList.append(GCDReductionEffect)
 
             while(self.TimeStamp <= TimeLimit):
 
