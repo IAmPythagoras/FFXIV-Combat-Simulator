@@ -161,27 +161,29 @@ def ManaficationEffect(Player, Spell):
     if Spell.GCD : #Only affect if GCD
         Player.ManaficationStack -= 1
         Spell.DPSBonus *= 1.05 #5% boost on magic damage
-        if Player.ManaficationStack == 0: Player.EffectList.remove(ManaficationEffect)  #If no stack remove it
 
 def AccelerationEffect(Player, Spell):
     if Spell.id == 3 and not (SwiftCastEffect in Player.EffectList): 
         Spell.CastTime = 0    #Will have to cast how this interacts with Dual cast
-        Player.EffectList.remove(AccelerationEffect)
+        Player.EffectToRemove.append(AccelerationEffect)
 
 #Check
+
+def ManaficationCheck(Player, Enemy):
+    if Player.ManaficationStack == 0: Player.EffectList.remove(ManaficationEffect)#If no stack remove it
 
 def EmboldenCheck(Player, Enemy):
     if Player.EmboldenTimer <= 0:
         Player.EmboldenTimer = 0
         Enemy.Bonus /= 1.05 #Removing 5% dps increase
-        Player.EffectCDList.remove(EmboldenCheck)
+        Player.EffectToRemove.append(EmboldenCheck)
 
 def AccelerationStackCheck(Player, Enemy):
     if Player.AccelerationCD <= 0:
         Player.AccelerationStack += 1
 
         if Player.AccelerationStack == 2:
-            Player.EffectCDList.remove(AccelerationStackCheck)
+            Player.EffectToRemove.append(AccelerationStackCheck)
         else:
             Player.AccelerationCD = 55
 
@@ -190,7 +192,7 @@ def EngagementStackCheck(Player, Enemy):
         Player.EngagementStack += 1
 
         if Player.EngagementStack == 2:
-            Player.EffectCDList.remove(EngagementStackCheck)
+            Player.EffectToRemove.append(EngagementStackCheck)
         else:
             Player.EngagementCD = 35
 
@@ -199,7 +201,7 @@ def CorpsStackCheck(Player, Enemy):
         Player.CorpsStack += 1
 
         if Player.CorpsStack == 2:
-            Player.EffectCDList.remove(CorpsStackCheck)
+            Player.EffectToRemove.append(CorpsStackCheck)
         else:
             Player.CorpsCD = 35
 

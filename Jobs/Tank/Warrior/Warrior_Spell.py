@@ -98,25 +98,26 @@ def InnerReleaseEffect(Player, Spell):
     if isinstance(Spell, WarriorSpell) and Spell.Cost != 0:
         Player.NoBeastCostStack -= 1
         Spell.Cost = 0
-        if Player.NoBeastCostStack == 0: Player.EffectList.remove(InnerReleaseEffect)
+        if Player.NoBeastCostStack == 0: 
+            Player.EffectToRemove.append(InnerReleaseEffect)
 
 def SurgingTempestEffect(Player, Spell):
     if Player.SurgingTempestTimer > 0 : 
         Player.MultDPSBonus *= 1.1
         Player.EffectCDList.append(SurgingTempestCheck)
-        Player.EffectList.remove(SurgingTempestEffect)
+        Player.EffectToRemove.append(SurgingTempestEffect)
 
 #Combo Action
 
 def HeavySwingEffect(Player, Spell):
     if Spell.id == 2:
         Spell.Potency += 150
-        Player.EffectList.remove(HeavySwingEffect)
+        Player.EffectToRemove.append(HeavySwingEffect)
 
 def MaimEffect(Player, Spell):
     if Spell.id == 3 or Spell.id == 11:
         Spell.Potency += 280
-        Player.EffectList.remove(MaimEffect)
+        Player.EffectToRemove.append(MaimEffect)
 
 
 #Check
@@ -125,12 +126,12 @@ def SurgingTempestCheck(Player, Enemy):
     if Player.SurgingTempestTimer <= 0: 
         Player.MultDPSBonus /= 1.1
         Player.EffectList.append(SurgingTempestEffect)
-        Player.EffectCDList.remove(SurgingTempestCheck)
+        Player.EffectToRemove.append(SurgingTempestCheck)
 
 def OnslaughtStackCheck(Player, Enemy):
     if Player.OnslaughtCD <= 0:
         if Player.OnslaughtStack == 2:
-            Player.EffectCDList.remove(OnslaughtStackCheck)
+            Player.EffectToRemove.append(OnslaughtStackCheck)
         else:
             Player.OnslaughtCD = 30
         Player.OnslaughtStack += 1
@@ -138,7 +139,7 @@ def OnslaughtStackCheck(Player, Enemy):
 def InfuriateStackCheck(Player, Enemy):
     if Player.InfuriateCD <= 0:
         if Player.InfuriateStack == 1:
-            Player.EffectCDList.remove(InfuriateStackCheck)
+            Player.EffectToRemove.append(InfuriateStackCheck)
         else:
             Player.InfuriateCD = 30
         Player.InfuriateStack += 1

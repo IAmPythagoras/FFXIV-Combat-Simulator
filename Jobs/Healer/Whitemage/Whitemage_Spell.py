@@ -57,12 +57,12 @@ def CheckDia(Player, Enemy):
     if Player.DiaTimer <= 0:
         Player.DOTList.remove(Player.Dia)
         Player.Dia = None
-        Player.EffectCDList.remove(CheckDia)
+        Player.EffectToRemove.append(CheckDia)
 
 def CheckPresenceOfMind(Player, Enemy):
     if Player.PresenceOfMindTimer <= 0:
         Player.EffectList.remove(PresenceOfMindEffect)
-        Player.EffectCDList.remove(CheckPresenceOfMind)
+        Player.EffectToRemove.append(CheckPresenceOfMind)
 
 
 

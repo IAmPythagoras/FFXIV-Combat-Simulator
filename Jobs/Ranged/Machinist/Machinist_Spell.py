@@ -148,13 +148,13 @@ def SplitShotEffect(Player, Spell):
     if Spell.id == 5:
 
         Spell.Potency =+ 160
-        Player.EffectList.remove(SplitShotEffect)
+        Player.EffectToRemove.append(SplitShotEffect)
 
 def SlugShotEffect(Player, Spell):
     if Spell.id == 6:
 
         Spell.Potency += 250
-        Player.EffectList.remove(SlugShotEffect)
+        Player.EffectToRemove.append(SlugShotEffect)
 
 
 #Check
@@ -167,18 +167,18 @@ def WildFireCheck(Player, Enemy):
         Player.ActionSet.insert(Player.NextSpell+1, WildFireOff) #Insert in queue, will be instantly executed
         Player.WildFireStack = 0
         Player.EffectList.remove(WildFireEffect)
-        Player.EffectCDList.remove(WildFireCheck)
+        Player.EffectToRemove.append(WildFireCheck)
 
 def HyperchargeCheck(Player, Enemy):
     if Player.HyperchargeTimer <= 0:
         #print("Hypercharge went off at : " + str(Player.CurrentFight.TimeStamp))
         Player.EffectList.remove(HyperchargeEffect)
-        Player.EffectCDList.remove(HyperchargeCheck)
+        Player.EffectToRemove.append(HyperchargeCheck)
 
 def ReassembleStackCheck(Player, Enemy):
     if Player.ReassembleCD <= 0:
         if Player.ReassembleStack == 1:
-            Player.EffectCDList.remove(ReassembleStackCheck)
+            Player.EffectToRemove.append(ReassembleStackCheck)
         else:
             Player.ReassembleCD = 55
         Player.ReassembleStack +=1
@@ -186,7 +186,7 @@ def ReassembleStackCheck(Player, Enemy):
 def GaussRoundStackCheck(Player, Enemy):
     if Player.GaussRoundCD <= 0:
         if Player.GaussRoundStack == 2:
-            Player.EffectCDList.remove(GaussRoundStackCheck)
+            Player.EffectToRemove.append(GaussRoundStackCheck)
         else:
             Player.GaussRoundCD = 30
         Player.GaussRoundStack +=1
@@ -194,7 +194,7 @@ def GaussRoundStackCheck(Player, Enemy):
 def RicochetStackCheck(Player, Enemy):
     if Player.RicochetCD <= 0:
         if Player.RicochetStack == 2:
-            Player.EffectCDList.remove(RicochetStackCheck)
+            Player.EffectToRemove.append(RicochetStackCheck)
         else:
             Player.RicochetCD = 30
         Player.RicochetStack +=1
@@ -204,7 +204,7 @@ def QueenCheck(Player, Enemy):#This will be called on the queen
         Player.Master.Overdrive = False
         Player.ActionSet.insert(Player.NextSpell+1,Bunker)
         Player.ActionSet.insert(Player.NextSpell+2,Collider)
-        Player.EffectCDList.remove(QueenCheck)
+        Player.EffectToRemove.append(QueenCheck)
 
 Wildfire = MachinistSpell(0, False, 0, Lock, 0, 0, ApplyWildFire, [WildFireRequirement], False)
 AirAnchor = MachinistSpell(2, True, 0, 2.5, 580, 0, ApplyAirAnchor, [AirAnchorRequirement], True)

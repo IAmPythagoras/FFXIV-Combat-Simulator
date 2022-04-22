@@ -95,7 +95,7 @@ def HardSlashEffect(Player, Spell):
         Spell.Potency += BonusDmg
         Player.Mana = min(Player.Mana + 600, 10000)
     if (Spell.id == 2) or (Spell.id == 3) or (Spell.id == 1):
-        Player.EffectList.remove(HardSlashEffect)
+        Player.EffectToRemove.append(HardSlashEffect)
 
 def SyphonStrikeEffect(Player, Spell):
     if Spell.id == 3:
@@ -104,32 +104,32 @@ def SyphonStrikeEffect(Player, Spell):
         Spell.Potency += BonusDmg
         Player.Blood = min(100, Player.Blood + 20)
     if (Spell.id == 2) or (Spell.id == 3) or (Spell.id == 1):
-        Player.EffectList.remove(SyphonStrikeEffect)
+        Player.EffectToRemove.append(SyphonStrikeEffect)
 
 #Cooldown checks to remove effect and restore charges
 
 def BloodWeaponCheck(Player, Spell):
     if Player.BloodWeaponTimer <= 0 or Player.BloodWeaponStacks == 0:
         Player.EffectList.remove(BloodWeaponEffect)
-        Player.EffectCDList.remove(BloodWeaponCheck)
+        Player.EffectToRemove.append(BloodWeaponCheck)
 
 def DeliriumCheck(Player, Spell):
     if Player.DeliriumTimer <= 0 or Player.DeliriumStacks == 0:
         Player.EffectList.remove(DeliriumEffect)
-        Player.EffectCDList.remove(DeliriumCheck)
+        Player.EffectToRemove.append(DeliriumCheck)
 
 def SaltedEarthCheck(Player, Spell):
     if Player.SaltedEarthTimer <= 0:
         Player.DOTList.remove(SaltedEarthDOT)
         Player.SaltedEarthTimer = 0
-        Player.EffectCDList.remove(SaltedEarthCheck)
+        Player.EffectToRemove.append(SaltedEarthCheck)
 
 def CheckShadowbringerCharge(Player, Enemy):
     if Player.ShadowbringerCD <= 0:
         if Player.ShadowbringerCharges == 0:
             Player.ShadowbringerCD = 30
         if Player.ShadowbringerCharges == 1:
-            Player.EffectCDList.remove(CheckShadowbringerCharge)
+            Player.EffectToRemove.append(CheckShadowbringerCharge)
         Player.ShadowbringerCharges +=1
 
 def CheckPlungeCharge(Player, Enemy):
@@ -137,7 +137,7 @@ def CheckPlungeCharge(Player, Enemy):
         if Player.PlungeCharges == 0:
             Player.PlungeCD = 30
         if Player.PlungeCharges == 1:
-            Player.EffectCDList.remove(CheckPlungeCharge)
+            Player.EffectToRemove.append(CheckPlungeCharge)
         Player.PlungeCharges +=1
 
 

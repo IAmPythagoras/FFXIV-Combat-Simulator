@@ -2,8 +2,6 @@ Remaining Jobs to implement:
 -SMN
 -AST
 -SGE
--GNB
--PLD
 -SAM
 -DRG
 -MNK
@@ -19,12 +17,17 @@ Already Done:
 -RDM
 -WAR
 -WHM
+-PLD
+-GNB (60 Potency More in Opener)
 
 
 Missing 40 Potency from MCH opener, maybe from Hypercharge?
 
 
 Other Stuff to do:
+-make more efficient by removing cost in Requirement
+-fix removing from list as we loop through them. DONE
+-implement auto-attack
 -implement Lucid Dreaming
 -Fix blackmage
 -Implement Graph of DPS and Potency/sec - DONE

@@ -131,19 +131,19 @@ def HakazeEffect(Player, Spell):
             Player.Fugetsu = True
             Player.MultDPSBonus *= 1.13
             Player.EffectCDList.append(FugetsuCheck)
-            Player.EffectList.remove(HakazeEffect)
+            Player.EffectToRemove.append(HakazeEffect)
     elif Spell.id == Shifu.id:
         Spell.Potency += 160
         if not (FukaEffect in Player.EffectList) : Player.EffectList.append(FukaEffect)
         if not (FukaCheck in Player.EffectCDList) : Player.EffectCDList.append(FukaCheck)
         Player.FukaTimer = 40
         AddKenki(Player, 5)
-        Player.EffectList.remove(HakazeEffect)
+        Player.EffectToRemove.append(HakazeEffect)
     elif Spell.id == Yukikaze.id:
         Spell.Potency += 180
         AddKenki(Player, 15)
         Player.Setsu = True
-        Player.EffectList.remove(HakazeEffect)
+        Player.EffectToRemove.append(HakazeEffect)
 
 
 def ShifuEffect(Player, Spell):
@@ -151,14 +151,14 @@ def ShifuEffect(Player, Spell):
         Spell.Potency += 210
         AddKenki(Player, 10)
         Player.Ka = True
-        Player.EffectList.remove(ShifuEffect)
+        Player.EffectToRemove.append(ShifuEffect)
 
 def JinpuEffect(Player, Spell):
     if Spell.id == Gekko.id: 
         Spell.Potency +=210
         AddKenki(Player, 10)
         Player.Getsu = True
-        Player.EffectList.remove(JinpuEffect)
+        Player.EffectToRemove.append(JinpuEffect)
 
 def FukaEffect(Player, Spell):
     Spell.CastTime *= 0.87
@@ -203,25 +203,25 @@ def MeikyoEffect(Player, Spell):
 def FukaCheck(Player, Enemy):
     if Player.FukaTimer <= 0:
         Player.EffectList.remove(FukaEffect)
-        Player.EffectCDList.remove(FukaCheck)
+        Player.EffectToRemove.append(FukaCheck)
 
 
 def FugetsuCheck(Player, Enemy):
     if Player.FugetsuTimer <= 0:
         Player.Fugetsu = False
         Player.MultDPSBonus /= 1.13
-        Player.EffectCDList.remove(FugetsuCheck)
+        Player.EffectToRemove.append(FugetsuCheck)
 
 def HiganbanaCheck(Player, Enemy):
     if Player.HiganbanaTimer <= 0:
         Player.DOTList.remove(Player.Higanbana)
         Player.Higanbana = None
-        Player.EffectCDList.remove(HiganbanaCheck)
+        Player.EffectToRemove.append(HiganbanaCheck)
 
 def MeikyoCheck(Player, Enemy):
     if Player.Meikyo == 0:
         Player.EffectList.remove(MeikyoEffect)
-        Player.EffectCDList.remove(MeikyoCheck)
+        Player.EffectToRemove.append(MeikyoCheck)
 
 #Stack Check
 
@@ -229,7 +229,7 @@ def MeikyoStackCheck(Player, Enemy):
     if Player.MeikyoCD <= 0:
         if Player.MeikyoStack == 1:
             Player.MeikyoStack +=1
-            Player.EffectCDList.remove(MeikyoStackCheck)
+            Player.EffectToRemove.append(MeikyoStackCheck)
         else:
             Player.MeikyoStack +=1
             Player.MeikyoCD = 55

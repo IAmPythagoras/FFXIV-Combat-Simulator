@@ -148,7 +148,7 @@ def BunshinEffect(Player, Spell):
         Player.NinkiGauge = min(100, Player.NinkiGauge + 5)
     
     if (Player.BunshinStacks == 0) or (Player.BunshinTimer <= 0):
-        Player.EffectList.remove(BunshinEffect)
+        Player.EffectToRemove.append(BunshinEffect)
         Player.BunshinTimer = 0
 
 
@@ -157,7 +157,7 @@ def BunshinEffect(Player, Spell):
 def MeisuiEffect(Player, Spell):
 
     if(Player.MeisuiTimer <= 0):
-        Player.EffectList.remove(MeisuiEffect)
+        Player.EffectToRemove.append(MeisuiEffect)
     elif(Spell.id == 12):
         Spell.Potency += 100
 
@@ -167,33 +167,33 @@ def RaitonStacksEffect(Player, Spell):
     if (Spell.id == 0) or (Spell.id == 1) or (Spell.id == 2) or (Spell.id == 3) or Player.RaitonStacksTimer <= 0 or Player.RaitonStacks == 0:#Remove if skill or timer out or stacks empty
         Player.RaitonStacks = 0
         Player.RaitonStacksTimer = 0
-        Player.EffectList.remove(RaitonStacksEffect)
+        Player.EffectToRemove.append(RaitonStacksEffect)
 
 
 def TrickAttackEffect(Player, Enemy):
     if(Player.TrickAttackTimer <= 0): 
-        Player.EffectCDList.remove(TrickAttackEffect)
+        Player.EffectToRemove.append(TrickAttackEffect)
         Enemy.Bonus /= 1.1
 
 def SpinningEdgeEffect(Player, Spell):
     if (Spell.id == 1):
         Spell.Potency += 160
         Player.NinkiGauge = min(100, Player.NinkiGauge + 5)
-        Player.EffectList.remove(SpinningEdgeEffect)
+        Player.EffectToRemove.append(SpinningEdgeEffect)
 
 def GustSlashEffect(Player,Spell):
     if (Spell.id == 2):
         Spell.Potency += 260
         Player.NinkiGauge = min(100, Player.NinkiGauge + 15)
-        Player.EffectList.remove(GustSlashEffect)
+        Player.EffectToRemove.append(GustSlashEffect)
     elif(Spell.id == 3):
         Spell.Potency += 240
         Player.NinkiGauge = min(100, Player.NinkiGauge + 15)
-        Player.EffectList.remove(GustSlashEffect)
+        Player.EffectToRemove.append(GustSlashEffect)
 
 def AutoEffect(Player, Spell):
     Player.DOTList.append(Autos)
-    Player.EffectList.remove(AutoEffect)
+    Player.EffectToRemove.append(AutoEffect)
 
 
 
@@ -202,7 +202,7 @@ def AutoEffect(Player, Spell):
 def MugCheck(Player, Enemy):
     if Player.MugTimer <= 0:
         Player.MultDPSBonus /= 1.05
-        Player.EffectCDList.remove(MugCheck)
+        Player.EffectToRemove.append(MugCheck)
 
 
 #Ability
