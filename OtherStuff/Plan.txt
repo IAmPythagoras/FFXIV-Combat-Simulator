@@ -17,7 +17,7 @@ Already Done:
 -RDM
 -WAR
 -WHM
--PLD (ADD blade of valor dot)
+-PLD
 -GNB (60 Potency More in Opener)
 
 
