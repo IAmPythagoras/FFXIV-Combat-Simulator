@@ -3,10 +3,21 @@ from Enemy import Enemy
 import matplotlib.pyplot as plt
 import numpy as np
 
-from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem, DarkKnight
-from Jobs.Ranged.Machinist.Machinist_Player import Queen, Machinist
+from Jobs.Caster.Blackmage.BlackMage_Player import BlackMage
+from Jobs.Caster.Redmage.Redmage_Player import Redmage
+
+from Jobs.Tank.Paladin.Paladin_Player import Paladin
+from Jobs.Tank.Gunbreaker.Gunbreaker_Player import Gunbreaker
 from Jobs.Tank.Warrior.Warrior_Player import Warrior
+from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem, DarkKnight
+
+from Jobs.Ranged.Machinist.Machinist_Player import Queen, Machinist
+
 from Jobs.Melee.Samurai.Samurai_Player import Samurai
+from Jobs.Melee.Ninja.Ninja_Player import Ninja
+
+from Jobs.Healer.Whitemage.Whitemage_Player import Whitemage
+from Jobs.Healer.Scholar.Scholar_Player import Scholar
 
 class NoMoreAction(Exception):#Exception called if a spell fails to cast
     pass
@@ -49,10 +60,22 @@ class Fight:
 
             #Plot part
 
-            
+            job = ""
 
-            axs[0].plot(TimeStamp,player.DPSGraph, label=str(type(player)))
-            axs[1].plot(TimeStamp,player.PotencyGraph, label=str(type(player)))
+            if isinstance(player, BlackMage) : job = "Blackmage"
+            elif isinstance(player, Redmage) : job = "Redmage"
+            elif isinstance(player, DarkKnight) : job = "DarkKnight"
+            elif isinstance(player, Warrior) : job = "Warrior"
+            elif isinstance(player, Paladin) : job = "Paladin"
+            elif isinstance(player, Gunbreaker) : job = "Gunbreaker"
+            elif isinstance(player, Machinist) : job = "Machinist"
+            elif isinstance(player, Samurai) : job = "Samurai"
+            elif isinstance(player, Ninja) : job = "Ninja"
+            elif isinstance(player, Scholar) : job = "Scholar"
+            elif isinstance(player, Whitemage) : job = "Whitemage"
+
+            axs[0].plot(TimeStamp,player.DPSGraph, label=job)
+            axs[1].plot(TimeStamp,player.PotencyGraph, label=job)
         
         print("The Enemy has received a total potency of: " + str(self.Enemy.TotalPotency))
         print("The Potency Per Second on the Enemy is: " + str(self.Enemy.TotalPotency/time))

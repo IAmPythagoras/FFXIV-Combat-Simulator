@@ -22,11 +22,13 @@ class Paladin(Tank):
         #Timer
         self.GoringDOTTimer = 0
         self.CircleScornTimer = 0
+        self.ValorDOTTimer = 0
         self.FightOrFlighTimer = 0
 
         #DOT
         self.GoringDOT = None
         self.CircleScornDOT = None
+        self.ValorDOT = None
 
         #CD
         self.RequestACatCD = 0
@@ -48,3 +50,4 @@ class Paladin(Tank):
         if (self.GoringDOTTimer > 0) : self.GoringDOTTimer = max(0,self.GoringDOTTimer - time)
         if (self.CircleScornTimer > 0) : self.CircleScornTimer = max(0,self.CircleScornTimer - time)
         if (self.FightOrFlighTimer > 0) : self.FightOrFlighTimer = max(0,self.FightOrFlighTimer - time)
+        if (self.ValorDOTTimer > 0) : self.ValorDOTTimer = max(0,self.ValorDOTTimer - time)

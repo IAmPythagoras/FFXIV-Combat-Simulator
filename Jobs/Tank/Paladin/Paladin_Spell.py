@@ -82,6 +82,12 @@ def ApplyBladeTruth(Player, Enemy):
 
 def ApplyBladeValor(Player, Enemy):
     Player.BladeValor = False
+    Player.GoringDOTTimer = 0   #Remove GoringBladeDOT
+    Player.ValorDOT = copy.deepcopy(BladeValorDOT)
+    Player.DOTList.append(Player.ValorDOT)
+    Player.ValorDOTTimer = 21
+    Player.EffectCDList.append(ValorDOTCheck)
+
 
 def ApplyConfetti(Player, Enemy):
     Player.RequestACatStack = 0
@@ -122,6 +128,7 @@ def RiotBladeCombo(Player, Spell):
             Player.GoringDOT = copy.deepcopy(GoringDOT)
             Player.EffectCDList.append(GoringDOTCheck)
             Player.DOTList.append(Player.GoringDOT)
+            Player.ValorDOTTimer = 0 #Remove other dot if it exists
         Player.GoringDOTTimer = 21
         Spell.Potency += 150
         Player.EffectToRemove.append(RiotBladeCombo)
@@ -161,6 +168,11 @@ def GoringDOTCheck(Player, Enemy):
         Player.EffectToRemove.append(GoringDOTCheck)
         Player.GoringDOT = None
 
+def ValorDOTCheck(Player, Enemy):
+    if Player.ValorDOTTimer <= 0:
+        Player.DOTList.remove(Player.ValorDOT)
+        Player.EffectToRemove(ValorDOTCheck)
+        Player.ValorDOT = None
 
 
 #Combo action
@@ -177,6 +189,7 @@ Confetti = PaladinSpell(5, True, Lock, 2.5, 900, 1000, ApplyConfetti, [ManaRequi
 BladeFaith = PaladinSpell(8, True, Lock, 2.5, 420, 0, ApplyBladeFaith, [BladeFaithRequirement])
 BladeTruth = PaladinSpell(9, True, Lock, 2.5, 500, 0, ApplyBladeTruth, [BladeTruthRequirement])
 BladeValor = PaladinSpell(10, True, Lock, 2.5, 580, 0, ApplyBladeValor, [BladeValorRequirement])
+BladeValorDOT = DOTSpell(-11, 80)
 #GCD
 HolySpirit = PaladinSpell(7, True, 1.5, 2.5, 270, 1000, empty, [ManaRequirement])
 Atonement = PaladinSpell(12, True, Lock, 2.5, 420, 0, ApplyAtonement, [AtonementRequirement])

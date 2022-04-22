@@ -2,7 +2,6 @@ Remaining Jobs to implement:
 -SMN
 -AST
 -SGE
--GNB (in work)
 -SAM
 -DRG
 -MNK
@@ -19,6 +18,7 @@ Already Done:
 -WAR
 -WHM
 -PLD (ADD blade of valor dot)
+-GNB (60 Potency More in Opener)
 
 
 Missing 40 Potency from MCH opener, maybe from Hypercharge?
