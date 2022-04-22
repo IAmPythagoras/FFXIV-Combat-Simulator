@@ -15,7 +15,7 @@ It is possible to simulate with as much player as we want. Here is an example wi
 ![BLMGraph](https://user-images.githubusercontent.com/62820030/164585292-6c0f5485-5ea9-4070-ab6a-abef2c01f35c.PNG)
 
 
-We have also implemented party buffs like Chain Stratagem, Trick Attack, etc. Here is an example where a Blackmage executing the previous opener (with same gear)
+We have also implemented party buffs like Chain Stratagem, Trick Attack and Astrologian Arcanum personnal buff. Here is an example where a Blackmage executing the previous opener (with same gear)
 will have its DPS increased by a scholar that uses Chain Stratagem in its opener : 
 
 ![BuffedBLMResult](https://user-images.githubusercontent.com/62820030/164585423-68449783-9beb-4714-ae1f-5c52b312862b.PNG)
@@ -46,7 +46,7 @@ We so far have implemented the following jobs :
 -WHM
 -PLD
 -GNB
-
+-AST
 And we plan to add the rest of them in due time.
 
 
