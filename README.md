@@ -30,6 +30,11 @@ It can also be used to directly compare damage within classes. Such as this exam
 ![TankResult](https://user-images.githubusercontent.com/62820030/164585479-071c5e2c-7a21-4101-baab-f14d8d777be0.PNG)
 ![TankGraph](https://user-images.githubusercontent.com/62820030/164585481-c4aa80a7-e400-403b-b00b-3f8217a7539e.PNG)
 
+Here is an example with a full standard team comp. Note that the DPS might be lower than expected for some classes, since not all of these players
+will execute abilities for the whole duration of the simulation as it ends when no more player has anything to do.
+
+![FullTeamResult](https://user-images.githubusercontent.com/62820030/164585700-e0aebc62-8ab8-47a9-a114-cb6dd0eb6fb0.PNG)
+![FullTeamGraph](https://user-images.githubusercontent.com/62820030/164585712-5b8f5f5d-5f02-4188-b3a5-26c004ebca20.PNG)
 
 We so far have implemented the following jobs :
 
