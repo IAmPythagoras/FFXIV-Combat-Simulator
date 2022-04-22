@@ -4,7 +4,7 @@ The goal is to create the environment first and then work on an AI that could op
 
 
 So far, we have been able to simulate 8 players at the same time (this limit is in theory infinite and we could add as much as we want).
-This simply shows that 8 man raids can now be simulated (for DPS only).
+This simply shows that 8 man raids can now be simulated (only accounts for damage done).
 
 Here is an example of running the program with an 8 player team consisting of : DRK, WAR, BLM, RDM, MCH, SAM, WHM, SCH.
 All players are assumed to be BiS and we ask it to do the opener we could find on the balance and some more.
