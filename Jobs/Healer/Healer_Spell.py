@@ -40,3 +40,13 @@ class ScholarSpell(HealerSpell):
 class WhitemageSpell(HealerSpell):
     def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
         super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+
+#########################################
+########## ASTROLOGIAN SPELL ############
+#########################################
+
+
+class AstrologianSpell(HealerSpell):
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+

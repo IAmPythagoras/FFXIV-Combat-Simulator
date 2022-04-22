@@ -35,6 +35,8 @@ class Player:
 
         self.EffectToRemove = []
 
+        self.ArcanumTimer = 0 #ArcanumTimer
+
         #Used for DPS graph and Potency/S graph
 
         self.DPSGraph = []
@@ -50,6 +52,7 @@ class Player:
         if (self.oGCDLockTimer > 0) : self.oGCDLockTimer = max(0, self.oGCDLockTimer-time)
         if (self.CastingLockTimer > 0) : self.CastingLockTimer = max(0, self.CastingLockTimer-time)
         if (self.ManaTick > 0) : self.ManaTick = max(0, self.ManaTick-time)
+        if (self.ArcanumTimer > 0) : self.ArcanumTimer = max(0, self.ArcanumTimer-time)
 
     def updateLock(self):
         if (self.GCDLockTimer <= 0):
