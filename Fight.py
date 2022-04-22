@@ -18,6 +18,7 @@ from Jobs.Melee.Ninja.Ninja_Player import Ninja
 
 from Jobs.Healer.Whitemage.Whitemage_Player import Whitemage
 from Jobs.Healer.Scholar.Scholar_Player import Scholar
+from Jobs.Healer.Astrologian.Astrologian_Player import Astrologian
 
 class NoMoreAction(Exception):#Exception called if a spell fails to cast
     pass
@@ -73,6 +74,7 @@ class Fight:
             elif isinstance(player, Ninja) : job = "Ninja"
             elif isinstance(player, Scholar) : job = "Scholar"
             elif isinstance(player, Whitemage) : job = "Whitemage"
+            elif isinstance(player, Astrologian) : job = "Astrologian"
 
             axs[0].plot(TimeStamp,player.DPSGraph, label=job)
             axs[1].plot(TimeStamp,player.PotencyGraph, label=job)
