@@ -11,14 +11,24 @@ All players are assumed to be BiS and we ask it to do the opener we could find o
 
 The program will output a text of each player's damage and a graph showing the DPS over time.
 
-Note that the outputed DPS will be lower than expected, since some players are not doing damage over the whole duration. This is
-simply for example's sake.
+It is possible to simulate with as much player as we want. Here is an example with only a Blackmage with SpS BiS executing 4F4 Opener : 
 
-![outpout3](https://user-images.githubusercontent.com/62820030/164307505-a1ae397b-98cb-4d0b-8e96-bd32c76b0e70.PNG)
+![BLMResut](https://user-images.githubusercontent.com/62820030/164585293-35eeb621-5795-4ffe-94be-812416ab446d.PNG)
+
+![BLMGraph](https://user-images.githubusercontent.com/62820030/164585292-6c0f5485-5ea9-4070-ab6a-abef2c01f35c.PNG)
 
 
-![OUTPUT](https://user-images.githubusercontent.com/62820030/164307120-50d7cda1-2396-4bcb-8862-759649e17d71.PNG)
+We have also implemented party buffs like Chain Stratagem, Trick Attack, etc. Here is an example where a Blackmage executing the previous opener (with same gear)
+will have its DPS increased by a scholar that uses Chain Stratagem in its opener : 
 
+![BuffedBLMResult](https://user-images.githubusercontent.com/62820030/164585423-68449783-9beb-4714-ae1f-5c52b312862b.PNG)
+
+![BuffedBLMGraph](https://user-images.githubusercontent.com/62820030/164585427-fc76e69b-5fa9-4d21-abc0-5d6e4486dda7.PNG)
+
+It can also be used to directly compare damage within classes. Such as this examples that compares Tank damage in their respective Opener : 
+ 
+![TankResult](https://user-images.githubusercontent.com/62820030/164585479-071c5e2c-7a21-4101-baab-f14d8d777be0.PNG)
+![TankGraph](https://user-images.githubusercontent.com/62820030/164585481-c4aa80a7-e400-403b-b00b-3f8217a7539e.PNG)
 
 
 We so far have implemented the following jobs :
@@ -32,6 +42,8 @@ We so far have implemented the following jobs :
 -MCH
 -SCH
 -WHM
+-PLD
+-GNB
 
 And we plan to add the rest of them in due time.
 
