@@ -10,9 +10,11 @@ from Jobs.Caster.Blackmage.BlackMage_Player import *
 from Jobs.Caster.Redmage.Redmage_Player import *
 
 #HEALER
+from Jobs.Healer.Sage.Sage_Spell import *
 from Jobs.Healer.Scholar.Scholar_Spell import *
 from Jobs.Healer.Whitemage.Whitemage_Spell import *
 from Jobs.Healer.Astrologian.Astrologian_Spell import *
+from Jobs.Healer.Sage.Sage_Player import *
 from Jobs.Healer.Scholar.Scholar_Player import *
 from Jobs.Healer.Whitemage.Whitemage_Player import *
 from Jobs.Healer.Astrologian.Astrologian_Player import *

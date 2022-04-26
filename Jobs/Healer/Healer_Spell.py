@@ -50,3 +50,12 @@ class AstrologianSpell(HealerSpell):
     def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
         super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
 
+#########################################
+##########     SAGE   SPELL   ###########
+#########################################
+
+
+class SageSpell(HealerSpell):
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+
