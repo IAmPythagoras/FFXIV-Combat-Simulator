@@ -35,19 +35,51 @@ will execute abilities for the whole duration of the simulation as it ends when 
 
 We so far have implemented the following jobs :
 
--WAR
--DRK
--BLM
--RDM
--NIN
--SAM
--MCH
--SCH
--WHM
--PLD
--GNB
--AST
+
+Healer:
+Whitemage - DONE
+Scholar - DONE
+Sage - DONE
+Astrologian - DONE
+
+Tank:
+Warrior - DONE
+Gunbreaker - DONE
+DarkKnight - DONE
+Paladin - DONE
+
+Caster:
+Blackmage - DONE
+Summoner - DONE
+Redmage - DONE
+
+Phys Ranged:
+Machinist - DONE
+Bard - not done
+Dancer - not done
+
+Melee:
+Ninja - DONE
+Samurai - DONE
+Reaper - not done
+Monk - not done
+Dragoon - not done
+
 And we plan to add the rest of them in due time.
 
 
-If you want to help me in developing this program, you contact me through discord Pythagoras#6312
+
+#How it works
+
+The big advantage of this program is that instead of computing the average PPS (potency per second) and then using a damage formula to find the
+DPS (Damage per second), it simulates the fight like it would happen in real time. That way, buffs are accurately taken into account. It is also able to discernate between oGCD and GCD, and will treat them accordingly (for weaving and stuff). The time-unit used for the program is by default 0.01s/step, but it can be put at whatever smaller (or bigger) number we prefer. It is also able to know when a certain ability cannot be casted, and using that ability anyway will result in an error that stops the simulation. We could in theory disable this checking if we wanted.
+
+Each job in the game is implemented in a relatively similar way. We first create a class JobSpell, which will be an object that will represent a spell/ability/weaponskill of the job. Such an object will have information like casting time, recast time (if GCD), potency, manacost, effect of applying that spell and the requirements of that spell. We then also need to create a class JobPlayer, which will inherit certain traits for its parent class (Healer, Caster, Melee, Ranged or Tank) (This is also the case for spell). This JobPlayer class will contain information like Ability Cooldown, Buff Timer, DOTTimer and other stuff that need to be tracked during the execution of the simulation.
+
+And that's about it, the code will take these two new classes (and object of the JobSpell class) and if everything is done correctly the simulator will be able to run without any issues.
+
+
+
+
+
+If you want to help me in developing this program, you can contact me through discord Pythagoras#6312 :). Ill take any help avaible lol
