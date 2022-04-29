@@ -80,6 +80,6 @@ And that's about it, the code will take these two new classes (and object of the
 
 
 
-
+# IF YOU WANT TO HELP:)
 
 If you want to help me in developing this program, you can contact me through discord Pythagoras#6312 :). Ill take any help avaible lol
