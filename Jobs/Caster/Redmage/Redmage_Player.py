@@ -48,7 +48,7 @@ class Redmage(Caster):
 
     def updateCD(self, time):
         super().updateCD(time)
-        if (self.EmboldenCD > 0) : self.AetherFlowCD = max(0,self.EmboldenCD - time)
+        if (self.EmboldenCD > 0) : self.EmboldenCD = max(0,self.EmboldenCD - time)
         if (self.ManaficationCD > 0) : self.ManaficationCD = max(0,self.ManaficationCD - time)
         if (self.LucidDreamingCD > 0) : self.LucidDreamingCD = max(0,self.LucidDreamingCD - time)
         if (self.AccelerationCD > 0) : self.AccelerationCD = max(0,self.AccelerationCD - time)

@@ -49,3 +49,17 @@ class RedmageSpell(CasterSpell):
 
         self.BlackCost = BlackCost
         self.WhiteCost = WhiteCost
+
+#########################################
+########## SUMMONER SPELL ###############
+#########################################
+
+
+class SummonerSpell(CasterSpell):
+
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+
+
+
+

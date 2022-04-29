@@ -25,6 +25,7 @@ Missing 40 Potency from MCH opener, maybe from Hypercharge?
 
 
 Other Stuff to do:
+-Add SPS reduction for each Spell (change Spell Class)
 -make more efficient by removing cost in Requirement
 -implement auto-attack
 -implement Lucid Dreaming

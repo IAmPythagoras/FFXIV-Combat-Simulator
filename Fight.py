@@ -5,6 +5,7 @@ import numpy as np
 
 from Jobs.Caster.Blackmage.BlackMage_Player import BlackMage
 from Jobs.Caster.Redmage.Redmage_Player import Redmage
+from Jobs.Caster.Summoner.Summoner_Player import Summoner
 
 from Jobs.Tank.Paladin.Paladin_Player import Paladin
 from Jobs.Tank.Gunbreaker.Gunbreaker_Player import Gunbreaker
@@ -83,6 +84,7 @@ class Fight:
             elif isinstance(player, Scholar) : job = "Scholar"
             elif isinstance(player, Whitemage) : job = "Whitemage"
             elif isinstance(player, Astrologian) : job = "Astrologian"
+            elif isinstance(player, Summoner) : job = "Summoner"
 
             axs[0].plot(TimeStamp,player.DPSGraph, label=job)
             axs[1].plot(TimeStamp,player.PotencyGraph, label=job)
