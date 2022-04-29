@@ -69,7 +69,7 @@ And we plan to add the rest of them in due time.
 
 
 
-#How it works
+# HOW IT WORKS
 
 The big advantage of this program is that instead of computing the average PPS (potency per second) and then using a damage formula to find the
 DPS (Damage per second), it simulates the fight like it would happen in real time. That way, buffs are accurately taken into account. It is also able to discernate between oGCD and GCD, and will treat them accordingly (for weaving and stuff). The time-unit used for the program is by default 0.01s/step, but it can be put at whatever smaller (or bigger) number we prefer. It is also able to know when a certain ability cannot be casted, and using that ability anyway will result in an error that stops the simulation. We could in theory disable this checking if we wanted.
