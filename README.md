@@ -78,6 +78,10 @@ Each job in the game is implemented in a relatively similar way. We first create
 
 And that's about it, the code will take these two new classes (and object of the JobSpell class) and if everything is done correctly the simulator will be able to run without any issues.
 
+# HOW TO USE
+
+For now the program does not have any UI, so you will have to go change the code itself to make it run what you want. Here is a PDF explaining how to do just that : 
+[How_to_use.pdf](https://github.com/IAmPythagoras/FFXIVPPSCalculator/files/8599169/How_to_use.pdf)
 
 
 # IF YOU WANT TO HELP:)
