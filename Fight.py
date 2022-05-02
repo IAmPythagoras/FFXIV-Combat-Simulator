@@ -276,6 +276,10 @@ def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
 
     if Player.CurrentFight.Enemy.ChainStratagem: CritRate += 0.1    #If ChainStratagem is active, increase crit
 
+    if Player.CurrentFight.Enemy.WanderingMinuet: CritRate += 0.02 #If WanderingMinuet is active, increase crit
+
+    if Player.CurrentFight.Enemy.BattleVoice: DHRate += 0.2 #If WanderingMinuet is active, increase crit
+
     if isinstance(Player, Machinist): 
         #print(Player.ActionSet[Player.NextSpell])  #Then if machinist, has to check if direct crit guarantee
         if Player.ActionSet[Player.NextSpell].id != -1 and Player.ActionSet[Player.NextSpell].id != -2 and Player.Reassemble and Player.ActionSet[Player.NextSpell].WeaponSkill:    #Checks if reassemble is on and if its a weapon skill

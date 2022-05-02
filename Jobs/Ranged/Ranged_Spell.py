@@ -17,3 +17,14 @@ class MachinistSpell(RangedSpell):
         super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
 
         self.WeaponSkill = WeaponSkill #Boolean Variable
+
+
+#########################################
+#######    BARD    SPELL    #############
+#########################################
+
+
+class BardSpell(RangedSpell):
+
+    def __init__(self, id, GCD, RecastTime, Potency, Effect, Requirement):
+        super().__init__(id, GCD, Lock, RecastTime, Potency, 0, Effect, Requirement)
