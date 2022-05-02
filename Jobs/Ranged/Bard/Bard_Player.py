@@ -22,6 +22,11 @@ class Bard(Ranged):
         self.ArmyPaeon = False
         self.WandererMinuet = False
 
+        #Coda
+        self.MageCoda = False
+        self.ArmyCoda = False
+        self.WandererCoda = False
+
 
         #CD
         self.SidewinderCD = 0
@@ -40,10 +45,16 @@ class Bard(Ranged):
         self.CausticDOTTimer = 0
         self.BattleVoiceTimer = 0
         self.RagingStrikeTimer = 0
+        self.RadiantFinaleTimer = 0
 
         #DOT
         self.StormbiteDOT = None
         self.CausticbiteDOT = None
+
+
+        #DPSBonus
+        self.MultDPSBonus = 1.2
+        self.RadiantFinaleBonus = 1
     
     def updateCD(self, time):
         if (self.ChainSawCD > 0) : self.ChainSawCD = max(0,self.ChainSawCD - time)

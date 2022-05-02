@@ -48,6 +48,9 @@ def BarrageRequirement(Player, Spell):
 def RagingStrikeRequirement(Player, Spell):
     return Player.RagingStrikeRequirement
 
+def RadiantFinaleRequirement(Player, Spell):
+    return Player.MageCoda or Player.ArmyCoda or Player.WandererCoda
+
 #Apply
 
 def ApplyBurstShot(Player, Enemy):
@@ -101,8 +104,8 @@ def ApplyBloodLetter(Player, Enemy):
     Player.BloodLetterStack -= 1
 
 def ApplyWandererMinuet(Player, Enemy):
+    Player.WandererCoda = True #Adding Coda
     Player.WandererMinuetCD = 120
-
     Player.SongTimer = 45
     Enemy.WandererMinuet = True
     Player.EffectCDList.append(WandererCheck)
@@ -113,18 +116,22 @@ def ApplyWandererMinuet(Player, Enemy):
     Player.WandererMinuet = True
 
 def ApplyArmyPaeon(Player, Enemy):
+    Player.ArmyCoda = True #Adding Coda
     Enemy.ArmyPaeon = True
     Player.ArmyPaeonCD = 120
     Player.SongTimer = 45
+    Player.EffectCDList.append(ArmyPaeonCheck)
     #Have to remove current song
     Player.MageBallad = False
     Player.ArmyPaeon = True
     Player.WandererMinuet = False
 
 def ApplyMageBallad(Player, Enemy):
+    Player.MageCoda = True #Adding Coda
     Enemy.Bonus *= 1.01 #DPS Bonus
     Player.SongTimer = 45
     Player.MageBalladCD = 120
+    Player.EffectCDList.append(MageBalladCheck)
     #Have to remove current song
     Player.MageBallad = True
     Player.ArmyPaeon = False
@@ -140,6 +147,21 @@ def ApplyRagingStrike(Player, Enemy):
     Player.RagingStrikeTimer = 20
     Player.EffectCDList.append(RagingStrikeCheck)
 
+def ApplyRadiantFinale(Player, Enemy):
+    #Will first have to find how many coda we have
+    coda = 0
+    if Player.MageCoda: coda += 1
+    if Player.ArmyCoda: coda += 1
+    if Player.WandererCoda: coda += 1
+    Player.RadiantFinaleBonus = coda * 1.02
+    Enemy.Bonus *= Player.RadiantFinaleBonus #Multiplying by the bonus
+    Player.RadiantFinaleTimer = 15
+    Player.EffectCDList.append(RadiantFinaleCheck)
+    Player.MageCoda = False
+    Player.ArmyCoda = False
+    Player.Wanderer = False
+    #We used all coda
+
 #Effect
 
 def BarrageEffect(Player, Spell):
@@ -148,6 +170,11 @@ def BarrageEffect(Player, Spell):
         Player.EffectToRemove.append(BarrageEffect)
 
 #Check
+
+def RadiantFinaleCheck(Player, Enemy):
+    if Player.RadiantFinaleTimer <= 0:
+        Enemy.Bonus /= Player.RadiantFinaleBonus
+        Player.EffectToRemove.append(RadiantFinaleCheck)
 
 def RagingStrikeCheck(Player, Enemy):
     if Player.RagingStrikeTimer <= 0:
@@ -226,3 +253,4 @@ BattleVoice = BardSpell(9, False, 0, 0, ApplyBattleVoice, [BattleVoiceRequiremen
 BloodLetter = BardSpell(10, False, 0, 110, ApplyBloodLetter, [BloodLetterRequirement])
 Barrage = BardSpell(13, False, 0, 0, ApplyBarrage, [BarrageRequirement])
 RagingStrike = BardSpell(14, False, 0, 0, ApplyRagingStrike, [RagingStrikeRequirement])
+RadiantFinale = BardSpell(15, False, 0, 0, ApplyRadiantFinale, [RadiantFinaleRequirement])
