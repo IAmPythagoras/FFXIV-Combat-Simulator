@@ -91,7 +91,7 @@ class Fight:
                 print("==================")
                 print("Expected Vs Used values for bard")
                 print("Expected Refulgent Proc : " + str(player.ExpectedRefulgent) + " Used Refulgent Proc : " + str(player.UsedRefulgent))
-                print("Expected Repertoire Proc : " + str(player.ExpectedRepertoire) + " Used Repertoire Proc : " + str(player.UsedRepertoire))
+                print("Expected Wanderer Repertoire Proc : " + str(player.ExpectedTotalWandererRepertoire) + " Used Repertoire Proc : " + str(player.UsedTotalWandererRepertoire))
                 print("RepertoireAdd : " + str(player.UsedRepertoireAdd))
                 print("Expected Soul Voice Gauge : " + str(player.ExpectedSoulVoiceGauge) + " Used SoulVoiceGauge : " + str(player.UsedSoulVoiceGauge))
                 print("Expected BloodLetterReduction : " + str(player.ExpectedBloodLetterReduction) + " Used BloodLetterReduction : " + str(player.UsedBloodLetterReduction))
