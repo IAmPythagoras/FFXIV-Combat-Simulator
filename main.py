@@ -24,7 +24,9 @@ from Jobs.Healer.Astrologian.Astrologian_Player import *
 
 #RANGED
 from Jobs.Ranged.Machinist.Machinist_Spell import *
+from Jobs.Ranged.Bard.Bard_Spell import *
 from Jobs.Ranged.Machinist.Machinist_Player import *
+from Jobs.Ranged.Bard.Bard_Player import *
 
 #TANK
 from Jobs.Tank.Gunbreaker.Gunbreaker_Spell import *
@@ -59,6 +61,7 @@ PLDStat = {"MainStat": 2502, "WD":120, "Det" : 1680, "Ten" : 527, "SS": 650, "Cr
 GNBStat = {"MainStat": 2517, "WD":120, "Det" : 1612, "Ten" : 527, "SS": 950, "Crit" : 2205, "DH" : 868}
 ASTStat = {"MainStat": 2560, "WD":120, "Det" : 1951, "Ten" : 400, "SS": 716, "Crit" : 2277, "DH" : 844}
 SMNStat = {"MainStat": 2575, "WD":120, "Det" : 1688, "Ten" : 400, "SS": 489, "Crit" : 2296, "DH" : 1289}
+BRDStat = {"MainStat": 2575, "WD":120, "Det" : 1381, "Ten" : 400, "SS": 479, "Crit" : 2229, "DH" : 1662}
 
 
 Event = Fight([], Dummy)
@@ -78,6 +81,7 @@ PLDPlayer = Paladin(2.5, [], [], [], Event, PLDStat)
 GNBPlayer = Gunbreaker(2.5, [], [], [], Event, GNBStat)
 ASTPlayer = Astrologian(2.5, [], [], [], Event, ASTStat)
 SMNPlayer = Summoner(2.5, [], [], [], Event, SMNStat)
+BRDPlayer = Bard(2.5, [], [], [SongEffect], Event, BRDStat)
 
 BLMOpener = [Sharp, WaitAbility(16.5), F3, T3, F4, Triple, F4, Potion, F4, Amp, Ley, F4, Triple, Despair, Mana, F4, SwiftCast, Despair, Transpo, Para, Xeno, T3, F3, F4, F4, F4, Despair, Xeno, Transpo, Para]
 SCHOpener = [WaitAbility(17), Potion, WaitAbility(1), Broil, Biolysis, Aetherflow, Broil, SwiftCast, Broil, ChainStratagem, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Broil, Broil, Broil, Broil]
@@ -92,6 +96,9 @@ PLDOpener = [WaitAbility(20), FastBlade, FightOrFlight, RiotBlade, GoringBlade, 
 GNBOpener = [WaitAbility(20), KeenEdge, BrutalShell, Potion, SolidBarrel, NoMercy, GnashingFang, Bloodfest, JugularRip, DoubleDown, BlastingZone, BowShock, SonicBreak, RoughDivide, SavageClaw, AbdomenTear, RoughDivide, WickedTalon, EyeGouge, BurstStrike, Hypervelocity, KeenEdge, BrutalShell, SolidBarrel,KeenEdge, BrutalShell, SolidBarrel, GnashingFang, JugularRip, SavageClaw, AbdomenTear, WickedTalon,BlastingZone, EyeGouge, BurstStrike, Hypervelocity ]
 ASTOpener = [WaitAbility(17.5), Potion, Malefic, Lightspeed, Combust, Arcanum(WHMPlayer, "Solar"), Draw, Malefic, Arcanum(WHMPlayer, "Lunar"), Draw, Malefic, Divination, Arcanum(WHMPlayer, "Celestial"), Malefic, MinorArcana, Astrodyne, Malefic, LordOfCrown, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic ]
 SMNOpener = [WaitAbility(18.5), Ruin3, Summon, SearingLight, AstralImpulse, Potion, AstralImpulse, AstralImpulse, EnergyDrainSMN, Enkindle, AstralImpulse, Deathflare, Fester, AstralImpulse, Fester, AstralImpulse, Titan, Topaz, Mountain, Topaz, Mountain,Topaz, Mountain,Topaz, Mountain, Garuda, SwiftCast, Slipstream]
+BRDOpener = [WaitAbility(19), Potion, Stormbite, WandererMinuet, RagingStrike, Causticbite, EmpyrealArrow, BloodLetter, RefulgentArrow, RadiantFinale, BattleVoice, BurstShot, Barrage, RefulgentArrow, Sidewinder, PitchPerfect3, BurstShot, RefulgentArrow, BurstShot, IronJaws, PitchPerfect3,  EmpyrealArrow, RefulgentArrow, BloodLetter, BurstShot, BloodLetter, RefulgentArrow, BurstShot,BloodLetter, RefulgentArrow, BurstShot, RefulgentArrow,EmpyrealArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow,  ]
+
+
 
 BLMPlayer.ActionSet = BLMOpener
 SCHPlayer.ActionSet = SCHOpener
@@ -106,8 +113,9 @@ PLDPlayer.ActionSet = PLDOpener
 GNBPlayer.ActionSet = GNBOpener
 ASTPlayer.ActionSet = ASTOpener
 SMNPlayer.ActionSet = SMNOpener
+BRDPlayer.ActionSet = BRDOpener
 
 #NinjaPlayer = Ninja(2.5, NINAction, [], [AutoEffect, NinjutsuTimerEffect], Event)
-Event.PlayerList = [SMNPlayer] #BLMPlayer, SCHPlayer, RDMPlayer, MCHPlayer ,DRKPlayer,WARPlayer,ASTPlayer,SAMPlayer
+Event.PlayerList = [BLMPlayer, SCHPlayer, RDMPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,SAMPlayer] #BLMPlayer, SCHPlayer, RDMPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,SAMPlayer
 Event.SimulateFight(0.01, 100, 20)
 
