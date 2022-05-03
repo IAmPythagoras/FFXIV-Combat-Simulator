@@ -15,7 +15,7 @@ A check will be done notheless to make sure a rotation is at least possible give
 
 #Requirement
 
-def RefulgentArrowRequiremen(Player, Spell):
+def RefulgentArrowRequirement(Player, Spell):
     return Player.StraightShotReady
 
 def SidewinderRequirement(Player, Spell):
@@ -91,7 +91,7 @@ def BarrageRequirement(Player, Spell):
     return Player.BarrageCD <= 0
 
 def RagingStrikeRequirement(Player, Spell):
-    return Player.RagingStrikeRequirement
+    return Player.RagingStrikeCD <= 0
 
 def RadiantFinaleRequirement(Player, Spell):
     return Player.MageCoda or Player.ArmyCoda or Player.WandererCoda
@@ -125,7 +125,7 @@ def ApplyCausticbite(Player, Enemy):
         Player.CausticbiteDOT = copy.deepcopy(CausticbiteDOT)
         Player.DOTList.append(Player.CausticbiteDOT)
         Player.EffectCDList.append(CausticbiteDOTCheck)
-    Player.CausticbiteDOT = 45
+    Player.CausticbiteDOTTimer = 45
 
 def ApplySidewinder(Player, Enemy):
     Player.SidewinderCD = 60
@@ -135,7 +135,7 @@ def ApplyIronJaws(Player, Enemy):
     Player.ExpectedRefulgent += 0.35
 
     if Player.StormbiteDOT != None : Player.StormbiteDOTTimer = 45
-    if Player.CausticDOT != None : Player.CausticDOTTimer = 45
+    if Player.CausticbiteDOT != None : Player.CausticbiteDOTTimer = 45
 
 def ApplyEmpyrealArrow(Player, Enemy):
     Player.EmpyrealArrowCD = 15
@@ -240,19 +240,19 @@ def ApplyApexArrow80(Player, Enemy):
 #Effect
 
 def BarrageEffect(Player, Spell):
-    if Spell.WeaponSkill:
+    if not isinstance(Spell, DOTSpell) and Spell.Weaponskill:
         Spell.Potency *= 3 #Triples potency. Shouldn't be a problem since Bard has no combo
         Player.EffectToRemove.append(BarrageEffect)
 
 
 def SongEffect(Player, Spell):
     #This effect is constantly on the player and will keep track of the expected number of expected SoulVoiceGauge
-    if Player.SongTimer%3 == 0 and Player.SongTimer > 0 :
+    if Player.SongTimer != 45 and Player.SongTimer%3 == 0 and Player.SongTimer > 0 :
         Player.ExpectedSoulVoiceGauge += 5 * 0.8 #We have an expected of 5 voice each proc with a chance of 80%
 
 def WandererEffect(Player, Spell):
     #This effect will keep track of how many repertoire we should be having
-    if Player.SongTimer%3 == 0:
+    if Player.SongTimer%3 == 0 and Player.SongTimer != 45:
         Player.MaximumRepertoire = min(3, Player.MaximumRepertoire + 1) #Adding to MaximumRepertoire, this is to make sure a Pitch Perfect is at least possible
         Player.ExpectedRepertoire = min(3, Player.ExpectedRepertoire + 0.8)
 
@@ -262,7 +262,7 @@ def ArmyPaeonEffect(Player, Spell):
     #We could change that as necessary
     #It will add 0.8 repertoire each proc since we have 80% chance for a max of 4 procs
 
-    if Player.SongTimer%3 == 0 and not (Player.Repertoire == 4.0):
+    if Player.SongTimer != 45 and Player.SongTimer%3 == 0 and not (Player.Repertoire == 4.0):
         Player.Repertoire += 0.8
 
     if Spell.GCD: #This if is after since a spell can affect its own GCD
@@ -273,7 +273,7 @@ def MageBalladEffect(Player, Spell):
     #This effect will assume that each GCD, the CD is reduced by 7.5 sec, but we will keep track of 
     #the Used CD and the expected CD reduction
 
-    if Player.SongTimer%3 == 0: #The effect applies each 3 seconds, so we check each such interval 
+    if Player.SongTimer != 45 and Player.SongTimer%3 == 0: #The effect applies each 3 seconds, so we check each such interval 
         Player.BloodLetterCD = max(0, Player.BloodLetterCD - 7.5) #Reducing it
         Player.ExpectedBloodLetterReduction += 7.5 * 0.8 #Adding expected reduction
 
@@ -297,7 +297,7 @@ def StormbiteDOTCheck(Player, Enemy):
         Player.EffectToRemove.append(StormbiteDOTCheck)
 
 def CausticbiteDOTCheck(Player, Enemy):
-    if Player.CausticbitDOTTimer <= 0:
+    if Player.CausticbiteDOTTimer <= 0:
         Player.DOTList.remove(Player.CausticbiteDOT)
         Player.CausticbiteDOT = None
         Player.EffectToRemove.append(CausticbiteDOTCheck)
@@ -342,30 +342,30 @@ def BloodLetterStackCheck(Player, Enemy):
 
 
 #GCD
-BurstShot = BardSpell(0, True, 2.5, 220, ApplyBurstShot, [])
-RegulgentArrow = BardSpell(1, True, 2.5, 280, ApplyRefulgentArrow, [RefulgentArrowRequiremen])
-Stormbite = BardSpell(2, True, 2.5, 100, ApplyStormbite, [])
-Causticbite = BardSpell(3, True, 2.5, 150, ApplyCausticbite, [])
+BurstShot = BardSpell(0, True, 2.5, 220, ApplyBurstShot, [], True)
+RefulgentArrow = BardSpell(1, True, 2.5, 280, ApplyRefulgentArrow, [RefulgentArrowRequirement], True)
+Stormbite = BardSpell(2, True, 2.5, 100, ApplyStormbite, [], True)
+Causticbite = BardSpell(3, True, 2.5, 150, ApplyCausticbite, [], True)
 StormbiteDOT = DOTSpell(-20, 25)
 CausticbiteDOT = DOTSpell(-21, 20)
-IronJaws = BardSpell(5, True, 2.5, 100, ApplyIronJaws, [])
-ApexArrow20 = BardSpell(16, True, 2.5, 200, ApplyApexArrow20, [])
-ApexArrow80 = BardSpell(17, True, 2.5, 500, ApplyApexArrow80, [])
-BlastArrow = BardSpell(18, True, 2.5, 600, ApplyBlastArrow, [BlastArrowRequirement])
+IronJaws = BardSpell(5, True, 2.5, 100, ApplyIronJaws, [], True)
+ApexArrow20 = BardSpell(16, True, 2.5, 200, ApplyApexArrow20, [], True)
+ApexArrow80 = BardSpell(17, True, 2.5, 500, ApplyApexArrow80, [], True)
+BlastArrow = BardSpell(18, True, 2.5, 600, ApplyBlastArrow, [BlastArrowRequirement],True)
 
 #Song
-WandererMinuet = BardSpell(8, False, 0, 100, ApplyWandererMinuet, [WandererMinuetRequirement])
-ArmyPaeon = BardSpell(11, False, 0, 100, ApplyArmyPaeon, [ArmyPaeonRequirement])
-MageBallad = BardSpell(12, False, 0, 100, ApplyMageBallad, [MageBalladRequirement])
+WandererMinuet = BardSpell(8, False, 0, 100, ApplyWandererMinuet, [WandererMinuetRequirement], False)
+ArmyPaeon = BardSpell(11, False, 0, 100, ApplyArmyPaeon, [ArmyPaeonRequirement],False)
+MageBallad = BardSpell(12, False, 0, 100, ApplyMageBallad, [MageBalladRequirement],False)
 #oGCD
-Sidewinder = BardSpell(4, False, 0, 300, ApplySidewinder, [SidewinderRequirement])
-EmpyrealArrow = BardSpell(6, False, 0, 200, ApplyEmpyrealArrow, [EmpyrealArrowRequirement])
-BattleVoice = BardSpell(9, False, 0, 0, ApplyBattleVoice, [BattleVoiceRequirement])
-BloodLetter = BardSpell(10, False, 0, 110, ApplyBloodLetter, [BloodLetterRequirement])
-Barrage = BardSpell(13, False, 0, 0, ApplyBarrage, [BarrageRequirement])
-RagingStrike = BardSpell(14, False, 0, 0, ApplyRagingStrike, [RagingStrikeRequirement])
-RadiantFinale = BardSpell(15, False, 0, 0, ApplyRadiantFinale, [RadiantFinaleRequirement])
+Sidewinder = BardSpell(4, False, 0, 300, ApplySidewinder, [SidewinderRequirement],False)
+EmpyrealArrow = BardSpell(6, False, 0, 200, ApplyEmpyrealArrow, [EmpyrealArrowRequirement],False)
+BattleVoice = BardSpell(9, False, 0, 0, ApplyBattleVoice, [BattleVoiceRequirement],False)
+BloodLetter = BardSpell(10, False, 0, 110, ApplyBloodLetter, [BloodLetterRequirement],False)
+Barrage = BardSpell(13, False, 0, 0, ApplyBarrage, [BarrageRequirement],False)
+RagingStrike = BardSpell(14, False, 0, 0, ApplyRagingStrike, [RagingStrikeRequirement],False)
+RadiantFinale = BardSpell(15, False, 0, 0, ApplyRadiantFinale, [RadiantFinaleRequirement],False)
 #Each PitchPerfecti represents a PitchPerfect with i repertoire
-PitchPerfect1 = BardSpell(7, False, 0, 100, ApplyPitchPerfect1, [PitchPerfect1Requirement])
-PitchPerfect2 = BardSpell(7, False, 0, 220, ApplyPitchPerfect2, [PitchPerfect2Requirement])
-PitchPerfect3 = BardSpell(7, False, 0, 360, ApplyPitchPerfect3, [PitchPerfect3Requirement])
+PitchPerfect1 = BardSpell(7, False, 0, 100, ApplyPitchPerfect1, [PitchPerfect1Requirement],False)
+PitchPerfect2 = BardSpell(7, False, 0, 220, ApplyPitchPerfect2, [PitchPerfect2Requirement],False)
+PitchPerfect3 = BardSpell(7, False, 0, 360, ApplyPitchPerfect3, [PitchPerfect3Requirement],False)

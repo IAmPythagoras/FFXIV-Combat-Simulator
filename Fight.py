@@ -6,6 +6,7 @@ import numpy as np
 from Jobs.Caster.Blackmage.BlackMage_Player import BlackMage
 from Jobs.Caster.Redmage.Redmage_Player import Redmage
 from Jobs.Caster.Summoner.Summoner_Player import Summoner
+from Jobs.Ranged.Bard.Bard_Player import Bard
 
 from Jobs.Tank.Paladin.Paladin_Player import Paladin
 from Jobs.Tank.Gunbreaker.Gunbreaker_Player import Gunbreaker
@@ -85,6 +86,17 @@ class Fight:
             elif isinstance(player, Whitemage) : job = "Whitemage"
             elif isinstance(player, Astrologian) : job = "Astrologian"
             elif isinstance(player, Summoner) : job = "Summoner"
+            elif isinstance(player, Bard) : 
+                job = "Bard"
+                print("==================")
+                print("Expected Vs Used values for bard")
+                print("Expected Refulgent Proc : " + str(player.ExpectedRefulgent) + " Used Refulgent Proc : " + str(player.UsedRefulgent))
+                print("Expected Repertoire Proc : " + str(player.ExpectedRepertoire) + " Used Repertoire Proc : " + str(player.UsedRepertoire))
+                print("RepertoireAdd : " + str(player.UsedRepertoireAdd))
+                print("Expected Soul Voice Gauge : " + str(player.ExpectedSoulVoiceGauge) + " Used SoulVoiceGauge : " + str(player.UsedSoulVoiceGauge))
+                print("Expected BloodLetterReduction : " + str(player.ExpectedBloodLetterReduction) + " Used BloodLetterReduction : " + str(player.UsedBloodLetterReduction))
+                
+
 
             axs[0].plot(TimeStamp,player.DPSGraph, label=job)
             axs[1].plot(TimeStamp,player.PotencyGraph, label=job)

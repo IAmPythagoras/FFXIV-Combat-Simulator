@@ -26,5 +26,7 @@ class MachinistSpell(RangedSpell):
 
 class BardSpell(RangedSpell):
 
-    def __init__(self, id, GCD, RecastTime, Potency, Effect, Requirement):
+    def __init__(self, id, GCD, RecastTime, Potency, Effect, Requirement, Weaponskill):
         super().__init__(id, GCD, Lock, RecastTime, Potency, 0, Effect, Requirement)
+
+        self.Weaponskill = Weaponskill
