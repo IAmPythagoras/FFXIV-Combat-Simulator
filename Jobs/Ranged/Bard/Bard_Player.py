@@ -5,8 +5,24 @@ class Bard(Ranged):
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
         super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
 
+        #Expected Proc number
+        self.ExpectedRefulgent = 0
+        self.ExpectedRepertoire = 0
+        self.ExpectedSoulVoiceGauge = 0
+        self.ExpectedBloodLetterReduction = 0
+
+        #Used proc
+        self.UsedRefulgent = 0
+        self.UsedRepertoire = 0 #Only relevant for Wanderer and pitch perfect
+        self.UsedSoulVoiceGauge = 0
+        self.UsedBloodLetterReduction = 0
+        self.UsedRepertoireAdd = 0 #This is repertoire stacks we used more than the expected value
+
+
         #Gauge
         self.SoulVoiceGauge = 0
+        self.Repertoire = 0
+        self.MaximumRepertoire = 0 #Used for wanderer
 
         #Stack
         self.BloodLetterStack = 3
@@ -14,7 +30,7 @@ class Bard(Ranged):
 
         #buff
         self.StraightShotReady = False
-        self.RepertoireStack = 0
+        self.BlastArrowReady = True
 
 
         #Song
