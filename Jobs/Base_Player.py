@@ -33,7 +33,8 @@ class Player:
 
         self.MultDPSBonus = 1   #Mult bonus for DPS (Ex: BLM.MultDPSBonus = 1.3 * 1.2 -> Enochian * Magik and Mend)
         self.GCDReduction = 1 #Mult GCD reduction based on Spell Speed or Skill Speed (computed before fight)
-
+        self.CritRateBonus = 0  #CritRateBonus
+        self.DHRateBonus = 0 #DHRate Bonus Very usefull for dancer personnal and dance partner crit/DH rate bonus
         self.EffectToRemove = []
 
         self.ArcanumTimer = 0 #ArcanumTimer

@@ -7,6 +7,7 @@ from Jobs.Caster.Blackmage.BlackMage_Player import BlackMage
 from Jobs.Caster.Redmage.Redmage_Player import Redmage
 from Jobs.Caster.Summoner.Summoner_Player import Summoner
 from Jobs.Ranged.Bard.Bard_Player import Bard
+from Jobs.Ranged.Dancer.Dancer_Player import Dancer
 
 from Jobs.Tank.Paladin.Paladin_Player import Paladin
 from Jobs.Tank.Gunbreaker.Gunbreaker_Player import Gunbreaker
@@ -95,9 +96,16 @@ class Fight:
                 print("RepertoireAdd : " + str(player.UsedRepertoireAdd))
                 print("Expected Soul Voice Gauge : " + str(player.ExpectedSoulVoiceGauge) + " Used SoulVoiceGauge : " + str(player.UsedSoulVoiceGauge))
                 print("Expected BloodLetterReduction : " + str(player.ExpectedBloodLetterReduction) + " Used BloodLetterReduction : " + str(player.UsedBloodLetterReduction))
-                
-
-
+                print("==================")
+            elif isinstance(player, Dancer):
+                job = "Dancer"
+                print("==================")
+                print("Expected Vs Used Proc for Dancer")
+                print("Expected SilkenSymettry : " + str(player.ExpectedSilkenSymettry) + " Used SilkenSymettry : " + str(player.UsedSilkenSymettry) )
+                print("Expected SilkenFlow : " + str(player.ExpectedSilkenFlow) + " Used SilkenFlow : " + str(player.UsedSilkenFlow) )
+                print("Expected FourfoldFeather : " + str(player.ExpectedFourfoldFeather) + " Used FourfoldFeather : " + str(player.UsedFourfoldFeather) )
+                print("Expected ThreefoldFan : " + str(player.ExpectedThreefoldFan) + " Used ThreefoldFan : " + str(player.UsedThreefoldFan) )
+                print("==================")
             axs[0].plot(TimeStamp,player.DPSGraph, label=job)
             axs[1].plot(TimeStamp,player.PotencyGraph, label=job)
         
@@ -292,6 +300,10 @@ def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
 
     if Player.CurrentFight.Enemy.BattleVoice: DHRate += 0.2 #If WanderingMinuet is active, increase crit
 
+
+    DHRate += Player.DHRateBonus #Adding Bonus
+    CritRate += Player.CritRateBonus #Adding bonus
+
     if isinstance(Player, Machinist): 
         #print(Player.ActionSet[Player.NextSpell])  #Then if machinist, has to check if direct crit guarantee
         if Player.ActionSet[Player.NextSpell].id != -1 and Player.ActionSet[Player.NextSpell].id != -2 and Player.Reassemble and Player.ActionSet[Player.NextSpell].WeaponSkill:    #Checks if reassemble is on and if its a weapon skill
@@ -308,6 +320,11 @@ def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
             CritRate = 1
             DHRate = 1
             Player.DirectCrit = False
+    elif isinstance(Player, Dancer):
+        if Player.NextDirectCrit:
+            CritRate = 1
+            DHRate = 1
+            Player.NextDirectCrit = False
 
     return Damage * ((1+(DHRate/4))*(1+(CritRate*CritDamage)))
 """
