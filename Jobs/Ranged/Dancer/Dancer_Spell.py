@@ -14,7 +14,7 @@ def StandardFinishRequirement(Player, Spell):
     #Not done in apply since we want to acces the spell easily
 
     Player.MultDPSBonus /= Player.StandardFinishDPSMult #Reset DPSBonus
-    Player.DancePartner.MultDPSBonus /= Player.StandardFinishDPSMult #Reset DPSBonus
+    if Player.DancePartner != None : Player.DancePartner.MultDPSBonus /= Player.StandardFinishDPSMult #Reset DPSBonus
 
     step = 0
     if Player.Emboite : step +=1
@@ -36,7 +36,7 @@ def TechnicalFinishRequirement(Player, Spell):
     #Not done in apply since we want to acces the spell easily
 
     Player.MultDPSBonus /= Player.TechnicalFinishDPSMult #Reset DPSBonus
-    Player.DancePartner.MultDPSBonus /= Player.TechnicalFinishDPSMult #Reset DPSBonus
+    if Player.DancePartner != None : Player.DancePartner.MultDPSBonus /= Player.TechnicalFinishDPSMult #Reset DPSBonus
 
     step = 0
     if Player.Emboite : step +=1
@@ -72,7 +72,7 @@ def StarfallDanceRequirement(Player, Spell):
     return Player.FlourishingStarfall
 
 def FlourishRequirement(Player, Spell):
-    Player.FlourishCD = 60
+    return Player.FlourishCD <= 0
 
 def FanDance4Requirement(Player, Spell):
     return Player.FourfoldFan
@@ -81,12 +81,24 @@ def FanDance3Requirement(Player, Spell):
     return Player.ThreefoldFan
 
 def FanDance1Requirement(Player, Spell):
-    return Player.FourfoldFeather
+    return Player.MaxFourfoldFeather > 0
+
+def FountainFallRequirement(Player, Spell):
+    return Player.SilkenFlow or Player.FlourishingFlow
+
+def ReverseCascadeRequirement(Player, Spell):
+    return Player.SilkenSymettry or Player.FlourishingSymettry
+
+def SaberDanceRequirement(Player, Spell):
+    return Player.MaxEspritGauge >= 50
+
+def ClosedPositionRequirement(Player, Spell):
+    return Player.ClosedPositionCD <= 0
 
 #Apply
 def ApplyCascade(Player, Enemy):
     #Cascade has 50% chance to grant SikenSymettry, so we will keep track of the expected number we should have
-    Player.ExpectedTotalSilkenSymettry += 0.5 #adding to expected
+    Player.ExpectedSilkenSymettry += 0.5 #adding to expected
     Player.SilkenSymettry = True    #Assuming it is true
 
     #Adding Combo Action
@@ -106,7 +118,7 @@ def ApplyStandardFinish(Player, Enemy):
     if Player.StandardFinishTimer == 0: Player.EffectCDList.append(StandardFinishCheck)
     Player.StandardFinishTimer = 60
     Player.MultDPSBonus *= Player.StandardFinishDPSMult #Bonus DPS
-    Player.DancePartner.MultDPSBonus *= Player.StandardFinishDPSMult #Dance Partner Bonus
+    if Player.DancePartner != None : Player.DancePartner.MultDPSBonus *= Player.StandardFinishDPSMult #Dance Partner Bonus
 
     Player.Emboite = False
     Player.Entrechat = False
@@ -128,7 +140,7 @@ def ApplyTechnicalFinish(Player, Enemy):
 
     Player.TechnicalFinishTimer = 20
     Player.MultDPSBonus *= Player.TechnicalFinishDPSMult #Bonus DPS
-    Player.DancePartner.MultDPSBonus *= Player.TechnicalFinishDPSMult #Dance Partner Bonus
+    if Player.DancePartner != None : Player.DancePartner.MultDPSBonus *= Player.TechnicalFinishDPSMult #Dance Partner Bonus
 
     Player.Emboite = False
     Player.Entrechat = False
@@ -160,8 +172,9 @@ def ApplyDevilment(Player, Enemy):
     Player.CritRateBonus += 0.2
     Player.DHRateBonus += 0.2
 
-    Player.DancePartner.CritRateBonus += 0.2
-    Player.DancePartner.DHRateBonus += 0.2
+    if Player.DancePartner != None : 
+        Player.DancePartner.CritRateBonus += 0.2
+        Player.DancePartner.DHRateBonus += 0.2
 
     Player.EffectCDList.append(DevilmentCheck)
 
@@ -170,7 +183,7 @@ def ApplyTillana(Player, Enemy):
     #We have to apply or reapply StandardFinish with a bonus of 5%, so reset, set bonus to 5% and apply
 
     Player.MultDPSBonus /= Player.StandardFinishDPSMult #Reset DPSBonus
-    Player.DancePartner.MultDPSBonus /= Player.StandardFinishDPSMult #Reset DPSBonus
+    if Player.DancePartner != None : Player.DancePartner.MultDPSBonus /= Player.StandardFinishDPSMult #Reset DPSBonus
     Player.StandardFinishDPSMult = 1.05
     ApplyStandardFinish(Player, Enemy) #Will give StandardFinish with a bonus of 5%
 
@@ -190,18 +203,61 @@ def ApplyFanDance4(Player, Enemy):
 
 def ApplyFanDance3(Player, Enemy):
     Player.ThreefoldFan = False
+    Player.UsedThreefoldFan += 1
 
-def ApplyFanDace1(Player, Enemy):
+def ApplyFanDance1(Player, Enemy):
     Player.ThreefoldFan = True #Assume it happend
-    Player.ExpectdTotalThreefoldFan += 0.5 #add to expected
+    Player.ExpectedThreefoldFan += 0.5 #add to expected
+
+    Player.MaxFourfoldFeather -= 1
+    Player.UsedFourfoldFeather += 1
+
+def ApplyFountainFall(Player, Enemy):
+    Player.MaxFourfoldFeather = min(4, Player.MaxFourfoldFeather + 1)
+    Player.ExpectedFourfoldFeather += 0.5
+    #Stats
+    if not Player.FlourishingFlow: #If not from flourish
+        Player.SilkenFlow = False
+        Player.UsedSilkenFlow += 1
+    else: #From flourish
+        Player.FlourishingFlow = False #Not RNG
+
+def ApplyReverseCascade(Player, Enemy):
+
+    Player.MaxFourfoldFeather = min(4, Player.MaxFourfoldFeather + 1) 
+    Player.ExpectedFourfoldFeather += 0.5 #Create
+    if not Player.FlourishingSymettry: #Then its by SilkenSymettry
+        Player.UsedSilkenSymettry += 1 #Need
+        Player.SilkenSymettry = False
+    else:
+        Player.FlourishingSymettry = False
+        #Since Flourish isn't RNG, this one does not keep track of anything
+
+def ApplySaberDance(Player, Enemy):
+    Player.MaxEspritGauge -= 50
+
+def ApplyEnding(Player, Enemy):
+    if Player.StandardFinishTimer > 0: #Remove StandardFinish
+        Player.DancePartner.MultDPSBonus /= Player.StandardFinishDPSMult
+    if Player.TechnicalFinishTimer > 0: #Remove TechnicalFinsish
+        Player.DancePartner.MultDPSBonus /= Player.TechnicalFinishDPSMult
+    if Player.DevilmentTimer > 0: #Remove Devilment
+        Player.DancePartner.CritRateBonus -= 0.2
+        Player.DancePartner.DHRateBonus -= 0.2
+
+    Player.DancePartner = None #Removing DancePartner
 
 #Effect
+
+def EspritEffect(Player, Spell):
+    if Spell.id == Fountain.id or Spell.id == FountainFall.id or Spell.id == Cascade.id or Spell.id == ReverseCascade.id:
+        Player.MaxEspritGauge = min(100, Player.MaxEspritGauge + 5)
 
 def CascadeComboEffect(Player, Spell):
     if Spell.id == Fountain.id:
         Spell.Potency += 180
         
-        Player.ExpectedTotalSilkenFlow += 0.5
+        Player.ExpectedSilkenFlow += 0.5
         Player.SilkenFlow = True
         Player.EffectToRemove.append(CascadeComboEffect)
 
@@ -218,22 +274,24 @@ def DevilmentCheck(Player, Enemy):
 def StandardFinishCheck(Player, Enemy):
     if Player.StandardFinishTimer <= 0:
         Player.MultDPSBonus /= Player.StandardFinishDPSMult
-        Player.DancePartner.MultDPSBonus /= Player.StandardFinishDPSMult
+        if Player.DancePartner != None : Player.DancePartner.MultDPSBonus /= Player.StandardFinishDPSMult
         Player.EffectToRemove.append(StandardFinishCheck)
 
 def TechnicalFinishCheck(Player, Enemy):
     if Player.TechnicalFinishTimer <= 0:
         Player.MultDPSBonus /= Player.TechnicalFinishDPSMult
-        Player.DancePartner.MultDPSBonus /= Player.TechnicalFinishDPSMult
+        if Player.DancePartner != None : Player.DancePartner.MultDPSBonus /= Player.TechnicalFinishDPSMult
         Player.EffectToRemove.append(TechnicalFinishCheck)
 
 
 #GCD
-StarfallDance = DancerSpell(12, True, 2.5, 600, ApplyStarfallDance, [StarfallDanceRequirement])
+StarfallDance = DancerSpell(12, True, 2.5, 600, ApplyStarfallDance, [StarfallDanceRequirement], True)
 #ComboAction
 Cascade = DancerSpell(0, True, 2.5, 220,ApplyCascade, [], True)
 Fountain = DancerSpell(1, True, 2.5, 100, empty, [], True)
-
+FountainFall = DancerSpell(17, True, 2.5, 340, ApplyFountainFall, [FountainFallRequirement], True)
+ReverseCascade = DancerSpell(18, True, 2.5, 280, ApplyReverseCascade, [ReverseCascadeRequirement], True)
+SaberDance = DancerSpell(19, True, 2.5, 480, ApplySaberDance, [SaberDanceRequirement], True)
 #Dance
 StandardStep = DancerSpell(2, True, 1.5, 0, ApplyStandardStep, [StandardStepRequirement], True)
 StandardFinish = DancerSpell(3, True, 1.5, 360, ApplyStandardFinish, [StandardFinishRequirement], True)
@@ -254,3 +312,24 @@ Flourish = DancerSpell(13, False, 0, 0, ApplyFlourish, [FlourishRequirement], Fa
 FanDance4 = DancerSpell(14, False, 0, 300, ApplyFanDance4, [FanDance4Requirement], False)
 FanDance3 = DancerSpell(15, False, 0, 200, ApplyFanDance3, [FanDance3Requirement], False)
 FanDance1 = DancerSpell(16, False, 0, 150, ApplyFanDance1, [FanDance1Requirement], False)
+#Dance Partner
+Ending = DancerSpell(21, False, 0, 0, ApplyEnding, [], False)
+
+def ClosedPosition(Partner, InFight):
+
+    def ApplyClosedPosition(Player, Enemy):
+        if InFight : Player.ClosedPositionCD = 30 #Only update CD if in Fight, since we can dance partner before begins
+        
+        Player.DancePartner = Partner #New Partner
+        if Player.StandardFinishTimer > 0: #Add StandardFinish
+            Player.DancePartner.MultDPSBonus *= Player.StandardFinishDPSMult
+        if Player.TechnicalFinishTimer > 0: #Add TechnicalFinsish
+            Player.DancePartner.MultDPSBonus *= Player.TechnicalFinishDPSMult
+        if Player.DevilmentTimer > 0: #Add Devilment
+            Player.DancePartner.CritRateBonus += 0.2
+            Player.DancePartner.DHRateBonus += 0.2
+
+
+        #Will have to switch buff
+
+    return DancerSpell(20, False, 0, 0, ApplyClosedPosition, [ClosedPositionRequirement], False)

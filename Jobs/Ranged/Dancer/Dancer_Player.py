@@ -6,16 +6,26 @@ class Dancer(Ranged):
         super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
 
         #Gauge
-        self.MaximumFourfoldFeather = 0
+        self.MaxFourfoldFeather = 0
+        self.MaxEspritGauge = 0
 
         #Dancer Partner
         self.DancePartner = None
 
+
+        #Used total proc
+        self.UsedSilkenFlow = 0
+        self.UsedSilkenSymettry = 0
+        self.UsedFourfoldFeather = 0
+        self.UsedThreefoldFan = 0
+
+
+
         #expected proc traking
-        self.ExpectedTotalSilkenSymettry = 0
-        self.ExpectedTotalSilkenFlow = 0
-        self.ExpectedTotalFourfoldFeather = 0
-        self.ExpectedTotalThreefoldFan = 0
+        self.ExpectedSilkenSymettry = 0
+        self.ExpectedSilkenFlow = 0
+        self.ExpectedFourfoldFeather = 0
+        self.ExpectedThreefoldFan = 0
 
         #buff
         self.NextDirectCrit = False #True if next 
@@ -48,6 +58,7 @@ class Dancer(Ranged):
         self.TechnicalStepCD = 0
         self.DevilmentCD = 0
         self.FlourishCD = 0
+        self.ClosedPositionCD = 0
 
         #Timer
         self.StandardFinishTimer = 0
@@ -57,21 +68,15 @@ class Dancer(Ranged):
 
 
     def updateCD(self, time):
-        if (self.SidewinderCD > 0) : self.SidewinderCD = max(0,self.SidewinderCD - time)
-        if (self.EmpyrealArrowCD > 0) : self.EmpyrealArrowCD = max(0,self.EmpyrealArrowCD - time)
-        if (self.WandererMinuetCD > 0) : self.WandererMinuetCD = max(0,self.WandererMinuetCD - time)
-        if (self.ArmyPaeonCD > 0) : self.ArmyPaeonCD = max(0,self.ArmyPaeonCD - time)
-        if (self.MageBalladCD > 0) : self.MageBalladCD = max(0,self.MageBalladCD - time)
-        if (self.BattleVoiceCD > 0) : self.BattleVoiceCD = max(0,self.BattleVoiceCD - time)
-        if (self.BloodLetterCD > 0) : self.BloodLetterCD = max(0,self.BloodLetterCD - time)
-        if (self.BarrageCD > 0) : self.BarrageCD = max(0,self.BarrageCD - time)
-        if (self.RagingStrikeCD > 0) : self.RagingStrikeCD = max(0,self.RagingStrikeCD - time)
+        if (self.StandardStepCD > 0) : self.StandardStepCD = max(0,self.StandardStepCD - time)
+        if (self.TechnicalStepCD > 0) : self.TechnicalStepCD = max(0,self.TechnicalStepCD - time)
+        if (self.DevilmentCD > 0) : self.DevilmentCD = max(0,self.DevilmentCD - time)
+        if (self.FlourishCD > 0) : self.FlourishCD = max(0,self.FlourishCD - time)
+        if (self.ClosedPositionCD > 0) : self.ClosedPositionCD = max(0,self.ClosedPositionCD - time)
+
 
     def updateTimer(self, time):
         super().updateTimer(time)
-        if (self.SongTimer > 0) : self.SongTimer = max(0,self.SongTimer - time)
-        if (self.StormbiteDOTTimer > 0) : self.StormbiteDOTTimer = max(0,self.StormbiteDOTTimer - time)
-        if (self.CausticbiteDOTTimer > 0) : self.CausticbiteDOTTimer = max(0,self.CausticbiteDOTTimer - time)
-        if (self.BattleVoiceTimer > 0) : self.BattleVoiceTimer = max(0,self.BattleVoiceTimer - time)
-        if (self.RagingStrikeTimer > 0) : self.RagingStrikeTimer = max(0,self.RagingStrikeTimer - time)
-        if (self.RadiantFinaleTimer > 0) : self.RadiantFinaleTimer = max(0,self.RadiantFinaleTimer - time)
+        if (self.StandardFinishTimer > 0) : self.StandardFinishTimer = max(0,self.StandardFinishTimer - time)
+        if (self.TechnicalFinishTimer > 0) : self.TechnicalFinishTimer = max(0,self.TechnicalFinishTimer - time)
+        if (self.DevilmentTimer > 0) : self.DevilmentTimer = max(0,self.DevilmentTimer - time)
