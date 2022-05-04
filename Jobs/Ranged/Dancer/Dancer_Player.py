@@ -5,6 +5,8 @@ class Dancer(Ranged):
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
         super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
 
+        #Gauge
+        self.MaximumFourfoldFeather = 0
 
         #Dancer Partner
         self.DancePartner = None
@@ -12,6 +14,8 @@ class Dancer(Ranged):
         #expected proc traking
         self.ExpectedTotalSilkenSymettry = 0
         self.ExpectedTotalSilkenFlow = 0
+        self.ExpectedTotalFourfoldFeather = 0
+        self.ExpectedTotalThreefoldFan = 0
 
         #buff
         self.NextDirectCrit = False #True if next 
@@ -30,14 +34,25 @@ class Dancer(Ranged):
         self.SilkenFlow = False
         self.StandardFinish = False
         self.TechnicalFinish = False
+        self.FlourishingFinish = False
+        self.FlourishingStarfall = False
+        #Flourish
+        self.FlourishingSymettry = False
+        self.FlourishingFlow = False
+        self.ThreefoldFan = False
+        self.FourfoldFan = False
+
 
         #CD
         self.StandardStepCD = 0
         self.TechnicalStepCD = 0
+        self.DevilmentCD = 0
+        self.FlourishCD = 0
 
         #Timer
         self.StandardFinishTimer = 0
         self.TechnicalFinishTimer = 0
+        self.DevilmentTimer = 0
 
 
 

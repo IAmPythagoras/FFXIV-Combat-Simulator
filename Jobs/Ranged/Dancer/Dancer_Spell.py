@@ -31,9 +31,57 @@ def StandardFinishRequirement(Player, Spell):
 
     return Player.StandardFinish
         
+def TechnicalFinishRequirement(Player, Spell):
+    #Will check how many step we have
+    #Not done in apply since we want to acces the spell easily
+
+    Player.MultDPSBonus /= Player.TechnicalFinishDPSMult #Reset DPSBonus
+    Player.DancePartner.MultDPSBonus /= Player.TechnicalFinishDPSMult #Reset DPSBonus
+
+    step = 0
+    if Player.Emboite : step +=1
+    if Player.Entrechat : step +=1
+    if Player.Jete : step +=1
+    if Player.Pirouette : step +=1
+
+    if step == 1 :
+        Spell.Potency += 190
+        Player.TechnicalFinishDPSMult = 1.01
+    elif step == 2 :
+        Spell.Potency += 370
+        Player.TechnicalFinishDPSMult = 1.02
+    elif step == 3 :
+        Spell.Potency += 550
+        Player.TechnicalFinishDPSMult = 1.03
+    elif step == 4 :
+        Spell.Potency += 850
+        Player.TechnicalFinishDPSMult = 1.05
+
+    return Player.TechnicalFinish
 
 def TechnicalStepRequirement(Player, Spell):
     return Player.TechnicalStepCD <= 0
+
+def DevilmentRequirement(Player, Spell):
+    return Player.DevilmentCD <= 0
+
+def TillanaRequirement(Player, Spell):
+    return Player.FlourishingFinish
+
+def StarfallDanceRequirement(Player, Spell):
+    return Player.FlourishingStarfall
+
+def FlourishRequirement(Player, Spell):
+    Player.FlourishCD = 60
+
+def FanDance4Requirement(Player, Spell):
+    return Player.FourfoldFan
+
+def FanDance3Requirement(Player, Spell):
+    return Player.ThreefoldFan
+
+def FanDance1Requirement(Player, Spell):
+    return Player.FourfoldFeather
 
 #Apply
 def ApplyCascade(Player, Enemy):
@@ -88,6 +136,8 @@ def ApplyTechnicalFinish(Player, Enemy):
     Player.Pirouette = False
     #Reseting Dance move
 
+    Player.FlourishingFinish = True #Enables Tillana
+
 def ApplyEmboite(Player, Enemy):
     Player.Emboite = True
 
@@ -100,6 +150,51 @@ def ApplyJete(Player, Enemy):
 def ApplyPirouette(Player, Enemy):
     Player.Pirouette = True
 
+def ApplyDevilment(Player, Enemy):
+    Player.FlourishingStarfall = True #Enables StarfallDance
+
+    Player.DevilmentTimer = 20
+    Player.DevilmentCD = 120
+    #Give buff
+
+    Player.CritRateBonus += 0.2
+    Player.DHRateBonus += 0.2
+
+    Player.DancePartner.CritRateBonus += 0.2
+    Player.DancePartner.DHRateBonus += 0.2
+
+    Player.EffectCDList.append(DevilmentCheck)
+
+def ApplyTillana(Player, Enemy):
+    Player.FlourishingFinish = False 
+    #We have to apply or reapply StandardFinish with a bonus of 5%, so reset, set bonus to 5% and apply
+
+    Player.MultDPSBonus /= Player.StandardFinishDPSMult #Reset DPSBonus
+    Player.DancePartner.MultDPSBonus /= Player.StandardFinishDPSMult #Reset DPSBonus
+    Player.StandardFinishDPSMult = 1.05
+    ApplyStandardFinish(Player, Enemy) #Will give StandardFinish with a bonus of 5%
+
+def ApplyStarfallDance(Player, Enemy):
+    Player.NextDirectCrit = True
+    Player.FlourishingStarfall = False
+
+def ApplyFlourish(Player, Enemy):
+    Player.FlourishCD = 60
+    Player.FlourishingSymettry = True
+    Player.FlourishingFlow = True
+    Player.ThreefoldFan = True
+    Player.FourfoldFan = True
+
+def ApplyFanDance4(Player, Enemy):
+    Player.FourfoldFan = False
+
+def ApplyFanDance3(Player, Enemy):
+    Player.ThreefoldFan = False
+
+def ApplyFanDace1(Player, Enemy):
+    Player.ThreefoldFan = True #Assume it happend
+    Player.ExpectdTotalThreefoldFan += 0.5 #add to expected
+
 #Effect
 
 def CascadeComboEffect(Player, Spell):
@@ -111,6 +206,14 @@ def CascadeComboEffect(Player, Spell):
         Player.EffectToRemove.append(CascadeComboEffect)
 
 #Check
+
+def DevilmentCheck(Player, Enemy):
+    if Player.DevilmentTimer <= 0:
+        Player.CritRateBonus -= 0.2
+        Player.DHRateBonus -= 0.2
+        Player.DancePartner.CritRateBonus -= 0.2
+        Player.DancePartner.DHRateBonus -= 0.2
+        Player.EffectToRemove.append(DevilmentCheck)
 
 def StandardFinishCheck(Player, Enemy):
     if Player.StandardFinishTimer <= 0:
@@ -126,6 +229,7 @@ def TechnicalFinishCheck(Player, Enemy):
 
 
 #GCD
+StarfallDance = DancerSpell(12, True, 2.5, 600, ApplyStarfallDance, [StarfallDanceRequirement])
 #ComboAction
 Cascade = DancerSpell(0, True, 2.5, 220,ApplyCascade, [], True)
 Fountain = DancerSpell(1, True, 2.5, 100, empty, [], True)
@@ -135,7 +239,8 @@ StandardStep = DancerSpell(2, True, 1.5, 0, ApplyStandardStep, [StandardStepRequ
 StandardFinish = DancerSpell(3, True, 1.5, 360, ApplyStandardFinish, [StandardFinishRequirement], True)
 
 TechnicalStep = DancerSpell(8, True, 1.5, 0, ApplyTechnicalStep, [TechnicalStepRequirement], True)
-
+TechnicalFinish = DancerSpell(10, True, 1.5, 350, ApplyTechnicalFinish, [TechnicalFinishRequirement], True)
+Tillana = DancerSpell(11, True, 1.5, 360, ApplyTillana, [TillanaRequirement], True)
 #Dance Move
 Emboite = DancerSpell(4, True, 1, 0, ApplyEmboite, [DanceRequirement], True)
 Entrechat = DancerSpell(5, True, 1, 0, ApplyEntrechat, [DanceRequirement], True)
@@ -143,3 +248,9 @@ Jete = DancerSpell(6, True, 1, 0, ApplyJete, [DanceRequirement], True)
 Pirouette = DancerSpell(7, True, 1, 0, ApplyPirouette, [DanceRequirement], True)
 
 
+#oGCD
+Devilment = DancerSpell(9, False, 0, 0, ApplyDevilment, [DevilmentRequirement], False)
+Flourish = DancerSpell(13, False, 0, 0, ApplyFlourish, [FlourishRequirement], False)
+FanDance4 = DancerSpell(14, False, 0, 300, ApplyFanDance4, [FanDance4Requirement], False)
+FanDance3 = DancerSpell(15, False, 0, 200, ApplyFanDance3, [FanDance3Requirement], False)
+FanDance1 = DancerSpell(16, False, 0, 150, ApplyFanDance1, [FanDance1Requirement], False)
