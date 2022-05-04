@@ -197,6 +197,7 @@ def ApplyFlourish(Player, Enemy):
     Player.FlourishingFlow = True
     Player.ThreefoldFan = True
     Player.FourfoldFan = True
+    Player.ExpectedThreefoldFan +=1
 
 def ApplyFanDance4(Player, Enemy):
     Player.FourfoldFan = False
@@ -265,6 +266,7 @@ def CascadeComboEffect(Player, Spell):
 
 def DevilmentCheck(Player, Enemy):
     if Player.DevilmentTimer <= 0:
+        input("devilment out")
         Player.CritRateBonus -= 0.2
         Player.DHRateBonus -= 0.2
         Player.DancePartner.CritRateBonus -= 0.2
@@ -279,6 +281,7 @@ def StandardFinishCheck(Player, Enemy):
 
 def TechnicalFinishCheck(Player, Enemy):
     if Player.TechnicalFinishTimer <= 0:
+        input("technical out")
         Player.MultDPSBonus /= Player.TechnicalFinishDPSMult
         if Player.DancePartner != None : Player.DancePartner.MultDPSBonus /= Player.TechnicalFinishDPSMult
         Player.EffectToRemove.append(TechnicalFinishCheck)
