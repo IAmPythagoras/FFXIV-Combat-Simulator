@@ -36,7 +36,7 @@ class BardSpell(RangedSpell):
 #########################################
 
 
-class BardSpell(RangedSpell):
+class DancerSpell(RangedSpell):
 
     def __init__(self, id, GCD, RecastTime, Potency, Effect, Requirement, Weaponskill):
         super().__init__(id, GCD, Lock, RecastTime, Potency, 0, Effect, Requirement)
