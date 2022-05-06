@@ -3,6 +3,15 @@ from Enemy import Enemy
 import matplotlib.pyplot as plt
 import numpy as np
 
+
+#Class
+from Jobs.Caster.Caster_Player import Caster
+from Jobs.Melee.Melee_Player import Melee
+from Jobs.Ranged.Ranged_Player import Ranged
+from Jobs.Tank.Tank_Player import Tank
+from Jobs.Healer.Healer_Player import Healer
+
+#Jobs
 from Jobs.Caster.Blackmage.BlackMage_Player import BlackMage
 from Jobs.Caster.Redmage.Redmage_Player import Redmage
 from Jobs.Caster.Summoner.Summoner_Player import Summoner
@@ -44,6 +53,7 @@ class Fight:
         self.Enemy = Enemy
         self.ShowGraph = True
         self.TimeStamp = 0
+        self.TeamCompositionBonus = 1
     def PrintResult(self, time, TimeStamp):
 
         fig, axs = plt.subplots(1, 2, constrained_layout=True)
@@ -132,6 +142,30 @@ class Fight:
 
             timeValue = []  #Used for graph
 
+
+            #The first thing we will do is compute the TEAM composition DPS bonus
+            #each class will give 1%
+            # Tank, Healer, Caster, Ranged, Melee
+            hasMelee = False
+            hasCaster = False
+            hasRanged = False
+            hasTank = False
+            hasHealer = False
+            for player in self.PlayerList:
+                if isinstance(player, Melee) : hasMelee = True
+                elif isinstance(player, Caster) : hasCaster = True
+                elif isinstance(player, Ranged) : hasRanged = True
+                elif isinstance(player, Tank) : hasTank = True
+                elif isinstance(player, Healer) : hasHealer = True
+
+            
+            if hasMelee: self.TeamCompositionBonus += 0.01
+            if hasCaster: self.TeamCompositionBonus += 0.01
+            if hasRanged: self.TeamCompositionBonus += 0.01
+            if hasTank: self.TeamCompositionBonus += 0.01
+            if hasHealer: self.TeamCompositionBonus += 0.01
+
+            input("bonus : " + str(self.TeamCompositionBonus))
 
             #Will first compute each player's GCD reduction value based on their Spell Speed or Skill Speed Value
 
@@ -276,7 +310,7 @@ def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
     baseSub = 400
     JobMod = 115
 
-    MainStat = Player.Stat["MainStat"] * 1.05 #Assuming we have 5% bonus on stats due to team (could add code to compute it)
+    MainStat = Player.Stat["MainStat"] * Player.CurrentFight.TeamCompositionBonus #Scaling %bonus
 
     Damage=math.floor(DPS*(Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))*(100+math.floor((MainStat-baseMain)*195/baseMain))/100)
 
