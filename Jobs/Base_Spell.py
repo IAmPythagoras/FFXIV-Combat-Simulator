@@ -105,6 +105,8 @@ class DOTSpell(Spell):
 #Function to generate Waiting
 
 def ManaRequirement(player, Spell):
+    #print("Total mana : " + str(player.Mana))
+    #input("Spell mana cost " + str(Spell.ManaCost))
     if player.Mana >= Spell.ManaCost :
         player.Mana -= Spell.ManaCost   #ManaRequirement is the only Requirement that actually removes Ressources
         return True

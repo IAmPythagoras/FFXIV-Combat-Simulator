@@ -193,7 +193,8 @@ def ElementalEffect(Player, Spell):
 
             if (Player.UmbralHearts > 0) : #If we have UmbralHearts, then no mana cost increase
                 Player.UmbralHearts -= 1
-            else : Spell.ManaCost *= 2 #Double mana cost
+            else : 
+                if Spell.id != Despair.id : Spell.ManaCost *= 2 #Double mana cost, only if not despair
         #Check if ice phase
         elif Player.ElementalGauge < 0 : #Ice Phase
             if Player.ElementalGauge == -1: 

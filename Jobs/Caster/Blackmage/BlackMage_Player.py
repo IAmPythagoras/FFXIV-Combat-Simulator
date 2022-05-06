@@ -42,6 +42,9 @@ class BlackMage(Caster):
         #DOT
         self.Thunder3DOT = None
 
+        #Bonus
+        self.MultDPSBonus = 1.3
+
 
 
 
