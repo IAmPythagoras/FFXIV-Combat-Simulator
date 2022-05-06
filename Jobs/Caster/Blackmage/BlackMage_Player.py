@@ -8,80 +8,85 @@ class BlackMage(Caster):
 
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
         super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
-        self.EffectCDList = [BLMManaRegenCheck]
-        #Prock
-        self.T3Prock = False
-        self.F3Prock = False
-        self.Paradox = True
+
+        self.EffectCDList = [BLMManaRegenCheck] #Add this effect
+        #Gauge
+        self.ElementalGauge = 0 #3 represents 3 astral fire and -3 represents 3 Umbral Ice
+        self.PolyglotStack = 0
+        self.Paradox = False
+        self.UmbralHearts = 0
         self.Enochian = False
-        self.SharpCastGoThroughOnce = False
 
-        #Ability Effect Stack
-        self.SharpCastStack = 0
+        #Stack
+        self.TripleCastUseStack = 2
+        self.SharpCastStack = 2
+
+        #buff
+        self.Thunder3Proc = False
         self.TripleCastStack = 0
-        self.SwiftCastStack = 0
-        self.AstralFireStack = 0
-        self.UmbralIceStack = 0
-        self.PolyglotStack = 1
-        self.UmbralHeartStack = 0
 
-        #Ability Timer
-        self.T3Timer = 0
-        self.F3Timer = 0
-        self.LeyLinesTimer = 0
-        self.TripleCastTimer = 0
-        self.SwiftCastTimer = 0
-        self.SharpCastTimer = 0
-        self.AFUITimer = 0
-
-        #Charges
-        self.SharpCastCharges = 2
-        self.TripleCastCharges = 2
-
-        #Ability CD
-        self.LeyLinesCD = 0
-        self.SharpCastCD = 0
-        self.TripleCastCD = 0
-        self.SwiftCastCD = 0
-        self.EnochianCD = 0
-        self.ManaFrontCD = 0
+        #CD
         self.TransposeCD = 0
         self.AmplifierCD = 0
+        self.LeyLinesCD = 0
+        self.TripleCastCD = 0
+        self.SharpCastCD = 0
+        self.ManafrontCD = 0
+
+        #Timer
+        self.PolyglotTimer = 0
+        self.EnochianTimer = 0
+        self.LeyLinesTimer = 0
+        self.Thunder3DOTTimer = 0
+
+        #DOT
+        self.Thunder3DOT = None
+
+        #Bonus
+        self.MultDPSBonus = 1.3
 
 
-        self.MultDPSBonus = 1.3 * 1.2   #Mult bonus for DPS, Magik and Mend * Enochian
-        self.T3 = None
-    
+
+
     def updateCD(self, time):
         super().updateCD(time)
+        if (self.TransposeCD > 0) : self.TransposeCD = max(0,self.TransposeCD - time)
+        if (self.AmplifierCD > 0) : self.AmplifierCD = max(0,self.AmplifierCD - time)
         if (self.LeyLinesCD > 0) : self.LeyLinesCD = max(0,self.LeyLinesCD - time)
-        if (self.SharpCastCD > 0) :self.SharpCastCD = max(0,self.SharpCastCD - time)
-        if (self.TripleCastCD > 0) :self.TripleCastCD = max(0,self.TripleCastCD - time)
-        if (self.SwiftCastCD > 0) :self.SwiftCastCD = max(0,self.SwiftCastCD - time)
-        if (self.EnochianCD > 0) :self.EnochianCD = max(0,self.EnochianCD - time)
-        if (self.ManaFrontCD > 0) :self.ManaFrontCD = max(0,self.ManaFrontCD - time)
-        if (self.TransposeCD > 0) :self.TransposeCD = max(0,self.TransposeCD - time)
-        if (self.AmplifierCD > 0) :self.AmplifierCD = max(0,self.AmplifierCD - time)
+        if (self.TripleCastCD > 0) : self.TripleCastCD = max(0,self.TripleCastCD - time)
+        if (self.SharpCastCD > 0) : self.SharpCastCD = max(0,self.SharpCastCD - time)
+        if (self.ManafrontCD > 0) : self.ManafrontCD = max(0,self.ManafrontCD - time)
 
     def updateTimer(self, time):
         super().updateTimer(time)
+        if (self.PolyglotTimer > 0) : self.PolyglotTimer = max(0,self.PolyglotTimer - time)
+        if (self.EnochianTimer > 0) : self.EnochianTimer = max(0,self.EnochianTimer - time)
         if (self.LeyLinesTimer > 0) : self.LeyLinesTimer = max(0,self.LeyLinesTimer - time)
-        if (self.T3Timer > 0) : self.T3Timer = max(0,self.T3Timer - time)
-        if (self.AFUITimer > 0) : self.AFUITimer = max(0, self.AFUITimer-time)
-        if (self.TripleCastTimer > 0) : self.TripleCastTimer = max(0, self.TripleCastTimer-time)
-        if (self.SwiftCastTimer > 0) : self.SwiftCastTimer = max(0, self.SwiftCastTimer-time)
-        if (self.SharpCastTimer > 0) : self.SharpCastTimer = max(0, self.SharpCastTimer-time)
-        if (self.F3Timer > 0) : self.F3Timer = max(0, self.F3Timer-time)
-        if (self.PotionTimer > 0) : self.PotionTimer = max(0, self.PotionTimer-time)
+        if (self.Thunder3DOTTimer > 0) : self.Thunder3DOTTimer = max(0,self.Thunder3DOTTimer - time)
 
+    def AddFire(self):
+        if self.ElementalGauge >= 0 :
+            self.EnochianTimer = 15 #Reset Timer
+            self.ElementalGauge = min(3, self.ElementalGauge + 1)
+        else: #In Ice phase, so we loose it
+            self.EnochianTimer = 0
+            self.ElementalGauge = 0
+
+    def AddIce(self):
+        if self.ElementalGauge <= 0 :
+            self.EnochianTimer = 15 #Reset Timer
+            self.ElementalGauge = max(-3, self.ElementalGauge - 1)
+        else: #In Fire phase, so we loose it
+            self.EnochianTimer = 0
+            self.ElementalGauge = 0
 
 def BLMManaRegenCheck(Player, Enemy):   #Mana Regen Stuff
     if Player.ManaTick <= 0:
         Player.ManaTick = 3
-        if Player.UmbralIceStack >= 1:
-            if(Player.UmbralIceStack == 1):
+        if Player.ElementalGauge < 0:
+            if(Player.ElementalGauge == -1):
                 Player.Mana = min(10000, Player.Mana + 3200)
-            if(Player.UmbralIceStack == 2):
+            if(Player.ElementalGauge == -2):
                 Player.Mana = min(10000, Player.Mana + 4700)
-            if(Player.UmbralIceStack == 3):
+            if(Player.ElementalGauge == -3):
                 Player.Mana = min(10000, Player.Mana + 6200)

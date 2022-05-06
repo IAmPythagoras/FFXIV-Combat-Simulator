@@ -2,7 +2,7 @@ from Enemy import *
 from Fight import *
 
 from Jobs.Base_Spell import WaitAbility, Potion
-from Jobs.Caster.Caster_Spell import SwiftCast
+from Jobs.Caster.Caster_Spell import SwiftCast, LucidDreaming
 
 #CASTER
 from Jobs.Caster.Summoner.Summoner_Spell import *
@@ -71,7 +71,7 @@ Event = Fight([], Dummy)
 
 #DRKPlayer = DarkKnight(2.41, DRKAction, [], [DarksideEffect], Event)
 
-BLMPlayer = BlackMage(2.5, [], [], [AstralFire, UmbralIce,UmbralHeartEffect], Event, BLMCRITStat)
+BLMPlayer = BlackMage(2.5, [], [], [EnochianEffect, ElementalEffect], Event, BLMCRITStat)
 SCHPlayer = Scholar(2.5, [], [], [], Event, SCHStat)
 RDMPlayer = Redmage(2.5, [], [], [DualCastEffect], Event, RDMStat)
 MCHPlayer = Machinist(2.5, [], [], [], Event, MCHStat)
@@ -87,7 +87,7 @@ SMNPlayer = Summoner(2.5, [], [], [], Event, SMNStat)
 BRDPlayer = Bard(2.5, [], [], [SongEffect], Event, BRDStat)
 DNCPlayer = Dancer(2.5, [], [], [EspritEffect], Event, DNCStat)
 
-BLMOpener = [Sharp, WaitAbility(16.5), F3, T3, F4, Triple, F4, Potion, F4, Amp, Ley, F4, Triple, Despair, Mana, F4, SwiftCast, Despair, Transpo, Para, Xeno, T3, F3, F4, F4, F4, Despair, Xeno, Transpo, Para]
+BLMOpener = [SharpCast, WaitAbility(16.5), Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, Triplecast, Despair, Manafront, Fire4, SwiftCast, LucidDreaming, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose,Fire3, Fire4, Fire4, Fire4, Despair, Xenoglossy, Transpose, Paradox]
 SCHOpener = [WaitAbility(17), Potion, WaitAbility(1), Broil, Biolysis, Aetherflow, Broil, SwiftCast, Broil, ChainStratagem, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Broil, Broil, Broil, Broil]
 RDMOpener = [WaitAbility(15), Verthunder, Verareo, SwiftCast, Acceleration, Verthunder, Potion, Verthunder, Embolden, Manafication, Riposte, Fleche, Zwerchhau, Contre, Redoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verfire, Verthunder, Verstone, Verareo, Verfire, Verthunder,Verfire, Verthunder,Verfire,Fleche]
 MCHOpener = [WaitAbility(15), Reassemble, WaitAbility(2.25), Potion, WaitAbility(1.5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, Reassemble, WaitAbility(1), Wildfire, ChainSaw, Automaton,WaitAbility(1), Hypercharge, HeatBlast, Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet, Drill, SplitShot,GaussRound, SlugShot,Ricochet,CleanShot,GaussRound,SplitShot, SlugShot,CleanShot,SlugShot]
@@ -121,6 +121,6 @@ BRDPlayer.ActionSet = BRDOpener
 DNCPlayer.ActionSet = DNCOpener
 
 #NinjaPlayer = Ninja(2.5, NINAction, [], [AutoEffect, NinjutsuTimerEffect], Event)
-Event.PlayerList = [DNCPlayer, DRKPlayer] #BLMPlayer, SCHPlayer, RDMPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,SAMPlayer
+Event.PlayerList = [BLMPlayer] #BLMPlayer, SCHPlayer, RDMPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,SAMPlayer
 Event.SimulateFight(0.01, 100, 20)
 

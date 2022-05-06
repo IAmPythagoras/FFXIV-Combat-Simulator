@@ -7,7 +7,7 @@ class Player:
         self.ActionSet = ActionSet  #Known Action List
         self.EffectList = EffectList    #Normally Empty, can has some effects initially
         self.PrePullSet = PrePullSet    #Prepull action list
-        self.EffectCDList = [ManaRegenCheck]       #List of Effect for which we have to check if the have ended
+        self.EffectCDList = []       #List of Effect for which we have to check if the have ended
         self.DOTList = []
         self.NextSpell = 0
         self.CastingSpell = []
