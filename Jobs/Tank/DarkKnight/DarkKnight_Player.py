@@ -2,12 +2,13 @@
 ########## DARK KNIGHT PLAYER ###########
 #########################################
 from Jobs.Tank.Tank_Player import Tank
+from Jobs.Base_Player import ManaRegenCheck
 class DarkKnight(Tank):
     #A class for Dark Knight Players containing all effects and cooldowns relevant to the job.
 
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
         super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
-
+        self.EffectCDList.append(ManaRegenCheck) #mana regen
         #Special
         self.DarksideTimer = 0          #Darkside Gauge, starts at 0 with a max duration of 60s.
         self.Blood = 0                  #Blood Gauge, starts at 0 with a max of 100 units.

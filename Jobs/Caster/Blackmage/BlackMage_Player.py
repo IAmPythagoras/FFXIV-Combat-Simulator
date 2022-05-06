@@ -9,7 +9,7 @@ class BlackMage(Caster):
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
         super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
 
-        self.EffectCDList = [BLMManaRegenCheck] #Add this effect
+        self.EffectCDList.append(BLMManaRegenCheck) #Mana regen
         #Gauge
         self.ElementalGauge = 0 #3 represents 3 astral fire and -3 represents 3 Umbral Ice
         self.PolyglotStack = 0

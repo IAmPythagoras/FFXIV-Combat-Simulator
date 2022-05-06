@@ -1,10 +1,10 @@
 from Jobs.Tank.Tank_Player import Tank
-
+from Jobs.Base_Player import ManaRegenCheck
 class Paladin(Tank):
 
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
         super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
-
+        self.EffectCDList.append(ManaRegenCheck) #Mana Regen
         #Stack
         self.SwordOathStack = 0
         self.RequestACatStack = 0

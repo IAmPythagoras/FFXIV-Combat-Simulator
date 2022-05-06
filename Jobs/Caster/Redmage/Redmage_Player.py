@@ -2,11 +2,15 @@
 ########## REDMAGE PLAYER ###############
 #########################################
 from Jobs.Caster.Caster_Player import Caster
+from Jobs.Base_Player import ManaRegenCheck
 
 class Redmage(Caster):
 
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
         super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
+
+        #Mana Regen 
+        self.EffectCDList.append(ManaRegenCheck)
 
         self.BlackMana = 0
         self.WhiteMana = 0

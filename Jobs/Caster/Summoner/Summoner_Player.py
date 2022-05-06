@@ -1,11 +1,12 @@
 from Jobs.Caster.Caster_Player import Caster
+from Jobs.Base_Player import ManaRegenCheck
 
 
 class Summoner(Caster):
 
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
         super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
-
+        self.EffectCDList.append(ManaRegenCheck)#Mana Regen
         #Gauge
         self.AetherflowGauge = 0
 
@@ -65,3 +66,4 @@ class Summoner(Caster):
         if (self.SearingLightTimer > 0) : self.SearingLightTimer = max(0,self.SearingLightTimer - time)
         if (self.SlipstreamDOTTimer > 0) : self.SlipstreamDOTTimer = max(0,self.SlipstreamDOTTimer - time)
         if (self.SummonDOTTimer > 0) : self.SummonDOTTimer = max(0,self.SummonDOTTimer - time)
+

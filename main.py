@@ -21,7 +21,7 @@ from Jobs.Healer.Sage.Sage_Player import *
 from Jobs.Healer.Scholar.Scholar_Player import *
 from Jobs.Healer.Whitemage.Whitemage_Player import *
 from Jobs.Healer.Astrologian.Astrologian_Player import *
-from Jobs.Ranged.Dancer.Dancer_Spell import Devilment, FanDance3, FanDance4, Flourish, FountainFall, StandardFinish, StandardStep, StarfallDance, TechnicalFinish, TechnicalStep, Tillana
+
 
 #RANGED
 from Jobs.Ranged.Machinist.Machinist_Spell import *
