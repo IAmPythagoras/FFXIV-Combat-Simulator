@@ -31,6 +31,7 @@ class BlackMage(Caster):
         self.LeyLinesCD = 0
         self.TripleCastCD = 0
         self.SharpCastCD = 0
+        self.ManafrontCD = 0
 
         #Timer
         self.PolyglotTimer = 0
@@ -40,6 +41,25 @@ class BlackMage(Caster):
 
         #DOT
         self.Thunder3DOT = None
+
+
+
+
+    def updateCD(self, time):
+        super().updateCD(time)
+        if (self.TransposeCD > 0) : self.TransposeCD = max(0,self.TransposeCD - time)
+        if (self.AmplifierCD > 0) : self.AmplifierCD = max(0,self.AmplifierCD - time)
+        if (self.LeyLinesCD > 0) : self.LeyLinesCD = max(0,self.LeyLinesCD - time)
+        if (self.TripleCastCD > 0) : self.TripleCastCD = max(0,self.TripleCastCD - time)
+        if (self.SharpCastCD > 0) : self.SharpCastCD = max(0,self.SharpCastCD - time)
+        if (self.ManafrontCD > 0) : self.ManafrontCD = max(0,self.ManafrontCD - time)
+
+    def updateTimer(self, time):
+        super().updateTimer(time)
+        if (self.PolyglotTimer > 0) : self.PolyglotTimer = max(0,self.PolyglotTimer - time)
+        if (self.EnochianTimer > 0) : self.EnochianTimer = max(0,self.EnochianTimer - time)
+        if (self.LeyLinesTimer > 0) : self.LeyLinesTimer = max(0,self.LeyLinesTimer - time)
+        if (self.Thunder3DOTTimer > 0) : self.Thunder3DOTTimer = max(0,self.Thunder3DOTTimer - time)
 
     def AddFire(self):
         if self.ElementalGauge >= 0 :

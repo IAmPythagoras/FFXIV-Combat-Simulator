@@ -35,6 +35,9 @@ def TripleCastRequirement(Player, Spell):
 def SharpCastRequirement(Player, Spell):
     return Player.SharpCastStack > 0
 
+def ManafrontRequirement(Player, Spell):
+    return Player.ManafrontCD <= 0
+
 #Apply
 
 def ApplyBlizzard1(Player, Enemy):
@@ -140,6 +143,10 @@ def ApplySharpCast(Player, Enemy):
 
     Player.SharpCast = True
 
+def ApplyManafront(Player, Enemy):
+    Player.ManafrontCD = 120
+    Player.Mana = min(10000, Player.Mana + 3000)
+
 #Effect
 
 def Fire3ProcEffect(Player, Spell):
@@ -176,7 +183,7 @@ def EnochianEffect(Player, Spell):
 def ElementalEffect(Player, Spell):
     #Will affect Spell depending on fire and ice
 
-    if Spell.IsFire:
+    if isinstance(Spell, BLMSpell) and Spell.IsFire:
         #Fire Spell
         #First check if fire phase and apply Effect
         if Player.ElementalGauge > 0: #Fire Phase
@@ -200,7 +207,7 @@ def ElementalEffect(Player, Spell):
                 Spell.ManaCost = 0
                 Spell.CastTime *= 0.5
 
-    elif Spell.IsIce:
+    elif isinstance(Spell, BLMSpell) and Spell.IsIce:
         #Ice Spell
         #First check if fire phase
         if Player.ElementalGauge > 0: #Fire Phase
@@ -295,3 +302,4 @@ Amplifier = BLMSpell(12, False, Lock, 0, 0, 0, False, False, ApplyAmplifier, [Am
 LeyLines = BLMSpell(13, False, Lock, 0, 0, 0, False, False, ApplyLeyLines, [LeyLinesRequirement])
 Triplecast = BLMSpell(14, False, Lock, 0, 0, 0, False, False, ApplyTripleCast, [TripleCastRequirement])
 SharpCast = BLMSpell(15, False, Lock, 0, 0, 0, False, False, ApplySharpCast, [SharpCastRequirement])
+Manafront = BLMSpell(16, False, Lock, 0, 0, 0, False, False, ApplyManafront, [ManafrontRequirement])
