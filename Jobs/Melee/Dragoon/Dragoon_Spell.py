@@ -5,6 +5,9 @@ import copy
 
 #Requirement
 
+def TrueThrustRequirement(Player, Spell):
+    return not Player.DraconianFire
+
 def WheelingThrustRequirement(Player, Spell):
     return Player.WheelInMotion
 
@@ -21,7 +24,7 @@ def DragonSightRequirement(Player, Spell):
     return Player.DragonSightCD <= 0
 
 def GeirskogulRequirement(Player, Spell):
-    return Player.GeirskogulCD <= 0
+    return Player.GeirskogulCD <= 0 and not Player.LifeOfTheDragon
 
 def NastrondRequirement(Player, Spell):
     return Player.LifeOfTheDragon and Player.NastrondCD <= 0
@@ -37,6 +40,15 @@ def SpineshafterRequirement(Player, Spell):
 
 def LifeSurgeRequirement(Player, Spell):
     return Player.LifeSurgeStack > 0
+
+def StardiverRequirement(Player, Spell):
+    return Player.StardiverCD <= 0 and Player.LifeOfTheDragon
+
+def RaidenThrustRequirement(Player, Spell):
+    return Player.DraconianFire
+
+def WyrmwindThrustRequirement(Player, Spell):
+    return Player.FirstmindGauge == 2 and Player.WyrmwindThrust <= 0
 
 #Apply
 
@@ -68,7 +80,10 @@ def ApplyBattleLitany(Player, Enemy):
 def ApplyGeirskogul(Player, Enemy):
     Player.GeirskogulCD = 30
 
-    if Player.FullGaze : Player.LifeOfTheDragon = True
+    if Player.DragonGauge == 2 : 
+        Player.LifeOfTheDragon = True
+        Player.LifeOfTheDragonTimer = 30
+        Player.EffectCDList.append(LifeOfTheDragonCheck)
 
 def ApplyHighJump(Player, Enemy):
     Player.HighJumpCD = 30
@@ -91,6 +106,10 @@ def ApplyLifeSurge(Player, Enemy):
     Player.LifeSurgeStack -= 1
 
     Player.NextCrit = True
+
+def ApplyWyrmwindThrust(Player, Enemy):
+    Player.FirstmindGauge = 0
+    Player.WyrmwindThrustCD = 10
 
 #Effect
 
@@ -130,10 +149,23 @@ def DisembowelCombo(Player, Spell):
         Player.WheelInMotion = True 
         Player.EffectToRemove.append(DisembowelCombo)
 
-def ApplyNastrond(Player, Spell):
+def ApplyNastrond(Player, Enemy):
     Player.NastrondCD = 10
 
+def ApplyStardiver(Player, Enemy):
+    Player.StardiverCD = 30
+
+def ApplyRaidenThrust(Player, Enemy):
+    Player.FirstmindGauge = min(2, Player.FirstmindGauge + 1)
+
+    ApplyTrueThrust(Player, Enemy) #Since considered as first of combo
+
 #Check
+
+def LifeOfTheDragonCheck(Player, Enemy):
+    if Player.LifeOfTheDragonTimer <= 0:
+        Player.EffectToRemove.append(LifeOfTheDragonCheck)
+        Player.LifeOfTheDragon = False
 
 def LifeSurgeStackCheck(Player, Enemy):
     if Player.LifeSurgeCD <= 0:
@@ -168,7 +200,7 @@ def PowerSurgeCheck(Player, Enemy):
 
 #GCD
 #Combo Action
-TrueThrust = DragoonSpell(1, True, 2.5, 230, ApplyTrueThrust, [], True)
+TrueThrust = DragoonSpell(1, True, 2.5, 230, ApplyTrueThrust, [TrueThrustRequirement], True)
 Disembowel = DragoonSpell(2, True, 2.5, 140, empty, [], True)
 VorpalThrust = DragoonSpell(3, True, 2.5, 130, empty, [], True)
 ChaoticSpring = DragoonSpell(4, True, 2.5, 140, empty, [], True)
@@ -177,7 +209,7 @@ HeavenThrust = DragoonSpell(5, True, 2.5, 100, empty, [], True)
 
 WheelingThrust = DragoonSpell(6, True, 2.5, 300, ApplyWheelingThrust, [WheelingThrustRequirement], True )
 FangAndClaw = DragoonSpell(7, True, 2.5, 300, ApplyFangAndClaw, [FangAndClawRequirement], True)
-
+RaidenThrust = DragoonSpell(18, True, 2.5, 280, ApplyRaidenThrust, [RaidenThrustRequirement], True)
 
 #oGCD
 LanceCharge = DragoonSpell(8, False, 0, 0, ApplyLanceCharge, [LanceChargeRequirement], False)
@@ -188,7 +220,8 @@ HighJump = DragoonSpell(13, False, 0, 400, ApplyHighJump, [HighJumpRequirement],
 MirageDive = DragoonSpell(14, False, 0, 200, ApplyMirageDive, [MirageDiveRequirement], False)
 SpineshafterDive = DragoonSpell(15, False, 0, 250, ApplySpineshafter, [SpineshafterRequirement], False)
 LifeSurge = DragoonSpell(16, False, 0, 0, ApplyLifeSurge, [LifeSurgeRequirement], False)
-
+Stardiver = DragoonSpell(17, False, 0, 620, ApplyStardiver, [StardiverRequirement], False)
+WyrmwindThrust = DragoonSpell(19, False, 0, 420, ApplyWyrmwindThrust, [WyrmwindThrustRequirement], False)
 def DragonSight(Target):
 
     def DragonSightCheck(Player, Enemy):
