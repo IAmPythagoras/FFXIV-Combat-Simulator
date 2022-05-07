@@ -9,6 +9,9 @@ class Dragoon(Melee):
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
         super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
 
+        #Special
+        self.LanceMastery = False #Let us know if we are in Wheeling Thrust and FangAndClaw combo
+
         #Gauge
         self.DragonGauge = 0
         self.FirstmindGauge = 0
@@ -32,6 +35,7 @@ class Dragoon(Melee):
         self.SpineshafterCD = 0
         self.LifeSurgeCD = 0
         self.StardiverCD = 0
+        self.DragonFireDiveCD = 0
         #Timer
         self.PowerSurgeTimer = 0
         self.ChaoticSpringDOTTimer = 0

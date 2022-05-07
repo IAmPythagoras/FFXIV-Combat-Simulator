@@ -44,8 +44,10 @@ from Jobs.Tank.Paladin.Paladin_Player import *
 #MELEE
 from Jobs.Melee.Samurai.Samurai_Spell import *
 from Jobs.Melee.Ninja.Ninja_Spell import *
+from Jobs.Melee.Dragoon.Dragoon_Spell import *
 from Jobs.Melee.Samurai.Samurai_Player import *
 from Jobs.Melee.Ninja.Ninja_Player import *
+from Jobs.Melee.Dragoon.Dragoon_Player import *
 
 Dummy = Enemy()
 

@@ -50,17 +50,35 @@ def RaidenThrustRequirement(Player, Spell):
 def WyrmwindThrustRequirement(Player, Spell):
     return Player.FirstmindGauge == 2 and Player.WyrmwindThrust <= 0
 
+def DragonFireDiveRequirement(Player, Spell):
+    return Player.DragonFireDiveCD <= 0
+
 #Apply
+
+def ApplyDragonFireDive(Player, Enemy):
+    Player.DragonFireDiveCD = 120
 
 def ApplyTrueThrust(Player, Enemy):
     if not (TrueThrustCombo in Player.EffectList) : Player.EffectList.append(TrueThrustCombo)
 
 def ApplyWheelingThrust(Player, Enemy):
     Player.WheelInMotion = False
+    
+    if not Player.LanceMastery: 
+        Player.FangAndClaw = True
+        Player.LanceMastery = True
+    else:
+        Player.LanceMastery = False
+
 
 def ApplyFangAndClaw(Player, Enemy):
     Player.FangAndClaw = False
 
+    if not Player.LanceMastery: 
+        Player.WheelingThrust = True
+        Player.LanceMastery = True
+    else:
+        Player.LanceMastery = False
 def ApplyLanceCharge(Player, Enemy):
     Player.MultDPSBonus *= 1.1
     Player.LanceChargeCD = 60
@@ -111,6 +129,17 @@ def ApplyWyrmwindThrust(Player, Enemy):
     Player.FirstmindGauge = 0
     Player.WyrmwindThrustCD = 10
 
+def ApplyNastrond(Player, Enemy):
+    Player.NastrondCD = 10
+
+def ApplyStardiver(Player, Enemy):
+    Player.StardiverCD = 30
+
+def ApplyRaidenThrust(Player, Enemy):
+    Player.FirstmindGauge = min(2, Player.FirstmindGauge + 1)
+
+    ApplyTrueThrust(Player, Enemy) #Since considered as first of combo
+
 #Effect
 
 def TrueThrustCombo(Player, Spell):
@@ -148,17 +177,6 @@ def DisembowelCombo(Player, Spell):
 
         Player.WheelInMotion = True 
         Player.EffectToRemove.append(DisembowelCombo)
-
-def ApplyNastrond(Player, Enemy):
-    Player.NastrondCD = 10
-
-def ApplyStardiver(Player, Enemy):
-    Player.StardiverCD = 30
-
-def ApplyRaidenThrust(Player, Enemy):
-    Player.FirstmindGauge = min(2, Player.FirstmindGauge + 1)
-
-    ApplyTrueThrust(Player, Enemy) #Since considered as first of combo
 
 #Check
 
@@ -222,6 +240,7 @@ SpineshafterDive = DragoonSpell(15, False, 0, 250, ApplySpineshafter, [Spineshaf
 LifeSurge = DragoonSpell(16, False, 0, 0, ApplyLifeSurge, [LifeSurgeRequirement], False)
 Stardiver = DragoonSpell(17, False, 0, 620, ApplyStardiver, [StardiverRequirement], False)
 WyrmwindThrust = DragoonSpell(19, False, 0, 420, ApplyWyrmwindThrust, [WyrmwindThrustRequirement], False)
+DragonFireDive = DragoonSpell(20, False, 0, 300, ApplyDragonFireDive, [DragonFireDiveRequirement], False)
 def DragonSight(Target):
 
     def DragonSightCheck(Player, Enemy):
