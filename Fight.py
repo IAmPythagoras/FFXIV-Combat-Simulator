@@ -98,6 +98,7 @@ class Fight:
             elif isinstance(player, Whitemage) : job = "Whitemage"
             elif isinstance(player, Astrologian) : job = "Astrologian"
             elif isinstance(player, Summoner) : job = "Summoner"
+            elif isinstance(player, Dragoon) : job = "Dragoon"
             elif isinstance(player, Bard) : 
                 job = "Bard"
                 print("==================")
@@ -166,7 +167,7 @@ class Fight:
             if hasTank: self.TeamCompositionBonus += 0.01
             if hasHealer: self.TeamCompositionBonus += 0.01
 
-            input("bonus : " + str(self.TeamCompositionBonus))
+            #input("bonus : " + str(self.TeamCompositionBonus))
 
             #Will first compute each player's GCD reduction value based on their Spell Speed or Skill Speed Value
 
@@ -186,6 +187,7 @@ class Fight:
                             #Have to check if the player can cast the spell
                             #So check if Animation Lock, if Casting or if GCDLock
                             if(not (player.oGCDLock or player.GCDLock or player.Casting)):
+                                #input("Current BUFF : "  + str(player.MultDPSBonus))
                                 #If we in here, then we can cast the next spell
                                 #print(player)
                                 #input("is casting gcd at : " + str(self.TimeStamp))

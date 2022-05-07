@@ -1,5 +1,4 @@
 from Jobs.Base_Spell import DOTSpell, empty
-from Jobs.Melee.Dragoon.Dragoon_Player import Dragoon
 from Jobs.Melee.Melee_Spell import DragoonSpell
 import copy
 
@@ -48,7 +47,7 @@ def RaidenThrustRequirement(Player, Spell):
     return Player.DraconianFire
 
 def WyrmwindThrustRequirement(Player, Spell):
-    return Player.FirstmindGauge == 2 and Player.WyrmwindThrust <= 0
+    return Player.FirstmindGauge == 2 and Player.WyrmwindThrustCD <= 0
 
 def DragonFireDiveRequirement(Player, Spell):
     return Player.DragonFireDiveCD <= 0
@@ -67,7 +66,9 @@ def ApplyWheelingThrust(Player, Enemy):
     if not Player.LanceMastery: 
         Player.FangAndClaw = True
         Player.LanceMastery = True
-    else:
+        Player.EffectList.append(LanceMasteryCombo)
+        Player.DraconianFire = True #Conditions met
+    else: 
         Player.LanceMastery = False
 
 
@@ -75,12 +76,16 @@ def ApplyFangAndClaw(Player, Enemy):
     Player.FangAndClaw = False
 
     if not Player.LanceMastery: 
-        Player.WheelingThrust = True
+        Player.WheelInMotion = True
         Player.LanceMastery = True
+        Player.EffectList.append(LanceMasteryCombo)
+        Player.DraconianFire = True #Conditions met
     else:
         Player.LanceMastery = False
 def ApplyLanceCharge(Player, Enemy):
+    #print("BUFFING LANCE CHARGE")
     Player.MultDPSBonus *= 1.1
+    #input(Player.MultDPSBonus)
     Player.LanceChargeCD = 60
     Player.LanceChargeTimer = 20
     Player.EffectCDList.append(LanceChargeCheck)
@@ -91,7 +96,9 @@ def ApplyBattleLitany(Player, Enemy):
 
     #Will give each person in the fight the buff
 
-    for player in Player.CurrentFight.PlayerList:  player.CritRateBonus += 0.1
+    for player in Player.CurrentFight.PlayerList:  
+        player.CritRateBonus += 0.1
+        #input("BUFFING CRIT : " + str(player.CritRateBonus))
 
     Player.EffectCDList.append(BattleLitanyCheck)
 
@@ -137,6 +144,7 @@ def ApplyStardiver(Player, Enemy):
 
 def ApplyRaidenThrust(Player, Enemy):
     Player.FirstmindGauge = min(2, Player.FirstmindGauge + 1)
+    Player.DraconianFire = False
 
     ApplyTrueThrust(Player, Enemy) #Since considered as first of combo
 
@@ -149,9 +157,12 @@ def TrueThrustCombo(Player, Spell):
         #Gain PowerSurge, 10% damage
 
         if Player.PowerSurgeTimer <= 0: #Not already applied
+            #print("Buffing")
             Player.MultDPSBonus *= 1.10
+            #input(Player.MultDPSBonus)
             Player.EffectCDList.append(PowerSurgeCheck)
         Player.PowerSurgeTimer = 30
+        #input(Player.PowerSurgeTimer)
 
         Player.EffectList.append(DisembowelCombo)
         Player.EffectToRemove.append(TrueThrustCombo)
@@ -178,6 +189,18 @@ def DisembowelCombo(Player, Spell):
         Player.WheelInMotion = True 
         Player.EffectToRemove.append(DisembowelCombo)
 
+def LanceMasteryCombo(Player, Spell):
+    if Spell.id == FangAndClaw.id or Spell.id == WheelingThrust.id:
+        Spell.Potency += 100
+        Player.EffectToRemove.append(LanceMasteryCombo)
+    elif isinstance(Spell, DragoonSpell) and Spell.Weaponskill:
+        Player.FangAndClaw = False
+        Player.WheelInMotion = False
+        Player.LanceMastery = False
+        Player.EffectToRemove.append(LanceMasteryCombo)
+
+
+
 #Check
 
 def LifeOfTheDragonCheck(Player, Enemy):
@@ -203,16 +226,20 @@ def SpineshafterStackCheck(Player, Enemy):
 
 def BattleLitanyCheck(Player, Enemy):
     if Player.BattleLitanyTimer <= 0:
+        #input("Removing battle litany")
         for player in Player.CurrentFight.PlayerList:  player.CritRateBonus -= 0.1 #Removing buff
         Player.EffectToRemove.append(BattleLitanyCheck)
 
 def LanceChargeCheck(Player, Enemy):
     if Player.LanceChargeTimer <= 0:
+        #input("Removing lance charge")
         Player.MultDPSBonus /= 1.1
         Player.EffectToRemove.append(LanceChargeCheck)
 
 def PowerSurgeCheck(Player, Enemy):
+    #input("in check : " + str(Player.PowerSurgeTimer))
     if Player.PowerSurgeTimer <= 0:
+        #input("Removing powersurge")
         Player.EffectToRemove.append(PowerSurgeCheck)
         Player.MultDPSBonus /= 1.1
 
@@ -228,6 +255,7 @@ HeavenThrust = DragoonSpell(5, True, 2.5, 100, empty, [], True)
 WheelingThrust = DragoonSpell(6, True, 2.5, 300, ApplyWheelingThrust, [WheelingThrustRequirement], True )
 FangAndClaw = DragoonSpell(7, True, 2.5, 300, ApplyFangAndClaw, [FangAndClawRequirement], True)
 RaidenThrust = DragoonSpell(18, True, 2.5, 280, ApplyRaidenThrust, [RaidenThrustRequirement], True)
+PiercingTalon = DragoonSpell(21, True, 2.5, 150, empty, [], True)
 
 #oGCD
 LanceCharge = DragoonSpell(8, False, 0, 0, ApplyLanceCharge, [LanceChargeRequirement], False)
