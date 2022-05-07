@@ -29,3 +29,13 @@ class SamuraiSpell(MeleeSpell):
 
 def KenkiRequirement(Player, Spell): #By default present in Samurai spell requirements
     return Spell.KenkiCost <= Player.KenkiGauge
+
+#########################################
+########## DRAGOON PLAYER ###############
+#########################################
+
+class DragoonSpell(MeleeSpell):
+    def __init__(self, id, GCD, RecastTime, Potency, Effect, Requirement, Weaponskill):
+        super().__init__(id, GCD, Lock, RecastTime, Potency, 0, Effect, Requirement)
+
+        self.Weaponskill = Weaponskill
