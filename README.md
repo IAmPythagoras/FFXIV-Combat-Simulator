@@ -37,33 +37,53 @@ We so far have implemented the following jobs :
 
 
 Healer:
+
 Whitemage : DONE
+
 Scholar : DONE
+
 Sage : DONE
+
 Astrologian : DONE
 
 Tank:
+
 Warrior : DONE
+
 Gunbreaker : DONE
+
 DarkKnight : DONE
+
 Paladin : DONE
 
 Caster:
+
 Blackmage : DONE
+
 Summoner : DONE
+
 Redmage : DONE
 
 Phys Ranged:
+
 Machinist : DONE
+
 Bard : DONE
+
 Dancer : DONE
 
 Melee:
+
 Ninja : DONE
+
 Samurai : DONE
+
 Reaper : not done
+
 Monk : not done
+
 Dragoon : DONE
+
 UPDATED : May 7 2022
 
 And we plan to add the rest of them in due time.
