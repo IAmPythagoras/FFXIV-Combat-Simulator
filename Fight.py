@@ -27,6 +27,7 @@ from Jobs.Ranged.Machinist.Machinist_Player import Queen, Machinist
 
 from Jobs.Melee.Samurai.Samurai_Player import Samurai
 from Jobs.Melee.Ninja.Ninja_Player import Ninja
+from Jobs.Melee.Dragoon.Dragoon_Player import Dragoon
 
 from Jobs.Healer.Whitemage.Whitemage_Player import Whitemage
 from Jobs.Healer.Scholar.Scholar_Player import Scholar
@@ -359,6 +360,10 @@ def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
             CritRate = 1
             DHRate = 1
             Player.NextDirectCrit = False
+    elif isinstance(Player, Dragoon):
+        if Player.NextCrit and Player.ActionSet[Player.NextSpell].Weaponskill: #If next crit and weaponskill
+            CritRate = 1
+            Player.NextCrit = False
 
     return Damage * ((1+(DHRate/4))*(1+(CritRate*CritDamage)))
 """

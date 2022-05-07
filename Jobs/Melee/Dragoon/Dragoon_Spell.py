@@ -20,6 +20,24 @@ def BattleLitanyRequirement(Player, Spell):
 def DragonSightRequirement(Player, Spell):
     return Player.DragonSightCD <= 0
 
+def GeirskogulRequirement(Player, Spell):
+    return Player.GeirskogulCD <= 0
+
+def NastrondRequirement(Player, Spell):
+    return Player.LifeOfTheDragon and Player.NastrondCD <= 0
+
+def HighJumpRequirement(Player, Spell):
+    return Player.HighJumpCD <= 0
+
+def MirageDiveRequirement(Player, Spell):
+    return Player.DiveReady
+
+def SpineshafterRequirement(Player, Spell):
+    return Player.SpineshafterStack > 0
+
+def LifeSurgeRequirement(Player, Spell):
+    return Player.LifeSurgeStack > 0
+
 #Apply
 
 def ApplyTrueThrust(Player, Enemy):
@@ -46,6 +64,34 @@ def ApplyBattleLitany(Player, Enemy):
     for player in Player.CurrentFight.PlayerList:  player.CritRateBonus += 0.1
 
     Player.EffectCDList.append(BattleLitanyCheck)
+
+def ApplyGeirskogul(Player, Enemy):
+    Player.GeirskogulCD = 30
+
+    if Player.FullGaze : Player.LifeOfTheDragon = True
+
+def ApplyHighJump(Player, Enemy):
+    Player.HighJumpCD = 30
+    Player.DiveReady = True
+
+def ApplyMirageDive(Player, Enemy):
+    Player.DiveReady = False
+    Player.DragonGauge = min(2, Player.DragonGauge + 1)
+
+def ApplySpineshafter(Player, Enemy):
+    if Player.SpineshafterStack == 2:
+        Player.EffectCDList.append(SpineshafterStackCheck)
+        Player.SpineshafterCD = 60
+    Player.SpineshafterStack -= 1
+
+def ApplyLifeSurge(Player, Enemy):
+    if Player.LifeSurgeStack == 2:
+        Player.EffectCDList.append(LifeSurgeStackCheck)
+        Player.LifeSurgeCD = 45
+    Player.LifeSurgeStack -= 1
+
+    Player.NextCrit = True
+
 #Effect
 
 def TrueThrustCombo(Player, Spell):
@@ -84,7 +130,26 @@ def DisembowelCombo(Player, Spell):
         Player.WheelInMotion = True 
         Player.EffectToRemove.append(DisembowelCombo)
 
+def ApplyNastrond(Player, Spell):
+    Player.NastrondCD = 10
+
 #Check
+
+def LifeSurgeStackCheck(Player, Enemy):
+    if Player.LifeSurgeCD <= 0:
+        if Player.LifeSurgeStack == 1:
+            Player.EffectToRemove.append(LifeSurgeStackCheck)
+        else:
+            Player.LifeSurgeCD = 45
+        Player.LifeSurgeStack += 1
+
+def SpineshafterStackCheck(Player, Enemy):
+    if Player.SpineshafterCD <= 0:
+        if Player.SpineshafterStack == 1:
+            Player.EffectToRemove.append(SpineshafterStackCheck)
+        else:
+            Player.SpineShifterCD = 60
+        Player.SpineshafterStack += 1
 
 def BattleLitanyCheck(Player, Enemy):
     if Player.BattleLitanyTimer <= 0:
@@ -117,6 +182,12 @@ FangAndClaw = DragoonSpell(7, True, 2.5, 300, ApplyFangAndClaw, [FangAndClawRequ
 #oGCD
 LanceCharge = DragoonSpell(8, False, 0, 0, ApplyLanceCharge, [LanceChargeRequirement], False)
 BattleLitany = DragoonSpell(9, False, 0, 0, ApplyBattleLitany, [BattleLitanyRequirement], False)
+Geirskogul = DragoonSpell(11, False, 0, 260, ApplyGeirskogul, [GeirskogulRequirement], False)
+Nastrond = DragoonSpell(12, False, 0, 300, ApplyNastrond, [NastrondRequirement], False)
+HighJump = DragoonSpell(13, False, 0, 400, ApplyHighJump, [HighJumpRequirement], False)
+MirageDive = DragoonSpell(14, False, 0, 200, ApplyMirageDive, [MirageDiveRequirement], False)
+SpineshafterDive = DragoonSpell(15, False, 0, 250, ApplySpineshafter, [SpineshafterRequirement], False)
+LifeSurge = DragoonSpell(16, False, 0, 0, ApplyLifeSurge, [LifeSurgeRequirement], False)
 
 def DragonSight(Target):
 
