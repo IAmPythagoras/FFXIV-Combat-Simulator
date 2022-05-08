@@ -68,6 +68,7 @@ class Esteem(Tank):
 
         self.Blood = 0
         self.Master = Master
+        self.JobMod = 100
 
     def updateCD(self, time):
         pass

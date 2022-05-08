@@ -82,6 +82,7 @@ class Queen(Ranged):
         self.Master.Queen = self  #Giving the Queen's pointer to the Machinist
         self.Master.CurrentFight.PlayerList.append(self)
         self.MultDPSBonus = 1.2
+        self.JobMod = 100
 
 
     def updateCD(self, time):

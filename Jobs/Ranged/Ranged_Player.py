@@ -6,6 +6,9 @@ class Ranged(Player):
         super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
 
         #Shared ressources across melees
+
+        #JobMod
+        self.JobMod = 115
     
     def updateCD(self,time):
         pass
