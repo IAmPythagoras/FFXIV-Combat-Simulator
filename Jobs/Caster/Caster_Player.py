@@ -13,6 +13,9 @@ class Caster(Player):
 
         #Timer
         self.LucidDreamingTimer = 0
+
+        #jobmod
+        self.JobMod = 115
     
     def updateCD(self,time):
         if (self.SwiftCastCD > 0) : self.SwiftCastCD = max(0,self.SwiftCastCD - time)

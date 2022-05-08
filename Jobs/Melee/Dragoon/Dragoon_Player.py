@@ -51,6 +51,9 @@ class Dragoon(Melee):
         #Next crit
         self.NextCrit = False
 
+        #JobMod
+        self.JobMod = 115
+
     def updateCD(self, time):
         if (self.LanceChargeCD > 0) : self.LanceChargeCD = max(0,self.LanceChargeCD - time)
         if (self.BattleLitanyCD > 0) : self.BattleLitanyCD = max(0,self.BattleLitanyCD - time)

@@ -35,6 +35,9 @@ class Gunbreaker(Tank):
         self.SonicBreakDOT = None
         self.BowShowDOT = None
 
+        #JobMod
+        self.JobMod = 100
+
     def updateCD(self, time):
         if (self.GnashingFangCD > 0) : self.GnashingFangCD = max(0,self.GnashingFangCD - time)
         if (self.BlastingZoneCD > 0) : self.BlastingZoneCD = max(0,self.BlastingZoneCD - time)

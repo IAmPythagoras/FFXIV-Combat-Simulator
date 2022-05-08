@@ -37,6 +37,9 @@ class Paladin(Tank):
         self.ExpiacionCD = 0
         self.FightOrFlightCD = 0
 
+        #JobMod
+        self.JobMod = 100
+
     def updateCD(self, time):
         if (self.RequestACatCD > 0) : self.RequestACatCD = max(0,self.RequestACatCD - time)
         if (self.CircleScornCD > 0) : self.CircleScornCD = max(0,self.CircleScornCD - time)

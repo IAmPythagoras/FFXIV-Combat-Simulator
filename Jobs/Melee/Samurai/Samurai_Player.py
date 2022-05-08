@@ -46,6 +46,9 @@ class Samurai(Melee):
         #DOT
         self.Higanbana = None
 
+        #JobMod
+        self.JobMod = 112
+
     def updateCD(self, time):
         if (self.MeikyoCD > 0) : self.MeikyoCD = max(0,self.MeikyoCD - time)
         if (self.IkishotenCD > 0) : self.IkishotenCD = max(0,self.IkishotenCD - time)

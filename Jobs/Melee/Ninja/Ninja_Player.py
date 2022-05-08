@@ -44,6 +44,9 @@ class Ninja(Melee):
         self.BunshinTimer = 0
         self.KamaitachiTimer = 0
 
+        #JobMod
+        self.JobMod = 110
+
     def updateCD(self, time):
         if (self.TenChiJinCd > 0) : self.TenChiJinCd = max(0,self.TenChiJinCd - time)
         if (self.DreamWithinADreamCd > 0) : self.DreamWithinADreamCd = max(0,self.DreamWithinADreamCd - time)

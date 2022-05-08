@@ -11,6 +11,9 @@ class Healer(Player):
         self.SwiftCastCD = 0
         self.LucidDreamingCD = 0
         self.LucidDreamingTimer = 0
+
+        #JobMod
+        self.JobMod = 115
     
     def updateCD(self,time):
         if (self.SwiftCastCD > 0) : self.SwiftCastCD = max(0,self.SwiftCastCD - time)

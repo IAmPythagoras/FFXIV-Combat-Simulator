@@ -311,7 +311,7 @@ def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
     levelMod = 1900
     baseMain = 390  
     baseSub = 400
-    JobMod = 115
+    JobMod = Player.JobMod
 
     MainStat = Player.Stat["MainStat"] * Player.CurrentFight.TeamCompositionBonus #Scaling %bonus
 
