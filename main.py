@@ -53,7 +53,7 @@ Dummy = Enemy()
 
 #Stat
 BLMCRITStat = {"MainStat": 2571, "WD":120, "Det" : 1518, "Ten" : 390, "SS": 884, "Crit" : 2323, "DH" : 1037} 
-BLMStat = {"MainStat": 2571, "WD":120, "Det" : 1422, "Ten" : 390, "SS": 2171, "Crit" : 715, "DH" : 1454} 
+BLMStat = {"MainStat": 2571, "WD":120, "Det" : 1422, "Ten" : 400, "SS": 2171, "Crit" : 715, "DH" : 1454} 
 SCHStat = {"MainStat": 2560, "WD":120, "Det" : 1951, "Ten" : 400, "SS": 944, "Crit" : 2277, "DH" : 616}
 RDMStat = {"MainStat": 2563, "WD":120, "Det" : 1669, "Ten" : 400, "SS": 400, "Crit" : 2348, "DH" : 1340}
 MCHStat = {"MainStat": 2572, "WD":120, "Det" : 1615, "Ten" : 400, "SS": 400, "Crit" : 2121, "DH" : 1626}
@@ -73,7 +73,7 @@ Event = Fight([], Dummy)
 
 #DRKPlayer = DarkKnight(2.41, DRKAction, [], [DarksideEffect], Event)
 
-BLMPlayer = BlackMage(2.5, [], [], [EnochianEffect, ElementalEffect], Event, BLMCRITStat)
+BLMPlayer = BlackMage(2.5, [], [], [EnochianEffect, ElementalEffect], Event, BLMStat)
 SCHPlayer = Scholar(2.5, [], [], [], Event, SCHStat)
 RDMPlayer = Redmage(2.5, [], [], [DualCastEffect], Event, RDMStat)
 MCHPlayer = Machinist(2.5, [], [], [], Event, MCHStat)
@@ -83,6 +83,7 @@ WARPlayer = Warrior(2.5, [], [], [SurgingTempestEffect], Event, WARStat)
 WHMPlayer = Whitemage(2.5, [], [], [], Event, WHMStat)
 SAMPlayer = Samurai(2.5, [], [], [], Event, SAMStat)
 PLDPlayer = Paladin(2.5, [], [], [], Event, PLDStat)
+
 GNBPlayer = Gunbreaker(2.5, [], [], [], Event, GNBStat)
 ASTPlayer = Astrologian(2.5, [], [], [], Event, ASTStat)
 SMNPlayer = Summoner(2.5, [], [], [], Event, SMNStat)
@@ -91,7 +92,7 @@ DNCPlayer = Dancer(2.5, [], [], [EspritEffect], Event, DNCStat)
 DRGPlayer = Dragoon(2.5, [], [], [], Event, DRGStat)
 
 
-#input(ComputeDamageV2(BLMPlayer, 540, 1, 1))
+input(ComputeDamageV2(BLMPlayer, 558, 1, 1))
 #input(ComputeDamage(BLMPlayer, 540, 1, 1))
 
 #exit()

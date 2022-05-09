@@ -321,7 +321,7 @@ def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
 
     Damage=math.floor(Damage*(1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000)#Tenacity damage
 
-    #if isinstance(Player.ActionSet[Player.NextSpell], DOTSpell) : Damage=math.floor(Damage*(1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000/100)#Spell/Skill speed damage bonus, only on DOT
+    Damage=math.floor(Damage*(1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000)#Spell/Skill speed damage bonus, only on DOT
 
     Damage = math.floor(Player.MultDPSBonus * Damage * EnemyBonus * SpellBonus)
     #input("Damage inside v1.0 : " + str(Damage))
@@ -338,6 +338,8 @@ def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
 
     if Player.CurrentFight.Enemy.BattleVoice: DHRate += 0.2 #If WanderingMinuet is active, increase crit
 
+
+    
 
     DHRate += Player.DHRateBonus #Adding Bonus
     CritRate += Player.CritRateBonus #Adding bonus
@@ -368,7 +370,7 @@ def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
             CritRate = 1
             Player.NextCrit = False
 
-    return Damage * ((1+(DHRate/4))*(1+(CritRate*CritDamage)))
+    return round(Damage * ((1+(DHRate/4))*(1+(CritRate*CritDamage)))/100, 2)
 """
     // Pulled from Orinx's Gear Comparison Sheet with slight modifications
 function Damage(Potency, WD, JobMod, MainStat,Det, Crit, DH,SS,TEN, hasBrd, hasDrg, hasSch, hasDnc, classNum) {
@@ -398,15 +400,15 @@ def ComputeDamageV2(Player, Potency, EnemyBonus, SpellBonus):
     baseSub = 400
     JobMod = Player.JobMod
 
-    MainStat = Player.Stat["MainStat"] * Player.CurrentFight.TeamCompositionBonus #Scaling %bonus
+    MainStat = Player.Stat["MainStat"] *1.05 *  Player.CurrentFight.TeamCompositionBonus #Scaling %bonus
 
     Damage=math.floor(Potency*(Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))*(100+math.floor((MainStat-baseMain)*195/baseMain))/100)
     
-    f_WD = (Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))
+    f_WD = (Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))/100
 
     f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100
 
-    f_DET=math.floor(1000+math.floor(140*(Player.Stat["Det"]-baseMain)/levelMod))/1000#Determination damage
+    f_DET = math.floor(1000+math.floor(130*(Player.Stat["Det"]-baseMain)/levelMod))/1000#Determination damage
 
     f_TEN = (1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000
 
@@ -420,7 +422,7 @@ def ComputeDamageV2(Player, Potency, EnemyBonus, SpellBonus):
 
     CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000
 
-    CritDamage = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000
+    CritDamage = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+1400))/1000
 
     DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000
 
@@ -463,7 +465,7 @@ def ComputeDamageV2(Player, Potency, EnemyBonus, SpellBonus):
     #The damage is now computed with average, but we could make it random to simulate an actual raid
     Damage = math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN ) *f_WD)
     input(Damage)
-    Damage = math.floor(Player.MultDPSBonus)
+    Damage = math.floor(Damage * Player.MultDPSBonus)
     input(Damage)
 
-    return Damage * ((1+(DHRate/4))*(1+(CritRate*CritDamage))) #This is to average crit and dh damage's contribution
+    return Damage * ((1+(DHRate*0.25))*(1+(CritRate*CritDamage))) #This is to average crit and dh damage's contribution
