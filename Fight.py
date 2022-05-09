@@ -321,9 +321,10 @@ def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
 
     Damage=math.floor(Damage*(1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000)#Tenacity damage
 
-    Damage=math.floor(Damage*(1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000/100)#Spell/Skill speed damage bonus
+    #if isinstance(Player.ActionSet[Player.NextSpell], DOTSpell) : Damage=math.floor(Damage*(1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000/100)#Spell/Skill speed damage bonus, only on DOT
 
     Damage = math.floor(Player.MultDPSBonus * Damage * EnemyBonus * SpellBonus)
+    #input("Damage inside v1.0 : " + str(Damage))
 
     CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000
 
@@ -386,3 +387,83 @@ function Damage(Potency, WD, JobMod, MainStat,Det, Crit, DH,SS,TEN, hasBrd, hasD
 }
 
 """
+
+
+def ComputeDamageV2(Player, Potency, EnemyBonus, SpellBonus):
+
+#This function will compute the DPS given the stats of a player
+
+    levelMod = 1900
+    baseMain = 390  
+    baseSub = 400
+    JobMod = Player.JobMod
+
+    MainStat = Player.Stat["MainStat"] * Player.CurrentFight.TeamCompositionBonus #Scaling %bonus
+
+    Damage=math.floor(Potency*(Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))*(100+math.floor((MainStat-baseMain)*195/baseMain))/100)
+    
+    f_WD = (Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))
+
+    f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100
+
+    f_DET=math.floor(1000+math.floor(140*(Player.Stat["Det"]-baseMain)/levelMod))/1000#Determination damage
+
+    f_TEN = (1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000
+
+    f_SPD = (1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000
+
+    Damage=math.floor(Damage*(1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000)#Tenacity damage
+
+    #if isinstance(Player.ActionSet[Player.NextSpell], DOTSpell) : Damage=math.floor(Damage*(1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000/100)#Spell/Skill speed damage bonus, only on DOT
+
+    Damage = math.floor(Player.MultDPSBonus * Damage * EnemyBonus * SpellBonus)
+
+    CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000
+
+    CritDamage = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000
+
+    DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000
+
+    if Player.CurrentFight.Enemy.ChainStratagem: CritRate += 0.1    #If ChainStratagem is active, increase crit
+
+    if Player.CurrentFight.Enemy.WanderingMinuet: CritRate += 0.02 #If WanderingMinuet is active, increase crit
+
+    if Player.CurrentFight.Enemy.BattleVoice: DHRate += 0.2 #If WanderingMinuet is active, increase crit
+
+
+    DHRate += Player.DHRateBonus #Adding Bonus
+    CritRate += Player.CritRateBonus #Adding bonus
+
+    if isinstance(Player, Machinist): 
+        #print(Player.ActionSet[Player.NextSpell])  #Then if machinist, has to check if direct crit guarantee
+        if Player.ActionSet[Player.NextSpell].id != -1 and Player.ActionSet[Player.NextSpell].id != -2 and Player.Reassemble and Player.ActionSet[Player.NextSpell].WeaponSkill:    #Checks if reassemble is on and if its a weapon skill
+            CritRate = 1
+            DHRate = 1
+            Player.Reassemble = False #Uses Reassemble       
+    elif isinstance(Player, Warrior):
+        if Player.InnerReleaseStack >= 1 and (Player.ActionSet[Player.NextSpell].id == 9 or Player.ActionSet[Player.NextSpell].id == 8):
+            CritRate = 1#If inner release weaponskill
+            DHRate = 1
+            Player.InnerReleaseStack -= 1
+    elif isinstance(Player, Samurai):
+        if Player.DirectCrit:
+            CritRate = 1
+            DHRate = 1
+            Player.DirectCrit = False
+    elif isinstance(Player, Dancer):
+        if Player.NextDirectCrit:
+            CritRate = 1
+            DHRate = 1
+            Player.NextDirectCrit = False
+    elif isinstance(Player, Dragoon):
+        if Player.NextCrit and Player.ActionSet[Player.NextSpell].Weaponskill: #If next crit and weaponskill
+            CritRate = 1
+            Player.NextCrit = False
+
+    #The damage is now computed with average, but we could make it random to simulate an actual raid
+    Damage = math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN ) *f_WD)
+    input(Damage)
+    Damage = math.floor(Player.MultDPSBonus)
+    input(Damage)
+
+    return Damage * ((1+(DHRate/4))*(1+(CritRate*CritDamage))) #This is to average crit and dh damage's contribution
