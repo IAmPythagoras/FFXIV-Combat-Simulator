@@ -304,6 +304,110 @@ class Fight:
 
 
 
+def ComputeDamage(Player, Potency, EnemyBonus, SpellBonus, type):
+
+    #The type input signifies what type of damage we are dealing with, since the computation will chance according to what
+    #type of damage it is
+
+    #type = 0 (Direct Damage), type = 1 (magical DOT), type = 2(physical DOT), type = 3 (Auto-attacks)
+
+    #All relevant formulas were taken from https://finalfantasy.fandom.com/wiki/Final_Fantasy_XIV_attributes#Damage_and_healing_formulae
+    #The formulas on the website assume a random function that will 
+    #This function will compute the DPS given the stats of a player
+
+    levelMod = 1900
+    baseMain = 390  
+    baseSub = 400#Level 90 LevelMod values
+
+    JobMod = Player.JobMod #Level 90 jobmod value, specific to each job
+
+    Enemy = Player.CurrentFight.Enemy #Enemy targetted
+
+    MainStat = Player.Stat["MainStat"] * Player.CurrentFight.TeamCompositionBonus #Scaling %bonus on mainstat
+
+    #Computing values used throughout all computations
+    
+    f_WD = (Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))/100
+
+    f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100
+
+    f_DET = math.floor(1000+math.floor(130*(Player.Stat["Det"]-baseMain)/levelMod))/1000#Determination damage
+
+    f_TEN = (1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000 #Tenacity damage, 1 for non-tank player
+
+    f_SPD = (1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000 #Used only for dots
+
+    CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000 #Crit rate in decimal
+
+    CritDamage = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+1400))/1000 #Crit Damage multiplier
+
+    DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000 #DH rate in decimal
+
+    if Enemy.ChainStratagem: CritRate += 0.1    #If ChainStratagem is active, increase crit rate
+
+    if Enemy.WanderingMinuet: CritRate += 0.02 #If WanderingMinuet is active, increase crit rate
+
+    if Enemy.BattleVoice: DHRate += 0.2 #If WanderingMinuet is active, increase DHRate
+
+
+    DHRate += Player.DHRateBonus #Adding Bonus
+    CritRate += Player.CritRateBonus #Adding bonus
+
+    if isinstance(Player, Machinist): 
+        #print(Player.ActionSet[Player.NextSpell])  #Then if machinist, has to check if direct crit guarantee
+        if Player.ActionSet[Player.NextSpell].id != -1 and Player.ActionSet[Player.NextSpell].id != -2 and Player.Reassemble and Player.ActionSet[Player.NextSpell].WeaponSkill:    #Checks if reassemble is on and if its a weapon skill
+            CritRate = 1
+            DHRate = 1
+            Player.Reassemble = False #Uses Reassemble       
+    elif isinstance(Player, Warrior):
+        if Player.InnerReleaseStack >= 1 and (Player.ActionSet[Player.NextSpell].id == 9 or Player.ActionSet[Player.NextSpell].id == 8):
+            CritRate = 1#If inner release weaponskill
+            DHRate = 1
+            Player.InnerReleaseStack -= 1
+    elif isinstance(Player, Samurai):
+        if Player.DirectCrit:
+            CritRate = 1
+            DHRate = 1
+            Player.DirectCrit = False
+    elif isinstance(Player, Dancer):
+        if Player.NextDirectCrit:
+            CritRate = 1
+            DHRate = 1
+            Player.NextDirectCrit = False
+    elif isinstance(Player, Dragoon):
+        if Player.NextCrit and Player.ActionSet[Player.NextSpell].Weaponskill: #If next crit and weaponskill
+            CritRate = 1
+            Player.NextCrit = False
+
+    if type == 0: #Type 0 is direct damage
+        Damage = math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN ) *f_WD) * Player.Trait) #Player.Trait is trait DPS bonus
+        #We will average the DPS by using DHRate, CritRate and CritDamage multiplier
+        Damage = math.floor(math.floor(Damage * (1 + (CritRate * CritDamage)) ) * (1 + (DHRate * 0.25))) #Average DHRate and Crit contribution
+
+    elif type == 1 : #Type 1 is magical DOT
+        Damage = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_WD) * f_MAIN_DMG) * f_SPD) * f_DET) * f_TEN) * Player.Trait) + 1
+        Damage = math.floor(math.floor(Damage * (1 + (CritRate * CritDamage)) ) * (1 + (DHRate * 0.25))) #Average DHRate and Crit contribution
+
+    elif type == 2: #Physical DOT
+        Damage = math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN) * f_SPD) * f_WD) * Player.Trait) +1
+        Damage = math.floor(math.floor(Damage * (1 + (CritRate * CritDamage)) ) * (1 + (DHRate * 0.25))) #Average DHRate and Crit contribution
+    elif type == 3: #Auto-attacks
+        Damage = math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN) * f_SPD)
+        Damage = math.floor(math.floor(Damage * math.floor(f_WD * (Player.Delay/3) *100 )/100) * Player.Trait)
+        Damage = math.floor(math.floor(Damage * (1 + (CritRate * CritDamage)) ) * (1 + (DHRate * 0.25))) #Average DHRate and Crit contribution
+
+    #Now applying buffs
+
+    for buffs in Player.buffList: 
+        Damage = math.floor(Damage * buffs.MultDPS) #Multiplying all buffs
+        
+    for buffs in Enemy.buffList:
+        Damage = math.floor(Damage * buffs.MultDPS) #Multiplying all buffs
+
+    return Damage #This is to average crit and dh damage's contribution
+
+"""
+Original ComputeDamage function
 
 def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
     #This function will compute the DPS given the stats of a player
@@ -371,7 +475,7 @@ def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
             Player.NextCrit = False
 
     return round(Damage * ((1+(DHRate/4))*(1+(CritRate*CritDamage)))/100, 2)
-"""
+
     // Pulled from Orinx's Gear Comparison Sheet with slight modifications
 function Damage(Potency, WD, JobMod, MainStat,Det, Crit, DH,SS,TEN, hasBrd, hasDrg, hasSch, hasDnc, classNum) {
   
@@ -389,83 +493,3 @@ function Damage(Potency, WD, JobMod, MainStat,Det, Crit, DH,SS,TEN, hasBrd, hasD
 }
 
 """
-
-
-def ComputeDamageV2(Player, Potency, EnemyBonus, SpellBonus):
-
-#This function will compute the DPS given the stats of a player
-
-    levelMod = 1900
-    baseMain = 390  
-    baseSub = 400
-    JobMod = Player.JobMod
-
-    MainStat = Player.Stat["MainStat"] *1.05 *  Player.CurrentFight.TeamCompositionBonus #Scaling %bonus
-
-    Damage=math.floor(Potency*(Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))*(100+math.floor((MainStat-baseMain)*195/baseMain))/100)
-    
-    f_WD = (Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))/100
-
-    f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100
-
-    f_DET = math.floor(1000+math.floor(130*(Player.Stat["Det"]-baseMain)/levelMod))/1000#Determination damage
-
-    f_TEN = (1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000
-
-    f_SPD = (1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000
-
-    Damage=math.floor(Damage*(1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000)#Tenacity damage
-
-    #if isinstance(Player.ActionSet[Player.NextSpell], DOTSpell) : Damage=math.floor(Damage*(1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000/100)#Spell/Skill speed damage bonus, only on DOT
-
-    Damage = math.floor(Player.MultDPSBonus * Damage * EnemyBonus * SpellBonus)
-
-    CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000
-
-    CritDamage = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+1400))/1000
-
-    DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000
-
-    if Player.CurrentFight.Enemy.ChainStratagem: CritRate += 0.1    #If ChainStratagem is active, increase crit
-
-    if Player.CurrentFight.Enemy.WanderingMinuet: CritRate += 0.02 #If WanderingMinuet is active, increase crit
-
-    if Player.CurrentFight.Enemy.BattleVoice: DHRate += 0.2 #If WanderingMinuet is active, increase crit
-
-
-    DHRate += Player.DHRateBonus #Adding Bonus
-    CritRate += Player.CritRateBonus #Adding bonus
-
-    if isinstance(Player, Machinist): 
-        #print(Player.ActionSet[Player.NextSpell])  #Then if machinist, has to check if direct crit guarantee
-        if Player.ActionSet[Player.NextSpell].id != -1 and Player.ActionSet[Player.NextSpell].id != -2 and Player.Reassemble and Player.ActionSet[Player.NextSpell].WeaponSkill:    #Checks if reassemble is on and if its a weapon skill
-            CritRate = 1
-            DHRate = 1
-            Player.Reassemble = False #Uses Reassemble       
-    elif isinstance(Player, Warrior):
-        if Player.InnerReleaseStack >= 1 and (Player.ActionSet[Player.NextSpell].id == 9 or Player.ActionSet[Player.NextSpell].id == 8):
-            CritRate = 1#If inner release weaponskill
-            DHRate = 1
-            Player.InnerReleaseStack -= 1
-    elif isinstance(Player, Samurai):
-        if Player.DirectCrit:
-            CritRate = 1
-            DHRate = 1
-            Player.DirectCrit = False
-    elif isinstance(Player, Dancer):
-        if Player.NextDirectCrit:
-            CritRate = 1
-            DHRate = 1
-            Player.NextDirectCrit = False
-    elif isinstance(Player, Dragoon):
-        if Player.NextCrit and Player.ActionSet[Player.NextSpell].Weaponskill: #If next crit and weaponskill
-            CritRate = 1
-            Player.NextCrit = False
-
-    #The damage is now computed with average, but we could make it random to simulate an actual raid
-    Damage = math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN ) *f_WD)
-    input(Damage)
-    Damage = math.floor(Damage * Player.MultDPSBonus)
-    input(Damage)
-
-    return Damage * ((1+(DHRate*0.25))*(1+(CritRate*CritDamage))) #This is to average crit and dh damage's contribution

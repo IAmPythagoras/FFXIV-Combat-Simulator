@@ -73,7 +73,7 @@ Event = Fight([], Dummy)
 
 #DRKPlayer = DarkKnight(2.41, DRKAction, [], [DarksideEffect], Event)
 
-BLMPlayer = BlackMage(2.5, [], [], [EnochianEffect, ElementalEffect], Event, BLMStat)
+BLMPlayer = BlackMage(2.5, [], [], [EnochianEffect, ElementalEffect], Event, BLMCRITStat)
 SCHPlayer = Scholar(2.5, [], [], [], Event, SCHStat)
 RDMPlayer = Redmage(2.5, [], [], [DualCastEffect], Event, RDMStat)
 MCHPlayer = Machinist(2.5, [], [], [], Event, MCHStat)
@@ -91,9 +91,6 @@ BRDPlayer = Bard(2.5, [], [], [SongEffect], Event, BRDStat)
 DNCPlayer = Dancer(2.5, [], [], [EspritEffect], Event, DNCStat)
 DRGPlayer = Dragoon(2.5, [], [], [], Event, DRGStat)
 
-
-input(ComputeDamageV2(BLMPlayer, 558, 1, 1))
-#input(ComputeDamage(BLMPlayer, 540, 1, 1))
 
 #exit()
 
