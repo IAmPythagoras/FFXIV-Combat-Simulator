@@ -339,7 +339,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
 
     CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000 #Crit rate in decimal
 
-    CritDamage = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+1400))/1000 #Crit Damage multiplier
+    CritDamage = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000 #Crit Damage multiplier
 
     DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000 #DH rate in decimal
 
@@ -407,10 +407,10 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
 
     return Damage #This is to average crit and dh damage's contribution
 
-"""
-Original ComputeDamage function
 
-def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
+#Original ComputeDamage function
+
+def ComputeDamageV2(Player, DPS, EnemyBonus, SpellBonus):
     #This function will compute the DPS given the stats of a player
 
     levelMod = 1900
@@ -428,7 +428,7 @@ def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
 
     Damage=math.floor(Damage*(1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000)#Spell/Skill speed damage bonus, only on DOT
 
-    Damage = math.floor(Player.MultDPSBonus * Damage * EnemyBonus * SpellBonus)
+    Damage = math.floor(Damage * EnemyBonus * SpellBonus)
     #input("Damage inside v1.0 : " + str(Damage))
 
     CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000
@@ -476,7 +476,7 @@ def ComputeDamage(Player, DPS, EnemyBonus, SpellBonus):
             Player.NextCrit = False
 
     return round(Damage * ((1+(DHRate/4))*(1+(CritRate*CritDamage)))/100, 2)
-
+"""
     // Pulled from Orinx's Gear Comparison Sheet with slight modifications
 function Damage(Potency, WD, JobMod, MainStat,Det, Crit, DH,SS,TEN, hasBrd, hasDrg, hasSch, hasDnc, classNum) {
   

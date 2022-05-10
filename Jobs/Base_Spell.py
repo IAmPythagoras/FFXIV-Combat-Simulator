@@ -1,6 +1,6 @@
 import copy
 
-from Fight import ComputeDamage
+from Fight import ComputeDamage, ComputeDamageV2
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
 from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
 Lock = 0.75
@@ -81,6 +81,8 @@ class Spell:
             
 
         Damage = ComputeDamage(player, self.Potency, Enemy, self.DPSBonus, type)    #Damage computation
+        input("Damage : " + str(Damage))
+        input("Damage from v1.0 " + str(ComputeDamageV2(player, self.Potency, 1, 1)))
 
         if isinstance(player, Queen) or isinstance(player, Esteem):
             player.Master.TotalPotency+= self.Potency
