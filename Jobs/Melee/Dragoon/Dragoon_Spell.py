@@ -1,4 +1,5 @@
-from Jobs.Base_Spell import DOTSpell, empty
+from torch import bucketize
+from Jobs.Base_Spell import DOTSpell, buff, empty
 from Jobs.Melee.Melee_Spell import DragoonSpell
 import copy
 
@@ -84,7 +85,7 @@ def ApplyFangAndClaw(Player, Enemy):
         Player.LanceMastery = False
 def ApplyLanceCharge(Player, Enemy):
     #print("BUFFING LANCE CHARGE")
-    Player.MultDPSBonus *= 1.1
+    Player.buffList.append(LanceChargeBuff)
     #input(Player.MultDPSBonus)
     Player.LanceChargeCD = 60
     Player.LanceChargeTimer = 20
@@ -158,7 +159,7 @@ def TrueThrustCombo(Player, Spell):
 
         if Player.PowerSurgeTimer <= 0: #Not already applied
             #print("Buffing")
-            Player.MultDPSBonus *= 1.10
+            Player.buffList.append(PowerSurgeBuff)
             #input(Player.MultDPSBonus)
             Player.EffectCDList.append(PowerSurgeCheck)
         Player.PowerSurgeTimer = 30
@@ -241,7 +242,7 @@ def PowerSurgeCheck(Player, Enemy):
     if Player.PowerSurgeTimer <= 0:
         #input("Removing powersurge")
         Player.EffectToRemove.append(PowerSurgeCheck)
-        Player.MultDPSBonus /= 1.1
+        Player.buffList.remove(PowerSurgeBuff)
 
 #GCD
 #Combo Action
@@ -269,20 +270,30 @@ LifeSurge = DragoonSpell(16, False, 0, 0, ApplyLifeSurge, [LifeSurgeRequirement]
 Stardiver = DragoonSpell(17, False, 0, 620, ApplyStardiver, [StardiverRequirement], False)
 WyrmwindThrust = DragoonSpell(19, False, 0, 420, ApplyWyrmwindThrust, [WyrmwindThrustRequirement], False)
 DragonFireDive = DragoonSpell(20, False, 0, 300, ApplyDragonFireDive, [DragonFireDiveRequirement], False)
+
+
+#buff
+RightEyeBuff = buff(1.1)
+LeftEyeBuff = buff(1.05)
+LanceChargeBuff = buff(1.1)
+PowerSurgeBuff = buff(1.1)
+
 def DragonSight(Target):
 
     def DragonSightCheck(Player, Enemy):
         if Player.DragonSightTimer <= 0:
-            Player.MultDPSBonus /= 1.1
-            Target.MultDPSBonus /= 1.05
+            Player.buffList.remove(RightEyeBuff)
+            Target.buffList.remove(LeftEyeBuff)
             Player.EffectToRemove.append(DragonSightCheck)
 
     def ApplyDragonSight(Player, Enemy):
         Player.DragonSightCD = 120
         Player.DragonSightTimer = 20
 
-        Player.MultDPSBonus *= 1.1
-        Target.MultDPSBonus *= 1.05
+        Player.buffList.append(RightEyeBuff)
+        Target.buffList.append(LeftEyeBuff)
         Player.EffectCDList.append(DragonSightCheck)
 
     return DragoonSpell(10, False, 0, 0, ApplyDragonSight, [DragonSightRequirement], False)
+
+

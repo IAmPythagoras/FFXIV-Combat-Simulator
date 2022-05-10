@@ -1,6 +1,6 @@
 import copy
 
-from Jobs.Base_Spell import DOTSpell, ManaRequirement, empty
+from Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
 from Jobs.Healer.Healer_Spell import AstrologianSpell
 Lock = 0.75
 
@@ -83,7 +83,6 @@ def ApplyCombust(Player, Enemy):
         Player.EffectCDList.append(CumbustDOTCheck)
     Player.CumbustTimer = 30
 
-
 #Effect
 
 def BodyEffect(Player, Spell):
@@ -105,9 +104,6 @@ def MindCheck(Player, Enemy):
     if Player.BodyTimer <= 0:
         Player.MultDPSBonus /= 1.05
         Player.EffectToRemove.append(MindCheck)
-
-
-
 
 def DrawStackCheck(Player, Enemy):
     if Player.DrawCD <= 0:
@@ -150,6 +146,7 @@ Astrodyne = AstrologianSpell(7, False, Lock, 0, 0, 0, ApplyAstrodyne, [])
 
 #Arcanum require a target within the team, so it will be a function that will return a spell that
 #will target the given player. It is also assumed that the bonus is 6%
+ArcanumBuff = buff(1.06)
 
 
 
@@ -161,14 +158,14 @@ def Arcanum(Target, Type):
         if Player.ArcanumTimer <= 0:
             #input("Effect has been removed on : " + str(Player))
             Player.EffectToRemove.append(ArcanumCheck)
-            Player.MultDPSBonus /= 1.06
+            Player.buffList.remove(ArcanumBuff)
         pass #This function is just to know if the Target has already been given a buff
 
     def ApplyArcanum(Player, Spell):
         Player.HasCard = False
         if Target.ArcanumTimer == 0 : #Can only have 1 buff at a time
             #input("Will affect target with Arcana :" + str(Target))
-            Target.MultDPSBonus *= 1.06
+            Target.buffList.append(ArcanumBuff)
             Target.EffectCDList.append(ArcanumCheck)
 
         Target.ArcanumTimer = 15

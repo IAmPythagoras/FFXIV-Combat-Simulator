@@ -1,4 +1,4 @@
-from Jobs.Base_Spell import DOTSpell, ManaRequirement, empty
+from Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
 from Jobs.Caster.Caster_Spell import SummonerSpell
 import copy
 Lock = 0.75
@@ -152,7 +152,7 @@ def ApplySearingLight(Player, Enemy):
     Player.SearingLightTimer = 30
     Player.SearingLightCD = 120
 
-    Enemy.Bonus *= 1.03 #3% dps bonus
+    Enemy.buffList.append(SearingLightbuff)
     Player.EffectCDList.append(SearingLightCheck)
 
 #Effect
@@ -183,7 +183,7 @@ def SummonDOTCheck(Player, Enemy):
 
 def SearingLightCheck(Player, Enemy):
     if Player.SearingLightTimer <= 0:
-        Enemy.Bonus /= 1.03
+        Enemy.buffList.remove(SearingLightbuff)
         Player.EffectToRemove.append(SearingLightCheck)
 
 
@@ -224,3 +224,6 @@ Deathflare = SummonerSpell(18, False, Lock, 0, 500, 0, ApplyDeathflare, [Deathfl
 EnergyDrainSMN = SummonerSpell(19, False, Lock, 0, 200, 0, ApplyEnergyDrain, [EnergyDrainRequirement])
 Fester = SummonerSpell(21, False, Lock, 0, 300, 0, ApplyFester, [FesterRequirement])
 SearingLight = SummonerSpell(20, False, Lock, 0, 0, 0, ApplySearingLight, [SearingLightRequirement])
+
+#buff
+SearingLightbuff = buff(1.03)

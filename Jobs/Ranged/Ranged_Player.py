@@ -9,6 +9,9 @@ class Ranged(Player):
 
         #JobMod
         self.JobMod = 115
+
+        #trait
+        self.Trait = 1.2
     
     def updateCD(self,time):
         pass

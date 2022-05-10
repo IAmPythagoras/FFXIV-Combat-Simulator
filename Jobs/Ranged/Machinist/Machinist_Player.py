@@ -46,8 +46,6 @@ class Machinist(Ranged):
         self.Overdrive = False  #Used to know if we can cast overdrive. Its set to true once the Queen is summoned and set to false when Overdrive is used
         self.QueenOnField = False
 
-        self.MultDPSBonus = 1.2
-
         
 
     def updateCD(self, time):

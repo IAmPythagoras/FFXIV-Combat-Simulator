@@ -383,6 +383,7 @@ def ComputeDamage(Player, Potency, EnemyBonus, SpellBonus, type):
         Damage = math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN ) *f_WD) * Player.Trait) #Player.Trait is trait DPS bonus
         #We will average the DPS by using DHRate, CritRate and CritDamage multiplier
         Damage = math.floor(math.floor(Damage * (1 + (CritRate * CritDamage)) ) * (1 + (DHRate * 0.25))) #Average DHRate and Crit contribution
+        Damage = math.floor(Damage * SpellBonus)
 
     elif type == 1 : #Type 1 is magical DOT
         Damage = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_WD) * f_MAIN_DMG) * f_SPD) * f_DET) * f_TEN) * Player.Trait) + 1

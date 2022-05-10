@@ -8,6 +8,12 @@ Lock = 0.75
 class FailedToCast(Exception):#Exception called if a spell fails to cast
     pass
 
+
+class buff:
+    def __init__(self, MultDPS):
+        self.MultDPS = MultDPS #DPS multiplier of the buff
+
+
 class Spell:
     #This class is any Spell, it will have some subclasses to take Job similar spell, etc.
 

@@ -1,7 +1,7 @@
 #########################################
 ########## NINJA PLAYER #################
 #########################################
-from Jobs.Base_Spell import DOTSpell, empty
+from Jobs.Base_Spell import DOTSpell, buff, empty
 from Jobs.Melee.Melee_Spell import NinjaSpell
 Lock = 0.75
 
@@ -108,14 +108,14 @@ def ApplyArmorCrush(Player, Enemy):
 
 def ApplyTrickAttack(Player, Enemy):
     Player.TrickAttackCd = 60
-    Enemy.Bonus *= 1.1
+    Player.buffList.append(TrickAttackBuff)
     Player.TrickAttackTimer = 15
     Player.EffectCDList.append(TrickAttackEffect)
 
 def ApplyMug(Player, Enemy):
     Player.NinkiGauge = min(100, Player.NinkiGauge + 40)
     Player.MugCd = 120
-    Player.MultDPSBonus *= 1.05
+    Enemy.buffList.append(MugBuff)
     Player.MugTimer = 20
     Player.EffectCDList.append(MugCheck)
 
@@ -173,7 +173,7 @@ def RaitonStacksEffect(Player, Spell):
 def TrickAttackEffect(Player, Enemy):
     if(Player.TrickAttackTimer <= 0): 
         Player.EffectToRemove.append(TrickAttackEffect)
-        Enemy.Bonus /= 1.1
+        Player.buffList.remove(TrickAttackBuff)
 
 def SpinningEdgeEffect(Player, Spell):
     if (Spell.id == 1):
@@ -201,7 +201,7 @@ def AutoEffect(Player, Spell):
 
 def MugCheck(Player, Enemy):
     if Player.MugTimer <= 0:
-        Player.MultDPSBonus /= 1.05
+        Enemy.buffList.remove(MugBuff)
         Player.EffectToRemove.append(MugCheck)
 
 
@@ -241,3 +241,7 @@ Autos = NinjaDOT(-1, 100)
 
 #Special
 Hide = NinjaSpell(16, False, False, 0, 0, 0, 0, ApplyHide, [])
+
+#
+TrickAttackBuff = buff(1.1)
+MugBuff = buff(1.05)
