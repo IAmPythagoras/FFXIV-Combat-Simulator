@@ -1,4 +1,4 @@
-from Jobs.Base_Spell import empty, DOTSpell
+from Jobs.Base_Spell import buff, empty, DOTSpell
 from Jobs.Tank.Tank_Spell import GunbreakerSpell
 import copy
 Lock = 0.75
@@ -42,7 +42,7 @@ def EyeGougeRequirement(Player, Spell):
 #Apply
 
 def ApplyNoMercy(Player, Enemy):
-    Player.MultDPSBonus *= 1.2
+    Player.buffList.append(NoMercyBuff)
     Player.NoMercyTimer = 20
     Player.NoMercyCD = 60
     Player.EffectCDList.append(NoMercyCheck)
@@ -120,7 +120,7 @@ def BrutalShellCombo(Player, Spell):
 
 def NoMercyCheck(Player, Enemy):
     if Player.NoMercyTimer <= 0:
-        Player.MultDPSBonus /= 1.2
+        Player.buffList.remove(NoMercyBuff)
         Player.EffectToRemove.append(NoMercyCheck)
 
 def BowShockDOTCheck(Player, Enemy):
@@ -164,11 +164,14 @@ Hypervelocity = GunbreakerSpell(13, False, 0, 180, ApplyHypervelocity,[Hypervelo
 BlastingZone = GunbreakerSpell(10, False, 0, 700, ApplyBlastingZone, [BlastingZoneRequirement], 0)
 Bloodfest = GunbreakerSpell(11, False, 0, 0, ApplyBloodfest, [BloodfestRequirement], 0)
 BowShock = GunbreakerSpell(16, False, 0, 150, ApplyBowShock, [BowShockRequirement], 0)
-BowShockDOT = DOTSpell(-10, 60)
+BowShockDOT = DOTSpell(-10, 60, True)
 RoughDivide = GunbreakerSpell(17, False, 0, 150, ApplyRoughDivide, [RoughDivideRequirement], 0)
 NoMercy = GunbreakerSpell(18, False, 0, 0, ApplyNoMercy, [NoMercyRequirement], 0)
 #GCD
 DoubleDown = GunbreakerSpell(14, True, 2.5, 1200, ApplyDoubleDown, [DoubleDownRequirement], 2)
 SonicBreak = GunbreakerSpell(15, True, 2.5, 300, ApplySonicBreak, [SonicBreakRequirement], 0)
-SonicBreakDOT = DOTSpell(-9, 60)
+SonicBreakDOT = DOTSpell(-9, 60,True)
 LightningShot = GunbreakerSpell(19, True, 2.5, 150, empty, [], 0)
+
+#buff
+NoMercyBuff = buff(1.2)

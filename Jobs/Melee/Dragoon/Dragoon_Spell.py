@@ -234,7 +234,7 @@ def BattleLitanyCheck(Player, Enemy):
 def LanceChargeCheck(Player, Enemy):
     if Player.LanceChargeTimer <= 0:
         #input("Removing lance charge")
-        Player.MultDPSBonus /= 1.1
+        Player.buffList.remove(LanceChargeBuff)
         Player.EffectToRemove.append(LanceChargeCheck)
 
 def PowerSurgeCheck(Player, Enemy):
@@ -250,7 +250,7 @@ TrueThrust = DragoonSpell(1, True, 2.5, 230, ApplyTrueThrust, [TrueThrustRequire
 Disembowel = DragoonSpell(2, True, 2.5, 140, empty, [], True)
 VorpalThrust = DragoonSpell(3, True, 2.5, 130, empty, [], True)
 ChaoticSpring = DragoonSpell(4, True, 2.5, 140, empty, [], True)
-ChaoticSpringDOT = DOTSpell(-22, 45)
+ChaoticSpringDOT = DOTSpell(-22, 45, True)
 HeavenThrust = DragoonSpell(5, True, 2.5, 100, empty, [], True)
 
 WheelingThrust = DragoonSpell(6, True, 2.5, 300, ApplyWheelingThrust, [WheelingThrustRequirement], True )

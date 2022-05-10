@@ -61,7 +61,7 @@ def EukrasianDOTCheck(Player, Enemy):
 #GCD
 Dosis = SageSpell(1, True, 1.5, 2.5, 330, 400, empty, [ManaRequirement])
 EukrasianDosis = SageSpell(2, True, Lock, 1.5, 0, 400, ApplyEukrasian, [ManaRequirement, EukrasianDosisRequirement])
-EukrasianDOT = DOTSpell(-12, 70)
+EukrasianDOT = DOTSpell(-12, 70, False)
 Phlegma = SageSpell(3, True, Lock, 2.5, 510, 400, ApplyPhlegma, [PhlegmaRequirement])
 Pneuma = SageSpell(4, True, 1.5, 2.5, 330, 700, ApplyPneuma, [ManaRequirement, PneumaRequirement])
 

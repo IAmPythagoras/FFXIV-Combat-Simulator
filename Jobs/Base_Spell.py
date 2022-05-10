@@ -72,7 +72,15 @@ class Spell:
         
         #print("Current MP: " + str(player.Mana))
         #print("Current Blood: " + str(player.Blood))
-        Damage = ComputeDamage(player, self.Potency, Enemy.Bonus, self.DPSBonus)    #Damage computation
+        type = 0 #Default value for type
+        if isinstance(self, DOTSpell): #Then dot
+            #We have to figure out if its a physical dot or not
+            if self.isPhysical: type = 2
+            else: type = 1
+            
+            
+
+        Damage = ComputeDamage(player, self.Potency, Enemy, self.DPSBonus, type)    #Damage computation
 
         if isinstance(player, Queen) or isinstance(player, Esteem):
             player.Master.TotalPotency+= self.Potency
@@ -95,10 +103,11 @@ class Spell:
 
 class DOTSpell(Spell):
     #Represents DOT
-    def __init__(self, id, Potency):
+    def __init__(self, id, Potency, isPhysical):
         super().__init__(id, False, 0, 0, Potency,  0, empty, [])
         #Note that here Potency is the potency of the dot, not of the ability
         self.DOTTimer = 0   #This represents the timer of the dot, and it will apply at each 3 seconds
+        self.isPhysical = isPhysical #True if physical dot, false if magical dot
     def CheckDOT(self, Player, Enemy, TimeUnit):
         #print("The dot Timer is :  " + str(self.DOTTimer))
         if(self.DOTTimer <= 0):

@@ -304,7 +304,7 @@ class Fight:
 
 
 
-def ComputeDamage(Player, Potency, EnemyBonus, SpellBonus, type):
+def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
 
     #The type input signifies what type of damage we are dealing with, since the computation will chance according to what
     #type of damage it is

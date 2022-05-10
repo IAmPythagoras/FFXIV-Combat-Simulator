@@ -9,7 +9,7 @@ Lock = 0.75
 class NinjaDOT(DOTSpell):
 
     def __init__(self,id, Potency):
-        super().__init__(id, Potency)
+        super().__init__(id, Potency, True)
         #Note that here Potency is the potency of the dot, not of the ability
         self.DOTTimer = 0   #This represents the timer of the dot, and it will apply at each 3 seconds
         self.WeaponSkill = False

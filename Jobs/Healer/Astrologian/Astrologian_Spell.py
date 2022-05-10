@@ -44,7 +44,7 @@ def ApplyAstrodyne(Player, Enemy):
         Player.EffectCDList.append(BodyCheck)#Only 1 check for both Body and Mind since same Timer
         Player.BodyTimer = 15
     if check == 3:
-        Player.MultDPSBonus *= 1.05
+        Player.buffList.append(AstrodyneBuff)
         Player.EffectCDList.append(MindCheck)
 
 
@@ -64,7 +64,7 @@ def ApplyLordOfCrown(Player, Enemy):
     Player.LordOfCrown = False
 
 def ApplyDivination(Player, Enemy):
-    Enemy.Bonus *= 1.06 #Just give DPS bonus on Enemy instead of raid wide buff
+    Enemy.buffList.append(DivinatonBuff) #Just give DPS bonus on Enemy instead of raid wide buff
     Player.DivinationCD = 120
     Player.DivinationTimer = 15
     Player.EffectCDList.append(DivinationCheck)
@@ -102,7 +102,7 @@ def BodyCheck(Player, Enemy):
 
 def MindCheck(Player, Enemy):
     if Player.BodyTimer <= 0:
-        Player.MultDPSBonus /= 1.05
+        Player.buffList.remove(AstrodyneBuff)
         Player.EffectToRemove.append(MindCheck)
 
 def DrawStackCheck(Player, Enemy):
@@ -115,7 +115,7 @@ def DrawStackCheck(Player, Enemy):
 
 def DivinationCheck(Player, Enemy):
     if Player.DivinationTimer <= 0:
-        Enemy.Bonus /= 1.06
+        Enemy.buffList.remove(DivinatonBuff)
         Player.EffectToRemove.append(DivinationCheck)
 
 def LightspeedCheck(Player, Enemy):
@@ -134,7 +134,7 @@ def CumbustDOTCheck(Player, Enemy):
 Malefic = AstrologianSpell(1, True, 1.5, 2.5, 250, 400, empty, [ManaRequirement])
 Combust = AstrologianSpell(2, True, Lock, 2.5, 0, 400, ApplyCombust, [ManaRequirement])
 LordOfCrown = AstrologianSpell(5, True, Lock, 1, 250, 0,  ApplyLordOfCrown, [LordOfCrownRequirement])
-CumbustDOT = DOTSpell(-12, 55)
+CumbustDOT = DOTSpell(-12, 55, False)
 
 
 #oGCD
@@ -147,7 +147,8 @@ Astrodyne = AstrologianSpell(7, False, Lock, 0, 0, 0, ApplyAstrodyne, [])
 #Arcanum require a target within the team, so it will be a function that will return a spell that
 #will target the given player. It is also assumed that the bonus is 6%
 ArcanumBuff = buff(1.06)
-
+AstrodyneBuff = buff(1.05)
+DivinatonBuff = buff(1.06)
 
 
 def Arcanum(Target, Type):

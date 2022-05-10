@@ -209,13 +209,13 @@ Strike = SummonerSpell(10, True, Lock, 2.5, 430, 0, ApplyStrike, [StrikeRequirem
 #GarudaAbility
 Emerald = SummonerSpell(11, True, Lock, 1.5, 230, 300, ApplyEmerald, [EmeraldRequirement, ManaRequirement])
 Slipstream = SummonerSpell(12, True, 3, 3.5, 430, 0, ApplySlipstream, [SlipstreamRequirement])
-SlipstreamDOT = DOTSpell(-13, 30)
+SlipstreamDOT = DOTSpell(-13, 30, False)
 
 #Summon
 Summon = SummonerSpell(14, True, Lock, 2.5, 0, 0, ApplySummon, [SummonRequirement])
 #Bahamut and Phoenix damage will simply be a dot
-BahamutDOT = DOTSpell(-14, 180)
-PhoenixDOT = DOTSpell(-15, 240)
+BahamutDOT = DOTSpell(-14, 180, False)
+PhoenixDOT = DOTSpell(-15, 240, False)
 #autos of summon seems to be faster if uses Enkindle, but always max 5
 
 #oGCD
