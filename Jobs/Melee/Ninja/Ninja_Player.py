@@ -41,6 +41,24 @@ class Ninja(Melee):
         self.TenChiJinCD = 0
 
 
+    def updateCD(self, time):
+        if (self.DreamWithinADreamCD > 0) : self.DreamWithinADreamCD = max(0,self.DreamWithinADreamCD - time)
+        if (self.MugCD > 0) : self.MugCD = max(0,self.MugCD - time)
+        if (self.TrickAttackCD > 0) : self.TrickAttackCD = max(0,self.TrickAttackCD - time)
+        if (self.MeisuiCD > 0) : self.MeisuiCD = max(0,self.MeisuiCD - time)
+        if (self.NinjutsuCD > 0) : self.NinjutsuCD = max(0,self.NinjutsuCD - time)
+        if (self.KassatsuCD > 0) : self.KassatsuCD = max(0,self.KassatsuCD - time)
+        if (self.TenChiJinCD > 0) : self.TenChiJinCD = max(0,self.TenChiJinCD - time)
+ 
+
+    def updateTimer(self, time):
+        super().updateTimer(time)
+        if (self.HutonTimer > 0) : self.HutonTimer = max(0,self.HutonTimer - time)
+        if (self.MugTimer > 0) : self.MugTimer = max(0,self.MugTimer - time)
+        if (self.TrickAttackTimer > 0) : self.TrickAttackTimer = max(0,self.TrickAttackTimer - time)
+        if (self.MeisuiTimer > 0) : self.MeisuiTimer = max(0,self.MeisuiTimer - time)
+        if (self.KassatsuTimer > 0) : self.KassatsuTimer = max(0,self.KassatsuTimer - time)
+        if (self.SuitonTimer > 0) : self.SuitonTimer = max(0,self.SuitonTimer - time)
 
     def AddNinki(self, amount):
         self.NinkiGauge = min(100, self.NinkiGauge + amount)

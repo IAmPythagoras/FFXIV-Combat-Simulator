@@ -1,4 +1,3 @@
-from tkinter.tix import Tree
 from Jobs.Base_Spell import buff, empty
 from Jobs.Melee.Melee_Spell import NinjaSpell
 from Jobs.Melee.Ninja.Ninja_Spell import ArmorCrush
@@ -7,8 +6,20 @@ Lock = 0.75
 
 #Requirement
 
+def TenRequirement(Player, Spell):
+    if Player.Ten :
+        Player.Ten = False
+        return True
+    return False
+
+def ChiRequirement(Player, Spell):
+    return Player.Chi
+
+def JinRequirement(Player, Spell):
+    return Player.Jin
+
 def TenChiJinRequirement(Player, Spell):
-    return Player.TenChiJinCD <= 0
+    return Player.TenChiJinCD <= 0 and not Player.Kassatsu
 
 def HyoshoRanryuRequirement(Player, Spell):
     return Player.Kassatsu
@@ -39,6 +50,12 @@ def DreamWithinADreamRequirement(Player, Spell):
 
 #Apply
 
+def ApplyTenChiJin(Player, Enemy):
+    Player.TenChiJinCD = 120
+    Player.Ten = True
+    Player.Chi = True
+    Player.Jin = True
+
 def ApplyKassatsu(Player, Enemy):
     Player.KassatsuTimer = 15
     Player.KassatsuCD = 60
@@ -50,8 +67,10 @@ def ApplyHyoshoRanryu(Player, Enemy):
     else: Player.Kassatsu = False
 
 def ApplySuiton(Player, Enemy):
-    if not Player.Kassatsu: ApplyNinjutsu(Player, Enemy)
-    else: Player.Kassatsu = False
+    if not Player.Kassatsu and not Player.Jin: ApplyNinjutsu(Player, Enemy)
+    elif Player.Kassatsu: Player.Kassatsu = False
+    elif Player.Jin : Player.Jin = False
+    #So then if in TenChiJin, will not cost anything
     Player.Suiton = True
     if not SuitonCheck in Player.EffectCDList : Player.EffectCDList.append(SuitonCheck)
     Player.SuitonTimer = 20
@@ -62,8 +81,10 @@ def ApplyHuton(Player, Enemy):
     Player.HutonTimer = 60
 
 def ApplyRaiton(Player, Enemy):
-    if not Player.Kassatsu: ApplyNinjutsu(Player, Enemy)
-    else: Player.Kassatsu = False
+    if not Player.Kassatsu and not Player.Chi: ApplyNinjutsu(Player, Enemy)
+    elif Player.Kassatsu: Player.Kassatsu = False
+    elif Player.Chi : Player.Chi = False
+    #So then if in TenChiJin, will not cost anything
 
     if Player.RaijuStack == 0: Player.EffectList.append(RaitonEffect) #will loose all if weaponskill is done
     Player.RaijuStack = min(3, Player.RaijuStack + 1)
@@ -209,6 +230,11 @@ Suiton = NinjaSpell(16, True, 3 + Lock, 3 + 1.5, 500, ApplySuiton, [NinjutsuRequ
 HyoshoRanryu = NinjaSpell(17, True, 3 + Lock, 3 + 1.5, 1300, ApplyHyoshoRanryu, [HyoshoRanryuRequirement], False, True)
 
 TenChiJin = NinjaSpell(18, False, Lock, 0, 0, ApplyTenChiJin, [TenChiJinRequirement], False, False)
+#TenChiJin will for now assume the player does : Fuma -> Raiton -> Suiton 
+Ten = NinjaSpell(19, True, Lock, 1.5, FumaShuriken.Potency, empty, [TenRequirement], False, True)
+Chi = NinjaSpell(19, True, Lock, 1.5, Raiton.Potency, ApplyRaiton, [ChiRequirement], False, True)
+Jin = NinjaSpell(19, True, Lock, 1.5, Suiton.Potency, ApplySuiton, [JinRequirement], False, True)
+
 
 #oGCD
 DreamWithinADream = NinjaSpell(5, False, Lock, 0, 3*150, ApplyDreamWithinADream, [DreamWithinADreamRequirement], False, False)
@@ -216,7 +242,7 @@ Mug = NinjaSpell(7, False, Lock, 0, 150, ApplyMug, [MugRequirement], False, Fals
 TrickAttack = NinjaSpell(8, False, Lock, 0, 400, ApplyTrickAttack, [TrickAttackRequirement], False, False)
 Bhavacakra = NinjaSpell(9, False, Lock, 0, 350, ApplyBhavacakra, [BhavacakraRequirement], False, False)
 Meisui = NinjaSpell(10, False, Lock, 0, 0, ApplyMeisui, [MeisuiRequirement], False, False)
-
+Kassatsu = NinjaSpell(20, False, Lock, 0, 0, ApplyKassatsu,[KassatsuRequirement], False, False)
 
 #buff
 MugBuff = buff(1.05)
