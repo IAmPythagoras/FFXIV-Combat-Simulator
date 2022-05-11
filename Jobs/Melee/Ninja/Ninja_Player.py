@@ -10,13 +10,26 @@ class Ninja(Melee):
 
         #Gauge
         self.NinkiGauge = 0
+
+        #buff
+        self.Suiton = False
+
+
+        #Ready
+        self.RaijuReady = False
         
 
         #Timer
         self.HutonTimer = 0
+        self.MugTimer = 0
+        self.TrickAttackTimer = 0
+        self.MeisuiTimer = 0
 
         #CD
         self.DreamWithinADreamCD = 0
+        self.MugCD = 0
+        self.TrickAttackCD = 0
+        self.MeisuiCD = 0
 
 
 
