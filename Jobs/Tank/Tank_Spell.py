@@ -1,5 +1,8 @@
-from Jobs.Base_Spell import Spell
+from Jobs.Base_Spell import Spell, Auto_Attack
 Lock = 0.75
+
+
+
 class TankSpell(Spell):
 
     def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):

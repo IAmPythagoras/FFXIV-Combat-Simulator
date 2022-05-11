@@ -306,13 +306,18 @@ class Fight:
 
 def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
 
+    #Still remains to change the f_MAIN_DAMAGE function for pets
+
     #The type input signifies what type of damage we are dealing with, since the computation will chance according to what
     #type of damage it is
 
     #type = 0 (Direct Damage), type = 1 (magical DOT), type = 2(physical DOT), type = 3 (Auto-attacks)
 
     #All relevant formulas were taken from https://finalfantasy.fandom.com/wiki/Final_Fantasy_XIV_attributes#Damage_and_healing_formulae
-    #The formulas on the website assume a random function that will 
+    #The formulas on the website assume a random function that will randomise the ouput. We instead compute the expected outcome.
+    #Also thanks to whoever did the DPS computation code on the black mage gear comparison sheet : https://docs.google.com/spreadsheets/d/1t3EYSOPuMceqCFrU4WAbzSd4gbYi-J7YeMB36dNmaWM/edit#gid=654212594
+    #It helped me a lot to understand better the DPS computation of this game
+    #Also, note that this function is still in development, and so some of these formulas might be a bit off. Use at your own risk.
     #This function will compute the DPS given the stats of a player
 
     levelMod = 1900
@@ -328,8 +333,8 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
     #Computing values used throughout all computations
     
     f_WD = (Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))/100
-
-    f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100
+    if isinstance(Player, Tank) : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*145/baseMain))/100 #This is experimental, and I do not have any actual proof to back up, but tanks do have a different f_MAIN_DMG formula
+    else: f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100
 
     f_DET = math.floor(1000+math.floor(130*(Player.Stat["Det"]-baseMain)/levelMod))/1000#Determination damage
 
@@ -360,7 +365,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
             DHRate = 1
             Player.Reassemble = False #Uses Reassemble       
     elif isinstance(Player, Warrior):
-        if Player.InnerReleaseStack >= 1 and (Player.ActionSet[Player.NextSpell].id == 9 or Player.ActionSet[Player.NextSpell].id == 8):
+        if Player.InnerReleaseStack >= 1 and (Player.NextSpell < len(Player.ActionSet)) and (Player.ActionSet[Player.NextSpell].id == 9 or Player.ActionSet[Player.NextSpell].id == 8):
             CritRate = 1#If inner release weaponskill
             DHRate = 1
             Player.InnerReleaseStack -= 1
@@ -405,9 +410,9 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
     for buffs in Enemy.buffList:
         Damage = math.floor(Damage * buffs.MultDPS) #Multiplying all buffs
 
-    return Damage #This is to average crit and dh damage's contribution
+    return Damage
 
-
+"""
 #Original ComputeDamage function
 
 def ComputeDamageV2(Player, DPS, EnemyBonus, SpellBonus):
@@ -476,7 +481,7 @@ def ComputeDamageV2(Player, DPS, EnemyBonus, SpellBonus):
             Player.NextCrit = False
 
     return round(Damage * ((1+(DHRate/4))*(1+(CritRate*CritDamage)))/100, 2)
-"""
+
     // Pulled from Orinx's Gear Comparison Sheet with slight modifications
 function Damage(Potency, WD, JobMod, MainStat,Det, Crit, DH,SS,TEN, hasBrd, hasDrg, hasSch, hasDnc, classNum) {
   

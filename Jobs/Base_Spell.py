@@ -77,12 +77,14 @@ class Spell:
             #We have to figure out if its a physical dot or not
             if self.isPhysical: type = 2
             else: type = 1
+        elif isinstance(self, Auto_Attack):
+            type = 3
             
             
 
         Damage = ComputeDamage(player, self.Potency, Enemy, self.DPSBonus, type)    #Damage computation
-        input("Damage : " + str(Damage))
-        input("Damage from v1.0 " + str(ComputeDamageV2(player, self.Potency, 1, 1)))
+        #input("Damage : " + str(Damage))
+        #input("Damage from v1.0 " + str(ComputeDamageV2(player, self.Potency, 1, 1)))
 
         if isinstance(player, Queen) or isinstance(player, Esteem):
             player.Master.TotalPotency+= self.Potency
@@ -103,22 +105,16 @@ class Spell:
 
         return self
 
-class DOTSpell(Spell):
-    #Represents DOT
-    def __init__(self, id, Potency, isPhysical):
-        super().__init__(id, False, 0, 0, Potency,  0, empty, [])
-        #Note that here Potency is the potency of the dot, not of the ability
-        self.DOTTimer = 0   #This represents the timer of the dot, and it will apply at each 3 seconds
-        self.isPhysical = isPhysical #True if physical dot, false if magical dot
-    def CheckDOT(self, Player, Enemy, TimeUnit):
-        #print("The dot Timer is :  " + str(self.DOTTimer))
-        if(self.DOTTimer <= 0):
-            #Apply DOT
-            tempSpell  = self.Cast(Player, Enemy)#Cast the DOT
-            tempSpell.CastFinal(Player, Enemy)
-            self.DOTTimer = 3
-        else:
-            self.DOTTimer = max(0, self.DOTTimer-TimeUnit)
+def ApplyMelee_AA(Player, Enemy):
+    Player.DOTList.append(Melee_AADOT)
+
+def ApplyRanged_AA(Player, Enemy):
+    Player.DOTList.append(Ranged_AADOT)
+
+Melee_AA = Spell(-30, False, 0, 0, 0, 0, ApplyMelee_AA, [])
+Ranged_AA = Spell(-30, False, 0, 0, 0, 0, ApplyRanged_AA, [])
+
+
 #Function to generate Waiting
 
 def ManaRequirement(player, Spell):
@@ -146,6 +142,47 @@ def PotionCheck(Player, Enemy):
     if Player.PotionTimer <= 0:
         Player.Stat["MainStat"] *= 1.1
         Player.EffectCDList.remove(PotionCheck)
+
+
+class DOTSpell(Spell):
+    #Represents DOT
+    def __init__(self, id, Potency, isPhysical):
+        super().__init__(id, False, 0, 0, Potency,  0, empty, [])
+        #Note that here Potency is the potency of the dot, not of the ability
+        self.DOTTimer = 0   #This represents the timer of the dot, and it will apply at each 3 seconds
+        self.isPhysical = isPhysical #True if physical dot, false if magical dot
+    def CheckDOT(self, Player, Enemy, TimeUnit):
+        #print("The dot Timer is :  " + str(self.DOTTimer))
+        if(self.DOTTimer <= 0):
+            #Apply DOT
+            tempSpell  = self.Cast(Player, Enemy)#Cast the DOT
+            tempSpell.CastFinal(Player, Enemy)
+            self.DOTTimer = 3
+        else:
+            self.DOTTimer = max(0, self.DOTTimer-TimeUnit)
+
+
+class Auto_Attack(DOTSpell):
+    #DOT specifically used for auto attack
+    def __init__(self, id, Ranged):
+        if Ranged : super().__init__(id, 100, True)
+        else: super().__init__(id, 110, True)
+
+        self.DOTTimer = 20 #The timer is intentionally set at a longer time, so it won't go off before the countdown is over
+
+class Melee_Auto(Auto_Attack):
+
+    def __init__(self, id, Ranged):
+        super().__init__(id, Ranged)
+
+class Ranged_Auto(Auto_Attack):
+
+    def __init__(self, id, Ranged):
+        super().__init__(id, Ranged)
+
+
+Melee_AADOT = Melee_Auto(-22, False)
+Ranged_AADOT = Ranged_Auto(-23, True)
 
 Potion = Spell(-2, False, 1, 1, 0, 0, ApplyPotion, [])
 
