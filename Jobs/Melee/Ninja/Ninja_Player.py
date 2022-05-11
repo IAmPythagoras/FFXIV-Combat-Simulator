@@ -13,7 +13,11 @@ class Ninja(Melee):
 
         #buff
         self.Suiton = False
+        self.Kassatsu = False
 
+        #Stack
+        self.NinjutsuStack = 2
+        self.RaijuStack = 0
 
         #Ready
         self.RaijuReady = False
@@ -24,12 +28,17 @@ class Ninja(Melee):
         self.MugTimer = 0
         self.TrickAttackTimer = 0
         self.MeisuiTimer = 0
+        self.KassatsuTimer = 0
+        self.SuitonTimer = 0
 
         #CD
         self.DreamWithinADreamCD = 0
         self.MugCD = 0
         self.TrickAttackCD = 0
         self.MeisuiCD = 0
+        self.NinjutsuCD = 0
+        self.KassatsuCD = 0
+        self.TenChiJinCD = 0
 
 
 
