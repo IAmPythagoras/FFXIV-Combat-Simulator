@@ -2,7 +2,7 @@
 ########## WARRIOR Spell  ###############
 #########################################
 
-from Jobs.Base_Spell import empty
+from Jobs.Base_Spell import buff, empty
 from Jobs.Tank.Tank_Spell import WarriorSpell
 Lock = 0.75
 
@@ -103,7 +103,7 @@ def InnerReleaseEffect(Player, Spell):
 
 def SurgingTempestEffect(Player, Spell):
     if Player.SurgingTempestTimer > 0 : 
-        Player.MultDPSBonus *= 1.1
+        Player.buffList.append(SurgingTempestBuff)
         Player.EffectCDList.append(SurgingTempestCheck)
         Player.EffectToRemove.append(SurgingTempestEffect)
 
@@ -124,7 +124,7 @@ def MaimEffect(Player, Spell):
 
 def SurgingTempestCheck(Player, Enemy):
     if Player.SurgingTempestTimer <= 0: 
-        Player.MultDPSBonus /= 1.1
+        Player.buffList.remove(SurgingTempestBuff)
         Player.EffectList.append(SurgingTempestEffect)
         Player.EffectToRemove.append(SurgingTempestCheck)
 
@@ -164,3 +164,6 @@ PrimalRend = WarriorSpell(8, True, Lock, 2.5, 700, 0, ApplyPrimalRend, [PrimalRe
 FellCleave = WarriorSpell(9, True, Lock, 2.5, 460, 0, empty, [],50)
 InnerChaos = WarriorSpell(10, True, Lock, 2.5, 650,0, ApplyInnerChaos, [InnerChaosRequirement], 50)
 Tomahawk = WarriorSpell(12, True, Lock, 2.5, 150, 0, empty, [], 0)
+
+#buff
+SurgingTempestBuff = buff(1.1)

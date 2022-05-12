@@ -1,5 +1,5 @@
 from doctest import FAIL_FAST
-from Jobs.Base_Spell import DOTSpell, ManaRequirement, empty
+from Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
 from Jobs.Caster.Caster_Spell import BLMSpell, SwiftCastEffect
 import copy
 Lock = 0.75
@@ -175,7 +175,7 @@ def LeyLinesEffect(Player, Spell):
 def EnochianEffect(Player, Spell):
     if Player.ElementalGauge != 0:
         #If elementalGauge is not 0
-        Player.MultDPSBonus *= 1.2
+        Player.buffList.append(Enochian)
         Player.EffectToRemove.append(EnochianEffect)
         Player.EffectCDList.append(EnochianEffectCheck)
         Player.Enochian = True
@@ -235,7 +235,7 @@ def ElementalEffect(Player, Spell):
 def EnochianEffectCheck(Player, Enemy):
     if Player.ElementalGauge == 0: #If we loose Enochian
         Player.Enochian = False
-        Player.MultDPSBonus /= 1.2
+        Player.buffList.remove(Enochian)
         Player.EffectList.append(EnochianEffect)
         Player.EffectToRemove.append(EnochianEffectCheck)
         Player.PolyglotTimer = 30
@@ -294,7 +294,7 @@ Blizzard4 = BLMSpell(6, True, 2.5, 2.5, 310, 800, False, True, ApplyBlizzard4, [
 Paradox = BLMSpell(7, True, 2.5, 2.5, 500, 1600, False, False, ApplyParadox, [ParadoxRequirement, ManaRequirement])
 Xenoglossy = BLMSpell(8, True, Lock, 2.5, 760, 0, False, False, ApplyXenoglossy, [PolyglotRequirement])
 Thunder3 = BLMSpell(10, True, 2.5, 2.5, 50, 400, False, False, ApplyThunder3, [ManaRequirement])
-Thunder3DOT = DOTSpell(-21, 35)
+Thunder3DOT = DOTSpell(-21, 35, False)
 
 
 #oGCD
@@ -304,3 +304,7 @@ LeyLines = BLMSpell(13, False, Lock, 0, 0, 0, False, False, ApplyLeyLines, [LeyL
 Triplecast = BLMSpell(14, False, Lock, 0, 0, 0, False, False, ApplyTripleCast, [TripleCastRequirement])
 SharpCast = BLMSpell(15, False, Lock, 0, 0, 0, False, False, ApplySharpCast, [SharpCastRequirement])
 Manafront = BLMSpell(16, False, Lock, 0, 0, 0, False, False, ApplyManafront, [ManafrontRequirement])
+
+
+#buff
+Enochian = buff(1.2)

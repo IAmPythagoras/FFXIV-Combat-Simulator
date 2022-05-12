@@ -16,6 +16,9 @@ class Caster(Player):
 
         #jobmod
         self.JobMod = 115
+
+        #trait
+        self.Trait = 1.3 #magik and mend
     
     def updateCD(self,time):
         if (self.SwiftCastCD > 0) : self.SwiftCastCD = max(0,self.SwiftCastCD - time)

@@ -46,8 +46,6 @@ class Machinist(Ranged):
         self.Overdrive = False  #Used to know if we can cast overdrive. Its set to true once the Queen is summoned and set to false when Overdrive is used
         self.QueenOnField = False
 
-        self.MultDPSBonus = 1.2
-
         
 
     def updateCD(self, time):
@@ -82,6 +80,7 @@ class Queen(Ranged):
         self.Master.Queen = self  #Giving the Queen's pointer to the Machinist
         self.Master.CurrentFight.PlayerList.append(self)
         self.MultDPSBonus = 1.2
+        self.JobMod = 100
 
 
     def updateCD(self, time):

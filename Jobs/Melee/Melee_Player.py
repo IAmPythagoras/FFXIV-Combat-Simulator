@@ -6,6 +6,9 @@ class Melee(Player):
         super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
 
         #Shared ressources across melees
+        
+        #Trait
+        self.Trait = 1
     
     def updateCD(self,time):
         pass

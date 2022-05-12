@@ -1,4 +1,4 @@
-from Jobs.Base_Spell import DOTSpell, ManaRequirement, empty
+from Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
 from Jobs.Caster.Caster_Spell import SummonerSpell
 import copy
 Lock = 0.75
@@ -152,7 +152,7 @@ def ApplySearingLight(Player, Enemy):
     Player.SearingLightTimer = 30
     Player.SearingLightCD = 120
 
-    Enemy.Bonus *= 1.03 #3% dps bonus
+    Enemy.buffList.append(SearingLightbuff)
     Player.EffectCDList.append(SearingLightCheck)
 
 #Effect
@@ -183,7 +183,7 @@ def SummonDOTCheck(Player, Enemy):
 
 def SearingLightCheck(Player, Enemy):
     if Player.SearingLightTimer <= 0:
-        Enemy.Bonus /= 1.03
+        Enemy.buffList.remove(SearingLightbuff)
         Player.EffectToRemove.append(SearingLightCheck)
 
 
@@ -209,13 +209,13 @@ Strike = SummonerSpell(10, True, Lock, 2.5, 430, 0, ApplyStrike, [StrikeRequirem
 #GarudaAbility
 Emerald = SummonerSpell(11, True, Lock, 1.5, 230, 300, ApplyEmerald, [EmeraldRequirement, ManaRequirement])
 Slipstream = SummonerSpell(12, True, 3, 3.5, 430, 0, ApplySlipstream, [SlipstreamRequirement])
-SlipstreamDOT = DOTSpell(-13, 30)
+SlipstreamDOT = DOTSpell(-13, 30, False)
 
 #Summon
 Summon = SummonerSpell(14, True, Lock, 2.5, 0, 0, ApplySummon, [SummonRequirement])
 #Bahamut and Phoenix damage will simply be a dot
-BahamutDOT = DOTSpell(-14, 180)
-PhoenixDOT = DOTSpell(-15, 240)
+BahamutDOT = DOTSpell(-14, 180, False)
+PhoenixDOT = DOTSpell(-15, 240, False)
 #autos of summon seems to be faster if uses Enkindle, but always max 5
 
 #oGCD
@@ -224,3 +224,6 @@ Deathflare = SummonerSpell(18, False, Lock, 0, 500, 0, ApplyDeathflare, [Deathfl
 EnergyDrainSMN = SummonerSpell(19, False, Lock, 0, 200, 0, ApplyEnergyDrain, [EnergyDrainRequirement])
 Fester = SummonerSpell(21, False, Lock, 0, 300, 0, ApplyFester, [FesterRequirement])
 SearingLight = SummonerSpell(20, False, Lock, 0, 0, 0, ApplySearingLight, [SearingLightRequirement])
+
+#buff
+SearingLightbuff = buff(1.03)

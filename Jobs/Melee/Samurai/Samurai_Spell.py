@@ -3,7 +3,7 @@
 #########################################
 
 from Jobs.Melee.Melee_Spell import SamuraiSpell
-from Jobs.Base_Spell import DOTSpell, empty
+from Jobs.Base_Spell import DOTSpell, buff, empty
 Lock = 0.75
 import copy
 #Special
@@ -129,7 +129,7 @@ def HakazeEffect(Player, Spell):
         Spell.Potency += 160
         if not Player.Fugetsu:
             Player.Fugetsu = True
-            Player.MultDPSBonus *= 1.13
+            Player.buffList.append(HakazaBuff)
             Player.EffectCDList.append(FugetsuCheck)
             Player.EffectToRemove.append(HakazeEffect)
     elif Spell.id == Shifu.id:
@@ -209,7 +209,7 @@ def FukaCheck(Player, Enemy):
 def FugetsuCheck(Player, Enemy):
     if Player.FugetsuTimer <= 0:
         Player.Fugetsu = False
-        Player.MultDPSBonus /= 1.13
+        Player.buffList.remove(HakazaBuff)
         Player.EffectToRemove.append(FugetsuCheck)
 
 def HiganbanaCheck(Player, Enemy):
@@ -257,4 +257,7 @@ Shoha = SamuraiSpell(15, False, Lock, Lock, 500, ApplyShoha, [ShohaRequirement],
 Shinten = SamuraiSpell(16, False, Lock, 1, 250, ApplyShinten, [], 25)
 #DOT
 Higanbana = SamuraiSpell(12, True, 1.3, 2.5, 200, ApplyHiganbana, [HiganbanaRequirement], 0)
-HiganbanaDOT = DOTSpell(-1, 60)
+HiganbanaDOT = DOTSpell(-1, 60, True)
+
+#buff
+HakazaBuff = buff(1.13)

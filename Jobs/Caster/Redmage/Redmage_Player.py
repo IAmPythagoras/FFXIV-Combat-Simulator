@@ -48,7 +48,6 @@ class Redmage(Caster):
         self.Scorch = False
         self.Resolution = False
 
-        self.MultDPSBonus = 1.3 #magik and mend
 
     def updateCD(self, time):
         super().updateCD(time)

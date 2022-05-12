@@ -11,9 +11,10 @@ class MeleeSpell(Spell):
 
 class NinjaSpell(MeleeSpell):
 
-    def __init__(self, id, WeaponSkill, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
-        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
-        self.WeaponSkill = WeaponSkill
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, Effect, Requirement,Weaponskill, Ninjutsu):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, 0, Effect, Requirement)
+        self.Weaponskill = Weaponskill
+        self.Ninjutsu = Ninjutsu
 
 
 #########################################
