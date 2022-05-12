@@ -74,7 +74,7 @@ class Ninja(Melee):
 
     def AddNinki(self, amount):
         self.NinkiGauge = min(100, self.NinkiGauge + amount)
-        print("NinkiGauge is now : " + str(self.NinkiGauge))
+        #print("NinkiGauge is now : " + str(self.NinkiGauge))
 
     def AddHuton(self, amount):
         self.HutonTimer = min(60, self.HutonTimer + amount)

@@ -174,11 +174,13 @@ class Melee_Auto(Auto_Attack):
 
     def __init__(self, id, Ranged):
         super().__init__(id, Ranged)
+        self.Weaponskill = False
 
 class Ranged_Auto(Auto_Attack):
 
     def __init__(self, id, Ranged):
         super().__init__(id, Ranged)
+        self.Weaponskill = False
 
 
 Melee_AADOT = Melee_Auto(-22, False)

@@ -89,7 +89,7 @@ def ApplyKassatsu(Player, Enemy):
 def ApplyHyoshoRanryu(Player, Enemy):
     if not Player.Kassatsu: ApplyNinjutsu(Player, Enemy)
     else: 
-        input("lol")
+        #input("lol")
         Player.Kassatsu = False
 
 def ApplySuiton(Player, Enemy):
@@ -118,6 +118,7 @@ def ApplyRaiton(Player, Enemy):
 
     if Player.RaijuStack == 0: Player.EffectList.append(RaitonEffect) #will loose all if weaponskill is done
     Player.RaijuStack = min(3, Player.RaijuStack + 1)
+    #print("Raiju is now at : " + str(Player.RaijuStack))
 
 def ApplyNinjutsu(Player, Enemy):
     if Player.NinjutsuStack == 2:
@@ -130,6 +131,9 @@ def ApplyThrowingDagger(Player, Enemy):
 
 def ApplyFleetingRaiju(Player, Enemy):
     Player.RaijuReady = False
+    Player.RaijuStack -= 1
+    Player.AddNinki(5)
+    
 
 def ApplyMeisui(Player, Enemy):
     Player.Suiton = False
@@ -185,10 +189,12 @@ def KassatsuEffect(Player, Spell):
         Spell.DPSBonus = 1.3
         Player.EffectCDList.remove(KassatsuCheck)
         Player.EffectToRemove.append(KassatsuEffect)
-        Player.Kassatsu = False
+        Player.KassatsuTimer = 0
 
 def RaitonEffect(Player, Spell):
-    if Spell.Weaponskill or Player.RaijuStack == 0:
+    if (Spell.Weaponskill or Player.RaijuStack == 0) and Spell.id != FleetingRaiju.id:
+        #input('removed')
+        #print(Spell.id)
         Player.RaijuStack = 0
         Player.EffectToRemove.append(RaitonEffect)
 
@@ -236,7 +242,7 @@ def SuitonCheck(Player, Enemy):
 
 def KassatsuCheck(Player, Enemy):
     if Player.KassatsuTimer <= 0:
-        print("removed kassatsu")
+        #print("removed kassatsu")
         Player.EffectList.remove(KassatsuEffect)
         Player.EffectToRemove.append(KassatsuCheck)
         Player.Kassatsu = False
