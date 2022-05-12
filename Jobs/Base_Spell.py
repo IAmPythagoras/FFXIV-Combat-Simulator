@@ -1,6 +1,6 @@
 import copy
 
-from Fight import ComputeDamage, ComputeDamageV2
+from Fight import ComputeDamage
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
 from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
 Lock = 0.75

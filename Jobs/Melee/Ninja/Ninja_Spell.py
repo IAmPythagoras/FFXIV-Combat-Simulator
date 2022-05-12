@@ -1,10 +1,16 @@
 from Jobs.Base_Spell import buff, empty
 from Jobs.Melee.Melee_Spell import NinjaSpell
-from Jobs.Melee.Ninja.Ninja_Spell import ArmorCrush
+from Jobs.Melee.Ninja.Ninja_Player import Ninja
 Lock = 0.75
 
 
 #Requirement
+
+def PhantomKamaitachiRequirement(Player, Spell):
+    return Player.PhantomKamaitachiReady
+
+def BunshinRequirement(Player, Spell):
+    return Player.BunshinCD <=0 and Player.NinkiGauge >= 50
 
 def TenRequirement(Player, Spell):
     if Player.Ten :
@@ -50,6 +56,23 @@ def DreamWithinADreamRequirement(Player, Spell):
 
 #Apply
 
+def ApplyHide(Player, Enemy):
+    Player.NinjutsuStack = 2
+
+def ApplyPhantomKamaitachi(Player, Enemy):
+    Player.PhantomKamaitachiReady = False
+    Player.AddHuton(10)
+    Player.AddNinki(10)
+
+def ApplyBunshin(Player, Enemy):
+    Player.AddNinki(-50)
+    Player.BunshinCD = 90
+    Player.BunshinStack = 5
+    Player.EffectList.append(BunshinEffect)
+    Player.PhantomKamaitachiReady = True
+    Player.PhantomKamaitachiReadyTimer = 45
+    Player.EffectCDList.append(PhantomKamaitachiCheck)
+
 def ApplyTenChiJin(Player, Enemy):
     Player.TenChiJinCD = 120
     Player.Ten = True
@@ -59,12 +82,15 @@ def ApplyTenChiJin(Player, Enemy):
 def ApplyKassatsu(Player, Enemy):
     Player.KassatsuTimer = 15
     Player.KassatsuCD = 60
+    Player.Kassatsu = True
     Player.EffectList.append(KassatsuEffect)
     Player.EffectCDList.append(KassatsuCheck)
 
 def ApplyHyoshoRanryu(Player, Enemy):
     if not Player.Kassatsu: ApplyNinjutsu(Player, Enemy)
-    else: Player.Kassatsu = False
+    else: 
+        input("lol")
+        Player.Kassatsu = False
 
 def ApplySuiton(Player, Enemy):
     if not Player.Kassatsu and not Player.Jin: ApplyNinjutsu(Player, Enemy)
@@ -79,6 +105,10 @@ def ApplyHuton(Player, Enemy):
     if not Player.Kassatsu: ApplyNinjutsu(Player, Enemy)
     else: Player.Kassatsu = False
     Player.HutonTimer = 60
+    if not (HutonEffect in Player.EffectList):
+        Player.EffectList.append(HutonEffect)
+    if not (HutonCheck in Player.EffectCDList):
+        Player.EffectCDList.append(HutonCheck)
 
 def ApplyRaiton(Player, Enemy):
     if not Player.Kassatsu and not Player.Chi: ApplyNinjutsu(Player, Enemy)
@@ -139,8 +169,19 @@ def ApplySpinningEdge(Player, Enemy):
 
 #Effect
 
+def HutonEffect(Player, Spell):
+    if isinstance(Spell, NinjaSpell) and Spell.Weaponskill : Spell.RecastTime *= 0.85
+
+def BunshinEffect(Player, Spell):
+    if isinstance(Spell, NinjaSpell) and Spell.Weaponskill:
+        Spell.Potency += 160 #This is to make it simpler
+        Player.BunshinStack -= 1
+        Player.AddNinki(5)
+        if Player.BunshinStack == 0:
+            Player.EffectToRemove.append(BunshinEffect)
+
 def KassatsuEffect(Player, Spell):
-    if Spell.Ninjutsu:
+    if isinstance(Spell, NinjaSpell) and Spell.Ninjutsu:
         Spell.DPSBonus = 1.3
         Player.EffectCDList.remove(KassatsuCheck)
         Player.EffectToRemove.append(KassatsuEffect)
@@ -176,6 +217,17 @@ def GustSlashCombo(Player, Spell):
 
 #Check
 
+def HutonCheck(Player, Enemy):
+    if Player.HutonTimer <= 0:
+        Player.EffectList.remove(HutonEffect)
+        Player.EffectToRemove.append(HutonCheck)
+
+def PhantomKamaitachiCheck(Player, Enemy):
+    if not Player.PhantomKamaitachiReady or Player.PhantomKamaitachiReadyTimer <= 0:
+        Player.PhantomKamaitachiReady = False
+        Player.PhantomKamaitachiReadyTimer = 0
+        Player.EffectToRemove.append(PhantomKamaitachiCheck)
+
 def SuitonCheck(Player, Enemy):
     if not Player.Suiton or Player.SuitonTimer <= 0:
         Player.EffectToRemove.append(SuitonCheck)
@@ -184,6 +236,7 @@ def SuitonCheck(Player, Enemy):
 
 def KassatsuCheck(Player, Enemy):
     if Player.KassatsuTimer <= 0:
+        print("removed kassatsu")
         Player.EffectList.remove(KassatsuEffect)
         Player.EffectToRemove.append(KassatsuCheck)
         Player.Kassatsu = False
@@ -221,13 +274,14 @@ ArmorCrush = NinjaSpell(4, True, Lock, 2.5, 200, empty, [], True, False)
 Huraijin = NinjaSpell(6, True, Lock, 2.5, 200, ApplyHuraijin, [], True, False)
 FleetingRaiju = NinjaSpell(11, True, Lock, 2.5, 560, ApplyFleetingRaiju, [FleetingRaijuRequirement], True, False)
 ThrowingDagger = NinjaSpell(12, True, Lock, 2.5, 120, ApplyThrowingDagger, [], True, False)
+PhantomKamaitachi = NinjaSpell(22, True, Lock, 2.5, 600, ApplyPhantomKamaitachi, [PhantomKamaitachiRequirement], True, False)
 
 #Ninjutsu
 FumaShuriken = NinjaSpell(13, True, 1 + Lock, 1 + 1.5, 450, ApplyNinjutsu, [NinjutsuRequirement], False, True) 
 Raiton = NinjaSpell(14, True, 2 + Lock, 1 + 1 + 1.5, 650, ApplyRaiton, [NinjutsuRequirement], False, True )
 Huton = NinjaSpell(15, True, 3 + Lock, 3 + 1.5, 0, ApplyHuton, [NinjutsuRequirement], False, True)
 Suiton = NinjaSpell(16, True, 3 + Lock, 3 + 1.5, 500, ApplySuiton, [NinjutsuRequirement], False, True)
-HyoshoRanryu = NinjaSpell(17, True, 3 + Lock, 3 + 1.5, 1300, ApplyHyoshoRanryu, [HyoshoRanryuRequirement], False, True)
+HyoshoRanryu = NinjaSpell(17, True, 2 + Lock, 2 + 1.5, 1300, ApplyHyoshoRanryu, [HyoshoRanryuRequirement], False, True)
 
 TenChiJin = NinjaSpell(18, False, Lock, 0, 0, ApplyTenChiJin, [TenChiJinRequirement], False, False)
 #TenChiJin will for now assume the player does : Fuma -> Raiton -> Suiton 
@@ -243,7 +297,8 @@ TrickAttack = NinjaSpell(8, False, Lock, 0, 400, ApplyTrickAttack, [TrickAttackR
 Bhavacakra = NinjaSpell(9, False, Lock, 0, 350, ApplyBhavacakra, [BhavacakraRequirement], False, False)
 Meisui = NinjaSpell(10, False, Lock, 0, 0, ApplyMeisui, [MeisuiRequirement], False, False)
 Kassatsu = NinjaSpell(20, False, Lock, 0, 0, ApplyKassatsu,[KassatsuRequirement], False, False)
-
+Bunshin = NinjaSpell(21, False, Lock, 0, 0, ApplyBunshin, [BunshinRequirement], False, False)
+Hide = NinjaSpell(23, True, 0, 0, 0, ApplyHide, [], False, False)
 #buff
 MugBuff = buff(1.05)
 TrickAttackBuff = buff(1.1)

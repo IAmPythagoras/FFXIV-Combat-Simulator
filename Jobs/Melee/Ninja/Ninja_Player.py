@@ -14,13 +14,18 @@ class Ninja(Melee):
         #buff
         self.Suiton = False
         self.Kassatsu = False
+        self.Ten = False
+        self.Chi = False
+        self.Jin = False
 
         #Stack
         self.NinjutsuStack = 2
         self.RaijuStack = 0
+        self.BunshinStack = 0
 
         #Ready
         self.RaijuReady = False
+        self.PhantomKamaitachiReady = False
         
 
         #Timer
@@ -30,6 +35,7 @@ class Ninja(Melee):
         self.MeisuiTimer = 0
         self.KassatsuTimer = 0
         self.SuitonTimer = 0
+        self.PhantomKamaitachiReadyTimer = 0
 
         #CD
         self.DreamWithinADreamCD = 0
@@ -39,6 +45,10 @@ class Ninja(Melee):
         self.NinjutsuCD = 0
         self.KassatsuCD = 0
         self.TenChiJinCD = 0
+        self.BunshinCD = 0
+
+        #JobMod
+        self.JobMod = 110
 
 
     def updateCD(self, time):
@@ -49,6 +59,7 @@ class Ninja(Melee):
         if (self.NinjutsuCD > 0) : self.NinjutsuCD = max(0,self.NinjutsuCD - time)
         if (self.KassatsuCD > 0) : self.KassatsuCD = max(0,self.KassatsuCD - time)
         if (self.TenChiJinCD > 0) : self.TenChiJinCD = max(0,self.TenChiJinCD - time)
+        if (self.BunshinCD > 0) : self.BunshinCD = max(0,self.BunshinCD - time)
  
 
     def updateTimer(self, time):
@@ -59,9 +70,11 @@ class Ninja(Melee):
         if (self.MeisuiTimer > 0) : self.MeisuiTimer = max(0,self.MeisuiTimer - time)
         if (self.KassatsuTimer > 0) : self.KassatsuTimer = max(0,self.KassatsuTimer - time)
         if (self.SuitonTimer > 0) : self.SuitonTimer = max(0,self.SuitonTimer - time)
+        if (self.PhantomKamaitachiReadyTimer > 0) : self.PhantomKamaitachiReadyTimer = max(0,self.PhantomKamaitachiReadyTimer - time)
 
     def AddNinki(self, amount):
         self.NinkiGauge = min(100, self.NinkiGauge + amount)
+        print("NinkiGauge is now : " + str(self.NinkiGauge))
 
     def AddHuton(self, amount):
         self.HutonTimer = min(60, self.HutonTimer + amount)
