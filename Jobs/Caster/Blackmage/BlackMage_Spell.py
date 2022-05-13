@@ -6,37 +6,37 @@ Lock = 0.75
 #Requirement
 
 def EnochianRequirement(Player, Spell):
-    return Player.EnochianTimer > 0
+    return Player.EnochianTimer > 0, 0
 
 def FireRequirement(Player, Spell):
-    return Player.ElementalGauge > 0
+    return Player.ElementalGauge > 0, 0
 
 def IceRequirement(Player, Spell):
-    return Player.ElementalGauge < 0
+    return Player.ElementalGauge < 0, 0
 
 def ParadoxRequirement(Player, Spell):
-    return Player.Paradox
+    return Player.Paradox, 0
 
 def PolyglotRequirement(Player, Spell):
-    return Player.PolyglotStack > 0
+    return Player.PolyglotStack > 0, 0
 
 def TransposeRequirement(Player, Spell):
-    return Player.TransposeCD <= 0
+    return Player.TransposeCD <= 0, Player.TranposeCD
 
 def AmplifierRequirement(Player, Spell):
-    return Player.AmplifierCD <= 0
+    return Player.AmplifierCD <= 0, Player.AmplifierCD
 
 def LeyLinesRequirement(Player, Spell):
-    return Player.LeyLinesCD <= 0
+    return Player.LeyLinesCD <= 0, Player.LeyLinesCD
 
 def TripleCastRequirement(Player, Spell):
-    return Player.TripleCastUseStack > 0
+    return Player.TripleCastUseStack > 0, Player.TripleStackCD
 
 def SharpCastRequirement(Player, Spell):
-    return Player.SharpCastStack > 0
+    return Player.SharpCastStack > 0, Player.SharpCastCD
 
 def ManafrontRequirement(Player, Spell):
-    return Player.ManafrontCD <= 0
+    return Player.ManafrontCD <= 0, Player.ManafrontCD
 
 #Apply
 

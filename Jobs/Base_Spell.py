@@ -49,9 +49,21 @@ class Spell:
             player.EffectList.remove(remove) #Removing effect
         
         player.EffectToRemove = [] #Empty the remove list
-
+        #input("id : " + str(self.id))
         for Requirement in tempSpell.Requirement:
-            if(not Requirement(player, tempSpell)) : #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
+            ableToCast, timeLeft = Requirement(player, tempSpell)
+            if(not ableToCast) : #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
+                input("timeleft : " + str(timeLeft))
+                #Will check if timeLeft is within a margin, so we will just wait for it to come
+                #timeLeft is the remaining time before the spell is available
+                if timeLeft <= 1:
+                    input("Waiting for " + str(timeLeft))
+                    tempSpell = WaitAbility(timeLeft)
+                    player.ActionSet.insert(player.NextSpell, tempSpell)
+                    return tempSpell #Makes the character wait
+                    #Might remove some stuff tho, might have to check into that (for when effects are applied)
+
+
                 print("Failed to cast the spell : " + str(self.id))
                 print("The Requirement that failed was : " + str(Requirement.__name__))
                 raise FailedToCast("Failed to cast the spell")

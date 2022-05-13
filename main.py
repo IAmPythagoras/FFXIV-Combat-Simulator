@@ -110,8 +110,9 @@ BRDOpener = [Ranged_AA,WaitAbility(19), Potion, Stormbite, WandererMinuet, Ragin
 DNCOpener = [Melee_AA,WaitAbility(4.5), StandardStep, Emboite, Entrechat, WaitAbility(11.74), ClosedPosition(DRKPlayer, False),Potion, StandardFinish, TechnicalStep, Emboite, Entrechat, Jete, Pirouette, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Emboite, Entrechat, StandardFinish]
 DRGOpener = [Melee_AA,WaitAbility(20), TrueThrust, Potion, Disembowel, LanceCharge, DragonSight(BLMPlayer), ChaoticSpring, BattleLitany, WheelingThrust, Geirskogul, LifeSurge, FangAndClaw, HighJump, RaidenThrust, DragonFireDive, VorpalThrust, LifeSurge, MirageDive, HeavenThrust, SpineshafterDive, FangAndClaw, SpineshafterDive, WheelingThrust, RaidenThrust, WyrmwindThrust, Disembowel, ChaoticSpring, WheelingThrust]
 NINOpener = [Melee_AA,WaitAbility(9.5),Huton, Hide, WaitAbility(2.25), Suiton, Kassatsu, SpinningEdge, Potion, GustSlash, Mug, Bunshin, PhantomKamaitachi, WaitAbility(0.7), TrickAttack, AeolianEdge, DreamWithinADream, HyoshoRanryu, Raiton, TenChiJin, Ten, Chi, Jin, Meisui, FleetingRaiju, Bhavacakra, FleetingRaiju, Bhavacakra, Raiton, FleetingRaiju, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, GustSlash, AeolianEdge] 
+BLMTest = [WaitAbility(22), LeyLines, WaitAbility(119.1), LeyLines]
 
-BLMPlayer.ActionSet = BLMOpener
+BLMPlayer.ActionSet = BLMTest
 SCHPlayer.ActionSet = SCHOpener
 RDMPlayer.ActionSet = RDMOpener
 MCHPlayer.ActionSet = MCHOpener
@@ -129,7 +130,7 @@ DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 
 #NinjaPlayer = Ninja(2.5, NINAction, [], [AutoEffect, NinjutsuTimerEffect], Event)
-Event.PlayerList = [NINPlayer, SCHPlayer, RDMPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,SAMPlayer] #BLMPlayer, SCHPlayer, RDMPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,SAMPlayer
+Event.PlayerList = [BLMPlayer] #BLMPlayer, SCHPlayer, RDMPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,SAMPlayer
 
 
 Event.SimulateFight(0.01, 100, 20)

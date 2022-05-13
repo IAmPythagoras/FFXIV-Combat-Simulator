@@ -167,8 +167,6 @@ class Fight:
             if hasTank: self.TeamCompositionBonus += 0.01
             if hasHealer: self.TeamCompositionBonus += 0.01
 
-            #input("bonus : " + str(self.TeamCompositionBonus))
-
             #Will first compute each player's GCD reduction value based on their Spell Speed or Skill Speed Value
 
             for Player in self.PlayerList:
@@ -180,8 +178,10 @@ class Fight:
                 for player in self.PlayerList:
                     #print("MainStat : " + str(player.Stat["MainStat"]))
                     #Will first Check if the NextSpell is a GCD or not
-                    if(not player.TrueLock):#If it is we do nothing
+                    if(not player.TrueLock and not Player.Casting):#If it is we do nothing
                         if(player.ActionSet[player.NextSpell].GCD):
+                            print("Spell with id : " + str(player.ActionSet[player.NextSpell].id))
+                            input("is being casted at : " + str(self.TimeStamp))
                             #Is a GCD
 
                             #Have to check if the player can cast the spell
@@ -206,6 +206,8 @@ class Fight:
 
                         else:
                             #Is an oGCD
+                            print("Spell with id : " + str(player.ActionSet[player.NextSpell].id))
+                            input("is being casted at : " + str(self.TimeStamp))
                             
                             if(not (player.oGCDLock or player.Casting)):
                                 #Then we can cast the oGCD
@@ -338,8 +340,8 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
 
     f_DET = math.floor(1000+math.floor(130*(Player.Stat["Det"]-baseMain)/levelMod))/1000#Determination damage
 
-    f_TEN = (1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000 #Tenacity damage, 1 for non-tank player
-
+    if isinstance(Player, Tank) : f_TEN = (1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000 #Tenacity damage, 1 for non-tank player
+    else : f_TEN = 1 #if non-tank
     f_SPD = (1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000 #Used only for dots
 
     CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000 #Crit rate in decimal
