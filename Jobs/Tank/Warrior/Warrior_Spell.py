@@ -8,7 +8,7 @@ Lock = 0.75
 
 def BeastGaugeRequirement(Player, Spell):
     RemoveBeast(Player, Spell.Cost)
-    return Player.BeastGauge >= 0
+    return Player.BeastGauge >= 0, -1
 
 #Special
 
@@ -21,25 +21,25 @@ def RemoveBeast(Player, Gauge):
 #Requirement
 
 def UpheavalRequirement(Player, Spell):
-    return Player.UpheavalCD == 0
+    return Player.UpheavalCD <= 0, Player.UpheavalCD
 
 def OnslaughtRequirement(Player, Spell):
-    return Player.OnslaughtStack >= 1
+    return Player.OnslaughtStack >= 1, Player.OnslaughtCD
 
 def InfuriateRequirement(Player, Spell):
-    return Player.InfuriateStack >= 1
+    return Player.InfuriateStack >= 1, Player.InfuriateCD
 
 def InnerReleaseRequirement(Player, Spell):
-    return Player.InnerReleaseCD == 0
+    return Player.InnerReleaseCD <= 0, Player.InnerReleaseCD
 
 def PrimalRendRequirement(Player, Spell):
-    return Player.PrimalRendTimer > 0
+    return Player.PrimalRendTimer > 0, -1
 
 def FellCleaveRequirement(Player, Spell):
-    return Player.BeastGauge >= 50
+    return Player.BeastGauge >= 50, -1
 
 def InnerChaosRequirement(Player, Spell):
-    return Player.NascentChaosTimer > 0
+    return Player.NascentChaosTimer > 0, -1
 
 #Apply
 

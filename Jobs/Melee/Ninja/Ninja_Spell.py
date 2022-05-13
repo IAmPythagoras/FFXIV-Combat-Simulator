@@ -7,52 +7,52 @@ Lock = 0.75
 #Requirement
 
 def PhantomKamaitachiRequirement(Player, Spell):
-    return Player.PhantomKamaitachiReady
+    return Player.PhantomKamaitachiReady, -1
 
 def BunshinRequirement(Player, Spell):
-    return Player.BunshinCD <=0 and Player.NinkiGauge >= 50
+    return Player.BunshinCD <=0 and Player.NinkiGauge >= 50, Player.BunshinCD
 
 def TenRequirement(Player, Spell):
     if Player.Ten :
         Player.Ten = False
-        return True
-    return False
+        return True, -1
+    return False, -1
 
 def ChiRequirement(Player, Spell):
-    return Player.Chi
+    return Player.Chi, -1
 
 def JinRequirement(Player, Spell):
-    return Player.Jin
+    return Player.Jin, -1
 
 def TenChiJinRequirement(Player, Spell):
-    return Player.TenChiJinCD <= 0 and not Player.Kassatsu
+    return Player.TenChiJinCD <= 0 and not Player.Kassatsu, Player.TenChiJinCD
 
 def HyoshoRanryuRequirement(Player, Spell):
-    return Player.Kassatsu
+    return Player.Kassatsu, -1
 
 def KassatsuRequirement(Player, Spell):
-    return Player.KassatsuCD <= 0
+    return Player.KassatsuCD <= 0, Player.KassatsuCD
 
 def NinjutsuRequirement(Player, Spell):
-    return Player.NinjutsuStack > 0 or Player.Kassatsu
+    return Player.NinjutsuStack > 0 or Player.Kassatsu, Player.NinjutsuCD
 
 def FleetingRaijuRequirement(Player, Spell):
-    return Player.RaijuStack > 0
+    return Player.RaijuStack > 0, -1
 
 def MeisuiRequirement(Player, Spell):
-    return Player.Suiton and Player.MeisuiCD <= 0
+    return Player.Suiton and Player.MeisuiCD <= 0, -1
 
 def BhavacakraRequirement(Player, Spell):
-    return Player.NinkiGauge >= 50
+    return Player.NinkiGauge >= 50, -1
 
 def TrickAttackRequirement(Player, Spell):
-    return Player.Suiton and Player.TrickAttackCD <= 0
+    return Player.Suiton and Player.TrickAttackCD <= 0, -1
 
 def MugRequirement(Player, Spell):
-    return Player.MugCD <= 0
+    return Player.MugCD <= 0, Player.MugCD
 
 def DreamWithinADreamRequirement(Player, Spell):
-    return Player.DreamWithinADreamCD <= 0
+    return Player.DreamWithinADreamCD <= 0, Player.DreamWithinADreamCD
 
 #Apply
 

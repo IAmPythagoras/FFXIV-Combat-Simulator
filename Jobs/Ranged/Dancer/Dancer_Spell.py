@@ -4,10 +4,10 @@ import copy
 #Requirement
 
 def StandardStepRequirement(Player, Spell):
-    return Player.StandardStepCD <= 0
+    return Player.StandardStepCD <= 0, Player.StandardStepCD
 
 def DanceRequirement(Player, Spell):
-    return Player.Dancing
+    return Player.Dancing, -1
 
 def StandardFinishRequirement(Player, Spell):
     #Will check how many step we have
@@ -29,7 +29,7 @@ def StandardFinishRequirement(Player, Spell):
         Spell.Potency += 360
         Player.StandardFinishBuff.MultDPS = 1.05
 
-    return Player.StandardFinish
+    return Player.StandardFinish, -1
         
 def TechnicalFinishRequirement(Player, Spell):
     #Will check how many step we have
@@ -56,43 +56,43 @@ def TechnicalFinishRequirement(Player, Spell):
         Spell.Potency += 850
         Player.TechnicalFinishBuff.MultDPS = 1.05
 
-    return Player.TechnicalFinish
+    return Player.TechnicalFinish, -1
 
 def TechnicalStepRequirement(Player, Spell):
-    return Player.TechnicalStepCD <= 0
+    return Player.TechnicalStepCD <= 0, Player.TechnicalStepCD
 
 def DevilmentRequirement(Player, Spell):
-    return Player.DevilmentCD <= 0
+    return Player.DevilmentCD <= 0, Player.DevilmentCD
 
 def TillanaRequirement(Player, Spell):
-    return Player.FlourishingFinish
+    return Player.FlourishingFinish, -1
 
 def StarfallDanceRequirement(Player, Spell):
-    return Player.FlourishingStarfall
+    return Player.FlourishingStarfall, -1
 
 def FlourishRequirement(Player, Spell):
-    return Player.FlourishCD <= 0
+    return Player.FlourishCD <= 0, Player.FlourishCD
 
 def FanDance4Requirement(Player, Spell):
-    return Player.FourfoldFan
+    return Player.FourfoldFan, -1
 
 def FanDance3Requirement(Player, Spell):
-    return Player.ThreefoldFan
+    return Player.ThreefoldFan, -1
 
 def FanDance1Requirement(Player, Spell):
-    return Player.MaxFourfoldFeather > 0
+    return Player.MaxFourfoldFeather > 0, -1
 
 def FountainFallRequirement(Player, Spell):
-    return Player.SilkenFlow or Player.FlourishingFlow
+    return Player.SilkenFlow or Player.FlourishingFlow, -1
 
 def ReverseCascadeRequirement(Player, Spell):
-    return Player.SilkenSymettry or Player.FlourishingSymettry
+    return Player.SilkenSymettry or Player.FlourishingSymettry, -1
 
 def SaberDanceRequirement(Player, Spell):
-    return Player.MaxEspritGauge >= 50
+    return Player.MaxEspritGauge >= 50, -1
 
 def ClosedPositionRequirement(Player, Spell):
-    return Player.ClosedPositionCD <= 0
+    return Player.ClosedPositionCD <= 0, Player.ClosedPositionCD
 
 #Apply
 def ApplyCascade(Player, Enemy):

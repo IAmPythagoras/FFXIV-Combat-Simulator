@@ -16,45 +16,45 @@ def Removemana(Player, WhiteMana, BlackMana):
 
 #Requirement
 def RDMManaRequirement(Player, Spell):
-    return Spell.ManaCost <= Player.Mana and Spell.BlackCost <= Player.BlackMana and Spell.WhiteCost <= Player.WhiteMana
+    return Spell.ManaCost <= Player.Mana and Spell.BlackCost <= Player.BlackMana and Spell.WhiteCost <= Player.WhiteMana, -1
 
 def ManaficationRequirement(Player, Spell):
-    return Player.ManaficationCD <= 0
+    return Player.ManaficationCD <= 0, Player.ManaficationCD
 
 def EmboldenRequirement(Player, Spell):
-    return Player.EmboldenCD <= 0
+    return Player.EmboldenCD <= 0, Player.EmboldenCD
 
 def AccelerationRequirement(Player, Spell):
-    return Player.AccelerationStack >= 1
+    return Player.AccelerationStack >= 1, Player.AccelerationCD
 
 def FlecheRequirement(Player, Spell):
-    return Player.FlecheCD <= 0
+    return Player.FlecheCD <= 0, Player.FlecheCD
 
 def ContreRequirement(Player, Spell):
-    return Player.ContreCD <= 0
+    return Player.ContreCD <= 0, Player.ContreCD
 
 def EngagementRequirement(Player, Spell):
-    return Player.EngagementStack > 0
+    return Player.EngagementStack > 0, Player.EngagementCD
 
 def CorpsRequirement(Player, Spell):
-    return Player.CorpsStack > 0
+    return Player.CorpsStack > 0, Player.CorpsCD
 
 #Combo Action Requirements
 
 def ZwerchhauRequirement(Player, Spell):
-    return Player.Zwerchhau
+    return Player.Zwerchhau,-1
 
 def RedoublementRequirement(Player, Spell):
-    return Player.Redoublement
+    return Player.Redoublement,-1
 
 def VerholyRequirement(Player, Spell):
-    return Player.Verholy
+    return Player.Verholy,-1
 
 def ScorchRequirement(Player, Spell):
-    return Player.Scorch
+    return Player.Scorch,-1
 
 def ResolutionRequirement(Player, Spell):
-    return Player.Resolution
+    return Player.Resolution,-1
 
 
 

@@ -39,16 +39,16 @@ def ApplyDissipation(Player, Enemy):
 #====================================
 
 def AetherflowRequirement(Player, Spell):
-    return Player.AetherFlowCD <= 0
+    return Player.AetherFlowCD <= 0, Player.AetherFlowCD
 
 def ChainStratagemRequirement(Player, Spell):
-    return Player.ChainStratagemCD <= 0
+    return Player.ChainStratagemCD <= 0, Player.ChainStratagemCD
 
 def AetherStackRequirement(Player, Spell):
-    return Player.AetherFlowStack > 0
+    return Player.AetherFlowStack > 0, Player.AetherFlowCD
 
 def DissipationRequirement(Player, Spell):
-    return Player.DissipationCD <= 0
+    return Player.DissipationCD <= 0, Player.DissipationCD
 #====================================
 
 def CheckChainStratagem(Player, Enemy):

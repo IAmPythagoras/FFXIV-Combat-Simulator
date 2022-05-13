@@ -7,22 +7,22 @@ Lock = 0.75
 #Requirement
 
 def DrawRequirement(Player, Spell):
-    return Player.DrawStack > 0
+    return Player.DrawStack > 0, Player.DrawCD
 
 def ArcanumRequirement(Player, Spell):
-    return Player.HasCard
+    return Player.HasCard, -1
 
 def MinorArcanaRequirement(Player, Spell):
-    return Player.MinorArcanaCD <= 0
+    return Player.MinorArcanaCD <= 0, Player.MinorArcanaCD
 
 def LordOfCrownRequirement(Player, Spell):
-    return Player.LordOfCrown #Will be assumed to be given by Minor Arcana
+    return Player.LordOfCrown, -1 #Will be assumed to be given by Minor Arcana
 
 def DivinationRequirement(Player, Spell):
-    return Player.DivinationCD <= 0
+    return Player.DivinationCD <= 0, Player.DivinationCD
 
 def LightspeedRequirement(Player, Spell):
-    return Player.LightspeedCD <= 0
+    return Player.LightspeedCD <= 0, Player.LightspeedCD
 
 #Apply
 

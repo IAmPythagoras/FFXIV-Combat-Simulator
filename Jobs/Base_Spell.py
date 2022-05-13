@@ -37,10 +37,11 @@ class Spell:
         #print("Status of DualCast : " + str(player.DualCast))
         #Will apply each effect the player currently has on the spell
         #print("Effect List : " + str(player.EffectList))
-        for Effect in player.EffectList:
-            Effect(player, tempSpell)#Changes tempSpell
-        for Effect in Enemy.EffectList:
-            Effect(player, tempSpell)#Changes tempSpell
+        if self.id != -1: #id = -1 is WaitAbility, we don't want anything with that
+            for Effect in player.EffectList:
+                Effect(player, tempSpell)#Changes tempSpell
+            for Effect in Enemy.EffectList:
+                Effect(player, tempSpell)#Changes tempSpell
         #Checks if we meet the spell requirement
 
         #Remove all effects that have to be removed
@@ -49,19 +50,20 @@ class Spell:
             player.EffectList.remove(remove) #Removing effect
         
         player.EffectToRemove = [] #Empty the remove list
-        #input("id : " + str(self.id))
+        input("id : " + str(self.id))
         for Requirement in tempSpell.Requirement:
             ableToCast, timeLeft = Requirement(player, tempSpell)
             if(not ableToCast) : #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
                 input("timeleft : " + str(timeLeft))
                 #Will check if timeLeft is within a margin, so we will just wait for it to come
                 #timeLeft is the remaining time before the spell is available
-                if timeLeft <= 1:
+                if timeLeft <= 1 and timeLeft > 0: #Limit of waiting for 1 sec
                     input("Waiting for " + str(timeLeft))
                     tempSpell = WaitAbility(timeLeft)
                     player.ActionSet.insert(player.NextSpell, tempSpell)
                     return tempSpell #Makes the character wait
                     #Might remove some stuff tho, might have to check into that (for when effects are applied)
+                
 
 
                 print("Failed to cast the spell : " + str(self.id))

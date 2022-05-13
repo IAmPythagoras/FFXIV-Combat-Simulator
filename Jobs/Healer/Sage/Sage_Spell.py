@@ -8,13 +8,13 @@ Lock = 0.75
 #Requirement
 
 def EukrasianDosisRequirement(Player, Spell):
-    return Player.Eukrasia
+    return Player.Eukrasia, -1
 
 def PneumaRequirement(Player, Spell):
-    return Player.PneumaCD <= 0
+    return Player.PneumaCD <= 0, Player.PneumaCD
 
 def PhlegmaRequirement(Player, Spell):
-    return Player.PhlegmaStack > 0
+    return Player.PhlegmaStack > 0, Player.PhlegmaCD
 
 #Apply
 

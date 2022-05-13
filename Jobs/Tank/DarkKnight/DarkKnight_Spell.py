@@ -18,60 +18,53 @@ def BloodRequirement(Player, Spell):
     if Player.DeliriumStacks > 0 and (Spell.id == 4 or Spell.id == 5):
         Spell.BloodCost = 0
         Player.DeliriumStacks -= 1
-        return True
+        return True, -1
     elif Player.Blood >= 50:
         Player.Blood -= 50
-        return True
-    return False
+        return True, -1
+    return False, -1
 
 def EdgeShadowRequirement(Player, Spell):
     if Player.EdgeShadowCD <= 0 :
         if Player.DarkArts:
             Spell.ManaCost = 0
             Player.DarkArts = False
-            return True
+            return True, -1
         elif Player.Mana >= Spell.ManaCost:
             Player.Mana -= Spell.ManaCost
-            return True
-    return False
+            return True, -1
+    return False, -1
 
 def BloodWeaponRequirement(Player, Spell):
-    if Player.BloodWeaponCD <= 0: return True
-    return False
+    return Player.BloodWeaponCD <= 0, Player.BloodWeaponCD
 
 def DeliriumRequirement(Player, Spell):
-    if Player.DeliriumCD <= 0: return True
-    return False
+    return Player.DeliriumCD <= 0, Player.DeliriumCD
 
 def CarveSpitRequirement(Player, Spell):
-    if Player.CarveSpitCD <= 0: return True
-    return False
+    return Player.CarveSpitCD <= 0, Player.CarveSpitCD
 
 def AbyssalDrainRequirement(Player, Spell):
-    if Player.AbyssalDrainCD <= 0: return True
-    return False
+    return Player.AbyssalDrainCD <= 0, Player.AbyssalDrainCD
 
 def SaltedEarthRequirement(Player, Spell):
-    if Player.SaltedEarthCD <= 0: return True
-    return False
+    return Player.SaltedEarthCD <= 0, Player.SaltedEarthCD
 
 def SaltDarknessRequirement(Player, Spell):
-    if Player.SaltedEarthTimer > 0: return True
-    return False
+    return Player.SaltedEarthTimer > 0, -1
 
 def ShadowbringerRequirement(Player, Spell):
-    if Player.DarksideTimer > 0 and Player.ShadowbringerCharges > 0: return True
-    return False
+    return Player.DarksideTimer > 0 and Player.ShadowbringerCharges > 0, -1
+
 
 def PlungeRequirement(Player, Spell):
-    if Player.PlungeCharges > 0: return True
-    return False
+    return Player.PlungeCharges > 0, Player.PlungeChargesCD
 
 def TBNRequirement(Player, Spell):
     if Player.Mana >= Spell.ManaCost:
         Player.Mana -= Spell.ManaCost
-        return True
-    return False
+        return True, -1
+    return False, -1
 
 #Effect functions that persist after action use
 

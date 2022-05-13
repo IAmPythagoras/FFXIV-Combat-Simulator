@@ -9,13 +9,13 @@ Lock = 0.75
 #Requirement
 
 def PresenceOfMindRequirement(Player, Spell):
-    return Player.PresenceOfMindCD <= 0
+    return Player.PresenceOfMindCD <= 0, Player.PresenceOfMindCD
 
 def AssizeRequirement(Player, Spell):
-    return Player.AssizeCD <= 0
+    return Player.AssizeCD <= 0, Player.AssizeCD
 
 def ThinAirRequirement(Player, Spell):
-    return Player.ThinAirCD <= 0
+    return Player.ThinAirCD <= 0, Player.ThinAirCD
 
 #Apply
 

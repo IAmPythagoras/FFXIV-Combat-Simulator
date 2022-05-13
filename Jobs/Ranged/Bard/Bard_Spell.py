@@ -19,10 +19,10 @@ def RefulgentArrowRequirement(Player, Spell):
     return Player.StraightShotReady
 
 def SidewinderRequirement(Player, Spell):
-    return Player.SidewinderCD <= 0
+    return Player.SidewinderCD <= 0, Player.SidewinderCD
 
 def EmpyrealArrowRequirement(Player, Spell):
-    return Player.EmpyrealArrowCD <= 0
+    return Player.EmpyrealArrowCD <= 0, Player.EmpyrealArrowCD
 """
 def PitchPerfectRequirement(Player, Spell):
     #I will modify the potency of the spell here since if I do it in apply, it will be harder to access spell
@@ -43,7 +43,7 @@ def PitchPerfect1Requirement(Player, Spell):
         #We can cast it, and we have to check the chances
         need = max(0, 1 - Player.ExpectedRepertoire)#This represents how much we would be missing, compared to the expected value
         Player.UsedRepertoireAdd += need#This represents the total number of repertoire procs we have used through out the simulation
-        return Player.WandererMinuet
+        return Player.WandererMinuet, -1
 
 def PitchPerfect2Requirement(Player, Spell):
     if Player.MaximumRepertoire < 2:#It will not be possible to cast in any case
@@ -52,7 +52,7 @@ def PitchPerfect2Requirement(Player, Spell):
         #We can cast it, and we have to check the chances
         need = max(0, 2 - Player.ExpectedRepertoire)#This represents how much we would be missing, compared to the expected value
         Player.UsedRepertoireAdd += need#This represents the total number of repertoire procs we have used through out the simulation
-        return Player.WandererMinuet
+        return Player.WandererMinuet, -1
 
 def PitchPerfect3Requirement(Player, Spell):
     if Player.MaximumRepertoire < 3:#It will not be possible to cast in any case
@@ -61,13 +61,13 @@ def PitchPerfect3Requirement(Player, Spell):
         #We can cast it, and we have to check the chances
         need = max(0, 3 - Player.ExpectedRepertoire) #This represents how much we would be missing, compared to the expected value
         Player.UsedRepertoireAdd += need #This represents the total number of repertoire procs we have used through out the simulation
-        return Player.WandererMinuet
+        return Player.WandererMinuet, -1
 
 def WandererMinuetRequirement(Player, Spell):
-    return Player.WandererMinuetCD <= 0
+    return Player.WandererMinuetCD <= 0, Player.WandererMinuetCD
 
 def BattleVoiceRequirement(Player, Spell):
-    return Player.BattleVoiceCD <= 0
+    return Player.BattleVoiceCD <= 0, Player.BattleVoiceCD
 
 def BloodLetterRequirement(Player, Spell):
     #This requirement will check if the spell can be casted. If it cannot, it will cast it anyway, but will add to
@@ -88,25 +88,25 @@ def BloodLetterRequirement(Player, Spell):
         Player.MaximumBloodLetterReduction -= need #Updating new MaximumBloodLetterReduction
         Player.UsedBloodLetterReduction += need
 
-    return True
+    return True, -1
 
 def ArmyPaeonRequirement(Player, Spell):
-    return Player.ArmyPaeonCD <= 0
+    return Player.ArmyPaeonCD <= 0, Player.ArmyPaeonCD
 
 def MageBalladRequirement(Player, Spell):
-    return Player.MageBalladCD <= 0
+    return Player.MageBalladCD <= 0, Player.MageBalladCD
 
 def BarrageRequirement(Player, Spell):
-    return Player.BarrageCD <= 0
+    return Player.BarrageCD <= 0, Player.BarrageCD
 
 def RagingStrikeRequirement(Player, Spell):
-    return Player.RagingStrikeCD <= 0
+    return Player.RagingStrikeCD <= 0, Player.RagingStrikeCD
 
 def RadiantFinaleRequirement(Player, Spell):
-    return Player.MageCoda or Player.ArmyCoda or Player.WandererCoda
+    return Player.MageCoda or Player.ArmyCoda or Player.WandererCoda, -1
 
 def BlastArrowRequirement(Player, Spell):
-    return Player.BlastArrowReady
+    return Player.BlastArrowReady, -1
 
 #Apply
 

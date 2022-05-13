@@ -6,61 +6,61 @@ Lock = 0.75
 #Requirement
 
 def Ruin4Requirement(Player, Spell):
-    return Player.FurtherRuin
+    return Player.FurtherRuin, -1
 
 def TitanRequirement(Player, Spell):
-    return Player.TitanGem
+    return Player.TitanGem, -1
 
 def IfritRequirement(Player, Spell):
-    return Player.IfritGem
+    return Player.IfritGem, -1
 
 def GarudaRequirement(Player, Spell):
-    return Player.GarudaGem
+    return Player.GarudaGem, -1
 
 def TopazRequirement(Player, Spell):
-    return Player.TitanStack > 0
+    return Player.TitanStack > 0, -1
 
 def MountainRequirement(Player, Spell):
-    return Player.TitanSpecial
+    return Player.TitanSpecial, -1
 
 def RubyRequirement(Player, Spell):
-    return Player.IfritStack > 0
+    return Player.IfritStack > 0, -1
 
 def CycloneRequirement(Player, Spell):
-    return Player.IfritSpecial
+    return Player.IfritSpecial, -1
 
 def StrikeRequirement(Player, Spell):
-    return Player.IfritSpecialCombo
+    return Player.IfritSpecialCombo, -1
 
 def EmeraldRequirement(Player, Spell):
-    return Player.GarudaStack > 0
+    return Player.GarudaStack > 0, -1
 
 def SlipstreamRequirement(Player, Spell):
-    return Player.GarudaSpecial
+    return Player.GarudaSpecial, -1
 
 def SummonRequirement(Player, Spell):
-    return Player.SummonCD <= 0
+    return Player.SummonCD <= 0, Player.SummonCD
 
 def FoFRequirement(Player, Spell):
-    return Player.FirebirdTrance
+    return Player.FirebirdTrance, -1
 
 def AstralImpulseRequirement(Player, Spell):
-    return Player.BahamutTrance
+    return Player.BahamutTrance, -1
 
 def EnkindleRequirement(Player, Spell):
-    return Player.Enkindle
+    return Player.Enkindle, -1
 
 def DeathflareRequirement(Player, Spell):
-    return Player.Deathflare
+    return Player.Deathflare, -1
 
 def EnergyDrainRequirement(Player, Spell):
-    return Player.EnergyDrainCD <= 0
+    return Player.EnergyDrainCD <= 0, Player.EnergyDrainCD
 
 def FesterRequirement(Player, Spell):
-    return Player.AetherflowGauge > 0
+    return Player.AetherflowGauge > 0, -1
 
 def SearingLightRequirement(Player, Spell):
-    return Player.SearingLightCD <= 0
+    return Player.SearingLightCD <= 0, Player.SearingLightCD
 
 #Apply
 

@@ -178,24 +178,18 @@ class Fight:
                 for player in self.PlayerList:
                     #print("MainStat : " + str(player.Stat["MainStat"]))
                     #Will first Check if the NextSpell is a GCD or not
-                    if(not player.TrueLock and not Player.Casting):#If it is we do nothing
+                    if(not player.TrueLock):#If it is we do nothing
                         if(player.ActionSet[player.NextSpell].GCD):
-                            print("Spell with id : " + str(player.ActionSet[player.NextSpell].id))
-                            input("is being casted at : " + str(self.TimeStamp))
                             #Is a GCD
 
                             #Have to check if the player can cast the spell
                             #So check if Animation Lock, if Casting or if GCDLock
                             if(not (player.oGCDLock or player.GCDLock or player.Casting)):
-                                #input("Current BUFF : "  + str(player.MultDPSBonus))
-                                #If we in here, then we can cast the next spell
-                                #print(player)
-                                #input("is casting gcd at : " + str(self.TimeStamp))
 
                                 player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)#Cast the spell
-                                #print("Spell with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(self.self.TimeStamp) )
                                 #Locking the player
-
+                                print(Player.CastingSpell.CastTime)
+                                input(Player.CastingSpell.RecastTime)
                                 player.Casting = True
                                 player.CastingLockTimer = player.CastingSpell.CastTime
                                 player.GCDLock = True

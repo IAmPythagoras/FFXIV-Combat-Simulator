@@ -6,19 +6,19 @@ Lock = 0.75
 #Requirement
 
 def EnochianRequirement(Player, Spell):
-    return Player.EnochianTimer > 0, 0
+    return Player.EnochianTimer > 0, -1
 
 def FireRequirement(Player, Spell):
-    return Player.ElementalGauge > 0, 0
+    return Player.ElementalGauge > 0, -1
 
 def IceRequirement(Player, Spell):
-    return Player.ElementalGauge < 0, 0
+    return Player.ElementalGauge < 0, -1
 
 def ParadoxRequirement(Player, Spell):
-    return Player.Paradox, 0
+    return Player.Paradox, -1
 
 def PolyglotRequirement(Player, Spell):
-    return Player.PolyglotStack > 0, 0
+    return Player.PolyglotStack > 0, Player.PolyglotTimer
 
 def TransposeRequirement(Player, Spell):
     return Player.TransposeCD <= 0, Player.TranposeCD

@@ -8,34 +8,34 @@ Lock = 0.75
 #Requirement
 
 def FightOrFlightRequirement(Player, Spell):
-    return Player.FightOrFlightCD <= 0
+    return Player.FightOrFlightCD <= 0, Player.FightOrFlightCD
 
 def ExpiacionRequirement(Player, Spell):
-    return Player.ExpiacionCD <= 0
+    return Player.ExpiacionCD <= 0, Player.ExpiacionCD
 
 def InterveneRequirement(Player, Spell):
-    return Player.InterveneStack > 0
+    return Player.InterveneStack > 0, Player.InterveneCD
 
 def AtonementRequirement(Player, Spell):
-    return Player.SwordOathStack > 0
+    return Player.SwordOathStack > 0, -1
 
 def CircleScornRequirement(Player, Spell):
-    return Player.CircleScornCD <= 0
+    return Player.CircleScornCD <= 0, Player.CircleScornCD
 
 def BladeFaithRequirement(Player, Spell):
-    return Player.BladeFaith
+    return Player.BladeFaith, -1
 
 def BladeTruthRequirement(Player, Spell):
-    return Player.BladeTruth
+    return Player.BladeTruth, -1
 
 def BladeValorRequirement(Player, Spell):
-    return Player.BladeValor
+    return Player.BladeValor, -1
 
 def ConfettiRequirement(Player, Spell):
-    return Player.RequestACat
+    return Player.RequestACat, -1
 
 def RequestACatRequirement(Player, Spell):
-    return Player.RequestACatCD <= 0
+    return Player.RequestACatCD <= 0, Player.RequestACatCD
 
 #Apply
 

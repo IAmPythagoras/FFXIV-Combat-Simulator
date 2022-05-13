@@ -7,37 +7,37 @@ Lock = 0.75
 #Requirement
 
 def NoMercyRequirement(Player, Spell):
-    return Player.NoMercyCD <= 0
+    return Player.NoMercyCD <= 0, Player.NoMercyCD
 
 def RoughDivideRequirement(Player, Enemy):
-    return Player.RoughDivideStack > 0
+    return Player.RoughDivideStack > 0, Player.RoughDivideCD
 
 def BowShockRequirement(Player, Spell):
-    return Player.BowShockCD <= 0
+    return Player.BowShockCD <= 0, Player.BowShockCD
 
 def SonicBreakRequirement(Player, Spell):
-    return Player.SonicBreakCD <= 0
+    return Player.SonicBreakCD <= 0, Player.SonicBreakCD
 
 def DoubleDownRequirement(Player, Spell):
-    return Player.DoubleDownCD <= 0
+    return Player.DoubleDownCD <= 0, Player.DoubleDownCD
 
 def HypervelocityRequirement(Player, Spell):
-    return Player.ReadyToBlast
+    return Player.ReadyToBlast, -1
 
 def BloodfestRequirement(Player, Spell):
-    return Player.BloodfestCD <= 0
+    return Player.BloodfestCD <= 0, Player.BloodfestCD
 
 def BlastingZoneRequirement(Player, Spell):
-    return Player.BlastingZoneCD <= 0
+    return Player.BlastingZoneCD <= 0, Player.BlastingZoneCD
 
 def JugularRipRequirement(Player, Spell):
-    return Player.ReadyToRip
+    return Player.ReadyToRip, -1
 
 def AbdomenTearRequirement(Player, Spell):
-    return Player.ReadyToTear
+    return Player.ReadyToTear, -1
 
 def EyeGougeRequirement(Player, Spell):
-    return Player.ReadyToGouge
+    return Player.ReadyToGouge, -1
 
 #Apply
 

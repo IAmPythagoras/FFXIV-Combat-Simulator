@@ -18,38 +18,35 @@ def KenkiRequirement(Player, Spell): #By default present in Samurai spell requir
     return Spell.KenkiCost <= Player.KenkiGauge
 
 def MeikyoRequirement(Player, Spell):
-    return Player.MeikyoStack > 0
+    return Player.MeikyoStack > 0, Player.MeikyoCD
 
 def IkishotenRequirement(Player, Spell):
-    return Player.IkishotenCD <= 0
+    return Player.IkishotenCD <= 0, Player.IkishotenCD
 
 def KaeshiRequirement(Player, Spell):
-    return Player.KaeshiCD <= 0
+    return Player.KaeshiCD <= 0, Player.KaeshiCD
 
 def SeneiRequirement(Player, Spell):
-    return Player.SeneiCD <= 0
+    return Player.SeneiCD <= 0, Player.SeneiCD
 
 def OgiNamikiriRequirement(Player, Spell):
-    return Player.OgiNamikiriReady
+    return Player.OgiNamikiriReady, -1
 
 def KaeshiNamikiriRequirement(Player, Spell):
-    return Player.KaeshiNamikiriReady
+    return Player.KaeshiNamikiriReady, -1
 
 def ShohaRequirement(Player, Spell):
-    return Player.MeditationGauge == 3
+    return Player.MeditationGauge == 3, -1
 
 def MidareRequirement(Player, Spell):
-    #print(Player.Setsu)
-    #print(Player.Ka)
-    #print(Player.Getsu)
-    return Player.Setsu and Player.Ka and Player.Getsu
+    return Player.Setsu and Player.Ka and Player.Getsu, -1
 
 def HiganbanaRequirement(Player, Spell):
     i = 0
     if Player.Setsu : i +=1
     if Player.Ka : i+=1
     if Player.Getsu : i +=1
-    return i == 1
+    return i == 1, -1
 
 #Apply
 

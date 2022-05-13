@@ -6,52 +6,52 @@ import copy
 #Requirement
 
 def TrueThrustRequirement(Player, Spell):
-    return not Player.DraconianFire
+    return not Player.DraconianFire, -1
 
 def WheelingThrustRequirement(Player, Spell):
-    return Player.WheelInMotion
+    return Player.WheelInMotion, -1
 
 def FangAndClawRequirement(Player, Spell):
-    return Player.FangAndClaw
+    return Player.FangAndClaw, -1
 
 def LanceChargeRequirement(Player, Spell):
-    return Player.LanceChargeCD <= 0
+    return Player.LanceChargeCD <= 0, Player.LanceChargeCD
 
 def BattleLitanyRequirement(Player, Spell):
-    return Player.BattleLitanyCD <= 0
+    return Player.BattleLitanyCD <= 0, Player.BattleLitanyCD
 
 def DragonSightRequirement(Player, Spell):
-    return Player.DragonSightCD <= 0
+    return Player.DragonSightCD <= 0, Player.DragonSightCD
 
 def GeirskogulRequirement(Player, Spell):
-    return Player.GeirskogulCD <= 0 and not Player.LifeOfTheDragon
+    return Player.GeirskogulCD <= 0 and not Player.LifeOfTheDragon, Player.GeirskogulCD
 
 def NastrondRequirement(Player, Spell):
-    return Player.LifeOfTheDragon and Player.NastrondCD <= 0
+    return Player.LifeOfTheDragon and Player.NastrondCD <= 0, Player.NastrondCD
 
 def HighJumpRequirement(Player, Spell):
-    return Player.HighJumpCD <= 0
+    return Player.HighJumpCD <= 0, Player.HighJumpCD
 
 def MirageDiveRequirement(Player, Spell):
-    return Player.DiveReady
+    return Player.DiveReady, -1
 
 def SpineshafterRequirement(Player, Spell):
-    return Player.SpineshafterStack > 0
+    return Player.SpineshafterStack > 0, Player.SpineshafterCD
 
 def LifeSurgeRequirement(Player, Spell):
-    return Player.LifeSurgeStack > 0
+    return Player.LifeSurgeStack > 0, Player.LifeSurgeCD
 
 def StardiverRequirement(Player, Spell):
-    return Player.StardiverCD <= 0 and Player.LifeOfTheDragon
+    return Player.StardiverCD <= 0 and Player.LifeOfTheDragon, Player.StardiverCD
 
 def RaidenThrustRequirement(Player, Spell):
-    return Player.DraconianFire
+    return Player.DraconianFire, -1
 
 def WyrmwindThrustRequirement(Player, Spell):
-    return Player.FirstmindGauge == 2 and Player.WyrmwindThrustCD <= 0
+    return Player.FirstmindGauge == 2 and Player.WyrmwindThrustCD <= 0, -1
 
 def DragonFireDiveRequirement(Player, Spell):
-    return Player.DragonFireDiveCD <= 0
+    return Player.DragonFireDiveCD <= 0, Player.DragonFireDiveCD
 
 #Apply
 

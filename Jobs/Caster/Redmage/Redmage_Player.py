@@ -28,9 +28,6 @@ class Redmage(Caster):
         #Timer
         self.EmboldenTimer = 0
         self.ManaficationTimer = 0
-        #self.SwiftCastTimer = 0
-        self.LucidDreamingTimer = 0
-        #self.AccelerationTimer = 0
 
         #stack
         self.AccelerationStack = 2
