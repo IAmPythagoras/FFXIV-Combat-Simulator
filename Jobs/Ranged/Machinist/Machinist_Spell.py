@@ -137,10 +137,10 @@ def ApplyCleanShot(Player, Enemy):
 #Effect
 
 def WildFireEffect(Player, Spell):
-    if isinstance(Spell, MachinistSpell) and Spell.WeaponSkill : Player.WildFireStack +=1
+    if isinstance(Spell, MachinistSpell) and Spell.Weaponskill : Player.WildFireStack +=1
 
 def HyperchargeEffect(Player, Spell):
-    if Spell.WeaponSkill : Spell.Potency += 20
+    if Spell.Weaponskill : Spell.Potency += 20
 
 #Combo Actions effect
 

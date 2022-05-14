@@ -58,7 +58,7 @@ def ShadowbringerRequirement(Player, Spell):
 
 
 def PlungeRequirement(Player, Spell):
-    return Player.PlungeCharges > 0, Player.PlungeChargesCD
+    return Player.PlungeCharges > 0, Player.PlungeCD
 
 def TBNRequirement(Player, Spell):
     if Player.Mana >= Spell.ManaCost:

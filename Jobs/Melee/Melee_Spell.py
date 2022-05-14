@@ -29,7 +29,7 @@ class SamuraiSpell(MeleeSpell):
         self.Requirement += [KenkiRequirement]
 
 def KenkiRequirement(Player, Spell): #By default present in Samurai spell requirements
-    return Spell.KenkiCost <= Player.KenkiGauge
+    return Spell.KenkiCost <= Player.KenkiGauge, -1
 
 #########################################
 ########## DRAGOON PLAYER ###############

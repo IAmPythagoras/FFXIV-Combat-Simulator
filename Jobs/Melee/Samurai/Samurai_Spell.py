@@ -15,7 +15,7 @@ def AddKenki(Player, Add):
 #Requirement
 
 def KenkiRequirement(Player, Spell): #By default present in Samurai spell requirements
-    return Spell.KenkiCost <= Player.KenkiGauge
+    return Spell.KenkiCost <= Player.KenkiGauge, -1
 
 def MeikyoRequirement(Player, Spell):
     return Player.MeikyoStack > 0, Player.MeikyoCD

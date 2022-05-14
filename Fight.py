@@ -188,8 +188,8 @@ class Fight:
 
                                 player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)#Cast the spell
                                 #Locking the player
-                                print(Player.CastingSpell.CastTime)
-                                input(Player.CastingSpell.RecastTime)
+                                #print(Player.CastingSpell.CastTime)
+                                #input(Player.CastingSpell.RecastTime)
                                 player.Casting = True
                                 player.CastingLockTimer = player.CastingSpell.CastTime
                                 player.GCDLock = True
@@ -200,8 +200,8 @@ class Fight:
 
                         else:
                             #Is an oGCD
-                            print("Spell with id : " + str(player.ActionSet[player.NextSpell].id))
-                            input("is being casted at : " + str(self.TimeStamp))
+                            #print("Spell with id : " + str(player.ActionSet[player.NextSpell].id))
+                            #input("is being casted at : " + str(self.TimeStamp))
                             
                             if(not (player.oGCDLock or player.Casting)):
                                 #Then we can cast the oGCD
@@ -356,7 +356,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
 
     if isinstance(Player, Machinist): 
         #print(Player.ActionSet[Player.NextSpell])  #Then if machinist, has to check if direct crit guarantee
-        if Player.ActionSet[Player.NextSpell].id != -1 and Player.ActionSet[Player.NextSpell].id != -2 and Player.Reassemble and Player.ActionSet[Player.NextSpell].WeaponSkill:    #Checks if reassemble is on and if its a weapon skill
+        if Player.ActionSet[Player.NextSpell].id != -1 and Player.ActionSet[Player.NextSpell].id != -2 and Player.Reassemble and Player.ActionSet[Player.NextSpell].Weaponskill:    #Checks if reassemble is on and if its a weapon skill
             CritRate = 1
             DHRate = 1
             Player.Reassemble = False #Uses Reassemble       
@@ -452,7 +452,7 @@ def ComputeDamageV2(Player, DPS, EnemyBonus, SpellBonus):
 
     if isinstance(Player, Machinist): 
         #print(Player.ActionSet[Player.NextSpell])  #Then if machinist, has to check if direct crit guarantee
-        if Player.ActionSet[Player.NextSpell].id != -1 and Player.ActionSet[Player.NextSpell].id != -2 and Player.Reassemble and Player.ActionSet[Player.NextSpell].WeaponSkill:    #Checks if reassemble is on and if its a weapon skill
+        if Player.ActionSet[Player.NextSpell].id != -1 and Player.ActionSet[Player.NextSpell].id != -2 and Player.Reassemble and Player.ActionSet[Player.NextSpell].Weaponskill:    #Checks if reassemble is on and if its a weapon skill
             CritRate = 1
             DHRate = 1
             Player.Reassemble = False #Uses Reassemble       

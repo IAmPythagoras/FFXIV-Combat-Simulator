@@ -15,7 +15,7 @@ class TankSpell(Spell):
 
 def BeastGaugeRequirement(Player, Spell):
     RemoveBeast(Player, Spell.Cost)
-    return Player.BeastGauge >= 0
+    return Player.BeastGauge >= 0, -1
 
 class WarriorSpell(TankSpell):
 
@@ -58,7 +58,7 @@ class PaladinSpell(TankSpell):
 
 def PowderRequirement(Player, Spell):
     Player.PowderGauge -= Spell.PowderCost
-    return Player.PowderGauge >=0
+    return Player.PowderGauge >=0, 0
 
 class GunbreakerSpell(TankSpell):
 

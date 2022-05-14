@@ -16,7 +16,7 @@ A check will be done notheless to make sure a rotation is at least possible give
 #Requirement
 
 def RefulgentArrowRequirement(Player, Spell):
-    return Player.StraightShotReady
+    return Player.StraightShotReady, -1
 
 def SidewinderRequirement(Player, Spell):
     return Player.SidewinderCD <= 0, Player.SidewinderCD

@@ -82,8 +82,11 @@ def BLMManaRegenCheck(Player, Enemy):   #Mana Regen Stuff
         Player.ManaTick = 3
         if Player.ElementalGauge < 0:
             if(Player.ElementalGauge == -1):
+                #input("adding 3200")
                 Player.Mana = min(10000, Player.Mana + 3200)
             if(Player.ElementalGauge == -2):
+                #input("adding 4700")
                 Player.Mana = min(10000, Player.Mana + 4700)
             if(Player.ElementalGauge == -3):
+                #input("adding 6200")
                 Player.Mana = min(10000, Player.Mana + 6200)

@@ -13,8 +13,8 @@ def StandardFinishRequirement(Player, Spell):
     #Will check how many step we have
     #Not done in apply since we want to acces the spell easily
 
-    Player.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
-    if Player.DancePartner != None : Player.DancePartner.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
+    if Player.StandardFinishBuff != None : Player.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
+    if Player.DancePartner != None and Player.StandardFinishBuff != None : Player.DancePartner.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
     Player.StandardFinishBuff = copy.deepcopy(StandardFinishBuff)
     step = 0
     if Player.Emboite : step +=1
@@ -35,7 +35,7 @@ def TechnicalFinishRequirement(Player, Spell):
     #Will check how many step we have
     #Not done in apply since we want to acces the spell easily
 
-    Player.CurrentFight.Enemy.buffList.remove(Player.TechnicalFinishBuff)#Reset DPSBonus
+    if Player.TechnicalFinishBuff != None : Player.CurrentFight.Enemy.buffList.remove(Player.TechnicalFinishBuff)#Reset DPSBonus
     Player.TechnicalFinishBuff = copy.deepcopy(TechnicalFinishBuff)
     step = 0
     if Player.Emboite : step +=1

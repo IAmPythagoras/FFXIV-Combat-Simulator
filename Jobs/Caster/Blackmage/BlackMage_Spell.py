@@ -21,7 +21,7 @@ def PolyglotRequirement(Player, Spell):
     return Player.PolyglotStack > 0, Player.PolyglotTimer
 
 def TransposeRequirement(Player, Spell):
-    return Player.TransposeCD <= 0, Player.TranposeCD
+    return Player.TransposeCD <= 0, Player.TransposeCD
 
 def AmplifierRequirement(Player, Spell):
     return Player.AmplifierCD <= 0, Player.AmplifierCD
@@ -30,7 +30,7 @@ def LeyLinesRequirement(Player, Spell):
     return Player.LeyLinesCD <= 0, Player.LeyLinesCD
 
 def TripleCastRequirement(Player, Spell):
-    return Player.TripleCastUseStack > 0, Player.TripleStackCD
+    return Player.TripleCastUseStack > 0, Player.TripleCastCD
 
 def SharpCastRequirement(Player, Spell):
     return Player.SharpCastStack > 0, Player.SharpCastCD

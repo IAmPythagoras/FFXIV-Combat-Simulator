@@ -10,10 +10,10 @@ class CasterSpell(Spell):
 
 
 def SwiftCastRequirement(Player, Spell):
-    return Player.SwiftCastCD <= 0
+    return Player.SwiftCastCD <= 0, Player.SwiftCastCD
 
 def LucidDreamingRequirement(Player, Spell):
-    return Player.LucidDreamingCD <= 0
+    return Player.LucidDreamingCD <= 0, Player.LucidDreamingCD
 
 def ApplyLucidDreaming(Player, Enemy):
     Player.LucidDreamingCD = 60
@@ -30,6 +30,7 @@ def SwiftCastEffect(Player, Spell):
         Player.EffectToRemove.append(SwiftCastEffect)
 
 def LucidDreamingCheck(Player, Enemy):
+    #input("got in")
     if (int(Player.LucidDreamingTimer * 100)/100)%3 == 0 and Player.LucidDreamingTimer != 21:
         #if on a tic and not equal to 21
         #input("got in")

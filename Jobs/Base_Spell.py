@@ -50,11 +50,12 @@ class Spell:
             player.EffectList.remove(remove) #Removing effect
         
         player.EffectToRemove = [] #Empty the remove list
-        input("id : " + str(self.id))
+        #input("id : " + str(self.id))
         for Requirement in tempSpell.Requirement:
+            #input(Requirement.__name__)
             ableToCast, timeLeft = Requirement(player, tempSpell)
             if(not ableToCast) : #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
-                input("timeleft : " + str(timeLeft))
+                #input("timeleft : " + str(timeLeft))
                 #Will check if timeLeft is within a margin, so we will just wait for it to come
                 #timeLeft is the remaining time before the spell is available
                 if timeLeft <= 1 and timeLeft > 0: #Limit of waiting for 1 sec
@@ -136,8 +137,8 @@ def ManaRequirement(player, Spell):
     #input("Spell mana cost " + str(Spell.ManaCost))
     if player.Mana >= Spell.ManaCost :
         player.Mana -= Spell.ManaCost   #ManaRequirement is the only Requirement that actually removes Ressources
-        return True
-    return False
+        return True, -1
+    return False, -1
 
 def empty(Player, Enemy):
     pass
@@ -154,7 +155,8 @@ def ApplyPotion(Player, Enemy):
 
 def PotionCheck(Player, Enemy):
     if Player.PotionTimer <= 0:
-        Player.Stat["MainStat"] *= 1.1
+        #input("removing potion")
+        Player.Stat["MainStat"] /= 1.1
         Player.EffectCDList.remove(PotionCheck)
 
 
