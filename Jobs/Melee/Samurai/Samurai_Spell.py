@@ -3,7 +3,7 @@
 #########################################
 
 from Jobs.Melee.Melee_Spell import SamuraiSpell
-from Jobs.Base_Spell import DOTSpell, empty
+from Jobs.Base_Spell import DOTSpell, buff, empty
 Lock = 0.75
 import copy
 #Special
@@ -15,41 +15,38 @@ def AddKenki(Player, Add):
 #Requirement
 
 def KenkiRequirement(Player, Spell): #By default present in Samurai spell requirements
-    return Spell.KenkiCost <= Player.KenkiGauge
+    return Spell.KenkiCost <= Player.KenkiGauge, -1
 
 def MeikyoRequirement(Player, Spell):
-    return Player.MeikyoStack > 0
+    return Player.MeikyoStack > 0, Player.MeikyoCD
 
 def IkishotenRequirement(Player, Spell):
-    return Player.IkishotenCD <= 0
+    return Player.IkishotenCD <= 0, Player.IkishotenCD
 
 def KaeshiRequirement(Player, Spell):
-    return Player.KaeshiCD <= 0
+    return Player.KaeshiCD <= 0, Player.KaeshiCD
 
 def SeneiRequirement(Player, Spell):
-    return Player.SeneiCD <= 0
+    return Player.SeneiCD <= 0, Player.SeneiCD
 
 def OgiNamikiriRequirement(Player, Spell):
-    return Player.OgiNamikiriReady
+    return Player.OgiNamikiriReady, -1
 
 def KaeshiNamikiriRequirement(Player, Spell):
-    return Player.KaeshiNamikiriReady
+    return Player.KaeshiNamikiriReady, -1
 
 def ShohaRequirement(Player, Spell):
-    return Player.MeditationGauge == 3
+    return Player.MeditationGauge == 3, -1
 
 def MidareRequirement(Player, Spell):
-    #print(Player.Setsu)
-    #print(Player.Ka)
-    #print(Player.Getsu)
-    return Player.Setsu and Player.Ka and Player.Getsu
+    return Player.Setsu and Player.Ka and Player.Getsu, -1
 
 def HiganbanaRequirement(Player, Spell):
     i = 0
     if Player.Setsu : i +=1
     if Player.Ka : i+=1
     if Player.Getsu : i +=1
-    return i == 1
+    return i == 1, -1
 
 #Apply
 
@@ -129,7 +126,7 @@ def HakazeEffect(Player, Spell):
         Spell.Potency += 160
         if not Player.Fugetsu:
             Player.Fugetsu = True
-            Player.MultDPSBonus *= 1.13
+            Player.buffList.append(HakazaBuff)
             Player.EffectCDList.append(FugetsuCheck)
             Player.EffectToRemove.append(HakazeEffect)
     elif Spell.id == Shifu.id:
@@ -209,7 +206,7 @@ def FukaCheck(Player, Enemy):
 def FugetsuCheck(Player, Enemy):
     if Player.FugetsuTimer <= 0:
         Player.Fugetsu = False
-        Player.MultDPSBonus /= 1.13
+        Player.buffList.remove(HakazaBuff)
         Player.EffectToRemove.append(FugetsuCheck)
 
 def HiganbanaCheck(Player, Enemy):
@@ -257,4 +254,7 @@ Shoha = SamuraiSpell(15, False, Lock, Lock, 500, ApplyShoha, [ShohaRequirement],
 Shinten = SamuraiSpell(16, False, Lock, 1, 250, ApplyShinten, [], 25)
 #DOT
 Higanbana = SamuraiSpell(12, True, 1.3, 2.5, 200, ApplyHiganbana, [HiganbanaRequirement], 0)
-HiganbanaDOT = DOTSpell(-1, 60)
+HiganbanaDOT = DOTSpell(-1, 60, True)
+
+#buff
+HakazaBuff = buff(1.13)

@@ -1,4 +1,4 @@
-from Jobs.Base_Spell import empty, DOTSpell, ManaRequirement
+from Jobs.Base_Spell import buff, empty, DOTSpell, ManaRequirement
 from Jobs.Tank.Paladin.Paladin_Player import Paladin
 from Jobs.Tank.Tank_Spell import PaladinSpell
 import copy
@@ -8,41 +8,41 @@ Lock = 0.75
 #Requirement
 
 def FightOrFlightRequirement(Player, Spell):
-    return Player.FightOrFlightCD <= 0
+    return Player.FightOrFlightCD <= 0, Player.FightOrFlightCD
 
 def ExpiacionRequirement(Player, Spell):
-    return Player.ExpiacionCD <= 0
+    return Player.ExpiacionCD <= 0, Player.ExpiacionCD
 
 def InterveneRequirement(Player, Spell):
-    return Player.InterveneStack > 0
+    return Player.InterveneStack > 0, Player.InterveneCD
 
 def AtonementRequirement(Player, Spell):
-    return Player.SwordOathStack > 0
+    return Player.SwordOathStack > 0, -1
 
 def CircleScornRequirement(Player, Spell):
-    return Player.CircleScornCD <= 0
+    return Player.CircleScornCD <= 0, Player.CircleScornCD
 
 def BladeFaithRequirement(Player, Spell):
-    return Player.BladeFaith
+    return Player.BladeFaith, -1
 
 def BladeTruthRequirement(Player, Spell):
-    return Player.BladeTruth
+    return Player.BladeTruth, -1
 
 def BladeValorRequirement(Player, Spell):
-    return Player.BladeValor
+    return Player.BladeValor, -1
 
 def ConfettiRequirement(Player, Spell):
-    return Player.RequestACat
+    return Player.RequestACat, -1
 
 def RequestACatRequirement(Player, Spell):
-    return Player.RequestACatCD <= 0
+    return Player.RequestACatCD <= 0, Player.RequestACatCD
 
 #Apply
 
 def ApplyFightOrFlight(Player, Enemy):
     Player.FightOrFlightTimer = 25
     Player.FightOrFlightCD = 60
-    Player.MultDPSBonus *= 1.25
+    Player.buffList.append(FightOrFlightBuff)
     Player.EffectCDList.append(FightOrFlightCheck)
 
 def ApplyExpiacion(Player, Enemy):
@@ -145,7 +145,7 @@ def RequestACatCheck(Player, Enemy):
 
 def FightOrFlightCheck(Player, Enemy):
     if Player.FightOrFlighTimer <= 0:
-        Player.MultDPSBonus /= 1.25
+        Player.buffList.remove(FightOrFlightBuff)
         Player.EffectToRemove.append(FightOrFlightCheck)
 
 def InterveneStackCheck(Player, Enemy):
@@ -181,7 +181,7 @@ FastBlade = PaladinSpell(1, True, Lock, 2.5, 200, 0, ApplyFastBlade, [])
 RiotBlade = PaladinSpell(2, True, Lock, 2.5, 170, 0, empty, [])
 RoyalAuthority = PaladinSpell(3, True, Lock, 2.5, 130,0, empty, [])
 GoringBlade = PaladinSpell(4, True, Lock, 2.5, 100, 0, empty, [])
-GoringDOT = DOTSpell(-5, 65)
+GoringDOT = DOTSpell(-5, 65, True)
 
 #Confiteor Combo Action
 
@@ -189,7 +189,7 @@ Confetti = PaladinSpell(5, True, Lock, 2.5, 900, 1000, ApplyConfetti, [ManaRequi
 BladeFaith = PaladinSpell(8, True, Lock, 2.5, 420, 0, ApplyBladeFaith, [BladeFaithRequirement])
 BladeTruth = PaladinSpell(9, True, Lock, 2.5, 500, 0, ApplyBladeTruth, [BladeTruthRequirement])
 BladeValor = PaladinSpell(10, True, Lock, 2.5, 580, 0, ApplyBladeValor, [BladeValorRequirement])
-BladeValorDOT = DOTSpell(-11, 80)
+BladeValorDOT = DOTSpell(-11, 80, True)
 #GCD
 HolySpirit = PaladinSpell(7, True, 1.5, 2.5, 270, 1000, empty, [ManaRequirement])
 Atonement = PaladinSpell(12, True, Lock, 2.5, 420, 0, ApplyAtonement, [AtonementRequirement])
@@ -197,7 +197,10 @@ Atonement = PaladinSpell(12, True, Lock, 2.5, 420, 0, ApplyAtonement, [Atonement
 #oGCD
 RequestACat = PaladinSpell(6, False, 0, Lock, 400, 0, ApplyRequestACat, [RequestACatRequirement]) #I NEED ONE RIGHT NOW :x
 CircleScorn = PaladinSpell(11, False, 0, Lock, 100, 0, ApplyCircleScorn, [CircleScornRequirement])
-CircleScornDOT = DOTSpell(-6, 30)
+CircleScornDOT = DOTSpell(-6, 30, True)
 Intervene = PaladinSpell(13, False, 0, Lock, 150, 0, ApplyIntervene, [InterveneRequirement])
 Expiacion = PaladinSpell(14, False, 0, Lock, 340, 0, ApplyExpiacion, [ExpiacionRequirement])
 FightOrFlight = PaladinSpell(15, False, 0, Lock, 0, 0, ApplyFightOrFlight, [FightOrFlightRequirement])
+
+#buff
+FightOrFlightBuff = buff(1.25)

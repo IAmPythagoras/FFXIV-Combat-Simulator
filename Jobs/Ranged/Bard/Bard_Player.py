@@ -72,8 +72,7 @@ class Bard(Ranged):
 
 
         #DPSBonus
-        self.MultDPSBonus = 1.2
-        self.RadiantFinaleBonus = 1
+        self.RadiantFinalBuff = None
     
     def updateCD(self, time):
         if (self.SidewinderCD > 0) : self.SidewinderCD = max(0,self.SidewinderCD - time)

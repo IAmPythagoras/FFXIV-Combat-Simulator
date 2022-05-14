@@ -1,28 +1,28 @@
 import copy
 
-from Jobs.Base_Spell import DOTSpell, ManaRequirement, empty
+from Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
 from Jobs.Healer.Healer_Spell import AstrologianSpell
 Lock = 0.75
 
 #Requirement
 
 def DrawRequirement(Player, Spell):
-    return Player.DrawStack > 0
+    return Player.DrawStack > 0, Player.DrawCD
 
 def ArcanumRequirement(Player, Spell):
-    return Player.HasCard
+    return Player.HasCard, -1
 
 def MinorArcanaRequirement(Player, Spell):
-    return Player.MinorArcanaCD <= 0
+    return Player.MinorArcanaCD <= 0, Player.MinorArcanaCD
 
 def LordOfCrownRequirement(Player, Spell):
-    return Player.LordOfCrown #Will be assumed to be given by Minor Arcana
+    return Player.LordOfCrown, -1 #Will be assumed to be given by Minor Arcana
 
 def DivinationRequirement(Player, Spell):
-    return Player.DivinationCD <= 0
+    return Player.DivinationCD <= 0, Player.DivinationCD
 
 def LightspeedRequirement(Player, Spell):
-    return Player.LightspeedCD <= 0
+    return Player.LightspeedCD <= 0, Player.LightspeedCD
 
 #Apply
 
@@ -44,7 +44,7 @@ def ApplyAstrodyne(Player, Enemy):
         Player.EffectCDList.append(BodyCheck)#Only 1 check for both Body and Mind since same Timer
         Player.BodyTimer = 15
     if check == 3:
-        Player.MultDPSBonus *= 1.05
+        Player.buffList.append(AstrodyneBuff)
         Player.EffectCDList.append(MindCheck)
 
 
@@ -64,7 +64,7 @@ def ApplyLordOfCrown(Player, Enemy):
     Player.LordOfCrown = False
 
 def ApplyDivination(Player, Enemy):
-    Enemy.Bonus *= 1.06 #Just give DPS bonus on Enemy instead of raid wide buff
+    Enemy.buffList.append(DivinatonBuff) #Just give DPS bonus on Enemy instead of raid wide buff
     Player.DivinationCD = 120
     Player.DivinationTimer = 15
     Player.EffectCDList.append(DivinationCheck)
@@ -82,7 +82,6 @@ def ApplyCombust(Player, Enemy):
         Player.DOTList.append(Player.CumbustDOT)
         Player.EffectCDList.append(CumbustDOTCheck)
     Player.CumbustTimer = 30
-
 
 #Effect
 
@@ -103,11 +102,8 @@ def BodyCheck(Player, Enemy):
 
 def MindCheck(Player, Enemy):
     if Player.BodyTimer <= 0:
-        Player.MultDPSBonus /= 1.05
+        Player.buffList.remove(AstrodyneBuff)
         Player.EffectToRemove.append(MindCheck)
-
-
-
 
 def DrawStackCheck(Player, Enemy):
     if Player.DrawCD <= 0:
@@ -119,7 +115,7 @@ def DrawStackCheck(Player, Enemy):
 
 def DivinationCheck(Player, Enemy):
     if Player.DivinationTimer <= 0:
-        Enemy.Bonus /= 1.06
+        Enemy.buffList.remove(DivinatonBuff)
         Player.EffectToRemove.append(DivinationCheck)
 
 def LightspeedCheck(Player, Enemy):
@@ -138,7 +134,7 @@ def CumbustDOTCheck(Player, Enemy):
 Malefic = AstrologianSpell(1, True, 1.5, 2.5, 250, 400, empty, [ManaRequirement])
 Combust = AstrologianSpell(2, True, Lock, 2.5, 0, 400, ApplyCombust, [ManaRequirement])
 LordOfCrown = AstrologianSpell(5, True, Lock, 1, 250, 0,  ApplyLordOfCrown, [LordOfCrownRequirement])
-CumbustDOT = DOTSpell(-12, 55)
+CumbustDOT = DOTSpell(-12, 55, False)
 
 
 #oGCD
@@ -150,7 +146,9 @@ Astrodyne = AstrologianSpell(7, False, Lock, 0, 0, 0, ApplyAstrodyne, [])
 
 #Arcanum require a target within the team, so it will be a function that will return a spell that
 #will target the given player. It is also assumed that the bonus is 6%
-
+ArcanumBuff = buff(1.06)
+AstrodyneBuff = buff(1.05)
+DivinatonBuff = buff(1.06)
 
 
 def Arcanum(Target, Type):
@@ -161,14 +159,14 @@ def Arcanum(Target, Type):
         if Player.ArcanumTimer <= 0:
             #input("Effect has been removed on : " + str(Player))
             Player.EffectToRemove.append(ArcanumCheck)
-            Player.MultDPSBonus /= 1.06
+            Player.buffList.remove(ArcanumBuff)
         pass #This function is just to know if the Target has already been given a buff
 
     def ApplyArcanum(Player, Spell):
         Player.HasCard = False
         if Target.ArcanumTimer == 0 : #Can only have 1 buff at a time
             #input("Will affect target with Arcana :" + str(Target))
-            Target.MultDPSBonus *= 1.06
+            Target.buffList.append(ArcanumBuff)
             Target.EffectCDList.append(ArcanumCheck)
 
         Target.ArcanumTimer = 15

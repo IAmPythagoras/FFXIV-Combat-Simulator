@@ -39,16 +39,16 @@ def ApplyDissipation(Player, Enemy):
 #====================================
 
 def AetherflowRequirement(Player, Spell):
-    return Player.AetherFlowCD <= 0
+    return Player.AetherFlowCD <= 0, Player.AetherFlowCD
 
 def ChainStratagemRequirement(Player, Spell):
-    return Player.ChainStratagemCD <= 0
+    return Player.ChainStratagemCD <= 0, Player.ChainStratagemCD
 
 def AetherStackRequirement(Player, Spell):
-    return Player.AetherFlowStack > 0
+    return Player.AetherFlowStack > 0, Player.AetherFlowCD
 
 def DissipationRequirement(Player, Spell):
-    return Player.DissipationCD <= 0
+    return Player.DissipationCD <= 0, Player.DissipationCD
 #====================================
 
 def CheckChainStratagem(Player, Enemy):
@@ -66,7 +66,7 @@ def CheckBiolysis(Player, Enemy):
 Broil = ScholarSpell(1, True, ScholarCast, ScholarGCD, 295,  400, empty, [ManaRequirement])
 Ruin = ScholarSpell(2, True, 0, ScholarGCD, 220,  300, empty, [ManaRequirement])
 Biolysis = ScholarSpell(3, True, 0, ScholarGCD, 0, 300, ApplyBiolysis, [ManaRequirement])
-BiolysisDOT = DOTSpell(4, 70)
+BiolysisDOT = DOTSpell(4, 70, False)
 Aetherflow = ScholarSpell(5, False, 0, Lock, 0, 0, ApplyAetherflow, [AetherflowRequirement])
 Dissipation = ScholarSpell(8, False, 0, Lock, 0, 0, ApplyDissipation, [DissipationRequirement])
 ChainStratagem = ScholarSpell(6, False, 0, Lock, 0, 0, ApplyChainStratagem, [ChainStratagemRequirement])

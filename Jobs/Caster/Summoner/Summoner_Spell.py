@@ -1,4 +1,4 @@
-from Jobs.Base_Spell import DOTSpell, ManaRequirement, empty
+from Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
 from Jobs.Caster.Caster_Spell import SummonerSpell
 import copy
 Lock = 0.75
@@ -6,61 +6,61 @@ Lock = 0.75
 #Requirement
 
 def Ruin4Requirement(Player, Spell):
-    return Player.FurtherRuin
+    return Player.FurtherRuin, -1
 
 def TitanRequirement(Player, Spell):
-    return Player.TitanGem
+    return Player.TitanGem, -1
 
 def IfritRequirement(Player, Spell):
-    return Player.IfritGem
+    return Player.IfritGem, -1
 
 def GarudaRequirement(Player, Spell):
-    return Player.GarudaGem
+    return Player.GarudaGem, -1
 
 def TopazRequirement(Player, Spell):
-    return Player.TitanStack > 0
+    return Player.TitanStack > 0, -1
 
 def MountainRequirement(Player, Spell):
-    return Player.TitanSpecial
+    return Player.TitanSpecial, -1
 
 def RubyRequirement(Player, Spell):
-    return Player.IfritStack > 0
+    return Player.IfritStack > 0, -1
 
 def CycloneRequirement(Player, Spell):
-    return Player.IfritSpecial
+    return Player.IfritSpecial, -1
 
 def StrikeRequirement(Player, Spell):
-    return Player.IfritSpecialCombo
+    return Player.IfritSpecialCombo, -1
 
 def EmeraldRequirement(Player, Spell):
-    return Player.GarudaStack > 0
+    return Player.GarudaStack > 0, -1
 
 def SlipstreamRequirement(Player, Spell):
-    return Player.GarudaSpecial
+    return Player.GarudaSpecial, -1
 
 def SummonRequirement(Player, Spell):
-    return Player.SummonCD <= 0
+    return Player.SummonCD <= 0, Player.SummonCD
 
 def FoFRequirement(Player, Spell):
-    return Player.FirebirdTrance
+    return Player.FirebirdTrance, -1
 
 def AstralImpulseRequirement(Player, Spell):
-    return Player.BahamutTrance
+    return Player.BahamutTrance, -1
 
 def EnkindleRequirement(Player, Spell):
-    return Player.Enkindle
+    return Player.Enkindle, -1
 
 def DeathflareRequirement(Player, Spell):
-    return Player.Deathflare
+    return Player.Deathflare, -1
 
 def EnergyDrainRequirement(Player, Spell):
-    return Player.EnergyDrainCD <= 0
+    return Player.EnergyDrainCD <= 0, Player.EnergyDrainCD
 
 def FesterRequirement(Player, Spell):
-    return Player.AetherflowGauge > 0
+    return Player.AetherflowGauge > 0, -1
 
 def SearingLightRequirement(Player, Spell):
-    return Player.SearingLightCD <= 0
+    return Player.SearingLightCD <= 0, Player.SearingLightCD
 
 #Apply
 
@@ -152,7 +152,7 @@ def ApplySearingLight(Player, Enemy):
     Player.SearingLightTimer = 30
     Player.SearingLightCD = 120
 
-    Enemy.Bonus *= 1.03 #3% dps bonus
+    Enemy.buffList.append(SearingLightbuff)
     Player.EffectCDList.append(SearingLightCheck)
 
 #Effect
@@ -183,7 +183,7 @@ def SummonDOTCheck(Player, Enemy):
 
 def SearingLightCheck(Player, Enemy):
     if Player.SearingLightTimer <= 0:
-        Enemy.Bonus /= 1.03
+        Enemy.buffList.remove(SearingLightbuff)
         Player.EffectToRemove.append(SearingLightCheck)
 
 
@@ -209,13 +209,13 @@ Strike = SummonerSpell(10, True, Lock, 2.5, 430, 0, ApplyStrike, [StrikeRequirem
 #GarudaAbility
 Emerald = SummonerSpell(11, True, Lock, 1.5, 230, 300, ApplyEmerald, [EmeraldRequirement, ManaRequirement])
 Slipstream = SummonerSpell(12, True, 3, 3.5, 430, 0, ApplySlipstream, [SlipstreamRequirement])
-SlipstreamDOT = DOTSpell(-13, 30)
+SlipstreamDOT = DOTSpell(-13, 30, False)
 
 #Summon
 Summon = SummonerSpell(14, True, Lock, 2.5, 0, 0, ApplySummon, [SummonRequirement])
 #Bahamut and Phoenix damage will simply be a dot
-BahamutDOT = DOTSpell(-14, 180)
-PhoenixDOT = DOTSpell(-15, 240)
+BahamutDOT = DOTSpell(-14, 180, False)
+PhoenixDOT = DOTSpell(-15, 240, False)
 #autos of summon seems to be faster if uses Enkindle, but always max 5
 
 #oGCD
@@ -224,3 +224,6 @@ Deathflare = SummonerSpell(18, False, Lock, 0, 500, 0, ApplyDeathflare, [Deathfl
 EnergyDrainSMN = SummonerSpell(19, False, Lock, 0, 200, 0, ApplyEnergyDrain, [EnergyDrainRequirement])
 Fester = SummonerSpell(21, False, Lock, 0, 300, 0, ApplyFester, [FesterRequirement])
 SearingLight = SummonerSpell(20, False, Lock, 0, 0, 0, ApplySearingLight, [SearingLightRequirement])
+
+#buff
+SearingLightbuff = buff(1.03)

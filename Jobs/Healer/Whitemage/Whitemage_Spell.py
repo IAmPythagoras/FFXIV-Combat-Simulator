@@ -9,13 +9,13 @@ Lock = 0.75
 #Requirement
 
 def PresenceOfMindRequirement(Player, Spell):
-    return Player.PresenceOfMindCD <= 0
+    return Player.PresenceOfMindCD <= 0, Player.PresenceOfMindCD
 
 def AssizeRequirement(Player, Spell):
-    return Player.AssizeCD <= 0
+    return Player.AssizeCD <= 0, Player.AssizeCD
 
 def ThinAirRequirement(Player, Spell):
-    return Player.ThinAirCD <= 0
+    return Player.ThinAirCD <= 0, Player.ThinAirCD
 
 #Apply
 
@@ -69,7 +69,7 @@ def CheckPresenceOfMind(Player, Enemy):
 #GCD
 Glare = WhitemageSpell(0, True, 1.5, 2.5, 310, 400, empty, [ManaRequirement])
 Dia = WhitemageSpell(1, True, Lock, 2.5, 0, 400, ApplyDia, [ManaRequirement])
-DiaDOT = DOTSpell(5, 60)
+DiaDOT = DOTSpell(5, 60, False)
 
 #OGCD
 Assize = WhitemageSpell(2, False, Lock, Lock, 400, 0, ApplyAssize, [AssizeRequirement])

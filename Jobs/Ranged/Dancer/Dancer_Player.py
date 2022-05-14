@@ -30,8 +30,8 @@ class Dancer(Ranged):
         #buff
         self.NextDirectCrit = False #True if next 
         self.Dancing = False #True if dancing
-        self.StandardFinishDPSMult = 1
-        self.TechnicalFinishDPSMult = 1
+        self.StandardFinishBuff = None
+        self.TechnicalFinishBuff = None
         #Dance move
         self.Emboite = False
         self.Entrechat = False
@@ -64,6 +64,8 @@ class Dancer(Ranged):
         self.StandardFinishTimer = 0
         self.TechnicalFinishTimer = 0
         self.DevilmentTimer = 0
+
+
 
 
 

@@ -33,7 +33,7 @@ class Paladin(Tank):
         #CD
         self.RequestACatCD = 0
         self.CircleScornCD = 0
-        self.InternveneCD = 0
+        self.InterveneCD = 0
         self.ExpiacionCD = 0
         self.FightOrFlightCD = 0
 
@@ -43,7 +43,7 @@ class Paladin(Tank):
     def updateCD(self, time):
         if (self.RequestACatCD > 0) : self.RequestACatCD = max(0,self.RequestACatCD - time)
         if (self.CircleScornCD > 0) : self.CircleScornCD = max(0,self.CircleScornCD - time)
-        if (self.InternveneCD > 0) : self.InternveneCD = max(0,self.InternveneCD - time)
+        if (self.InterveneCD > 0) : self.InterveneCD = max(0,self.InterveneCD - time)
         if (self.ExpiacionCD > 0) : self.ExpiacionCD = max(0,self.ExpiacionCD - time)
         if (self.FightOrFlightCD > 0) : self.FightOrFlightCD = max(0,self.FightOrFlightCD - time)
  

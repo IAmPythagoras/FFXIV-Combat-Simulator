@@ -14,6 +14,9 @@ class Healer(Player):
 
         #JobMod
         self.JobMod = 115
+
+        #Trait
+        self.Trait = 1.3
     
     def updateCD(self,time):
         if (self.SwiftCastCD > 0) : self.SwiftCastCD = max(0,self.SwiftCastCD - time)

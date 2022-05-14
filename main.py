@@ -1,7 +1,7 @@
 from Enemy import *
 from Fight import *
 
-from Jobs.Base_Spell import WaitAbility, Potion
+from Jobs.Base_Spell import Melee_AA, Ranged_AA, WaitAbility, Potion
 from Jobs.Caster.Caster_Spell import SwiftCast, LucidDreaming
 
 #CASTER
@@ -53,7 +53,7 @@ Dummy = Enemy()
 
 #Stat
 BLMCRITStat = {"MainStat": 2571, "WD":120, "Det" : 1518, "Ten" : 390, "SS": 884, "Crit" : 2323, "DH" : 1037} 
-BLMStat = {"MainStat": 2571, "WD":120, "Det" : 1422, "Ten" : 390, "SS": 2171, "Crit" : 715, "DH" : 1454} 
+BLMStat = {"MainStat": 2571, "WD":120, "Det" : 1422, "Ten" : 400, "SS": 2171, "Crit" : 715, "DH" : 1454} 
 SCHStat = {"MainStat": 2560, "WD":120, "Det" : 1951, "Ten" : 400, "SS": 944, "Crit" : 2277, "DH" : 616}
 RDMStat = {"MainStat": 2563, "WD":120, "Det" : 1669, "Ten" : 400, "SS": 400, "Crit" : 2348, "DH" : 1340}
 MCHStat = {"MainStat": 2572, "WD":120, "Det" : 1615, "Ten" : 400, "SS": 400, "Crit" : 2121, "DH" : 1626}
@@ -83,6 +83,7 @@ WARPlayer = Warrior(2.5, [], [], [SurgingTempestEffect], Event, WARStat)
 WHMPlayer = Whitemage(2.5, [], [], [], Event, WHMStat)
 SAMPlayer = Samurai(2.5, [], [], [], Event, SAMStat)
 PLDPlayer = Paladin(2.5, [], [], [], Event, PLDStat)
+
 GNBPlayer = Gunbreaker(2.5, [], [], [], Event, GNBStat)
 ASTPlayer = Astrologian(2.5, [], [], [], Event, ASTStat)
 SMNPlayer = Summoner(2.5, [], [], [], Event, SMNStat)
@@ -90,22 +91,25 @@ BRDPlayer = Bard(2.5, [], [], [SongEffect], Event, BRDStat)
 DNCPlayer = Dancer(2.5, [], [], [EspritEffect], Event, DNCStat)
 DRGPlayer = Dragoon(2.5, [], [], [], Event, DRGStat)
 
+
+#exit()
+
 BLMOpener = [SharpCast, WaitAbility(16.5), Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, Triplecast, Despair, Manafront, Fire4, SwiftCast, LucidDreaming, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose,Fire3, Fire4, Fire4, Fire4, Despair, Xenoglossy, Transpose, Paradox]
 SCHOpener = [WaitAbility(17), Potion, WaitAbility(1), Broil, Biolysis, Aetherflow, Broil, SwiftCast, Broil, ChainStratagem, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Broil, Broil, Broil, Broil]
 RDMOpener = [WaitAbility(15), Verthunder, Verareo, SwiftCast, Acceleration, Verthunder, Potion, Verthunder, Embolden, Manafication, Riposte, Fleche, Zwerchhau, Contre, Redoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verfire, Verthunder, Verstone, Verareo, Verfire, Verthunder,Verfire, Verthunder,Verfire,Fleche]
-MCHOpener = [WaitAbility(15), Reassemble, WaitAbility(2.25), Potion, WaitAbility(1.5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, Reassemble, WaitAbility(1), Wildfire, ChainSaw, Automaton,WaitAbility(1), Hypercharge, HeatBlast, Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet, Drill, SplitShot,GaussRound, SlugShot,Ricochet,CleanShot,GaussRound,SplitShot, SlugShot,CleanShot,SlugShot]
-NINOpener = [WaitAbility(18.5), Suiton, Kassatsu, SpinningEdge, Potion, GustSlash, Mug, Bunshin, AeolianEdge, WaitAbility(1.75), TrickAttack, Kamaitachi, Hyosho, Raiton, TenChiJin, Meisui, Raiju, Bhavacakra,Raiju, Bhavacakra, SpinningEdge, Raiton, Raiju]
-DRKOpener = [WaitAbility(19.25), BloodWeapon, HardSlash, EdgeShadow, Delirium, SyphonStrike, Potion, Souleater, LivingShadow, SaltedEarth, HardSlash, Shadowbringer, EdgeShadow, Bloodspiller, CarveSpit, Plunge, Bloodspiller, Shadowbringer, EdgeShadow, SyphonStrike, Plunge, EdgeShadow, HardSlash, SyphonStrike, Souleater,HardSlash, SyphonStrike, Souleater,HardSlash, SyphonStrike, Souleater,HardSlash, SyphonStrike]
-WAROpener = [WaitAbility(20), Tomahawk, Infuriate, HeavySwing, Maim, WaitAbility(1),Potion, StormEye, InnerChaos, Upheaval, InnerRelease, PrimalRend, Onslaught, FellCleave,Onslaught, FellCleave,Onslaught, FellCleave, Infuriate, InnerChaos, HeavySwing,Maim, StormPath, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, Upheaval, StormEye]
+MCHOpener = [Ranged_AA,WaitAbility(15), Reassemble, WaitAbility(2.25), Potion, WaitAbility(1.5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, Reassemble, WaitAbility(1), Wildfire, ChainSaw, Automaton,WaitAbility(1), Hypercharge, HeatBlast, Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet, Drill, SplitShot,GaussRound, SlugShot,Ricochet,CleanShot,GaussRound,SplitShot, SlugShot,CleanShot,SlugShot]
+DRKOpener = [Melee_AA,WaitAbility(19.25), BloodWeapon, HardSlash, EdgeShadow, Delirium, SyphonStrike, Potion, Souleater, LivingShadow, SaltedEarth, HardSlash, Shadowbringer, EdgeShadow, Bloodspiller, CarveSpit, Plunge, Bloodspiller, Shadowbringer, EdgeShadow, SyphonStrike, Plunge, EdgeShadow, HardSlash, SyphonStrike, Souleater,HardSlash, SyphonStrike, Souleater,HardSlash, SyphonStrike, Souleater,HardSlash, SyphonStrike]
+WAROpener = [Melee_AA,WaitAbility(19.99), Tomahawk, Infuriate, HeavySwing, Maim, WaitAbility(1),Potion, StormEye, InnerChaos, Upheaval, InnerRelease, PrimalRend, Onslaught, FellCleave,Onslaught, FellCleave,Onslaught, FellCleave, Infuriate, InnerChaos, HeavySwing,Maim, StormPath, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, Upheaval, StormEye]
 WHMOpener = [WaitAbility(17), Potion, WaitAbility(1), Glare, Dia, Glare, Glare, SwiftCast, Glare, Assize, PresenceOfMind, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Dia, Glare, Glare, Glare, Glare ]
-SAMOpener = [WaitAbility(11), Meikyo, WaitAbility(8.25), Gekko, Potion, Kasha, Ikishoten, Yukikaze,Shinten, Midare,Shinten, Kaeshi, Senei, Meikyo, Gekko, Higanbana, Kasha, OgiNamikiri, KaeshiNamikiri, Shoha, Gekko, Shinten, Hakaze, Yukikaze, Midare, Kaeshi, Hakaze, Yukikaze, Shinten,Hakaze, Jinpu]
-PLDOpener = [WaitAbility(20), FastBlade, FightOrFlight, RiotBlade, GoringBlade, FastBlade, Potion, RiotBlade, CircleScorn, Intervene, RoyalAuthority, Expiacion, RequestACat, Atonement, Intervene, Atonement, Atonement, FastBlade, RiotBlade, GoringBlade, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti, WaitAbility(1.75),CircleScorn, BladeFaith, WaitAbility(1.75), Expiacion,BladeTruth, BladeValor ]
-GNBOpener = [WaitAbility(20), KeenEdge, BrutalShell, Potion, SolidBarrel, NoMercy, GnashingFang, Bloodfest, JugularRip, DoubleDown, BlastingZone, BowShock, SonicBreak, RoughDivide, SavageClaw, AbdomenTear, RoughDivide, WickedTalon, EyeGouge, BurstStrike, Hypervelocity, KeenEdge, BrutalShell, SolidBarrel,KeenEdge, BrutalShell, SolidBarrel, GnashingFang, JugularRip, SavageClaw, AbdomenTear, WickedTalon,BlastingZone, EyeGouge, BurstStrike, Hypervelocity ]
-ASTOpener = [WaitAbility(17.5), Potion, Malefic, Lightspeed, Combust, Arcanum(WHMPlayer, "Solar"), Draw, Malefic, Arcanum(WHMPlayer, "Lunar"), Draw, Malefic, Divination, Arcanum(WHMPlayer, "Celestial"), Malefic, MinorArcana, Astrodyne, Malefic, LordOfCrown, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic ]
+SAMOpener = [Melee_AA,WaitAbility(11), Meikyo, WaitAbility(8.25), Gekko, Potion, Kasha, Ikishoten, Yukikaze,Shinten, Midare,Shinten, Kaeshi, Senei, Meikyo, Gekko, Higanbana, Kasha, OgiNamikiri, KaeshiNamikiri, Shoha, Gekko, Shinten, Hakaze, Yukikaze, Midare, Kaeshi, Hakaze, Yukikaze, Shinten,Hakaze, Jinpu]
+PLDOpener = [Melee_AA,WaitAbility(20), FastBlade, FightOrFlight, RiotBlade, GoringBlade, FastBlade, Potion, RiotBlade, CircleScorn, Intervene, RoyalAuthority, Expiacion, RequestACat, Atonement, Intervene, Atonement, Atonement, FastBlade, RiotBlade, GoringBlade, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti, WaitAbility(1.75),CircleScorn, BladeFaith, WaitAbility(1.75), Expiacion,BladeTruth, BladeValor ]
+GNBOpener = [Melee_AA,WaitAbility(20), KeenEdge, BrutalShell, Potion, SolidBarrel, NoMercy, GnashingFang, Bloodfest, JugularRip, DoubleDown, BlastingZone, BowShock, SonicBreak, RoughDivide, SavageClaw, AbdomenTear, RoughDivide, WickedTalon, EyeGouge, BurstStrike, Hypervelocity, KeenEdge, BrutalShell, SolidBarrel,KeenEdge, BrutalShell, SolidBarrel, GnashingFang, JugularRip, SavageClaw, AbdomenTear, WickedTalon,BlastingZone, EyeGouge, BurstStrike, Hypervelocity ]
+ASTOpener = [WaitAbility(17.5), Potion, Malefic, Lightspeed, Combust, Arcanum(BLMPlayer, "Solar"), Draw, Malefic, Arcanum(DRGPlayer, "Lunar"), Draw, Malefic, Divination, Arcanum(BRDPlayer, "Celestial"), Malefic, MinorArcana, Astrodyne, Malefic, LordOfCrown, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic ]
 SMNOpener = [WaitAbility(18.5), Ruin3, Summon, SearingLight, AstralImpulse, Potion, AstralImpulse, AstralImpulse, EnergyDrainSMN, Enkindle, AstralImpulse, Deathflare, Fester, AstralImpulse, Fester, AstralImpulse, Titan, Topaz, Mountain, Topaz, Mountain,Topaz, Mountain,Topaz, Mountain, Garuda, SwiftCast, Slipstream]
-BRDOpener = [WaitAbility(19), Potion, Stormbite, WandererMinuet, RagingStrike, Causticbite, EmpyrealArrow, BloodLetter, RefulgentArrow, RadiantFinale, BattleVoice, BurstShot, Barrage, RefulgentArrow, Sidewinder, PitchPerfect3, BurstShot, RefulgentArrow, BurstShot, IronJaws, PitchPerfect3,  EmpyrealArrow, RefulgentArrow, BloodLetter, BurstShot, BloodLetter, RefulgentArrow, BurstShot,BloodLetter, RefulgentArrow, BurstShot, RefulgentArrow,EmpyrealArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow,  ]
-DNCOpener = [WaitAbility(4.5), StandardStep, Emboite, Entrechat, WaitAbility(11.74), ClosedPosition(DRKPlayer, False),Potion, StandardFinish, TechnicalStep, Emboite, Entrechat, Jete, Pirouette, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Emboite, Entrechat, StandardFinish]
-DRGOpener = [WaitAbility(20), TrueThrust, Potion, Disembowel, LanceCharge, DragonSight(BLMPlayer), ChaoticSpring, BattleLitany, WheelingThrust, Geirskogul, LifeSurge, FangAndClaw, HighJump, RaidenThrust, DragonFireDive, VorpalThrust, LifeSurge, MirageDive, HeavenThrust, SpineshafterDive, FangAndClaw, SpineshafterDive, WheelingThrust, RaidenThrust, WyrmwindThrust, Disembowel, ChaoticSpring, WheelingThrust]
+BRDOpener = [Ranged_AA,WaitAbility(19), Potion, Stormbite, WandererMinuet, RagingStrike, Causticbite, EmpyrealArrow, BloodLetter, RefulgentArrow, RadiantFinale, BattleVoice, BurstShot, Barrage, RefulgentArrow, Sidewinder, PitchPerfect3, BurstShot, RefulgentArrow, BurstShot, IronJaws, PitchPerfect3,  EmpyrealArrow, RefulgentArrow, BloodLetter, BurstShot, BloodLetter, RefulgentArrow, BurstShot,BloodLetter, RefulgentArrow, BurstShot, RefulgentArrow,EmpyrealArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow,  ]
+DNCOpener = [Melee_AA,ClosedPosition(BLMPlayer, False),WaitAbility(4.5), StandardStep, Emboite, Entrechat, WaitAbility(11.74),Potion, StandardFinish, TechnicalStep, Emboite, Entrechat, Jete, Pirouette, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Emboite, Entrechat, StandardFinish]
+DRGOpener = [Melee_AA,WaitAbility(20), TrueThrust, Potion, Disembowel, LanceCharge, DragonSight(BLMPlayer), ChaoticSpring, BattleLitany, WheelingThrust, Geirskogul, LifeSurge, FangAndClaw, HighJump, RaidenThrust, DragonFireDive, VorpalThrust, LifeSurge, MirageDive, HeavenThrust, SpineshafterDive, FangAndClaw, SpineshafterDive, WheelingThrust, RaidenThrust, WyrmwindThrust, Disembowel, ChaoticSpring, WheelingThrust]
+NINOpener = [Melee_AA,WaitAbility(9.5),Huton, Hide, WaitAbility(2.25), Suiton, Kassatsu, SpinningEdge, Potion, GustSlash, Mug, Bunshin, PhantomKamaitachi, WaitAbility(0.7), TrickAttack, AeolianEdge, DreamWithinADream, HyoshoRanryu, Raiton, TenChiJin, Ten, Chi, Jin, Meisui, FleetingRaiju, Bhavacakra, FleetingRaiju, Bhavacakra, Raiton, FleetingRaiju, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, GustSlash, AeolianEdge] 
 
 BLMPlayer.ActionSet = BLMOpener
 SCHPlayer.ActionSet = SCHOpener
@@ -125,6 +129,8 @@ DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 
 #NinjaPlayer = Ninja(2.5, NINAction, [], [AutoEffect, NinjutsuTimerEffect], Event)
-Event.PlayerList = [BLMPlayer, SCHPlayer, RDMPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer] #BLMPlayer, SCHPlayer, RDMPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,SAMPlayer
-Event.SimulateFight(0.01, 50, 20)
+Event.PlayerList = [BLMPlayer, SCHPlayer, DNCPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer] #BLMPlayer, SCHPlayer, RDMPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,SAMPlayer
+
+
+Event.SimulateFight(0.01, 200, 20)
 

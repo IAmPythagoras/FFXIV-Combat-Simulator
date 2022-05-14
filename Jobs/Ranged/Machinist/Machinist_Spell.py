@@ -19,37 +19,37 @@ def RemoveGauge(Player, Battery, Heat):
 #Requirement
 
 def WildFireRequirement(Player, Spell):
-    return Player.WildFireCD <= 0
+    return Player.WildFireCD <= 0, Player.WildFireCD
 
 def AirAnchorRequirement(Player, Spell):
-    return Player.AirAnchorCD <= 0
+    return Player.AirAnchorCD <= 0, Player.AirAnchorCD
 
 def BarrelStabilizerRequirement(Player, Spell):
-    return Player.BarrelStabilizerCD <= 0
+    return Player.BarrelStabilizerCD <= 0, Player.BarrelStabilizerCD
 
 def HyperchargeRequirement(Player, Spell):
-    return Player.HyperchargeCD <= 0 and Player.HeatGauge >= 50
+    return Player.HyperchargeCD <= 0 and Player.HeatGauge >= 50, -1
 
 def ReassembleRequirement(Player, Spell):
-    return Player.ReassembleStack > 0
+    return Player.ReassembleStack > 0, -1
 
 def GaussRoundRequirement(Player, Spell):
-    return Player.GaussRoundStack > 0
+    return Player.GaussRoundStack > 0, -1
 
 def RicochetRequirement(Player, Spell):
-    return Player.RicochetStack > 0
+    return Player.RicochetStack > 0, -1
 
 def DrillRequirement(Player, Spell):
-    return Player.DrillCD <= 0
+    return Player.DrillCD <= 0, Player.DrillCD
 
 def OverdriveRequirement(Player, Spell):
-    return Player.Overdrive
+    return Player.Overdrive, -1
 
 def ChainSawRequirement(Player, Spell):
-    return Player.ChainSawCD <= 0
+    return Player.ChainSawCD <= 0, Player.ChainSawCD
 
 def AutomatonRequirement(Player, Spell):
-    return (not Player.Overdrive) and Player.BatteryGauge >= 50
+    return (not Player.Overdrive) and Player.BatteryGauge >= 50, -1
 
 #Apply
 
@@ -137,10 +137,10 @@ def ApplyCleanShot(Player, Enemy):
 #Effect
 
 def WildFireEffect(Player, Spell):
-    if isinstance(Spell, MachinistSpell) and Spell.WeaponSkill : Player.WildFireStack +=1
+    if isinstance(Spell, MachinistSpell) and Spell.Weaponskill : Player.WildFireStack +=1
 
 def HyperchargeEffect(Player, Spell):
-    if Spell.WeaponSkill : Spell.Potency += 20
+    if Spell.Weaponskill : Spell.Potency += 20
 
 #Combo Actions effect
 

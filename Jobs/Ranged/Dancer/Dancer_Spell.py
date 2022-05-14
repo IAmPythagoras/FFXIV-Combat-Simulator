@@ -1,21 +1,21 @@
-from Jobs.Base_Spell import empty
+from Jobs.Base_Spell import buff, empty
 from Jobs.Ranged.Ranged_Spell import DancerSpell
-
+import copy
 #Requirement
 
 def StandardStepRequirement(Player, Spell):
-    return Player.StandardStepCD <= 0
+    return Player.StandardStepCD <= 0, Player.StandardStepCD
 
 def DanceRequirement(Player, Spell):
-    return Player.Dancing
+    return Player.Dancing, -1
 
 def StandardFinishRequirement(Player, Spell):
     #Will check how many step we have
     #Not done in apply since we want to acces the spell easily
 
-    Player.MultDPSBonus /= Player.StandardFinishDPSMult #Reset DPSBonus
-    if Player.DancePartner != None : Player.DancePartner.MultDPSBonus /= Player.StandardFinishDPSMult #Reset DPSBonus
-
+    if Player.StandardFinishBuff != None : Player.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
+    if Player.DancePartner != None and Player.StandardFinishBuff != None : Player.DancePartner.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
+    Player.StandardFinishBuff = copy.deepcopy(StandardFinishBuff)
     step = 0
     if Player.Emboite : step +=1
     if Player.Entrechat : step +=1
@@ -24,20 +24,19 @@ def StandardFinishRequirement(Player, Spell):
 
     if step == 1:
         Spell.Potency += 180
-        Player.StandardFinishDPSMult = 1.02
+        Player.StandardFinishBuff.MultDPS = 1.02
     elif step > 1:
         Spell.Potency += 360
-        Player.StandardFinishDPSMult = 1.05
+        Player.StandardFinishBuff.MultDPS = 1.05
 
-    return Player.StandardFinish
+    return Player.StandardFinish, -1
         
 def TechnicalFinishRequirement(Player, Spell):
     #Will check how many step we have
     #Not done in apply since we want to acces the spell easily
 
-    Player.MultDPSBonus /= Player.TechnicalFinishDPSMult #Reset DPSBonus
-    if Player.DancePartner != None : Player.DancePartner.MultDPSBonus /= Player.TechnicalFinishDPSMult #Reset DPSBonus
-
+    if Player.TechnicalFinishBuff != None : Player.CurrentFight.Enemy.buffList.remove(Player.TechnicalFinishBuff)#Reset DPSBonus
+    Player.TechnicalFinishBuff = copy.deepcopy(TechnicalFinishBuff)
     step = 0
     if Player.Emboite : step +=1
     if Player.Entrechat : step +=1
@@ -46,54 +45,54 @@ def TechnicalFinishRequirement(Player, Spell):
 
     if step == 1 :
         Spell.Potency += 190
-        Player.TechnicalFinishDPSMult = 1.01
+        Player.TechnicalFinishBuff.MultDPS = 1.01
     elif step == 2 :
         Spell.Potency += 370
-        Player.TechnicalFinishDPSMult = 1.02
+        Player.TechnicalFinishBuff.MultDPS = 1.02
     elif step == 3 :
         Spell.Potency += 550
-        Player.TechnicalFinishDPSMult = 1.03
+        Player.TechnicalFinishBuff.MultDPS = 1.03
     elif step == 4 :
         Spell.Potency += 850
-        Player.TechnicalFinishDPSMult = 1.05
+        Player.TechnicalFinishBuff.MultDPS = 1.05
 
-    return Player.TechnicalFinish
+    return Player.TechnicalFinish, -1
 
 def TechnicalStepRequirement(Player, Spell):
-    return Player.TechnicalStepCD <= 0
+    return Player.TechnicalStepCD <= 0, Player.TechnicalStepCD
 
 def DevilmentRequirement(Player, Spell):
-    return Player.DevilmentCD <= 0
+    return Player.DevilmentCD <= 0, Player.DevilmentCD
 
 def TillanaRequirement(Player, Spell):
-    return Player.FlourishingFinish
+    return Player.FlourishingFinish, -1
 
 def StarfallDanceRequirement(Player, Spell):
-    return Player.FlourishingStarfall
+    return Player.FlourishingStarfall, -1
 
 def FlourishRequirement(Player, Spell):
-    return Player.FlourishCD <= 0
+    return Player.FlourishCD <= 0, Player.FlourishCD
 
 def FanDance4Requirement(Player, Spell):
-    return Player.FourfoldFan
+    return Player.FourfoldFan, -1
 
 def FanDance3Requirement(Player, Spell):
-    return Player.ThreefoldFan
+    return Player.ThreefoldFan, -1
 
 def FanDance1Requirement(Player, Spell):
-    return Player.MaxFourfoldFeather > 0
+    return Player.MaxFourfoldFeather > 0, -1
 
 def FountainFallRequirement(Player, Spell):
-    return Player.SilkenFlow or Player.FlourishingFlow
+    return Player.SilkenFlow or Player.FlourishingFlow, -1
 
 def ReverseCascadeRequirement(Player, Spell):
-    return Player.SilkenSymettry or Player.FlourishingSymettry
+    return Player.SilkenSymettry or Player.FlourishingSymettry, -1
 
 def SaberDanceRequirement(Player, Spell):
-    return Player.MaxEspritGauge >= 50
+    return Player.MaxEspritGauge >= 50, -1
 
 def ClosedPositionRequirement(Player, Spell):
-    return Player.ClosedPositionCD <= 0
+    return Player.ClosedPositionCD <= 0, Player.ClosedPositionCD
 
 #Apply
 def ApplyCascade(Player, Enemy):
@@ -117,8 +116,8 @@ def ApplyStandardFinish(Player, Enemy):
     #The check will be done on the dancer only
     if Player.StandardFinishTimer == 0: Player.EffectCDList.append(StandardFinishCheck)
     Player.StandardFinishTimer = 60
-    Player.MultDPSBonus *= Player.StandardFinishDPSMult #Bonus DPS
-    if Player.DancePartner != None : Player.DancePartner.MultDPSBonus *= Player.StandardFinishDPSMult #Dance Partner Bonus
+    Player.buffList.append(Player.StandardFinishBuff) #Bonus DPS
+    if Player.DancePartner != None : Player.DancePartner.buffList.append(Player.StandardFinishBuff) #Dance Partner Bonus
 
     Player.Emboite = False
     Player.Entrechat = False
@@ -139,8 +138,7 @@ def ApplyTechnicalFinish(Player, Enemy):
     Player.EffectCDList.append(TechnicalFinishCheck)
 
     Player.TechnicalFinishTimer = 20
-    Player.MultDPSBonus *= Player.TechnicalFinishDPSMult #Bonus DPS
-    if Player.DancePartner != None : Player.DancePartner.MultDPSBonus *= Player.TechnicalFinishDPSMult #Dance Partner Bonus
+    Enemy.buffList.append(Player.TechnicalFinishBuff) #Since party wide, applies on enemy
 
     Player.Emboite = False
     Player.Entrechat = False
@@ -182,9 +180,9 @@ def ApplyTillana(Player, Enemy):
     Player.FlourishingFinish = False 
     #We have to apply or reapply StandardFinish with a bonus of 5%, so reset, set bonus to 5% and apply
 
-    Player.MultDPSBonus /= Player.StandardFinishDPSMult #Reset DPSBonus
-    if Player.DancePartner != None : Player.DancePartner.MultDPSBonus /= Player.StandardFinishDPSMult #Reset DPSBonus
-    Player.StandardFinishDPSMult = 1.05
+    Player.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
+    if Player.DancePartner != None : Player.DancePartner.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
+    Player.StandardFinishBuff.MultDPS = 1.05
     ApplyStandardFinish(Player, Enemy) #Will give StandardFinish with a bonus of 5%
 
 def ApplyStarfallDance(Player, Enemy):
@@ -239,9 +237,7 @@ def ApplySaberDance(Player, Enemy):
 
 def ApplyEnding(Player, Enemy):
     if Player.StandardFinishTimer > 0: #Remove StandardFinish
-        Player.DancePartner.MultDPSBonus /= Player.StandardFinishDPSMult
-    if Player.TechnicalFinishTimer > 0: #Remove TechnicalFinsish
-        Player.DancePartner.MultDPSBonus /= Player.TechnicalFinishDPSMult
+        Player.DancePartner.buffList.remove(Player.StandardFinishBuff)
     if Player.DevilmentTimer > 0: #Remove Devilment
         Player.DancePartner.CritRateBonus -= 0.2
         Player.DancePartner.DHRateBonus -= 0.2
@@ -275,15 +271,14 @@ def DevilmentCheck(Player, Enemy):
 
 def StandardFinishCheck(Player, Enemy):
     if Player.StandardFinishTimer <= 0:
-        Player.MultDPSBonus /= Player.StandardFinishDPSMult
-        if Player.DancePartner != None : Player.DancePartner.MultDPSBonus /= Player.StandardFinishDPSMult
+        Player.buffList.remove(Player.StandardFinishBuff)
+        if Player.DancePartner != None : Player.DancePartner.buffList.remove(Player.StandardFinishBuff)
         Player.EffectToRemove.append(StandardFinishCheck)
 
 def TechnicalFinishCheck(Player, Enemy):
     if Player.TechnicalFinishTimer <= 0:
         input("technical out")
-        Player.MultDPSBonus /= Player.TechnicalFinishDPSMult
-        if Player.DancePartner != None : Player.DancePartner.MultDPSBonus /= Player.TechnicalFinishDPSMult
+        Enemy.buffList.remove(Player.TechnicalFinishBuff)
         Player.EffectToRemove.append(TechnicalFinishCheck)
 
 
@@ -315,6 +310,11 @@ Flourish = DancerSpell(13, False, 0, 0, ApplyFlourish, [FlourishRequirement], Fa
 FanDance4 = DancerSpell(14, False, 0, 300, ApplyFanDance4, [FanDance4Requirement], False)
 FanDance3 = DancerSpell(15, False, 0, 200, ApplyFanDance3, [FanDance3Requirement], False)
 FanDance1 = DancerSpell(16, False, 0, 150, ApplyFanDance1, [FanDance1Requirement], False)
+
+#buff
+TechnicalFinishBuff = buff(1) #We will adapt the buff depending on number of steps at casting
+StandardFinishBuff = buff(1) #We will adapt the buff depending on number of steps at casting
+
 #Dance Partner
 Ending = DancerSpell(21, False, 0, 0, ApplyEnding, [], False)
 
@@ -325,9 +325,7 @@ def ClosedPosition(Partner, InFight):
         
         Player.DancePartner = Partner #New Partner
         if Player.StandardFinishTimer > 0: #Add StandardFinish
-            Player.DancePartner.MultDPSBonus *= Player.StandardFinishDPSMult
-        if Player.TechnicalFinishTimer > 0: #Add TechnicalFinsish
-            Player.DancePartner.MultDPSBonus *= Player.TechnicalFinishDPSMult
+            Player.DancePartner.buffList.append(Player.StandardFinishBuff)
         if Player.DevilmentTimer > 0: #Add Devilment
             Player.DancePartner.CritRateBonus += 0.2
             Player.DancePartner.DHRateBonus += 0.2

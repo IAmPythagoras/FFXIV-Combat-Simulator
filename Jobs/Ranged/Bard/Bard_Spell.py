@@ -1,4 +1,4 @@
-from Jobs.Base_Spell import DOTSpell
+from Jobs.Base_Spell import DOTSpell, buff
 from Jobs.Ranged.Ranged_Spell import BardSpell
 import copy
 Lock = 0.75
@@ -16,13 +16,13 @@ A check will be done notheless to make sure a rotation is at least possible give
 #Requirement
 
 def RefulgentArrowRequirement(Player, Spell):
-    return Player.StraightShotReady
+    return Player.StraightShotReady, -1
 
 def SidewinderRequirement(Player, Spell):
-    return Player.SidewinderCD <= 0
+    return Player.SidewinderCD <= 0, Player.SidewinderCD
 
 def EmpyrealArrowRequirement(Player, Spell):
-    return Player.EmpyrealArrowCD <= 0
+    return Player.EmpyrealArrowCD <= 0, Player.EmpyrealArrowCD
 """
 def PitchPerfectRequirement(Player, Spell):
     #I will modify the potency of the spell here since if I do it in apply, it will be harder to access spell
@@ -43,7 +43,7 @@ def PitchPerfect1Requirement(Player, Spell):
         #We can cast it, and we have to check the chances
         need = max(0, 1 - Player.ExpectedRepertoire)#This represents how much we would be missing, compared to the expected value
         Player.UsedRepertoireAdd += need#This represents the total number of repertoire procs we have used through out the simulation
-        return Player.WandererMinuet
+        return Player.WandererMinuet, -1
 
 def PitchPerfect2Requirement(Player, Spell):
     if Player.MaximumRepertoire < 2:#It will not be possible to cast in any case
@@ -52,7 +52,7 @@ def PitchPerfect2Requirement(Player, Spell):
         #We can cast it, and we have to check the chances
         need = max(0, 2 - Player.ExpectedRepertoire)#This represents how much we would be missing, compared to the expected value
         Player.UsedRepertoireAdd += need#This represents the total number of repertoire procs we have used through out the simulation
-        return Player.WandererMinuet
+        return Player.WandererMinuet, -1
 
 def PitchPerfect3Requirement(Player, Spell):
     if Player.MaximumRepertoire < 3:#It will not be possible to cast in any case
@@ -61,13 +61,13 @@ def PitchPerfect3Requirement(Player, Spell):
         #We can cast it, and we have to check the chances
         need = max(0, 3 - Player.ExpectedRepertoire) #This represents how much we would be missing, compared to the expected value
         Player.UsedRepertoireAdd += need #This represents the total number of repertoire procs we have used through out the simulation
-        return Player.WandererMinuet
+        return Player.WandererMinuet, -1
 
 def WandererMinuetRequirement(Player, Spell):
-    return Player.WandererMinuetCD <= 0
+    return Player.WandererMinuetCD <= 0, Player.WandererMinuetCD
 
 def BattleVoiceRequirement(Player, Spell):
-    return Player.BattleVoiceCD <= 0
+    return Player.BattleVoiceCD <= 0, Player.BattleVoiceCD
 
 def BloodLetterRequirement(Player, Spell):
     #This requirement will check if the spell can be casted. If it cannot, it will cast it anyway, but will add to
@@ -88,25 +88,25 @@ def BloodLetterRequirement(Player, Spell):
         Player.MaximumBloodLetterReduction -= need #Updating new MaximumBloodLetterReduction
         Player.UsedBloodLetterReduction += need
 
-    return True
+    return True, -1
 
 def ArmyPaeonRequirement(Player, Spell):
-    return Player.ArmyPaeonCD <= 0
+    return Player.ArmyPaeonCD <= 0, Player.ArmyPaeonCD
 
 def MageBalladRequirement(Player, Spell):
-    return Player.MageBalladCD <= 0
+    return Player.MageBalladCD <= 0, Player.MageBalladCD
 
 def BarrageRequirement(Player, Spell):
-    return Player.BarrageCD <= 0
+    return Player.BarrageCD <= 0, Player.BarrageCD
 
 def RagingStrikeRequirement(Player, Spell):
-    return Player.RagingStrikeCD <= 0
+    return Player.RagingStrikeCD <= 0, Player.RagingStrikeCD
 
 def RadiantFinaleRequirement(Player, Spell):
-    return Player.MageCoda or Player.ArmyCoda or Player.WandererCoda
+    return Player.MageCoda or Player.ArmyCoda or Player.WandererCoda, -1
 
 def BlastArrowRequirement(Player, Spell):
-    return Player.BlastArrowReady
+    return Player.BlastArrowReady, -1
 
 #Apply
 
@@ -203,7 +203,7 @@ def ApplyArmyPaeon(Player, Enemy):
 
 def ApplyMageBallad(Player, Enemy):
     Player.MageCoda = True #Adding Coda
-    Enemy.Bonus *= 1.01 #DPS Bonus
+    Enemy.buffList.append(MageBalladBuff)
     Player.SongTimer = 45
     Player.MageBalladCD = 120
     Player.EffectCDList.append(MageBalladCheck)
@@ -219,7 +219,7 @@ def ApplyBarrage(Player, Enemy):
     Player.BarrageCD = 120
 
 def ApplyRagingStrike(Player, Enemy):
-    Player.MultDPSBonus *=1.15
+    Player.buffList.append(RagingStrikeBuff)
     Player.RagingStrikeTimer = 20
     Player.EffectCDList.append(RagingStrikeCheck)
 
@@ -229,8 +229,9 @@ def ApplyRadiantFinale(Player, Enemy):
     if Player.MageCoda: coda += 1
     if Player.ArmyCoda: coda += 1
     if Player.WandererCoda: coda += 1
-    Player.RadiantFinaleBonus = coda * 1.02
-    Enemy.Bonus *= Player.RadiantFinaleBonus #Multiplying by the bonus
+    Player.RadiantFinalBuff = copy.deepcopy(RadiantFinaleBuff)
+    Player.RadiantFinalBuff.MultDPS *= coda
+    Enemy.buffList.append(Player.RadiantFinalBuff)
     Player.RadiantFinaleTimer = 15
     Player.EffectCDList.append(RadiantFinaleCheck)
     Player.MageCoda = False
@@ -278,12 +279,12 @@ def ArmyPaeonEffect(Player, Spell):
 
 def RadiantFinaleCheck(Player, Enemy):
     if Player.RadiantFinaleTimer <= 0:
-        Enemy.Bonus /= Player.RadiantFinaleBonus
+        Enemy.buffList.remove(Player.RadiantFinalBuff)
         Player.EffectToRemove.append(RadiantFinaleCheck)
 
 def RagingStrikeCheck(Player, Enemy):
     if Player.RagingStrikeTimer <= 0:
-        Player.MultDPSBonus /= 1.2
+        Player.buffList.remove(RagingStrikeBuff)
         Player.EffectToRemove.append(RagingStrikeCheck)
 
 def StormbiteDOTCheck(Player, Enemy):
@@ -340,7 +341,7 @@ def MageBalladCheck(Player, Enemy):
         Player.MaximumBloodLetterReduction += 7.5
 
     if Player.SongTimer <= 0 or not (Player.MageBallad):
-        Enemy.Bonus /= 1.01 #Remove DPSBonus
+        Enemy.buffList.remove(MageBalladBuff) #Remove DPSBonus
         Player.MageBallad = False
         Player.EffectToRemove.append(MageBalladCheck)
 
@@ -370,8 +371,8 @@ BurstShot = BardSpell(0, True, 2.5, 220, ApplyBurstShot, [], True)
 RefulgentArrow = BardSpell(1, True, 2.5, 280, ApplyRefulgentArrow, [RefulgentArrowRequirement], True)
 Stormbite = BardSpell(2, True, 2.5, 100, ApplyStormbite, [], True)
 Causticbite = BardSpell(3, True, 2.5, 150, ApplyCausticbite, [], True)
-StormbiteDOT = DOTSpell(-20, 25)
-CausticbiteDOT = DOTSpell(-21, 20)
+StormbiteDOT = DOTSpell(-20, 25, True)
+CausticbiteDOT = DOTSpell(-21, 20, True)
 IronJaws = BardSpell(5, True, 2.5, 100, ApplyIronJaws, [], True)
 ApexArrow20 = BardSpell(16, True, 2.5, 200, ApplyApexArrow20, [], True)
 ApexArrow80 = BardSpell(17, True, 2.5, 500, ApplyApexArrow80, [], True)
@@ -393,3 +394,8 @@ RadiantFinale = BardSpell(15, False, 0, 0, ApplyRadiantFinale, [RadiantFinaleReq
 PitchPerfect1 = BardSpell(7, False, 0, 100, ApplyPitchPerfect1, [PitchPerfect1Requirement],False)
 PitchPerfect2 = BardSpell(7, False, 0, 220, ApplyPitchPerfect2, [PitchPerfect2Requirement],False)
 PitchPerfect3 = BardSpell(7, False, 0, 360, ApplyPitchPerfect3, [PitchPerfect3Requirement],False)
+
+#buff
+RadiantFinaleBuff = buff(1.02)
+RagingStrikeBuff = buff(1.15)
+MageBalladBuff = buff(1.01)

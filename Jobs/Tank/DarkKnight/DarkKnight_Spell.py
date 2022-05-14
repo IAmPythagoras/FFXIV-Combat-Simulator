@@ -1,15 +1,15 @@
 #########################################
 ########## DARK KNIGHT SKILLS ###########
 #########################################
-from Jobs.Base_Spell import DOTSpell, empty
+from Jobs.Base_Spell import DOTSpell, buff, empty
 import copy
 from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
 from Jobs.Tank.Tank_Spell import DRKSkill
 Lock = 0.75
 
-def DarksideEffect(Player, Spell):
-    if Player.DarksideTimer > 0:
-        Spell.Potency *= 1.10
+#def DarksideEffect(Player, Spell):
+ #   if Player.DarksideTimer > 0:
+  #      Spell.Potency *= 1.10
 
 #Requirements for each Skill and Ability.
 
@@ -18,60 +18,53 @@ def BloodRequirement(Player, Spell):
     if Player.DeliriumStacks > 0 and (Spell.id == 4 or Spell.id == 5):
         Spell.BloodCost = 0
         Player.DeliriumStacks -= 1
-        return True
+        return True, -1
     elif Player.Blood >= 50:
         Player.Blood -= 50
-        return True
-    return False
+        return True, -1
+    return False, -1
 
 def EdgeShadowRequirement(Player, Spell):
     if Player.EdgeShadowCD <= 0 :
         if Player.DarkArts:
             Spell.ManaCost = 0
             Player.DarkArts = False
-            return True
+            return True, -1
         elif Player.Mana >= Spell.ManaCost:
             Player.Mana -= Spell.ManaCost
-            return True
-    return False
+            return True, -1
+    return False, -1
 
 def BloodWeaponRequirement(Player, Spell):
-    if Player.BloodWeaponCD <= 0: return True
-    return False
+    return Player.BloodWeaponCD <= 0, Player.BloodWeaponCD
 
 def DeliriumRequirement(Player, Spell):
-    if Player.DeliriumCD <= 0: return True
-    return False
+    return Player.DeliriumCD <= 0, Player.DeliriumCD
 
 def CarveSpitRequirement(Player, Spell):
-    if Player.CarveSpitCD <= 0: return True
-    return False
+    return Player.CarveSpitCD <= 0, Player.CarveSpitCD
 
 def AbyssalDrainRequirement(Player, Spell):
-    if Player.AbyssalDrainCD <= 0: return True
-    return False
+    return Player.AbyssalDrainCD <= 0, Player.AbyssalDrainCD
 
 def SaltedEarthRequirement(Player, Spell):
-    if Player.SaltedEarthCD <= 0: return True
-    return False
+    return Player.SaltedEarthCD <= 0, Player.SaltedEarthCD
 
 def SaltDarknessRequirement(Player, Spell):
-    if Player.SaltedEarthTimer > 0: return True
-    return False
+    return Player.SaltedEarthTimer > 0, -1
 
 def ShadowbringerRequirement(Player, Spell):
-    if Player.DarksideTimer > 0 and Player.ShadowbringerCharges > 0: return True
-    return False
+    return Player.DarksideTimer > 0 and Player.ShadowbringerCharges > 0, -1
+
 
 def PlungeRequirement(Player, Spell):
-    if Player.PlungeCharges > 0: return True
-    return False
+    return Player.PlungeCharges > 0, Player.PlungeCD
 
 def TBNRequirement(Player, Spell):
     if Player.Mana >= Spell.ManaCost:
         Player.Mana -= Spell.ManaCost
-        return True
-    return False
+        return True, -1
+    return False, -1
 
 #Effect functions that persist after action use
 
@@ -166,12 +159,12 @@ def ApplyDeliriumEffect(Player, Spell):
 def ApplyEdgeShadowEffect(Player, Spell):
     Player.DarksideTimer = min(60, Player.DarksideTimer + 30)
     if not (CheckEdgeShadow in Player.EffectCDList):
-        Player.MultDPSBonus *= 1.1
+        Player.buffList.append(EdgeShadowBuff)
         Player.EffectCDList.append(CheckEdgeShadow)
 
 def CheckEdgeShadow(Player, Enemy):
     if Player.DarksideTimer <= 0:
-        Player.MultDPSBonus /= 1.1
+        Player.buffList.remove(EdgeShadowBuff)
         Player.EffectCDList.remove(CheckEdgeShadow)
 
 def ApplyCarveSpitEffect(Player, Spell):
@@ -237,7 +230,7 @@ FloodShadow = DRKSkill(10, False, Lock, 0, 160, 3000, 0, ApplyEdgeShadowEffect, 
 CarveSpit = DRKSkill(11, False, Lock, 0, 510, 0, 0, ApplyCarveSpitEffect, [CarveSpitRequirement])
 AbyssalDrain = DRKSkill(12, False, Lock, 0, 150, 0, 0, ApplyAbyssalDrainEffect, [AbyssalDrainRequirement])
 SaltedEarth = DRKSkill(13, False, Lock, 0, 50, 0, 0, ApplySaltedEarth, [SaltedEarthRequirement]) #Ground target DOT, ticks once upon placement.
-SaltedEarthDOT = DOTSpell(14, 50)
+SaltedEarthDOT = DOTSpell(14, 50, True)
 SaltDarkness = DRKSkill(15, False, Lock, 0, 500, 0, 0, empty, [SaltDarknessRequirement])
 Shadowbringer = DRKSkill(16, False, Lock, 0, 600, 0, 0, SpendShadowbringer, [ShadowbringerRequirement])
 LivingShadow = DRKSkill(17, False, Lock, 0, 0, 0, 50, SummonLivingShadow, [BloodRequirement])
@@ -255,3 +248,6 @@ PEdgeShadow = DRKSkill(23, True, 0.5, 2.36, 300, 0, 0, empty, [])
 PBloodspiller = DRKSkill(24, True, 0.5, 2.36, 300, 0, 0, empty, [])
 PCarveSpit = DRKSkill(25, True, 0.5, 2.36, 300, 0, 0, empty, [])
 PDelay = DRKSkill(26, True, 0, 4.50, 0, 0, 0, empty, [])    #6s animation before it starts attacking.
+
+#buff
+EdgeShadowBuff = buff(1.1)

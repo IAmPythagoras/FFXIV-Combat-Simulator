@@ -1,56 +1,57 @@
-from Jobs.Base_Spell import DOTSpell, empty
+from torch import bucketize
+from Jobs.Base_Spell import DOTSpell, buff, empty
 from Jobs.Melee.Melee_Spell import DragoonSpell
 import copy
 
 #Requirement
 
 def TrueThrustRequirement(Player, Spell):
-    return not Player.DraconianFire
+    return not Player.DraconianFire, -1
 
 def WheelingThrustRequirement(Player, Spell):
-    return Player.WheelInMotion
+    return Player.WheelInMotion, -1
 
 def FangAndClawRequirement(Player, Spell):
-    return Player.FangAndClaw
+    return Player.FangAndClaw, -1
 
 def LanceChargeRequirement(Player, Spell):
-    return Player.LanceChargeCD <= 0
+    return Player.LanceChargeCD <= 0, Player.LanceChargeCD
 
 def BattleLitanyRequirement(Player, Spell):
-    return Player.BattleLitanyCD <= 0
+    return Player.BattleLitanyCD <= 0, Player.BattleLitanyCD
 
 def DragonSightRequirement(Player, Spell):
-    return Player.DragonSightCD <= 0
+    return Player.DragonSightCD <= 0, Player.DragonSightCD
 
 def GeirskogulRequirement(Player, Spell):
-    return Player.GeirskogulCD <= 0 and not Player.LifeOfTheDragon
+    return Player.GeirskogulCD <= 0 and not Player.LifeOfTheDragon, Player.GeirskogulCD
 
 def NastrondRequirement(Player, Spell):
-    return Player.LifeOfTheDragon and Player.NastrondCD <= 0
+    return Player.LifeOfTheDragon and Player.NastrondCD <= 0, Player.NastrondCD
 
 def HighJumpRequirement(Player, Spell):
-    return Player.HighJumpCD <= 0
+    return Player.HighJumpCD <= 0, Player.HighJumpCD
 
 def MirageDiveRequirement(Player, Spell):
-    return Player.DiveReady
+    return Player.DiveReady, -1
 
 def SpineshafterRequirement(Player, Spell):
-    return Player.SpineshafterStack > 0
+    return Player.SpineshafterStack > 0, Player.SpineshafterCD
 
 def LifeSurgeRequirement(Player, Spell):
-    return Player.LifeSurgeStack > 0
+    return Player.LifeSurgeStack > 0, Player.LifeSurgeCD
 
 def StardiverRequirement(Player, Spell):
-    return Player.StardiverCD <= 0 and Player.LifeOfTheDragon
+    return Player.StardiverCD <= 0 and Player.LifeOfTheDragon, Player.StardiverCD
 
 def RaidenThrustRequirement(Player, Spell):
-    return Player.DraconianFire
+    return Player.DraconianFire, -1
 
 def WyrmwindThrustRequirement(Player, Spell):
-    return Player.FirstmindGauge == 2 and Player.WyrmwindThrustCD <= 0
+    return Player.FirstmindGauge == 2 and Player.WyrmwindThrustCD <= 0, -1
 
 def DragonFireDiveRequirement(Player, Spell):
-    return Player.DragonFireDiveCD <= 0
+    return Player.DragonFireDiveCD <= 0, Player.DragonFireDiveCD
 
 #Apply
 
@@ -84,7 +85,7 @@ def ApplyFangAndClaw(Player, Enemy):
         Player.LanceMastery = False
 def ApplyLanceCharge(Player, Enemy):
     #print("BUFFING LANCE CHARGE")
-    Player.MultDPSBonus *= 1.1
+    Player.buffList.append(LanceChargeBuff)
     #input(Player.MultDPSBonus)
     Player.LanceChargeCD = 60
     Player.LanceChargeTimer = 20
@@ -158,7 +159,7 @@ def TrueThrustCombo(Player, Spell):
 
         if Player.PowerSurgeTimer <= 0: #Not already applied
             #print("Buffing")
-            Player.MultDPSBonus *= 1.10
+            Player.buffList.append(PowerSurgeBuff)
             #input(Player.MultDPSBonus)
             Player.EffectCDList.append(PowerSurgeCheck)
         Player.PowerSurgeTimer = 30
@@ -233,7 +234,7 @@ def BattleLitanyCheck(Player, Enemy):
 def LanceChargeCheck(Player, Enemy):
     if Player.LanceChargeTimer <= 0:
         #input("Removing lance charge")
-        Player.MultDPSBonus /= 1.1
+        Player.buffList.remove(LanceChargeBuff)
         Player.EffectToRemove.append(LanceChargeCheck)
 
 def PowerSurgeCheck(Player, Enemy):
@@ -241,7 +242,7 @@ def PowerSurgeCheck(Player, Enemy):
     if Player.PowerSurgeTimer <= 0:
         #input("Removing powersurge")
         Player.EffectToRemove.append(PowerSurgeCheck)
-        Player.MultDPSBonus /= 1.1
+        Player.buffList.remove(PowerSurgeBuff)
 
 #GCD
 #Combo Action
@@ -249,7 +250,7 @@ TrueThrust = DragoonSpell(1, True, 2.5, 230, ApplyTrueThrust, [TrueThrustRequire
 Disembowel = DragoonSpell(2, True, 2.5, 140, empty, [], True)
 VorpalThrust = DragoonSpell(3, True, 2.5, 130, empty, [], True)
 ChaoticSpring = DragoonSpell(4, True, 2.5, 140, empty, [], True)
-ChaoticSpringDOT = DOTSpell(-22, 45)
+ChaoticSpringDOT = DOTSpell(-22, 45, True)
 HeavenThrust = DragoonSpell(5, True, 2.5, 100, empty, [], True)
 
 WheelingThrust = DragoonSpell(6, True, 2.5, 300, ApplyWheelingThrust, [WheelingThrustRequirement], True )
@@ -269,20 +270,30 @@ LifeSurge = DragoonSpell(16, False, 0, 0, ApplyLifeSurge, [LifeSurgeRequirement]
 Stardiver = DragoonSpell(17, False, 0, 620, ApplyStardiver, [StardiverRequirement], False)
 WyrmwindThrust = DragoonSpell(19, False, 0, 420, ApplyWyrmwindThrust, [WyrmwindThrustRequirement], False)
 DragonFireDive = DragoonSpell(20, False, 0, 300, ApplyDragonFireDive, [DragonFireDiveRequirement], False)
+
+
+#buff
+RightEyeBuff = buff(1.1)
+LeftEyeBuff = buff(1.05)
+LanceChargeBuff = buff(1.1)
+PowerSurgeBuff = buff(1.1)
+
 def DragonSight(Target):
 
     def DragonSightCheck(Player, Enemy):
         if Player.DragonSightTimer <= 0:
-            Player.MultDPSBonus /= 1.1
-            Target.MultDPSBonus /= 1.05
+            Player.buffList.remove(RightEyeBuff)
+            Target.buffList.remove(LeftEyeBuff)
             Player.EffectToRemove.append(DragonSightCheck)
 
     def ApplyDragonSight(Player, Enemy):
         Player.DragonSightCD = 120
         Player.DragonSightTimer = 20
 
-        Player.MultDPSBonus *= 1.1
-        Target.MultDPSBonus *= 1.05
+        Player.buffList.append(RightEyeBuff)
+        Target.buffList.append(LeftEyeBuff)
         Player.EffectCDList.append(DragonSightCheck)
 
     return DragoonSpell(10, False, 0, 0, ApplyDragonSight, [DragonSightRequirement], False)
+
+

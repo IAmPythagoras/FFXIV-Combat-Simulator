@@ -1,6 +1,7 @@
 #########################################
 ########## REDMAGE PLAYER ###############
 #########################################
+from Jobs.Base_Spell import buff
 from Jobs.Caster.Caster_Spell import RedmageSpell, SwiftCastEffect
 Lock = 0.75
 #Special
@@ -15,45 +16,45 @@ def Removemana(Player, WhiteMana, BlackMana):
 
 #Requirement
 def RDMManaRequirement(Player, Spell):
-    return Spell.ManaCost <= Player.Mana and Spell.BlackCost <= Player.BlackMana and Spell.WhiteCost <= Player.WhiteMana
+    return Spell.ManaCost <= Player.Mana and Spell.BlackCost <= Player.BlackMana and Spell.WhiteCost <= Player.WhiteMana, -1
 
 def ManaficationRequirement(Player, Spell):
-    return Player.ManaficationCD <= 0
+    return Player.ManaficationCD <= 0, Player.ManaficationCD
 
 def EmboldenRequirement(Player, Spell):
-    return Player.EmboldenCD <= 0
+    return Player.EmboldenCD <= 0, Player.EmboldenCD
 
 def AccelerationRequirement(Player, Spell):
-    return Player.AccelerationStack >= 1
+    return Player.AccelerationStack >= 1, Player.AccelerationCD
 
 def FlecheRequirement(Player, Spell):
-    return Player.FlecheCD <= 0
+    return Player.FlecheCD <= 0, Player.FlecheCD
 
 def ContreRequirement(Player, Spell):
-    return Player.ContreCD <= 0
+    return Player.ContreCD <= 0, Player.ContreCD
 
 def EngagementRequirement(Player, Spell):
-    return Player.EngagementStack > 0
+    return Player.EngagementStack > 0, Player.EngagementCD
 
 def CorpsRequirement(Player, Spell):
-    return Player.CorpsStack > 0
+    return Player.CorpsStack > 0, Player.CorpsCD
 
 #Combo Action Requirements
 
 def ZwerchhauRequirement(Player, Spell):
-    return Player.Zwerchhau
+    return Player.Zwerchhau,-1
 
 def RedoublementRequirement(Player, Spell):
-    return Player.Redoublement
+    return Player.Redoublement,-1
 
 def VerholyRequirement(Player, Spell):
-    return Player.Verholy
+    return Player.Verholy,-1
 
 def ScorchRequirement(Player, Spell):
-    return Player.Scorch
+    return Player.Scorch,-1
 
 def ResolutionRequirement(Player, Spell):
-    return Player.Resolution
+    return Player.Resolution,-1
 
 
 
@@ -81,7 +82,7 @@ def ApplyManafication(Player, Enemy):
     Addmana(Player, 50, 50)
 
 def ApplyEmbolden(Player, Enemy):
-    Enemy.Bonus *= 1.05 #5% DPS boost for everyone. I put buff on Boss, but could put it on every other player
+    Enemy.buffList.append(EmboldenBuff) #5% DPS boost for everyone. I put buff on Boss, but could put it on every other player
     Player.EmboldenTimer = 20
     Player.EmboldenCD = 120
     Player.EffectCDList.append(EmboldenCheck)
@@ -175,7 +176,7 @@ def ManaficationCheck(Player, Enemy):
 def EmboldenCheck(Player, Enemy):
     if Player.EmboldenTimer <= 0:
         Player.EmboldenTimer = 0
-        Enemy.Bonus /= 1.05 #Removing 5% dps increase
+        Enemy.buffList.remove(EmboldenBuff) #Removing 5% dps increase
         Player.EffectToRemove.append(EmboldenCheck)
 
 def AccelerationStackCheck(Player, Enemy):
@@ -230,3 +231,6 @@ Fleche = RedmageSpell(13, False, 0, Lock, 460, 0, ApplyFleche, [FlecheRequiremen
 Contre = RedmageSpell(14, False, 0, Lock, 360, 0, ApplyContre, [ContreRequirement], 0, 0)
 Engagement = RedmageSpell(15, False, 0, Lock, 180, 0, ApplyEngagement, [EngagementRequirement], 0, 0)
 Corps = RedmageSpell(16, False, 0, Lock, 130, 0, ApplyCorps, [CorpsRequirement], 0, 0)
+
+#buff
+EmboldenBuff = buff(1.05)

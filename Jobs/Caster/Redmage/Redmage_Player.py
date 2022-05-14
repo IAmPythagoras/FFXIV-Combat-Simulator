@@ -28,9 +28,6 @@ class Redmage(Caster):
         #Timer
         self.EmboldenTimer = 0
         self.ManaficationTimer = 0
-        #self.SwiftCastTimer = 0
-        self.LucidDreamingTimer = 0
-        #self.AccelerationTimer = 0
 
         #stack
         self.AccelerationStack = 2
@@ -48,7 +45,6 @@ class Redmage(Caster):
         self.Scorch = False
         self.Resolution = False
 
-        self.MultDPSBonus = 1.3 #magik and mend
 
     def updateCD(self, time):
         super().updateCD(time)

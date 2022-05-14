@@ -12,7 +12,7 @@ class Player:
         self.NextSpell = 0
         self.CastingSpell = []
         self.CurrentFight = CurrentFight
-        self.ManaTick = 1.5 #Starts Mana tick at this value
+        self.ManaTick = 2 #Starts Mana tick at this value
 
         self.TrueLock = False   #Used to know when a player has finished all of its ActionSet
         self.Casting = False    #used to know if an action is possible
@@ -31,7 +31,8 @@ class Player:
 
         self.Stat = Stat #Stats of the player
 
-        self.MultDPSBonus = 1   #Mult bonus for DPS (Ex: BLM.MultDPSBonus = 1.3 * 1.2 -> Enochian * Magik and Mend)
+        self.Trait = 1  #DPS mult from trait
+        self.buffList = []
         self.GCDReduction = 1 #Mult GCD reduction based on Spell Speed or Skill Speed (computed before fight)
         self.CritRateBonus = 0  #CritRateBonus
         self.DHRateBonus = 0 #DHRate Bonus Very usefull for dancer personnal and dance partner crit/DH rate bonus
@@ -55,6 +56,7 @@ class Player:
         if (self.CastingLockTimer > 0) : self.CastingLockTimer = max(0, self.CastingLockTimer-time)
         if (self.ManaTick > 0) : self.ManaTick = max(0, self.ManaTick-time)
         if (self.ArcanumTimer > 0) : self.ArcanumTimer = max(0, self.ArcanumTimer-time)
+        if (self.PotionTimer > 0) : self.PotionTimer = max(0, self.PotionTimer-time)
 
     def updateLock(self):
         if (self.GCDLockTimer <= 0):
