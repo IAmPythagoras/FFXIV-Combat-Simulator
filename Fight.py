@@ -50,7 +50,7 @@ def Normal(mean, std, x):#returns value from NormalDistribution
 def AverageCritMult(Player, k):
     n = Player.NumberDamageSpell #Total number of damage Spell
     #k is the number of success, so the number of crit
-    return ((k) * (1 + Player.CritMult) + (n-k))/n #Average crit multiplier over the run, this can be seen as a fix bonus on the whole fight
+    return ((k) * (1 + Player.CritMult)  + (n-k))/n #Average crit multiplier over the run, this can be seen as a fix bonus on the whole fight
 
 class Fight:
 
@@ -66,16 +66,29 @@ class Fight:
 
 
 
-    def ComputeDPSDistribution(self, Player):
+    def ComputeDPSDistribution(self, Player, fig, axs, job):
+
+        #Graph data
+        axs.set_ylabel("Percentage (%)")
+        axs.set_xlabel("Expected DPS")
+        axs.set_title(job + " DPS Distribution")
+        axs.spines["top"].set_alpha(0.0)
+        axs.spines["right"].set_alpha(0.0)
+        axs.set_facecolor("lightgrey")
+
+
+
+
 
         #This function will return a distribution of DPS and chance of having certain DPS
-        Player.DPS = Player.TotalDamage / self.TimeStamp #Computing DPS
+        Player.DPS = Player.TotalMinDamage / self.TimeStamp #Computing DPS with no crit, expected DH
+        Player.ExpectedDPS = Player.TotalDamage / self.TimeStamp #Expected DPS with crit
 
         n = Player.NumberDamageSpell #Number of spell that deals damage done by this player (does not include DOT)
         #p = Player.AverageCritRate #Average crit rate of the player
         p = Player.CritRate
         mean = math.floor(n * p)
-        radius = math.floor(n/2)
+        radius = math.ceil(n/2)
         #The binomial distribution of enough trials can be approximated to N(np, np(1-p)) for big enough n, so we will simply approximate the distribution by this
         #Note that here n stands for the number of damage spell, and p is the averagecritrate of the player AverageCritRate = (CritRate + CritRateBonus)/time
         #We will salvage values from the normal distribution, then find the average crit multiplier by number of crits gotten. We will then multiply the computed DPS
@@ -86,17 +99,14 @@ class Fight:
         expected_dps_list = [] #List of expected DPS
         average_crit_mult_list = []#This will be a list of expected DPS for the number of succesful crit
         #It will be computed by computing an average crit multiplier, and then multiplying the DPS by that
-
-        for i in range(mean - radius, mean + radius+1): #Here i is the number of success
-            y_list += [Normal(n*p, n*p * (1-p), i)] #Sampling from the distribution
+        for i in range(max(0, mean - radius), mean + radius+1): #Here i is the number of success
+            y_list += [math.floor(Normal(n*p, n*p * (1-p), i) * 1000) /10] #Sampling from the distribution
             average_crit_mult = AverageCritMult(Player, i)
             average_crit_mult_list += [average_crit_mult] 
             expected_dps_list += [average_crit_mult * Player.DPS]
-
-        plt.plot(expected_dps_list, y_list)
-        expectedDPS = math.floor(math.floor(Player.DPS * (1 + (Player.CritRate * Player.CritMult)) ))
-        print("Expected DPS : " + str(expectedDPS))
-        plt.show()
+        lab = "\u03BC = " + str(round(Player.ExpectedDPS,1)) + " \u03C3 = " + str(round(n*p*(1-p),2))
+        axs.plot(expected_dps_list, y_list,label=lab)
+        axs.legend()
 
 
         
@@ -115,10 +125,8 @@ class Fight:
 
     def PrintResult(self, time, TimeStamp):
 
-        for Player in self.PlayerList:
-            self.ComputeDPSDistribution(Player)
-
-        fig, axs = plt.subplots(1, 2, constrained_layout=True)
+        fig, axs = plt.subplots(1, 2, constrained_layout=True) #DPS and PPS graph
+        fig2, axs2 = plt.subplots(2, 4, constrained_layout=True) #DPS Crit distribution
         axs[0].set_ylabel("DPS")
         axs[0].set_xlabel("Time (s)")
         axs[0].set_title("DPS over time")
@@ -133,6 +141,9 @@ class Fight:
         axs[1].set_facecolor("lightgrey")
 
         fig.suptitle("DPS and PPS values over time.")
+
+        i = 0 #Used as coordinate for DPS distribution graph
+        j = 0
 
         for player in self.PlayerList:
             print("The Total Potency done by player " + str(type(player)) + " was : " + str(player.TotalPotency))
@@ -181,6 +192,13 @@ class Fight:
                 print("==================")
             axs[0].plot(TimeStamp,player.DPSGraph, label=job)
             axs[1].plot(TimeStamp,player.PotencyGraph, label=job)
+
+            self.ComputeDPSDistribution(player, fig2, axs2[j][i], job)
+            input((i,j))
+            i+=1
+            if i == 4:
+                i = 0
+                j+=1
         
         print("The Enemy has received a total potency of: " + str(self.Enemy.TotalPotency))
         print("The Potency Per Second on the Enemy is: " + str(self.Enemy.TotalPotency/time))
@@ -477,7 +495,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
     for buffs in Enemy.buffList:
         Damage = math.floor(Damage * buffs.MultDPS) #Multiplying all buffs
 
-    return Damage
+    return math.floor(Damage * ( 1 + (Player.DHRate * 0.25))), math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))) #Non crit expected damage, expected damage with crit
 
 """
 #Original ComputeDamage function

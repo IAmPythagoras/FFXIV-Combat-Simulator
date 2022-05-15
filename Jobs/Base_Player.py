@@ -27,7 +27,8 @@ class Player:
         self.HP = 1000  #Could be changed
         
         self.TotalPotency = 0
-        self.TotalDamage = 0    
+        self.TotalDamage = 0   
+        self.TotalMinDamage = 0 #Minimum expected damage (no crit or diret hit) 
 
         self.Stat = Stat #Stats of the player
 
