@@ -44,6 +44,9 @@ def GCDReductionEffect(Player, Spell):
         Spell.CastTime *= Player.GCDReduction
         Spell.RecastTime *= Player.GCDReduction
 
+def Normal(mean, std, x):#returns value from NormalDistribution
+    return 1/(std * np.sqrt(2 * np.pi)) * np.exp(-1/2 * ((x-mean)/std)**2)
+
 class Fight:
 
     #This class will be the environment in which the fight happens. It will hold a list of players, an enemy, etc.
@@ -55,6 +58,40 @@ class Fight:
         self.ShowGraph = True
         self.TimeStamp = 0
         self.TeamCompositionBonus = 1
+
+
+
+    def ComputeDPSDistribution(self, Player):
+
+        #This function will return a distribution of DPS and chance of having certain DPS
+
+        n = Player.NumberDamageSpell #Number of spell that deals damage done by this player (does not include DOT)
+        p = Player.AverageCritRate #Average crit rate of the player
+        mean = math.floor(n * p)
+        radius = math.floor(n/4)
+        #The binomial distribution of enough trials will be approximated to N(np, np(1-p)), so we will simply approximate the distribution by this
+
+        #We will salvage values from the normal distribution, then find the average crit multiplier by number of crits gotten. We will then multiply the computed DPS
+        #by these multipliers to get DPS values for each chance
+        #We will sample n/4 points on each side
+
+        x_list = []
+        y_list = []
+        average_crit_mult_list = []
+
+        for i in range(mean - radius, mean + radius):
+            x_list += [i]
+            y_list += [Normal(n*p, n*p * (1-p), i)]
+            average_crit_mult_list += []
+
+        #We now have values from the sample, so we will now change x_list into DPS value
+
+
+
+
+
+
+
     def PrintResult(self, time, TimeStamp):
 
         fig, axs = plt.subplots(1, 2, constrained_layout=True)
