@@ -83,7 +83,6 @@ WARPlayer = Warrior(2.5, [], [], [SurgingTempestEffect], Event, WARStat)
 WHMPlayer = Whitemage(2.5, [], [], [], Event, WHMStat)
 SAMPlayer = Samurai(2.5, [], [], [], Event, SAMStat)
 PLDPlayer = Paladin(2.5, [], [], [], Event, PLDStat)
-
 GNBPlayer = Gunbreaker(2.5, [], [], [], Event, GNBStat)
 ASTPlayer = Astrologian(2.5, [], [], [], Event, ASTStat)
 SMNPlayer = Summoner(2.5, [], [], [], Event, SMNStat)
@@ -91,8 +90,6 @@ BRDPlayer = Bard(2.5, [], [], [SongEffect], Event, BRDStat)
 DNCPlayer = Dancer(2.5, [], [], [EspritEffect], Event, DNCStat)
 DRGPlayer = Dragoon(2.5, [], [], [], Event, DRGStat)
 
-
-#exit()
 
 BLMOpener = [SharpCast, WaitAbility(16.5), Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, Triplecast, Despair, Manafront, Fire4, SwiftCast, LucidDreaming, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose,Fire3, Fire4, Fire4, Fire4, Despair, Xenoglossy, Transpose, Paradox]
 SCHOpener = [WaitAbility(17), Potion, WaitAbility(1), Broil, Biolysis, Aetherflow, Broil, SwiftCast, Broil, ChainStratagem, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Broil, Broil, Broil, Broil]
@@ -129,7 +126,7 @@ DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 
 #NinjaPlayer = Ninja(2.5, NINAction, [], [AutoEffect, NinjutsuTimerEffect], Event)
-Event.PlayerList = [BLMPlayer, SCHPlayer, DNCPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer] #BLMPlayer, SCHPlayer, RDMPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,SAMPlayer
+Event.PlayerList = [BLMPlayer] #BLMPlayer, SCHPlayer, RDMPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,SAMPlayer
 
 
 Event.SimulateFight(0.01, 200, 20)

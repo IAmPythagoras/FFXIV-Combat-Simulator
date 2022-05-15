@@ -45,6 +45,22 @@ class Player:
         self.DPSGraph = []
         self.PotencyGraph = []
 
+        self.NumberDamageSpell = 0 #Number of damaging spell done, not including DOT and AA
+
+
+        #functions for computing damage. Since the stats do not change (except MainStat), we can compute in advance
+        #all functions that will not have their values changed
+        #They will be computed at the begining of the simulation, they are now set at 0
+        self.f_WD = 0
+        self.f_DET = 0
+        self.f_TEN = 0
+        self.f_SPD = 0
+        self.CritRate = 0
+        self.CritMult = 0
+        self.DHRate = 0
+
+
+
 
 
 

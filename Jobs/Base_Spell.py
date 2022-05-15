@@ -94,10 +94,9 @@ class Spell:
             else: type = 1
         elif isinstance(self, Auto_Attack):
             type = 3
-            
-            
-
-        Damage = ComputeDamage(player, self.Potency, Enemy, self.DPSBonus, type)    #Damage computation
+        
+        if self.Potency != 0 : Damage = ComputeDamage(player, self.Potency, Enemy, self.DPSBonus, type)    #Damage computation
+        else: Damage = 0
         #input("Damage : " + str(Damage))
         #input("Damage from v1.0 " + str(ComputeDamageV2(player, self.Potency, 1, 1)))
 
