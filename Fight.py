@@ -75,7 +75,7 @@ class Fight:
         axs.spines["top"].set_alpha(0.0)
         axs.spines["right"].set_alpha(0.0)
         axs.set_facecolor("lightgrey")
-
+        axs.yaxis.set_ticks(np.arange(0,15,1))
 
 
 
@@ -85,9 +85,11 @@ class Fight:
         Player.ExpectedDPS = Player.TotalDamage / self.TimeStamp #Expected DPS with crit
 
         n = Player.NumberDamageSpell #Number of spell that deals damage done by this player (does not include DOT)
-        #p = Player.AverageCritRate #Average crit rate of the player
-        p = Player.CritRate
-        mean = math.floor(n * p)
+        p = round(np.mean(Player.CritRateHistory),3) #Average crit rate of the player, so it takes into account crit buffs
+        print("job : " + job)
+        print("Average CritRate" + str(p))
+        input("Base Crit Rate : " + str(Player.CritRate))
+        mean = math.floor(Player.ExpectedDPS / Player.DPS)
         radius = math.ceil(n/2)
         #The binomial distribution of enough trials can be approximated to N(np, np(1-p)) for big enough n, so we will simply approximate the distribution by this
         #Note that here n stands for the number of damage spell, and p is the averagecritrate of the player AverageCritRate = (CritRate + CritRateBonus)/time
@@ -105,7 +107,8 @@ class Fight:
             average_crit_mult_list += [average_crit_mult] 
             expected_dps_list += [average_crit_mult * Player.DPS]
         lab = "\u03BC = " + str(round(Player.ExpectedDPS,1)) + " \u03C3 = " + str(round(n*p*(1-p),2))
-        axs.plot(expected_dps_list, y_list,label=lab)
+        axs.plot(expected_dps_list, y_list,label=lab) #Distribution
+        axs.plot([Player.ExpectedDPS,Player.ExpectedDPS], [0,13], label="Expected DPS", linestyle="dashed") #Expected DPS
         axs.legend()
 
 
@@ -194,7 +197,7 @@ class Fight:
             axs[1].plot(TimeStamp,player.PotencyGraph, label=job)
 
             self.ComputeDPSDistribution(player, fig2, axs2[j][i], job)
-            input((i,j))
+            #input((i,j))
             i+=1
             if i == 4:
                 i = 0
@@ -468,25 +471,20 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
             CritRate = 1
             Player.NextCrit = False
 
-    if type == 0: #Type 0 is direct damage
-        Player.NumberDamageSpell += 1
-        Damage = math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN ) *f_WD) * Player.Trait) #Player.Trait is trait DPS bonus
-        #We will average the DPS by using DHRate, CritRate and CritMult multiplier
-        #Damage = math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))) #Average DHRate and Crit contribution
-        Damage = math.floor(Damage * SpellBonus)
 
+    Player.NumberDamageSpell += 1
+    Player.CritRateHistory += [CritRate]
+
+    if type == 0: #Type 0 is direct damage
+        Damage = math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN ) *f_WD) * Player.Trait) #Player.Trait is trait DPS bonus
+        Damage = math.floor(Damage * SpellBonus)
     elif type == 1 : #Type 1 is magical DOT
         Damage = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_WD) * f_MAIN_DMG) * f_SPD) * f_DET) * f_TEN) * Player.Trait) + 1
-        #Damage = math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))) #Average DHRate and Crit contribution
-
     elif type == 2: #Physical DOT
         Damage = math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN) * f_SPD) * f_WD) * Player.Trait) +1
-        #Damage = math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))) #Average DHRate and Crit contribution
     elif type == 3: #Auto-attacks
         Damage = math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN) * f_SPD)
         Damage = math.floor(math.floor(Damage * math.floor(f_WD * (Player.Delay/3) *100 )/100) * Player.Trait)
-        #Damage = math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))) #Average DHRate and Crit contribution
-
     #Now applying buffs
 
     for buffs in Player.buffList: 

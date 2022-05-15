@@ -12,7 +12,7 @@ class Player:
         self.NextSpell = 0
         self.CastingSpell = []
         self.CurrentFight = CurrentFight
-        self.ManaTick = 2 #Starts Mana tick at this value
+        self.ManaTick = 1.5 #Starts Mana tick at this value
 
         self.TrueLock = False   #Used to know when a player has finished all of its ActionSet
         self.Casting = False    #used to know if an action is possible
@@ -47,6 +47,7 @@ class Player:
         self.PotencyGraph = []
 
         self.NumberDamageSpell = 0 #Number of damaging spell done, not including DOT and AA
+        self.CritRateHistory = [] #History of crit rate, so we can average them at the end
 
 
         #functions for computing damage. Since the stats do not change (except MainStat), we can compute in advance
