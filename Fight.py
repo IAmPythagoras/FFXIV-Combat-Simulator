@@ -84,12 +84,9 @@ class Fight:
         Player.DPS = Player.TotalMinDamage / self.TimeStamp #Computing DPS with no crit, expected DH
         Player.ExpectedDPS = Player.TotalDamage / self.TimeStamp #Expected DPS with crit
 
-        n = Player.NumberDamageSpell #Number of spell that deals damage done by this player (does not include DOT)
+        n = Player.NumberDamageSpell #Number of spell that deals damage done by this player
         p = round(np.mean(Player.CritRateHistory),3) #Average crit rate of the player, so it takes into account crit buffs
-        print("job : " + job)
-        print("Average CritRate" + str(p))
-        input("Base Crit Rate : " + str(Player.CritRate))
-        mean = math.floor(Player.ExpectedDPS / Player.DPS)
+        mean = math.floor(n * p) #Number of expected crit
         radius = math.ceil(n/2)
         #The binomial distribution of enough trials can be approximated to N(np, np(1-p)) for big enough n, so we will simply approximate the distribution by this
         #Note that here n stands for the number of damage spell, and p is the averagecritrate of the player AverageCritRate = (CritRate + CritRateBonus)/time
@@ -472,12 +469,11 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
             Player.NextCrit = False
 
 
-    Player.NumberDamageSpell += 1
-    Player.CritRateHistory += [CritRate]
-
     if type == 0: #Type 0 is direct damage
         Damage = math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN ) *f_WD) * Player.Trait) #Player.Trait is trait DPS bonus
         Damage = math.floor(Damage * SpellBonus)
+        Player.NumberDamageSpell += 1
+        Player.CritRateHistory += [CritRate]
     elif type == 1 : #Type 1 is magical DOT
         Damage = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_WD) * f_MAIN_DMG) * f_SPD) * f_DET) * f_TEN) * Player.Trait) + 1
     elif type == 2: #Physical DOT
@@ -492,8 +488,11 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
         
     for buffs in Enemy.buffList:
         Damage = math.floor(Damage * buffs.MultDPS) #Multiplying all buffs
-
-    return math.floor(Damage * ( 1 + (Player.DHRate * 0.25))), math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))) #Non crit expected damage, expected damage with crit
+    
+    if CritRate == 2:
+        return math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))), math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))) #If we have auto crit, we return full damage
+    else:
+        return math.floor(Damage * ( 1 + (DHRate * 0.25))), math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))) #Non crit expected damage, expected damage with crit
 
 """
 #Original ComputeDamage function
