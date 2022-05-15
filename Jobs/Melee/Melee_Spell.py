@@ -42,7 +42,7 @@ class DragoonSpell(MeleeSpell):
         self.Weaponskill = Weaponskill
 
 #########################################
-########## MONK PLAYER ###############
+########## MONK SPELL ###############
 #########################################
 
 class MonkSpell(MeleeSpell):

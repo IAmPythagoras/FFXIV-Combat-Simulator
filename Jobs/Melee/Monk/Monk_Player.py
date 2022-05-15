@@ -11,10 +11,13 @@ class Monk(Melee):
 
         #Gauge
         self.FifthChakra = 0 #5 meditation chakras for forbidden chakra, steel peak, howling fist, and enlightenment
-        self.ElixirField = False   #masterful blitz
-        self.CelestialRevolution = False   #masterful blitz
-        self.RisingPhoenix = False #masterful blitz
-        self.PhantomRush = False   #masterful blitz
+        self.OpoOpoSkillUsed = 0 
+        self.RaptorSkillUsed = 0 
+        self.CoeurlSkillUsed = 0       
+        # self.ElixirField = False   #masterful blitz
+        # self.CelestialRevolution = False   #masterful blitz
+        # self.RisingPhoenix = False #masterful blitz
+        # self.PhantomRush = False   #masterful blitz
 
         #Stacks
         self.RiddleOfEarth = 0  #three stacks
@@ -28,6 +31,16 @@ class Monk(Melee):
         self.RaptorForm = False #if disciplined fist at 7s or more use true strike else twin snakes
         self.CoeurlForm = False #if demonlish has 4s or less use demolish else snap punch
         self.FormShift = False
+        self.FormlessFist = False   #allows execution of weaponskills that requires certain form without being in that form
+        self.Bootshine = False  #grants raptor form
+        self.TrueStrike = False #grants coeurl, only can be executed in raptor
+        self.SnapPunch = False  #grants opo-opo form, only can be executed in coeurl
+        self.TwinSnakes = False #grants coeurl form, can only be executed in raptor
+        self.ArmOfTheDestroyer = False  #changes form to raptor
+        self.Demolish = False   #changes form to opo-opo, can only be executed in coeurl
+        self.Rockbreaker = False    #changes form to opo-opo, can only be executed in coeurl
+        self.FourPointFury = False  #changes form to coeurl, can only be executed in raptor
+        self.DragonKick = False #changes form to raptor
 
         #Buffs
         self.LeadenFist = False  #guaranteed critical hit in opo-opo form for from dragon kick
@@ -57,10 +70,10 @@ class Monk(Melee):
         self.AnatmanTimer = 0
 
         #DOT
-        self.Demolish = None
+        self.DemolishDOT = None
 
         #CD
-        self.perfectBalanceCD = 0
+        self.PerfectBalanceCD = 0
         self.RiddleOfFireCD = 0
         self.RiddleOfWindCD = 0
         self.RiddleOfEarthCD = 0
@@ -74,7 +87,7 @@ class Monk(Melee):
         self.JobMod = 110
 
     def updateCD(self, time):
-        if (self.perfectBalanceCD > 0) : self.perfectBalanceCD = max(0,self.perfectBalanceCD - time)
+        if (self.PerfectBalanceCD > 0) : self.PerfectBalanceCD = max(0,self.PerfectBalanceCD - time)
         if (self.RiddleOfFireCD > 0) : self.RiddleOfFireCD = max(0,self.RiddleOfFireCD - time)
         if (self.RiddleOfWindCD > 0) : self.RiddleOfWindCD = max(0,self.RiddleOfWindCD - time)
         if (self.RiddleOfEarthCD > 0) : self.RiddleOfEarthCD = max(0,self.RiddleOfEarthCD - time)
