@@ -85,7 +85,12 @@ class Fight:
         Player.ExpectedDPS = Player.TotalDamage / self.TimeStamp #Expected DPS with crit
 
         n = Player.NumberDamageSpell #Number of spell that deals damage done by this player
-        p = round(np.mean(Player.CritRateHistory),3) #Average crit rate of the player, so it takes into account crit buffs
+        p = round((Player.ExpectedDPS/Player.DPS - 1)/Player.CritMult,3)
+
+        #The value of p is found by using the fact that Player.DPS = DPS * ExpectedDHDamage, Player.ExpectedDPS = DPS * ExpectedDHDamage * ExpectedCritDamage
+        #And ExpectedCritDamage = ( 1 + (CritMult * CritRate)), so we simply isolate CritRate. This will give an average Crit rate over the whole fight which will
+        #take into account crit rate buffs throughout the fight
+
         mean = math.floor(n * p) #Number of expected crit
         radius = math.ceil(n/2)
         #The binomial distribution of enough trials can be approximated to N(np, np(1-p)) for big enough n, so we will simply approximate the distribution by this
