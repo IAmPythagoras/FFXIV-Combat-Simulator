@@ -94,19 +94,20 @@ class Spell:
             else: type = 1
         elif isinstance(self, Auto_Attack):
             type = 3
-            
-            
-
-        Damage = ComputeDamage(player, self.Potency, Enemy, self.DPSBonus, type)    #Damage computation
+        
+        if self.Potency != 0 : minDamage,Damage= ComputeDamage(player, self.Potency, Enemy, self.DPSBonus, type)    #Damage computation
+        else: minDamage, Damage = 0,0
         #input("Damage : " + str(Damage))
         #input("Damage from v1.0 " + str(ComputeDamageV2(player, self.Potency, 1, 1)))
 
         if isinstance(player, Queen) or isinstance(player, Esteem):
             player.Master.TotalPotency+= self.Potency
             player.Master.TotalDamage += Damage
+            player.Master.TotalMinDamage += minDamage
         else:
             player.TotalPotency+= self.Potency
             player.TotalDamage += Damage
+            player.TotalMinDamage += minDamage
         
         Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage

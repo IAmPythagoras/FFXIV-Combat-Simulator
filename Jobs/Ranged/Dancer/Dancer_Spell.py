@@ -262,7 +262,6 @@ def CascadeComboEffect(Player, Spell):
 
 def DevilmentCheck(Player, Enemy):
     if Player.DevilmentTimer <= 0:
-        input("devilment out")
         Player.CritRateBonus -= 0.2
         Player.DHRateBonus -= 0.2
         Player.DancePartner.CritRateBonus -= 0.2
@@ -277,7 +276,6 @@ def StandardFinishCheck(Player, Enemy):
 
 def TechnicalFinishCheck(Player, Enemy):
     if Player.TechnicalFinishTimer <= 0:
-        input("technical out")
         Enemy.buffList.remove(Player.TechnicalFinishBuff)
         Player.EffectToRemove.append(TechnicalFinishCheck)
 

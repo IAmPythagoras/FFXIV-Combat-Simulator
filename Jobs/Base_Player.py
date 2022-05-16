@@ -12,7 +12,7 @@ class Player:
         self.NextSpell = 0
         self.CastingSpell = []
         self.CurrentFight = CurrentFight
-        self.ManaTick = 2 #Starts Mana tick at this value
+        self.ManaTick = 1.5 #Starts Mana tick at this value
 
         self.TrueLock = False   #Used to know when a player has finished all of its ActionSet
         self.Casting = False    #used to know if an action is possible
@@ -27,7 +27,8 @@ class Player:
         self.HP = 1000  #Could be changed
         
         self.TotalPotency = 0
-        self.TotalDamage = 0    
+        self.TotalDamage = 0   
+        self.TotalMinDamage = 0 #Minimum expected damage (no crit or diret hit) 
 
         self.Stat = Stat #Stats of the player
 
@@ -44,6 +45,23 @@ class Player:
 
         self.DPSGraph = []
         self.PotencyGraph = []
+
+        self.NumberDamageSpell = 0 #Number of damaging spell done, not including DOT and AA
+        self.CritRateHistory = [] #History of crit rate, so we can average them at the end
+
+
+        #functions for computing damage. Since the stats do not change (except MainStat), we can compute in advance
+        #all functions that will not have their values changed
+        #They will be computed at the begining of the simulation, they are now set at 0
+        self.f_WD = 0
+        self.f_DET = 0
+        self.f_TEN = 0
+        self.f_SPD = 0
+        self.CritRate = 0
+        self.CritMult = 0
+        self.DHRate = 0
+
+
 
 
 
