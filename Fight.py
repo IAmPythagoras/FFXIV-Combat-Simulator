@@ -28,6 +28,7 @@ from Jobs.Ranged.Machinist.Machinist_Player import Queen, Machinist
 from Jobs.Melee.Samurai.Samurai_Player import Samurai
 from Jobs.Melee.Ninja.Ninja_Player import Ninja
 from Jobs.Melee.Dragoon.Dragoon_Player import Dragoon
+from Jobs.Melee.Reaper.Reaper_Player import Reaper
 
 from Jobs.Healer.Whitemage.Whitemage_Player import Whitemage
 from Jobs.Healer.Scholar.Scholar_Player import Scholar
@@ -176,6 +177,7 @@ class Fight:
             elif isinstance(player, Astrologian) : job = "Astrologian"
             elif isinstance(player, Summoner) : job = "Summoner"
             elif isinstance(player, Dragoon) : job = "Dragoon"
+            elif isinstance(player, Reaper) : job = "Reaper"
             elif isinstance(player, Bard) : 
                 job = "Bard"
                 print("==================")

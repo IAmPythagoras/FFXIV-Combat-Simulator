@@ -20,6 +20,8 @@ def BloodStalkRequirement(Player, Spell):
     return Player.SoulGauge >= 50, -1
 
 def GibbetRequirement(Player, Spell):
+    #input(Player.SoulReaverStack > 0)
+    #input(Player.AvatarTimer == 0)
     return Player.SoulReaverStack > 0 and Player.AvatarTimer == 0, -1
 
 def PlentifulHarvestRequirement(Player, Spell):
@@ -31,6 +33,8 @@ def PlentifulHarvestRequirement(Player, Spell):
     return Player.ImmortalSacrificeStack > 0 and Player.BloodsownTimer == 0, Player.BloodsownTimer
 
 def EnshroudRequirement(Player, Spell):
+    #input(Player.EnshroudCD <= 0)
+    #input(Player.ShroudGauge)
     return Player.EnshroudCD <= 0 and Player.ShroudGauge >= 50, Player.EnshroudCD
 
 
@@ -46,14 +50,27 @@ def CommunioRequirement(Player, Spell):
 def UnveiledGibbetRequirement(Player, Spell):
     return Player.EnhancedGibbet, -1
 
-def UnveiledGallows(Player, Spell):
+def UnveiledGallowsRequirement(Player, Spell):
     return Player.EnhancedGallows, -1
 
+def HellIngressRequirement(Player, Spell):
+    return Player.HellIngressCD <= 0, Player.HellIngress
+
 #Apply
+
+def ApplyHellIngress(Player, Enemy):
+    if not (HellIngressEffect in Player.EffectList):
+        Player.EffectList.append(HellIngressEffect)
+        Player.EffectCDList.append(HellIngressCheck)
+    Player.HellIngressCD = 20
+    Player.HellIngressTimer = 20
 
 def ApplyUnveiledGibbet(Player, Enemy):
     Player.AddGauge(-50) #Removing 50 Soul gauge
     Player.SoulReaverStack = 1
+
+    #Since SoulReaver stack are removed if any other ability is done, we will add an effect that will check for that
+    Player.EffectList.append(SoulReaverEffect)
 
 def ApplySlice(Player, Enemy):
     if not (SliceCombo in Player.EffectList) : Player.EffectList.append(SliceCombo)
@@ -94,32 +111,40 @@ def ApplyEnshroud(Player, Enemy):
 
 def ApplyPlentifulHarvest(Player, Enemy):
     Player.AddShroud(50)
-    Player.ImmortalStack = 0
+    Player.ImmortalSacrificeStack = 0
 
 
 def ApplyGibbet(Player, Enemy):
-    if not (GibbetEffect in Player.EffectList) : 
+    if not Player.EnhancedGallows : 
         Player.EffectList.append(GibbetEffect) #Buffs next Gallows
         Player.EffectCDList.append(GibbetCheck)
+        Player.EnhancedGallows = True
     Player.AddShroud(10) #Add 10 ShroudGauge
     Player.GibbetEffectTimer = 60
+    Player.SoulReaverStack -= 1 #Removing a stack
 
 def ApplyGallows(Player, Enemy):
-    if not (GallowsEffect in Player.EffectList) : 
-        Player.EffetList.append(GallowsEffect) #Buff next Gibbet
+    if not Player.EnhancedGibbet : 
+        Player.EffectList.append(GallowsEffect) #Buff next Gibbet
         Player.EffectCDList.append(GallowsCheck)
+        Player.EnhancedGibbet = True
     Player.AddShroud(10) #Add 10 Shroud Gauge
     Player.GallowsEffectTimer = 60
+    Player.SoulReaverStack -= 1 #Removing a stack
 
 def ApplyBloodStalk(Player, Enemy):
     Player.Addgauge(-50) #Removing 50 Soul Gauge
     Player.SoulReaverStack = 1 #Reset to 1
+    #Since SoulReaver stack are removed if any other ability is done, we will add an effect that will check for that
+    Player.EffectListappend(SoulReaverEffect)
 
 
 def ApplyGluttony(Player, Enemy):
     Player.AddGauge(-50) #Removing 50 Soul Gauge
     Player.GluttonyCD = 60
     Player.SoulReaverStack += 2
+    #Since SoulReaver stack are removed if any other ability is done, we will add an effect that will check for that
+    Player.EffectList.append(SoulReaverEffect)
 
 
 def ApplyArcaneCircle(Player, Enemy):
@@ -134,7 +159,7 @@ def ApplyArcaneCircle(Player, Enemy):
     def CircleOfSacrificeEffet(Target, Spell):
         #This effect will be given to all players
         if Spell.GCD: #We will assume that the GCD will be either a Weaposkill or a spell
-            Player.ImmortalStack = min(8, Player.ImmortalStack + 1)#Giving one stack
+            Player.ImmortalSacrificeStack = min(8, Player.ImmortalSacrificeStack + 1)#Giving one stack
 
     def CircleOfSacrificeCheck(Target, Enemy):
         if Player.CircleOfSacrificeTimer <= 0: #If no more time, we remove
@@ -172,6 +197,17 @@ def ApplySoulsow(Player, Enemy):
 
 #Effect
 
+def HellIngressEffect(Player, Spell):
+    if Spell.id == Harpe.id:
+        Spell.CastTime = Lock #Insta Cast
+        Player.HellIngressTimer = 0
+
+def SoulReaverEffect(Player, Spell):
+    #Will check if Spell is Gibbet or Gallows, if it is not we will remove SoulReaverStack
+    if Spell.GCD and Spell.id != Gibbet.id and Spell.id != Gallows.id:
+        #If not, we remove SoulReaverStack
+        Player.SoulReaverStack = 0
+
 def SliceCombo(Player, Spell):
     if Spell.id == WaxingSlice.id:
         if not (WaxingSliceCombo in Player.EffectList) : 
@@ -201,13 +237,20 @@ def GibbetEffect(Player, Spell):
     if Spell.id == Gallows.id:
         Spell.Potency += 60
         Player.GibbetEffectTimer = 0
+        Player.EnhancedGallows = False
 
 def GallowsEffect(Player, Spell):
     if Spell.id == Gibbet.id:
         Spell.Potency += 60
         Player.GallowsEffectTimer = 0
+        Player.EnhancedGibbet = False
 
 #check
+
+def HellIngressCheck(Player, Enemy):
+    if Player.HellIngressTimer <= 0:
+        Player.EffectList.remove(HellIngressEffect)
+        Player.EffectToRemove.append(HellIngressCheck)
 
 def VoidReapingCheck(Player, Enemy):
     if Player.VoidReapingTimer <= 0:
@@ -227,7 +270,7 @@ def GibbetCheck(Player, Enemy):
 def GallowsCheck(Player, Enemy):
     if Player.GallowsEffectTimer <= 0:
         Player.EffectList.remove(GallowsEffect)
-        Player.EffectCDList.append(GallowsCheck)
+        Player.EffectToRemove.append(GallowsCheck)
 
 def SoulSliceStackCheck(Player, Enemy):
     if Player.SoulSliceCD <= 0:
@@ -267,8 +310,9 @@ Gluttony = ReaperSpell(7, False, Lock, 0, 500, ApplyGluttony, [GluttonyRequireme
 Enshroud = ReaperSpell(11, False, Lock, 0, 0, ApplyEnshroud, [EnshroudRequirement], False)
 LemureSlice = ReaperSpell(14, False, Lock, 0, 200, ApplyLemureSlice, [LemureSliceRequirement], False)
 BloodStalk = ReaperSpell(18, False, Lock, 0, 340, ApplyBloodStalk, [BloodStalkRequirement], False)
-UnveiledGibbet = ReaperSpell(19, False, Lock, 0, 400, ApplyUnveiledGibbed, [UnveiledGibbetRequirment], False)
-UnveiledGallows = ReaperSpell(20, False, Lock, 0, 400, ApplyUnveiledGibbet, [UnveiledGallowsRequirment], False) #Shares effect with Gibbet
+UnveiledGibbet = ReaperSpell(19, False, Lock, 0, 400, ApplyUnveiledGibbet, [UnveiledGibbetRequirement], False)
+UnveiledGallows = ReaperSpell(20, False, Lock, 0, 400, ApplyUnveiledGibbet, [UnveiledGallowsRequirement], False) #Shares effect with Gibbet
+HellIngress = ReaperSpell(21, False, Lock, 0, 0, ApplyHellIngress, [HellIngressRequirement], False)
 #buff
 DeathDesignBuff = buff(1.1)
 ArcaneCircleBuff = buff(1.03)
