@@ -12,6 +12,8 @@ class Reaper(Melee):
         self.ImmortalSacrificeStack = 0
         self.SoulReaverStack = 2
         self.ShroudGauge = 0
+        self.LemureGauge = 0
+        self.VoidShroudGauge = 0
 
         #Ready Effect
 
@@ -39,6 +41,8 @@ class Reaper(Melee):
         self.GallowsEffectTimer = 0
         self.GibbetEffectTimer = 0
         self.BloodsownTime = 0
+        self.VoidReapingTimer = 0
+        self.CrossReapingTimer = 0
 
 
     def AddGauge(self, Amount):

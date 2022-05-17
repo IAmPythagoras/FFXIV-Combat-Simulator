@@ -27,16 +27,52 @@ def PlentifulHarvestRequirement(Player, Spell):
 
     return Player.ImmortalSacrificeStack > 0 and Player.BloodsownTimer == 0, Player.BloodsownTimer
 
+def EnshroudRequirement(Player, Spell):
+    return Player.EnshroudCD <= 0 and Player.ShroudGauge >= 50, Player.EnshroudCD
+
 
 def VoidReapingRequirement(Player, Spell):
-    return Player.AvatarTimer > 0
+    return Player.AvatarTimer > 0 and Player.LemureGauge > 0, -1
+
+def LemureSliceRequirement(Player, Spell):
+    return Player.VoidShroudGauge > 1, -1
+
+def CommunioRequirement(Player, Spell):
+    return Player.LemureGauge > 0, -1
 
 #Apply
+
+def ApplyCommunio(Player, Enemy):
+    #Ends Enshroud effect
+    Player.AvatarTimer = 0
+    Player.LemureGauge = 0
+    Player.VoidShroudGauge = 0
+    #Removing all Gauge related to Enshroud
+
+def ApplyLemureSlice(Player, Enemy):
+    Player.VoidShroudGauge -= 2 #Removing 2
+
+def ApplyVoidReaping(Player, Enemy):
+    if not (VoidReapingEffect in Player.EffectList) : 
+        Player.EffectList.append(VoidReapingEffect)
+        Player.EffectCDList.append(VoidReapingCheck)
+    Player.LemureGauge -= 1
+    Player.VoidShroudGauge = min(5, Player.VoidShroudGauge + 1) #Each Lemure used, we get a void shroud
+    Player.VoidReapingTimer = 30
+
+def ApplyCrossReaping(Player, Enemy):
+    if not (CrossReapingEffect in Player.EffectList) : 
+        Player.EffectList.append(CrossReapingEffect)
+        Player.EffectCDList.append(CrossReapingCheck)
+    Player.LemureGauge -= 1
+    Player.VoidShroudGauge = min(5, Player.VoidShroudGauge + 1)
+    Player.CrossReapingTimer = 30
 
 def ApplyEnshroud(Player, Enemy):
     Player.AddShroud(-50) #Removing 50Shroud Gauge
     Player.EnshroudCD = 15
     Player.AvatarTimer = 30 #Avatar Timer
+    Player.LemureGauge = 5 #Max Lemure
 
 
 def ApplyPlentifulHarvest(Player, Enemy):
@@ -116,6 +152,16 @@ def ApplySoulsow(Player, Enemy):
 
 #Effect
 
+def VoidReapingEffect(Player, Spell):
+    if Spell.id == CrossReaping.id:
+        Spell.Potency += 60
+        Player.VoidReapingTimer = 0
+
+def CrossReapingEffect(Player, Spell):
+    if Spell.id == VoidReaping.id:
+        Spell.Potency += 60
+        Player.CrossReapingTimer = 0
+
 def GibbetEffect(Player, Spell):
     if Spell.id == Gallows.id:
         Spell.Potency += 60
@@ -127,6 +173,16 @@ def GallowsEffect(Player, Spell):
         Player.GallowsEffectTimer = 0
 
 #check
+
+def VoidReapingCheck(Player, Enemy):
+    if Player.VoidReapingTimer <= 0:
+        Player.EffectList.remove(VoidReapingEffect)
+        Player.EffectToRemove.append(VoidReapingCheck)
+
+def CrossReapingCheck(Player, Enemy):
+    if Player.CrossReapingTimer <= 0:
+        Player.EffectList.remove(CrossReapingEffect)
+        Player.EffectToRemove.append(CrossReapingCheck)
 
 def GibbetCheck(Player, Enemy):
     if Player.GibbetEffectTimer <= 0:
@@ -161,12 +217,13 @@ Gibbet = ReaperSpell(8, True, Lock, 2.5, 460, ApplyGibbet, [GibbetRequirement], 
 Gallows = ReaperSpell(9, True, Lock, 2.5, 460, ApplyGallows, [GibbetRequirement], True) #shares same requirement as Gibbet
 PlentifulHarvest = ReaperSpell(10, True, Lock, 2.5, 520, ApplyPlentifulHarvest, [PlentifulHarvestRequirement], True)
 VoidReaping = ReaperSpell(12, True, Lock, 1.5, 460, ApplyVoidReaping, [VoidReapingRequirement], True)
-
+CrossReaping = ReaperSpell(13, True, Lock, 1.5, 460, ApplyCrossReaping, [VoidReapingRequirement], True) #Same Requriement as VoidReaping
+Communio = ReaperSpell(14, True, 1.3, 2.5, 1000, ApplyCommunio, [CommunioRequirement], False)
 #oGCD
 ArcaneCircle = ReaperSpell(6, False, Lock, 0, 0, ApplyArcaneCircle, [ArcaneCircleRequirement], False)
 Gluttony = ReaperSpell(7, False, Lock, 0, 500, ApplyGluttony, [GluttonyRequirement], False)
-Enshroud = ReaperSpell(11, False, Lock, 0, 0, ApplyEnshroud, [Enshroudrequirement], False)
-
+Enshroud = ReaperSpell(11, False, Lock, 0, 0, ApplyEnshroud, [EnshroudRequirement], False)
+LemureSlice = ReaperSpell(14, False, Lock, 0, 200, ApplyLemureSlice, [LemureSliceRequirement], False)
 #buff
 DeathDesignBuff = buff(1.1)
 ArcaneCircleBuff = buff(1.03)
