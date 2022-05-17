@@ -51,3 +51,13 @@ class MonkSpell(MeleeSpell):
 
         self.Weaponskill = Weaponskill
         self.MasterfulBlitz = MasterfulBlitz
+
+#########################################
+########## MONK SPELL ###############
+#########################################
+
+class ReaperSpell(MeleeSpell):
+    def __init__(self, id, GCD, CastTime,RecastTime, Potency, Effect, Requirement, Weaponskill):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, 0, Effect, Requirement)
+
+        self.Weaponskill = Weaponskill
