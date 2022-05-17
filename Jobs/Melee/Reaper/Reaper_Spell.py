@@ -16,6 +16,9 @@ def ArcaneCircleRequirement(Player, Spell):
 def GluttonyRequirement(Player, Spell):
     return Player.GluttonyCD <= 0 and Player.SoulGauge >= 50, Player.GluttonyCD
 
+def BloodStalkRequirement(Player, Spell):
+    return Player.SoulGauge >= 50, -1
+
 def GibbetRequirement(Player, Spell):
     return Player.SoulReaverStack > 0 and Player.AvatarTimer == 0, -1
 
@@ -41,6 +44,10 @@ def CommunioRequirement(Player, Spell):
     return Player.LemureGauge > 0, -1
 
 #Apply
+
+def ApplySlice(Player, Enemy):
+    if not (SliceCombo in Player.EffectList) : Player.EffectList.append(SliceCombo)
+    Player.AddGauge(10) #add 10 Soul Gauge
 
 def ApplyCommunio(Player, Enemy):
     #Ends Enshroud effect
@@ -94,6 +101,9 @@ def ApplyGallows(Player, Enemy):
     Player.AddShroud(10) #Add 10 Shroud Gauge
     Player.GallowsEffectTimer = 60
 
+def ApplyBloodStalk(Player, Enemy):
+    Player.Addgauge(-50) #Removing 50 Soul Gauge
+    Player.SoulReaverStack = 1 #Reset to 1
 
 
 def ApplyGluttony(Player, Enemy):
@@ -152,6 +162,21 @@ def ApplySoulsow(Player, Enemy):
 
 #Effect
 
+def SliceCombo(Player, Spell):
+    if Spell.id == WaxingSlice.id:
+        if not (WaxingSliceCombo in Player.EffectList) : 
+            Player.EffectList.append(WaxingSliceCombo)
+        Player.EffectToRemove.append(SliceCombo)
+        Spell.Potency += 240
+        Player.AddGauge(10) #add 10 soul gauge
+
+def WaxingSliceCombo(Player, Spell):
+    if Spell.id == InfernalSlice.id:
+        Spell.Potency += 320
+        Player.EffectToRemove.append(WaxingSliceCombo)
+        Player.AddGauge(10) #Add 10 soul gauge
+
+
 def VoidReapingEffect(Player, Spell):
     if Spell.id == CrossReaping.id:
         Spell.Potency += 60
@@ -208,6 +233,13 @@ def DeathDesignCheck(Player, Enemy):
         Player.EffectToRemove.append(DeathDesignCheck)
 
 #GCD
+
+#Combo Actions
+Slice = ReaperSpell(15, True, Lock, 2.5, 300, ApplySlice, [], True)
+WaxingSlice = ReaperSpell(16, True, Lock, 2.5, 140, empty, [], True)
+InfernalSlice = ReaperSpell(17, True, Lock, 2.5, 140, empty, [], True)
+
+#Other GCD
 Soulsow = ReaperSpell(1, True, 5, 2.5, 0, ApplySoulsow, [], False)
 HarvestMoon = ReaperSpell(2, True, Lock, 2.5, 600, ApplyHarvestMoon, [HarvestMoonRequirement], False)
 Harpe = ReaperSpell(3, True, 1.3, 2.5, 2.5, empty, [], False)
@@ -224,6 +256,7 @@ ArcaneCircle = ReaperSpell(6, False, Lock, 0, 0, ApplyArcaneCircle, [ArcaneCircl
 Gluttony = ReaperSpell(7, False, Lock, 0, 500, ApplyGluttony, [GluttonyRequirement], False)
 Enshroud = ReaperSpell(11, False, Lock, 0, 0, ApplyEnshroud, [EnshroudRequirement], False)
 LemureSlice = ReaperSpell(14, False, Lock, 0, 200, ApplyLemureSlice, [LemureSliceRequirement], False)
+BloodStalk = ReaperSpell(18, False, Lock, 0, 340, ApplyBloodStalk, [BloodStalkRequirement], False)
 #buff
 DeathDesignBuff = buff(1.1)
 ArcaneCircleBuff = buff(1.03)
