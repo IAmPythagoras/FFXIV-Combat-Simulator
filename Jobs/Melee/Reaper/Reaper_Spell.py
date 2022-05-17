@@ -43,7 +43,17 @@ def LemureSliceRequirement(Player, Spell):
 def CommunioRequirement(Player, Spell):
     return Player.LemureGauge > 0, -1
 
+def UnveiledGibbetRequirement(Player, Spell):
+    return Player.EnhancedGibbet, -1
+
+def UnveiledGallows(Player, Spell):
+    return Player.EnhancedGallows, -1
+
 #Apply
+
+def ApplyUnveiledGibbet(Player, Enemy):
+    Player.AddGauge(-50) #Removing 50 Soul gauge
+    Player.SoulReaverStack = 1
 
 def ApplySlice(Player, Enemy):
     if not (SliceCombo in Player.EffectList) : Player.EffectList.append(SliceCombo)
@@ -257,6 +267,8 @@ Gluttony = ReaperSpell(7, False, Lock, 0, 500, ApplyGluttony, [GluttonyRequireme
 Enshroud = ReaperSpell(11, False, Lock, 0, 0, ApplyEnshroud, [EnshroudRequirement], False)
 LemureSlice = ReaperSpell(14, False, Lock, 0, 200, ApplyLemureSlice, [LemureSliceRequirement], False)
 BloodStalk = ReaperSpell(18, False, Lock, 0, 340, ApplyBloodStalk, [BloodStalkRequirement], False)
+UnveiledGibbet = ReaperSpell(19, False, Lock, 0, 400, ApplyUnveiledGibbed, [UnveiledGibbetRequirment], False)
+UnveiledGallows = ReaperSpell(20, False, Lock, 0, 400, ApplyUnveiledGibbet, [UnveiledGallowsRequirment], False) #Shares effect with Gibbet
 #buff
 DeathDesignBuff = buff(1.1)
 ArcaneCircleBuff = buff(1.03)
