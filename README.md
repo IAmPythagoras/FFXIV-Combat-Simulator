@@ -84,13 +84,13 @@ Ninja : DONE
 
 Samurai : DONE
 
-Reaper : IN WORK
+Reaper : DONE
 
 Monk : IN WORK
 
 Dragoon : DONE
 
-UPDATED : May 16th 2022
+UPDATED : May 17th 2022
 
 And we plan to add the rest of them in due time.
 
