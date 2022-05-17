@@ -27,8 +27,9 @@ def GibbetRequirement(Player, Spell):
 def PlentifulHarvestRequirement(Player, Spell):
 
     #Will modify Spell's potency depending on ImmortalStack, will add 35 potency for each stack, for a max of 800
-
-    Spell.Potency += Player.ImmortalSacrificeStack * 35
+    #input(Player.ImmortalSacrificeStack)
+    Spell.Potency += (Player.ImmortalSacrificeStack - 1) * 40 #Removing minimal requirement, which is 1 stack
+    #input("Potency of plentiful is : " + str(Spell.Potency))
 
     return Player.ImmortalSacrificeStack > 0 and Player.BloodsownTimer == 0, Player.BloodsownTimer
 
@@ -119,6 +120,7 @@ def ApplyGibbet(Player, Enemy):
         Player.EffectList.append(GibbetEffect) #Buffs next Gallows
         Player.EffectCDList.append(GibbetCheck)
         Player.EnhancedGallows = True
+        #input("Giving enhanced Gallows")
     Player.AddShroud(10) #Add 10 ShroudGauge
     Player.GibbetEffectTimer = 60
     Player.SoulReaverStack -= 1 #Removing a stack
@@ -128,6 +130,7 @@ def ApplyGallows(Player, Enemy):
         Player.EffectList.append(GallowsEffect) #Buff next Gibbet
         Player.EffectCDList.append(GallowsCheck)
         Player.EnhancedGibbet = True
+        #input("Giving enhanced Gibbet")
     Player.AddShroud(10) #Add 10 Shroud Gauge
     Player.GallowsEffectTimer = 60
     Player.SoulReaverStack -= 1 #Removing a stack
@@ -160,6 +163,8 @@ def ApplyArcaneCircle(Player, Enemy):
         #This effect will be given to all players
         if Spell.GCD: #We will assume that the GCD will be either a Weaposkill or a spell
             Player.ImmortalSacrificeStack = min(8, Player.ImmortalSacrificeStack + 1)#Giving one stack
+            Target.EffectToRemove.append(CircleOfSacrificeEffet)
+            Target.EffectCDList.remove(CircleOfSacrificeCheck) #Removing check and effect, since max of 1 per player
 
     def CircleOfSacrificeCheck(Target, Enemy):
         if Player.CircleOfSacrificeTimer <= 0: #If no more time, we remove
@@ -167,8 +172,9 @@ def ApplyArcaneCircle(Player, Enemy):
             Target.EffectToRemove.append(CircleOfSacrificeCheck)
 
     for player in Player.CurrentFight.PlayerList:
+        #input("Given effect to : " + str(player))
         player.EffectList.append(CircleOfSacrificeEffet) #Giving the effect to all players in the fight
-        Player.EffectCDList.append(CircleOfSacrificeCheck)
+        player.EffectCDList.append(CircleOfSacrificeCheck)
 
     
 
@@ -235,12 +241,14 @@ def CrossReapingEffect(Player, Spell):
 
 def GibbetEffect(Player, Spell):
     if Spell.id == Gallows.id:
+        #input("Buffing Gallows")
         Spell.Potency += 60
         Player.GibbetEffectTimer = 0
         Player.EnhancedGallows = False
 
 def GallowsEffect(Player, Spell):
     if Spell.id == Gibbet.id:
+        #input("Buffing Gibbet")
         Spell.Potency += 60
         Player.GallowsEffectTimer = 0
         Player.EnhancedGibbet = False
@@ -266,11 +274,13 @@ def GibbetCheck(Player, Enemy):
     if Player.GibbetEffectTimer <= 0:
         Player.EffectList.remove(GibbetEffect)
         Player.EffectToRemove.append(GibbetCheck)
+        #input("Removing enhanced gallows")
 
 def GallowsCheck(Player, Enemy):
     if Player.GallowsEffectTimer <= 0:
         Player.EffectList.remove(GallowsEffect)
         Player.EffectToRemove.append(GallowsCheck)
+        #input("Removing enhanced gibbet")
 
 def SoulSliceStackCheck(Player, Enemy):
     if Player.SoulSliceCD <= 0:
@@ -288,31 +298,31 @@ def DeathDesignCheck(Player, Enemy):
 #GCD
 
 #Combo Actions
-Slice = ReaperSpell(15, True, Lock, 2.5, 300, ApplySlice, [], True)
-WaxingSlice = ReaperSpell(16, True, Lock, 2.5, 140, empty, [], True)
-InfernalSlice = ReaperSpell(17, True, Lock, 2.5, 140, empty, [], True)
+Slice = ReaperSpell(1, True, Lock, 2.5, 300, ApplySlice, [], True)
+WaxingSlice = ReaperSpell(2, True, Lock, 2.5, 140, empty, [], True)
+InfernalSlice = ReaperSpell(3, True, Lock, 2.5, 140, empty, [], True)
 
 #Other GCD
-Soulsow = ReaperSpell(1, True, 5, 2.5, 0, ApplySoulsow, [], False)
-HarvestMoon = ReaperSpell(2, True, Lock, 2.5, 600, ApplyHarvestMoon, [HarvestMoonRequirement], False)
-Harpe = ReaperSpell(3, True, 1.3, 2.5, 2.5, empty, [], False)
-ShadowOfDeath = ReaperSpell(4, True, Lock, 2.5, 300, ApplyShadowOfDeath, [], True)
-SoulSlice = ReaperSpell(5, True, Lock, 2.5, 460, ApplySoulSlice, [SoulSliceRequirement], True)
-Gibbet = ReaperSpell(8, True, Lock, 2.5, 460, ApplyGibbet, [GibbetRequirement], True)
-Gallows = ReaperSpell(9, True, Lock, 2.5, 460, ApplyGallows, [GibbetRequirement], True) #shares same requirement as Gibbet
-PlentifulHarvest = ReaperSpell(10, True, Lock, 2.5, 520, ApplyPlentifulHarvest, [PlentifulHarvestRequirement], True)
+Soulsow = ReaperSpell(4, True, 5, 2.5, 0, ApplySoulsow, [], False)
+HarvestMoon = ReaperSpell(5, True, Lock, 2.5, 600, ApplyHarvestMoon, [HarvestMoonRequirement], False)
+Harpe = ReaperSpell(6, True, 1.3, 2.5, 300, empty, [], False)
+ShadowOfDeath = ReaperSpell(7, True, Lock, 2.5, 300, ApplyShadowOfDeath, [], True)
+SoulSlice = ReaperSpell(8, True, Lock, 2.5, 460, ApplySoulSlice, [SoulSliceRequirement], True)
+Gibbet = ReaperSpell(9, True, Lock, 2.5, 460, ApplyGibbet, [GibbetRequirement], True)
+Gallows = ReaperSpell(10, True, Lock, 2.5, 460, ApplyGallows, [GibbetRequirement], True) #shares same requirement as Gibbet
+PlentifulHarvest = ReaperSpell(11, True, Lock, 2.5, 520, ApplyPlentifulHarvest, [PlentifulHarvestRequirement], True)
 VoidReaping = ReaperSpell(12, True, Lock, 1.5, 460, ApplyVoidReaping, [VoidReapingRequirement], True)
 CrossReaping = ReaperSpell(13, True, Lock, 1.5, 460, ApplyCrossReaping, [VoidReapingRequirement], True) #Same Requriement as VoidReaping
 Communio = ReaperSpell(14, True, 1.3, 2.5, 1000, ApplyCommunio, [CommunioRequirement], False)
 #oGCD
-ArcaneCircle = ReaperSpell(6, False, Lock, 0, 0, ApplyArcaneCircle, [ArcaneCircleRequirement], False)
-Gluttony = ReaperSpell(7, False, Lock, 0, 500, ApplyGluttony, [GluttonyRequirement], False)
-Enshroud = ReaperSpell(11, False, Lock, 0, 0, ApplyEnshroud, [EnshroudRequirement], False)
-LemureSlice = ReaperSpell(14, False, Lock, 0, 200, ApplyLemureSlice, [LemureSliceRequirement], False)
-BloodStalk = ReaperSpell(18, False, Lock, 0, 340, ApplyBloodStalk, [BloodStalkRequirement], False)
-UnveiledGibbet = ReaperSpell(19, False, Lock, 0, 400, ApplyUnveiledGibbet, [UnveiledGibbetRequirement], False)
-UnveiledGallows = ReaperSpell(20, False, Lock, 0, 400, ApplyUnveiledGibbet, [UnveiledGallowsRequirement], False) #Shares effect with Gibbet
-HellIngress = ReaperSpell(21, False, Lock, 0, 0, ApplyHellIngress, [HellIngressRequirement], False)
+ArcaneCircle = ReaperSpell(15, False, Lock, 0, 0, ApplyArcaneCircle, [ArcaneCircleRequirement], False)
+Gluttony = ReaperSpell(16, False, Lock, 0, 500, ApplyGluttony, [GluttonyRequirement], False)
+Enshroud = ReaperSpell(17, False, Lock, 0, 0, ApplyEnshroud, [EnshroudRequirement], False)
+LemureSlice = ReaperSpell(18, False, Lock, 0, 200, ApplyLemureSlice, [LemureSliceRequirement], False)
+BloodStalk = ReaperSpell(19, False, Lock, 0, 340, ApplyBloodStalk, [BloodStalkRequirement], False)
+UnveiledGibbet = ReaperSpell(20, False, Lock, 0, 400, ApplyUnveiledGibbet, [UnveiledGibbetRequirement], False)
+UnveiledGallows = ReaperSpell(21, False, Lock, 0, 400, ApplyUnveiledGibbet, [UnveiledGallowsRequirement], False) #Shares effect with Gibbet
+HellIngress = ReaperSpell(22, False, Lock, 0, 0, ApplyHellIngress, [HellIngressRequirement], False)
 #buff
 DeathDesignBuff = buff(1.1)
 ArcaneCircleBuff = buff(1.03)
