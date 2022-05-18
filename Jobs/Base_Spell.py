@@ -70,6 +70,9 @@ class Spell:
                 print("Failed to cast the spell : " + str(self.id))
                 print("The Requirement that failed was : " + str(Requirement.__name__))
                 raise FailedToCast("Failed to cast the spell")
+        #Will make sure CastTime is at least Lock
+        if tempSpell.CastTime < Lock : tempSpell.CastTime = Lock
+            
         return tempSpell
 
         #Will put casting spell in player, and do damage/effect once the casting time is over
