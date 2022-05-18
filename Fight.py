@@ -1,4 +1,5 @@
 import math
+from unicodedata import decimal
 from Enemy import Enemy
 import matplotlib.pyplot as plt
 import numpy as np
@@ -91,9 +92,10 @@ class Fight:
         #The value of p is found by using the fact that Player.DPS = DPS * ExpectedDHDamage, Player.ExpectedDPS = DPS * ExpectedDHDamage * ExpectedCritDamage
         #And ExpectedCritDamage = ( 1 + (CritMult * CritRate)), so we simply isolate CritRate. This will give an average Crit rate over the whole fight which will
         #take into account crit rate buffs throughout the fight
-
-        mean = math.floor(n * p) #Number of expected crit
-        radius = math.ceil(n/2)
+        decimal_mean = n*p #Number of expected crit (not an integer)
+        mean = math.floor(decimal_mean) #Number of expected crit rounded down
+        radius = math.ceil(n/2) #Radius we for which we will graph the distribution
+        std = n*p * (1-p) #Standard deviation
         #The binomial distribution of enough trials can be approximated to N(np, np(1-p)) for big enough n, so we will simply approximate the distribution by this
         #Note that here n stands for the number of damage spell, and p is the averagecritrate of the player AverageCritRate = (CritRate + CritRateBonus)/time
         #We will salvage values from the normal distribution, then find the average crit multiplier by number of crits gotten. We will then multiply the computed DPS
@@ -102,16 +104,37 @@ class Fight:
 
         y_list = []
         expected_dps_list = [] #List of expected DPS
-        average_crit_mult_list = []#This will be a list of expected DPS for the number of succesful crit
         #It will be computed by computing an average crit multiplier, and then multiplying the DPS by that
         for i in range(max(0, mean - radius), mean + radius+1): #Here i is the number of success
-            y_list += [math.floor(Normal(n*p, n*p * (1-p), i) * 1000) /10] #Sampling from the distribution
+            y_list += [math.floor(Normal(decimal_mean, std, i) * 1000) /10] #Sampling from the distribution
             average_crit_mult = AverageCritMult(Player, i)
-            average_crit_mult_list += [average_crit_mult] 
             expected_dps_list += [average_crit_mult * Player.DPS]
-        lab = "\u03BC = " + str(round(Player.ExpectedDPS,1)) + " \u03C3 = " + str(round(n*p*(1-p),2))
+
+
+        high_crit_mult_list = []
+        low_crit_mult_list = []
+        for i in range(1,4): #This loop will create boundary for the empirical rules, it will do 1 to 3 std away from the mean
+            high = decimal_mean + i*std
+            low = decimal_mean - i*std
+            high_crit_mult = AverageCritMult(Player, high)
+            low_crit_mult = AverageCritMult(Player, low)
+            high_crit_mult_list += [high_crit_mult * Player.DPS]
+            low_crit_mult_list += [low_crit_mult * Player.DPS]
+        #Even though low and high are not integers, the AverageCritMult is a continuous stricly increasing function, so we can use it on
+        #non integer value to get an "in-between" value
+
+
+        lab = "\u03BC = " + str(round(Player.ExpectedDPS,1)) + " \u03C3 = " + str(round(std,2))
         axs.plot(expected_dps_list, y_list,label=lab) #Distribution
         axs.plot([Player.ExpectedDPS,Player.ExpectedDPS], [0,13], label="Expected DPS", linestyle="dashed") #Expected DPS
+        #Plotting Empirical rule region
+        axs.axvspan(max(expected_dps_list[0],low_crit_mult_list[2]), min(expected_dps_list[-1],high_crit_mult_list[0]), color="green") #99.7% empirical rule region, will most likely not appear in the graph
+        axs.axvspan(max(expected_dps_list[0],low_crit_mult_list[1]), high_crit_mult_list[1], color="blue") #95% empirical rule region
+        axs.axvspan(low_crit_mult_list[0], high_crit_mult_list[0], color="red") #68% empirical rule region
+
+
+        axs.fill_between(expected_dps_list, y_list, 14, fc="lightgrey") #Used to cover the vertical regions from axvspan so they stop under the line of the distribution
+        axs.margins(-0.005) #margin arrangement
         axs.legend()
 
 
