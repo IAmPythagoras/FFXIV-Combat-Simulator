@@ -7,9 +7,12 @@ class Caster(Player):
         super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
 
         #Shared ressources across casters
-
-        self.SwiftCastCD = 0
+        
+        #CD
+        self.SwiftcastCD = 0
         self.LucidDreamingCD = 0
+        self.SureCastCD = 0
+        self.AddleCD = 0
 
         #Timer
         self.LucidDreamingTimer = 0
@@ -21,8 +24,10 @@ class Caster(Player):
         self.Trait = 1.3 #magik and mend
     
     def updateCD(self,time):
-        if (self.SwiftCastCD > 0) : self.SwiftCastCD = max(0,self.SwiftCastCD - time)
+        if (self.SwiftcastCD > 0) : self.SwiftcastCD = max(0,self.SwiftcastCD - time)
         if (self.LucidDreamingCD > 0) : self.LucidDreamingCD = max(0,self.LucidDreamingCD - time)
+        if (self.SureCastCD > 0) : self.SureCastCD = max(0,self.SureCastCD - time)
+        if (self.AddleCD > 0) : self.AddleCD = max(0,self.AddleCD - time)
 
     def updateTimer(self, time):
         super().updateTimer(time)
