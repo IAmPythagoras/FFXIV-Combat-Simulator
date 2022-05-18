@@ -1,6 +1,6 @@
 from doctest import FAIL_FAST
 from Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
-from Jobs.Caster.Caster_Spell import BLMSpell, SwiftCastEffect
+from Jobs.Caster.Caster_Spell import BLMSpell, SwiftcastEffect
 import copy
 Lock = 0.75
 #Requirement
@@ -50,7 +50,6 @@ def ApplyFire1(Player, Enemy):
         Player.SharpCast = False
 
 def ApplyFire3(Player, Enemy):
-
     #Will check if we unlock paradox
     if Player.ElementalGauge == -3 and Player.UmbralHearts == 3:
         Player.Paradox = True
@@ -163,13 +162,13 @@ def Thunder3ProcEffect(Player, Spell):
         Player.EffectToRemove.append(Thunder3ProcEffect)
 
 def TripleCastEffect(Player, Spell): 
-    if not (SwiftCastEffect in Player.EffectList) and Spell.GCD and Spell.CastTime > Lock: #If GCD and not already insta cast, also Swift will go before
+    if not (SwiftcastEffect in Player.EffectList) and Spell.GCD and Spell.CastTime > Lock: #If GCD and not already insta cast, also Swift will go before
         Spell.CastTime = Lock
         Player.TripleCastStack -= 1
 
 def LeyLinesEffect(Player, Spell):
     if Spell.GCD:
-        Spell.CastTime = min(Lock, Spell.CastTime * 0.85)
+        Spell.CastTime *= 0.85
         Spell.RecastTime *= 0.85
 
 def EnochianEffect(Player, Spell):
@@ -228,7 +227,7 @@ def ElementalEffect(Player, Spell):
 
         if Player.ElementalGauge < 0 : #Ice Phase
             Spell.ManaCost = 0
-            Spell.CastingTime = Lock
+            Spell.CastTime = 0
 
 #Check
 
@@ -291,7 +290,7 @@ Blizzard1 = BLMSpell(4, True, 2.5, 2.5, 180, 400, False, True, ApplyBlizzard1, [
 Blizzard3 = BLMSpell(5, True, 3.5, 2.5, 260, 800, False, True, ApplyBlizzard3, [ManaRequirement])
 Blizzard4 = BLMSpell(6, True, 2.5, 2.5, 310, 800, False, True, ApplyBlizzard4, [EnochianRequirement, IceRequirement, ManaRequirement])
 #Unaspected Spell
-Paradox = BLMSpell(7, True, 2.5, 2.5, 500, 1600, False, False, ApplyParadox, [ParadoxRequirement, ManaRequirement])
+Paradox = BLMSpell(7, True, 2.5, 2.5, 500, 1600, False, False, ApplyParadox, [ParadoxRequirement, ManaRequirement]) 
 Xenoglossy = BLMSpell(8, True, Lock, 2.5, 760, 0, False, False, ApplyXenoglossy, [PolyglotRequirement])
 Thunder3 = BLMSpell(10, True, 2.5, 2.5, 50, 400, False, False, ApplyThunder3, [ManaRequirement])
 Thunder3DOT = DOTSpell(-21, 35, False)
