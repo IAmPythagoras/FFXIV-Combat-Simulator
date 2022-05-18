@@ -1,25 +1,9 @@
-from Jobs.Base_Spell import Spell
+from Jobs.Base_Spell import ManaRequirement, Spell, empty
 Lock = 0.75
 class HealerSpell(Spell):
 
     def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
         super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
-
-
-
-def SwiftCastRequirement(Player, Spell):
-    return Player.SwiftCastCD <= 0
-
-def ApplySwiftCast(Player, Enemy):
-    Player.SwiftCastCD = 60
-    Player.EffectList.append(SwiftCastEffect)
-
-def SwiftCastEffect(Player, Spell):
-    if Spell.GCD and Spell.CastTime != 0: 
-        Spell.CastTime = 0
-        Player.EffectToRemove.append(SwiftCastEffect)
-
-SwiftCast = HealerSpell(1, False,0, Lock, 0, 0, ApplySwiftCast, [SwiftCastRequirement])
 
 
 #########################################
@@ -59,3 +43,20 @@ class SageSpell(HealerSpell):
     def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
         super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
 
+
+
+#Class Action spell
+
+#Requirement
+def RescueRequirement(Player, Spell):
+    return Player.RescueCD <= 0, Player.RescueCD
+
+#Apply
+
+def ApplyRescue(Player, Enemy):
+    Player.RescueCD = 120
+
+#Swiftcast, Surecast and LucidDreaming are in Caster_Spell.py
+Repose = HealerSpell(0, True, 2.5, 2.5, 0, 600, empty, [ManaRequirement])
+Esuna = HealerSpell(0, True, 1, 2.5, 0, 0, 400, [ManaRequirement])
+Rescue = HealerSpell(0, False, 0, 0, 0, 0, ApplyRescue, [RescueRequirement])
