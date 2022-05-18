@@ -12,7 +12,7 @@ class Healer(Player):
         #CD
         self.SurecastCD = 0
         self.RescueCD = 0
-        self.SwiftCastCD = 0
+        self.SwiftcastCD = 0
         self.LucidDreamingCD = 0
 
         
@@ -26,7 +26,7 @@ class Healer(Player):
         self.Trait = 1.3 #Magik and mend
     
     def updateCD(self,time):
-        if (self.SwiftCastCD > 0) : self.SwiftCastCD = max(0,self.SwiftCastCD - time)
+        if (self.SwiftcastCD > 0) : self.SwiftcastCD = max(0,self.SwiftcastCD - time)
         if (self.LucidDreamingCD > 0) : self.LucidDreamingCD = max(0,self.LucidDreamingCD - time)
         if (self.RescueCD > 0) : self.RescueCD = max(0,self.RescueCD - time)
         if (self.SurecastCD > 0) : self.SurecastCD = max(0,self.SurecastCD - time)

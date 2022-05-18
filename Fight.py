@@ -62,7 +62,7 @@ class Fight:
     def __init__(self, PlayerList, Enemy):
         self.PlayerList = PlayerList
         self.Enemy = Enemy
-        self.ShowGraph = False
+        self.ShowGraph = True
         self.TimeStamp = 0
         self.TeamCompositionBonus = 1
 

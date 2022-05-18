@@ -28,7 +28,6 @@ class Whitemage(Healer):
 
     def updateCD(self, time):
         super().updateCD(time)
-        if (self.SwiftCastCD > 0) : self.SwiftCastCD = max(0,self.SwiftCastCD - time)
         if (self.LucidDreamingCD > 0) : self.LucidDreamingCD = max(0,self.LucidDreamingCD - time)
         if (self.AssizeCD > 0) : self.AssizeCD = max(0,self.AssizeCD - time)
         if (self.ThinAirCD > 0) : self.ThinAirCD = max(0,self.ThinAirCD - time)
