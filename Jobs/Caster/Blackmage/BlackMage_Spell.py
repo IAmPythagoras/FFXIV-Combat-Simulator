@@ -50,8 +50,6 @@ def ApplyFire1(Player, Enemy):
         Player.SharpCast = False
 
 def ApplyFire3(Player, Enemy):
-    input("fire 3 time stamp : " + str(Player.CurrentFight.TimeStamp))
-    input("CastTime = " + str(Player.CastingSpell.CastTime))
     #Will check if we unlock paradox
     if Player.ElementalGauge == -3 and Player.UmbralHearts == 3:
         Player.Paradox = True
@@ -101,13 +99,10 @@ def ApplyThunder3(Player, Spell):
 
     if Player.SharpCast: #If we have SharpCast
         Player.EffectList.append(Thunder3ProcEffect)
-        input("Gaining Stack")
-        input("time stamp : " + str(Player.CurrentFight.TimeStamp))
         Player.SharpCast = False
 
 def ApplyTranspose(Player, Spell):
     Player.TransposeCD = 4
-    input("transpose at time stamp : " + str(Player.CurrentFight.TimeStamp))
     #Check if we unlock paradox
 
     if (Player.ElementalGauge == 3) or (Player.ElementalGauge == -3 and Player.UmbralHearts == 3): Player.Paradox = True #In fire phase with 3 Astral Fire
@@ -161,8 +156,6 @@ def Fire3ProcEffect(Player, Spell):
 
 def Thunder3ProcEffect(Player, Spell):
     if Spell.id == Thunder3.id:
-        input("buffed T3")
-        input("time stamp : " + str(Player.CurrentFight.TimeStamp))
         Spell.Potency += 350
         Spell.ManaCost = 0
         Spell.CastTime = Lock
@@ -170,15 +163,11 @@ def Thunder3ProcEffect(Player, Spell):
 
 def TripleCastEffect(Player, Spell): 
     if not (SwiftcastEffect in Player.EffectList) and Spell.GCD and Spell.CastTime > Lock: #If GCD and not already insta cast, also Swift will go before
-        input("Using Triple on : " + str(Spell.id))
-        input("CastTime is : " + str(Spell.CastTime))
-        input("triple time stamp : " + str(Player.CurrentFight.TimeStamp))
         Spell.CastTime = Lock
         Player.TripleCastStack -= 1
 
 def LeyLinesEffect(Player, Spell):
     if Spell.GCD:
-        #input("in leylines " + str(Spell.id))
         Spell.CastTime *= 0.85
         Spell.RecastTime *= 0.85
 
@@ -238,7 +227,7 @@ def ElementalEffect(Player, Spell):
 
         if Player.ElementalGauge < 0 : #Ice Phase
             Spell.ManaCost = 0
-            Spell.CastingTime = Lock
+            Spell.CastTime = 0
 
 #Check
 

@@ -83,8 +83,6 @@ def ApplyAddle(Player, Enemy):
 
 def SwiftcastEffect(Player, Spell):
     if Spell.GCD and Spell.CastTime > Lock:  #If GCD and not already insta cast
-        input("Using Swift cast on : " + str(Spell.id))
-        input("Swift time stamp : " + str(Player.CurrentFight.TimeStamp))
         Spell.CastTime = Lock
         Player.EffectToRemove.append(SwiftcastEffect)
 

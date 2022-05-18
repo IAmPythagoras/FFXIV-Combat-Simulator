@@ -71,7 +71,7 @@ class Spell:
                 print("The Requirement that failed was : " + str(Requirement.__name__))
                 raise FailedToCast("Failed to cast the spell")
         #Will make sure CastTime is at least Lock
-        if tempSpell.CastTime < Lock : tempSpell.CastTime = Lock
+        if tempSpell.CastTime < Lock : tempSpell.CastTime = 0.5
             
         return tempSpell
 
