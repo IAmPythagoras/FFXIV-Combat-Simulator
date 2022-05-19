@@ -104,11 +104,25 @@ class Fight:
 
         y_list = []
         expected_dps_list = [] #List of expected DPS
+        resolution = 500 #Hardcoded value, represents how many points on the curve we take
+        i = max(0, mean-radius) #Starting point
+        j = mean + radius+1 #Upper limit
+        h = (j - i)/resolution #Step to take
+        x_list = np.linspace(i,j,resolution) #Evenly spaced out from i -> j with resolution number of points
         #It will be computed by computing an average crit multiplier, and then multiplying the DPS by that
-        for i in range(max(0, mean - radius), mean + radius+1): #Here i is the number of success
-            y_list += [math.floor(Normal(decimal_mean, std, i) * 1000) /10] #Sampling from the distribution
+        while i < j:
+            y_list += [math.floor(Normal(decimal_mean, std, i) * 1000) /10]
             average_crit_mult = AverageCritMult(Player, i)
             expected_dps_list += [average_crit_mult * Player.DPS]
+            i+= h
+
+
+
+
+        #for i in range(max(0, mean - radius), mean + radius+1): #Here i is the number of success
+         #   y_list += [math.floor(Normal(decimal_mean, std, i) * 1000) /10] #Sampling from the distribution
+          #  average_crit_mult = AverageCritMult(Player, i)
+           # expected_dps_list += [average_crit_mult * Player.DPS]
 
 
         high_crit_mult_list = []
@@ -126,15 +140,15 @@ class Fight:
 
         lab = "\u03BC = " + str(round(Player.ExpectedDPS,1)) + " \u03C3 = " + str(round(std,2))
         axs.plot(expected_dps_list, y_list,label=lab) #Distribution
-        axs.plot([Player.ExpectedDPS,Player.ExpectedDPS], [0,13], label="Expected DPS", linestyle="dashed") #Expected DPS
+        axs.plot([Player.ExpectedDPS,Player.ExpectedDPS], [0,math.ceil(max(y_list))], label="Expected DPS", linestyle="dashed") #Expected DPS
         #Plotting Empirical rule region
-        axs.axvspan(max(expected_dps_list[0],low_crit_mult_list[2]), min(expected_dps_list[-1],high_crit_mult_list[0]), color="green") #99.7% empirical rule region, will most likely not appear in the graph
+        axs.axvspan(max(expected_dps_list[0],low_crit_mult_list[2]), min(expected_dps_list[-1],high_crit_mult_list[2]), color="green") #99.7% empirical rule region, will most likely not appear in the graph
         axs.axvspan(max(expected_dps_list[0],low_crit_mult_list[1]), high_crit_mult_list[1], color="blue") #95% empirical rule region
         axs.axvspan(low_crit_mult_list[0], high_crit_mult_list[0], color="red") #68% empirical rule region
 
 
-        axs.fill_between(expected_dps_list, y_list, 14, fc="lightgrey") #Used to cover the vertical regions from axvspan so they stop under the line of the distribution
-        axs.margins(-0.005) #margin arrangement
+        axs.fill_between(expected_dps_list, y_list, math.ceil(max(y_list)), fc="lightgrey") #Used to cover the vertical regions from axvspan so they stop under the line of the distribution
+        axs.margins(-0.0001) #margin arrangement
         axs.legend()
 
 
