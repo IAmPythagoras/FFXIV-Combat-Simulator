@@ -36,6 +36,7 @@ class Ninja(Melee):
         self.KassatsuTimer = 0
         self.SuitonTimer = 0
         self.PhantomKamaitachiReadyTimer = 0
+        self.TenChiJinTimer = 0
 
         #CD
         self.DreamWithinADreamCD = 0

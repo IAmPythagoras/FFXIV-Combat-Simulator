@@ -115,9 +115,9 @@ def ApplyBunshin(Player, Enemy):
 
 def ApplyTenChiJin(Player, Enemy):
     Player.TenChiJinCD = 120
-    Player.Ten = True
-    Player.Chi = True
-    Player.Jin = True
+    Player.TenChiJinTimer = 6
+    Player.EffectCDList.append(TenChiJinCheck)
+    Player.EffectList.append(TenChiJinEffect)
 
 def ApplyKassatsu(Player, Enemy):
     Player.KassatsuTimer = 15
@@ -201,6 +201,14 @@ def ApplySpinningEdge(Player, Enemy):
 
 
 #Effect
+
+def TenChiJinEffect(Player, Spell):
+    if Spell.id == Ten.id or Spell.id == Chi.id or Spell.id == Jin.id:
+        if Spell.id == Ten.id:
+            Player.CurrentRitual == 
+    else:
+        #Remove it
+        Player.TenChiJinTimer = 0
 
 def HutonEffect(Player, Spell):
     if isinstance(Spell, NinjaSpell) and Spell.Weaponskill : Spell.RecastTime *= 0.85
@@ -326,6 +334,7 @@ Jin = NinjaSpell(15, True, 1, 1, 0, ApplyJin, [NinjutsuRequirement], False, Fals
 
 
 #oGCD
+TenChiJin = NinjaSpell(16, False, Lock, 0, 0, ApplyTenChiJin, [TenChiJinRequirement], False, False)
 DreamWithinADream = NinjaSpell(5, False, Lock, 0, 3*150, ApplyDreamWithinADream, [DreamWithinADreamRequirement], False, False)
 Mug = NinjaSpell(7, False, Lock, 0, 150, ApplyMug, [MugRequirement], False, False)
 TrickAttack = NinjaSpell(8, False, Lock, 0, 400, ApplyTrickAttack, [TrickAttackRequirement], False, False)
