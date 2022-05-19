@@ -148,7 +148,7 @@ def empty(Player, Enemy):
     pass
 
 def WaitAbility(time):
-    return Spell(-1, True, time, time, 0, 0, empty, [])
+    return Spell(-1, False, time, time, 0, 0, empty, [])
 
 def ApplyPotion(Player, Enemy):
     Player.Stat["MainStat"] *= 1.1
