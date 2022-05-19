@@ -31,12 +31,13 @@ class Spell:
     def Cast(self, player, Enemy):
         #This function will cast the spell given by the Fight, it will apply whatever effects it has and do its potency
 
+        #print("Begining Cast of : " + str(self.id))
+        #input("Time stamp is : " + str(player.CurrentFight.TimeStamp))
+
         tempSpell = copy.deepcopy(self)
         #Creating a tempSpell which will have its values changed according that what effect
         #the player and the enemy have
-        #print("Status of DualCast : " + str(player.DualCast))
         #Will apply each effect the player currently has on the spell
-        #print("Effect List : " + str(player.EffectList))
         if self.id != -1: #id = -1 is WaitAbility, we don't want anything with that
             for Effect in player.EffectList:
                 Effect(player, tempSpell)#Changes tempSpell
@@ -71,7 +72,7 @@ class Spell:
                 print("The Requirement that failed was : " + str(Requirement.__name__))
                 raise FailedToCast("Failed to cast the spell")
         #Will make sure CastTime is at least Lock
-        if tempSpell.CastTime < Lock : tempSpell.CastTime = 0.5
+        if tempSpell.id > 0 and tempSpell.CastTime < Lock : tempSpell.CastTime = 0.7 #id < 0 are special abilities like DOT, so we do not want them to be affected by that
             
         return tempSpell
 

@@ -76,7 +76,7 @@ Event = Fight([], Dummy)
 
 #DRKPlayer = DarkKnight(2.41, DRKAction, [], [DarksideEffect], Event)
 
-BLMPlayer = BlackMage(2.5, [], [], [EnochianEffect, ElementalEffect], Event, BLMStat)
+BLMPlayer = BlackMage(2.5, [], [], [EnochianEffect, ElementalEffect], Event, BLMCRITStat)
 SCHPlayer = Scholar(2.5, [], [], [], Event, SCHStat)
 RDMPlayer = Redmage(2.5, [], [], [DualCastEffect], Event, RDMStat)
 MCHPlayer = Machinist(2.5, [], [], [], Event, MCHStat)
@@ -131,7 +131,7 @@ DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 RPRPlayer.ActionSet = RPROpener
 
-Event.PlayerList = [BLMPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
+Event.PlayerList = [BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
 
 
 Event.SimulateFight(0.01, 200, 20)

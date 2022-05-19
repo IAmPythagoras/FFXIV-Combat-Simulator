@@ -62,7 +62,7 @@ class Fight:
     def __init__(self, PlayerList, Enemy):
         self.PlayerList = PlayerList
         self.Enemy = Enemy
-        self.ShowGraph = False
+        self.ShowGraph = True
         self.TimeStamp = 0
         self.TeamCompositionBonus = 1
 
@@ -519,7 +519,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
     for buffs in Enemy.buffList:
         Damage = math.floor(Damage * buffs.MultDPS) #Multiplying all buffs
     
-    if CritRate == 2:
+    if CritRate == 1: #If sure to crit, add crit to min expected damage
         return math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))), math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))) #If we have auto crit, we return full damage
     else:
         return math.floor(Damage * ( 1 + (DHRate * 0.25))), math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))) #Non crit expected damage, expected damage with crit

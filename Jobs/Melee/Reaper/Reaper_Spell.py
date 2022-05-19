@@ -109,6 +109,9 @@ def ApplyEnshroud(Player, Enemy):
     Player.AvatarTimer = 30 #Avatar Timer
     Player.LemureGauge = 5 #Max Lemure
 
+def ApplyHarpe(Player, Enemy):
+    input("harpe at : " + str(Player.CurrentFight.TimeStamp))
+
 
 def ApplyPlentifulHarvest(Player, Enemy):
     Player.AddShroud(50)
@@ -185,6 +188,7 @@ def ApplySoulSlice(Player, Enemy):
     Player.SoulSliceStack -= 1
 
 def ApplyShadowOfDeath(Player, Enemy):
+    input("First spell at : " + str(Player.CurrentFight.TimeStamp))
 
     Player.AddGauge(50) #Adding 50 SoulGauge
 
@@ -305,7 +309,7 @@ InfernalSlice = ReaperSpell(3, True, Lock, 2.5, 140, empty, [], True)
 #Other GCD
 Soulsow = ReaperSpell(4, True, 5, 2.5, 0, ApplySoulsow, [], False)
 HarvestMoon = ReaperSpell(5, True, Lock, 2.5, 600, ApplyHarvestMoon, [HarvestMoonRequirement], False)
-Harpe = ReaperSpell(6, True, 1.3, 2.5, 300, empty, [], False)
+Harpe = ReaperSpell(6, True, 1.3, 2.5, 300, ApplyHarpe, [], False)
 ShadowOfDeath = ReaperSpell(7, True, Lock, 2.5, 300, ApplyShadowOfDeath, [], True)
 SoulSlice = ReaperSpell(8, True, Lock, 2.5, 460, ApplySoulSlice, [SoulSliceRequirement], True)
 Gibbet = ReaperSpell(9, True, Lock, 2.5, 460, ApplyGibbet, [GibbetRequirement], True)
