@@ -27,7 +27,7 @@ def JinRequirement(Player, Spell):
 def TenChiJinRequirement(Player, Spell):
     return Player.TenChiJinCD <= 0 and not Player.Kassatsu, Player.TenChiJinCD
 
-def HyoshoRanryuRequirement(Player, Spell):
+def KassatsuOnRequirement(Player, Spell):
     return Player.Kassatsu, -1
 
 def KassatsuRequirement(Player, Spell):
@@ -52,9 +52,49 @@ def MugRequirement(Player, Spell):
     return Player.MugCD <= 0, Player.MugCD
 
 def DreamWithinADreamRequirement(Player, Spell):
-    return Player.DreamWithinADreamCD <= 0, Player.DreamWithinADreamCD
+    return Player.DreamWithinADreamCD <= 0, Player.DreamWithinADreamCD\
+
+#Ninjutsu Requirement
+
+#Ten 0
+#Chi 1
+#Jin 2
+
+def FumaShurikenRequirement(Player, Spell):
+    return Player.CurrentRitual == [0] or Player.CurrentRitual == [1] or Player.CurrentRitual == [2], -1
+
+def RaitonRequirement(Player, Spell):
+    return Player.CurrentRitual == [0,1] or Player.CurrentRitual == [2,1], -1
+
+def KatonRequirement(Player, Spell):
+    return Player.CurrentRitual == [1,0] or Player.CurrentRitual == [2,0], -1
+
+def HyotonRequirement(Player, Spell):
+    return Player.CurrentRitual == [0,2] or Player.CurrentRitual == [1,2], -1
+
+def HutonRequirement(Player, Spell):
+    return Player.CurrentRitual == [2,1,0] or Player.CurrentRitual == [1,2,0], -1
+
+def DotonRequirement(Player, Spell):
+    return Player.CurrentRitual == [0,2,1] or Player.CurrentRitual == [2,0,1], -1
+
+def SuitonRequirement(Player, Spell):
+    return Player.CurrentRitual == [0,1,2] or Player.CurrentRitual == [1,0,2], -1
+
 
 #Apply
+
+def ApplyTen(Player, Enemy):
+    ApplyNinjutsu(Player, Enemy)
+    Player.CurrentRitual.append(0) #0 is a Ten
+
+def ApplyChi(Player, Enemy):
+    ApplyNinjutsu(Player, Enemy)
+    Player.CurrentRitual.append(1) #1 is a Chi
+
+def ApplyJin(Player, Enemy):
+    ApplyNinjutsu(Player, Enemy)
+    Player.CurrentRitual.append(2) #2 is a Jin
 
 def ApplyHide(Player, Enemy):
     Player.NinjutsuStack = 2
@@ -87,44 +127,33 @@ def ApplyKassatsu(Player, Enemy):
     Player.EffectCDList.append(KassatsuCheck)
 
 def ApplyHyoshoRanryu(Player, Enemy):
-    if not Player.Kassatsu: ApplyNinjutsu(Player, Enemy)
-    else: 
-        #input("lol")
-        Player.Kassatsu = False
+    Player.ResetRitual()
 
 def ApplySuiton(Player, Enemy):
-    if not Player.Kassatsu and not Player.Jin: ApplyNinjutsu(Player, Enemy)
-    elif Player.Kassatsu: Player.Kassatsu = False
-    elif Player.Jin : Player.Jin = False
-    #So then if in TenChiJin, will not cost anything
     Player.Suiton = True
     if not SuitonCheck in Player.EffectCDList : Player.EffectCDList.append(SuitonCheck)
     Player.SuitonTimer = 20
+    Player.ResetRitual()
 
 def ApplyHuton(Player, Enemy):
-    if not Player.Kassatsu: ApplyNinjutsu(Player, Enemy)
-    else: Player.Kassatsu = False
     Player.HutonTimer = 60
     if not (HutonEffect in Player.EffectList):
         Player.EffectList.append(HutonEffect)
     if not (HutonCheck in Player.EffectCDList):
         Player.EffectCDList.append(HutonCheck)
+    Player.ResetRitual()
 
 def ApplyRaiton(Player, Enemy):
-    if not Player.Kassatsu and not Player.Chi: ApplyNinjutsu(Player, Enemy)
-    elif Player.Kassatsu: Player.Kassatsu = False
-    elif Player.Chi : Player.Chi = False
-    #So then if in TenChiJin, will not cost anything
-
     if Player.RaijuStack == 0: Player.EffectList.append(RaitonEffect) #will loose all if weaponskill is done
     Player.RaijuStack = min(3, Player.RaijuStack + 1)
-    #print("Raiju is now at : " + str(Player.RaijuStack))
+    Player.ResetRitual()
 
 def ApplyNinjutsu(Player, Enemy):
-    if Player.NinjutsuStack == 2:
-        Player.EffectCDList.append(NinjutsuStackCheck)
-        Player.NinjutsuCD = 20
-    Player.NinjutsuStack -= 1
+    if len(Player.CurrentRitual) == 0 or Player.Kassatsu: #If we are not already in a ritual
+        if Player.NinjutsuStack == 2:
+            Player.EffectCDList.append(NinjutsuStackCheck)
+            Player.NinjutsuCD = 20
+        Player.NinjutsuStack -= 1
 
 def ApplyThrowingDagger(Player, Enemy):
     Player.AddNinki(5)
@@ -283,17 +312,17 @@ ThrowingDagger = NinjaSpell(12, True, Lock, 2.5, 120, ApplyThrowingDagger, [], T
 PhantomKamaitachi = NinjaSpell(22, True, Lock, 2.5, 600, ApplyPhantomKamaitachi, [PhantomKamaitachiRequirement], True, False)
 
 #Ninjutsu
-FumaShuriken = NinjaSpell(13, True, 1 + Lock, 1 + 1.5, 450, ApplyNinjutsu, [NinjutsuRequirement], False, True) 
-Raiton = NinjaSpell(14, True, 2 + Lock, 1 + 1 + 1.5, 650, ApplyRaiton, [NinjutsuRequirement], False, True )
-Huton = NinjaSpell(15, True, 3 + Lock, 3 + 1.5, 0, ApplyHuton, [NinjutsuRequirement], False, True)
-Suiton = NinjaSpell(16, True, 3 + Lock, 3 + 1.5, 500, ApplySuiton, [NinjutsuRequirement], False, True)
-HyoshoRanryu = NinjaSpell(17, True, 2 + Lock, 2 + 1.5, 1300, ApplyHyoshoRanryu, [HyoshoRanryuRequirement], False, True)
+FumaShuriken = NinjaSpell(13, True, Lock,1.5, 450, ApplyHyoshoRanryu, [FumaShurikenRequirement], False, True) #Same effect as HyoshoRanruy, since only reset Player.CurrentRitual list
+Raiton = NinjaSpell(14, True, Lock,1.5, 650, ApplyRaiton, [RaitonRequirement], False, True )
+Huton = NinjaSpell(15, True, Lock,1.5, 0, ApplyHuton, [HutonRequirement], False, True)
+Suiton = NinjaSpell(16, True, Lock,1.5, 500, ApplySuiton, [SuitonRequirement], False, True)
+HyoshoRanryu = NinjaSpell(17, True, Lock,1.5, 1300, ApplyHyoshoRanryu, [HyotonRequirement, KassatsuOnRequirement], False, True)
 
-TenChiJin = NinjaSpell(18, False, Lock, 0, 0, ApplyTenChiJin, [TenChiJinRequirement], False, False)
-#TenChiJin will for now assume the player does : Fuma -> Raiton -> Suiton 
-Ten = NinjaSpell(19, True, Lock, 1.5, FumaShuriken.Potency, empty, [TenRequirement], False, True)
-Chi = NinjaSpell(19, True, Lock, 1.5, Raiton.Potency, ApplyRaiton, [ChiRequirement], False, True)
-Jin = NinjaSpell(19, True, Lock, 1.5, Suiton.Potency, ApplySuiton, [JinRequirement], False, True)
+#Ritual
+Ten = NinjaSpell(15, True, 1, 1, 0, ApplyTen, [NinjutsuRequirement], False, False)
+Chi = NinjaSpell(15, True, 1, 1, 0, ApplyChi, [NinjutsuRequirement], False, False)
+Jin = NinjaSpell(15, True, 1, 1, 0, ApplyJin, [NinjutsuRequirement], False, False)
+
 
 
 #oGCD

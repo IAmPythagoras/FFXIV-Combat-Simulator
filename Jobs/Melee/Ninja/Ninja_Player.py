@@ -47,8 +47,14 @@ class Ninja(Melee):
         self.TenChiJinCD = 0
         self.BunshinCD = 0
 
+        #Ninjutsu
+        self.CurrentRitual = [] #List of currently done ritual
+
         #JobMod
         self.JobMod = 110
+
+    def ResetRitual(self):
+        self.CurrentRitual = []
 
 
     def updateCD(self, time):
