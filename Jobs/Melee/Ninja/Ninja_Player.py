@@ -50,6 +50,7 @@ class Ninja(Melee):
 
         #Ninjutsu
         self.CurrentRitual = [] #List of currently done ritual
+        self.TenChiJinRitual = [] #List of Ritual's done in TenChiJin
 
         #JobMod
         self.JobMod = 110
@@ -78,6 +79,7 @@ class Ninja(Melee):
         if (self.KassatsuTimer > 0) : self.KassatsuTimer = max(0,self.KassatsuTimer - time)
         if (self.SuitonTimer > 0) : self.SuitonTimer = max(0,self.SuitonTimer - time)
         if (self.PhantomKamaitachiReadyTimer > 0) : self.PhantomKamaitachiReadyTimer = max(0,self.PhantomKamaitachiReadyTimer - time)
+        if (self.TenChiJinTimer > 0) : self.TenChiJinTimer = max(0,self.TenChiJinTimer - time)
 
     def AddNinki(self, amount):
         self.NinkiGauge = min(100, self.NinkiGauge + amount)

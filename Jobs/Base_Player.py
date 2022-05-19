@@ -68,7 +68,7 @@ class Player:
 
 
     def updateTimer(self, time):
-        #input("Update called at : " + str(self.CurrentFight.TimeStamp))
+        ##input("Update called at : " + str(self.CurrentFight.TimeStamp))
         if (self.GCDLockTimer > 0) : self.GCDLockTimer = max(0, self.GCDLockTimer-time)
         if (self.oGCDLockTimer > 0) : self.oGCDLockTimer = max(0, self.oGCDLockTimer-time)
         if (self.CastingLockTimer > 0) : self.CastingLockTimer = max(0, self.CastingLockTimer-time)
