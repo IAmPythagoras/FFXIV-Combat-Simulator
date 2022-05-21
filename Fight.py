@@ -238,7 +238,7 @@ class Fight:
             axs[1].plot(TimeStamp,player.PotencyGraph, label=job)
 
             self.ComputeDPSDistribution(player, fig2, axs2[j][i], job)
-            #input((i,j))
+            ##input((i,j))
             i+=1
             if i == 4:
                 i = 0
@@ -314,7 +314,7 @@ class Fight:
                                 player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)#Cast the spell
                                 #Locking the player
                                 #print(Player.CastingSpell.CastTime)
-                                #input(Player.CastingSpell.RecastTime)
+                                ##input(Player.CastingSpell.RecastTime)
                                 player.Casting = True
                                 player.CastingLockTimer = player.CastingSpell.CastTime
                                 player.GCDLock = True
@@ -326,7 +326,7 @@ class Fight:
                         else:
                             #Is an oGCD
                             #print("Spell with id : " + str(player.ActionSet[player.NextSpell].id))
-                            #input("is being casted at : " + str(self.TimeStamp))
+                            ##input("is being casted at : " + str(self.TimeStamp))
                             
                             if(not (player.oGCDLock or player.Casting)):
                                 #Then we can cast the oGCD
@@ -446,7 +446,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
 
     #Still remains to change the f_MAIN_DAMAGE function for pets
 
-    #The type input signifies what type of damage we are dealing with, since the computation will chance according to what
+    #The type #input signifies what type of damage we are dealing with, since the computation will chance according to what
     #type of damage it is
 
     #type = 0 (Direct Damage), type = 1 (magical DOT), type = 2(physical DOT), type = 3 (Auto-attacks)
@@ -560,7 +560,7 @@ def ComputeDamageV2(Player, DPS, EnemyBonus, SpellBonus):
     Damage=math.floor(Damage*(1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000)#Spell/Skill speed damage bonus, only on DOT
 
     Damage = math.floor(Damage * EnemyBonus * SpellBonus)
-    #input("Damage inside v1.0 : " + str(Damage))
+    ##input("Damage inside v1.0 : " + str(Damage))
 
     CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000
 
