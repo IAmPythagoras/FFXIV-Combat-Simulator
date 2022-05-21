@@ -37,6 +37,7 @@ class Ninja(Melee):
         self.SuitonTimer = 0
         self.PhantomKamaitachiReadyTimer = 0
         self.TenChiJinTimer = 0
+        self.DotonTimer = 0
 
         #CD
         self.DreamWithinADreamCD = 0
@@ -47,10 +48,14 @@ class Ninja(Melee):
         self.KassatsuCD = 0
         self.TenChiJinCD = 0
         self.BunshinCD = 0
+        self.ShadeShiftCD = 0
 
         #Ninjutsu
         self.CurrentRitual = [] #List of currently done ritual
         self.TenChiJinRitual = [] #List of Ritual's done in TenChiJin
+
+        #DOT
+        self.DotonDOT = None
 
         #JobMod
         self.JobMod = 110

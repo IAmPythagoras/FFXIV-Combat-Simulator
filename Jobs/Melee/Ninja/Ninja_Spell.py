@@ -1,10 +1,15 @@
 from Jobs.Base_Spell import DOTSpell, buff, empty
 from Jobs.Melee.Melee_Spell import NinjaSpell
+import copy
+
 from Jobs.Melee.Ninja.Ninja_Player import Ninja
 Lock = 0.75
 
 
 #Requirement
+
+def ShadeShiftRequirement(Player, Spell):
+    return Player.ShadeShiftCD <= 0, Player.ShadeShiftCD
 
 def PhantomKamaitachiRequirement(Player, Spell):
     return Player.PhantomKamaitachiReady, -1
@@ -83,6 +88,20 @@ def SuitonRequirement(Player, Spell):
 
 
 #Apply
+
+def ApplyDeathBlossom(Player, Enemy):
+    if not (DeathBlossomCombo in Player.EffectList) : Player.EffectList.append(DeathBlossomCombo)
+    Player.AddNinki(5)
+
+def ApplyShadeShift(Player, Enemy):
+    Player.ShadeShiftCD = 120
+
+def ApplyDoton(Player, Enemy):
+    Player.ResetRitual()
+    Player.DotonTimer = 18
+    Player.DotonDOT = copy.deepcopy(DotonDOT)
+    Player.DOTList.append(Player.DotonDOT)
+    Player.EffectCDList.append(DotonCheck)
 
 def ApplyTen(Player, Enemy):
     ApplyNinjutsu(Player, Enemy)
@@ -211,6 +230,13 @@ def ApplySpinningEdge(Player, Enemy):
 
 #Effect
 
+def DeathBlossomCombo(Player, Spell):
+    if Spell.id == HakkeMujinsatsu.id:
+        Spell.Potency += 30
+        Player.AddHuton(10)
+        Player.AddNinki(5)
+        Player.EffectToRemove.append(DeathBlossomCombo)
+
 def TenChiJinEffect(Player, Spell):
     if Spell.id == Ten2.id or Spell.id == Chi2.id or Spell.id == Jin2.id: #If not one of these spells, we simply stop
 
@@ -314,6 +340,12 @@ def GustSlashCombo(Player, Spell):
 
 #Check
 
+def DotonCheck(Player, Enemy):
+    if Player.DotonTimer <= 0:
+        Player.DOTList.remove(Player.DotonDOT)
+        Player.DotonDOT = None
+        Player.EffectToRemove.append(DotonCheck)
+
 def HutonCheck(Player, Enemy):
     if Player.HutonTimer <= 0:
         Player.EffectList.remove(HutonEffect)
@@ -379,6 +411,8 @@ Huraijin = NinjaSpell(5, True, Lock, 2.5, 200, ApplyHuraijin, [], True, False)
 FleetingRaiju = NinjaSpell(6, True, Lock, 2.5, 560, ApplyFleetingRaiju, [FleetingRaijuRequirement], True, False)
 ThrowingDagger = NinjaSpell(7, True, Lock, 2.5, 120, ApplyThrowingDagger, [], True, False)
 PhantomKamaitachi = NinjaSpell(8, True, Lock, 2.5, 600, ApplyPhantomKamaitachi, [PhantomKamaitachiRequirement], True, False)
+DeathBlossom = NinjaSpell(33, True, Lock, 2.5, 100, ApplyDeathBlossom, [],True, False )
+HakkeMujinsatsu = NinjaSpell(34, True, Lock, 2.5, 100, empty, [], True, False)
 
 #Ninjutsu
 FumaShuriken = NinjaSpell(9, True, Lock,1.5, 450, ApplyHyoshoRanryu, [FumaShurikenRequirement], False, True) #Same effect as HyoshoRanruy, since only reset Player.CurrentRitual list
@@ -386,6 +420,10 @@ Raiton = NinjaSpell(10, True, Lock,1.5, 650, ApplyRaiton, [RaitonRequirement], F
 Huton = NinjaSpell(11, True, Lock,1.5, 0, ApplyHuton, [HutonRequirement], False, True)
 Suiton = NinjaSpell(12, True, Lock,1.5, 500, ApplySuiton, [SuitonRequirement], False, True)
 HyoshoRanryu = NinjaSpell(13, True, Lock,1.5, 1300, ApplyHyoshoRanryu, [HyotonRequirement, KassatsuOnRequirement], False, True)
+Katon = NinjaSpell(29, True, Lock, 1.5, 350, ApplyHyoshoRanryu, [KatonRequirement], False, True)
+GokaMekkyaku = NinjaSpell(30, True, Lock, 1.5, 600, HyoshoRanryu, [KatonRequirement, KassatsuOnRequirement], False, True)
+Doton = NinjaSpell(31, True, Lock, 1.5, 0, ApplyDoton, [DotonRequirement], False, True)
+DotonDOT = DOTSpell(-33, 80, True)
 
 #Ritual
 Ten = NinjaSpell(14, True, 1, 1, 0, ApplyTen, [NinjutsuRequirement], False, False)
@@ -410,6 +448,8 @@ Meisui = NinjaSpell(25, False, Lock, 0, 0, ApplyMeisui, [MeisuiRequirement], Fal
 Kassatsu = NinjaSpell(26, False, Lock, 0, 0, ApplyKassatsu,[KassatsuRequirement], False, False)
 Bunshin = NinjaSpell(27, False, Lock, 0, 0, ApplyBunshin, [BunshinRequirement], False, False)
 Hide = NinjaSpell(28, True, 0, 0, 0, ApplyHide, [], False, False)
+ShadeShift = NinjaSpell(32, False, Lock, 0, 0, ApplyShadeShift, [ShadeShiftRequirement], False, False)
+HellfrogMedium = NinjaSpell(35, False, Lock, 0, 160, ApplyBhavacakra, [BhavacakraRequirement], False, False)
 #buff
 MugBuff = buff(1.05)
 TrickAttackBuff = buff(1.1)
