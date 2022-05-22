@@ -143,7 +143,7 @@ Ranged_AA = Spell(-30, False, 0, 0, 0, 0, ApplyRanged_AA, [])
 
 def ManaRequirement(player, Spell):
     #print("Total mana : " + str(player.Mana))
-    ##input("Spell mana cost " + str(Spell.ManaCost))
+    #input("Spell mana cost " + str(Spell.ManaCost))
     if player.Mana >= Spell.ManaCost :
         player.Mana -= Spell.ManaCost   #ManaRequirement is the only Requirement that actually removes Ressources
         return True, -1
