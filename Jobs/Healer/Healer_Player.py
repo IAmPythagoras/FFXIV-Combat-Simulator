@@ -8,19 +8,28 @@ class Healer(Player):
 
         #Shared ressources across casters
         self.EffectCDList.append(ManaRegenCheck) #Mana Regen
-        self.SwiftCastCD = 0
+
+        #CD
+        self.SurecastCD = 0
+        self.RescueCD = 0
+        self.SwiftcastCD = 0
         self.LucidDreamingCD = 0
+
+        
+        #Timer
         self.LucidDreamingTimer = 0
 
         #JobMod
         self.JobMod = 115
 
         #Trait
-        self.Trait = 1.3
+        self.Trait = 1.3 #Magik and mend
     
     def updateCD(self,time):
-        if (self.SwiftCastCD > 0) : self.SwiftCastCD = max(0,self.SwiftCastCD - time)
+        if (self.SwiftcastCD > 0) : self.SwiftcastCD = max(0,self.SwiftcastCD - time)
         if (self.LucidDreamingCD > 0) : self.LucidDreamingCD = max(0,self.LucidDreamingCD - time)
+        if (self.RescueCD > 0) : self.RescueCD = max(0,self.RescueCD - time)
+        if (self.SurecastCD > 0) : self.SurecastCD = max(0,self.SurecastCD - time)
 
     def updateTimer(self, time):
         super().updateTimer(time)

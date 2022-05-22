@@ -1,4 +1,5 @@
 import math
+from unicodedata import decimal
 from Enemy import Enemy
 import matplotlib.pyplot as plt
 import numpy as np
@@ -28,6 +29,7 @@ from Jobs.Ranged.Machinist.Machinist_Player import Queen, Machinist
 from Jobs.Melee.Samurai.Samurai_Player import Samurai
 from Jobs.Melee.Ninja.Ninja_Player import Ninja
 from Jobs.Melee.Dragoon.Dragoon_Player import Dragoon
+from Jobs.Melee.Reaper.Reaper_Player import Reaper
 
 from Jobs.Healer.Whitemage.Whitemage_Player import Whitemage
 from Jobs.Healer.Scholar.Scholar_Player import Scholar
@@ -44,6 +46,14 @@ def GCDReductionEffect(Player, Spell):
         Spell.CastTime *= Player.GCDReduction
         Spell.RecastTime *= Player.GCDReduction
 
+def Normal(mean, std, x):#returns value from NormalDistribution
+    return 1/(std * np.sqrt(2 * np.pi)) * np.exp(-1/2 * ((x-mean)/std)**2)
+
+def AverageCritMult(Player, k):
+    n = Player.NumberDamageSpell #Total number of damage Spell
+    #k is the number of success, so the number of crit
+    return ((k) * (1 + Player.CritMult)  + (n-k))/n #Average crit multiplier over the run, this can be seen as a fix bonus on the whole fight
+
 class Fight:
 
     #This class will be the environment in which the fight happens. It will hold a list of players, an enemy, etc.
@@ -52,12 +62,114 @@ class Fight:
     def __init__(self, PlayerList, Enemy):
         self.PlayerList = PlayerList
         self.Enemy = Enemy
-        self.ShowGraph = True
+        self.ShowGraph = False
         self.TimeStamp = 0
         self.TeamCompositionBonus = 1
+
+
+
+    def ComputeDPSDistribution(self, Player, fig, axs, job):
+
+        #Graph data
+        axs.set_ylabel("Percentage (%)")
+        axs.set_xlabel("Expected DPS")
+        axs.set_title(job + " DPS Distribution")
+        axs.spines["top"].set_alpha(0.0)
+        axs.spines["right"].set_alpha(0.0)
+        axs.set_facecolor("lightgrey")
+        axs.yaxis.set_ticks(np.arange(0,15,1))
+
+
+
+
+        #This function will return a distribution of DPS and chance of having certain DPS
+        Player.DPS = Player.TotalMinDamage / self.TimeStamp #Computing DPS with no crit, expected DH
+        Player.ExpectedDPS = Player.TotalDamage / self.TimeStamp #Expected DPS with crit
+
+        n = Player.NumberDamageSpell #Number of spell that deals damage done by this player
+        p = round((Player.ExpectedDPS/Player.DPS - 1)/Player.CritMult,3)
+
+        #The value of p is found by using the fact that Player.DPS = DPS * ExpectedDHDamage, Player.ExpectedDPS = DPS * ExpectedDHDamage * ExpectedCritDamage
+        #And ExpectedCritDamage = ( 1 + (CritMult * CritRate)), so we simply isolate CritRate. This will give an average Crit rate over the whole fight which will
+        #take into account crit rate buffs throughout the fight
+        decimal_mean = n*p #Number of expected crit (not an integer)
+        mean = math.floor(decimal_mean) #Number of expected crit rounded down
+        radius = math.ceil(n/2) #Radius we for which we will graph the distribution
+        std = n*p * (1-p) #Standard deviation
+        #The binomial distribution of enough trials can be approximated to N(np, np(1-p)) for big enough n, so we will simply approximate the distribution by this
+        #Note that here n stands for the number of damage spell, and p is the averagecritrate of the player AverageCritRate = (CritRate + CritRateBonus)/time
+        #We will salvage values from the normal distribution, then find the average crit multiplier by number of crits gotten. We will then multiply the computed DPS
+        #by these multipliers to get DPS values for each chance
+        #We will sample n/2 points on each side
+
+        y_list = []
+        expected_dps_list = [] #List of expected DPS
+        resolution = 500 #Hardcoded value, represents how many points on the curve we take
+        i = max(0, mean-radius) #Starting point
+        j = mean + radius+1 #Upper limit
+        h = (j - i)/resolution #Step to take
+        x_list = np.linspace(i,j,resolution) #Evenly spaced out from i -> j with resolution number of points
+        #It will be computed by computing an average crit multiplier, and then multiplying the DPS by that
+        while i < j:
+            y_list += [math.floor(Normal(decimal_mean, std, i) * 1000) /10]
+            average_crit_mult = AverageCritMult(Player, i)
+            expected_dps_list += [average_crit_mult * Player.DPS]
+            i+= h
+
+
+
+
+        #for i in range(max(0, mean - radius), mean + radius+1): #Here i is the number of success
+         #   y_list += [math.floor(Normal(decimal_mean, std, i) * 1000) /10] #Sampling from the distribution
+          #  average_crit_mult = AverageCritMult(Player, i)
+           # expected_dps_list += [average_crit_mult * Player.DPS]
+
+
+        high_crit_mult_list = []
+        low_crit_mult_list = []
+        for i in range(1,4): #This loop will create boundary for the empirical rules, it will do 1 to 3 std away from the mean
+            high = decimal_mean + i*std
+            low = decimal_mean - i*std
+            high_crit_mult = AverageCritMult(Player, high)
+            low_crit_mult = AverageCritMult(Player, low)
+            high_crit_mult_list += [high_crit_mult * Player.DPS]
+            low_crit_mult_list += [low_crit_mult * Player.DPS]
+        #Even though low and high are not integers, the AverageCritMult is a continuous stricly increasing function, so we can use it on
+        #non integer value to get an "in-between" value
+
+
+        lab = "\u03BC = " + str(round(Player.ExpectedDPS,1)) + " \u03C3 = " + str(round(std,2))
+        axs.plot(expected_dps_list, y_list,label=lab) #Distribution
+        axs.plot([Player.ExpectedDPS,Player.ExpectedDPS], [0,math.ceil(max(y_list))], label="Expected DPS", linestyle="dashed") #Expected DPS
+        #Plotting Empirical rule region
+        axs.axvspan(max(expected_dps_list[0],low_crit_mult_list[2]), min(expected_dps_list[-1],high_crit_mult_list[2]), color="green") #99.7% empirical rule region, will most likely not appear in the graph
+        axs.axvspan(max(expected_dps_list[0],low_crit_mult_list[1]), high_crit_mult_list[1], color="blue") #95% empirical rule region
+        axs.axvspan(low_crit_mult_list[0], high_crit_mult_list[0], color="red") #68% empirical rule region
+
+
+        axs.fill_between(expected_dps_list, y_list, math.ceil(max(y_list)), fc="lightgrey") #Used to cover the vertical regions from axvspan so they stop under the line of the distribution
+        axs.margins(-0.0001) #margin arrangement
+        axs.legend()
+
+
+        
+
+
+
+
+
+        #We now have values from the sample, so we will now change x_list into DPS value
+
+
+
+
+
+
+
     def PrintResult(self, time, TimeStamp):
 
-        fig, axs = plt.subplots(1, 2, constrained_layout=True)
+        fig, axs = plt.subplots(1, 2, constrained_layout=True) #DPS and PPS graph
+        fig2, axs2 = plt.subplots(2, 4, constrained_layout=True) #DPS Crit distribution
         axs[0].set_ylabel("DPS")
         axs[0].set_xlabel("Time (s)")
         axs[0].set_title("DPS over time")
@@ -72,6 +184,9 @@ class Fight:
         axs[1].set_facecolor("lightgrey")
 
         fig.suptitle("DPS and PPS values over time.")
+
+        i = 0 #Used as coordinate for DPS distribution graph
+        j = 0
 
         for player in self.PlayerList:
             print("The Total Potency done by player " + str(type(player)) + " was : " + str(player.TotalPotency))
@@ -99,6 +214,7 @@ class Fight:
             elif isinstance(player, Astrologian) : job = "Astrologian"
             elif isinstance(player, Summoner) : job = "Summoner"
             elif isinstance(player, Dragoon) : job = "Dragoon"
+            elif isinstance(player, Reaper) : job = "Reaper"
             elif isinstance(player, Bard) : 
                 job = "Bard"
                 print("==================")
@@ -120,6 +236,13 @@ class Fight:
                 print("==================")
             axs[0].plot(TimeStamp,player.DPSGraph, label=job)
             axs[1].plot(TimeStamp,player.PotencyGraph, label=job)
+
+            self.ComputeDPSDistribution(player, fig2, axs2[j][i], job)
+            ##input((i,j))
+            i+=1
+            if i == 4:
+                i = 0
+                j+=1
         
         print("The Enemy has received a total potency of: " + str(self.Enemy.TotalPotency))
         print("The Potency Per Second on the Enemy is: " + str(self.Enemy.TotalPotency/time))
@@ -143,6 +266,8 @@ class Fight:
             start = False
 
             timeValue = []  #Used for graph
+
+            self.ComputeFunctions() #Compute all damage functions for the players
 
 
             #The first thing we will do is compute the TEAM composition DPS bonus
@@ -189,7 +314,7 @@ class Fight:
                                 player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)#Cast the spell
                                 #Locking the player
                                 #print(Player.CastingSpell.CastTime)
-                                #input(Player.CastingSpell.RecastTime)
+                                ##input(Player.CastingSpell.RecastTime)
                                 player.Casting = True
                                 player.CastingLockTimer = player.CastingSpell.CastTime
                                 player.GCDLock = True
@@ -201,7 +326,7 @@ class Fight:
                         else:
                             #Is an oGCD
                             #print("Spell with id : " + str(player.ActionSet[player.NextSpell].id))
-                            #input("is being casted at : " + str(self.TimeStamp))
+                            ##input("is being casted at : " + str(self.TimeStamp))
                             
                             if(not (player.oGCDLock or player.Casting)):
                                 #Then we can cast the oGCD
@@ -298,13 +423,30 @@ class Fight:
             
 
 
+    def ComputeFunctions(self):
+        for Player in self.PlayerList:
+            levelMod = 1900
+            baseMain = 390  
+            baseSub = 400#Level 90 LevelMod values
+
+            JobMod = Player.JobMod #Level 90 jobmod value, specific to each job
+
+            Player.f_WD = (Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))/100
+            Player.f_DET = math.floor(1000+math.floor(130*(Player.Stat["Det"]-baseMain)/levelMod))/1000#Determination damage
+            if isinstance(Player, Tank) : Player.f_TEN = (1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000 #Tenacity damage, 1 for non-tank player
+            else : Player.f_TEN = 1 #if non-tank
+            Player.f_SPD = (1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000 #Used only for dots
+            Player.CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000 #Crit rate in decimal
+            Player.CritMult = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000 #Crit Damage multiplier
+            Player.DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000 #DH rate in decimal
+
 
 
 def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
 
     #Still remains to change the f_MAIN_DAMAGE function for pets
 
-    #The type input signifies what type of damage we are dealing with, since the computation will chance according to what
+    #The type #input signifies what type of damage we are dealing with, since the computation will chance according to what
     #type of damage it is
 
     #type = 0 (Direct Damage), type = 1 (magical DOT), type = 2(physical DOT), type = 3 (Auto-attacks)
@@ -316,33 +458,23 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
     #Also, note that this function is still in development, and so some of these formulas might be a bit off. Use at your own risk.
     #This function will compute the DPS given the stats of a player
 
-    levelMod = 1900
     baseMain = 390  
-    baseSub = 400#Level 90 LevelMod values
-
-    JobMod = Player.JobMod #Level 90 jobmod value, specific to each job
 
     Enemy = Player.CurrentFight.Enemy #Enemy targetted
 
     MainStat = Player.Stat["MainStat"] * Player.CurrentFight.TeamCompositionBonus #Scaling %bonus on mainstat
 
     #Computing values used throughout all computations
-    
-    f_WD = (Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))/100
     if isinstance(Player, Tank) : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*145/baseMain))/100 #This is experimental, and I do not have any actual proof to back up, but tanks do have a different f_MAIN_DMG formula
     else: f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100
-
-    f_DET = math.floor(1000+math.floor(130*(Player.Stat["Det"]-baseMain)/levelMod))/1000#Determination damage
-
-    if isinstance(Player, Tank) : f_TEN = (1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000 #Tenacity damage, 1 for non-tank player
-    else : f_TEN = 1 #if non-tank
-    f_SPD = (1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000 #Used only for dots
-
-    CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000 #Crit rate in decimal
-
-    CritDamage = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000 #Crit Damage multiplier
-
-    DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000 #DH rate in decimal
+    #These values are all already computed since they do not change
+    f_WD = Player.f_WD
+    f_DET = Player.f_DET
+    f_TEN = Player.f_TEN
+    f_SPD = Player.f_SPD
+    CritRate = Player.CritRate
+    CritMult = Player.CritMult
+    DHRate = Player.DHRate
 
     if Enemy.ChainStratagem: CritRate += 0.1    #If ChainStratagem is active, increase crit rate
 
@@ -380,24 +512,19 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
             CritRate = 1
             Player.NextCrit = False
 
+
     if type == 0: #Type 0 is direct damage
         Damage = math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN ) *f_WD) * Player.Trait) #Player.Trait is trait DPS bonus
-        #We will average the DPS by using DHRate, CritRate and CritDamage multiplier
-        Damage = math.floor(math.floor(Damage * (1 + (CritRate * CritDamage)) ) * (1 + (DHRate * 0.25))) #Average DHRate and Crit contribution
         Damage = math.floor(Damage * SpellBonus)
-
+        Player.NumberDamageSpell += 1
+        Player.CritRateHistory += [CritRate]
     elif type == 1 : #Type 1 is magical DOT
         Damage = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_WD) * f_MAIN_DMG) * f_SPD) * f_DET) * f_TEN) * Player.Trait) + 1
-        Damage = math.floor(math.floor(Damage * (1 + (CritRate * CritDamage)) ) * (1 + (DHRate * 0.25))) #Average DHRate and Crit contribution
-
     elif type == 2: #Physical DOT
         Damage = math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN) * f_SPD) * f_WD) * Player.Trait) +1
-        Damage = math.floor(math.floor(Damage * (1 + (CritRate * CritDamage)) ) * (1 + (DHRate * 0.25))) #Average DHRate and Crit contribution
     elif type == 3: #Auto-attacks
         Damage = math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN) * f_SPD)
         Damage = math.floor(math.floor(Damage * math.floor(f_WD * (Player.Delay/3) *100 )/100) * Player.Trait)
-        Damage = math.floor(math.floor(Damage * (1 + (CritRate * CritDamage)) ) * (1 + (DHRate * 0.25))) #Average DHRate and Crit contribution
-
     #Now applying buffs
 
     for buffs in Player.buffList: 
@@ -405,8 +532,11 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
         
     for buffs in Enemy.buffList:
         Damage = math.floor(Damage * buffs.MultDPS) #Multiplying all buffs
-
-    return Damage
+    
+    if CritRate == 1: #If sure to crit, add crit to min expected damage
+        return math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))), math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))) #If we have auto crit, we return full damage
+    else:
+        return math.floor(Damage * ( 1 + (DHRate * 0.25))), math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))) #Non crit expected damage, expected damage with crit
 
 """
 #Original ComputeDamage function
@@ -430,11 +560,11 @@ def ComputeDamageV2(Player, DPS, EnemyBonus, SpellBonus):
     Damage=math.floor(Damage*(1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000)#Spell/Skill speed damage bonus, only on DOT
 
     Damage = math.floor(Damage * EnemyBonus * SpellBonus)
-    #input("Damage inside v1.0 : " + str(Damage))
+    ##input("Damage inside v1.0 : " + str(Damage))
 
     CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000
 
-    CritDamage = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000
+    CritMult = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000
 
     DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000
 
@@ -476,7 +606,7 @@ def ComputeDamageV2(Player, DPS, EnemyBonus, SpellBonus):
             CritRate = 1
             Player.NextCrit = False
 
-    return round(Damage * ((1+(DHRate/4))*(1+(CritRate*CritDamage)))/100, 2)
+    return round(Damage * ((1+(DHRate/4))*(1+(CritRate*CritMult)))/100, 2)
 
     // Pulled from Orinx's Gear Comparison Sheet with slight modifications
 function Damage(Potency, WD, JobMod, MainStat,Det, Crit, DH,SS,TEN, hasBrd, hasDrg, hasSch, hasDnc, classNum) {
@@ -488,10 +618,10 @@ function Damage(Potency, WD, JobMod, MainStat,Det, Crit, DH,SS,TEN, hasBrd, hasD
   Damage=Math.floor(Damage*(1000+Math.floor(130*(SS-baseSub)/levelMod))/1000/100);
   Damage=Math.floor(Damage*magicAndMend)
   Damage=Math.floor(Damage*enochian)
-  var CritDamage=CalcCritDamage(Crit)
+  var CritMult=CalcCritMult(Crit)
   var CritRate=CalcCritRate(Crit) + (hasDrg ? battleLitanyAvg : 0) + (hasSch ? chainStratAvg : 0) + (hasDnc ? devilmentAvg : 0) + (hasBrd ? brdCritAvg : 0);
   var DHRate=CalcDHRate(DH) + (hasBrd ? battleVoiceAvg + brdDhAvg : 0) + (hasDnc ? devilmentAvg : 0);
-  return Damage * ((1+(DHRate/4))*(1+(CritRate*CritDamage)))                                                                                                                               
+  return Damage * ((1+(DHRate/4))*(1+(CritRate*CritMult)))                                                                                                                               
 }
 
 """

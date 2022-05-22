@@ -30,6 +30,9 @@ def CoeurlFormRequirement(Player, Spell):
 
 def RaptorFormRequirement(Player, Spell):
     return Player.PerfectBalance > 0 or Player.Bootshine or Player.ArmOfTheDestroyer or Player.DragonKick or Player.ShadowOfTheDestroyer
+<<<<<<< HEAD
 
 #next steps - forms, GCD, OGCD, apply functions
 
+=======
+>>>>>>> d631c5a6283d2962d6af21f3621a5345fb930350

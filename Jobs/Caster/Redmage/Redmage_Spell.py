@@ -2,7 +2,7 @@
 ########## REDMAGE PLAYER ###############
 #########################################
 from Jobs.Base_Spell import buff
-from Jobs.Caster.Caster_Spell import RedmageSpell, SwiftCastEffect
+from Jobs.Caster.Caster_Spell import RedmageSpell, SwiftcastEffect
 Lock = 0.75
 #Special
 
@@ -164,7 +164,7 @@ def ManaficationEffect(Player, Spell):
         Spell.DPSBonus *= 1.05 #5% boost on magic damage
 
 def AccelerationEffect(Player, Spell):
-    if Spell.id == 3 and not (SwiftCastEffect in Player.EffectList): 
+    if Spell.id == 3 and not (SwiftcastEffect in Player.EffectList): 
         Spell.CastTime = 0    #Will have to cast how this interacts with Dual cast
         Player.EffectToRemove.append(AccelerationEffect)
 

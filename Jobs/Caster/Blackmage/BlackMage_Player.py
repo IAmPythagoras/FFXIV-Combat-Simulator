@@ -24,6 +24,7 @@ class BlackMage(Caster):
         #buff
         self.Thunder3Proc = False
         self.TripleCastStack = 0
+        self.SharpCast = False
 
         #CD
         self.TransposeCD = 0
@@ -38,9 +39,11 @@ class BlackMage(Caster):
         self.EnochianTimer = 0
         self.LeyLinesTimer = 0
         self.Thunder3DOTTimer = 0
+        self.Thunder4DOTTimer = 0
 
         #DOT
         self.Thunder3DOT = None
+        self.Thunder4DOT = None
 
 
 
@@ -60,6 +63,7 @@ class BlackMage(Caster):
         if (self.EnochianTimer > 0) : self.EnochianTimer = max(0,self.EnochianTimer - time)
         if (self.LeyLinesTimer > 0) : self.LeyLinesTimer = max(0,self.LeyLinesTimer - time)
         if (self.Thunder3DOTTimer > 0) : self.Thunder3DOTTimer = max(0,self.Thunder3DOTTimer - time)
+        if (self.Thunder4DOTTimer > 0) : self.Thunder4DOTTimer = max(0,self.Thunder4DOTTimer - time)
 
     def AddFire(self):
         if self.ElementalGauge >= 0 :
