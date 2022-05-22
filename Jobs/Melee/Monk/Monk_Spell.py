@@ -26,13 +26,31 @@ def PhantomRushRequirement(Player, Spell):    #must use three different form ski
     return Player.SolarNadi == -1 and Player.LunarNadi == -1
                                     
 def CoeurlFormRequirement(Player, Spell):
-    return Player.PerfectBalance > 0 or Player.TrueStrike or Player.TwinSnakes or Player.FourPointFury
+    return Player.PerfectBalance > 0 or [Player.TrueStrike, Player.TwinSnakes, Player.FourPointFury]
 
 def RaptorFormRequirement(Player, Spell):
-    return Player.PerfectBalance > 0 or Player.Bootshine or Player.ArmOfTheDestroyer or Player.DragonKick or Player.ShadowOfTheDestroyer
-<<<<<<< HEAD
+    return Player.PerfectBalance > 0 or [Player.Bootshine, Player.ArmOfTheDestroyer, Player.DragonKick, Player.ShadowOfTheDestroyer]
 
-#next steps - forms, GCD, OGCD, apply functions
+#Effect
+def BootshineOpoOpoFormBonus(Player, Spell):
+    if Spell.id == Bootshine.id and Player.OpoOpoForm == True:
+        Player.NextCrit = True
 
-=======
->>>>>>> d631c5a6283d2962d6af21f3621a5345fb930350
+def LeadenFist(Player, Spell):
+    if Spell.id == DragonKick.id:
+        Bootshine.Potency += 310
+        Player.buffList.Append() 
+
+def ApplyRaptorForm(Player, Spell):
+    Player.OpoOpoSkillUsed += 1
+    Player.RaptorForm = True
+
+def ApplyCoeurlForm(Player, Spell):
+    Player.RaptorSkillUsed += 1
+    Player.RaptorForm = True
+
+#GCD
+# def __init__(self, id, GCD, RecastTime, Potency, Effect, Requirement, Weaponskill):
+Bootshine = MonkSpell(1, True, Lock, 2, 210, [BootshineOpoOpoFormBonus, LeadenFist, ApplyRaptorForm], [], True)
+TrueStrike = MonkSpell(2, True, Lock, 2, 300, ApplyCoeurlForm, RaptorFormRequirement, True)
+SnapPunch = MonkSpell(3, True, Lock, 2, 310, )

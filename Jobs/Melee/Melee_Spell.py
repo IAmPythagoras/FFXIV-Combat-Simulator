@@ -46,11 +46,10 @@ class DragoonSpell(MeleeSpell):
 #########################################
 
 class MonkSpell(MeleeSpell):
-    def __init__(self, id, GCD, RecastTime, Potency, Effect, Requirement, Weaponskill, MasterfulBlitz):
+    def __init__(self, id, GCD, RecastTime, Potency, Effect, Requirement, Weaponskill):
         super().__init__(id, GCD, Lock, RecastTime, Potency, 0, Effect, Requirement)
 
         self.Weaponskill = Weaponskill
-        self.MasterfulBlitz = MasterfulBlitz
 
 #########################################
 ########## MONK SPELL ###############
