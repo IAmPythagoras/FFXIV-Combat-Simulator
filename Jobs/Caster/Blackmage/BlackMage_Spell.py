@@ -2,6 +2,9 @@ from doctest import FAIL_FAST
 from Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
 from Jobs.Caster.Caster_Spell import BLMSpell, SwiftcastEffect
 import copy
+import math
+
+from Jobs.Tank.Paladin.Paladin_Spell import ApplyFastBlade
 Lock = 0.75
 #Requirement
 
@@ -40,6 +43,36 @@ def ManafrontRequirement(Player, Spell):
 
 #Apply
 
+def ApplyFlare(Player, Enemy):
+    manaback = 0
+    #input(Player.UmbralHearts)
+    if Player.UmbralHearts > 0:
+        Player.UmbralHearts -= 1
+        manaback = math.floor(Player.Mana/3)
+    ApplyDespair(Player, Enemy)
+    Player.Mana += manaback #we get 1/3rd of our mana back if with UmbralHearts stack
+
+def ApplyHighFire(Player, Enemy):
+    ApplyFire3(Player, Enemy)
+    Player.EffectList.append(HighFireEffect)
+    Player.EffectCDList.append(HighFireCheck)
+
+def ApplyThunder4(Player, Enemy):
+    if Player.Thunder4DOT == None:
+        Player.Thunder4DOT = copy.deepcopy(Thunder4DOT)
+        Player.DOTList.append(Player.Thunder4DOT)
+        Player.EffectList.append(Thunder4DOTCheck)
+    Player.Thunder4DOTTimer = 18
+
+    if Player.SharpCast: #If we have SharpCast
+        Player.EffectList.append(Thunder3ProcEffect)
+        Player.SharpCast = False
+
+    #We now have to check if Thunder 3 is already applied, in which case we will remove it
+    if Player.Thunder3DOT != None : Player.Thunder3DOTTimer = 0
+
+
+
 def ApplyBlizzard1(Player, Enemy):
     Player.AddIce() #Add 1 Ice
 
@@ -62,7 +95,7 @@ def ApplyBlizzard3(Player, Enemy):
     #Check if we unlock paradox
     if Player.ElementalGauge == 3: Player.Paradox = True
 
-    Player.ElementalGauge = 3
+    Player.ElementalGauge = -3
     Player.EnochianTimer = 15 #ResetTimer
 
 def ApplyBlizzard4(Player, Enemy):
@@ -100,6 +133,9 @@ def ApplyThunder3(Player, Spell):
     if Player.SharpCast: #If we have SharpCast
         Player.EffectList.append(Thunder3ProcEffect)
         Player.SharpCast = False
+
+    #We now have to check if Thunder 4 is already applied, in which case we will remove it
+    if Player.Thunder4DOT != None : Player.Thunder4DOTTimer = 0
 
 def ApplyTranspose(Player, Spell):
     Player.TransposeCD = 4
@@ -148,6 +184,12 @@ def ApplyManafront(Player, Enemy):
 
 #Effect
 
+def HighFireEffect(Player, Spell):
+    if Spell.id == Flare.id:
+        Spell.Potency += 60
+        Player.EffectToRemove.append(HighFireEffect)
+        Player.EffectCDList.remove(HighFireCheck)
+
 def Fire3ProcEffect(Player, Spell):
     if Spell.id == Fire3.id:
         Spell.ManaCost = 0
@@ -157,6 +199,11 @@ def Fire3ProcEffect(Player, Spell):
 def Thunder3ProcEffect(Player, Spell):
     if Spell.id == Thunder3.id:
         Spell.Potency += 350
+        Spell.ManaCost = 0
+        Spell.CastTime = Lock
+        Player.EffectToRemove.append(Thunder3ProcEffect)
+    elif Spell.id == Thunder4.id:
+        Spell.Potency += 120
         Spell.ManaCost = 0
         Spell.CastTime = Lock
         Player.EffectToRemove.append(Thunder3ProcEffect)
@@ -181,19 +228,21 @@ def EnochianEffect(Player, Spell):
 
 def ElementalEffect(Player, Spell):
     #Will affect Spell depending on fire and ice
-
+    #input("UmbrealHearts : " + str(Player.UmbralHearts))
     if isinstance(Spell, BLMSpell) and Spell.IsFire:
         #Fire Spell
         #First check if fire phase and apply Effect
         if Player.ElementalGauge > 0: #Fire Phase
+            #input('we in : ' + str(Spell.id))
             if Player.ElementalGauge == 1: Spell.Potency *= 1.4
             elif Player.ElementalGauge == 2 : Spell.Potency *= 1.6
             elif Player.ElementalGauge == 3 : Spell.Potency *= 1.8
 
-            if (Player.UmbralHearts > 0) : #If we have UmbralHearts, then no mana cost increase
+            if (Player.UmbralHearts > 0) and Spell.id!= Flare.id: #If we have UmbralHearts, then no mana cost increase. We also have to make sure
+                #it isn't Flare, since Flare has its own way of dealing with UmbrealHearts
                 Player.UmbralHearts -= 1
             else : 
-                if Spell.id != Despair.id : Spell.ManaCost *= 2 #Double mana cost, only if not despair
+                if Spell.id != Despair.id and Spell.id != Flare.id: Spell.ManaCost *= 2 #Double mana cost, only if not despair
         #Check if ice phase
         elif Player.ElementalGauge < 0 : #Ice Phase
             if Player.ElementalGauge == -1: 
@@ -230,6 +279,11 @@ def ElementalEffect(Player, Spell):
             Spell.CastTime = 0
 
 #Check
+
+def HighFireCheck(Player, Enemy):
+    if Player.ElementalGauge <= 0: #If loose astralFire
+        Player.EffectList.remove(HighFireEffect)
+        Player.EffectToRemove.append(HighFireCheck)
 
 def EnochianEffectCheck(Player, Enemy):
     if Player.ElementalGauge == 0: #If we loose Enochian
@@ -277,32 +331,50 @@ def Thunder3DOTCheck(Player, Enemy):
         Player.Thunder3DOT = None
         Player.EffectToRemove.append(Thunder3DOTCheck)
 
+def Thunder4DOTCheck(Player, Enemy):
+    if Player.Thunder4DOTTimer <= 0:
+        Player.DOTList.remove(Player.Thunder4DOT)
+        Player.Thunder4DOT = None
+        Player.EffectToRemove.append(Thunder4DOTCheck)
+
 #GCD
 
 #Fire Spell
 Fire1 = BLMSpell(1, True, 2.5, 2.5, 180, 800, True, False, ApplyFire1, [ManaRequirement])
-#Fire2 AOE
-Fire3 = BLMSpell(2, True, 3.5, 2.5, 260, 2000, True, False, ApplyFire3, [ManaRequirement])
-Fire4 = BLMSpell(3, True, 2.8, 2.5, 310, 800, True, False, empty, [EnochianRequirement, FireRequirement, ManaRequirement]) #BIG PP DAMAGE LETS GOOOOOOOOOOOOOo
-Despair = BLMSpell(9, True, 3, 2.5, 340, 800, True, False, ApplyDespair, [FireRequirement, ManaRequirement])
+Fire2 = BLMSpell(2, True, 3, 2.5, 100, 1500, True, False, ApplyFire3, [ManaRequirement]) #Same effect as Fire 3
+Fire3 = BLMSpell(3, True, 3.5, 2.5, 260, 2000, True, False, ApplyFire3, [ManaRequirement])
+Fire4 = BLMSpell(4, True, 2.8, 2.5, 310, 800, True, False, empty, [EnochianRequirement, FireRequirement, ManaRequirement]) #BIG PP DAMAGE LETS GOOOOOOOOOOOOOo
+Despair = BLMSpell(5, True, 3, 2.5, 340, 800, True, False, ApplyDespair, [FireRequirement, ManaRequirement])
+Flare = BLMSpell(6, True, 4, 2.5, 220, 800, True, False, ApplyFlare, [ManaRequirement, FireRequirement])
+HighFire = BLMSpell(7, True, 3, 2.5, 140, 1500, True, False, ApplyHighFire, [ManaRequirement])
+
+
+
 #Ice Spell
-Blizzard1 = BLMSpell(4, True, 2.5, 2.5, 180, 400, False, True, ApplyBlizzard1, [ManaRequirement])
-Blizzard3 = BLMSpell(5, True, 3.5, 2.5, 260, 800, False, True, ApplyBlizzard3, [ManaRequirement])
-Blizzard4 = BLMSpell(6, True, 2.5, 2.5, 310, 800, False, True, ApplyBlizzard4, [EnochianRequirement, IceRequirement, ManaRequirement])
+Blizzard1 = BLMSpell(8, True, 2.5, 2.5, 180, 400, False, True, ApplyBlizzard1, [ManaRequirement])
+Blizzard3 = BLMSpell(9, True, 3.5, 2.5, 260, 800, False, True, ApplyBlizzard3, [ManaRequirement])
+Blizzard4 = BLMSpell(10, True, 2.5, 2.5, 310, 800, False, True, ApplyBlizzard4, [EnochianRequirement, IceRequirement, ManaRequirement])
+Freeze = BLMSpell(11, True, 2.8, 2.5, 120, 1000, False, True, ApplyBlizzard4, [EnochianRequirement, IceRequirement, ManaRequirement]) #Same as B4
+HighBlizzard = BLMSpell(12, True, 3, 2.5, 140, 800, False, True, ApplyBlizzard3, [ManaRequirement])
+
 #Unaspected Spell
-Paradox = BLMSpell(7, True, 2.5, 2.5, 500, 1600, False, False, ApplyParadox, [ParadoxRequirement, ManaRequirement]) 
-Xenoglossy = BLMSpell(8, True, Lock, 2.5, 760, 0, False, False, ApplyXenoglossy, [PolyglotRequirement])
-Thunder3 = BLMSpell(10, True, 2.5, 2.5, 50, 400, False, False, ApplyThunder3, [ManaRequirement])
+Scathe = BLMSpell(13, True, Lock, 2.5, 100, 800, False, False, empty, [ManaRequirement])
+Paradox = BLMSpell(14, True, 2.5, 2.5, 500, 1600, False, False, ApplyParadox, [ParadoxRequirement, ManaRequirement]) 
+Xenoglossy = BLMSpell(15, True, Lock, 2.5, 760, 0, False, False, ApplyXenoglossy, [PolyglotRequirement])
+Foul = BLMSpell(16, True, Lock, 2.5, 560, 0, False, False, ApplyXenoglossy, [PolyglotRequirement]) #Same effect as Xeno
+Thunder3 = BLMSpell(17, True, 2.5, 2.5, 50, 400, False, False, ApplyThunder3, [ManaRequirement])
 Thunder3DOT = DOTSpell(-21, 35, False)
+Thunder4 = BLMSpell(18, True, 2.5, 2.5, 50, 400, False, False, ApplyThunder4, [ManaRequirement])
+Thunder4DOT = DOTSpell(-40, 20, False)
 
 
 #oGCD
-Transpose = BLMSpell(11, False, Lock, 0, 0, 0, False, False, ApplyTranspose, [TransposeRequirement])
-Amplifier = BLMSpell(12, False, Lock, 0, 0, 0, False, False, ApplyAmplifier, [AmplifierRequirement])
-LeyLines = BLMSpell(13, False, Lock, 0, 0, 0, False, False, ApplyLeyLines, [LeyLinesRequirement])
-Triplecast = BLMSpell(14, False, Lock, 0, 0, 0, False, False, ApplyTripleCast, [TripleCastRequirement])
-SharpCast = BLMSpell(15, False, Lock, 0, 0, 0, False, False, ApplySharpCast, [SharpCastRequirement])
-Manafront = BLMSpell(16, False, Lock, 0, 0, 0, False, False, ApplyManafront, [ManafrontRequirement])
+Transpose = BLMSpell(19, False, Lock, 0, 0, 0, False, False, ApplyTranspose, [TransposeRequirement])
+Amplifier = BLMSpell(20, False, Lock, 0, 0, 0, False, False, ApplyAmplifier, [AmplifierRequirement])
+LeyLines = BLMSpell(21, False, Lock, 0, 0, 0, False, False, ApplyLeyLines, [LeyLinesRequirement])
+Triplecast = BLMSpell(22, False, Lock, 0, 0, 0, False, False, ApplyTripleCast, [TripleCastRequirement])
+SharpCast = BLMSpell(23, False, Lock, 0, 0, 0, False, False, ApplySharpCast, [SharpCastRequirement])
+Manafront = BLMSpell(24, False, Lock, 0, 0, 0, False, False, ApplyManafront, [ManafrontRequirement])
 
 
 #buff
