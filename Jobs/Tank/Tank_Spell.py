@@ -47,8 +47,10 @@ class DRKSkill(TankSpell):
 
 class PaladinSpell(TankSpell):
 
-    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, isPhysical):
         super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+
+        self.isPhysical = isPhysical #To know to what ability we will give FoF
 
 
 

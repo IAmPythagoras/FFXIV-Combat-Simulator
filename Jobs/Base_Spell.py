@@ -108,6 +108,8 @@ class Spell:
         ##input("Damage : " + str(Damage))
         ##input("Damage from v1.0 " + str(ComputeDamageV2(player, self.Potency, 1, 1)))
 
+        #input("Adding " + str(self.Potency) + " to player : " + str(player))
+
         if isinstance(player, Queen) or isinstance(player, Esteem):
             player.Master.TotalPotency+= self.Potency
             player.Master.TotalDamage += Damage
@@ -130,10 +132,10 @@ class Spell:
         return self
 
 def ApplyMelee_AA(Player, Enemy):
-    Player.DOTList.append(Melee_AADOT)
+    Player.DOTList.append(copy.deepcopy(Melee_AADOT))
 
 def ApplyRanged_AA(Player, Enemy):
-    Player.DOTList.append(Ranged_AADOT)
+    Player.DOTList.append(copy.deepcopy(Ranged_AADOT))
 
 Melee_AA = Spell(-30, False, 0, 0, 0, 0, ApplyMelee_AA, [])
 Ranged_AA = Spell(-30, False, 0, 0, 0, 0, ApplyRanged_AA, [])

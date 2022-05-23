@@ -94,6 +94,9 @@ DNCPlayer = Dancer(2.5, [], [], [EspritEffect], Event, DNCStat)
 DRGPlayer = Dragoon(2.5, [], [], [], Event, DRGStat)
 RPRPlayer = Reaper(2.5, [], [], [], Event, RPRStat)
 
+PLDPlayer2 = Paladin(2.5, [], [], [], Event, PLDStat)
+PLDPlayer3 = Paladin(2.5, [], [], [], Event, PLDStat)
+
 
 BLMOpener = [SharpCast, WaitAbility(16.5), Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, Triplecast, Despair, Manafront, Fire4, Swiftcast, LucidDreaming, Despair, Transpose, SharpCast, Paradox, Xenoglossy, Thunder3,Transpose,Fire3, Fire4, Fire4, Fire4, Despair, Xenoglossy, Transpose, Paradox]
 SCHOpener = [WaitAbility(17), Potion, WaitAbility(1), Broil, Biolysis, Aetherflow, Broil, Swiftcast, Broil, ChainStratagem, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Broil, Broil, Broil, Broil]
@@ -112,10 +115,11 @@ DNCOpener = [Melee_AA,ClosedPosition(NINPlayer, False),WaitAbility(4.5), Standar
 DRGOpener = [Melee_AA,WaitAbility(20), TrueThrust, Potion, Disembowel, LanceCharge, DragonSight(NINPlayer), ChaoticSpring, BattleLitany, WheelingThrust, Geirskogul, LifeSurge, FangAndClaw, HighJump, RaidenThrust, DragonFireDive, VorpalThrust, LifeSurge, MirageDive, HeavenThrust, SpineshafterDive, FangAndClaw, SpineshafterDive, WheelingThrust, RaidenThrust, WyrmwindThrust, Disembowel, ChaoticSpring, WheelingThrust]
 RPROpener = [Melee_AA,Soulsow, WaitAbility(13.7), Harpe, ShadowOfDeath, Potion, SoulSlice, ArcaneCircle, Gluttony, Gibbet, Gallows, PlentifulHarvest, Enshroud, VoidReaping, CrossReaping, LemureSlice, VoidReaping, CrossReaping, LemureSlice, Communio, SoulSlice, UnveiledGibbet, Gibbet, Slice, WaxingSlice, ShadowOfDeath, InfernalSlice, Slice, WaxingSlice, UnveiledGallows, Gallows, InfernalSlice, Slice]
 NINOpener = [Melee_AA, WaitAbility(9.5), Jin, Chi, Ten, Huton, Hide,WaitAbility(1.5), Ten, Chi, Jin, Suiton, Kassatsu, SpinningEdge, Potion, GustSlash, Mug, Bunshin, PhantomKamaitachi, WaitAbility(0.6), TrickAttack, AeolianEdge, DreamWithinADream, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, TenChiJin, Ten2, Chi2, Jin2, Meisui, FleetingRaiju, Bhavacakra, FleetingRaiju, Bhavacakra, Ten, Chi, Raiton, FleetingRaiju ]
-BLMAOE = [HighBlizzard, Freeze, Thunder4, HighFire, HighFire, HighFire, Flare, Flare] #HighBlizzard, Freeze, HighFire, HighFire, HighFire, Flare, Flare
 
+PLDTEst = [Melee_AA,WaitAbility(18.5), HolySpirit, FastBlade, RiotBlade, Intervene, CircleScorn, GoringBlade, Expiacion, RequestACat, FastBlade, Intervene, RiotBlade, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti, BladeFaith, BladeTruth, BladeValor]
+PLDTest2 = [Melee_AA,WaitAbility(18.5), HolySpirit, Expiacion, Intervene, FastBlade, RiotBlade, CircleScorn,RequestACat, RoyalAuthority, Atonement, Intervene, Atonement, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti, BladeFaith, BladeTruth, Expiacion, BladeValor,Intervene]
 
-BLMPlayer.ActionSet = BLMAOE
+BLMPlayer.ActionSet = BLMOpener
 SCHPlayer.ActionSet = SCHOpener
 RDMPlayer.ActionSet = RDMOpener
 MCHPlayer.ActionSet = MCHOpener
@@ -124,7 +128,8 @@ DRKPlayer.ActionSet = DRKOpener
 WARPlayer.ActionSet = WAROpener
 WHMPlayer.ActionSet = WHMOpener
 SAMPlayer.ActionSet = SAMOpener
-PLDPlayer.ActionSet = PLDOpener
+PLDPlayer.ActionSet = PLDTEst
+PLDPlayer2.ActionSet = PLDTest2
 GNBPlayer.ActionSet = GNBOpener
 ASTPlayer.ActionSet = ASTOpener
 SMNPlayer.ActionSet = SMNOpener
@@ -132,9 +137,9 @@ BRDPlayer.ActionSet = BRDOpener
 DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 RPRPlayer.ActionSet = RPROpener
+#print(PLDPlayer, PLDPlayer2)
+Event.PlayerList = [BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
 
-Event.PlayerList = [BLMPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
 
-
-Event.SimulateFight(0.01, 200, 0)
+Event.SimulateFight(0.01, 32, 20)
 

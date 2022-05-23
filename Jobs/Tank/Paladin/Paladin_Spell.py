@@ -42,7 +42,7 @@ def RequestACatRequirement(Player, Spell):
 def ApplyFightOrFlight(Player, Enemy):
     Player.FightOrFlightTimer = 25
     Player.FightOrFlightCD = 60
-    Player.buffList.append(FightOrFlightBuff)
+    Player.EffectList.append(FightOrFlightEffect)
     Player.EffectCDList.append(FightOrFlightCheck)
 
 def ApplyExpiacion(Player, Enemy):
@@ -102,6 +102,10 @@ def ApplyFastBlade(Player, Enemy):
 
 #Effect
 
+def FightOrFlightEffect(Player, Spell):
+    if Spell.isPhysical or isinstance(Spell, DOTSpell):
+        Spell.DPSBonus *= FightOrFlightBuff.MultDPS #Giving bonus to the spell if it is physical
+
 def RequestACatEffect(Player, Spell):
     if Spell.id == HolySpirit.id:
         Spell.Potency += 270
@@ -121,6 +125,7 @@ def RiotBladeCombo(Player, Spell):
     if Spell.id == RoyalAuthority.id:
         Spell.Potency += 290
         Player.SwordOathStack += 3
+        input("adding")
         Player.EffectToRemove.append(RiotBladeCombo)
     elif Spell.id == GoringBlade.id:
         #Apply dot
@@ -145,7 +150,7 @@ def RequestACatCheck(Player, Enemy):
 
 def FightOrFlightCheck(Player, Enemy):
     if Player.FightOrFlighTimer <= 0:
-        Player.buffList.remove(FightOrFlightBuff)
+        Player.EffectList.remove(FightOrFlightEffect)
         Player.EffectToRemove.append(FightOrFlightCheck)
 
 def InterveneStackCheck(Player, Enemy):
@@ -177,30 +182,30 @@ def ValorDOTCheck(Player, Enemy):
 
 #Combo action
 
-FastBlade = PaladinSpell(1, True, Lock, 2.5, 200, 0, ApplyFastBlade, [])
-RiotBlade = PaladinSpell(2, True, Lock, 2.5, 170, 0, empty, [])
-RoyalAuthority = PaladinSpell(3, True, Lock, 2.5, 130,0, empty, [])
-GoringBlade = PaladinSpell(4, True, Lock, 2.5, 100, 0, empty, [])
+FastBlade = PaladinSpell(1, True, Lock, 2.5, 200, 0, ApplyFastBlade, [], True)
+RiotBlade = PaladinSpell(2, True, Lock, 2.5, 170, 0, empty, [], True)
+RoyalAuthority = PaladinSpell(3, True, Lock, 2.5, 130,0, empty, [], True)
+GoringBlade = PaladinSpell(4, True, Lock, 2.5, 100, 0, empty, [], True)
 GoringDOT = DOTSpell(-5, 65, True)
 
 #Confiteor Combo Action
 
-Confetti = PaladinSpell(5, True, Lock, 2.5, 900, 1000, ApplyConfetti, [ManaRequirement, ConfettiRequirement]) # >.>
-BladeFaith = PaladinSpell(8, True, Lock, 2.5, 420, 0, ApplyBladeFaith, [BladeFaithRequirement])
-BladeTruth = PaladinSpell(9, True, Lock, 2.5, 500, 0, ApplyBladeTruth, [BladeTruthRequirement])
-BladeValor = PaladinSpell(10, True, Lock, 2.5, 580, 0, ApplyBladeValor, [BladeValorRequirement])
+Confetti = PaladinSpell(5, True, Lock, 2.5, 900, 1000, ApplyConfetti, [ManaRequirement, ConfettiRequirement], False) # >.>
+BladeFaith = PaladinSpell(8, True, Lock, 2.5, 420, 0, ApplyBladeFaith, [BladeFaithRequirement], False)
+BladeTruth = PaladinSpell(9, True, Lock, 2.5, 500, 0, ApplyBladeTruth, [BladeTruthRequirement], False)
+BladeValor = PaladinSpell(10, True, Lock, 2.5, 580, 0, ApplyBladeValor, [BladeValorRequirement], False)
 BladeValorDOT = DOTSpell(-11, 80, True)
 #GCD
-HolySpirit = PaladinSpell(7, True, 1.5, 2.5, 270, 1000, empty, [ManaRequirement])
-Atonement = PaladinSpell(12, True, Lock, 2.5, 420, 0, ApplyAtonement, [AtonementRequirement])
+HolySpirit = PaladinSpell(7, True, 1.5, 2.5, 270, 1000, empty, [ManaRequirement], False)
+Atonement = PaladinSpell(12, True, Lock, 2.5, 420, 0, ApplyAtonement, [AtonementRequirement], True)
 
 #oGCD
-RequestACat = PaladinSpell(6, False, 0, Lock, 400, 0, ApplyRequestACat, [RequestACatRequirement]) #I NEED ONE RIGHT NOW :x
-CircleScorn = PaladinSpell(11, False, 0, Lock, 100, 0, ApplyCircleScorn, [CircleScornRequirement])
+RequestACat = PaladinSpell(6, False, 0, Lock, 400, 0, ApplyRequestACat, [RequestACatRequirement], True) #I NEED ONE RIGHT NOW :x
+CircleScorn = PaladinSpell(11, False, 0, Lock, 100, 0, ApplyCircleScorn, [CircleScornRequirement], True)
 CircleScornDOT = DOTSpell(-6, 30, True)
-Intervene = PaladinSpell(13, False, 0, Lock, 150, 0, ApplyIntervene, [InterveneRequirement])
-Expiacion = PaladinSpell(14, False, 0, Lock, 340, 0, ApplyExpiacion, [ExpiacionRequirement])
-FightOrFlight = PaladinSpell(15, False, 0, Lock, 0, 0, ApplyFightOrFlight, [FightOrFlightRequirement])
+Intervene = PaladinSpell(13, False, 0, Lock, 150, 0, ApplyIntervene, [InterveneRequirement], True)
+Expiacion = PaladinSpell(14, False, 0, Lock, 340, 0, ApplyExpiacion, [ExpiacionRequirement], True)
+FightOrFlight = PaladinSpell(15, False, 0, Lock, 0, 0, ApplyFightOrFlight, [FightOrFlightRequirement], True)
 
 #buff
 FightOrFlightBuff = buff(1.25)
