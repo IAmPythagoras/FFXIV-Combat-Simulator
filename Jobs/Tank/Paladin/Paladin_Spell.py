@@ -2,7 +2,7 @@ from Jobs.Base_Spell import buff, empty, DOTSpell, ManaRequirement
 from Jobs.Tank.Paladin.Paladin_Player import Paladin
 from Jobs.Tank.Tank_Spell import PaladinSpell
 import copy
-Lock = 0.75
+Lock = 0.5
 
 
 #Requirement

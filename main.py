@@ -117,7 +117,7 @@ RPROpener = [Melee_AA,Soulsow, WaitAbility(13.7), Harpe, ShadowOfDeath, Potion, 
 NINOpener = [Melee_AA, WaitAbility(9.5), Jin, Chi, Ten, Huton, Hide,WaitAbility(1.5), Ten, Chi, Jin, Suiton, Kassatsu, SpinningEdge, Potion, GustSlash, Mug, Bunshin, PhantomKamaitachi, WaitAbility(0.6), TrickAttack, AeolianEdge, DreamWithinADream, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, TenChiJin, Ten2, Chi2, Jin2, Meisui, FleetingRaiju, Bhavacakra, FleetingRaiju, Bhavacakra, Ten, Chi, Raiton, FleetingRaiju ]
 
 PLDTEst = [Melee_AA,WaitAbility(18.5), HolySpirit, FastBlade, RiotBlade, Intervene, CircleScorn, GoringBlade, Expiacion, RequestACat, FastBlade, Intervene, RiotBlade, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti, BladeFaith, BladeTruth, BladeValor]
-PLDTest2 = [Melee_AA,WaitAbility(18.5), HolySpirit, Expiacion, Intervene, FastBlade, RiotBlade, CircleScorn,RequestACat, RoyalAuthority, Atonement, Intervene, Atonement, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti, BladeFaith, BladeTruth, Expiacion, BladeValor,Intervene]
+PLDTest2 = [Melee_AA,WaitAbility(18.5), HolySpirit, Expiacion, Intervene, FastBlade,CircleScorn, RiotBlade,RequestACat, RoyalAuthority, Atonement, Intervene, Atonement, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti, BladeFaith, BladeTruth, Expiacion, BladeValor,Intervene,CircleScorn]
 
 BLMPlayer.ActionSet = BLMOpener
 SCHPlayer.ActionSet = SCHOpener
@@ -138,8 +138,8 @@ DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 RPRPlayer.ActionSet = RPROpener
 #print(PLDPlayer, PLDPlayer2)
-Event.PlayerList = [BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
+Event.PlayerList = [PLDPlayer2] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
 
 
-Event.SimulateFight(0.01, 32, 20)
+Event.SimulateFight(0.01, 33, 20)
 
