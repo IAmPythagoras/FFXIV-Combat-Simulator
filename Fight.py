@@ -59,10 +59,10 @@ class Fight:
     #This class will be the environment in which the fight happens. It will hold a list of players, an enemy, etc.
     # It will be called upon for when we want to start the simulation
 
-    def __init__(self, PlayerList, Enemy):
+    def __init__(self, PlayerList, Enemy, ShowGraph):
         self.PlayerList = PlayerList
         self.Enemy = Enemy
-        self.ShowGraph = False
+        self.ShowGraph = ShowGraph
         self.TimeStamp = 0
         self.TeamCompositionBonus = 1
 

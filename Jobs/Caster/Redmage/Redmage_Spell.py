@@ -1,7 +1,7 @@
 #########################################
 ########## REDMAGE PLAYER ###############
 #########################################
-from Jobs.Base_Spell import buff
+from Jobs.Base_Spell import ManaRequirement, buff, empty
 from Jobs.Caster.Caster_Spell import RedmageSpell, SwiftcastEffect
 Lock = 0.75
 #Special
@@ -48,7 +48,7 @@ def RedoublementRequirement(Player, Spell):
     return Player.Redoublement,-1
 
 def VerholyRequirement(Player, Spell):
-    return Player.Verholy,-1
+    return Player.ManaStack == 3,-1
 
 def ScorchRequirement(Player, Spell):
     return Player.Scorch,-1
@@ -56,9 +56,20 @@ def ScorchRequirement(Player, Spell):
 def ResolutionRequirement(Player, Spell):
     return Player.Resolution,-1
 
-
+def MagickBarrierRequirement(Player, Spell):
+    return Player.MagickBarrierCD <= 0, Player.MagickBarrierCD
 
 #Apply
+
+def ApplyMagickBarrier(Player, Enemy):
+    Player.MagickBarrierCD = 120
+
+def ApplyImpact(Player, Enemy):
+    Addmana(Player, 3, 3) #Add mana
+
+def ApplyMoulinet(Player, Enemy):
+    Removemana(Player, 20, 20)
+    Player.ManaStack = min(3, Player.ManaStack + 1) #Max of 3 stacks
 
 def ApplyJolt(Player, Enemy):
     Addmana(Player, 2, 2)
@@ -118,35 +129,77 @@ def ApplyCorps(Player, Enemy):
 #Combo Action Apply
 
 def ApplyRiposte(Player, Enemy):
+    if not (Riposte in Player.EffectList) : Player.EffectList.append(RiposteCombo)
+
+def ApplyEnchantedRiposte(Player, Enemy):
     Removemana(Player, 20, 20)
-    Player.Zwerchhau = True
+    Player.ManaStack = min(3, Player.ManaStack + 1) #Max of 3 stacks
+    if not (Riposte in Player.EffectList) : Player.EffectList.append(RiposteCombo)
+    if not (ManaStackEffect in Player.EffectList) : Player.EffectList.append(ManaStackEffect)
+    #This effect is to make sure we only do melee actions, since otherwise we loose mana stacks
 
 def ApplyZwerchhau(Player, Enemy):
     Removemana(Player, 15, 15)
-    Player.Redoublement = True
-    Player.Zwerchhau = False
+    Player.ManaStack = min(3, Player.ManaStack + 1) #Max of 3 stacks
+    if not (ManaStackEffect in Player.EffectList) : Player.EffectList.append(ManaStackEffect)
+    #This effect is to make sure we only do melee actions, since otherwise we loose mana stacks
 
 def ApplyRedoublement(Player, Enemy):
     Removemana(Player, 15, 15)
-    Player.Verholy = True
-    Player.Redoublement = False
+    Player.ManaStack = min(3, Player.ManaStack + 1) #Max of 3 stacks
+    if not (ManaStackEffect in Player.EffectList) : Player.EffectList.append(ManaStackEffect)
+    #This effect is to make sure we only do melee actions, since otherwise we loose mana stacks
 
 def ApplyVerholy(Player, Enemy):
     Addmana(Player, 11, 0)
     Player.Scorch = True
-    Player.Verholy = False
+    Player.ManaStack -= 1 #Removing one mana stack
+
+def ApplyVerflare(Player, Enemy):
+    Addmana(Player, 0, 11)
+    Player.Scorch = True
+    Player.ManaStack -= 1 #Removing one mana stack
 
 def ApplyScorch(Player, Enemy):
     Addmana(Player, 4, 4)
     Player.Resolution = True
     Player.Scorch = False
+    Player.ManaStack -= 1 #Removing one mana stack
 
 def ApplyResolution(Player, Enemy):
     Addmana(Player, 4, 4)
     Player.Resolution = False
+    Player.ManaStack -= 1 #Removing one mana stack
 
 
 #Effect
+
+def ManaStackEffect(Player, Spell):
+    if Spell.id == Verholy.id or Spell.id == Verflare.id:
+        #Then we remove this effect
+        Player.EffectToRemove.append(ManaStackEffect)
+    elif Spell.GCD and not (Spell.id == EnchantedRiposte.id or Spell.id == EnchantedZwerchhau.id or Spell.id == EnchantedRedoublement.id):
+        #If not any of these, we loose mana stacks
+        Player.ManaStack = 0
+        Player.EffectToRemove.append(ManaStackEffect)
+
+def RiposteCombo(Player, Spell):
+    if Spell.id == EnchantedZwerchhau.id:
+        Spell.Potency += 190
+        Player.EffectToRemove.append(RiposteCombo)
+        Player.EffectList.append(ZwerchhauCombo)
+    elif Spell.id == Zwerchhau.id:
+        Spell.Potency += 50
+        Player.EffectToRemove.append(RiposteCombo)
+        Player.EffectList.append(ZwerchhauCombo)
+
+def ZwerchhauCombo(Player, Spell):
+    if Spell.id == EnchantedRedoublement.id:
+        Spell.Potency += 370
+        Player.EffectToRemove.append(ZwerchhauCombo)
+    elif Spell.id == Redoublement.id:
+        Spell.Potency += 130
+        Player.EffectToRemove.append(ZwerchhauCombo)
 
 def DualCastEffect(Player, Spell):
     if Spell.CastTime != 0 and  Spell.GCD and Spell.id != -1:   #Want to make sure the spell will affect Dualcast, id != -1 is to make sure this is not WaitAbility
@@ -164,9 +217,10 @@ def ManaficationEffect(Player, Spell):
         Spell.DPSBonus *= 1.05 #5% boost on magic damage
 
 def AccelerationEffect(Player, Spell):
-    if Spell.id == 3 and not (SwiftcastEffect in Player.EffectList): 
+    if (Spell.id == Verthunder.id or Spell.id ==Verareo.id or Spell.id == Impact.id) and not (SwiftcastEffect in Player.EffectList): #id 3 is both 
         Spell.CastTime = 0    #Will have to cast how this interacts with Dual cast
         Player.EffectToRemove.append(AccelerationEffect)
+        if Spell.id == Impact.id : Spell.Potency += 50 #Impact has high potency when used with Acceleration
 
 #Check
 
@@ -206,31 +260,45 @@ def CorpsStackCheck(Player, Enemy):
         else:
             Player.CorpsCD = 35
 
-Jolt = RedmageSpell(0, True, 2, 2.5,310, 200, ApplyJolt, [RDMManaRequirement], 0, 0 )
-Verfire = RedmageSpell(1, True, 2, 2.5, 330, 200, ApplyVerfire, [RDMManaRequirement], 0, 0)
-Verstone = RedmageSpell(2, True, 2, 2.5, 330, 200, ApplyVerstone, [RDMManaRequirement], 0, 0)
-Verthunder = RedmageSpell(3, True, 5, 2.5, 380, 300, ApplyVerthunder, [RDMManaRequirement], 0, 0)
-Verareo = RedmageSpell(3, True, 5, 2.5, 380, 300, ApplyVerareao, [RDMManaRequirement], 0, 0)
 
-#All melee actions are assumed to be enchanted
+#GCD    
+
+Jolt = RedmageSpell(1, True, 2, 2.5,310, 200, ApplyJolt, [ManaRequirement], 0, 0 )
+Verfire = RedmageSpell(2, True, 2, 2.5, 330, 200, ApplyVerfire, [ManaRequirement], 0, 0)
+Verstone = RedmageSpell(3, True, 2, 2.5, 330, 200, ApplyVerstone, [ManaRequirement], 0, 0)
+Verthunder = RedmageSpell(4, True, 5, 2.5, 380, 300, ApplyVerthunder, [ManaRequirement], 0, 0)
+Verareo = RedmageSpell(5, True, 5, 2.5, 380, 300, ApplyVerareao, [ManaRequirement], 0, 0)
+#AoEs
+Impact = RedmageSpell(6, True, 5, 2.5, 210, 400, ApplyImpact, [ManaRequirement], 0, 0)
 #Combo actions
-Riposte = RedmageSpell(4, True, 0, 1.5, 220, 0, ApplyRiposte, [RDMManaRequirement], 20,20)
-Zwerchhau = RedmageSpell(5, True, 0, 1.5, 290, 0, ApplyZwerchhau, [RDMManaRequirement, ZwerchhauRequirement], 15, 15)
-Redoublement = RedmageSpell(6, True, 0, 2.5, 470, 0, ApplyRedoublement, [RDMManaRequirement, RedoublementRequirement], 15, 15)
-Verholy = RedmageSpell(7, True, 0, 2.5, 580, 400, ApplyVerholy, [RDMManaRequirement, VerholyRequirement], 0, 0)
-Scorch = RedmageSpell(8, True, 0, 2.5, 680, 400, ApplyScorch, [RDMManaRequirement, ScorchRequirement], 0, 0)
-Resolution = RedmageSpell(9, True, 0, 2.5, 750, 400, ApplyResolution, [RDMManaRequirement, ResolutionRequirement], 0, 0)
+#NonEnchanted
+Riposte = RedmageSpell(7, True, 0, 2.5, 130, 0, ApplyRiposte, [], 0, 0)
+Zwerchhau = RedmageSpell(8, True, 0, 2.5, 100, 0, empty, [], 0, 0)
+Redoublement = RedmageSpell(9, True, 0, 2.5, 100, 0, empty, [], 0, 0)
+#Enchanted
+EnchantedRiposte = RedmageSpell(10, True, 0, 1.5, 220, 0, ApplyEnchantedRiposte, [RDMManaRequirement], 20,20)
+EnchantedZwerchhau = RedmageSpell(11, True, 0, 1.5, 100, 0, ApplyZwerchhau, [RDMManaRequirement], 15, 15)
+EnchantedRedoublement = RedmageSpell(12, True, 0, 2.2, 100, 0, ApplyRedoublement, [RDMManaRequirement], 15, 15)
+Verholy = RedmageSpell(13, True, 0, 2.5, 580, 400, ApplyVerholy, [ManaRequirement, VerholyRequirement], 0, 0)
+Verflare = RedmageSpell(14, True, 0, 2.5, 580, 400, ApplyVerflare, [ManaRequirement, VerholyRequirement], 0, 0) #Same Requirement as Verholy, just need 3 Mana stacks
+Scorch = RedmageSpell(15, True, 0, 2.5, 680, 400, ApplyScorch, [ManaRequirement, ScorchRequirement], 0, 0)
+Resolution = RedmageSpell(16, True, 0, 2.5, 750, 400, ApplyResolution, [ManaRequirement, ResolutionRequirement], 0, 0)
+#AOE Melee Action
+Moulinet = RedmageSpell(17, True, 0, 1.5, 130, 0, ApplyMoulinet, [RDMManaRequirement], 20, 20)
 
 #For now combo action cannot be cancelled by doing something else
+Manafication = RedmageSpell(18, False, 0, Lock, 0, 0, ApplyManafication, [ManaficationRequirement], 0, 0)
+Embolden = RedmageSpell(19, False, 0, Lock, 0, 0, ApplyEmbolden, [EmboldenRequirement], 0, 0)
+Acceleration = RedmageSpell(20, False, 0, Lock, 0, 0, ApplyAcceleration, [AccelerationRequirement], 0, 0)
+Fleche = RedmageSpell(21, False, 0, Lock, 460, 0, ApplyFleche, [FlecheRequirement], 0, 0)
+Contre = RedmageSpell(22, False, 0, Lock, 360, 0, ApplyContre, [ContreRequirement], 0, 0)
+Engagement = RedmageSpell(23, False, 0, Lock, 180, 0, ApplyEngagement, [EngagementRequirement], 0, 0)
+Corps = RedmageSpell(24, False, 0, Lock, 130, 0, ApplyCorps, [CorpsRequirement], 0, 0)
 
-Manafication = RedmageSpell(10, False, 0, Lock, 0, 0, ApplyManafication, [ManaficationRequirement], 0, 0)
-Embolden = RedmageSpell(11, False, 0, Lock, 0, 0, ApplyEmbolden, [EmboldenRequirement], 0, 0)
-Acceleration = RedmageSpell(12, False, 0, Lock, 0, 0, ApplyAcceleration, [AccelerationRequirement], 0, 0)
-
-Fleche = RedmageSpell(13, False, 0, Lock, 460, 0, ApplyFleche, [FlecheRequirement], 0, 0)
-Contre = RedmageSpell(14, False, 0, Lock, 360, 0, ApplyContre, [ContreRequirement], 0, 0)
-Engagement = RedmageSpell(15, False, 0, Lock, 180, 0, ApplyEngagement, [EngagementRequirement], 0, 0)
-Corps = RedmageSpell(16, False, 0, Lock, 130, 0, ApplyCorps, [CorpsRequirement], 0, 0)
+#Other GCD/oGCD with no DPS goal
+MagickBarrier = RedmageSpell(25, False, 0, 0, 0, 0, ApplyMagickBarrier, [MagickBarrierRequirement], 0, 0)
+Verraise = RedmageSpell(26, True,10, 2.5, 0,2400, empty, [RDMManaRequirement], 0, 0)
+Vercure = RedmageSpell(27, True, 2, 2.5, 0, 500, empty, [RDMManaRequirement], 0, 0)
 
 #buff
 EmboldenBuff = buff(1.05)
