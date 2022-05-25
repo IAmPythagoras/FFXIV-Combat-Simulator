@@ -24,6 +24,7 @@ class Redmage(Caster):
         self.ContreCD = 0
         self.EngagementCD = 0
         self.CorpsCD = 0
+        self.MagickBarrierCD = 0
 
         #Timer
         self.EmboldenTimer = 0
@@ -33,6 +34,7 @@ class Redmage(Caster):
         self.AccelerationStack = 2
         self.EngagementStack = 2
         self.CorpsStack = 2
+        self.ManaStack = 0 #Used for Melee Combo finisher
 
         self.DualCast = False #True if DualCast cast
 
