@@ -8,6 +8,9 @@ from Jobs.Tank.Paladin.Paladin_Spell import ApplyFastBlade
 Lock = 0.75
 #Requirement
 
+def ManawardRequirement(Player, Spell):
+    return Player.ManawardCD <= 0, Player.ManawardCD
+
 def EnochianRequirement(Player, Spell):
     return Player.EnochianTimer > 0, -1
 
@@ -71,7 +74,9 @@ def ApplyThunder4(Player, Enemy):
     #We now have to check if Thunder 3 is already applied, in which case we will remove it
     if Player.Thunder3DOT != None : Player.Thunder3DOTTimer = 0
 
-
+def ApplyUmbralSoul(Player, Enemy):
+    Player.AddIce() #Add 1 Ice
+    Player.UmbralHearts = min(3, Player.UmbralHearts + 1)
 
 def ApplyBlizzard1(Player, Enemy):
     Player.AddIce() #Add 1 Ice
@@ -351,6 +356,7 @@ HighFire = BLMSpell(7, True, 3, 2.5, 140, 1500, True, False, ApplyHighFire, [Man
 
 
 #Ice Spell
+UmbralSoul = BLMSpell(25, True, 0, 2.5, 0, 0, False, True, ApplyUmbralSoul, [IceRequirement])
 Blizzard1 = BLMSpell(8, True, 2.5, 2.5, 180, 400, False, True, ApplyBlizzard1, [ManaRequirement])
 Blizzard3 = BLMSpell(9, True, 3.5, 2.5, 260, 800, False, True, ApplyBlizzard3, [ManaRequirement])
 Blizzard4 = BLMSpell(10, True, 2.5, 2.5, 310, 800, False, True, ApplyBlizzard4, [EnochianRequirement, IceRequirement, ManaRequirement])
@@ -375,6 +381,9 @@ LeyLines = BLMSpell(21, False, Lock, 0, 0, 0, False, False, ApplyLeyLines, [LeyL
 Triplecast = BLMSpell(22, False, Lock, 0, 0, 0, False, False, ApplyTripleCast, [TripleCastRequirement])
 SharpCast = BLMSpell(23, False, Lock, 0, 0, 0, False, False, ApplySharpCast, [SharpCastRequirement])
 Manafront = BLMSpell(24, False, Lock, 0, 0, 0, False, False, ApplyManafront, [ManafrontRequirement])
+BetweenTheLine = BLMSpell(26, False, 0, 0, 0, 0, False, False, empty, [])
+AetherialManipulation = BLMSpell(27, False, 0, 0, 0, 0, False, False, empty, [])
+Manaward = BLMSpell(28, False, 0, 0, 0, 0, False, False, ApplyManaward, [ManawardRequirement])
 
 
 #buff

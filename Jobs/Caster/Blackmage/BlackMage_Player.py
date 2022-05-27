@@ -33,6 +33,7 @@ class BlackMage(Caster):
         self.TripleCastCD = 0
         self.SharpCastCD = 0
         self.ManafrontCD = 0
+        self.ManawardCD = 0
 
         #Timer
         self.PolyglotTimer = 0
@@ -56,6 +57,7 @@ class BlackMage(Caster):
         if (self.TripleCastCD > 0) : self.TripleCastCD = max(0,self.TripleCastCD - time)
         if (self.SharpCastCD > 0) : self.SharpCastCD = max(0,self.SharpCastCD - time)
         if (self.ManafrontCD > 0) : self.ManafrontCD = max(0,self.ManafrontCD - time)
+        if (self.ManawardCD > 0) : self.ManawardCD = max(0,self.ManawardCD - time)
 
     def updateTimer(self, time):
         super().updateTimer(time)

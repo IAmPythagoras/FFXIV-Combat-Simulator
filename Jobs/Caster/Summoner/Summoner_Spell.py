@@ -192,6 +192,7 @@ Ruin3 = SummonerSpell(1, True, 1.5, 2.5, 310, 300, empty, [ManaRequirement])
 Ruin4 = SummonerSpell(2, True, Lock, 2.5, 430, 400, ApplyRuin4, [ManaRequirement, Ruin4Requirement])
 FoF = SummonerSpell(15, True, Lock, 2.5, 540, 300, empty, [FoFRequirement, ManaRequirement])
 AstralImpulse = SummonerSpell(16, True, Lock, 2.5, 440, 300, empty, [AstralImpulseRequirement, ManaRequirement])
+TryDisaster = SummonerSpell(17, True, 1.5, 2.5, 120, 300, empty, [ManaRequirement])
 #Primal
 Titan = SummonerSpell(3, True, Lock, 2.5, 700, 0, ApplyTitan, [TitanRequirement])
 Garuda = SummonerSpell(4, True, Lock, 2.5, 700, 0, ApplyGaruda, [GarudaRequirement])
@@ -200,14 +201,16 @@ Ifrit = SummonerSpell(5, True, Lock, 2.5, 700, 0, ApplyIfrit, [IfritRequirement]
 #Titan Ability
 Topaz = SummonerSpell(6, True, Lock, 2.5, 140, 330, ApplyTopaz, [ManaRequirement, TopazRequirement])
 Mountain = SummonerSpell(7, False, Lock, 0, 150, 0, ApplyMountain, [MountainRequirement])
+TopazCatastrophe = SummonerSpell(8, True, 0, 2.5, 140, 300, ApplyTopaz, ManaRequirement, TopazRequirement ) #same effect and requirement as Topaz
 
 #IfritAbility
 Ruby = SummonerSpell(8, True, 2.8, 3, 510, 300, ApplyRuby, [RubyRequirement, ManaRequirement] )
 Cyclone = SummonerSpell(9, True, Lock, 2.5, 430, 0, ApplyCyclone, [CycloneRequirement])
 Strike = SummonerSpell(10, True, Lock, 2.5, 430, 0, ApplyStrike, [StrikeRequirement])
-
+RubyCatastrophe = SummonerSpell(11, True, 2.8, 2.5, 210, 300, ApplyRuby, [RubyRequirement, ManaRequirement]) #Same as Ruby
 #GarudaAbility
 Emerald = SummonerSpell(11, True, Lock, 1.5, 230, 300, ApplyEmerald, [EmeraldRequirement, ManaRequirement])
+EmeraldCatastrophe = SummonerSpell(12, True, 0, 1.5, 100, 300, ApplyEmerald, [ManaRequirement, EmeraldRequirement])
 Slipstream = SummonerSpell(12, True, 3, 3.5, 430, 0, ApplySlipstream, [SlipstreamRequirement])
 SlipstreamDOT = DOTSpell(-13, 30, False)
 
@@ -223,6 +226,7 @@ Enkindle = SummonerSpell(17, False, 0.25, 0, 1300, 0, ApplyEnkindle, [EnkindleRe
 Deathflare = SummonerSpell(18, False, Lock, 0, 500, 0, ApplyDeathflare, [DeathflareRequirement])
 EnergyDrainSMN = SummonerSpell(19, False, Lock, 0, 200, 0, ApplyEnergyDrain, [EnergyDrainRequirement])
 Fester = SummonerSpell(21, False, Lock, 0, 300, 0, ApplyFester, [FesterRequirement])
+PainFlare = SummonerSpell(22, False, 0, 0, 150, 0, ApplyFester, [FesterRequirement]) #AOE version of Fester
 SearingLight = SummonerSpell(20, False, Lock, 0, 0, 0, ApplySearingLight, [SearingLightRequirement])
 
 #buff
