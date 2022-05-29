@@ -7,7 +7,7 @@ class Astrologian(Healer):
 
         #Stack
         self.DrawStack = 2
-
+        self.EssentialDignityStack = 2
         #Gauge
         self.Lunar = False #Balance and Bole
         self.Solar = False #Arrow and Ewer
@@ -30,6 +30,8 @@ class Astrologian(Healer):
         self.EarthlyStarCD = 0
         self.CelestialOppositionCD = 0
         self.CollectiveCD = 0 #Collective Uncounscious
+        self.SynastryCD = 0
+        self.EssentialDignityCD = 0
         #Timer
         self.CumbustDOTTimer = 0
         self.LightspeedTimer = 0
@@ -53,6 +55,7 @@ class Astrologian(Healer):
         if (self.EarthlyStarCD > 0) : self.EarthlyStarCD = max(0,self.EarthlyStarCD - time)
         if (self.CelestialOppositionCD > 0) : self.CelestialOppositionCD = max(0,self.CelestialOppositionCD - time)
         if (self.CollectiveCD > 0) : self.CollectiveCD = max(0,self.CollectiveCD - time)
+        if (self.SynastryCD > 0) : self.SynastryCD = max(0,self.SynastryCD - time)
 
     def updateTimer(self, time):
         super().updateTimer(time)

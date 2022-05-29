@@ -53,7 +53,25 @@ def StellarDetonationRequirement(Player, Spell):
 def CelestialOppositionRequirement(Player, Spell):
     return Player.CelestialOppositionCD <= 0, Player.CelestialOppositionCD
 
+def CollectiveRequirement(Player, Spell):
+    return Player.CollectiveCD <= 0, Player.CollectiveCD
+
+def SynastryRequirement(Player, Spell):
+    return Player.SynastryCD <= 0, Player.SynastryCD
+
+def EssentialDignityRequirement(Player, Spell):
+    return Player.EssentialDignityStack >0, Player.EssentialDignityCD
+
 #Apply
+
+def ApplyEssentialDignity(Player, Enemy):
+    if Player.EssentialDignityStack == 2:
+        Player.EffectCDList.append(EssentialDignityStackCheck)
+        Player.EssentialDignityCD = 40
+    Player.EssentialDignityStack -= 1
+
+def ApplySynastry(Player, Enemy):
+    Player.SynastryCD = 120
 
 def ApplyCollective(Player, Enemy):
     Player.CollectiveCD = 60
@@ -148,6 +166,14 @@ def LightspeedEffect(Player, Spell):
 
 #Check
 
+def EssentialDignityStackCheck(Player, Enemy):
+    if Player.EssentialDignityCD <= 0:
+        if Player.EssentialDignityStack == 1:
+            Player.EffectToRemove.append(EssentialDignityStackCheck)
+        else:
+            Player.EssentialDignityCD = 40
+        Player.EssentialDignityStack += 1
+
 def BodyCheck(Player, Enemy):
     if Player.BodyTimer <= 0:
         Player.EffectList.remove(BodyEffect)
@@ -186,27 +212,34 @@ def CumbustDOTCheck(Player, Enemy):
 #GCD
 Malefic = AstrologianSpell(1, True, 1.5, 2.5, 250, 400, empty, [ManaRequirement])
 Combust = AstrologianSpell(2, True, Lock, 2.5, 0, 400, ApplyCombust, [ManaRequirement])
-LordOfCrown = AstrologianSpell(5, True, Lock, 1, 250, 0,  ApplyLordOfCrown, [LordOfCrownRequirement])
+LordOfCrown = AstrologianSpell(3, True, Lock, 1, 250, 0,  ApplyLordOfCrown, [LordOfCrownRequirement])
 CumbustDOT = DOTSpell(-12, 55, False)
-Gravity = AstrologianSpell(1, True, 1.5, 2.5, 130, 400, empty, [ManaRequirement])
-
-
+Gravity = AstrologianSpell(4, True, 1.5, 2.5, 130, 400, empty, [ManaRequirement])
+#Heal GCD
+AspectedHelios = AstrologianSpell(5, True, 1.5, 2.5, 0, 800, empty, [ManaRequirement])
+AspectedBenific = AstrologianSpell(6, True, 0, 2.5, 0, 400, empty, [ManaRequirement])
+Benefic = AstrologianSpell(7, True, 1.5, 2.5, 0, 700, empty, [ManaRequirement])
+Benefic = AstrologianSpell(8, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement])
+Helios = AstrologianSpell(9, True, 1.5, 2.5, 0, 700, empty, [ManaRequirement])
+EssentialDignity = AstrologianSpell(10, False, 0, 0, 0, 0, ApplyEssentialDignity, [EssentialDignityRequirement])
 #oGCD
-Lightspeed = AstrologianSpell(3, False, Lock, 0, 0, 0, ApplyLightspeed, [LightspeedRequirement])
-Divination = AstrologianSpell(4, False, Lock, 0, 0, 0, ApplyDivination, [DivinationRequirement])
-MinorArcana = AstrologianSpell(5, False, Lock, 0, 0, 0, ApplyMinorArcana, [MinorArcanaRequirement])
-Draw = AstrologianSpell(6, False, Lock,0, 0, 0, ApplyDraw, [DrawRequirement])
-Astrodyne = AstrologianSpell(7, False, Lock, 0, 0, 0, ApplyAstrodyne, [])
-Macrocosmos = AstrologianSpell(8, False, 0, 0, 250, 600, ApplyMacrocosmos, [MacrocosmosRequirement, ManaRequirement])
-Microcosmos = AstrologianSpell(9, False, 0, 0, 0, 0, empty, [MicrocosmosRequirement])
-Exaltation = AstrologianSpell(10, False, 0, 0, 0, 0, ApplyExaltation, [ExaltationRequirement])
-NeutralSect = AstrologianSpell(11, False, 0, 0, 0, 0, ApplyNeutralSect, [NeutralSectRequirement])
-Horoscope = AstrologianSpell(12, False, 0, 0, 0, 0, ApplyHoroscope, [HoroscopeRequirement])
-CelestialIntersection = AstrologianSpell(13, False, 0, 0, 0, 0, ApplyCelestialIntersection, [CelestialIntersectionRequirement])
-EarthlyStar = AstrologianSpell(13, False, 0, 0, 0, 0, ApplyEarthlyStar, [EarthlyStarRequirement])
-StellarDetonation = AstrologianSpell(14, False, 0, 0, 0, 0, empty, [StellarDetonationRequirement])
-CelestialOpposition = AstrologianSpell(15, False, 0, 0, 0, 0, ApplyCelestialOpposition, [CelestialOppositionRequirement])
-Collective = AstrologianSpell(16, False, 0, 0, 0, 0, ApplyCollective, [CollectiveRequirement])
+Lightspeed = AstrologianSpell(11, False, Lock, 0, 0, 0, ApplyLightspeed, [LightspeedRequirement])
+Divination = AstrologianSpell(12, False, Lock, 0, 0, 0, ApplyDivination, [DivinationRequirement])
+MinorArcana = AstrologianSpell(13, False, Lock, 0, 0, 0, ApplyMinorArcana, [MinorArcanaRequirement])
+Draw = AstrologianSpell(14, False, Lock,0, 0, 0, ApplyDraw, [DrawRequirement])
+Astrodyne = AstrologianSpell(15, False, Lock, 0, 0, 0, ApplyAstrodyne, [])
+#Heal oGCD
+Macrocosmos = AstrologianSpell(16, False, 0, 0, 250, 600, ApplyMacrocosmos, [MacrocosmosRequirement, ManaRequirement])
+Microcosmos = AstrologianSpell(17, False, 0, 0, 0, 0, empty, [MicrocosmosRequirement])
+Exaltation = AstrologianSpell(18, False, 0, 0, 0, 0, ApplyExaltation, [ExaltationRequirement])
+NeutralSect = AstrologianSpell(19, False, 0, 0, 0, 0, ApplyNeutralSect, [NeutralSectRequirement])
+Horoscope = AstrologianSpell(20, False, 0, 0, 0, 0, ApplyHoroscope, [HoroscopeRequirement])
+CelestialIntersection = AstrologianSpell(21, False, 0, 0, 0, 0, ApplyCelestialIntersection, [CelestialIntersectionRequirement])
+EarthlyStar = AstrologianSpell(22, False, 0, 0, 0, 0, ApplyEarthlyStar, [EarthlyStarRequirement])
+StellarDetonation = AstrologianSpell(23, False, 0, 0, 0, 0, empty, [StellarDetonationRequirement])
+CelestialOpposition = AstrologianSpell(24, False, 0, 0, 0, 0, ApplyCelestialOpposition, [CelestialOppositionRequirement])
+Collective = AstrologianSpell(25, False, 0, 0, 0, 0, ApplyCollective, [CollectiveRequirement])
+Synastry = AstrologianSpell(26, False, 0, 0, 0, 0, ApplySynastry, [SynastryRequirement])
 
 #Arcanum require a target within the team, so it will be a function that will return a spell that
 #will target the given player. It is also assumed that the bonus is 6%
