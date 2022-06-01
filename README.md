@@ -11,6 +11,7 @@ This simply shows that 8 man raids can now be simulated (only accounts for damag
 The program will output a text of each player's damage, a graph showing the DPS over time and a graph of each player's DPS distribution. Here I will only show the outputed Graphs, since all the information the program gives can be seen here.
 
 It is possible to simulate with as much player as we want. Here is an example with only a Blackmage with 2.44 Crit BiS executing 4F4 Opener : 
+
 ![BLMDist](https://user-images.githubusercontent.com/62820030/171497586-2fbcf405-c377-4684-807b-8ee74468d668.png)
 ![BLMGraph](https://user-images.githubusercontent.com/62820030/171495792-059caf23-77d7-4060-b600-4ddd17ac5d18.png)
 
