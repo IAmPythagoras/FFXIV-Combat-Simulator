@@ -7,7 +7,7 @@ class Astrologian(Healer):
 
         #Stack
         self.DrawStack = 2
-
+        self.EssentialDignityStack = 2
         #Gauge
         self.Lunar = False #Balance and Bole
         self.Solar = False #Arrow and Ewer
@@ -22,6 +22,16 @@ class Astrologian(Healer):
         self.DivinationCD = 0
         self.MinorArcanaCD = 0
         self.DrawCD = 0
+        self.MacrocosmosCD = 0
+        self.ExaltationCD = 0
+        self.NeutralSectCD = 0
+        self.HoroscopeCD = 0
+        self.CelestialIntersectionCD = 0
+        self.EarthlyStarCD = 0
+        self.CelestialOppositionCD = 0
+        self.CollectiveCD = 0 #Collective Uncounscious
+        self.SynastryCD = 0
+        self.EssentialDignityCD = 0
         #Timer
         self.CumbustDOTTimer = 0
         self.LightspeedTimer = 0
@@ -37,6 +47,15 @@ class Astrologian(Healer):
         if (self.DivinationCD > 0) : self.DivinationCD = max(0,self.DivinationCD - time)
         if (self.MinorArcanaCD > 0) : self.MinorArcanaCD = max(0,self.MinorArcanaCD - time)
         if (self.DrawCD > 0) : self.DrawCD = max(0,self.DrawCD - time)
+        if (self.MacrocosmosCD > 0) : self.MacrocosmosCD = max(0,self.MacrocosmosCD - time)
+        if (self.ExaltationCD > 0) : self.ExaltationCD = max(0,self.ExaltationCD - time)
+        if (self.NeutralSectCD > 0) : self.NeutralSectCD = max(0,self.NeutralSectCD - time)
+        if (self.HoroscopeCD > 0) : self.HoroscopeCD = max(0,self.HoroscopeCD - time)
+        if (self.CelestialIntersectionCD > 0) : self.CelestialIntersectionCD = max(0,self.CelestialIntersectionCD - time)
+        if (self.EarthlyStarCD > 0) : self.EarthlyStarCD = max(0,self.EarthlyStarCD - time)
+        if (self.CelestialOppositionCD > 0) : self.CelestialOppositionCD = max(0,self.CelestialOppositionCD - time)
+        if (self.CollectiveCD > 0) : self.CollectiveCD = max(0,self.CollectiveCD - time)
+        if (self.SynastryCD > 0) : self.SynastryCD = max(0,self.SynastryCD - time)
 
     def updateTimer(self, time):
         super().updateTimer(time)
