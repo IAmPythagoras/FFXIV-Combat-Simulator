@@ -5,38 +5,39 @@ Note that this project is still in active development, and some things shown her
 fix with time. This is simply to show what we have achieved so far, and what we want to do with this program.
 
 
-So far, we have been able to simulate 8 players at the same time (this limit is in theory infinite and we could add as much as we want).
+So far, we have been able to simulate 8 players (we could do more) at the same time (this limit is in theory infinite and we could add as much as we want).
 This simply shows that 8 man raids can now be simulated (only accounts for damage done).
 
-The program will output a text of each player's damage, a graph showing the DPS over time and a graph of each player's DPS distribution.
+The program will output a text of each player's damage, a graph showing the DPS over time and a graph of each player's DPS distribution. Here I will only show the outputed Graphs, since all the information the program gives can be seen here.
 
 It is possible to simulate with as much player as we want. Here is an example with only a Blackmage with 2.44 Crit BiS executing 4F4 Opener : 
 
-![BLMAloneDPS](https://user-images.githubusercontent.com/62820030/168635582-5874112c-463e-46f4-b687-f0f9ccb4f3c9.PNG)
-![DPSAloneDist](https://user-images.githubusercontent.com/62820030/168635607-28e6f8c4-23ff-4a09-874f-94b110ef9142.PNG)
-![BLMAloneResult](https://user-images.githubusercontent.com/62820030/168635621-d68ec25f-dbb0-45e8-85a3-820677ce6145.PNG)
+![BLMGraph](https://user-images.githubusercontent.com/62820030/171495792-059caf23-77d7-4060-b600-4ddd17ac5d18.png)
+![BLMDist](https://user-images.githubusercontent.com/62820030/171495800-31b4f588-1ecf-40ae-8983-c6aec63a4ade.png)
 
+The DPS distribution is the distribution of the expected DPS where the Direct Hit Rate is assumed to be the expected value and where Crit Rate can vary. The different colors show the 68-95-99 empirical rule. For those that do not know what this rule is, it basically implies that 68% of all trials will be within 1 standard deviation away from the mean (the red region), 95% of the trials will be within 2 standard deviation away (blue and red region) and 99.7% (basically 100%) will be within 3 standard deviation away from the mean (green, blue and red region).
+Using the DPS over time graph, we can also see rapid increase in DPS, and stagnation of DPS. This can be used to make sure all raid buffs are put in at the optimal time so we maximize the DPS bonus.
 
-We have also implemented party buffs like Chain Stratagem, Trick Attack, Astrologian Arcanum personnal buff, dance partner, etc.. Here is an example where a Blackmage executing the previous opener (with same gear) will have its DPS increased by being the dance partner of the dancer : 
-![BLMDNCGraph](https://user-images.githubusercontent.com/62820030/168635766-89266c1f-dbd8-4122-9f77-1d482a9c2797.PNG)
-![BLMDNCDist](https://user-images.githubusercontent.com/62820030/168635777-507ab3c3-bc68-4f30-bd2b-61557c88231a.PNG)
-![BLMDNCResult](https://user-images.githubusercontent.com/62820030/168635796-dc75a0c6-03e1-4742-867c-776e90f064ab.PNG)
+We have also implemented party buffs like Chain Stratagem, Trick Attack, Astrologian Arcanum personnal buff, dance partner, etc.. Here is an example where a Blackmage executing the previous opener (with same gear) will have its DPS by a Scholar doing Chain Stratagem: 
+![BLMScholarDist](https://user-images.githubusercontent.com/62820030/171496731-fb564013-fd67-48e3-b55a-da05c4b7c74f.PNG)
+![BLMScholarGraph](https://user-images.githubusercontent.com/62820030/171496752-b35ea302-e57e-414e-8087-e3114f8cf88f.PNG)
 
 As you can see, the Blackmage's DPS has been increased. Also, note that the standard deviation of the DPS distribution graph on Blackmage is bigger because
-it has received some crit buffs by the Dancer.
+it has received some crit buffs by the Scholar.
 
 
 It can also be used to directly compare damage within classes. Such as this examples that compares Tank damage in their respective Opener : 
  
-![TankResult](https://user-images.githubusercontent.com/62820030/164585479-071c5e2c-7a21-4101-baab-f14d8d777be0.PNG)
-![TankGraph](https://user-images.githubusercontent.com/62820030/164585481-c4aa80a7-e400-403b-b00b-3f8217a7539e.PNG)
+![tankDist](https://user-images.githubusercontent.com/62820030/171497230-db066d01-3a29-4ba3-bffd-e4cec3217e61.PNG)
+![tankGraph](https://user-images.githubusercontent.com/62820030/171497249-ac093177-336b-4a08-8931-e3a2f3d4694d.PNG)
+
 
 Here is an example with a full standard team comp. Note that the DPS might be lower than expected for some classes, since not all of these players
 will execute abilities for the whole duration of the simulation as it ends when no more player has anything to do.
 
-![fullteamgraph](https://user-images.githubusercontent.com/62820030/168636009-20204bca-010a-4941-ab95-ee6cd653b7c1.PNG)
-![fullteamdist](https://user-images.githubusercontent.com/62820030/168636017-2febd13c-843a-498f-b742-ccf754b3211f.PNG)
-![Fullteamresult](https://user-images.githubusercontent.com/62820030/168636020-2f9bbfe7-5f2e-4e6a-8a2c-28a314d7dd5d.PNG)
+![fullteamDist](https://user-images.githubusercontent.com/62820030/171497282-8acf5732-94e6-49df-952f-af3c4070b356.png)
+![FullteamGraph](https://user-images.githubusercontent.com/62820030/171497291-93c94a7b-a9d9-471a-a132-bad3cd2a04e4.png)
+
 
 
 We so far have implemented the following jobs :
@@ -90,12 +91,9 @@ Monk : IN WORK
 
 Dragoon : DONE
 
-UPDATED : May 17th 2022
-
-And we plan to add the rest of them in due time.
+UPDATED : June 1st 2022
 
 We also plan to add Bluemage once we are done with the core program.
-
 
 
 # HOW IT WORKS
