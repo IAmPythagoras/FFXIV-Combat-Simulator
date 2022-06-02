@@ -32,14 +32,7 @@ class Astrologian(Healer):
         self.CollectiveCD = 0 #Collective Uncounscious
         self.SynastryCD = 0
         self.EssentialDignityCD = 0
-        #Timer
-        self.CumbustDOTTimer = 0
-        self.LightspeedTimer = 0
-        self.DivinationTimer = 0
-        self.BodyTimer = 0
 
-        #DOT
-        self.CumbustDOT = None #That's the actual name of the spell
 
     def updateCD(self, time):
         super().updateCD(time)

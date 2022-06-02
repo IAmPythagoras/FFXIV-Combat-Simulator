@@ -58,12 +58,30 @@ def EukrasianDOTCheck(Player, Enemy):
         Player.Eukrasian = None
 
 
-#GCD
+#Damage GCD
 Dosis = SageSpell(1, True, 1.5, 2.5, 330, 400, empty, [ManaRequirement])
 EukrasianDosis = SageSpell(2, True, Lock, 1.5, 0, 400, ApplyEukrasian, [ManaRequirement, EukrasianDosisRequirement])
 EukrasianDOT = DOTSpell(-12, 70, False)
 Phlegma = SageSpell(3, True, Lock, 2.5, 510, 400, ApplyPhlegma, [PhlegmaRequirement])
 Pneuma = SageSpell(4, True, 1.5, 2.5, 330, 700, ApplyPneuma, [ManaRequirement, PneumaRequirement])
 
-#oGCD
+#Healing GCD
+Egeiro = SageSpell(1, True, 8, 2.5, 0, 2400, empty, [ManaRequirement])
+Prognosis = SageSpell(1, True, 2, 2.5, 0, 800, empty, [ManaRequirement])
+Diagnosis = SageSpell(1, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement])
+#Damage oGCD
 Eukrasia = SageSpell(5, False, Lock, 0, 0, 0, ApplyEukrasia, []) #Since only 1 sec CD, no real need to put a requirement
+
+#Healing oGCD
+Krasis = SageSpell(1, False, 0, 0, 0, 0, ApplyKrasis, [KrasisRequirement])
+Panhaima = SageSpell(1, False, 0, 0, 0, 0, ApplyPanhaima, [PanhaimaRequirement])
+Holos = SageSpell(1, False, 0, 0, 0, 0, ApplyHolos, [HolosRequirement])
+Rhizomata = SageSpell(1, False, 0, 0, 0, 0, ApplyRhizomata, [RhizomataRequirement])
+Haimi = SageSpell(1, False, 0, 0, 0, 0, ApplyHaima, [HaimaRequirement])
+Taurochole = SageSpell(1, False, 0, 0, 0, 0, ApplyTaurochole, [TaurocholeRequirement])
+Pepsi = SageSpell(1, False, 0, 0, 0, 0, ApplyPepsi, [PepsiRequirement])
+Zoe = SageSpell(1, False, 0, 0, 0, 0, ApplyZoe, [ZoeRequirement]) #https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.leagueoflegends.com%2Fen-pl%2Fchampions%2Fzoe%2F&psig=AOvVaw2X9QcnXQ_CGp3xMY8MLua9&ust=1654295724885000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCJjl4oPqj_gCFQAAAAAdAAAAABAD
+Ixochole = SageSpell(1, False, 0, 0, 0, 0, ApplyIxochole, [IxocholeRequirement])
+Kerachole = SageSpell(1, False, 0, 0, 0, 0, ApplyKerachole, [KeracholeRequirement])
+Icarus = SageSpell(1, False, 0, 0, 0, 0, ApplyIcarus, [IcarusRequirement])
+Soteria = SageSpell(1, False, 0, 0, 0, 0, ApplySoteria, [SoteriaRequirement])

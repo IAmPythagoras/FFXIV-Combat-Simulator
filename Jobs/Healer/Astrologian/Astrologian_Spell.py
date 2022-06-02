@@ -222,6 +222,8 @@ Benefic = AstrologianSpell(7, True, 1.5, 2.5, 0, 700, empty, [ManaRequirement])
 Benefic = AstrologianSpell(8, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement])
 Helios = AstrologianSpell(9, True, 1.5, 2.5, 0, 700, empty, [ManaRequirement])
 EssentialDignity = AstrologianSpell(10, False, 0, 0, 0, 0, ApplyEssentialDignity, [EssentialDignityRequirement])
+Macrocosmos = AstrologianSpell(16, True, 0, 0, 250, 600, ApplyMacrocosmos, [MacrocosmosRequirement, ManaRequirement])
+Microcosmos = AstrologianSpell(17, True, 0, 0, 0, 0, empty, [MicrocosmosRequirement])
 #oGCD
 Lightspeed = AstrologianSpell(11, False, Lock, 0, 0, 0, ApplyLightspeed, [LightspeedRequirement])
 Divination = AstrologianSpell(12, False, Lock, 0, 0, 0, ApplyDivination, [DivinationRequirement])
@@ -229,8 +231,6 @@ MinorArcana = AstrologianSpell(13, False, Lock, 0, 0, 0, ApplyMinorArcana, [Mino
 Draw = AstrologianSpell(14, False, Lock,0, 0, 0, ApplyDraw, [DrawRequirement])
 Astrodyne = AstrologianSpell(15, False, Lock, 0, 0, 0, ApplyAstrodyne, [])
 #Heal oGCD
-Macrocosmos = AstrologianSpell(16, False, 0, 0, 250, 600, ApplyMacrocosmos, [MacrocosmosRequirement, ManaRequirement])
-Microcosmos = AstrologianSpell(17, False, 0, 0, 0, 0, empty, [MicrocosmosRequirement])
 Exaltation = AstrologianSpell(18, False, 0, 0, 0, 0, ApplyExaltation, [ExaltationRequirement])
 NeutralSect = AstrologianSpell(19, False, 0, 0, 0, 0, ApplyNeutralSect, [NeutralSectRequirement])
 Horoscope = AstrologianSpell(20, False, 0, 0, 0, 0, ApplyHoroscope, [HoroscopeRequirement])

@@ -140,32 +140,32 @@ def CheckPresenceOfMind(Player, Enemy):
 
 
 #Damage GCD
-Glare = WhitemageSpell(0, True, 1.5, 2.5, 310, 400, empty, [ManaRequirement])
-Dia = WhitemageSpell(1, True, 0, 2.5, 0, 400, ApplyDia, [ManaRequirement])
+Glare = WhitemageSpell(1, True, 1.5, 2.5, 310, 400, empty, [ManaRequirement])
+Dia = WhitemageSpell(2, True, 0, 2.5, 0, 400, ApplyDia, [ManaRequirement])
 DiaDOT = DOTSpell(5, 60, False)
-AfflatusMisery = WhitemageSpell(1, True, 0, 2.5, 1240, 0, ApplyAfflatusMisery, [BloomLilyRequirement])
-Holy = WhitemageSpell(1, True, 2.5, 2.5, 150, 400, empty, [ManaRequirement])
+AfflatusMisery = WhitemageSpell(3, True, 0, 2.5, 1240, 0, ApplyAfflatusMisery, [BloomLilyRequirement])
+Holy = WhitemageSpell(4, True, 2.5, 2.5, 150, 400, empty, [ManaRequirement])
 #Healing GCD
-AfflatusRapture = WhitemageSpell(1, True, 0, 2.5, 0, 0, ApplyLily, [BloodLilyRequirement])
-AfflatusSolace = WhitemageSpell(1, False, 0, 0, 0, 0, ApplyLily, [BloodLilyRequirement])
-Medica2 = WhitemageSpell(1, True, 2, 2.5, 0, 1000, empty, [ManaRequirement])
-Regen = WhitemageSpell(3, True, 0, 2.5, 0, 400, empty, [ManaRequirement])
-Cure = WhitemageSpell(1, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement])
-Cure2 = WhitemageSpell(4, True, 2, 2.5, 0, 1000, empty, [ManaRequirement])
-Cure3 = WhitemageSpell(2, True, 2, 2.5, 0, 1500, empty, [ManaRequirement])
-Medica = WhitemageSpell(5, True, 2, 2.5, 0, 900, empty, [ManaRequirement])
+AfflatusRapture = WhitemageSpell(5, True, 0, 2.5, 0, 0, ApplyLily, [BloodLilyRequirement])
+AfflatusSolace = WhitemageSpell(6, False, 0, 0, 0, 0, ApplyLily, [BloodLilyRequirement])
+Medica2 = WhitemageSpell(7, True, 2, 2.5, 0, 1000, empty, [ManaRequirement])
+Regen = WhitemageSpell(8, True, 0, 2.5, 0, 400, empty, [ManaRequirement])
+Cure = WhitemageSpell(9, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement])
+Cure2 = WhitemageSpell(10, True, 2, 2.5, 0, 1000, empty, [ManaRequirement])
+Cure3 = WhitemageSpell(11, True, 2, 2.5, 0, 1500, empty, [ManaRequirement])
+Medica = WhitemageSpell(12, True, 2, 2.5, 0, 900, empty, [ManaRequirement])
 #Damage oGCD
-Assize = WhitemageSpell(2, False, 0, 0, 400, 0, ApplyAssize, [AssizeRequirement])
-ThinAir = WhitemageSpell(3, False, 0, 0, 0, 0, ApplyThinAir, [ThinAirRequirement])
-PresenceOfMind = WhitemageSpell(4, False, 0, 0, 0, 0, ApplyPresenceOfMind, [PresenceOfMindRequirement])
+Assize = WhitemageSpell(13, False, 0, 0, 400, 0, ApplyAssize, [AssizeRequirement])
+ThinAir = WhitemageSpell(14, False, 0, 0, 0, 0, ApplyThinAir, [ThinAirRequirement])
+PresenceOfMind = WhitemageSpell(15, False, 0, 0, 0, 0, ApplyPresenceOfMind, [PresenceOfMindRequirement])
 
 #Healing oGCD
-Bell = WhitemageSpell(1, False, 0, 0, 0, 0, ApplyBell, [BellRequirement]) #Litturgy of the bell
-Aquaveil = WhitemageSpell(1, False, 0, 0, 0, 0, ApplyAquaveil, [AquaveilRequirement])
-Temperance = WhitemageSpell(1, False, 0, 0, 0, 0, ApplyTemperance, [TemperanceRequirement])
-PlaneryIndulgence = WhitemageSpell(1, False, 0, 0, 0, 0, ApplyPlaneryIndulgence, [PlaneryIndulgenceRequirement])
-DivineBenison =WhitemageSpell(1, False, 0, 0, 0, 0, ApplyDivineBenison, [DivineBenisonRequirement])
-Tetragrammaton = WhitemageSpell(1, False, 0, 0, 0, 0, ApplyTetragrammaton, [TetragrammatonRequirement])
-Asylum = WhitemageSpell(1, False, 0, 0, 0, 0, ApplyAsylum, [AsylumRequirement])
-Benediction = WhitemageSpell(1, False, 0, 0, 0, 0, ApplyBenediction, [BenedictionRequirement])
+Bell = WhitemageSpell(16, False, 0, 0, 0, 0, ApplyBell, [BellRequirement]) #Litturgy of the bell
+Aquaveil = WhitemageSpell(17, False, 0, 0, 0, 0, ApplyAquaveil, [AquaveilRequirement])
+Temperance = WhitemageSpell(18, False, 0, 0, 0, 0, ApplyTemperance, [TemperanceRequirement])
+PlaneryIndulgence = WhitemageSpell(19, False, 0, 0, 0, 0, ApplyPlaneryIndulgence, [PlaneryIndulgenceRequirement])
+DivineBenison =WhitemageSpell(20, False, 0, 0, 0, 0, ApplyDivineBenison, [DivineBenisonRequirement])
+Tetragrammaton = WhitemageSpell(21, False, 0, 0, 0, 0, ApplyTetragrammaton, [TetragrammatonRequirement])
+Asylum = WhitemageSpell(22, False, 0, 0, 0, 0, ApplyAsylum, [AsylumRequirement])
+Benediction = WhitemageSpell(23, False, 0, 0, 0, 0, ApplyBenediction, [BenedictionRequirement])
 
