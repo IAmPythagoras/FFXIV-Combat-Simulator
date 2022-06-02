@@ -4,7 +4,6 @@
 from Jobs.Base_Spell import DOTSpell, empty, ManaRequirement
 from Jobs.Healer.Healer_Spell import WhitemageSpell
 import copy
-Lock = 0.75
 
 #Requirement
 
@@ -17,7 +16,76 @@ def AssizeRequirement(Player, Spell):
 def ThinAirRequirement(Player, Spell):
     return Player.ThinAirCD <= 0, Player.ThinAirCD
 
+def BellRequirement(Player, Spell):
+    return Player.BellCD <= 0, Player.BellCD
+
+def AquaveilRequirement(Player, Spell):
+    return Player.AquaveilCD <= 0, Player.AquaveilCD
+
+def TemperanceRequirement(Player, Spell):
+    return Player.TemperanceCD <= 0, Player.TemperanceCD
+
+def PlaneryIndulgenceRequirement(Player, Spell):
+    return Player.PlaneryIndulgenceCD <= 0, Player.PlaneryIndulgenceCD
+
+def DivineBenisonRequirement(Player, Spell):
+    return Player.DivineBenisonCD <= 0, Player.DivineBenisonCD
+
+def TetragrammatonRequirement(Player, Spell):
+    return Player.TetragrammatonCD <= 0, Player.TetragrammatonCD
+
+def BenedictionRequirement(Player, Spell):
+    return Player.BenedictionCD <= 0, Player.BenedictionCD
+
+def AsylumRequirement(Player, Spell):
+    return Player.AsylumCD <= 0, Player.AsylumCD
+
+def BloodLilyRequirement(Player, Spell):
+    return Player.LilyStack > 0, Player.LilyTimer
+
+def BloomLilyRequirement(Player, Spell):
+    return Player.BloomLily, -1
+
+
+
 #Apply
+
+def ApplyAfflatusMisery(Player, Enemy):
+    Player.BloomLily = False
+    Player.UsedLily = 0 #Reset counter
+
+def ApplyLily(Player, Enemy):
+    if not Player.BloomLily : Player.UsedLily = min(3, Player.UsedLily + 1)
+    Player.LilyStack -= 1
+
+    if Player.UsedLily == 3: Player.BloomLily = True
+
+def Apply(Player, Enemy):
+    Player.CD = 0
+
+def ApplyBell(Player, Enemy):
+    Player.BellCD = 180
+
+def ApplyAquaveil(Player, Enemy):
+    Player.AquaveilCD = 60
+
+def ApplyTemperance(Player, Enemy):
+    Player.TemperanceCD = 120
+
+def ApplyPlaneryIndulgence(Player, Enemy):
+    Player.PlaneryIndulgenceCD = 60
+
+def ApplyDivineBenison(Player, Enemy):
+    Player.DivineBenisonCD = 30
+
+def ApplyTetragrammaton(Player, Enemy):
+    Player.TetragrammatonCD = 60
+
+def ApplyAsylum(Player, Enemy):
+    Player.AsylumCD = 90
+
+def ApplyBenediction(Player, Enemy):
+    Player.BenedictionCD = 180
 
 def ApplyDia(Player, Enemy):
     Player.DiaTimer = 30
@@ -53,6 +121,11 @@ def PresenceOfMindEffect(Player, Spell):
 
 #Check
 
+def LilyCheck(Player, Enemy):
+    if Player.LilyTimer <= 0:
+        Player.LilyStack = min(3, Player.LilyStack + 1)
+        Player.LilyTimer = 20 #Reset Timer
+
 def CheckDia(Player, Enemy):
     if Player.DiaTimer <= 0:
         Player.DOTList.remove(Player.Dia)
@@ -66,12 +139,33 @@ def CheckPresenceOfMind(Player, Enemy):
 
 
 
-#GCD
+#Damage GCD
 Glare = WhitemageSpell(0, True, 1.5, 2.5, 310, 400, empty, [ManaRequirement])
-Dia = WhitemageSpell(1, True, Lock, 2.5, 0, 400, ApplyDia, [ManaRequirement])
+Dia = WhitemageSpell(1, True, 0, 2.5, 0, 400, ApplyDia, [ManaRequirement])
 DiaDOT = DOTSpell(5, 60, False)
+AfflatusMisery = WhitemageSpell(1, True, 0, 2.5, 1240, 0, ApplyAfflatusMisery, [BloomLilyRequirement])
+Holy = WhitemageSpell(1, True, 2.5, 2.5, 150, 400, empty, [ManaRequirement])
+#Healing GCD
+AfflatusRapture = WhitemageSpell(1, True, 0, 2.5, 0, 0, ApplyLily, [BloodLilyRequirement])
+AfflatusSolace = WhitemageSpell(1, False, 0, 0, 0, 0, ApplyLily, [BloodLilyRequirement])
+Medica2 = WhitemageSpell(1, True, 2, 2.5, 0, 1000, empty, [ManaRequirement])
+Regen = WhitemageSpell(3, True, 0, 2.5, 0, 400, empty, [ManaRequirement])
+Cure = WhitemageSpell(1, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement])
+Cure2 = WhitemageSpell(4, True, 2, 2.5, 0, 1000, empty, [ManaRequirement])
+Cure3 = WhitemageSpell(2, True, 2, 2.5, 0, 1500, empty, [ManaRequirement])
+Medica = WhitemageSpell(5, True, 2, 2.5, 0, 900, empty, [ManaRequirement])
+#Damage oGCD
+Assize = WhitemageSpell(2, False, 0, 0, 400, 0, ApplyAssize, [AssizeRequirement])
+ThinAir = WhitemageSpell(3, False, 0, 0, 0, 0, ApplyThinAir, [ThinAirRequirement])
+PresenceOfMind = WhitemageSpell(4, False, 0, 0, 0, 0, ApplyPresenceOfMind, [PresenceOfMindRequirement])
 
-#OGCD
-Assize = WhitemageSpell(2, False, Lock, Lock, 400, 0, ApplyAssize, [AssizeRequirement])
-ThinAir = WhitemageSpell(3, False, Lock, Lock, 0, 0, ApplyThinAir, [ThinAirRequirement])
-PresenceOfMind = WhitemageSpell(4, False, Lock, Lock, 0, 0, ApplyPresenceOfMind, [PresenceOfMindRequirement])
+#Healing oGCD
+Bell = WhitemageSpell(1, False, 0, 0, 0, 0, ApplyBell, [BellRequirement]) #Litturgy of the bell
+Aquaveil = WhitemageSpell(1, False, 0, 0, 0, 0, ApplyAquaveil, [AquaveilRequirement])
+Temperance = WhitemageSpell(1, False, 0, 0, 0, 0, ApplyTemperance, [TemperanceRequirement])
+PlaneryIndulgence = WhitemageSpell(1, False, 0, 0, 0, 0, ApplyPlaneryIndulgence, [PlaneryIndulgenceRequirement])
+DivineBenison =WhitemageSpell(1, False, 0, 0, 0, 0, ApplyDivineBenison, [DivineBenisonRequirement])
+Tetragrammaton = WhitemageSpell(1, False, 0, 0, 0, 0, ApplyTetragrammaton, [TetragrammatonRequirement])
+Asylum = WhitemageSpell(1, False, 0, 0, 0, 0, ApplyAsylum, [AsylumRequirement])
+Benediction = WhitemageSpell(1, False, 0, 0, 0, 0, ApplyBenediction, [BenedictionRequirement])
+
