@@ -159,23 +159,23 @@ Phlegma = SageSpell(3, True, Lock, 2.5, 510, 400, ApplyPhlegma, [PhlegmaRequirem
 Pneuma = SageSpell(4, True, 1.5, 2.5, 330, 700, ApplyPneuma, [ManaRequirement, PneumaRequirement])
 
 #Healing GCD
-Egeiro = SageSpell(1, True, 8, 2.5, 0, 2400, empty, [ManaRequirement])
-Prognosis = SageSpell(1, True, 2, 2.5, 0, 800, empty, [ManaRequirement])
-Diagnosis = SageSpell(1, True, 1.5, 2.5, 0, 400, ApplyDiagnosis, [ManaRequirement])
+Egeiro = SageSpell(5, True, 8, 2.5, 0, 2400, empty, [ManaRequirement])
+Prognosis = SageSpell(6, True, 2, 2.5, 0, 800, empty, [ManaRequirement])
+Diagnosis = SageSpell(7, True, 1.5, 2.5, 0, 400, ApplyDiagnosis, [ManaRequirement])
 #Damage oGCD
-Eukrasia = SageSpell(5, False, Lock, 0, 0, 0, ApplyEukrasia, []) #Since only 1 sec CD, no real need to put a requirement
+Eukrasia = SageSpell(8, False, Lock, 0, 0, 0, ApplyEukrasia, []) #Since only 1 sec CD, no real need to put a requirement
 
 #Healing oGCD
-Krasis = SageSpell(1, False, 0, 0, 0, 0, ApplyKrasis, [KrasisRequirement])
-Panhaima = SageSpell(1, False, 0, 0, 0, 0, ApplyPanhaima, [PanhaimaRequirement])
-Holos = SageSpell(1, False, 0, 0, 0, 0, ApplyHolos, [HolosRequirement])
-Rhizomata = SageSpell(1, False, 0, 0, 0, 0, ApplyRhizomata, [RhizomataRequirement])
-Haima = SageSpell(1, False, 0, 0, 0, 0, ApplyHaima, [HaimaRequirement])
-Taurochole = SageSpell(1, False, 0, 0, 0, 0, ApplyTaurochole, [TaurocholeRequirement,AddersgallRequirement])
-Pepsi = SageSpell(1, False, 0, 0, 0, 0, ApplyPepsi, [PepsiRequirement])
-Zoe = SageSpell(1, False, 0, 0, 0, 0, ApplyZoe, [ZoeRequirement]) #https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.leagueoflegends.com%2Fen-pl%2Fchampions%2Fzoe%2F&psig=AOvVaw2X9QcnXQ_CGp3xMY8MLua9&ust=1654295724885000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCJjl4oPqj_gCFQAAAAAdAAAAABAD
-Ixochole = SageSpell(1, False, 0, 0, 0, 0, ApplyIxochole, [IxocholeRequirement,AddersgallRequirement])
-Kerachole = SageSpell(1, False, 0, 0, 0, 0, ApplyKerachole, [KeracholeRequirement,AddersgallRequirement])
-Icarus = SageSpell(1, False, 0, 0, 0, 0, ApplyIcarus, [IcarusRequirement])
-Soteria = SageSpell(1, False, 0, 0, 0, 0, ApplySoteria, [SoteriaRequirement])
-Druochole = SageSpell(1, False, 0, 0, 0, 0, ApplyDruochole, [AddersgallRequirement])
+Krasis = SageSpell(9, False, 0, 0, 0, 0, ApplyKrasis, [KrasisRequirement])
+Panhaima = SageSpell(10, False, 0, 0, 0, 0, ApplyPanhaima, [PanhaimaRequirement])
+Holos = SageSpell(11, False, 0, 0, 0, 0, ApplyHolos, [HolosRequirement])
+Rhizomata = SageSpell(12, False, 0, 0, 0, 0, ApplyRhizomata, [RhizomataRequirement])
+Haima = SageSpell(13, False, 0, 0, 0, 0, ApplyHaima, [HaimaRequirement])
+Taurochole = SageSpell(14, False, 0, 0, 0, 0, ApplyTaurochole, [TaurocholeRequirement,AddersgallRequirement])
+Pepsi = SageSpell(15, False, 0, 0, 0, 0, ApplyPepsi, [PepsiRequirement])
+Zoe = SageSpell(16, False, 0, 0, 0, 0, ApplyZoe, [ZoeRequirement]) #https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.leagueoflegends.com%2Fen-pl%2Fchampions%2Fzoe%2F&psig=AOvVaw2X9QcnXQ_CGp3xMY8MLua9&ust=1654295724885000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCJjl4oPqj_gCFQAAAAAdAAAAABAD
+Ixochole = SageSpell(17, False, 0, 0, 0, 0, ApplyIxochole, [IxocholeRequirement,AddersgallRequirement])
+Kerachole = SageSpell(18, False, 0, 0, 0, 0, ApplyKerachole, [KeracholeRequirement,AddersgallRequirement])
+Icarus = SageSpell(19, False, 0, 0, 0, 0, ApplyIcarus, [IcarusRequirement])
+Soteria = SageSpell(20, False, 0, 0, 0, 0, ApplySoteria, [SoteriaRequirement])
+Druochole = SageSpell(21, False, 0, 0, 0, 0, ApplyDruochole, [AddersgallRequirement])

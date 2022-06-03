@@ -22,7 +22,6 @@ from Jobs.Healer.Scholar.Scholar_Player import *
 from Jobs.Healer.Whitemage.Whitemage_Player import *
 from Jobs.Healer.Astrologian.Astrologian_Player import *
 
-
 #RANGED
 from Jobs.Ranged.Machinist.Machinist_Spell import *
 from Jobs.Ranged.Bard.Bard_Spell import *
