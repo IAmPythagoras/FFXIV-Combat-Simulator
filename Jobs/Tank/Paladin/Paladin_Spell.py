@@ -125,11 +125,10 @@ def RiotBladeCombo(Player, Spell):
     if Spell.id == RoyalAuthority.id:
         Spell.Potency += 290
         Player.SwordOathStack += 3
-        input("adding")
         Player.EffectToRemove.append(RiotBladeCombo)
     elif Spell.id == GoringBlade.id:
         #Apply dot
-        if Player.GoringDOT != None:
+        if Player.GoringDOT == None:
             Player.GoringDOT = copy.deepcopy(GoringDOT)
             Player.EffectCDList.append(GoringDOTCheck)
             Player.DOTList.append(Player.GoringDOT)
@@ -191,17 +190,17 @@ GoringDOT = DOTSpell(-5, 65, True)
 #Confiteor Combo Action
 
 Confetti = PaladinSpell(5, True, Lock, 2.5, 900, 1000, ApplyConfetti, [ManaRequirement, ConfettiRequirement], False) # >.>
-BladeFaith = PaladinSpell(8, True, Lock, 2.5, 420, 0, ApplyBladeFaith, [BladeFaithRequirement], False)
-BladeTruth = PaladinSpell(9, True, Lock, 2.5, 500, 0, ApplyBladeTruth, [BladeTruthRequirement], False)
-BladeValor = PaladinSpell(10, True, Lock, 2.5, 580, 0, ApplyBladeValor, [BladeValorRequirement], False)
+BladeFaith = PaladinSpell(6, True, Lock, 2.5, 420, 0, ApplyBladeFaith, [BladeFaithRequirement], False)
+BladeTruth = PaladinSpell(7, True, Lock, 2.5, 500, 0, ApplyBladeTruth, [BladeTruthRequirement], False)
+BladeValor = PaladinSpell(8, True, Lock, 2.5, 580, 0, ApplyBladeValor, [BladeValorRequirement], False)
 BladeValorDOT = DOTSpell(-11, 80, True)
 #GCD
-HolySpirit = PaladinSpell(7, True, 1.5, 2.5, 270, 1000, empty, [ManaRequirement], False)
-Atonement = PaladinSpell(12, True, Lock, 2.5, 420, 0, ApplyAtonement, [AtonementRequirement], True)
+HolySpirit = PaladinSpell(9, True, 1.5, 2.5, 270, 1000, empty, [ManaRequirement], False)
+Atonement = PaladinSpell(10, True, Lock, 2.5, 420, 0, ApplyAtonement, [AtonementRequirement], True)
 
 #oGCD
-RequestACat = PaladinSpell(6, False, 0, Lock, 400, 0, ApplyRequestACat, [RequestACatRequirement], True) #I NEED ONE RIGHT NOW :x
-CircleScorn = PaladinSpell(11, False, 0, Lock, 100, 0, ApplyCircleScorn, [CircleScornRequirement], True)
+RequestACat = PaladinSpell(11, False, 0, Lock, 400, 0, ApplyRequestACat, [RequestACatRequirement], True) #I NEED ONE RIGHT NOW :x
+CircleScorn = PaladinSpell(12, False, 0, Lock, 100, 0, ApplyCircleScorn, [CircleScornRequirement], True)
 CircleScornDOT = DOTSpell(-6, 30, True)
 Intervene = PaladinSpell(13, False, 0, Lock, 150, 0, ApplyIntervene, [InterveneRequirement], True)
 Expiacion = PaladinSpell(14, False, 0, Lock, 340, 0, ApplyExpiacion, [ExpiacionRequirement], True)

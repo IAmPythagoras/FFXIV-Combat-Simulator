@@ -1,6 +1,4 @@
 from Jobs.Healer.Healer_Player import Healer
-from Jobs.Healer.Sage.Sage_Spell import AddersgallCheck
-
 class Sage(Healer):
 
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
@@ -62,3 +60,8 @@ class Sage(Healer):
         super().updateTimer(time)
         if (self.EukrasianTimer > 0) : self.EukrasianTimer = max(0,self.EukrasianTimer - time)
         if (self.AddersgallTimer > 0) : self.AddersgallTimer = max(0,self.AddersgallTimer - time)
+
+def AddersgallCheck(Player, Enemy):
+    if Player.AddersgallTimer <= 0:
+        Player.AddersgallStack = min(3, Player.AddersgallStack + 1)
+        Player.AddersgallTimer = 0

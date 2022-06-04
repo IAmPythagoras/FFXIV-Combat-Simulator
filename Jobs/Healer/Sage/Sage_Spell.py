@@ -129,11 +129,6 @@ def ApplyEukrasian(Player, Enemy):
 
 #Check
 
-def AddersgallCheck(Player, Enemy):
-    if Player.AddersgallTimer <= 0:
-        Player.AddersgallStack = min(3, Player.AddersgallStack + 1)
-        Player.AddersgallTimer = 0
-
 def PhlegmaStackCheck(Player, Enemy):
     if Player.PhlegmaTimer <= 0:
         if Player.PhlegmaStack == 1:

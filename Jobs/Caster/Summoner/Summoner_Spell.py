@@ -201,7 +201,7 @@ Ifrit = SummonerSpell(5, True, Lock, 2.5, 700, 0, ApplyIfrit, [IfritRequirement]
 #Titan Ability
 Topaz = SummonerSpell(6, True, Lock, 2.5, 140, 330, ApplyTopaz, [ManaRequirement, TopazRequirement])
 Mountain = SummonerSpell(7, False, Lock, 0, 150, 0, ApplyMountain, [MountainRequirement])
-TopazCatastrophe = SummonerSpell(8, True, 0, 2.5, 140, 300, ApplyTopaz, ManaRequirement, TopazRequirement ) #same effect and requirement as Topaz
+TopazCatastrophe = SummonerSpell(8, True, 0, 2.5, 140, 300, ApplyTopaz, [ManaRequirement, TopazRequirement] ) #same effect and requirement as Topaz
 
 #IfritAbility
 Ruby = SummonerSpell(8, True, 2.8, 3, 510, 300, ApplyRuby, [RubyRequirement, ManaRequirement] )

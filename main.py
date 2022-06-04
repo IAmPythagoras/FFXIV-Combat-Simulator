@@ -115,9 +115,9 @@ DRGOpener = [Melee_AA,WaitAbility(20), TrueThrust, Potion, Disembowel, LanceChar
 RPROpener = [Melee_AA,Soulsow, WaitAbility(13.7), Harpe, ShadowOfDeath, Potion, SoulSlice, ArcaneCircle, Gluttony, Gibbet, Gallows, PlentifulHarvest, Enshroud, VoidReaping, CrossReaping, LemureSlice, VoidReaping, CrossReaping, LemureSlice, Communio, SoulSlice, UnveiledGibbet, Gibbet, Slice, WaxingSlice, ShadowOfDeath, InfernalSlice, Slice, WaxingSlice, UnveiledGallows, Gallows, InfernalSlice, Slice]
 NINOpener = [Melee_AA, WaitAbility(9.5), Jin, Chi, Ten, Huton, Hide,WaitAbility(1.5), Ten, Chi, Jin, Suiton, Kassatsu, SpinningEdge, Potion, GustSlash, Mug, Bunshin, PhantomKamaitachi, WaitAbility(0.6), TrickAttack, AeolianEdge, DreamWithinADream, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, TenChiJin, Ten2, Chi2, Jin2, Meisui, FleetingRaiju, Bhavacakra, FleetingRaiju, Bhavacakra, Ten, Chi, Raiton, FleetingRaiju ]
 
-PLDTEst = [Melee_AA,WaitAbility(18.5), HolySpirit, FastBlade, RiotBlade, Intervene, CircleScorn, GoringBlade, Expiacion, RequestACat, FastBlade, Intervene, RiotBlade, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti, BladeFaith, BladeTruth, BladeValor]
-PLDTest2 = [Melee_AA,WaitAbility(18.5), HolySpirit, Expiacion, Intervene, FastBlade,CircleScorn, RiotBlade,RequestACat, RoyalAuthority, Atonement, Intervene, Atonement, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti, BladeFaith, BladeTruth, Expiacion, BladeValor,Intervene,CircleScorn]
-
+PLDTest = [Melee_AA,WaitAbility(18.5), HolySpirit, FastBlade, RiotBlade, Intervene, CircleScorn, GoringBlade, Expiacion, RequestACat, FastBlade, Intervene, RiotBlade, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti, BladeFaith, BladeTruth, BladeValor]
+PLDTest2 = [WaitAbility(15), FightOrFlight, WaitAbility(3), HolySpirit, Intervene, FastBlade,Expiacion, RiotBlade,Intervene, CircleScorn, RoyalAuthority, RequestACat, Atonement, Atonement, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti, BladeFaith, BladeTruth, Expiacion, BladeValor,Intervene]
+PLDTest3 = [WaitAbility(15), FightOrFlight, WaitAbility(3), HolySpirit,Intervene, FastBlade, Expiacion, RiotBlade, GoringBlade, CircleScorn,FastBlade,RiotBlade, RequestACat, RoyalAuthority, Atonement, Atonement, Atonement, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Intervene, Expiacion ]
 BLMPlayer.ActionSet = BLMOpener
 SCHPlayer.ActionSet = SCHOpener
 RDMPlayer.ActionSet = RDMOpener
@@ -127,7 +127,7 @@ DRKPlayer.ActionSet = DRKOpener
 WARPlayer.ActionSet = WAROpener
 WHMPlayer.ActionSet = WHMOpener
 SAMPlayer.ActionSet = SAMOpener
-PLDPlayer.ActionSet = PLDTEst
+PLDPlayer.ActionSet = PLDTest3
 PLDPlayer2.ActionSet = PLDTest2
 GNBPlayer.ActionSet = GNBOpener
 ASTPlayer.ActionSet = ASTOpener
@@ -137,7 +137,7 @@ DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 RPRPlayer.ActionSet = RPROpener
 #print(PLDPlayer, PLDPlayer2)
-Event.PlayerList = [BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
+Event.PlayerList = [PLDPlayer, PLDPlayer2] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
 
 Event.ShowGraph = True
 Event.SimulateFight(0.01, 100, 20)

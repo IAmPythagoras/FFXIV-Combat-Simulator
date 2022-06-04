@@ -3,7 +3,6 @@
 #########################################
 
 from Jobs.Healer.Healer_Player import Healer
-from Jobs.Healer.Whitemage.Whitemage_Spell import LilyCheck
 class Whitemage(Healer):
 
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
@@ -61,3 +60,8 @@ class Whitemage(Healer):
         if (self.LucidDreamingTimer > 0) : self.LucidDreamingTimer = max(0,self.LucidDreamingTimer - time)
         if (self.PresenceOfMindTimer > 0) : self.PresenceOfMindTimer = max(0,self.PresenceOfMindTimer - time)
         if (self.LilyTimer > 0) : self.LilyTimer = max(0,self.LilyTimer - time)
+
+def LilyCheck(Player, Enemy):
+    if Player.LilyTimer <= 0:
+        Player.LilyStack = min(3, Player.LilyStack + 1)
+        Player.LilyTimer = 20 #Reset Timer

@@ -183,9 +183,13 @@ class DOTSpell(Spell):
         if(self.DOTTimer <= 0):
             #Apply DOT
             tempSpell  = self.Cast(Player, Enemy)#Cast the DOT
+            #print(self.id)
+            #print("Timestamp is : " + str(Player.CurrentFight.TimeStamp))
+            #input("applying dot with potency : " + str(tempSpell.Potency))
             tempSpell.CastFinal(Player, Enemy)
             self.DOTTimer = 3
         else:
+            #input("updating : " + str(self.id))
             self.DOTTimer = max(0, self.DOTTimer-TimeUnit)
 
 

@@ -121,11 +121,6 @@ def PresenceOfMindEffect(Player, Spell):
 
 #Check
 
-def LilyCheck(Player, Enemy):
-    if Player.LilyTimer <= 0:
-        Player.LilyStack = min(3, Player.LilyStack + 1)
-        Player.LilyTimer = 20 #Reset Timer
-
 def CheckDia(Player, Enemy):
     if Player.DiaTimer <= 0:
         Player.DOTList.remove(Player.Dia)

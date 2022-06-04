@@ -46,6 +46,9 @@ def ManafrontRequirement(Player, Spell):
 
 #Apply
 
+def ApplyManaward(Player, Enemy):
+    Player.ManawardCD = 120
+
 def ApplyFlare(Player, Enemy):
     manaback = 0
     #input(Player.UmbralHearts)
