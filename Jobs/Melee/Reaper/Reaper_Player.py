@@ -27,6 +27,7 @@ class Reaper(Melee):
         self.GluttonyCD = 0 #60 sec CD
         self.EnshroudCD = 0 #15 sec CD
         self.HellIngressCD = 0 #20 sec CD
+        self.ArcaneCrestCD = 0 # 30 sec CD
 
 
         #buff
@@ -60,6 +61,7 @@ class Reaper(Melee):
         if (self.GluttonyCD > 0) : self.GluttonyCD = max(0,self.GluttonyCD - time)
         if (self.EnshroudCD > 0) : self.EnshroudCD = max(0,self.EnshroudCD - time)
         if (self.HellIngressCD > 0) : self.HellIngressCD = max(0,self.HellIngressCD - time)
+        if (self.ArcaneCrestCD > 0) : self.ArcaneCrestCD = max(0,self.ArcaneCrestCD - time)
 
 
     def updateTimer(self, time):

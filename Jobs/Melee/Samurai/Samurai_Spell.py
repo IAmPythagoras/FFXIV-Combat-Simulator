@@ -50,6 +50,10 @@ def HiganbanaRequirement(Player, Spell):
 
 #Apply
 
+def ApplyFuko(Player, Enemy):
+    AddKenki(Player, 10)
+    if not (FukoCombo in Player.EffectList) : Player.EffectList.append(FukoCombo)
+
 def ApplyHakaze(Player, Enemy):
     AddKenki(Player, 5)
     if not (HakazeEffect in Player.EffectList) : Player.EffectList.append(HakazeEffect)
@@ -118,6 +122,16 @@ def ApplyShinten(Player, Enemy):
     Player.KenkiGauge -= 25
 
 #Combo Action Effect
+
+def FukoCombo(Player, Spell):
+    if Spell.id == Mangetsu.id:
+        Spell.Potency += 20
+        Player.FugetsuTimer = 40
+        Player.Getsu = True
+    elif Spell.id == Oka.id:
+        Spell.Potency += 20
+        Player.FukaTimer = 40
+        Player.Ka = True
 
 def HakazeEffect(Player, Spell):
     if Spell.id == Jinpu.id:
@@ -244,6 +258,10 @@ Gekko = SamuraiSpell(3, True, Lock, 2.5, 170, empty, [], 0)
 Shifu = SamuraiSpell(4, True, Lock, 2.5, 120, empty, [], 0)
 Kasha = SamuraiSpell(5, True, Lock, 2.5, 170, empty, [], 0)
 Yukikaze = SamuraiSpell(6, True, Lock, 2.5, 120, empty, [], 0)
+
+#AOE GCD
+Fuko = SamuraiSpell(7, True, 0, 2.5, 100, ApplyFuko, [], 0 )
+Mangetsu = SamuraiSpell(8, True, 0, 2.5, 100, empty, [], 0)
 
 
 #oGCD

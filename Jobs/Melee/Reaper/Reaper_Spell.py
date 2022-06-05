@@ -1,6 +1,6 @@
 from Jobs.Base_Spell import buff, empty
 from Jobs.Melee.Melee_Spell import ReaperSpell
-Lock = 0.75
+Lock = 0
 
 #Requirement
 
@@ -57,7 +57,24 @@ def UnveiledGallowsRequirement(Player, Spell):
 def HellIngressRequirement(Player, Spell):
     return Player.HellIngressCD <= 0, Player.HellIngress
 
+def ArcaneCrestRequirement(Player, Spell):
+    return Player.ArcaneCrestCD <= 0, Player.ArcaneCrestCD
+
 #Apply
+
+def ApplyGrimReaping(Player, Enemy):
+    Player.LemureGauge -= 1
+    Player.VoidShroudGauge = min(5, Player.VoidShroudGauge + 1)
+
+def ApplyGuillotine(Player, Enemy):
+    Player.AddShroud(10)
+
+def ApplyArcaneCrest(Player, Enemy):
+    Player.ArcaneCrestCD = 30
+
+def ApplySpinningScythe(Player, Enemy):
+    Player.AddGauge(10)
+    if not (SpinningScytheCombo in Player.EffectList) : Player.EffectList.append(SpinningScytheCombo)
 
 def ApplyHellIngress(Player, Enemy):
     if not (HellIngressEffect in Player.EffectList):
@@ -203,6 +220,12 @@ def ApplySoulsow(Player, Enemy):
 
 #Effect
 
+def SpinningScytheCombo(Player, Spell):
+    if Spell.id == NightmareScythe.id:
+        Spell.Potency += 60
+        Player.AddGauge(10)
+        Player.EffectToRemove.append(SpinningScytheCombo)
+
 def HellIngressEffect(Player, Spell):
     if Spell.id == Harpe.id:
         Spell.CastTime = Lock #Insta Cast
@@ -314,6 +337,7 @@ PlentifulHarvest = ReaperSpell(11, True, Lock, 2.5, 520, ApplyPlentifulHarvest, 
 VoidReaping = ReaperSpell(12, True, Lock, 1.5, 460, ApplyVoidReaping, [VoidReapingRequirement], True)
 CrossReaping = ReaperSpell(13, True, Lock, 1.5, 460, ApplyCrossReaping, [VoidReapingRequirement], True) #Same Requriement as VoidReaping
 Communio = ReaperSpell(14, True, 1.3, 2.5, 1000, ApplyCommunio, [CommunioRequirement], False)
+
 #oGCD
 ArcaneCircle = ReaperSpell(15, False, Lock, 0, 0, ApplyArcaneCircle, [ArcaneCircleRequirement], False)
 Gluttony = ReaperSpell(16, False, Lock, 0, 500, ApplyGluttony, [GluttonyRequirement], False)
@@ -323,6 +347,16 @@ BloodStalk = ReaperSpell(19, False, Lock, 0, 340, ApplyBloodStalk, [BloodStalkRe
 UnveiledGibbet = ReaperSpell(20, False, Lock, 0, 400, ApplyUnveiledGibbet, [UnveiledGibbetRequirement], False)
 UnveiledGallows = ReaperSpell(21, False, Lock, 0, 400, ApplyUnveiledGibbet, [UnveiledGallowsRequirement], False) #Shares effect with Gibbet
 HellIngress = ReaperSpell(22, False, Lock, 0, 0, ApplyHellIngress, [HellIngressRequirement], False)
+ArcaneCrest = ReaperSpell(23, False, 0, 0, 0, ApplyArcaneCrest, [ArcaneCrestRequirement], False)
+#AOE GCD
+SpinningScythe = ReaperSpell(25, True, 0, 2.5, 140, ApplySpinningScythe, [], True)
+NightmareScythe = ReaperSpell(26, True, 0, 2.5, 120, empty, [], True)
+WhorlOfDeath = ReaperSpell(27, True, 0, 2.5, 100, ApplyShadowOfDeath, [], False)
+Guillotine = ReaperSpell(29, False, 0, 0, 200, ApplyGuillotine, [GibbetRequirement], True) #AOE version of Gallows/Gibbet
+#AOE oGCD
+GrimSwath = ReaperSpell(27, False, 0, 0, 140, ApplyBloodStalk, [BloodStalkRequirement], False) #AOE version of bloodstalk
+SoulScyte = ReaperSpell(28, False, 0, 0, 180, ApplySoulSlice, [SoulSliceRequirement], False) #AOE version of SoulSlice
+LemureScythe = ReaperSpell(30, False, 0, 0, 100, ApplyLemureSlice, [LemureSliceRequirement], False) #AOE version of Lemure Slice
 #buff
 DeathDesignBuff = buff(1.1)
 ArcaneCircleBuff = buff(1.03)
