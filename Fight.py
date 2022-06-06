@@ -353,8 +353,11 @@ class Fight:
                         CDCheck(player, self.Enemy)
                     for remove in player.EffectToRemove:
                         player.EffectCDList.remove(remove) #Removing relevant spell
+                    for add in player.EffectToAdd:
+                        player.EffectCDList.append(add)
 
                     player.EffectToRemove = []
+                    player.EffectToAdd = []
                 
 
 

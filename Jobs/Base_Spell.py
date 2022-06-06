@@ -50,8 +50,11 @@ class Spell:
 
         for remove in player.EffectToRemove:
             player.EffectList.remove(remove) #Removing effect
+        for add in player.EffectToAdd:
+            player.EffectList.append(add)
         
         player.EffectToRemove = [] #Empty the remove list
+        player.EffectToAdd = []
         ##input("id : " + str(self.id))
         for Requirement in tempSpell.Requirement:
             ##input("in requirement")
