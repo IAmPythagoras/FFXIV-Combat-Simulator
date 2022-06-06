@@ -112,7 +112,7 @@ def Add10Kenki(Player, Enemy):
 
 def ApplyTenkaGoken(Player, Enemy):
     Player.KaeshiGoken = True
-    Player.EffectToAdd.append(TsubamegaeshiCheck)
+    Player.EffectList.append(TsubamegaeshiCheck)
     Player.MeditationGauge = min(3, Player.MeditationGauge + 1) #Adding meditation stack
     Player.Setsu, Player.Ka, Player.Getsu = False, False, False #Reseting
 
@@ -152,8 +152,7 @@ def ApplyIkishoten(Player, Enemy):
 
 def ApplyMidare(Player, Enemy):
     Player.KaeshiSetsugekka = True
-    Player.EffectToAdd.append(TsubamegaeshiCheck)
-    Player.EffectList.append
+    Player.EffectList.append(TsubamegaeshiCheck)
     Player.MeditationGauge = min(3, Player.MeditationGauge + 1)
     Player.DirectCrit = True
     Player.Setsu, Player.Ka, Player.Getsu = False, False, False #Reseting
@@ -169,7 +168,7 @@ def ApplySenei(Player, Enemy):
 
 def ApplyHiganbana(Player, Enemy):
     Player.KaeshiHiganbana = True
-    Player.EffectToAdd.append(TsubamegaeshiCheck)
+    Player.EffectList.append(TsubamegaeshiCheck)
     if Player.Higanbana != None:
         Player.Higanbana = copy.deepcopy(HiganbanaDOT)
         Player.DOTList.append(Player.Higanbana)
@@ -285,14 +284,15 @@ def MeikyoEffect(Player, Spell):
 
 def TsubamegaeshiCheck(Player, Spell):
     #This effect will remove the ability to do Tsubamegaeshi if the next spell after a Iaijutsu is not a Kaeshi
-    if Player.KaeshiHiganbana:
-        if Spell.id != KaeshiHiganbana.id: Player.KaeshiHiganbana = False
-    elif Player.KaeshiGoken:
-        if Spell.id != KaeshiGoken.id: Player.KaeshiGoken = False
-    elif Player.KaeshiSetsugekka:
-        if Spell.id != KaeshiSetsugekka.id: Player.KaeshiSetsugekka = False
+    if Spell.GCD:
+        if Player.KaeshiHiganbana:
+            if Spell.id != KaeshiHiganbana.id: Player.KaeshiHiganbana = False
+        elif Player.KaeshiGoken:
+            if Spell.id != KaeshiGoken.id: Player.KaeshiGoken = False
+        elif Player.KaeshiSetsugekka:
+            if Spell.id != KaeshiSetsugekka.id: Player.KaeshiSetsugekka = False
 
-    Player.EffectToRemove.append(TsubamegaeshiCheck)
+        Player.EffectToRemove.append(TsubamegaeshiCheck)
 
 def YatenEffect(Player, Spell):
     if Spell.id == Enpi.id:

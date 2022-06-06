@@ -71,6 +71,7 @@ class Samurai(Melee):
         if (self.YatenCD > 0) : self.YatenCD = max(0,self.YatenCD - time)
         if (self.MedidateCD > 0) : self.MedidateCD = max(0,self.MedidateCD - time)
         if (self.KyutenCD > 0) : self.KyutenCD = max(0,self.KyutenCD - time)
+        if (self.TsubamegaeshiCD > 0) : self.TsubamegaeshiCD = max(0,self.TsubamegaeshiCD - time)
  
 
     def updateTimer(self, time):
