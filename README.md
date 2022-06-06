@@ -115,4 +115,4 @@ For now the program does not have any UI, so you will have to go change the code
 
 # IF YOU WANT TO HELP:)
 
-If you want to help me in developing this program, you can contact me through discord Pythagoras#6312 :). Ill take any help avaible lol
+If you want to help me in developing this program, you can contact me through discord Pythagoras#6312 :). Ill take any available help lol
