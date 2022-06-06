@@ -1,4 +1,4 @@
-from Jobs.Base_Spell import DOTSpell, buff
+from Jobs.Base_Spell import DOTSpell, buff, empty
 from Jobs.Ranged.Ranged_Spell import BardSpell
 import copy
 Lock = 0.75
@@ -111,7 +111,13 @@ def BlastArrowRequirement(Player, Spell):
 def ShadowbiteRequirement(Player, Spell):
     return Player.ShadowbiteReady, -1
 
+def TroubadourRequirement(Player, Spell):
+    return Player.TroubadourCD <= 0, Player.TroubadourCD
+
 #Apply
+
+def ApplyTroubadour(Player, Enemy):
+    Player.TroubadourCD = 90
 
 def ApplyLadonsbite(Player, Enemy):
     Player.ShadowbiteReady = True
@@ -408,6 +414,8 @@ RainOfDeath = BardSpell(18, False, 0, 110, ApplyBloodLetter, [BloodLetterRequire
 Barrage = BardSpell(19, False, 0, 0, ApplyBarrage, [BarrageRequirement],False)
 RagingStrike = BardSpell(20, False, 0, 0, ApplyRagingStrike, [RagingStrikeRequirement],False)
 RadiantFinale = BardSpell(21, False, 0, 0, ApplyRadiantFinale, [RadiantFinaleRequirement],False)
+Troubadour = BardSpell(22, False, 0, 0, ApplyTroubadour, [TroubadourRequirement], False)
+RepellingShot = BardSpell(23, False, 0, 0, empty, [], False) #No requirement, do that shit forever
 #Each PitchPerfecti represents a PitchPerfect with i repertoire
 PitchPerfect1 = BardSpell(22, False, 0, 100, ApplyPitchPerfect1, [PitchPerfect1Requirement],False)
 PitchPerfect2 = BardSpell(23, False, 0, 220, ApplyPitchPerfect2, [PitchPerfect2Requirement],False)
