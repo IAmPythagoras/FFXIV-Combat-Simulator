@@ -11,6 +11,7 @@ class Bard(Ranged):
         self.ExpectedSoulVoiceGauge = 0
         self.ExpectedBloodLetterReduction = 0
         self.ExpectedTotalWandererRepertoire = 0
+        self.ExpectedShadowbite = 0
 
         #Used proc
         self.UsedRefulgent = 0
@@ -19,6 +20,7 @@ class Bard(Ranged):
         self.UsedBloodLetterReduction = 0
         self.UsedRepertoireAdd = 0 #This is repertoire stacks we used more than the expected value
         self.UsedTotalWandererRepertoire = 0
+        self.UsedShadowbite = 0
 
 
         #Gauge
@@ -34,6 +36,7 @@ class Bard(Ranged):
         #buff
         self.StraightShotReady = False
         self.BlastArrowReady = True
+        self.ShadowbiteReady = False
 
 
         #Song
