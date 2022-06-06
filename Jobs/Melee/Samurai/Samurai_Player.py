@@ -36,6 +36,7 @@ class Samurai(Melee):
         self.IkishotenCD = 0
         self.KaeshiCD = 0
         self.SeneiCD = 0
+        self.ThirdEyeCD = 0
         
         #stack
         self.MeikyoStack = 2
@@ -54,6 +55,7 @@ class Samurai(Melee):
         if (self.IkishotenCD > 0) : self.IkishotenCD = max(0,self.IkishotenCD - time)
         if (self.KaeshiCD > 0) : self.KaeshiCD = max(0,self.KaeshiCD - time)
         if (self.SeneiCD > 0) : self.SeneiCD = max(0,self.SeneiCD - time)
+        if (self.ThirdEyeCD > 0) : self.ThirdEyeCD = max(0,self.ThirdEyeCD - time)
  
 
     def updateTimer(self, time):

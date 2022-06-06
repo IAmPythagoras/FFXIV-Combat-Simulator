@@ -48,7 +48,18 @@ def HiganbanaRequirement(Player, Spell):
     if Player.Getsu : i +=1
     return i == 1, -1
 
+def ThirdEyeRequirement(Player, Spell):
+    return Player.ThirdEyeCD <= 0, Player.ThirdEyeCD
+
 #Apply
+
+def Add10Kenki(Player, Enemy):
+    AddKenki(Player, 10)
+
+def ApplyThirdEye(Player, Enemy):
+    Player.ThirdEyeCD = 15
+    #We will assume it gives us 10 Kenki
+    AddKenki(Player, 10)
 
 def ApplyFuko(Player, Enemy):
     AddKenki(Player, 10)
@@ -216,7 +227,6 @@ def FukaCheck(Player, Enemy):
         Player.EffectList.remove(FukaEffect)
         Player.EffectToRemove.append(FukaCheck)
 
-
 def FugetsuCheck(Player, Enemy):
     if Player.FugetsuTimer <= 0:
         Player.Fugetsu = False
@@ -250,6 +260,7 @@ Midare = SamuraiSpell(9, True, 1.3, 2.5, 600, ApplyMidare, [MidareRequirement], 
 Kaeshi = SamuraiSpell(10, True, 1.3, 2.5, 600, ApplyKaeshi, [], 0)
 OgiNamikiri = SamuraiSpell(13, True, 1.8, 2.5, 800, ApplyOgiNamikiri, [OgiNamikiriRequirement], 0)
 KaeshiNamikiri = SamuraiSpell(14, True, 1.3, 1, 800, ApplyKaeshiNamikiri, [KaeshiNamikiriRequirement], 0)
+Enpi = SamuraiSpell(1, True, 0, 1.5, 100, Add10Kenki, [], 0)
 
 #Combo Actions
 Hakaze = SamuraiSpell(1, True, Lock, 2.5, 200, ApplyHakaze, [], 0 )
@@ -270,6 +281,7 @@ Ikishoten = SamuraiSpell(8, False, Lock, Lock, 0, ApplyIkishoten, [IkishotenRequ
 Senei = SamuraiSpell(11, False, Lock, 2.5, 800, ApplySenei, [SeneiRequirement], 25)
 Shoha = SamuraiSpell(15, False, Lock, Lock, 500, ApplyShoha, [ShohaRequirement], 0)
 Shinten = SamuraiSpell(16, False, Lock, 1, 250, ApplyShinten, [], 25)
+ThirdEye = SamuraiSpell(17, False, 0, 0, 0, ApplyThirdEye, [ThirdEyeRequirement], 0)
 #DOT
 Higanbana = SamuraiSpell(12, True, 1.3, 2.5, 200, ApplyHiganbana, [HiganbanaRequirement], 0)
 HiganbanaDOT = DOTSpell(-1, 60, True)
