@@ -83,6 +83,7 @@ def KaeshiSetsugekkaRequirement(Player, Spell):
 #Apply
 
 def ApplyTsubamegaeshi(Player, Enemy):
+    Player.KaeshiHiganbana , Player.KaeshiGoken, Player.KaeshiSetsugekka = False,False,False #Reseting values
     if Player.TsubamegaeshiStack == 2:
         Player.EffectCDList.append(TsubamegaeshiStackCheck)
         Player.TsubamegaeshiCD = 60
@@ -159,7 +160,19 @@ def ApplyMidare(Player, Enemy):
 
 def ApplyKaeshi(Player, Enemy):
     Player.DirectCrit = True
-    ApplyTsubamegaeshi(Player, Enemy)
+    ApplyTsubamegaeshi(Player, Enemy) #Also sets flag to false
+
+def ApplyKaeshiHiganbana(Player, Enemy):
+    Player.DirectCrit = True
+    ApplyTsubamegaeshi(Player, Enemy) #Also sets flag to false
+    if Player.Higanbana == None:
+        Player.Higanbana = copy.deepcopy(HiganbanaDOT)
+        Player.DOTList.append(Player.Higanbana)
+    Player.HiganbanaTimer = 45 #Adding dot
+
+def ApplyKaeshiGoken(Player, Enemy):
+    Player.DirectCrit = True
+    ApplyTsubamegaeshi(Player, Enemy) #Also sets flag to false
 
 
 def ApplySenei(Player, Enemy):
@@ -169,7 +182,7 @@ def ApplySenei(Player, Enemy):
 def ApplyHiganbana(Player, Enemy):
     Player.KaeshiHiganbana = True
     Player.EffectList.append(TsubamegaeshiCheck)
-    if Player.Higanbana != None:
+    if Player.Higanbana == None:
         Player.Higanbana = copy.deepcopy(HiganbanaDOT)
         Player.DOTList.append(Player.Higanbana)
     Player.HiganbanaTimer = 45
@@ -193,6 +206,9 @@ def ApplyShoha(Player, Enemy):
 def ApplyShinten(Player, Enemy):
     Player.KenkiGauge -= 25
 
+def ApplyKaeshiGoken(Player, Enemy):
+    ApplyTsubamegaeshi(Player, Enemy)
+
 #Combo Action Effect
 
 def FukoCombo(Player, Spell):
@@ -212,7 +228,7 @@ def HakazeEffect(Player, Spell):
         Spell.Potency += 160
         if not Player.Fugetsu:
             Player.Fugetsu = True
-            Player.buffList.append(HakazaBuff)
+            Player.buffList.append(HakazeBuff)
             Player.EffectCDList.append(FugetsuCheck)
             Player.EffectToRemove.append(HakazeEffect)
     elif Spell.id == Shifu.id:
@@ -314,7 +330,7 @@ def FukaCheck(Player, Enemy):
 def FugetsuCheck(Player, Enemy):
     if Player.FugetsuTimer <= 0:
         Player.Fugetsu = False
-        Player.buffList.remove(HakazaBuff)
+        Player.buffList.remove(HakazeBuff)
         Player.EffectToRemove.append(FugetsuCheck)
 
 def HiganbanaCheck(Player, Enemy):
@@ -359,8 +375,8 @@ TenkaGoken = SamuraiSpell(5, True, 1.3, 2.5, 280, ApplyTenkaGoken, [TenkaGokenRe
 Midare = SamuraiSpell(6, True, 1.3, 2.5, 640, ApplyMidare, [MidareRequirement], 0)
 
 #Kaeshi
-KaeshiHiganbana = SamuraiSpell(7, True, 0, 2.5, 200, ApplyHiganbana, [KaeshiHiganbanaRequirement,TsubamegaeshiRequirement], 0)
-KaeshiGoken = SamuraiSpell(8, True, 0, 2.5, 280, ApplyTenkaGoken, [KaeshiGokenRequirement,TsubamegaeshiRequirement], 0)
+KaeshiHiganbana = SamuraiSpell(7, True, 0, 2.5, 200, ApplyKaeshiHiganbana, [KaeshiHiganbanaRequirement,TsubamegaeshiRequirement], 0)
+KaeshiGoken = SamuraiSpell(8, True, 0, 2.5, 280, ApplyKaeshiGoken, [KaeshiGokenRequirement,TsubamegaeshiRequirement], 0)
 KaeshiSetsugekka = SamuraiSpell(9, True, 0, 2.5, 640, ApplyKaeshi, [KaeshiSetsugekkaRequirement,TsubamegaeshiRequirement], 0)
 
 #Combo Actions
@@ -379,7 +395,7 @@ Oka = SamuraiSpell(18, True, 0, 2.5, 100, empty, [], 0)
 #oGCD
 Meikyo = SamuraiSpell(19, False, Lock, Lock, 0, ApplyMeikyo, [MeikyoRequirement], 0)
 Ikishoten = SamuraiSpell(20, False, Lock, Lock, 0, ApplyIkishoten, [IkishotenRequirement], 0)
-Shoha = SamuraiSpell(21, False, Lock, Lock, 500, ApplyShoha, [ShohaRequirement], 0)
+Shoha = SamuraiSpell(21, False, Lock, Lock, 520, ApplyShoha, [ShohaRequirement], 0)
 Shoha2 = SamuraiSpell(22, False, Lock, Lock, 200, ApplyShoha, [ShohaRequirement], 0) #AOEVersion of Shoha
 ThirdEye = SamuraiSpell(23, False, 0, 0, 0, ApplyThirdEye, [ThirdEyeRequirement], 0)
 Hagakure = SamuraiSpell(24, False, 0, 0, 0, ApplyHagakure, [HagakureRequirement], 0)
@@ -392,7 +408,7 @@ Gyoten = SamuraiSpell(28, False, 0, 0, 100, ApplyGyoten,[GyotenRequirement],10 )
 Yaten = SamuraiSpell(29, False, 0, 0, 100, ApplyYaten, [YatenRequirement], 10)
 Kyuten = SamuraiSpell(30, False, 0, 0, 110, empty, [], 25)
 #buff
-HakazaBuff = buff(1.13)
+HakazeBuff = buff(1.13)
 
 def Meditate(time):
     #This function will return a Samurai Spell object that will correspond to a Meditate of the specified amount of time
