@@ -2,7 +2,7 @@
 ########## MACHINIST SPELL  #############
 #########################################
 import copy
-from Jobs.Base_Spell import DOTSpell, empty, WaitAbility
+from Jobs.Base_Spell import DOTSpell, Melee_AA, empty, WaitAbility
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
 from Jobs.Ranged.Ranged_Spell import MachinistSpell
 
@@ -132,9 +132,11 @@ def ApplyAutomaton(Player, Enemy):
     #Will have to depend on battery Gauge
     #Timer is set at 10 so we can have 2 GCD to do finisher move if reaches before
     Player.Queen.EffectCDList.append(QueenCheck)
+    Player.Queen.ActionSet.append(Melee_AA)
     Player.Queen.ActionSet.append(WaitAbility(10.5))
 
 def ApplyCollider(Queen, Enemy):#Called on queen
+    input("collider going ooff")
     Queen.Master.QueenOnField = False
 
 #Combo Actions
@@ -190,12 +192,12 @@ def BioblasterDOTCheck(Player, Enemy):
 def WildFireCheck(Player, Enemy):
     if Player.WildFireTimer <= 0:
 
-        WildFireOff = MachinistSpell(1, False, 0, 0, 200 * Player.WildFireStack, 0, empty, [], False)
+        WildFireOff = MachinistSpell(1, False, 0, 0, 220 * Player.WildFireStack, 0, empty, [], False)
         #Temporary Spell that will be put in front of the Queue
         Player.ActionSet.insert(Player.NextSpell+1, WildFireOff) #Insert in queue, will be instantly executed
-        Player.WildFireStack = 0
         Player.EffectList.remove(WildFireEffect)
         Player.EffectToRemove.append(WildFireCheck)
+        Player.WildFireStack = 0
 
 def HyperchargeCheck(Player, Enemy):
     if Player.HyperchargeTimer <= 0:
@@ -230,9 +232,12 @@ def RicochetStackCheck(Player, Enemy):
 def QueenCheck(Player, Enemy):#This will be called on the queen
     if Player.Timer <= 0: 
         Player.Master.Overdrive = False
+        #Player.ActionSet.insert(Player.NextSpell+1,Melee_AA)
         Player.ActionSet.insert(Player.NextSpell+1,Bunker)
         Player.ActionSet.insert(Player.NextSpell+2,Collider)
         Player.EffectToRemove.append(QueenCheck)
+        input(Player.ActionSet)
+        input(Player.NextSpell)
 
 Wildfire = MachinistSpell(0, False, 0, Lock, 0, 0, ApplyWildFire, [WildFireRequirement], False)
 AirAnchor = MachinistSpell(2, True, 0, 2.5, 580, 0, ApplyAirAnchor, [AirAnchorRequirement], True)
@@ -255,8 +260,8 @@ CleanShot = MachinistSpell(6, True, Lock, 2.5, 110, 0, ApplyCleanShot, [], True)
 AutoCrossbow = MachinistSpell(1, True, 0, 1.5, 140, 0, empty, [OverheatedRequirement], True)
 Scattergun = MachinistSpell(1, True, 0, 2.5, 150, 0, ApplyScattergun, [], True)
 Bioblaster = MachinistSpell(1, True, 0, 0, 50, 0, ApplyBioblaster, [DrillRequirement], True) #Shares CD with Drill
-BioblasterDOT = DOTSpell(-2, 50)
-FlamethrowerDOT = DOTSpell(-3, 80)
+BioblasterDOT = DOTSpell(-2, 50, True)
+FlamethrowerDOT = DOTSpell(-3, 80, True)
 def Flamethrower(time):
     #This function will apply a dot for the specified duration, and lock the player for this duration
 
@@ -278,8 +283,8 @@ def Flamethrower(time):
 
 #These abilities will write into the Queen's ability list.
 #If they are not done the queen will do them automatically
-Automaton = MachinistSpell(14, False, 0, Lock, 0, 0, ApplyAutomaton, [AutomatonRequirement], False)
-Overdrive = MachinistSpell(13, False, 0, Lock, 0, 0, ApplyOverdrive, [OverdriveRequirement], False)
+Automaton = MachinistSpell(14, False, 0, Lock, 0, 0, ApplyAutomaton, [], False)
+Overdrive = MachinistSpell(13, False, 0, Lock, 0, 0, ApplyOverdrive, [], False)
 #These will be casted by the machinist, so they have no damage. Their only effect is to add into Queen's Queue
-Bunker = MachinistSpell(15, True, 0, 2.5, 680, 0, empty, [], False)   #Triggered by Overdrive
+Bunker = MachinistSpell(15, True, 0, 2.5, 680, 0, ApplyCollider, [], False)   #Triggered by Overdrive
 Collider = MachinistSpell(16, True, 0 , 2.5, 780, 0, ApplyCollider, [], False)  #Spell Queen will cast

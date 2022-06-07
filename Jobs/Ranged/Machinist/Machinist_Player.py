@@ -24,7 +24,7 @@ class Machinist(Ranged):
         self.HotShotCD = 0
         self.HyperchargeCD = 0
         self.RicochetCD = 0
-        self.AutomatedQueenCD = 0
+        self.AutomatonQueenCD = 0
         self.FlamethrowerCD = 0
 
         #Timer
@@ -65,7 +65,7 @@ class Machinist(Ranged):
         if (self.HotShotCD > 0) : self.HotShotCD = max(0,self.HotShotCD - time)
         if (self.HyperchargeCD > 0) : self.HyperchargeCD = max(0,self.HyperchargeCD - time)
         if (self.RicochetCD > 0) : self.RicochetCD = max(0,self.RicochetCD - time)
-        if (self.AutomatedQueenCD > 0) : self.AutomatedQueenCD = max(0,self.AutomatedQueenCD - time)
+        if (self.AutomatonQueenCD > 0) : self.AutomatonQueenCD = max(0,self.AutomatonQueenCD - time)
         if (self.FlamethrowerCD > 0) : self.FlamethrowerCD = max(0,self.FlamethrowerCD - time)
 
     def updateTimer(self, time):
@@ -89,6 +89,7 @@ class Queen(Ranged):
         self.Timer = Timer
         self.Master.Queen = self  #Giving the Queen's pointer to the Machinist
         self.Master.CurrentFight.PlayerList.append(self)
+        input(self.Master.CurrentFight.PlayerList)
         self.MultDPSBonus = 1.2
         self.JobMod = 100
 

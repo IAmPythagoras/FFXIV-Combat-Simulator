@@ -310,6 +310,9 @@ class Fight:
                             #Have to check if the player can cast the spell
                             #So check if Animation Lock, if Casting or if GCDLock
                             if(not (player.oGCDLock or player.GCDLock or player.Casting)):
+                                if isinstance(Player, Queen) : 
+                                    print('hey')
+                                    print(player.NextSpell)
 
                                 player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)#Cast the spell
                                 #Locking the player
