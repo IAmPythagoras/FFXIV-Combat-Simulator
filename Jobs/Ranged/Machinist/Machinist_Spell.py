@@ -1,11 +1,12 @@
 #########################################
 ########## MACHINIST SPELL  #############
 #########################################
-from Jobs.Base_Spell import empty, WaitAbility
+import copy
+from Jobs.Base_Spell import DOTSpell, empty, WaitAbility
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
 from Jobs.Ranged.Ranged_Spell import MachinistSpell
 
-Lock = 0.75
+Lock = 0
 
 #Special
 
@@ -17,6 +18,9 @@ def RemoveGauge(Player, Battery, Heat):
     Player.BatteryGauge = max(0, Player.BatteryGauge - Battery)
     Player.HeatGauge = max(0, Player.HeatGauge - Heat)
 #Requirement
+
+def OverheatedRequirement(Player, Spell):
+    return Player.HyperchargeTimer > 0, -1 #True if Overheated
 
 def WildFireRequirement(Player, Spell):
     return Player.WildFireCD <= 0, Player.WildFireCD
@@ -52,6 +56,18 @@ def AutomatonRequirement(Player, Spell):
     return (not Player.Overdrive) and Player.BatteryGauge >= 50, -1
 
 #Apply
+
+def ApplyScattergun(Player, Enemy):
+    AddGauge(Player, 0, 10)
+
+def ApplyBioblaster(Player, Enemy):
+    ApplyDrill(Player, Enemy)
+    if Player.BioblasterDOT == None:
+        Player.BioblasterDOT = copy.deepcopy(BioblasterDOT)
+        Player.DOTList.append(Player.BioblasterDOT)
+        Player.BioblasterDOTTimer = 15
+        Player.EffectCDList.append(BioblasterDOTCheck)
+    Player.BioblasterDOTTimer = 15
 
 def ApplyWildFire(Player, Enemy):
     Player.WildFireCD = 120
@@ -159,6 +175,18 @@ def SlugShotEffect(Player, Spell):
 
 #Check
 
+def FlamethrowerDOTCheck(Player, Enemy):
+    if Player.FlamethrowerDOTTimer <= 0:
+        Player.DOTList.remove(Player.FlamethrowerDOT)
+        Player.FlamethrowerDOT = None
+        Player.EffectToRemove.append(FlamethrowerDOTCheck )
+
+def BioblasterDOTCheck(Player, Enemy):
+    if Player.BioblasterDOTTimer <= 0:
+        Player.DOTList.remove(Player.BioblasterDOT)
+        Player.BioblasterDOT = None
+        Player.EffectToRemove.append(BioblasterDOTCheck)
+
 def WildFireCheck(Player, Enemy):
     if Player.WildFireTimer <= 0:
 
@@ -209,7 +237,7 @@ def QueenCheck(Player, Enemy):#This will be called on the queen
 Wildfire = MachinistSpell(0, False, 0, Lock, 0, 0, ApplyWildFire, [WildFireRequirement], False)
 AirAnchor = MachinistSpell(2, True, 0, 2.5, 580, 0, ApplyAirAnchor, [AirAnchorRequirement], True)
 BarrelStabilizer = MachinistSpell(3, False, 0, Lock, 0, 0, ApplyBarrelStabilizer, [BarrelStabilizerRequirement], False)
-HeatBlast = MachinistSpell(7, True, Lock, 1.5, 180, 0, ApplyHeatBlast, [], True)
+HeatBlast = MachinistSpell(7, True, Lock, 1.5, 180, 0, ApplyHeatBlast, [OverheatedRequirement], True)
 Hypercharge = MachinistSpell(8, False, 0, Lock, 0, 0, ApplyHypercharge, [HyperchargeRequirement], False)
 Reassemble = MachinistSpell(9, False, 0, Lock, 0, 0, ApplyReassemble, [ReassembleRequirement], False)
 GaussRound = MachinistSpell(10, False, 0, Lock, 120, 0, ApplyGaussRound, [GaussRoundRequirement], False)
@@ -222,6 +250,29 @@ SplitShot = MachinistSpell(4, True, Lock, 2.5, 200, 0, ApplySplitShot, [], True)
 SlugShot = MachinistSpell(5, True, Lock, 2.5, 120, 0, ApplySlugShot, [], True )
 CleanShot = MachinistSpell(6, True, Lock, 2.5, 110, 0, ApplyCleanShot, [], True)
 
+
+#AOE GCD
+AutoCrossbow = MachinistSpell(1, True, 0, 1.5, 140, 0, empty, [OverheatedRequirement], True)
+Scattergun = MachinistSpell(1, True, 0, 2.5, 150, 0, ApplyScattergun, [], True)
+Bioblaster = MachinistSpell(1, True, 0, 0, 50, 0, ApplyBioblaster, [DrillRequirement], True) #Shares CD with Drill
+BioblasterDOT = DOTSpell(-2, 50)
+FlamethrowerDOT = DOTSpell(-3, 80)
+def Flamethrower(time):
+    #This function will apply a dot for the specified duration, and lock the player for this duration
+
+
+
+    def FlamethrowerRequirement(Player, Spell):
+        return time > 10 and Player.FlamethrowerCD <= 0, Player.FlamethrowerCD
+
+    def ApplyFlamethrower(Player, Enemy):
+        Player.FlamethrowerCD = 60
+        Player.FlamethrowerDOTTimer = time
+        Player.FlamethrowerDOT = copy.deepcopy(FlamethrowerDOT)
+        Player.DOTList.append(Player.FlamethrowerDOT)
+        Player.EffectCDList.append(FlamethrowerDOTCheck)
+
+    return MachinistSpell(1, True, time, time, 0, 0, ApplyFlamethrower, [FlamethrowerRequirement], False)
 
 #Queen's Ability
 

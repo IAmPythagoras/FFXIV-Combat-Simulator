@@ -109,11 +109,11 @@ PLDOpener = [Melee_AA,WaitAbility(20), FastBlade, FightOrFlight, RiotBlade, Gori
 GNBOpener = [Melee_AA,WaitAbility(20), KeenEdge, BrutalShell, Potion, SolidBarrel, NoMercy, GnashingFang, Bloodfest, JugularRip, DoubleDown, BlastingZone, BowShock, SonicBreak, RoughDivide, SavageClaw, AbdomenTear, RoughDivide, WickedTalon, EyeGouge, BurstStrike, Hypervelocity, KeenEdge, BrutalShell, SolidBarrel,KeenEdge, BrutalShell, SolidBarrel, GnashingFang, JugularRip, SavageClaw, AbdomenTear, WickedTalon,BlastingZone, EyeGouge, BurstStrike, Hypervelocity ]
 ASTOpener = [WaitAbility(17.5), Potion, Malefic, Lightspeed, Combust, Arcanum(NINPlayer, "Solar"), Draw, Malefic, Arcanum(DRGPlayer, "Lunar"), Draw, Malefic, Divination, Arcanum(BRDPlayer, "Celestial"), Malefic, MinorArcana, Astrodyne, Malefic, LordOfCrown, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic ]
 SMNOpener = [WaitAbility(18.5), Ruin3, Summon, SearingLight, AstralImpulse, Potion, AstralImpulse, AstralImpulse, EnergyDrainSMN, Enkindle, AstralImpulse, Deathflare, Fester, AstralImpulse, Fester, AstralImpulse, Titan, Topaz, Mountain, Topaz, Mountain,Topaz, Mountain,Topaz, Mountain, Garuda, Swiftcast, Slipstream]
-DNCOpener = [Melee_AA,ClosedPosition(NINPlayer, False),WaitAbility(4.5), StandardStep, Emboite, Entrechat, WaitAbility(11.74),Potion, StandardFinish, TechnicalStep, Emboite, Entrechat, Jete, Pirouette, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Emboite, Entrechat, StandardFinish]
 RPROpener = [Melee_AA,Soulsow, WaitAbility(13.7), Harpe, ShadowOfDeath, Potion, SoulSlice, ArcaneCircle, Gluttony, Gibbet, Gallows, PlentifulHarvest, Enshroud, VoidReaping, CrossReaping, LemureSlice, VoidReaping, CrossReaping, LemureSlice, Communio, SoulSlice, UnveiledGibbet, Gibbet, Slice, WaxingSlice, ShadowOfDeath, InfernalSlice, Slice, WaxingSlice, UnveiledGallows, Gallows, InfernalSlice, Slice]
 NINOpener = [Melee_AA, WaitAbility(9.5), Jin, Chi, Ten, Huton, Hide,WaitAbility(1.5), Ten, Chi, Jin, Suiton, Kassatsu, SpinningEdge, Potion, GustSlash, Mug, Bunshin, PhantomKamaitachi, WaitAbility(0.6), TrickAttack, AeolianEdge, DreamWithinADream, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, TenChiJin, Ten2, Chi2, Jin2, Meisui, FleetingRaiju, Bhavacakra, FleetingRaiju, Bhavacakra, Ten, Chi, Raiton, FleetingRaiju ]
 DRGOpener = [Melee_AA,WaitAbility(20), TrueThrust, Potion, Disembowel, LanceCharge, DragonSight(NINPlayer), ChaoticSpring, BattleLitany, WheelingThrust, Geirskogul, LifeSurge, FangAndClaw, HighJump, RaidenThrust, DragonFireDive, VorpalThrust, LifeSurge, MirageDive, HeavenThrust, SpineshafterDive, FangAndClaw, SpineshafterDive, WheelingThrust, RaidenThrust, WyrmwindThrust, Disembowel, ChaoticSpring, WheelingThrust]
 BRDOpener = [WaitAbility(19.5), Potion, Stormbite, WandererMinuet, RagingStrike, Causticbite, EmpyrealArrow, BloodLetter, BurstShot, RadiantFinale, BattleVoice, BurstShot, Sidewinder,RefulgentArrow, Barrage, RefulgentArrow, BurstShot, RefulgentArrow, EmpyrealArrow, IronJaws]
+DNCOpener = [ClosedPosition(NINPlayer, False),WaitAbility(4.5), StandardStep, Emboite, Entrechat, WaitAbility(11.74),Potion, StandardFinish, TechnicalStep, Emboite, Entrechat, Jete, Pirouette, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Emboite, Entrechat, StandardFinish]
 
 
 PLDTest = [Melee_AA,WaitAbility(18.5), HolySpirit, FastBlade, RiotBlade, Intervene, CircleScorn, GoringBlade, Expiacion, RequestACat, FastBlade, Intervene, RiotBlade, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti, BladeFaith, BladeTruth, BladeValor]
@@ -138,7 +138,7 @@ DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 RPRPlayer.ActionSet = RPROpener
 #print(PLDPlayer, PLDPlayer2)
-Event.PlayerList = [BRDPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
+Event.PlayerList = [DNCPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
 
 Event.ShowGraph = False
 Event.SimulateFight(0.01, 100, 20)
