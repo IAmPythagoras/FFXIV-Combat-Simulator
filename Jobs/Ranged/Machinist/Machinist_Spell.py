@@ -2,7 +2,7 @@
 ########## MACHINIST SPELL  #############
 #########################################
 import copy
-from Jobs.Base_Spell import DOTSpell, Melee_AA, empty, WaitAbility
+from Jobs.Base_Spell import DOTSpell, Melee_AA, Queen_AA, empty, WaitAbility
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
 from Jobs.Ranged.Ranged_Spell import MachinistSpell
 
@@ -126,17 +126,26 @@ def ApplyChainSaw(Player, Enemy):
     Player.ChainSawCD = 60
 
 def ApplyAutomaton(Player, Enemy):
+    Player.QueenStartUpTimer = 5
+    Player.EffectCDList.append(QueenStartUpCheck)
+
+def SummonQueen(Player, Enemy):
+    #input("SummoningQueen at : " + str(Player.CurrentFight.TimeStamp))
     Player.AutomatonQueenCD = 6
-    RemoveGauge(Player, 50, 0)
+
+    QueenTimer = (Player.BatteryGauge - 50)/5 + 5 #Queen timer by linearly extrapolating 10 sec base + extra battery Gauge
+    #Queen Timer = (ExtraBatteryGauge) / BatteryPerSec - StartUpTimer + BaseTimer = Battery/5 - 5 + 10
+    Player.BatteryGauge = 0
     if Player.Queen == None : Queen(Player, 10)#Creating new queen
+    Player.Queen.Timer = 15 #Setting Queen Timer
     #Will have to depend on battery Gauge
     #Timer is set at 10 so we can have 2 GCD to do finisher move if reaches before
     Player.Queen.EffectCDList.append(QueenCheck)
-    Player.Queen.ActionSet.append(Melee_AA)
-    Player.Queen.ActionSet.append(WaitAbility(10.5))
+    Player.Queen.ActionSet.append(Queen_AA)
+    Player.Queen.ActionSet.append(WaitAbility(QueenTimer - 3)) #Gives 3 last sec to do finishing move
+    Player.Queen.TrueLock = False #Delocking the queen if she was in a locked state, would happen is resummoned
 
 def ApplyCollider(Queen, Enemy):#Called on queen
-    input("collider going ooff")
     Queen.Master.QueenOnField = False
 
 #Combo Actions
@@ -176,6 +185,11 @@ def SlugShotEffect(Player, Spell):
 
 
 #Check
+
+def QueenStartUpCheck(Player, Enemy):
+    if Player.QueenStartUpTimer <= 0:
+        SummonQueen(Player, Enemy) #Waits for 5 sec then summons the queen
+        Player.EffectToRemove.append(QueenStartUpCheck)
 
 def FlamethrowerDOTCheck(Player, Enemy):
     if Player.FlamethrowerDOTTimer <= 0:
@@ -231,13 +245,22 @@ def RicochetStackCheck(Player, Enemy):
 
 def QueenCheck(Player, Enemy):#This will be called on the queen
     if Player.Timer <= 0: 
+        #input("Begining at : " + str(Player.CurrentFight.TimeStamp))
         Player.Master.Overdrive = False
-        #Player.ActionSet.insert(Player.NextSpell+1,Melee_AA)
+        Player.TrueLock = False #Delocking the Queen so she can perform these two abilities
         Player.ActionSet.insert(Player.NextSpell+1,Bunker)
         Player.ActionSet.insert(Player.NextSpell+2,Collider)
         Player.EffectToRemove.append(QueenCheck)
-        input(Player.ActionSet)
-        input(Player.NextSpell)
+        ##input(Player.ActionSet)
+        ##input(Player.NextSpell)
+        Player.EffectCDList.append(QueenAACheck)
+
+
+def QueenAACheck(Player, Enemy):
+    if Player.TrueLock:#This function will be called on the Queen once it has finished Collider, it will get rid of AA's
+        #It checks for when the Queen is done
+        Player.DOTList = [] #Reset DOTList
+        Player.EffectToRemove.append(QueenAACheck)
 
 Wildfire = MachinistSpell(0, False, 0, Lock, 0, 0, ApplyWildFire, [WildFireRequirement], False)
 AirAnchor = MachinistSpell(2, True, 0, 2.5, 580, 0, ApplyAirAnchor, [AirAnchorRequirement], True)

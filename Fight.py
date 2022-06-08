@@ -310,10 +310,6 @@ class Fight:
                             #Have to check if the player can cast the spell
                             #So check if Animation Lock, if Casting or if GCDLock
                             if(not (player.oGCDLock or player.GCDLock or player.Casting)):
-                                if isinstance(Player, Queen) : 
-                                    print('hey')
-                                    print(player.NextSpell)
-
                                 player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)#Cast the spell
                                 #Locking the player
                                 #print(Player.CastingSpell.CastTime)
@@ -349,6 +345,7 @@ class Fight:
                     #print(player)
                     #print("============")
                     for DOT in player.DOTList:
+                        #print(DOT)
                         DOT.CheckDOT(player,self.Enemy, TimeUnit)
                 for player in self.PlayerList:
                     #print(player.EffectCDList)
@@ -452,7 +449,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
 
     #Still remains to change the f_MAIN_DAMAGE function for pets
 
-    #The type #input signifies what type of damage we are dealing with, since the computation will chance according to what
+    #The type input signifies what type of damage we are dealing with, since the computation will chance according to what
     #type of damage it is
 
     #type = 0 (Direct Damage), type = 1 (magical DOT), type = 2(physical DOT), type = 3 (Auto-attacks)

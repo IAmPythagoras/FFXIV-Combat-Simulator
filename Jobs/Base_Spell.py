@@ -31,7 +31,7 @@ class Spell:
     def Cast(self, player, Enemy):
         #This function will cast the spell given by the Fight, it will apply whatever effects it has and do its potency
 
-        #print("Begining Cast of : " + str(self.id))
+        ##print("Begining Cast of : " + str(self.id))
         ##input("Time stamp is : " + str(player.CurrentFight.TimeStamp))
 
         tempSpell = copy.deepcopy(self)
@@ -74,9 +74,9 @@ class Spell:
                 
 
 
-                print("Failed to cast the spell : " + str(self.id))
-                print("The Requirement that failed was : " + str(Requirement.__name__))
-                print("The timestamp is : " + str(player.CurrentFight.TimeStamp))
+                #print("Failed to cast the spell : " + str(self.id))
+                #print("The Requirement that failed was : " + str(Requirement.__name__))
+                #print("The timestamp is : " + str(player.CurrentFight.TimeStamp))
                 raise FailedToCast("Failed to cast the spell")
         #Will make sure CastTime is at least Lock
         if tempSpell.id > 0 and tempSpell.CastTime < Lock : tempSpell.CastTime = 0.5 #id < 0 are special abilities like DOT, so we do not want them to be affected by that
@@ -87,17 +87,17 @@ class Spell:
 
 
     def CastFinal(self, player, Enemy):
-        #print("##################################")
-        #print("Potency of spell: " + str(self.Potency))
-        #print("Spell has finally been cast: " + str(self.id))
+        ##print("##################################")
+        ##print("Potency of spell: " + str(self.Potency))
+        ##print("Spell has finally been cast: " + str(self.id))
 
         
         for Effect in self.Effect:
             Effect(player, Enemy)#Put effects on Player and/or Enemy
         #This will include substracting the mana (it has been verified before that the mana was enough)
         
-        #print("Current MP: " + str(player.Mana))
-        #print("Current Blood: " + str(player.Blood))
+        ##print("Current MP: " + str(player.Mana))
+        ##print("Current Blood: " + str(player.Blood))
         type = 0 #Default value for type
         if isinstance(self, DOTSpell): #Then dot
             #We have to figure out if its a physical dot or not
@@ -140,14 +140,18 @@ def ApplyMelee_AA(Player, Enemy):
 def ApplyRanged_AA(Player, Enemy):
     Player.DOTList.append(copy.deepcopy(Ranged_AADOT))
 
+def ApplyQueen_AA(Player, Enemy):
+    Player.DOTList.append(copy.deepcopy(Queen_AADOT))
+
 Melee_AA = Spell(-30, False, 0, 0, 0, 0, ApplyMelee_AA, [])
 Ranged_AA = Spell(-30, False, 0, 0, 0, 0, ApplyRanged_AA, [])
+Queen_AA = Spell(-30, False, 0, 0, 0, 0, ApplyQueen_AA, [])
 
 
 #Function to generate Waiting
 
 def ManaRequirement(player, Spell):
-    #print("Total mana : " + str(player.Mana))
+    ##print("Total mana : " + str(player.Mana))
     #input("Spell mana cost " + str(Spell.ManaCost))
     if player.Mana >= Spell.ManaCost :
         player.Mana -= Spell.ManaCost   #ManaRequirement is the only Requirement that actually removes Ressources
@@ -182,12 +186,12 @@ class DOTSpell(Spell):
         self.DOTTimer = 0   #This represents the timer of the dot, and it will apply at each 3 seconds
         self.isPhysical = isPhysical #True if physical dot, false if magical dot
     def CheckDOT(self, Player, Enemy, TimeUnit):
-        #print("The dot Timer is :  " + str(self.DOTTimer))
+        ##print("The dot Timer is :  " + str(self.DOTTimer))
         if(self.DOTTimer <= 0):
             #Apply DOT
             tempSpell  = self.Cast(Player, Enemy)#Cast the DOT
-            #print(self.id)
-            #print("Timestamp is : " + str(Player.CurrentFight.TimeStamp))
+            ##print(self.id)
+            ##print("Timestamp is : " + str(Player.CurrentFight.TimeStamp))
             #input("applying dot with potency : " + str(tempSpell.Potency))
             tempSpell.CastFinal(Player, Enemy)
             self.DOTTimer = 3
@@ -204,6 +208,13 @@ class Auto_Attack(DOTSpell):
 
         self.DOTTimer = 20 #The timer is intentionally set at a longer time, so it won't go off before the countdown is over
 
+class Queen_Auto(Auto_Attack):
+
+    def __init__(self, id, Ranged):
+        super().__init__(id, Ranged)
+        self.Weaponskill = False
+        self.DOTTimer = 0 #Since we need to attack as it spawns
+
 class Melee_Auto(Auto_Attack):
 
     def __init__(self, id, Ranged):
@@ -219,6 +230,7 @@ class Ranged_Auto(Auto_Attack):
 
 Melee_AADOT = Melee_Auto(-22, False)
 Ranged_AADOT = Ranged_Auto(-23, True)
+Queen_AADOT = Queen_Auto(-24, False)
 
 Potion = Spell(-2, False, 1, 1, 0, 0, ApplyPotion, [])
 

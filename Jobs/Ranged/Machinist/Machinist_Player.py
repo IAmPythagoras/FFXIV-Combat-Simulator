@@ -32,6 +32,7 @@ class Machinist(Ranged):
         self.HyperchargeTimer = 0
         self.BioblasterDOTTimer = 0
         self.FlamethrowerDOTTimer = 0
+        self.QueenStartUpTimer = 0
 
         #Stacks
         self.GaussRoundStack = 3
@@ -74,6 +75,7 @@ class Machinist(Ranged):
         if (self.HyperchargeTimer > 0) : self.HyperchargeTimer = max(0,self.HyperchargeTimer - time)
         if (self.BioblasterDOTTimer > 0) : self.BioblasterDOTTimer = max(0,self.BioblasterDOTTimer - time)
         if (self.FlamethrowerDOTTimer > 0) : self.FlamethrowerDOTTimer = max(0,self.FlamethrowerDOTTimer - time)
+        if (self.QueenStartUpTimer > 0) : self.QueenStartUpTimer = max(0,self.QueenStartUpTimer - time)
 
 
 #Queen Player
@@ -89,7 +91,7 @@ class Queen(Ranged):
         self.Timer = Timer
         self.Master.Queen = self  #Giving the Queen's pointer to the Machinist
         self.Master.CurrentFight.PlayerList.append(self)
-        input(self.Master.CurrentFight.PlayerList)
+        #input(self.Master.CurrentFight.PlayerList)
         self.MultDPSBonus = 1.2
         self.JobMod = 100
 
