@@ -1,8 +1,8 @@
+
 from Jobs.Base_Spell import buff, empty, DOTSpell, ManaRequirement
-from Jobs.Tank.Paladin.Paladin_Player import Paladin
 from Jobs.Tank.Tank_Spell import PaladinSpell
 import copy
-Lock = 0.5
+Lock = 0
 
 
 #Requirement
@@ -37,7 +37,41 @@ def ConfettiRequirement(Player, Spell):
 def RequestACatRequirement(Player, Spell):
     return Player.RequestACatCD <= 0, Player.RequestACatCD
 
+def DivineVeilRequirement(Player, Spell):
+    return Player.DivineVeilCD <= 0, Player.DivineVeilCD
+
+def SheltronRequirement(Player, Spell):
+    return Player.OathGauge >= 50, -1
+
+def HolySheltronRequirement(Player, Spell):
+    return Player.HolySheltronCD <= 0, Player.HolySheltronCD
+
+def CoverRequirement(Player, Spell):
+    return Player.CoverCD <= 0, Player.CoverCD
+
+def InterventionRequirement(Player, Spell):
+    return Player.InterventionCD <= 0, Player.InterventionCD
+
 #Apply
+
+def ApplyHolySheltron(Player, Enemy):
+    Player.HolySheltronCD = 5
+    Player.OathGauge -= 50
+
+def ApplyCover(Player, Enemy):
+    Player.CoverCD = 120
+    Player.OathGauge -= 50
+
+def ApplyIntervention(Player, Enemy):
+    Player.InterventionCD = 5
+    Player.OathGauge -= 50
+
+
+def ApplyDivineVeil(Player, Enemy):
+    Player.DivineVeilCD = 90
+
+def ApplyTotalEclipse(Player, Enemy):
+    if not (TotalEclipseCombo in Player.EffectList) : Player.EffectList.append(TotalEclipseCombo)
 
 def ApplyFightOrFlight(Player, Enemy):
     Player.FightOrFlightTimer = 25
@@ -102,6 +136,11 @@ def ApplyFastBlade(Player, Enemy):
 
 #Effect
 
+def TotalEclipseCombo(Player, Spell):
+    if Spell.id == Prominence.id:
+        Spell.Potency += 70
+        Player.EffectToRemove.append(TotalEclipseCombo)
+
 def FightOrFlightEffect(Player, Spell):
     if Spell.isPhysical or isinstance(Spell, DOTSpell):
         Spell.DPSBonus *= FightOrFlightBuff.MultDPS #Giving bonus to the spell if it is physical
@@ -109,6 +148,14 @@ def FightOrFlightEffect(Player, Spell):
 def RequestACatEffect(Player, Spell):
     if Spell.id == HolySpirit.id:
         Spell.Potency += 270
+        Spell.CastTime = 0
+        Player.RequestACatStack -= 1
+    elif Spell.id == HolyCircle.id:
+        Spell.Potency += 170
+        Spell.CastTime = 0
+        Player.RequestACatStack -= 1
+    elif Spell.id == Clemency.id:
+        Spell.CastTime = 0
         Player.RequestACatStack -= 1
 
 
@@ -194,17 +241,37 @@ BladeFaith = PaladinSpell(6, True, Lock, 2.5, 420, 0, ApplyBladeFaith, [BladeFai
 BladeTruth = PaladinSpell(7, True, Lock, 2.5, 500, 0, ApplyBladeTruth, [BladeTruthRequirement], False)
 BladeValor = PaladinSpell(8, True, Lock, 2.5, 580, 0, ApplyBladeValor, [BladeValorRequirement], False)
 BladeValorDOT = DOTSpell(-11, 80, True)
+
 #GCD
 HolySpirit = PaladinSpell(9, True, 1.5, 2.5, 270, 1000, empty, [ManaRequirement], False)
 Atonement = PaladinSpell(10, True, Lock, 2.5, 420, 0, ApplyAtonement, [AtonementRequirement], True)
+Clemency = PaladinSpell(11, True, 1.5, 2.5, 0, 1000, empty, [ManaRequirement], False)
+#AOE GCD
+HolyCircle = PaladinSpell(12, True, 1.5, 2.5,130, 1000, empty, [ManaRequirement], False)
+TotalEclipse = PaladinSpell(13, True, 0, 2.5, 100, 0, ApplyTotalEclipse, [], True)
+Prominence = PaladinSpell(14, True, 0, 2.5, 100, 0, empty, [], True)
 
 #oGCD
-RequestACat = PaladinSpell(11, False, 0, Lock, 400, 0, ApplyRequestACat, [RequestACatRequirement], True) #I NEED ONE RIGHT NOW :x
-CircleScorn = PaladinSpell(12, False, 0, Lock, 100, 0, ApplyCircleScorn, [CircleScornRequirement], True)
+RequestACat = PaladinSpell(15, False, 0, Lock, 400, 0, ApplyRequestACat, [RequestACatRequirement], True) #I NEED ONE RIGHT NOW :x
+CircleScorn = PaladinSpell(16, False, 0, Lock, 100, 0, ApplyCircleScorn, [CircleScornRequirement], True)
 CircleScornDOT = DOTSpell(-6, 30, True)
-Intervene = PaladinSpell(13, False, 0, Lock, 150, 0, ApplyIntervene, [InterveneRequirement], True)
-Expiacion = PaladinSpell(14, False, 0, Lock, 340, 0, ApplyExpiacion, [ExpiacionRequirement], True)
-FightOrFlight = PaladinSpell(15, False, 0, Lock, 0, 0, ApplyFightOrFlight, [FightOrFlightRequirement], True)
+Intervene = PaladinSpell(17, False, 0, Lock, 150, 0, ApplyIntervene, [InterveneRequirement], True)
+Expiacion = PaladinSpell(18, False, 0, Lock, 340, 0, ApplyExpiacion, [ExpiacionRequirement], True)
+FightOrFlight = PaladinSpell(19, False, 0, Lock, 0, 0, ApplyFightOrFlight, [FightOrFlightRequirement], True)
 
+#Mitigation Actions
+DivineVeil = PaladinSpell(20, False, 0, 0, 0, 0, ApplyDivineVeil, [DivineVeilRequirement], False)
+HolySheltron = PaladinSpell(21, False, 0, 0, 0, 0, ApplyHolySheltron, [HolySheltronRequirement,SheltronRequirement], False)
+Cover = PaladinSpell(22, False, 0, 0, 0, 0, ApplyCover, [SheltronRequirement, CoverRequirement], False)
+Intervention = PaladinSpell(23, False, 0, 0, 0, 0, ApplyIntervention, [SheltronRequirement, InterventionRequirement], False)
+def PassageOfArms(time):
+    #Function since we will be using it for a set time
+    def PassageOfArmsRequirement(Player, Spell):
+        return Player.PassageOfArmsCD <= 0, Player.PassageOfArmsCD
+
+    def ApplyPassageOfArms(Player, Enemy):
+        Player.PassageOfArmsCD = 120
+
+    return PaladinSpell(24, False, time, time, 0, 0, ApplyPassageOfArms, [PassageOfArmsRequirement], False)
 #buff
 FightOrFlightBuff = buff(1.25)

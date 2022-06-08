@@ -5,6 +5,11 @@ class Paladin(Tank):
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
         super().__init__(GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat)
         self.EffectCDList.append(ManaRegenCheck) #Mana Regen
+
+        #Gauge
+        self.OathGauge = 0
+
+
         #Stack
         self.SwordOathStack = 0
         self.RequestACatStack = 0
@@ -36,6 +41,11 @@ class Paladin(Tank):
         self.InterveneCD = 0
         self.ExpiacionCD = 0
         self.FightOrFlightCD = 0
+        self.DivineVeilCD = 0
+        self.HolySheltronCD = 0
+        self.CoverCD = 0
+        self.InterventionCD = 0
+        self.PassageOfArmsCD = 0
 
         #JobMod
         self.JobMod = 100
@@ -46,6 +56,10 @@ class Paladin(Tank):
         if (self.InterveneCD > 0) : self.InterveneCD = max(0,self.InterveneCD - time)
         if (self.ExpiacionCD > 0) : self.ExpiacionCD = max(0,self.ExpiacionCD - time)
         if (self.FightOrFlightCD > 0) : self.FightOrFlightCD = max(0,self.FightOrFlightCD - time)
+        if (self.HolySheltronCD > 0) : self.HolySheltronCD = max(0,self.HolySheltronCD - time)
+        if (self.CoverCD > 0) : self.CoverCD = max(0,self.CoverCD - time)
+        if (self.InterventionCD > 0) : self.InterventionCD = max(0,self.InterventionCD - time)
+        if (self.PassageOfArmsCD > 0) : self.PassageOfArmsCD = max(0,self.PassageOfArmsCD - time)
  
 
     def updateTimer(self, time):
@@ -54,3 +68,9 @@ class Paladin(Tank):
         if (self.CircleScornTimer > 0) : self.CircleScornTimer = max(0,self.CircleScornTimer - time)
         if (self.FightOrFlighTimer > 0) : self.FightOrFlighTimer = max(0,self.FightOrFlighTimer - time)
         if (self.ValorDOTTimer > 0) : self.ValorDOTTimer = max(0,self.ValorDOTTimer - time)
+
+
+#Oath Gauge Effect
+def OathGauge(Player, Spell):
+    if Spell.id == -1: #AA's DOT have id -1
+        Player.OathGauge = min(100, Player.OathGauge + 5) #adding 5 Gauge each AA

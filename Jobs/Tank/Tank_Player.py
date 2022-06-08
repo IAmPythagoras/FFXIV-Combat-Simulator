@@ -7,6 +7,9 @@ class Tank(Player):
 
         #Shared ressources across tank
 
+        #buff
+        self.TankStanceOn = False
+
         #CD
         self.RampartCD = 0
         self.LowBlowCD = 0
@@ -15,6 +18,8 @@ class Tank(Player):
         self.ReprisalCD = 0
         self.ArmLengthCD = 0
         self.ShirkCD = 0
+        self.BigMitCD = 0
+        self.TankStanceCD = 0
     
     def updateCD(self,time):
         if (self.RampartCD > 0) : self.RampartCD = max(0,self.RampartCD - time)
@@ -24,3 +29,5 @@ class Tank(Player):
         if (self.ShirkCD > 0) : self.ShirkCD = max(0,self.ShirkCD - time)
         if (self.ArmLengthCD > 0) : self.ArmLengthCD = max(0,self.ArmLengthCD - time)
         if (self.ReprisalCD > 0) : self.ReprisalCD = max(0,self.ReprisalCD - time)
+        if (self.BigMitCD > 0) : self.BigMitCD = max(0,self.BigMitCD - time)
+        if (self.TankStanceCD > 0) : self.TankStanceCD = max(0,self.TankStanceCD - time)

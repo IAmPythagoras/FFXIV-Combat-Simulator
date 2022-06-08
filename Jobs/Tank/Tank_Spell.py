@@ -92,7 +92,23 @@ def ReprisalRequirement(Player, Spell):
 def ShirkRequirement(Player, Spell):
     return Player.ShirkCD <= 0, Player.ShirkCD
 
+def BigMitRequirement(Player, Spell):
+    return Player.BigMitCD <= 0, Player.BigMitCD
+
+def TankStanceRequirement(Player, Spell):
+    return Player.TankStanceCD <= 0, Player.TankStanceCD
+
 #Apply
+
+def ApplyTankStance(Player, Enemy):
+    Player.TankStanceCD = 3
+    Player.TankStanceOn = True
+
+def ApplyTurnOffTankStance(Player, Enemy):
+    Player.TankStanceOn = True
+
+def ApplyBigMit(Player, Enemy):
+    Player.BigMitCD = 120
 
 def ApplyRampart(Player, Enemy):
     Player.RampartCD = 90
@@ -119,3 +135,6 @@ Provoke = TankSpell(0, False, Lock, 0, 0, 0, ApplyProvoke, [ProvokeRequirement])
 Interject = TankSpell(0, False, Lock, 0, 0, 0, ApplyInterject, [InterjectRequirement])
 Reprisal = TankSpell(0, False, Lock, 0, 0, 0, ApplyReprisal, [ReprisalRequirement])
 Shirk = TankSpell(0, False, Lock, 0, 0, 0, ApplyShirk, [ShirkRequirement])
+BigMit = TankSpell(0, False, 0, 0, 0, 0, ApplyBigMit, [BigMitRequirement]) #30% mit
+TankStance = TankSpell(0, False, 0, 0, 0, 0, ApplyTankStance, [TankStanceRequirement]) #Turn on Tank Stance
+TurnOffTankStance = TankSpell(0, False, 0, 0, 0, 0, ApplyTurnOffTankStance, [])#Turn off Tank Stance
