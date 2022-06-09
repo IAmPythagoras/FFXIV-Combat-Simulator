@@ -39,7 +39,37 @@ def AbdomenTearRequirement(Player, Spell):
 def EyeGougeRequirement(Player, Spell):
     return Player.ReadyToGouge, -1
 
+def AuroraRequirement(Player, Spell):
+    return Player.AuroraStack > 0, Player.AuroraCD
+
+def SuperbolideRequirement(Player, Spell):
+    return Player.SuperbolideCD <= 0, Player.SuperbolideCD
+
+def HeartOfLightRequirement(Player, Spell):
+    return Player.HeartOfLightCD <= 0, Player.HeartOfLightCD
+
+def HeartOfCorundumRequirement(Player, Spell):
+    return Player.HeartOfCorundumCD <= 0, Player.HeartOfCorundumCD
+
 #Apply
+
+def ApplyDemonSlice(Player, Enemy):
+    if not (DemonSliceCombo in Player.EffectList) : Player.EffectList.append(DemonSliceCombo)
+
+def ApplyHeartOfCorundum(Player, Enemy):
+    Player.HeartOfCorundumCD = 25
+
+def ApplyHeartOfLight(Player, Enemy):
+    Player.HeartOfLightCD = 90
+
+def ApplySuperbolide(Player, Enemy):
+    Player.SuperbolideCD = 360
+
+def ApplyAurora(Player, Enemy):
+    if Player.AuroraStack == 2:
+        Player.EffectCDList.append(AuroraStackCheck)
+        Player.AuroraCD = 60
+    Player.AuroraStack -= 1
 
 def ApplyNoMercy(Player, Enemy):
     Player.buffList.append(NoMercyBuff)
@@ -103,6 +133,12 @@ def ApplyEyeGouge(Player, Enemy):
 
 #Combo Effect
 
+def DemonSliceCombo(Player, Spell):
+    if Spell.id == DemonSlaughter.id:
+        Spell.Potency += 60
+        Player.PowderGauge = min(3, Player.PowderGauge + 1)
+        Player.EffectToRemove.append(DemonSliceCombo)
+
 def KeenEdgeCombo(Player, Spell):
     if Spell.id == BrutalShell.id:
         Spell.Potency += 140
@@ -143,6 +179,14 @@ def RoughDivideStackCheck(Player, Enemy):
             Player.RoughDivideCD = 30
         Player.RoughDivideStack +=1
 
+def AuroraStackCheck(Player, Enemy):
+    if Player.AuroraCD <= 0:
+        if Player.Aurora == 1:
+            Player.EffectToRemove.append(AuroraStackCheck)
+        else:
+            Player.AuroraCD = 30
+        Player.AuroraStack +=1
+
 
 #Combo Action
 
@@ -157,21 +201,32 @@ AbdomenTear = GunbreakerSpell(7, False, 0, 220, empty, [AbdomenTearRequirement],
 WickedTalon = GunbreakerSpell(8, True, 2.5, 520, ApplyWickedTalon, [AbdomenTearRequirement], 0)
 EyeGouge = GunbreakerSpell(9, False, 0, 260, ApplyEyeGouge, [EyeGougeRequirement], 0)
 
-BurstStrike = GunbreakerSpell(12, True, 2.5, 380, ApplyBurstStrike, [], 1)
-Hypervelocity = GunbreakerSpell(13, False, 0, 180, ApplyHypervelocity,[HypervelocityRequirement], 0)
+BurstStrike = GunbreakerSpell(10, True, 2.5, 380, ApplyBurstStrike, [], 1)
+Hypervelocity = GunbreakerSpell(11, False, 0, 180, ApplyHypervelocity,[HypervelocityRequirement], 0)
 
 #oGCD
-BlastingZone = GunbreakerSpell(10, False, 0, 700, ApplyBlastingZone, [BlastingZoneRequirement], 0)
-Bloodfest = GunbreakerSpell(11, False, 0, 0, ApplyBloodfest, [BloodfestRequirement], 0)
-BowShock = GunbreakerSpell(16, False, 0, 150, ApplyBowShock, [BowShockRequirement], 0)
+BlastingZone = GunbreakerSpell(12, False, 0, 700, ApplyBlastingZone, [BlastingZoneRequirement], 0)
+Bloodfest = GunbreakerSpell(13, False, 0, 0, ApplyBloodfest, [BloodfestRequirement], 0)
+BowShock = GunbreakerSpell(14, False, 0, 150, ApplyBowShock, [BowShockRequirement], 0)
 BowShockDOT = DOTSpell(-10, 60, True)
-RoughDivide = GunbreakerSpell(17, False, 0, 150, ApplyRoughDivide, [RoughDivideRequirement], 0)
-NoMercy = GunbreakerSpell(18, False, 0, 0, ApplyNoMercy, [NoMercyRequirement], 0)
+RoughDivide = GunbreakerSpell(15, False, 0, 150, ApplyRoughDivide, [RoughDivideRequirement], 0)
+NoMercy = GunbreakerSpell(16, False, 0, 0, ApplyNoMercy, [NoMercyRequirement], 0)
 #GCD
-DoubleDown = GunbreakerSpell(14, True, 2.5, 1200, ApplyDoubleDown, [DoubleDownRequirement], 2)
-SonicBreak = GunbreakerSpell(15, True, 2.5, 300, ApplySonicBreak, [SonicBreakRequirement], 0)
+DoubleDown = GunbreakerSpell(17, True, 2.5, 1200, ApplyDoubleDown, [DoubleDownRequirement], 2)
+SonicBreak = GunbreakerSpell(18, True, 2.5, 300, ApplySonicBreak, [SonicBreakRequirement], 0)
 SonicBreakDOT = DOTSpell(-9, 60,True)
 LightningShot = GunbreakerSpell(19, True, 2.5, 150, empty, [], 0)
+#AOE GCD
+FatedCircle = GunbreakerSpell(1, True, 2.5, 290, empty, [], 1)
+DemonSlice = GunbreakerSpell(1, True, 2.5, 100, ApplyDemonSlice, [], 0)
+DemonSlaughter = GunbreakerSpell(1, True, 2.5, 100, empty, [], 1)
+
+
+#Mit
+Aurora = GunbreakerSpell(20, False, 0, 0, ApplyAurora, [AuroraRequirement], 0)
+Superbolide = GunbreakerSpell(21, False, 0, 0, ApplySuperbolide, [SuperbolideRequirement], 0)
+HeartOfLight = GunbreakerSpell(22, False, 0, 0, ApplyHeartOfLight, [HeartOfLightRequirement], 0)
+HeartOfCorundum = GunbreakerSpell(23, False, 0, 0, ApplyHeartOfCorundum, [HeartOfCorundumRequirement], 0)
 
 #buff
 NoMercyBuff = buff(1.2)

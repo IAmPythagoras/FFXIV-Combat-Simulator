@@ -46,6 +46,7 @@ class Paladin(Tank):
         self.CoverCD = 0
         self.InterventionCD = 0
         self.PassageOfArmsCD = 0
+        self.HallowedGroundCD = 0
 
         #JobMod
         self.JobMod = 100
@@ -60,7 +61,7 @@ class Paladin(Tank):
         if (self.CoverCD > 0) : self.CoverCD = max(0,self.CoverCD - time)
         if (self.InterventionCD > 0) : self.InterventionCD = max(0,self.InterventionCD - time)
         if (self.PassageOfArmsCD > 0) : self.PassageOfArmsCD = max(0,self.PassageOfArmsCD - time)
- 
+        if (self.HallowedGroundCD > 0) : self.HallowedGroundCD = max(0,self.HallowedGroundCD - time)
 
     def updateTimer(self, time):
         super().updateTimer(time)

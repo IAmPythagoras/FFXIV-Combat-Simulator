@@ -52,7 +52,14 @@ def CoverRequirement(Player, Spell):
 def InterventionRequirement(Player, Spell):
     return Player.InterventionCD <= 0, Player.InterventionCD
 
+def HallowedGroundRequirement(Player, Spell):
+    return Player.HallowedGroundCD <= 0, Player.HallowedGroundCD
+
 #Apply
+
+def ApplyHallowedGround(Player, Enemy):
+    Player.HallowedGroundCD = 420
+
 
 def ApplyHolySheltron(Player, Enemy):
     Player.HolySheltronCD = 5
@@ -263,6 +270,7 @@ FightOrFlight = PaladinSpell(19, False, 0, Lock, 0, 0, ApplyFightOrFlight, [Figh
 DivineVeil = PaladinSpell(20, False, 0, 0, 0, 0, ApplyDivineVeil, [DivineVeilRequirement], False)
 HolySheltron = PaladinSpell(21, False, 0, 0, 0, 0, ApplyHolySheltron, [HolySheltronRequirement,SheltronRequirement], False)
 Cover = PaladinSpell(22, False, 0, 0, 0, 0, ApplyCover, [SheltronRequirement, CoverRequirement], False)
+HallowedGround = PaladinSpell(25, False, 0, 0, 0, 0, ApplyHallowedGround, [HallowedGroundRequirement], False)
 Intervention = PaladinSpell(23, False, 0, 0, 0, 0, ApplyIntervention, [SheltronRequirement, InterventionRequirement], False)
 def PassageOfArms(time):
     #Function since we will be using it for a set time
