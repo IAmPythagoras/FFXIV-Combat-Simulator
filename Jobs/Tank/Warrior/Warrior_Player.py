@@ -31,6 +31,12 @@ class Warrior(Tank):
         self.UpheavalCD = 0
         self.InnerReleaseCD = 0
         self.OnslaughtCD = 0
+        self.ThrillOfBattleCD = 0
+        self.HolmgangCD = 0
+        self.ShakeItOffCD = 0
+        self.NascentFlashCD = 0
+        self.BloodwhettingCD = 0
+        self.EquilibriumCD = 0
 
         #JobMod
         self.JobMod = 105
@@ -40,6 +46,12 @@ class Warrior(Tank):
         if (self.UpheavalCD > 0) : self.UpheavalCD = max(0,self.UpheavalCD - time)
         if (self.InnerReleaseCD > 0) : self.InnerReleaseCD = max(0,self.InnerReleaseCD - time)
         if (self.OnslaughtCD > 0) : self.OnslaughtCD = max(0,self.OnslaughtCD - time)
+        if (self.ThrillOfBattleCD > 0) : self.ThrillOfBattleCD = max(0,self.ThrillOfBattleCD - time)
+        if (self.HolmgangCD > 0) : self.HolmgangCD = max(0,self.HolmgangCD - time)
+        if (self.ShakeItOffCD > 0) : self.ShakeItOffCD = max(0,self.ShakeItOffCD - time)
+        if (self.NascentFlashCD > 0) : self.NascentFlashCD = max(0,self.NascentFlashCD - time)
+        if (self.BloodwhettingCD > 0) : self.BloodwhettingCD = max(0,self.BloodwhettingCD - time)
+        if (self.EquilibriumCD > 0) : self.EquilibriumCD = max(0,self.EquilibriumCD - time)
  
 
     def updateTimer(self, time):
