@@ -11,6 +11,7 @@ class Bard(Ranged):
         self.ExpectedSoulVoiceGauge = 0
         self.ExpectedBloodLetterReduction = 0
         self.ExpectedTotalWandererRepertoire = 0
+        self.ExpectedShadowbite = 0
 
         #Used proc
         self.UsedRefulgent = 0
@@ -19,6 +20,7 @@ class Bard(Ranged):
         self.UsedBloodLetterReduction = 0
         self.UsedRepertoireAdd = 0 #This is repertoire stacks we used more than the expected value
         self.UsedTotalWandererRepertoire = 0
+        self.UsedShadowbite = 0
 
 
         #Gauge
@@ -34,6 +36,7 @@ class Bard(Ranged):
         #buff
         self.StraightShotReady = False
         self.BlastArrowReady = True
+        self.ShadowbiteReady = False
 
 
         #Song
@@ -57,6 +60,7 @@ class Bard(Ranged):
         self.BloodLetterCD = 0
         self.BarrageCD = 0
         self.RagingStrikeCD = 0
+        self.TroubadourCD = 0
 
         #Timer
         self.SongTimer = 0
@@ -84,6 +88,7 @@ class Bard(Ranged):
         if (self.BloodLetterCD > 0) : self.BloodLetterCD = max(0,self.BloodLetterCD - time)
         if (self.BarrageCD > 0) : self.BarrageCD = max(0,self.BarrageCD - time)
         if (self.RagingStrikeCD > 0) : self.RagingStrikeCD = max(0,self.RagingStrikeCD - time)
+        if (self.TroubadourCD > 0) : self.TroubadourCD = max(0,self.TroubadourCD - time)
 
     def updateTimer(self, time):
         super().updateTimer(time)

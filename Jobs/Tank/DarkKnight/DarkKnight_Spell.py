@@ -5,7 +5,7 @@ from Jobs.Base_Spell import DOTSpell, buff, empty
 import copy
 from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
 from Jobs.Tank.Tank_Spell import DRKSkill
-Lock = 0.75
+Lock = 0
 
 #def DarksideEffect(Player, Spell):
  #   if Player.DarksideTimer > 0:
@@ -15,7 +15,7 @@ Lock = 0.75
 
 def BloodRequirement(Player, Spell):
     #print("Delirium stacks: "+ str(Player.DeliriumStacks))
-    if Player.DeliriumStacks > 0 and (Spell.id == 4 or Spell.id == 5):
+    if Player.DeliriumStacks > 0 and (Spell.id == Bloodspiller.id or Spell.id == Quietus):
         Spell.BloodCost = 0
         Player.DeliriumStacks -= 1
         return True, -1
@@ -66,6 +66,18 @@ def TBNRequirement(Player, Spell):
         return True, -1
     return False, -1
 
+def LivingDeadRequirement(Player, Spell):
+    return Player.LivingDeadCD <= 0, Player.LivingDeadCD
+
+def DarkMindRequirement(Player, Spell):
+    return Player.DarkMindCD <= 0, Player.DarkMindCD
+
+def DarkMissionaryRequirement(Player, Spell):
+    return Player.DarkMissionaryCD <= 0, Player.DarkMissionaryCD
+
+def OblationRequirement(Player, Spell):
+    return Player.OblationStack > 0, Player.OblationCD
+
 #Effect functions that persist after action use
 
 def BloodWeaponEffect(Player, Spell):
@@ -87,19 +99,27 @@ def HardSlashEffect(Player, Spell):
         BonusDmg = 140 * Multiplier
         Spell.Potency += BonusDmg
         Player.Mana = min(Player.Mana + 600, 10000)
-    if (Spell.id == 2) or (Spell.id == 3) or (Spell.id == 1):
+    if (Spell.id == SyphonStrike.id) or (Spell.id == Souleater.id) or (Spell.id == HardSlash.id):
         Player.EffectToRemove.append(HardSlashEffect)
 
 def SyphonStrikeEffect(Player, Spell):
-    if Spell.id == 3:
+    if Spell.id == Souleater.id:
         Multiplier = Spell.Potency/120
         BonusDmg = 220 * Multiplier
         Spell.Potency += BonusDmg
         Player.Blood = min(100, Player.Blood + 20)
-    if (Spell.id == 2) or (Spell.id == 3) or (Spell.id == 1):
+    if (Spell.id == SyphonStrike.id) or (Spell.id == Souleater.id) or (Spell.id == HardSlash.id):
         Player.EffectToRemove.append(SyphonStrikeEffect)
 
 #Cooldown checks to remove effect and restore charges
+
+def OblationStackCheck(Player, Spell):
+    if Player.OblationCD <= 0:
+        if Player.OblationStack == 1:
+            Player.EffectToRemove.append(OblationStackCheck)
+        else:
+            Player.OblationCD = 60
+        Player.OblationStack += 1
 
 def BloodWeaponCheck(Player, Spell):
     if Player.BloodWeaponTimer <= 0 or Player.BloodWeaponStacks == 0:
@@ -133,8 +153,19 @@ def CheckPlungeCharge(Player, Enemy):
             Player.EffectToRemove.append(CheckPlungeCharge)
         Player.PlungeCharges +=1
 
+def UnleashCombo(Player, Spell):
+    if Spell.id == StalwartSoul.id:
+        Spell.Potency += 40
+        Player.Blood = min(100, Player.Blood + 20)
+
 
 #Apply effects that happen upon action use
+
+def ApplyLivingDead(Player, Enemy):
+    Player.LivingDeadCD = 300
+
+def ApplyUnleash(Player, Spell):
+    if not (UnleashCombo in Player.EffectList) : Player.EffectList.append(UnleashCombo)
 
 def ApplyHardSlashEffect(Player, Spell):
     Player.EffectList.append(HardSlashEffect)
@@ -206,10 +237,21 @@ def SpendPlunge(Player,Spell):
 def ApplyDarkArts(Player, Spell):
     Player.DarkArts = True
 
+def ApplyDarkMind(Player, Spell):
+    Player.DarkMindCD = 60
+
+def ApplyDarkMissionary(Player, Enemy):
+    Player.DarkMissionaryCD = 90
+
+def ApplyOblation(Player, Enemy):
+    if Player.OblationStack == 2:
+        Player.EffectCDList.append(OblationStackCheck)
+        Player.OblationCD = 60
+    Player.OblationStack -= 1
 
 #List of Weaponskills and Spells used by a Dark Knight Player.
-DRKGCD = 2.41           #GCD speed
-Lock = 0.75             #Fixed value for animation lock.
+DRKGCD = 2.5         #GCD speed
+Lock = 0            #Fixed value for animation lock.
 
 HardSlash = DRKSkill(1, True, Lock, DRKGCD, 170, 0, 0, ApplyHardSlashEffect, [])
 SyphonStrike = DRKSkill(2, True, Lock, DRKGCD, 120, 0, 0, ApplySyphonEffect, [])
@@ -236,18 +278,26 @@ Shadowbringer = DRKSkill(16, False, Lock, 0, 600, 0, 0, SpendShadowbringer, [Sha
 LivingShadow = DRKSkill(17, False, Lock, 0, 0, 0, 50, SummonLivingShadow, [BloodRequirement])
 Plunge = DRKSkill(18, False, Lock, 0, 150, 0, 0, SpendPlunge, [PlungeRequirement])
 
-TBN = DRKSkill(27, False, Lock, 0, 0, 3000, 0, ApplyDarkArts, [TBNRequirement])     #Simply makes the next EdgeShadow free for now.
+TBN = DRKSkill(19, False, Lock, 0, 0, 3000, 0, ApplyDarkArts, [TBNRequirement])     #Simply makes the next EdgeShadow free for now.
 
+#AOE GCD
+Unleash = DRKSkill(20, True, 0, 2.5, 120, 0, 0, ApplyUnleash, [])
+StalwartSoul = DRKSkill(21, True, 0, 2.5, 100, 0, 0, empty, [])
 #List of Abilities performed by Living Shadow.
 
-PAbyssalDrain = DRKSkill(19, True, 0.5, 2.36, 300, 0, 0, empty, [])
-PPlunge = DRKSkill(20, True, 0.5, 2.36, 300, 0, 0, empty, [])
-PQuietus = DRKSkill(21, True, 0.5, 2.36, 300, 0, 0, empty, [])
-PShadowbringer = DRKSkill(22, True, 0.5, 2.36, 450, 0, 0, empty, [])
-PEdgeShadow = DRKSkill(23, True, 0.5, 2.36, 300, 0, 0, empty, [])
-PBloodspiller = DRKSkill(24, True, 0.5, 2.36, 300, 0, 0, empty, [])
-PCarveSpit = DRKSkill(25, True, 0.5, 2.36, 300, 0, 0, empty, [])
-PDelay = DRKSkill(26, True, 0, 4.50, 0, 0, 0, empty, [])    #6s animation before it starts attacking.
+PAbyssalDrain = DRKSkill(22, True, 0.5, 2.36, 300, 0, 0, empty, [])
+PPlunge = DRKSkill(23, True, 0.5, 2.36, 300, 0, 0, empty, [])
+PQuietus = DRKSkill(24, True, 0.5, 2.36, 300, 0, 0, empty, [])
+PShadowbringer = DRKSkill(25, True, 0.5, 2.36, 450, 0, 0, empty, [])
+PEdgeShadow = DRKSkill(26, True, 0.5, 2.36, 300, 0, 0, empty, [])
+PBloodspiller = DRKSkill(27, True, 0.5, 2.36, 300, 0, 0, empty, [])
+PCarveSpit = DRKSkill(28, True, 0.5, 2.36, 300, 0, 0, empty, [])
+PDelay = DRKSkill(29, True, 0, 4.50, 0, 0, 0, empty, [])    #6s animation before it starts attacking.
 
+#Mit
+LivingDead = DRKSkill(30, False, 0, 0, 0, 0, 0, ApplyLivingDead, [LivingDeadRequirement])
+DarkMind = DRKSkill(31, False, 0, 0, 0, 0, 0, ApplyDarkMind, [DarkMindRequirement])
+DarkMissionary = DRKSkill(32, False, 0, 0, 0, 0, 0, ApplyDarkMissionary, [DarkMissionaryRequirement])
+Oblation = DRKSkill(33, False, 0, 0, 0, 0, 0, ApplyOblation, [OblationRequirement])
 #buff
 EdgeShadowBuff = buff(1.1)

@@ -1,11 +1,12 @@
 #########################################
 ########## MACHINIST SPELL  #############
 #########################################
-from Jobs.Base_Spell import empty, WaitAbility
+import copy
+from Jobs.Base_Spell import DOTSpell, Melee_AA, Queen_AA, empty, WaitAbility
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
 from Jobs.Ranged.Ranged_Spell import MachinistSpell
 
-Lock = 0.75
+Lock = 0
 
 #Special
 
@@ -17,6 +18,9 @@ def RemoveGauge(Player, Battery, Heat):
     Player.BatteryGauge = max(0, Player.BatteryGauge - Battery)
     Player.HeatGauge = max(0, Player.HeatGauge - Heat)
 #Requirement
+
+def OverheatedRequirement(Player, Spell):
+    return Player.HyperchargeTimer > 0, -1 #True if Overheated
 
 def WildFireRequirement(Player, Spell):
     return Player.WildFireCD <= 0, Player.WildFireCD
@@ -52,6 +56,18 @@ def AutomatonRequirement(Player, Spell):
     return (not Player.Overdrive) and Player.BatteryGauge >= 50, -1
 
 #Apply
+
+def ApplyScattergun(Player, Enemy):
+    AddGauge(Player, 0, 10)
+
+def ApplyBioblaster(Player, Enemy):
+    ApplyDrill(Player, Enemy)
+    if Player.BioblasterDOT == None:
+        Player.BioblasterDOT = copy.deepcopy(BioblasterDOT)
+        Player.DOTList.append(Player.BioblasterDOT)
+        Player.BioblasterDOTTimer = 15
+        Player.EffectCDList.append(BioblasterDOTCheck)
+    Player.BioblasterDOTTimer = 15
 
 def ApplyWildFire(Player, Enemy):
     Player.WildFireCD = 120
@@ -110,13 +126,24 @@ def ApplyChainSaw(Player, Enemy):
     Player.ChainSawCD = 60
 
 def ApplyAutomaton(Player, Enemy):
+    Player.QueenStartUpTimer = 5
+    Player.EffectCDList.append(QueenStartUpCheck)
+
+def SummonQueen(Player, Enemy):
+    #input("SummoningQueen at : " + str(Player.CurrentFight.TimeStamp))
     Player.AutomatonQueenCD = 6
-    RemoveGauge(Player, 50, 0)
+
+    QueenTimer = (Player.BatteryGauge - 50)/5 + 5 #Queen timer by linearly extrapolating 10 sec base + extra battery Gauge
+    #Queen Timer = (ExtraBatteryGauge) / BatteryPerSec - StartUpTimer + BaseTimer = Battery/5 - 5 + 10
+    Player.BatteryGauge = 0
     if Player.Queen == None : Queen(Player, 10)#Creating new queen
+    Player.Queen.Timer = 15 #Setting Queen Timer
     #Will have to depend on battery Gauge
     #Timer is set at 10 so we can have 2 GCD to do finisher move if reaches before
     Player.Queen.EffectCDList.append(QueenCheck)
-    Player.Queen.ActionSet.append(WaitAbility(10.5))
+    Player.Queen.ActionSet.append(Queen_AA)
+    Player.Queen.ActionSet.append(WaitAbility(QueenTimer - 3)) #Gives 3 last sec to do finishing move
+    Player.Queen.TrueLock = False #Delocking the queen if she was in a locked state, would happen is resummoned
 
 def ApplyCollider(Queen, Enemy):#Called on queen
     Queen.Master.QueenOnField = False
@@ -159,15 +186,32 @@ def SlugShotEffect(Player, Spell):
 
 #Check
 
+def QueenStartUpCheck(Player, Enemy):
+    if Player.QueenStartUpTimer <= 0:
+        SummonQueen(Player, Enemy) #Waits for 5 sec then summons the queen
+        Player.EffectToRemove.append(QueenStartUpCheck)
+
+def FlamethrowerDOTCheck(Player, Enemy):
+    if Player.FlamethrowerDOTTimer <= 0:
+        Player.DOTList.remove(Player.FlamethrowerDOT)
+        Player.FlamethrowerDOT = None
+        Player.EffectToRemove.append(FlamethrowerDOTCheck )
+
+def BioblasterDOTCheck(Player, Enemy):
+    if Player.BioblasterDOTTimer <= 0:
+        Player.DOTList.remove(Player.BioblasterDOT)
+        Player.BioblasterDOT = None
+        Player.EffectToRemove.append(BioblasterDOTCheck)
+
 def WildFireCheck(Player, Enemy):
     if Player.WildFireTimer <= 0:
 
-        WildFireOff = MachinistSpell(1, False, 0, 0, 200 * Player.WildFireStack, 0, empty, [], False)
+        WildFireOff = MachinistSpell(1, False, 0, 0, 220 * Player.WildFireStack, 0, empty, [], False)
         #Temporary Spell that will be put in front of the Queue
         Player.ActionSet.insert(Player.NextSpell+1, WildFireOff) #Insert in queue, will be instantly executed
-        Player.WildFireStack = 0
         Player.EffectList.remove(WildFireEffect)
         Player.EffectToRemove.append(WildFireCheck)
+        Player.WildFireStack = 0
 
 def HyperchargeCheck(Player, Enemy):
     if Player.HyperchargeTimer <= 0:
@@ -201,15 +245,27 @@ def RicochetStackCheck(Player, Enemy):
 
 def QueenCheck(Player, Enemy):#This will be called on the queen
     if Player.Timer <= 0: 
+        #input("Begining at : " + str(Player.CurrentFight.TimeStamp))
         Player.Master.Overdrive = False
+        Player.TrueLock = False #Delocking the Queen so she can perform these two abilities
         Player.ActionSet.insert(Player.NextSpell+1,Bunker)
         Player.ActionSet.insert(Player.NextSpell+2,Collider)
         Player.EffectToRemove.append(QueenCheck)
+        ##input(Player.ActionSet)
+        ##input(Player.NextSpell)
+        Player.EffectCDList.append(QueenAACheck)
+
+
+def QueenAACheck(Player, Enemy):
+    if Player.TrueLock:#This function will be called on the Queen once it has finished Collider, it will get rid of AA's
+        #It checks for when the Queen is done
+        Player.DOTList = [] #Reset DOTList
+        Player.EffectToRemove.append(QueenAACheck)
 
 Wildfire = MachinistSpell(0, False, 0, Lock, 0, 0, ApplyWildFire, [WildFireRequirement], False)
 AirAnchor = MachinistSpell(2, True, 0, 2.5, 580, 0, ApplyAirAnchor, [AirAnchorRequirement], True)
 BarrelStabilizer = MachinistSpell(3, False, 0, Lock, 0, 0, ApplyBarrelStabilizer, [BarrelStabilizerRequirement], False)
-HeatBlast = MachinistSpell(7, True, Lock, 1.5, 180, 0, ApplyHeatBlast, [], True)
+HeatBlast = MachinistSpell(7, True, Lock, 1.5, 180, 0, ApplyHeatBlast, [OverheatedRequirement], True)
 Hypercharge = MachinistSpell(8, False, 0, Lock, 0, 0, ApplyHypercharge, [HyperchargeRequirement], False)
 Reassemble = MachinistSpell(9, False, 0, Lock, 0, 0, ApplyReassemble, [ReassembleRequirement], False)
 GaussRound = MachinistSpell(10, False, 0, Lock, 120, 0, ApplyGaussRound, [GaussRoundRequirement], False)
@@ -223,12 +279,35 @@ SlugShot = MachinistSpell(5, True, Lock, 2.5, 120, 0, ApplySlugShot, [], True )
 CleanShot = MachinistSpell(6, True, Lock, 2.5, 110, 0, ApplyCleanShot, [], True)
 
 
+#AOE GCD
+AutoCrossbow = MachinistSpell(1, True, 0, 1.5, 140, 0, empty, [OverheatedRequirement], True)
+Scattergun = MachinistSpell(1, True, 0, 2.5, 150, 0, ApplyScattergun, [], True)
+Bioblaster = MachinistSpell(1, True, 0, 0, 50, 0, ApplyBioblaster, [DrillRequirement], True) #Shares CD with Drill
+BioblasterDOT = DOTSpell(-2, 50, True)
+FlamethrowerDOT = DOTSpell(-3, 80, True)
+def Flamethrower(time):
+    #This function will apply a dot for the specified duration, and lock the player for this duration
+
+
+
+    def FlamethrowerRequirement(Player, Spell):
+        return time > 10 and Player.FlamethrowerCD <= 0, Player.FlamethrowerCD
+
+    def ApplyFlamethrower(Player, Enemy):
+        Player.FlamethrowerCD = 60
+        Player.FlamethrowerDOTTimer = time
+        Player.FlamethrowerDOT = copy.deepcopy(FlamethrowerDOT)
+        Player.DOTList.append(Player.FlamethrowerDOT)
+        Player.EffectCDList.append(FlamethrowerDOTCheck)
+
+    return MachinistSpell(1, True, time, time, 0, 0, ApplyFlamethrower, [FlamethrowerRequirement], False)
+
 #Queen's Ability
 
 #These abilities will write into the Queen's ability list.
 #If they are not done the queen will do them automatically
-Automaton = MachinistSpell(14, False, 0, Lock, 0, 0, ApplyAutomaton, [AutomatonRequirement], False)
-Overdrive = MachinistSpell(13, False, 0, Lock, 0, 0, ApplyOverdrive, [OverdriveRequirement], False)
+Automaton = MachinistSpell(14, False, 0, Lock, 0, 0, ApplyAutomaton, [], False)
+Overdrive = MachinistSpell(13, False, 0, Lock, 0, 0, ApplyOverdrive, [], False)
 #These will be casted by the machinist, so they have no damage. Their only effect is to add into Queen's Queue
-Bunker = MachinistSpell(15, True, 0, 2.5, 680, 0, empty, [], False)   #Triggered by Overdrive
+Bunker = MachinistSpell(15, True, 0, 2.5, 680, 0, ApplyCollider, [], False)   #Triggered by Overdrive
 Collider = MachinistSpell(16, True, 0 , 2.5, 780, 0, ApplyCollider, [], False)  #Spell Queen will cast

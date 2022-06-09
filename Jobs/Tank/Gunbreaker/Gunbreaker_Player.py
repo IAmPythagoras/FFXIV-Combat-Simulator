@@ -7,6 +7,7 @@ class Gunbreaker(Tank):
 
         #Stack
         self.RoughDivideStack = 2
+        self.AuroraStack = 2
         #Gauge
         self.PowderGauge = 0
 
@@ -25,6 +26,10 @@ class Gunbreaker(Tank):
         self.BowShockCD = 0
         self.RoughDivideCD = 0
         self.NoMercyCD = 0
+        self.AuroraCD = 0
+        self.SuperbolideCD = 0
+        self.HeartOfLightCD = 0
+        self.HeartOfCorundumCD = 0
 
         #Timer
         self.BowShockTimer = 0
@@ -47,7 +52,11 @@ class Gunbreaker(Tank):
         if (self.BowShockCD > 0) : self.BowShockCD = max(0,self.BowShockCD - time)
         if (self.RoughDivideCD > 0) : self.RoughDivideCD = max(0,self.RoughDivideCD - time)
         if (self.NoMercyCD > 0) : self.NoMercyCD = max(0,self.NoMercyCD - time)
- 
+        if (self.AuroraCD > 0) : self.AuroraCD = max(0,self.AuroraCD - time)
+        if (self.SuperbolideCD > 0) : self.SuperbolideCD = max(0,self.SuperbolideCD - time)
+        if (self.HeartOfLightCD > 0) : self.HeartOfLightCD = max(0,self.HeartOfLightCD - time)
+        if (self.HeartOfCorundumCD > 0) : self.HeartOfCorundumCD = max(0,self.HeartOfCorundumCD - time)
+
 
     def updateTimer(self, time):
         super().updateTimer(time)

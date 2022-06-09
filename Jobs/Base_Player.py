@@ -38,6 +38,7 @@ class Player:
         self.CritRateBonus = 0  #CritRateBonus
         self.DHRateBonus = 0 #DHRate Bonus Very usefull for dancer personnal and dance partner crit/DH rate bonus
         self.EffectToRemove = []
+        self.EffectToAdd = [] #List that will add effect to the effectlist or effectcdlist once it has been gone through once
 
         self.ArcanumTimer = 0 #ArcanumTimer
 

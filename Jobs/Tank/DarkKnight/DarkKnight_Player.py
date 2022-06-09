@@ -23,6 +23,7 @@ class DarkKnight(Tank):
         self.ShadowbringerCharges = 2   #Charges of Shadowbringer
         self.PlungeCharges = 2          #Charges of Plunge
         self.DarkArts = False           #Dark Arts Gauge, activates when TBN breaks.
+        self.OblationStack = 2
         #Cooldowns for all abilities, starting at 0 and adjusted by Apply.
 
         self.BloodWeaponCD = 0          #60s
@@ -35,7 +36,10 @@ class DarkKnight(Tank):
         self.ShadowbringerCD = 0        #60s charge
         self.LivingShadowCD = 0         #120s
         self.PlungeCD = 0               #30s charge
-        
+        self.LivingDeadCD = 0  
+        self.DarkMindCD = 0
+        self.DarkMissionaryCD = 0
+        self.OblationCD = 0
         #JobMod
         self.JobMod = 105
 
@@ -50,6 +54,10 @@ class DarkKnight(Tank):
         if (self.ShadowbringerCD > 0) :self.ShadowbringerCD = max(0,self.ShadowbringerCD - time)
         if (self.LivingShadowCD > 0) :self.LivingShadowCD = max(0,self.LivingShadowCD - time)
         if (self.PlungeCD > 0) :self.PlungeCD = max(0,self.PlungeCD - time)
+        if (self.LivingDeadCD > 0) :self.LivingDeadCD = max(0,self.LivingDeadCD - time)
+        if (self.DarkMindCD > 0) :self.DarkMindCD = max(0,self.DarkMindCD - time)
+        if (self.DarkMissionaryCD > 0) :self.DarkMissionaryCD = max(0,self.DarkMissionaryCD - time)
+        if (self.OblationCD > 0) :self.OblationCD = max(0,self.OblationCD - time)
 
     def updateTimer(self, time):
         super().updateTimer(time)
