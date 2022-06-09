@@ -217,16 +217,16 @@ SonicBreak = GunbreakerSpell(18, True, 2.5, 300, ApplySonicBreak, [SonicBreakReq
 SonicBreakDOT = DOTSpell(-9, 60,True)
 LightningShot = GunbreakerSpell(19, True, 2.5, 150, empty, [], 0)
 #AOE GCD
-FatedCircle = GunbreakerSpell(1, True, 2.5, 290, empty, [], 1)
-DemonSlice = GunbreakerSpell(1, True, 2.5, 100, ApplyDemonSlice, [], 0)
-DemonSlaughter = GunbreakerSpell(1, True, 2.5, 100, empty, [], 1)
+FatedCircle = GunbreakerSpell(20, True, 2.5, 290, empty, [], 1)
+DemonSlice = GunbreakerSpell(21, True, 2.5, 100, ApplyDemonSlice, [], 0)
+DemonSlaughter = GunbreakerSpell(22, True, 2.5, 100, empty, [], 1)
 
 
 #Mit
-Aurora = GunbreakerSpell(20, False, 0, 0, ApplyAurora, [AuroraRequirement], 0)
-Superbolide = GunbreakerSpell(21, False, 0, 0, ApplySuperbolide, [SuperbolideRequirement], 0)
-HeartOfLight = GunbreakerSpell(22, False, 0, 0, ApplyHeartOfLight, [HeartOfLightRequirement], 0)
-HeartOfCorundum = GunbreakerSpell(23, False, 0, 0, ApplyHeartOfCorundum, [HeartOfCorundumRequirement], 0)
+Aurora = GunbreakerSpell(23, False, 0, 0, ApplyAurora, [AuroraRequirement], 0)
+Superbolide = GunbreakerSpell(24, False, 0, 0, ApplySuperbolide, [SuperbolideRequirement], 0)
+HeartOfLight = GunbreakerSpell(25, False, 0, 0, ApplyHeartOfLight, [HeartOfLightRequirement], 0)
+HeartOfCorundum = GunbreakerSpell(26, False, 0, 0, ApplyHeartOfCorundum, [HeartOfCorundumRequirement], 0)
 
 #buff
 NoMercyBuff = buff(1.2)
