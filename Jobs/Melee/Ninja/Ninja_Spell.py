@@ -217,7 +217,7 @@ def ApplyMug(Player, Enemy):
     Enemy.buffList.append(MugBuff)
     Player.MugCD = 120
     Player.MugTimer = 20
-    Player.AddNinki(50)
+    Player.AddNinki(40)
     Player.EffectCDList.append(MugCheck)
 
 def ApplyHuraijin(Player, Enemy):
