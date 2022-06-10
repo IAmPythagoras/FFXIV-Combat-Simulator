@@ -110,8 +110,9 @@ And that's about it, the code will take these two new classes (and object of the
 # HOW TO USE
 
 For now the program does not have any UI, so you will have to go change the code itself to make it run what you want. Here is a PDF explaining how to do just that : 
-[How_to_use.pdf](https://github.com/IAmPythagoras/FFXIVPPSCalculator/files/8599169/How_to_use.pdf)
+[How_to_use (5).pdf](https://github.com/IAmPythagoras/FFXIVPPSCalculator/files/8882436/How_to_use.5.pdf)
 
+If you encounter any bug or error in the simulation, DM me on discord Pythagoras#6312 so I can fix it as soon as possible. Since this program is still in testing phase, this will help me out a lot:).
 
 # IF YOU WANT TO HELP:)
 
