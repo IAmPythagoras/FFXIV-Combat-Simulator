@@ -52,6 +52,9 @@ class Summoner(Caster):
         self.SlipstreamDOT = None
         self.SummonDOT = None
 
+        #Summon
+        self.Summon = None
+
     def updateCD(self, time):
         super().updateCD(time)
         if (self.TranceCD > 0) : self.TranceCD = max(0,self.TranceCD - time)
@@ -67,3 +70,19 @@ class Summoner(Caster):
         if (self.SlipstreamDOTTimer > 0) : self.SlipstreamDOTTimer = max(0,self.SlipstreamDOTTimer - time)
         if (self.SummonDOTTimer > 0) : self.SummonDOTTimer = max(0,self.SummonDOTTimer - time)
 
+class BigSummon(Summoner): #Bahamut of phoenix
+    def __init__(self, Master):
+        super().__init__(Master.GCDTimer * Master.GCDReduction, [], [], [], Master.CurrentFight, Master.Stat) #GCD assumes Huton
+
+        self.Master = Master
+        self.Master.Shadow = self  #Giving Master the pointer of the summon
+        self.Master.CurrentFight.PlayerList.append(self)
+        self.JobMod = 100
+        #Giving already computed values
+        self.f_WD = Master.f_WD
+        self.f_DET = Master.f_DET
+        self.f_TEN = Master.f_TEN
+        self.f_SPD = Master.f_SPD
+        self.CritRate = Master.CritRate
+        self.CritMult = Master.CritMult
+        self.DHRate = Master.DHRate

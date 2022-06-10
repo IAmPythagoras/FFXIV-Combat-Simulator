@@ -1,8 +1,8 @@
-from Jobs.Base_Spell import DOTSpell, buff, empty
+from Jobs.Base_Spell import DOTSpell, WaitAbility, buff, empty
 from Jobs.Melee.Melee_Spell import NinjaSpell
 import copy
 
-from Jobs.Melee.Ninja.Ninja_Player import Ninja
+from Jobs.Melee.Ninja.Ninja_Player import Shadow
 Lock = 0.75
 
 
@@ -130,6 +130,11 @@ def ApplyBunshin(Player, Enemy):
     Player.AddNinki(-50)
     Player.BunshinCD = 90
     Player.BunshinStack = 5
+
+    if Player.Shadow == None: #If no Shadow, we will create a new one
+        Player.Shadow = Shadow(Player)
+        Player.Shadow.ActionSet.append(WaitAbility(0.1)) #Adding an action so program does not crash
+
     Player.EffectList.append(BunshinEffect)
     Player.PhantomKamaitachiReady = True
     Player.PhantomKamaitachiReadyTimer = 45
@@ -212,7 +217,7 @@ def ApplyMug(Player, Enemy):
     Enemy.buffList.append(MugBuff)
     Player.MugCD = 120
     Player.MugTimer = 20
-    Player.AddNinki(40)
+    Player.AddNinki(50)
     Player.EffectCDList.append(MugCheck)
 
 def ApplyHuraijin(Player, Enemy):
@@ -297,7 +302,10 @@ def HutonEffect(Player, Spell):
 
 def BunshinEffect(Player, Spell):
     if isinstance(Spell, NinjaSpell) and Spell.Weaponskill:
-        Spell.Potency += 160 #This is to make it simpler
+        #Will give Action to the Shadow
+        Shadow = Player.Shadow
+        Shadow.TrueLock = False #Delocking the shadow
+        Shadow.ActionSet.insert(Shadow.NextSpell + 1, NinjaSpell(35, True, 0, Shadow.GCDTimer, 160, empty, [], True, False)) #Adding the spell
         Player.BunshinStack -= 1
         Player.AddNinki(5)
         if Player.BunshinStack == 0:
@@ -336,7 +344,6 @@ def GustSlashCombo(Player, Spell):
         Player.AddNinki(15)
         Player.AddHuton(30)
         Player.EffectToRemove.append(GustSlashCombo)
-
 
 #Check
 
@@ -419,6 +426,7 @@ FumaShuriken = NinjaSpell(9, True, Lock,1.5, 450, ApplyHyoshoRanryu, [FumaShurik
 Raiton = NinjaSpell(10, True, Lock,1.5, 650, ApplyRaiton, [RaitonRequirement], False, True )
 Huton = NinjaSpell(11, True, Lock,1.5, 0, ApplyHuton, [HutonRequirement], False, True)
 Suiton = NinjaSpell(12, True, Lock,1.5, 500, ApplySuiton, [SuitonRequirement], False, True)
+Hyoton = NinjaSpell(13, True, Lock, 1.5, 350, ApplyHyoshoRanryu, [HyotonRequirement], False, True)
 HyoshoRanryu = NinjaSpell(13, True, Lock,1.5, 1300, ApplyHyoshoRanryu, [HyotonRequirement, KassatsuOnRequirement], False, True)
 Katon = NinjaSpell(29, True, Lock, 1.5, 350, ApplyHyoshoRanryu, [KatonRequirement], False, True)
 GokaMekkyaku = NinjaSpell(30, True, Lock, 1.5, 600, HyoshoRanryu, [KatonRequirement, KassatsuOnRequirement], False, True)

@@ -60,6 +60,8 @@ class Ninja(Melee):
         #JobMod
         self.JobMod = 110
 
+        #Shadow 
+        self.Shadow = None #Pointer to Shadow object
     def ResetRitual(self):
         self.CurrentRitual = []
 
@@ -92,3 +94,22 @@ class Ninja(Melee):
 
     def AddHuton(self, amount):
         self.HutonTimer = min(60, self.HutonTimer + amount)
+
+
+class Shadow(Ninja):
+    def __init__(self, Master):
+        super().__init__(Master.GCDTimer * Master.GCDReduction * 0.85, [], [], [], Master.CurrentFight, Master.Stat) #GCD assumes Huton
+        #This won't change anything, since the Master is directing the attacks anyway
+
+        self.Master = Master
+        self.Master.Shadow = self  #Giving Master the pointer of the shadow
+        self.Master.CurrentFight.PlayerList.append(self)
+        self.JobMod = 100
+        #Giving already computed values
+        self.f_WD = Master.f_WD
+        self.f_DET = Master.f_DET
+        self.f_TEN = Master.f_TEN
+        self.f_SPD = Master.f_SPD
+        self.CritRate = Master.CritRate
+        self.CritMult = Master.CritMult
+        self.DHRate = Master.DHRate

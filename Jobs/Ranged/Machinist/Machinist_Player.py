@@ -83,7 +83,7 @@ class Machinist(Ranged):
 class Queen(Ranged):
 
     def __init__(self, Machinist, Timer):
-        super().__init__(Machinist.GCDTimer, [], [], [], Machinist.CurrentFight, Machinist.Stat)
+        super().__init__(Machinist.GCDTimer * Machinist.GCDREduction, [], [], [], Machinist.CurrentFight, Machinist.Stat)
 
 
         self.Master = Machinist
@@ -92,9 +92,15 @@ class Queen(Ranged):
         self.Master.Queen = self  #Giving the Queen's pointer to the Machinist
         self.Master.CurrentFight.PlayerList.append(self)
         #input(self.Master.CurrentFight.PlayerList)
-        self.MultDPSBonus = 1.2
         self.JobMod = 100
 
+        self.f_WD = Machinist.f_WD
+        self.f_DET = Machinist.f_DET
+        self.f_TEN = Machinist.f_TEN
+        self.f_SPD = Machinist.f_SPD
+        self.CritRate = Machinist.CritRate
+        self.CritMult = Machinist.CritMult
+        self.DHRate = Machinist.DHRate
 
     def updateCD(self, time):
         pass

@@ -15,7 +15,7 @@ from Jobs.Healer.Healer_Player import Healer
 #Jobs
 from Jobs.Caster.Blackmage.BlackMage_Player import BlackMage
 from Jobs.Caster.Redmage.Redmage_Player import Redmage
-from Jobs.Caster.Summoner.Summoner_Player import Summoner
+from Jobs.Caster.Summoner.Summoner_Player import BigSummon, Summoner
 from Jobs.Ranged.Bard.Bard_Player import Bard
 from Jobs.Ranged.Dancer.Dancer_Player import Dancer
 
@@ -27,7 +27,7 @@ from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem, DarkKnight
 from Jobs.Ranged.Machinist.Machinist_Player import Queen, Machinist
 
 from Jobs.Melee.Samurai.Samurai_Player import Samurai
-from Jobs.Melee.Ninja.Ninja_Player import Ninja
+from Jobs.Melee.Ninja.Ninja_Player import Ninja, Shadow
 from Jobs.Melee.Dragoon.Dragoon_Player import Dragoon
 from Jobs.Melee.Reaper.Reaper_Player import Reaper
 
@@ -408,12 +408,14 @@ class Fight:
             remove = []
 
             for i in range(len(self.PlayerList)):  
-                player = self.PlayerList[i]
-                if isinstance(player, DarkKnight):
-                    player.TotalPotency += player.EsteemPointer.TotalPotency    #Adds every damage done by Esteem to the dark knight
+                player = self.PlayerList[i] #Removing all instance of clones/summons from the fight
                 if isinstance(player, Queen):
                     remove += [i]
                 if isinstance(player, Esteem):
+                    remove += [i]
+                if isinstance(player, Shadow):
+                    remove += [i]
+                if isinstance(player, BigSummon):
                     remove += [i]
 
             k = 0

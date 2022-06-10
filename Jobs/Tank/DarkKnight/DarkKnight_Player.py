@@ -78,6 +78,14 @@ class Esteem(Tank):
         self.Master = Master
         self.JobMod = 100
 
+        self.f_WD = Master.f_WD
+        self.f_DET = Master.f_DET
+        self.f_TEN = Master.f_TEN
+        self.f_SPD = Master.f_SPD
+        self.CritRate = Master.CritRate
+        self.CritMult = Master.CritMult
+        self.DHRate = Master.DHRate
+
     def updateCD(self, time):
         pass
 

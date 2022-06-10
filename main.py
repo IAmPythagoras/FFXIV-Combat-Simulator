@@ -116,9 +116,6 @@ DNCOpener = [ClosedPosition(NINPlayer, False),WaitAbility(4.5), StandardStep, Em
 MCHOpener = [Ranged_AA,WaitAbility(15), Reassemble, WaitAbility(2.25), Potion, WaitAbility(1.5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, Reassemble, WaitAbility(1), Wildfire, ChainSaw, Automaton,WaitAbility(1), Hypercharge, HeatBlast, Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet, Drill]
 
 
-PLDTest = [Melee_AA,WaitAbility(18.5), HolySpirit, FastBlade, RiotBlade, Intervene, CircleScorn, GoringBlade, Expiacion, RequestACat, FastBlade, Intervene, RiotBlade, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti, BladeFaith, BladeTruth, BladeValor]
-PLDTest2 = [WaitAbility(15), FightOrFlight, WaitAbility(3), HolySpirit, Intervene, FastBlade,Expiacion, RiotBlade,Intervene, CircleScorn, RoyalAuthority, RequestACat, Atonement, Atonement, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti, BladeFaith, BladeTruth, Expiacion, BladeValor,Intervene]
-PLDTest3 = [WaitAbility(15), FightOrFlight, WaitAbility(3), HolySpirit,Intervene, FastBlade, Expiacion, RiotBlade, GoringBlade, CircleScorn,FastBlade,RiotBlade, RequestACat, RoyalAuthority, Atonement, Atonement, Atonement, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Intervene, Expiacion ]
 BLMPlayer.ActionSet = BLMOpener
 SCHPlayer.ActionSet = SCHOpener
 RDMPlayer.ActionSet = RDMOpener
@@ -128,8 +125,7 @@ DRKPlayer.ActionSet = DRKOpener
 WARPlayer.ActionSet = WAROpener
 WHMPlayer.ActionSet = WHMOpener
 SAMPlayer.ActionSet = SAMOpener
-PLDPlayer.ActionSet = PLDTest3
-PLDPlayer2.ActionSet = PLDTest2
+PLDPlayer.ActionSet = PLDOpener
 GNBPlayer.ActionSet = GNBOpener
 ASTPlayer.ActionSet = ASTOpener
 SMNPlayer.ActionSet = SMNOpener
@@ -138,7 +134,7 @@ DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 RPRPlayer.ActionSet = RPROpener
 #print(PLDPlayer, PLDPlayer2)
-Event.PlayerList = [MCHPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
+Event.PlayerList = [SMNPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
 
 Event.ShowGraph = True
 Event.SimulateFight(0.01, 100, 20)

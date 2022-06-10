@@ -1,6 +1,9 @@
 import copy
 
 from Fight import ComputeDamage
+from Jobs.Base_Player import Player
+from Jobs.Caster.Summoner.Summoner_Player import BigSummon
+from Jobs.Melee.Ninja.Ninja_Player import Shadow
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
 from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
 Lock = 0.75
@@ -74,9 +77,9 @@ class Spell:
                 
 
 
-                #print("Failed to cast the spell : " + str(self.id))
-                #print("The Requirement that failed was : " + str(Requirement.__name__))
-                #print("The timestamp is : " + str(player.CurrentFight.TimeStamp))
+                print("Failed to cast the spell : " + str(self.id))
+                print("The Requirement that failed was : " + str(Requirement.__name__))
+                print("The timestamp is : " + str(player.CurrentFight.TimeStamp))
                 raise FailedToCast("Failed to cast the spell")
         #Will make sure CastTime is at least Lock
         if tempSpell.id > 0 and tempSpell.CastTime < Lock : tempSpell.CastTime = 0.5 #id < 0 are special abilities like DOT, so we do not want them to be affected by that
@@ -104,7 +107,7 @@ class Spell:
             if self.isPhysical: type = 2
             else: type = 1
         elif isinstance(self, Auto_Attack):
-            type = 3
+            type = 3   
         
         if self.Potency != 0 : minDamage,Damage= ComputeDamage(player, self.Potency, Enemy, self.DPSBonus, type)    #Damage computation
         else: minDamage, Damage = 0,0
@@ -113,7 +116,7 @@ class Spell:
 
         #input("Adding " + str(self.Potency) + " to player : " + str(player))
 
-        if isinstance(player, Queen) or isinstance(player, Esteem):
+        if isinstance(player, Queen) or isinstance(player, Esteem) or isinstance(player, Shadow) or isinstance(player, BigSummon):
             player.Master.TotalPotency+= self.Potency
             player.Master.TotalDamage += Damage
             player.Master.TotalMinDamage += minDamage

@@ -1,6 +1,8 @@
-from Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
+from Jobs.Base_Spell import DOTSpell, ManaRequirement, WaitAbility, buff, empty
 from Jobs.Caster.Caster_Spell import SummonerSpell
 import copy
+
+from Jobs.Caster.Summoner.Summoner_Player import BigSummon
 Lock = 0.75
 
 #Requirement
@@ -114,29 +116,36 @@ def ApplySummon(Player, Enemy):
     Player.SummonCD = 60
     Player.Enkindle = True
 
-
+    #Will check if we already have a summon object
+    if Player.Summon == None:
+        Player.Summon = BigSummon(Player)
+        Player.Summon.ActionSet.append(WaitAbility(0.01)) #So program doesn't crash >.>
     Player.TitanGem = True
     Player.GarudaGem = True
     Player.IfritGem = True
 
 
+    Player.Summon.TrueLock = False #Delocking bahamut
     if not Player.LastTranceBahamut:
         #Then we summon bahamut
         Player.Deathflare = True
         Player.LastTranceBahamut = True
-        Player.SummonDOT = copy.deepcopy(BahamutDOT)
         Player.BahamutTrance = True
+
+        Player.Summon.ActionSet.insert(Player.Summon.NextSpell + 1, BahamutAA) #Applying AA
+
     else:
         #Then we summon birdy
         Player.LastTranceBahamut = False
         Player.SummonDOT = copy.deepcopy(PhoenixDOT)
         Player.PhoenixTrance = True
-    Player.DOTList.append(Player.SummonDOT)
+        Player.Summon.ActionSet.insert(Player.Summon.NextSpell + 1, PhoenixAA)#Applying AA
     Player.EffectCDList.append(SummonDOTCheck)
     Player.SummonDOTTimer = 15
 
 def ApplyEnkindle(Player, Enemy):
     Player.Enkindle = False
+    Player.Summon.ActionSet.insert(Player.Summon.NextSpell + 1, EnkindleSummon)
 
 def ApplyDeathflare(Player, Enemy):
     Player.Deathflare = False
@@ -154,6 +163,13 @@ def ApplySearingLight(Player, Enemy):
 
     Enemy.buffList.append(SearingLightbuff)
     Player.EffectCDList.append(SearingLightCheck)
+
+
+def ApplyBahamutAA(Player, Enemy):
+    Player.DOTList.append(copy.deepcopy(BahamutDOT))
+
+def ApplyPhoenixAA(Player, Enemy):
+    Player.DOTList.append(copy.deepcopy(PhoenixDOT))
 
 #Effect
 
@@ -174,8 +190,9 @@ def SlipstreamDOTCheck(Player, Enemy):
 
 def SummonDOTCheck(Player, Enemy):
     if Player.SummonDOTTimer <= 0:
-        Player.DOTList.remove(Player.SummonDOT)
-        Player.SummonDOT = None
+
+        Player.Summon.DOTList = [] #Reseting DOTList
+
         Player.EffectToRemove.append(SummonDOTCheck)
         Player.PhoenixTrance = False
         Player.BahamutTrance = False
@@ -217,12 +234,15 @@ SlipstreamDOT = DOTSpell(-13, 30, False)
 #Summon
 Summon = SummonerSpell(14, True, Lock, 2.5, 0, 0, ApplySummon, [SummonRequirement])
 #Bahamut and Phoenix damage will simply be a dot
+BahamutAA = SummonerSpell(15, False, 0, 0, 0, 0, ApplyBahamutAA, [])
+PhoenixAA = SummonerSpell(15, False, 0, 0, 0, 0, ApplyPhoenixAA, [])
 BahamutDOT = DOTSpell(-14, 180, False)
 PhoenixDOT = DOTSpell(-15, 240, False)
+EnkindleSummon = SummonerSpell(17, False, 0, 0, 1300, 0, empty, []) #Enkindle done by pet
 #autos of summon seems to be faster if uses Enkindle, but always max 5
 
 #oGCD
-Enkindle = SummonerSpell(17, False, 0.25, 0, 1300, 0, ApplyEnkindle, [EnkindleRequirement]) #Smaller lock since executed by pet, might have to reconsider... >.>
+Enkindle = SummonerSpell(17, False, 0, 0, 0, 0, ApplyEnkindle, [EnkindleRequirement]) #Smaller lock since executed by pet, might have to reconsider... >.>
 Deathflare = SummonerSpell(18, False, Lock, 0, 500, 0, ApplyDeathflare, [DeathflareRequirement])
 EnergyDrainSMN = SummonerSpell(19, False, Lock, 0, 200, 0, ApplyEnergyDrain, [EnergyDrainRequirement])
 Fester = SummonerSpell(21, False, Lock, 0, 300, 0, ApplyFester, [FesterRequirement])
