@@ -254,6 +254,7 @@ class Fight:
         axs[0].legend()
         axs[1].legend()
         if self.ShowGraph: plt.show()
+        input("Press any button to exit the program")
 
 
 
