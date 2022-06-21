@@ -49,6 +49,7 @@ from Jobs.Melee.Samurai.Samurai_Player import *
 from Jobs.Melee.Ninja.Ninja_Player import *
 from Jobs.Melee.Dragoon.Dragoon_Player import *
 from Jobs.Melee.Reaper.Reaper_Player import *
+from apitest import getAbilityList
 
 Dummy = Enemy()
 
@@ -115,8 +116,9 @@ BRDOpener = [WaitAbility(19.5), Potion, Stormbite, WandererMinuet, RagingStrike,
 DNCOpener = [ClosedPosition(NINPlayer, False),WaitAbility(4.5), StandardStep, Emboite, Entrechat, WaitAbility(11.74),Potion, StandardFinish, TechnicalStep, Emboite, Entrechat, Jete, Pirouette, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Emboite, Entrechat, StandardFinish]
 MCHOpener = [Ranged_AA,WaitAbility(15), Reassemble, WaitAbility(2.25), Potion, WaitAbility(1.5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, Reassemble, WaitAbility(1), Wildfire, ChainSaw, Automaton,WaitAbility(1), Hypercharge, HeatBlast, Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet, Drill]
 
-
-BLMPlayer.ActionSet = BLMOpener
+client_id = ""
+client_secret = ""
+BLMPlayer.ActionSet = getAbilityList(client_id, client_secret)
 SCHPlayer.ActionSet = SCHOpener
 RDMPlayer.ActionSet = RDMOpener
 MCHPlayer.ActionSet = MCHOpener
@@ -134,8 +136,8 @@ DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 RPRPlayer.ActionSet = RPROpener
 #print(PLDPlayer, PLDPlayer2)
-Event.PlayerList = [SMNPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
+Event.PlayerList = [BLMPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
 
 Event.ShowGraph = True
-Event.SimulateFight(0.01, 100, 20)
+Event.SimulateFight(0.01, 1000, 20)
 
