@@ -4,8 +4,9 @@ Created on Thu Jun 17 11:00:05 2022
 
 @author: Bri
 """
-
 from Jobs.Base_Spell import WaitAbility
+from Jobs.Caster.Blackmage.BlackMage_Spell import BlackMageAbility
+from Jobs.Caster.Caster_Spell import CasterAbility
 
 #CASTER
 from Jobs.Caster.Summoner.Summoner_Player import *
@@ -37,8 +38,24 @@ from Jobs.Melee.Reaper.Reaper_Player import *
 
 import http.client, json 
 
-def lookup_abilityID(actionID, targetID): #not yet implemented
-    return None
+class ActionNotFound(Exception):#Exception called if a spell fails to cast
+    pass
+
+def lookup_abilityID(actionID, targetID, sourceID): #not yet implemented
+    #Will first get the job of the sourceID so we know in what dictionnary to search for
+
+    job_name = player_list[str(sourceID)]["job"] #getting job name
+    action = None
+    if job_name == "BlackMage" :
+        if not (int(actionID) in BlackMageAbility.keys()): #if not in, then the action is in CasterAbility
+            if not (int(actionID) in CasterAbility.keys()):
+                input("ID of action not found is : " + str(actionID))
+                return None
+                #raise ActionNotFound #Did not find action
+            action = CasterAbility[int(actionID)]
+        action = BlackMageAbility[int(actionID)]
+
+    return action
 
 
 def getAccessToken(conn, client_id, client_secret):
@@ -56,7 +73,6 @@ client_secret = ""
 access_token = getAccessToken(conn, client_id, client_secret)
 
 payload = "{\"query\":\"query trio{\\n    reportData {\\n        report(code: \\\"RQwfx3vATFWGahJc\\\") {\\n            playerDetails(fightIDs:8,endTime:999999999)\\n        }\\n\\n    }\\n}\",\"operationName\":\"trio\"}"
-
 
 headers = {
     'Content-Type': "application/json",
@@ -123,7 +139,7 @@ for player_class in player_data: #player_data is a dictionnary with key "healers
 
 #Second request will fetch all the abilities done in the fight and make an array associated with each player's ID
 
-payload = "{\"query\":\"query trio{\\n    reportData {\\n        report(code: \\\"RQwfx3vATFWGahJc\\\") {\\n\\t\\t\\t\\tendTime,\\n            events(\\n\\t\\t\\t\\t\\t\\t\\tfightIDs:8,\\n\\t\\t\\t\\t\\t\\t\\tendTime:1652499259666,\\n\\t\\t\\t\\t\\t\\t\\tincludeResources:false,\\n\\t\\t\\t\\t\\t\\t\\tfilterExpression:\\\"type = 'cast' OR type = 'begincast' OR type = 'calculateddamage' OR type = 'applybuff' OR type = 'damage'\\\"\\n\\t\\t\\t\\t\\t\\t\\t\\n\\t\\t\\t\\t\\t\\t){data}\\n        }\\n\\n    }\\n}\",\"operationName\":\"trio\"}"
+payload = "{\"query\":\"query trio{\\n    reportData {\\n        report(code: \\\"RQwfx3vATFWGahJc\\\") {\\n\\t\\t\\t\\tendTime,\\n            events(\\n\\t\\t\\t\\t\\t\\t\\tfightIDs:8,\\n\\t\\t\\t\\t\\t\\t\\tendTime:1652499259666,\\n\\t\\t\\t\\t\\t\\t\\tincludeResources:false,\\n\\t\\t\\t\\t\\t\\t\\tfilterExpression:\\\"type = 'cast' OR type = 'begincast' OR type = 'calculateddamage' OR type = 'applybuff'\\\"\\n\\t\\t\\t\\t\\t\\t\\t\\n\\t\\t\\t\\t\\t\\t){data}\\n        }\\n\\n    }\\n}\",\"operationName\":\"trio\"}"
 conn.request("POST", "/api/v2/client", payload, headers)
 
 res = conn.getresponse()
@@ -141,46 +157,78 @@ class action_object():
         self.type = type
         self.targetID = targetID
 
+    def __str__(self):
+        return "action_id : " + str(self.action_id) + " type : " + self.type
+
 action_dict = {} #Each player can be found using their id, and each key has an array of all done actions in order. Each entry in the array is an action_object
 
 #Will first initialize all key in the action_dict to be all empty arrays with key equal to player's ID
 
 for key in player_list:
     action_dict[key] = [] #Initializing each array
-
+#print(action_dict.keys())
 for action in action_list:
     #Will parse each action so each player has a list of all done action
-    if action["sourceID"] in action_dict.keys(): #Making sure the sourceID is a player
+    #input(action["sourceID"] + 1)
+    if str(action["sourceID"]) in action_dict.keys(): #Making sure the sourceID is a player
+        #input("hey")
         rel_timestamp = action["timestamp"] - relative_timestamp_zero
         action_dict[str(action["sourceID"])] += [action_object(action["abilityGameID"], rel_timestamp, action["type"], action["targetID"])]#Will be assumed to be damaging spell
 
 #Will now go through each player and build their action set
+#input(action_list)
+#input(action_dict)
+
 
 for player in action_dict:
     player_action_list = [] #will contain the action list that we have to give to the sim for the player
     #player is each player's id
-    raw_action_list = action_dict[player] #list of action_object object
+    raw_action_list = action_dict[str(player)] #list of action_object object
 
     wait_flag = False #a flag that is set to true if we have to add a WaitAbility() in the player_action_list
     wait_timestamp = 0 #timestamp value of an action so we can compare it to the next action to add WaitAbility
-
+    wait_cast = False #a flag that is set to true if we are waiting for the next cast type
+    wait_calculateddamage = False #a flag that is set to true if we are waiting for calculated damage
     for action in raw_action_list:
         #will check the type since we have to do different stuff in accordance to what it is
 
 
+
         if wait_flag: #If the flag is True, we have to add a WaitAbility
-            player_action_list.append(WaitAbility(action.timestamp - wait_timestamp))
+            player_action_list.append(WaitAbility((action.timestamp - wait_timestamp)/ 1000)) #Dividing by 1000 since time in milisecond
             wait_flag = False #reset
             wait_timestamp = 0 #reset
 
-        next_action = lookup_abilityID(action.action_id, action.targetID) #returns the action object of the specified spell NOT YET IMPLEMENTED
-        if action.type == "begincast":#If begining cast, we simply add the spell to the list
-            player_action_list.append(next_action)
-        elif action.type == "damage" or action.type == "applybuff":#insta cast, so we want to add but also check how long until next action
-            player_action_list.append(next_action)
-            wait_flag = True #We have to add a WaitAbility, so we will check this time and next action's timestamp and add a relevant WaitAbility
-            wait_timestamp = action.timestamp
-        elif action.type == "cast":
-            wait_flag = True #We have to add a WaitAbility, so we will check this time and next action's timestamp and add a relevant WaitAbility
-            wait_timestamp = action.timestamp
-    
+        next_action = lookup_abilityID(action.action_id, action.targetID, player) #returns the action object of the specified spell NOT YET IMPLEMENTED
+        #if player == "1" : 
+            #input(action)
+        if not wait_cast and not wait_calculateddamage:
+            if action.type == "begincast":#If begining cast, we simply add the spell to the list
+                #if player == "1" : print("adding")
+                wait_cast = True #set flag to true
+                player_action_list.append(next_action)
+            elif action.type == "calculateddamage":#insta cast, so we want to add but also check how long until next action. Calculated damage might also be right after a "cast", so we want to have
+                #it such that it can detect if it is an "insta-cast" or the damage from a casted action (which will affect how we add it to the action_list)
+                #if player == "1" : print("adding")
+                player_action_list.append(next_action)
+                wait_flag = True #We have to add a WaitAbility, so we will check this time and next action's timestamp and add a relevant WaitAbility
+                wait_timestamp = action.timestamp
+        elif wait_cast:
+            #Waiting for a cast
+            if action.type == "cast":
+                wait_flag = True #We have to add a WaitAbility, so we will check this time and next action's timestamp and add a relevant WaitAbility
+                wait_timestamp = action.timestamp
+                wait_cast = False
+                wait_calculateddamage = True
+            elif action.type == "applybuff" :
+                pass #not yet implemented
+        elif wait_calculateddamage:
+            if action.type == "calculateddamage":
+                wait_calculateddamage = False
+
+
+
+    action_dict[player] = player_action_list
+
+for action in action_dict["1"]:
+    if action != None : input(action.id)
