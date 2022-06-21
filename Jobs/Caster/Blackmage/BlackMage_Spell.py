@@ -110,6 +110,7 @@ def ApplyBlizzard4(Player, Enemy):
     Player.UmbralHearts = 3
 
 def ApplyParadox(Player, Enemy):
+    input("applying")
     Player.Paradox = False
 
     Player.EnochianTimer = 15 #Reset Timer
@@ -126,6 +127,7 @@ def ApplyXenoglossy(Player, Spell):
     Player.PolyglotStack -= 1
 
 def ApplyDespair(Player, Spell):
+    input("using despair")
     Player.Mana = 0 #All mana is used
     Player.EnochianTimer = 15
     Player.ElementalGauge = 3

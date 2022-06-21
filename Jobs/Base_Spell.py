@@ -92,7 +92,8 @@ class Spell:
     def CastFinal(self, player, Enemy):
         ##print("##################################")
         ##print("Potency of spell: " + str(self.Potency))
-        ##print("Spell has finally been cast: " + str(self.id))
+        print("Spell is casted: " + str(self.id))
+        input("timestamp : " + str(player.CurrentFight.TimeStamp) )
 
         
         for Effect in self.Effect:
@@ -159,13 +160,15 @@ def ManaRequirement(player, Spell):
     if player.Mana >= Spell.ManaCost :
         player.Mana -= Spell.ManaCost   #ManaRequirement is the only Requirement that actually removes Ressources
         return True, -1
-    return False, -1
+    return True, -1
 
 def empty(Player, Enemy):
     pass
 
 def WaitAbility(time):
-    return Spell(-1, False, time, time, 0, 0, empty, [])
+    def ApplyWaitAbility(Player, Enemy):
+        print("waiting for : " + str(time))
+    return Spell(-1, False, time, time, 0, 0, ApplyWaitAbility, [])
 
 def ApplyPotion(Player, Enemy):
     Player.Stat["MainStat"] *= 1.1

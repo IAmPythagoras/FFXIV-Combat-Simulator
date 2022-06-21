@@ -195,19 +195,24 @@ def getAbilityList(client_id, client_secret):
             if wait_flag: #If the flag is True, we have to add a WaitAbility
                 #if player == "1" : input("Waiting for : " + str((action.timestamp - wait_timestamp)))
                 wait_time = (action.timestamp - wait_timestamp)
-                if wait_time >= 100:
-                    player_action_list.append(WaitAbility(wait_time/ 1000)) #Dividing by 1000 since time in milisecond
+                #if wait_time >= 100:
+                 #   player_action_list.append(WaitAbility(wait_time/ 1000)) #Dividing by 1000 since time in milisecond
                 wait_flag = False #reset
                 wait_timestamp = 0 #reset
 
             next_action = lookup_abilityID(action.action_id, action.targetID, player) #returns the action object of the specified spell NOT YET IMPLEMENTED
-            #if player == "1" : 
-                #input(action)
+            if player == "1": 
+                input(action)
+
+
             if not wait_cast and not wait_calculateddamage:
                 if action.type == "begincast":#If begining cast, we simply add the spell to the list
                     #if player == "1" : print("adding")
                     wait_cast = True #set flag to true
                     player_action_list.append(next_action)
+                elif action.type == "cast":
+                    if next_action != None: player_action_list.append(next_action)
+                    wait_calculateddamage = True
                 elif action.type == "calculateddamage":#insta cast, so we want to add but also check how long until next action. Calculated damage might also be right after a "cast", so we want to have
                     #it such that it can detect if it is an "insta-cast" or the damage from a casted action (which will affect how we add it to the action_list)
                     #if player == "1" : print("adding")
@@ -217,15 +222,14 @@ def getAbilityList(client_id, client_secret):
             elif wait_cast:
                 #Waiting for a cast
                 if action.type == "cast":
-                    wait_flag = True #We have to add a WaitAbility, so we will check this time and next action's timestamp and add a relevant WaitAbility
-                    wait_timestamp = action.timestamp
+                    #wait_flag = True #We have to add a WaitAbility, so we will check this time and next action's timestamp and add a relevant WaitAbility
+                    #wait_timestamp = action.timestamp
                     wait_cast = False
                     wait_calculateddamage = True
-                elif action.type == "applybuff" :
-                    pass #not yet implemented
             elif wait_calculateddamage:
                 if action.type == "calculateddamage":
                     wait_calculateddamage = False
+
 
 
 
