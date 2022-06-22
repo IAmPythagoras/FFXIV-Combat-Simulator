@@ -24,7 +24,7 @@ class BlackMage(Caster):
         #buff
         self.Thunder3Proc = False
         self.TripleCastStack = 0
-        self.SharpCast = False
+        self.SharpCast = True
 
         #CD
         self.TransposeCD = 0

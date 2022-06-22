@@ -39,6 +39,8 @@ def TripleCastRequirement(Player, Spell):
     return Player.TripleCastUseStack > 0, Player.TripleCastCD
 
 def SharpCastRequirement(Player, Spell):
+    print("CD on sharp is : " + str(Player.SharpCastCD))
+    print("stack on sharp is : " + str(Player.SharpCastStack))
     return Player.SharpCastStack > 0, Player.SharpCastCD
 
 def ManafrontRequirement(Player, Spell):

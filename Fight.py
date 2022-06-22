@@ -468,7 +468,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
 
     Enemy = Player.CurrentFight.Enemy #Enemy targetted
 
-    MainStat = Player.Stat["MainStat"] * Player.CurrentFight.TeamCompositionBonus #Scaling %bonus on mainstat
+    MainStat = Player.Stat["MainStat"] * 1.05 # Player.CurrentFight.TeamCompositionBonus #Scaling %bonus on mainstat
 
     #Computing values used throughout all computations
     if isinstance(Player, Tank) : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*145/baseMain))/100 #This is experimental, and I do not have any actual proof to back up, but tanks do have a different f_MAIN_DMG formula

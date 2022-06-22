@@ -201,22 +201,26 @@ def getAbilityList(client_id, client_secret):
                 wait_timestamp = 0 #reset
 
             next_action = lookup_abilityID(action.action_id, action.targetID, player) #returns the action object of the specified spell NOT YET IMPLEMENTED
-            if player == "1": 
-                input(action)
+            #if player == "1": 
+             #   input(action)
 
 
             if not wait_cast and not wait_calculateddamage:
                 if action.type == "begincast":#If begining cast, we simply add the spell to the list
-                    #if player == "1" : print("adding")
                     wait_cast = True #set flag to true
                     player_action_list.append(next_action)
+                    #if player == "1" : input("1adding id : " + str(action.action_id))
                 elif action.type == "cast":
-                    if next_action != None: player_action_list.append(next_action)
+                    if next_action != None: 
+                        player_action_list.append(next_action)
+                    #    if player == "1" :
+                      #      input("2adding id : " + str(action.action_id))
                     wait_calculateddamage = True
                 elif action.type == "calculateddamage":#insta cast, so we want to add but also check how long until next action. Calculated damage might also be right after a "cast", so we want to have
                     #it such that it can detect if it is an "insta-cast" or the damage from a casted action (which will affect how we add it to the action_list)
                     #if player == "1" : print("adding")
                     player_action_list.append(next_action)
+                    #if player == "1" : input("3adding id : " + str(action.action_id))
                     wait_flag = True #We have to add a WaitAbility, so we will check this time and next action's timestamp and add a relevant WaitAbility
                     wait_timestamp = action.timestamp
             elif wait_cast:
@@ -227,8 +231,14 @@ def getAbilityList(client_id, client_secret):
                     wait_cast = False
                     wait_calculateddamage = True
             elif wait_calculateddamage:
-                if action.type == "calculateddamage":
+                if action.type == "calculateddamage" or action.type == "applybuff":
                     wait_calculateddamage = False
+                elif action.type == "cast":
+                    if next_action != None: 
+                        player_action_list.append(next_action)
+                      #  if player == "1" :
+                       #     input("4adding id : " + str(action.action_id))
+                
 
 
 

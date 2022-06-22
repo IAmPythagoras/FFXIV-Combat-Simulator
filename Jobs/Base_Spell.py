@@ -68,9 +68,9 @@ class Spell:
                 ##input("timeleft : " + str(timeLeft))
                 #Will check if timeLeft is within a margin, so we will just wait for it to come
                 #timeLeft is the remaining time before the spell is available
-                if timeLeft <= 1 and timeLeft > 0: #Limit of waiting for 1 sec
+                if timeLeft <= 5 and timeLeft > 0: #Limit of waiting for 1 sec
                     #input("Waiting for " + str(timeLeft))
-                    tempSpell = WaitAbility(timeLeft)
+                    tempSpell = WaitAbility(timeLeft + 0.01)
                     player.ActionSet.insert(player.NextSpell, tempSpell)
                     return tempSpell #Makes the character wait
                     #Might remove some stuff tho, might have to check into that (for when effects are applied)
