@@ -156,7 +156,7 @@ def getAbilityList(client_id, client_secret):
             self.targetID = targetID
 
         def __str__(self):
-            return "action_id : " + str(self.action_id) + " type : " + self.type
+            return "action_id : " + str(self.action_id) + " type : " + self.type + " timestamp : " + str(self.timestamp/1000)
 
     action_dict = {} #Each player can be found using their id, and each key has an array of all done actions in order. Each entry in the array is an action_object
 
@@ -195,14 +195,14 @@ def getAbilityList(client_id, client_secret):
             if wait_flag: #If the flag is True, we have to add a WaitAbility
                 #if player == "1" : input("Waiting for : " + str((action.timestamp - wait_timestamp)))
                 wait_time = (action.timestamp - wait_timestamp)
-                #if wait_time >= 100:
-                 #   player_action_list.append(WaitAbility(wait_time/ 1000)) #Dividing by 1000 since time in milisecond
+                if wait_time >= 100:
+                   player_action_list.append(WaitAbility(wait_time/ 1000)) #Dividing by 1000 since time in milisecond
                 wait_flag = False #reset
                 wait_timestamp = 0 #reset
 
             next_action = lookup_abilityID(action.action_id, action.targetID, player) #returns the action object of the specified spell NOT YET IMPLEMENTED
             #if player == "1": 
-             #   input(action)
+            #   input(action)
 
 
             if not wait_cast and not wait_calculateddamage:
@@ -216,6 +216,8 @@ def getAbilityList(client_id, client_secret):
                     #    if player == "1" :
                       #      input("2adding id : " + str(action.action_id))
                     wait_calculateddamage = True
+                    wait_flag = True
+                    wait_timestamp = action.timestamp
                 elif action.type == "calculateddamage":#insta cast, so we want to add but also check how long until next action. Calculated damage might also be right after a "cast", so we want to have
                     #it such that it can detect if it is an "insta-cast" or the damage from a casted action (which will affect how we add it to the action_list)
                     #if player == "1" : print("adding")

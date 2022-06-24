@@ -34,8 +34,8 @@ class Spell:
     def Cast(self, player, Enemy):
         #This function will cast the spell given by the Fight, it will apply whatever effects it has and do its potency
 
-        ##print("Begining Cast of : " + str(self.id))
-        ##input("Time stamp is : " + str(player.CurrentFight.TimeStamp))
+        print("Begining Cast of : " + str(self.id))
+        input("Time stamp is : " + str(player.CurrentFight.TimeStamp))
 
         tempSpell = copy.deepcopy(self)
         #Creating a tempSpell which will have its values changed according that what effect
@@ -82,7 +82,7 @@ class Spell:
                 print("The timestamp is : " + str(player.CurrentFight.TimeStamp))
                 raise FailedToCast("Failed to cast the spell")
         #Will make sure CastTime is at least Lock
-        if tempSpell.id > 0 and tempSpell.CastTime < Lock : tempSpell.CastTime = 0.5 #id < 0 are special abilities like DOT, so we do not want them to be affected by that
+        #if tempSpell.id > 0 and tempSpell.CastTime < Lock : tempSpell.CastTime = 0.5 #id < 0 are special abilities like DOT, so we do not want them to be affected by that
             
         return tempSpell
 
@@ -92,8 +92,8 @@ class Spell:
     def CastFinal(self, player, Enemy):
         ##print("##################################")
         ##print("Potency of spell: " + str(self.Potency))
-        print("Spell is casted: " + str(self.id))
-        input("timestamp : " + str(player.CurrentFight.TimeStamp) )
+        #print("Spell is casted: " + str(self.id))
+        #input("timestamp : " + str(player.CurrentFight.TimeStamp) )
 
         
         for Effect in self.Effect:

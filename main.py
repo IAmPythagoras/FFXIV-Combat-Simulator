@@ -138,6 +138,6 @@ RPRPlayer.ActionSet = RPROpener
 #print(PLDPlayer, PLDPlayer2)
 Event.PlayerList = [BLMPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
 
-Event.ShowGraph = True
+Event.ShowGraph = False
 Event.SimulateFight(0.01, 1000, 3.37)
 
