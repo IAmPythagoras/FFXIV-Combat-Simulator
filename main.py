@@ -54,7 +54,7 @@ from apitest import getAbilityList
 Dummy = Enemy()
 
 #Stat
-BLMCRITStat = {"MainStat": 2571, "WD":120, "Det" : 1518, "Ten" : 390, "SS": 884, "Crit" : 2323, "DH" : 1037} 
+BLMCRITStat = {"MainStat": 2571, "WD":120, "Det" : 1752, "Ten" : 390, "SS": 758, "Crit" : 2287, "DH" : 965} 
 BLMStat = {"MainStat": 2571, "WD":120, "Det" : 1422, "Ten" : 400, "SS": 2171, "Crit" : 715, "DH" : 1454} 
 SCHStat = {"MainStat": 2560, "WD":120, "Det" : 1951, "Ten" : 400, "SS": 944, "Crit" : 2277, "DH" : 616}
 RDMStat = {"MainStat": 2563, "WD":120, "Det" : 1669, "Ten" : 400, "SS": 400, "Crit" : 2348, "DH" : 1340}
@@ -138,6 +138,6 @@ RPRPlayer.ActionSet = RPROpener
 #print(PLDPlayer, PLDPlayer2)
 Event.PlayerList = [BLMPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
 
-Event.ShowGraph = False
+Event.ShowGraph = True
 Event.SimulateFight(0.01, 1000, 3.37)
 

@@ -1,6 +1,6 @@
 from Jobs.Base_Spell import ManaRequirement, Spell, empty
 from Jobs.Caster.Blackmage.BlackMage_Player import BlackMage
-Lock = 0.75
+Lock = 0
 class CasterSpell(Spell):
 
     def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):

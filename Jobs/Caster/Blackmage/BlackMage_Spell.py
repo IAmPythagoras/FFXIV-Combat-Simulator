@@ -5,7 +5,7 @@ import copy
 import math
 
 from Jobs.Tank.Paladin.Paladin_Spell import ApplyFastBlade
-Lock = 0.75
+Lock = 0
 #Requirement
 
 def ManawardRequirement(Player, Spell):
@@ -39,11 +39,6 @@ def TripleCastRequirement(Player, Spell):
     return Player.TripleCastUseStack > 0, Player.TripleCastCD
 
 def SharpCastRequirement(Player, Spell):
-    print("=============================")
-    print("CD on sharp is : " + str(Player.SharpCastCD))
-    print("stack on sharp is : " + str(Player.SharpCastStack))
-    input("timestamp : " + str(Player.CurrentFight.TimeStamp))
-    print("=============================")
     return Player.SharpCastStack > 0, Player.SharpCastCD
 
 def ManafrontRequirement(Player, Spell):
@@ -351,6 +346,9 @@ def Thunder4DOTCheck(Player, Enemy):
         Player.EffectToRemove.append(Thunder4DOTCheck)
 
 #GCD
+
+def ApplyFire4(Player, Enemy):
+    input("Applying fire4 at : " + str(Player.CurrentFight.TimeStamp))
 
 #Fire Spell
 Fire1 = BLMSpell(1, True, 2.5, 2.5, 180, 800, True, False, ApplyFire1, [ManaRequirement])

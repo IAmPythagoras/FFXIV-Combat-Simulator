@@ -41,6 +41,15 @@ import http.client, json
 class ActionNotFound(Exception):#Exception called if a spell fails to cast
     pass
 
+def getAccessToken(conn, client_id, client_secret):
+    payload = "grant_type=client_credentials&client_id=%s&client_secret=%s" % (client_id, client_secret)
+    headers = {'content-type':"application/x-www-form-urlencoded"}
+    conn.request("POST","/oauth/token", payload, headers)
+    res = conn.getresponse()
+    res_str = res.read().decode("utf-8")
+    res_json = json.loads(res_str)
+    return res_json["access_token"]
+
 def getAbilityList(client_id, client_secret):
     def lookup_abilityID(actionID, targetID, sourceID): #not yet implemented
         #Will first get the job of the sourceID so we know in what dictionnary to search for
@@ -56,16 +65,6 @@ def getAbilityList(client_id, client_secret):
             return BlackMageAbility[int(actionID)]
 
         return None
-
-
-    def getAccessToken(conn, client_id, client_secret):
-        payload = "grant_type=client_credentials&client_id=%s&client_secret=%s" % (client_id, client_secret)
-        headers = {'content-type':"application/x-www-form-urlencoded"}
-        conn.request("POST","/oauth/token", payload, headers)
-        res = conn.getresponse()
-        res_str = res.read().decode("utf-8")
-        res_json = json.loads(res_str)
-        return res_json["access_token"]
 
     conn = http.client.HTTPSConnection("www.fflogs.com")
     access_token = getAccessToken(conn, client_id, client_secret)
@@ -187,16 +186,20 @@ def getAbilityList(client_id, client_secret):
         wait_timestamp = 0 #timestamp value of an action so we can compare it to the next action to add WaitAbility
         wait_cast = False #a flag that is set to true if we are waiting for the next cast type
         wait_calculateddamage = False #a flag that is set to true if we are waiting for calculated damage
+        is_casted = False #flag that is set to true if the spell is casted (the server has a shorter casting time cuz why not) so have to play around that
+        i = 1
         for action in raw_action_list:
             #will check the type since we have to do different stuff in accordance to what it is
 
 
-
             if wait_flag: #If the flag is True, we have to add a WaitAbility
-                #if player == "1" : input("Waiting for : " + str((action.timestamp - wait_timestamp)))
+               # if player == "1" : 
+                    #print('waiting between ' + str(i) + " and " + str(i+1))
+                    #print("Waiting for before " + str(action.action_id))
+                    #input("Waiting for : " + str((action.timestamp - wait_timestamp)))
                 wait_time = (action.timestamp - wait_timestamp)
-                if wait_time >= 100:
-                   player_action_list.append(WaitAbility(wait_time/ 1000)) #Dividing by 1000 since time in milisecond
+                if wait_time >=500: #otherwise animation lock
+                  player_action_list.append(WaitAbility(max(0,(wait_time))/ 1000)) #Dividing by 1000 since time in milisecond
                 wait_flag = False #reset
                 wait_timestamp = 0 #reset
 
@@ -209,6 +212,7 @@ def getAbilityList(client_id, client_secret):
                 if action.type == "begincast":#If begining cast, we simply add the spell to the list
                     wait_cast = True #set flag to true
                     player_action_list.append(next_action)
+                    is_casted = True
                     #if player == "1" : input("1adding id : " + str(action.action_id))
                 elif action.type == "cast":
                     if next_action != None: 
@@ -235,11 +239,19 @@ def getAbilityList(client_id, client_secret):
             elif wait_calculateddamage:
                 if action.type == "calculateddamage" or action.type == "applybuff":
                     wait_calculateddamage = False
+                    wait_flag = True #Waiting on next action
+                    if is_casted: 
+                        wait_timestamp = 400 + action.timestamp
+                        is_casted = False
+                    else:wait_timestamp = action.timestamp
+                    i+=1
                 elif action.type == "cast":
                     if next_action != None: 
                         player_action_list.append(next_action)
+                        i+=1
                       #  if player == "1" :
                        #     input("4adding id : " + str(action.action_id))
+
                 
 
 
@@ -248,3 +260,44 @@ def getAbilityList(client_id, client_secret):
         action_dict[player] = player_action_list
 
     return action_dict["1"] #just for testing purposes
+
+
+def test(client_id,client_secret):
+    conn = http.client.HTTPSConnection("www.fflogs.com")
+    access_token = getAccessToken(conn, client_id, client_secret)
+
+    payload = "{\"query\":\"query trio{\\n\\treportData {\\n\\t\\treport(code: \\\"RQwfx3vATFWGahJc\\\") {\\n\\t\\t\\ttitle,\\n\\t\\t\\tendTime,\\n\\t\\t\\tevents(\\n\\t\\t\\t\\tendTime:1651557651925,\\n\\t\\t\\t\\tfightIDs:8,\\n\\t\\t\\t\\tincludeResources: false,\\n\\t\\t\\t\\tfilterExpression:\\\"ability.ID = 3577\\\"\\n\\t\\t\\t){data\\n\\t\\t\\t}\\n\\t\\t\\t\\n\\t\\t}\\n\\t}\\n}\",\"operationName\":\"trio\"}"
+    
+    headers = {
+        'Content-Type': "application/json",
+        'Authorization': "Bearer %s" % access_token
+        }
+
+    conn.request("POST", "/api/v2/client", payload, headers)
+
+    res = conn.getresponse()
+    data = res.read()
+    data_json = json.loads(data.decode("utf-8"))
+
+    data = data_json["data"]["reportData"]["report"]["events"]["data"]
+    wait_cast = False
+    wait_calculated = False
+    for event in data:
+
+        if event["type"] == "cast": input("Applying fire 4 at : " + str((event["timestamp"] - 14825136)/1000))
+
+        # if event["type"] == "begincast": 
+        #     begin_time = event["timestamp"]
+        #     wait_cast = True
+        # elif event["type"] == "cast" and wait_cast:
+        #     end_time = event["timestamp"]
+        #     input("Fire 4 had a casttime of " + str((end_time - begin_time)/1000))
+        #     
+        #     wait_calculated = True
+        #     wait_cast = False
+        # elif wait_calculated and event["type"] == "calculateddamage":
+        #     wait_calculated = False
+
+client_id = "" #Put your own client_id and client_secret obtained from FFLogs
+client_secret = ""
+#test(client_id, client_secret)

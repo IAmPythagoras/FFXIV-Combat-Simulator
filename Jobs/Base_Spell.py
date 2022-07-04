@@ -34,8 +34,8 @@ class Spell:
     def Cast(self, player, Enemy):
         #This function will cast the spell given by the Fight, it will apply whatever effects it has and do its potency
 
-        print("Begining Cast of : " + str(self.id))
-        input("Time stamp is : " + str(player.CurrentFight.TimeStamp))
+        #print("Begining Cast of : " + str(self.id))
+        #input("Time stamp is : " + str(player.CurrentFight.TimeStamp))
 
         tempSpell = copy.deepcopy(self)
         #Creating a tempSpell which will have its values changed according that what effect
@@ -69,7 +69,6 @@ class Spell:
                 #Will check if timeLeft is within a margin, so we will just wait for it to come
                 #timeLeft is the remaining time before the spell is available
                 if timeLeft <= 5 and timeLeft > 0: #Limit of waiting for 1 sec
-                    #input("Waiting for " + str(timeLeft))
                     tempSpell = WaitAbility(timeLeft + 0.01)
                     player.ActionSet.insert(player.NextSpell, tempSpell)
                     return tempSpell #Makes the character wait
@@ -83,9 +82,7 @@ class Spell:
                 raise FailedToCast("Failed to cast the spell")
         #Will make sure CastTime is at least Lock
         #if tempSpell.id > 0 and tempSpell.CastTime < Lock : tempSpell.CastTime = 0.5 #id < 0 are special abilities like DOT, so we do not want them to be affected by that
-            
         return tempSpell
-
         #Will put casting spell in player, and do damage/effect once the casting time is over
 
 
@@ -166,9 +163,7 @@ def empty(Player, Enemy):
     pass
 
 def WaitAbility(time):
-    def ApplyWaitAbility(Player, Enemy):
-        print("waiting for : " + str(time))
-    return Spell(-1, False, time, time, 0, 0, ApplyWaitAbility, [])
+    return Spell(-1, False, time, time, 0, 0, empty, [])
 
 def ApplyPotion(Player, Enemy):
     Player.Stat["MainStat"] *= 1.1
