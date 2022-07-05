@@ -55,7 +55,13 @@ def ChainSawRequirement(Player, Spell):
 def AutomatonRequirement(Player, Spell):
     return (not Player.Overdrive) and Player.BatteryGauge >= 50, -1
 
+def TacticianRequirement(Player, Spell):
+    return Player.TacticianCD <= 0, Player.TacticianCD
+
 #Apply
+
+def ApplyTactician(Player, Enemy):
+    Player.TacticianCD = 90
 
 def ApplyScattergun(Player, Enemy):
     AddGauge(Player, 0, 10)
@@ -262,6 +268,8 @@ def QueenAACheck(Player, Enemy):
         Player.DOTList = [] #Reset DOTList
         Player.EffectToRemove.append(QueenAACheck)
 
+
+
 Wildfire = MachinistSpell(0, False, 0, Lock, 0, 0, ApplyWildFire, [WildFireRequirement], False)
 AirAnchor = MachinistSpell(2, True, 0, 2.5, 580, 0, ApplyAirAnchor, [AirAnchorRequirement], True)
 BarrelStabilizer = MachinistSpell(3, False, 0, Lock, 0, 0, ApplyBarrelStabilizer, [BarrelStabilizerRequirement], False)
@@ -272,6 +280,7 @@ GaussRound = MachinistSpell(10, False, 0, Lock, 120, 0, ApplyGaussRound, [GaussR
 Ricochet = MachinistSpell(11, False, 0, Lock, 120, 0, ApplyRicochet, [RicochetRequirement], False)
 Drill = MachinistSpell(12, True, 0, 2.5, 580, 0, ApplyDrill, [DrillRequirement], True)
 ChainSaw = MachinistSpell(17, True, 0, 2.5, 580, 0, ApplyChainSaw, [ChainSawRequirement], True)
+Tactician = MachinistSpell(18, False, 0, 0, 0, 0, ApplyTactician, [TacticianRequirement], False)
 #Combo Action
 
 SplitShot = MachinistSpell(4, True, Lock, 2.5, 200, 0, ApplySplitShot, [], True)
@@ -312,4 +321,6 @@ Overdrive = MachinistSpell(13, False, 0, Lock, 0, 0, ApplyOverdrive, [], False)
 Bunker = MachinistSpell(15, True, 0, 2.5, 680, 0, ApplyCollider, [], False)   #Triggered by Overdrive
 Collider = MachinistSpell(16, True, 0 , 2.5, 780, 0, ApplyCollider, [], False)  #Spell Queen will cast
 
-MachinistAbility = {}
+MachinistAbility = {7411 : SplitShot, 7412 : SlugShot, 25788 : ChainSaw, 25768 : Scattergun, 17209 : Hypercharge, 16889 : Tactician, 16502:Overdrive, 16501:Automaton,
+16500 : AirAnchor, 16499 : Bioblaster, 16498:Drill, 16497 : AutoCrossbow, 7418 : Flamethrower, 7414 : BarrelStabilizer, 7413 : CleanShot, 7410 : HeatBlast, 2878 : Wildfire,
+2874 : GaussRound, 2890 : Ricochet }
