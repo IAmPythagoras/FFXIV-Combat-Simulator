@@ -117,3 +117,9 @@ If you encounter any bug or error in the simulation, DM me on discord Pythagoras
 # IF YOU WANT TO HELP:)
 
 If you want to help me in developing this program, you can contact me through discord Pythagoras#6312 :). Ill take any available help lol
+
+
+## Credits
+This project is borrowed and modified from https://github.com/IAmPythagoras/FFXIVPPSCalculator
+It has a speeds-optimization focus and might diverge from the original project in functionality, 
+but this section is meant to credit the original creators with the vast majority of worthwhile work.
