@@ -61,6 +61,8 @@ class Bard(Ranged):
         self.BarrageCD = 0
         self.RagingStrikeCD = 0
         self.TroubadourCD = 0
+        self.WardenPaeanCD = 0
+        self.NatureMinneCD = 0
 
         #Timer
         self.SongTimer = 0
@@ -89,6 +91,8 @@ class Bard(Ranged):
         if (self.BarrageCD > 0) : self.BarrageCD = max(0,self.BarrageCD - time)
         if (self.RagingStrikeCD > 0) : self.RagingStrikeCD = max(0,self.RagingStrikeCD - time)
         if (self.TroubadourCD > 0) : self.TroubadourCD = max(0,self.TroubadourCD - time)
+        if (self.WardenPaeanCD > 0) : self.WardenPaeanCD = max(0,self.WardenPaeanCD - time)
+        if (self.NatureMinneCD > 0) : self.NatureMinneCD = max(0,self.NatureMinneCD - time)
 
     def updateTimer(self, time):
         super().updateTimer(time)

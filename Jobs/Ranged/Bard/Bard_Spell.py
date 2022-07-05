@@ -114,7 +114,19 @@ def ShadowbiteRequirement(Player, Spell):
 def TroubadourRequirement(Player, Spell):
     return Player.TroubadourCD <= 0, Player.TroubadourCD
 
+def WardenPaeanRequirement(Player, Spell):
+    return Player.WardenPaeanCD <= 0, Player.WardenPaeanCD
+
+def NatureMinneRequirement(Player, Spell):
+    return Player.NatureMinneCD <= 0, Player.NatureMinneCD
+
 #Apply
+
+def ApplyNatureMinne(Player, Enemy):
+    Player.NatureMinneCD = 90
+
+def ApplyWardenPaean(Player, Enemy):
+    Player.WardenPaeanCD = 45
 
 def ApplyTroubadour(Player, Enemy):
     Player.TroubadourCD = 90
@@ -416,14 +428,19 @@ RagingStrike = BardSpell(20, False, 0, 0, ApplyRagingStrike, [RagingStrikeRequir
 RadiantFinale = BardSpell(21, False, 0, 0, ApplyRadiantFinale, [RadiantFinaleRequirement],False)
 Troubadour = BardSpell(22, False, 0, 0, ApplyTroubadour, [TroubadourRequirement], False)
 RepellingShot = BardSpell(23, False, 0, 0, empty, [], False) #No requirement, do that shit forever
+WardenPaean = BardSpell(27, False, 0, 0, ApplyWardenPaean, [WardenPaeanRequirement], False)
+NatureMinne = BardSpell(28, False, 0, 0, ApplyNatureMinne, [NatureMinneRequirement], False)
 #Each PitchPerfecti represents a PitchPerfect with i repertoire
-PitchPerfect1 = BardSpell(22, False, 0, 100, ApplyPitchPerfect1, [PitchPerfect1Requirement],False)
-PitchPerfect2 = BardSpell(23, False, 0, 220, ApplyPitchPerfect2, [PitchPerfect2Requirement],False)
-PitchPerfect3 = BardSpell(24, False, 0, 360, ApplyPitchPerfect3, [PitchPerfect3Requirement],False)
+PitchPerfect1 = BardSpell(24, False, 0, 100, ApplyPitchPerfect1, [PitchPerfect1Requirement],False)
+PitchPerfect2 = BardSpell(25, False, 0, 220, ApplyPitchPerfect2, [PitchPerfect2Requirement],False)
+PitchPerfect3 = BardSpell(26, False, 0, 360, ApplyPitchPerfect3, [PitchPerfect3Requirement],False)
 
 #buff
 RadiantFinaleBuff = buff(1.02)
 RagingStrikeBuff = buff(1.15)
 MageBalladBuff = buff(1.01)
 
-BardAbility = {}
+BardAbility = {101 : RagingStrike, 107 : Barrage, 114 : MageBallad, 116 : ArmyPaeon, 117 : RainOfDeath, 118 : BattleVoice, 3558 : EmpyrealArrow, 3559 : WandererMinuet, 
+3560 : IronJaws, 3561 : WardenPaean, 3562 : Sidewinder ,7404 : PitchPerfect3, 7405 : Troubadour, 7406 : Causticbite, 7407 : Stormbite, 7408 : NatureMinne, 
+7409 : RefulgentArrow, 16494 : Shadowbite, 16495 : BurstShot, 16496 : ApexArrow80, 25783 : Ladonsbite, 25785 : RadiantFinale, 112 : RepellingShot, 110 : BloodLetter,
+25784 : BlastArrow }
