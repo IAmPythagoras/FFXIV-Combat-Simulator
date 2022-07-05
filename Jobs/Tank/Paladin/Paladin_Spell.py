@@ -283,3 +283,5 @@ def PassageOfArms(time):
     return PaladinSpell(24, False, time, time, 0, 0, ApplyPassageOfArms, [PassageOfArmsRequirement], False)
 #buff
 FightOrFlightBuff = buff(1.25)
+
+PaladinAbility = {}

@@ -1,44 +1,75 @@
 # -- coding: utf-8 --
 """
-Created on Thu Jun 17 11:00:05 2022
-
 @author: Bri
+
+The network/API request part of this code was made by a friend of mine called Brian.
+I only did the code relevant to how we used the data, he did everything regarding
+how to get the data. You can DM him on discord if you have questions : Bri-kun#6539
+
 """
 from Jobs.Base_Spell import WaitAbility
-from Jobs.Caster.Blackmage.BlackMage_Spell import BlackMageAbility
-from Jobs.Caster.Caster_Spell import CasterAbility
+
 
 #CASTER
 from Jobs.Caster.Summoner.Summoner_Player import *
 from Jobs.Caster.Blackmage.BlackMage_Player import * 
 from Jobs.Caster.Redmage.Redmage_Player import *
+from Jobs.Caster.Caster_Spell import CasterAbility
+from Jobs.Caster.Blackmage.BlackMage_Spell import BlackMageAbility
+from Jobs.Caster.Redmage.Redmage_Spell import RedMageAbility
+from Jobs.Caster.Summoner.Summoner_Spell import SummonerAbility
 
 #HEALER
 from Jobs.Healer.Sage.Sage_Player import *
 from Jobs.Healer.Scholar.Scholar_Player import *
 from Jobs.Healer.Whitemage.Whitemage_Player import *
 from Jobs.Healer.Astrologian.Astrologian_Player import *
+from Jobs.Healer.Healer_Spell import HealerAbility
+from Jobs.Healer.Sage.Sage_Spell import SageAbility
+from Jobs.Healer.Astrologian.Astrologian_Spell import AstrologianAbility
+from Jobs.Healer.Scholar.Scholar_Spell import ScholarAbility
+from Jobs.Healer.Whitemage.Whitemage_Spell import WhiteMageAbility
+
 
 #RANGED
 from Jobs.Ranged.Machinist.Machinist_Player import *
 from Jobs.Ranged.Bard.Bard_Player import *
 from Jobs.Ranged.Dancer.Dancer_Player import *
+from Jobs.Ranged.Ranged_Spell import RangedAbility
+from Jobs.Ranged.Bard.Bard_Spell import BardAbility
+from Jobs.Ranged.Machinist.Machinist_Spell import MachinistAbility
+from Jobs.Ranged.Dancer.Dancer_Spell import DancerAbility
 
 #TANK
 from Jobs.Tank.Gunbreaker.Gunbreaker_Player import *
 from Jobs.Tank.DarkKnight.DarkKnight_Player import *
 from Jobs.Tank.Warrior.Warrior_Player import *
 from Jobs.Tank.Paladin.Paladin_Player import *
+from Jobs.Tank.Tank_Spell import TankAbility
+from Jobs.Tank.Gunbreaker.Gunbreaker_Spell import GunbreakerAbility
+from Jobs.Tank.DarkKnight.DarkKnight_Spell import DarkKnightAbility
+from Jobs.Tank.Warrior.Warrior_Spell import WarriorAbility
+from Jobs.Tank.Paladin.Paladin_Spell import PaladinAbility
 
 #MELEE
 from Jobs.Melee.Samurai.Samurai_Player import *
 from Jobs.Melee.Ninja.Ninja_Player import *
 from Jobs.Melee.Dragoon.Dragoon_Player import *
 from Jobs.Melee.Reaper.Reaper_Player import *
+from Jobs.Melee.Monk.Monk_Player import *
+from Jobs.Melee.Melee_Spell import MeleeAbility
+from Jobs.Melee.Samurai.Samurai_Spell import SamuraiAbility
+from Jobs.Melee.Ninja.Ninja_Spell import NinjaAbility
+from Jobs.Melee.Dragoon.Dragoon_Spell import DragoonAbility
+from Jobs.Melee.Reaper.Reaper_Spell import ReaperAbility
+from Jobs.Melee.Monk.Monk_Spell import MonkAbility
+
 
 import http.client, json 
 
 class ActionNotFound(Exception):#Exception called if a spell fails to cast
+    pass
+class JobNotFound(Exception):#Exception called if a spell fails to cast
     pass
 
 def getAccessToken(conn, client_id, client_secret):
@@ -51,20 +82,64 @@ def getAccessToken(conn, client_id, client_secret):
     return res_json["access_token"]
 
 def getAbilityList(client_id, client_secret):
-    def lookup_abilityID(actionID, targetID, sourceID): #not yet implemented
+
+
+    def lookup_abilityID(actionID, targetID, sourceID):
         #Will first get the job of the sourceID so we know in what dictionnary to search for
 
-        job_name = player_list[str(sourceID)]["job"] #getting job name
-        if job_name == "BlackMage" :
-            if not (int(actionID) in BlackMageAbility.keys()): #if not in, then the action is in CasterAbility
-                if not (int(actionID) in CasterAbility.keys()):
-                    #input("ID of action not found is : " + str(actionID))
-                    return None
-                    #raise ActionNotFound #Did not find action
-                return CasterAbility[int(actionID)]
-            return BlackMageAbility[int(actionID)]
+        def lookup(JobDict, ClassDict):
+            if not (int(actionID) in JobDict.keys()): #if not in, then the action is in the ClassDict
+                if not (int(actionID) in ClassDict.keys()):
+                    raise ActionNotFound #Did not find action
+                return ClassDict[int(actionID)]
+            return JobDict[int(actionID)]
 
-        return None
+        job_name = player_list[str(sourceID)]["job"] #getting job name
+
+        #Will now go through all possible job and find what action is being used based on the ID. If the ID is not right, it will
+        #raise an ActionNotFoundError. And if the job's name does not exist it will raise a JobNotFoundError
+        if job_name == "BlackMage" :#Caster
+            return lookup(BlackMageAbility, CasterAbility)
+        elif job_name == "RedMage":
+            return lookup(RedMageAbility, CasterAbility)
+        elif job_name == "Summoner":
+            return lookup(SummonerAbility, CasterAbility)
+        elif job_name == "Dancer":#Ranged
+            return lookup(DancerAbility, RangedAbility)
+        elif job_name == "Machinist":
+            return lookup(MachinistAbility, RangedAbility)
+        elif job_name == "Bard":
+            return lookup(BardAbility, RangedAbility)
+        elif job_name == "Warrior":#Tank
+            return lookup(WarriorAbility, TankAbility)
+        elif job_name == "Gunbreaker":
+            return lookup(GunbreakerAbility, TankAbility)
+        elif job_name == "DarkKnight":
+            return lookup(DarkKnightAbility, TankAbility)
+        elif job_name == "Paladin":
+            return lookup(PaladinAbility, TankAbility)
+        elif job_name == "WhiteMage":#Healer
+            return lookup(WhiteMageAbility, HealerAbility)
+        elif job_name == "Scholar":
+            return lookup(ScholarAbility, HealerAbility)
+        elif job_name == "Sage":
+            return lookup(SageAbility, HealerAbility)
+        elif job_name == "Astrologian":
+            return lookup(AstrologianAbility, HealerAbility)
+        elif job_name == "Samurai":#Melee
+            return lookup(SamuraiAbility, MeleeAbility)
+        elif job_name == "Reaper":
+            return lookup(ReaperAbility, MeleeAbility)
+        elif job_name == "Ninja":
+            return lookup(NinjaAbility, MeleeAbility)
+        elif job_name == "Monk":
+            return lookup(MonkAbility, MeleeAbility)
+        elif job_name == "Dragoon":
+            return lookup(DragoonAbility, MeleeAbility)
+
+        raise JobNotFound #If we get here, then we have not found the job in question
+        #This should not happen, and if it does it means we either have a serious problem or the names aren't correct
+
 
     conn = http.client.HTTPSConnection("www.fflogs.com")
     access_token = getAccessToken(conn, client_id, client_secret)
@@ -187,16 +262,13 @@ def getAbilityList(client_id, client_secret):
         wait_cast = False #a flag that is set to true if we are waiting for the next cast type
         wait_calculateddamage = False #a flag that is set to true if we are waiting for calculated damage
         is_casted = False #flag that is set to true if the spell is casted (the server has a shorter casting time cuz why not) so have to play around that
-        i = 1
+
         for action in raw_action_list:
             #will check the type since we have to do different stuff in accordance to what it is
 
 
             if wait_flag: #If the flag is True, we have to add a WaitAbility
                # if player == "1" : 
-                    #print('waiting between ' + str(i) + " and " + str(i+1))
-                    #print("Waiting for before " + str(action.action_id))
-                    #input("Waiting for : " + str((action.timestamp - wait_timestamp)))
                 wait_time = (action.timestamp - wait_timestamp)
                 if wait_time >=500: #otherwise animation lock
                   player_action_list.append(WaitAbility(max(0,(wait_time))/ 1000)) #Dividing by 1000 since time in milisecond
@@ -204,9 +276,6 @@ def getAbilityList(client_id, client_secret):
                 wait_timestamp = 0 #reset
 
             next_action = lookup_abilityID(action.action_id, action.targetID, player) #returns the action object of the specified spell NOT YET IMPLEMENTED
-            #if player == "1": 
-            #   input(action)
-
 
             if not wait_cast and not wait_calculateddamage:
                 if action.type == "begincast":#If begining cast, we simply add the spell to the list
@@ -241,16 +310,12 @@ def getAbilityList(client_id, client_secret):
                     wait_calculateddamage = False
                     wait_flag = True #Waiting on next action
                     if is_casted: 
-                        wait_timestamp = 400 + action.timestamp
+                        wait_timestamp = 500 + action.timestamp
                         is_casted = False
                     else:wait_timestamp = action.timestamp
-                    i+=1
                 elif action.type == "cast":
                     if next_action != None: 
                         player_action_list.append(next_action)
-                        i+=1
-                      #  if player == "1" :
-                       #     input("4adding id : " + str(action.action_id))
 
                 
 
@@ -266,7 +331,7 @@ def test(client_id,client_secret):
     conn = http.client.HTTPSConnection("www.fflogs.com")
     access_token = getAccessToken(conn, client_id, client_secret)
 
-    payload = "{\"query\":\"query trio{\\n\\treportData {\\n\\t\\treport(code: \\\"RQwfx3vATFWGahJc\\\") {\\n\\t\\t\\ttitle,\\n\\t\\t\\tendTime,\\n\\t\\t\\tevents(\\n\\t\\t\\t\\tendTime:1651557651925,\\n\\t\\t\\t\\tfightIDs:8,\\n\\t\\t\\t\\tincludeResources: false,\\n\\t\\t\\t\\tfilterExpression:\\\"ability.ID = 3577\\\"\\n\\t\\t\\t){data\\n\\t\\t\\t}\\n\\t\\t\\t\\n\\t\\t}\\n\\t}\\n}\",\"operationName\":\"trio\"}"
+    payload = "{\"query\":\"query trio{\\n\\treportData {\\n\\t\\treport(code: \\\"RQwfx3vATFWGahJc\\\") {\\n\\t\\t\\ttitle,\\n\\t\\t\\tendTime,\\n\\t\\t\\tevents(\\n\\t\\t\\t\\tendTime:1651557651925,\\n\\t\\t\\t\\tfightIDs:8,\\n\\t\\t\\t\\tincludeResources: false,\\n\\t\\t\\t\\tfilterExpression:\\\"ability.ID = 25797\\\"\\n\\t\\t\\t){data\\n\\t\\t\\t}\\n\\t\\t\\t\\n\\t\\t}\\n\\t}\\n}\",\"operationName\":\"trio\"}"
     
     headers = {
         'Content-Type': "application/json",
@@ -286,18 +351,18 @@ def test(client_id,client_secret):
 
         if event["type"] == "cast": input("Applying fire 4 at : " + str((event["timestamp"] - 14825136)/1000))
 
-        # if event["type"] == "begincast": 
-        #     begin_time = event["timestamp"]
-        #     wait_cast = True
-        # elif event["type"] == "cast" and wait_cast:
-        #     end_time = event["timestamp"]
-        #     input("Fire 4 had a casttime of " + str((end_time - begin_time)/1000))
-        #     
-        #     wait_calculated = True
-        #     wait_cast = False
-        # elif wait_calculated and event["type"] == "calculateddamage":
-        #     wait_calculated = False
+        if event["type"] == "begincast": 
+             begin_time = event["timestamp"]
+             wait_cast = True
+        elif event["type"] == "cast" and wait_cast:
+             end_time = event["timestamp"]
+             input("Fire 4 had a casttime of " + str((end_time - begin_time)/1000))
+             
+             wait_calculated = True
+             wait_cast = False
+        elif wait_calculated and event["type"] == "calculateddamage":
+             wait_calculated = False
 
-client_id = "" #Put your own client_id and client_secret obtained from FFLogs
-client_secret = ""
+client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
+client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE"
 #test(client_id, client_secret)

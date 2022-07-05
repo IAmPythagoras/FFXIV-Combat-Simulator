@@ -301,3 +301,5 @@ DarkMissionary = DRKSkill(32, False, 0, 0, 0, 0, 0, ApplyDarkMissionary, [DarkMi
 Oblation = DRKSkill(33, False, 0, 0, 0, 0, 0, ApplyOblation, [OblationRequirement])
 #buff
 EdgeShadowBuff = buff(1.1)
+
+DarkKnightAbility = {}

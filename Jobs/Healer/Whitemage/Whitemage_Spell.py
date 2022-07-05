@@ -164,3 +164,4 @@ Tetragrammaton = WhitemageSpell(21, False, 0, 0, 0, 0, ApplyTetragrammaton, [Tet
 Asylum = WhitemageSpell(22, False, 0, 0, 0, 0, ApplyAsylum, [AsylumRequirement])
 Benediction = WhitemageSpell(23, False, 0, 0, 0, 0, ApplyBenediction, [BenedictionRequirement])
 
+WhiteMageAbility = {}

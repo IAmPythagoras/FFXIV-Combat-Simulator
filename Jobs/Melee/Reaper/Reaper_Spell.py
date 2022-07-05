@@ -360,3 +360,5 @@ LemureScythe = ReaperSpell(30, False, 0, 0, 100, ApplyLemureSlice, [LemureSliceR
 #buff
 DeathDesignBuff = buff(1.1)
 ArcaneCircleBuff = buff(1.03)
+
+ReaperAbility = {}

@@ -79,3 +79,5 @@ LegGraze = RangedSpell(0, False, Lock, 0, 0, 0, ApplyLegGraze, [LegGrazeRequirem
 FootGraze = RangedSpell(0, False, Lock, 0, 0, 0, ApplyFootGraze, [FootGrazeRequirement])
 Peloton = RangedSpell(0, False, Lock, 0, 0, 0, ApplyPeloton, [PelotonRequirement])
 HeadGraze = RangedSpell(0, False, Lock, 0, 0, 0, ApplyHeadGraze, [HeadGrazeRequirement])
+
+RangedAbility = {}

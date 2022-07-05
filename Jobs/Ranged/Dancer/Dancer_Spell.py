@@ -379,3 +379,5 @@ def ClosedPosition(Partner, InFight):
         #Will have to switch buff
 
     return DancerSpell(33, False, 0, 0, ApplyClosedPosition, [ClosedPositionRequirement], False)
+
+DancerAbility = {}

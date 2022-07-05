@@ -226,3 +226,5 @@ Bloodwhetting = WarriorSpell(22, False, 0, 0, 0, 0, ApplyBloodwhetting, [Bloodwh
 Equilibrium = WarriorSpell(23, False, 0, 0, 0, 0, ApplyEquilibrium, [EquilibriumRequirement], 0)
 #buff
 SurgingTempestBuff = buff(1.1)
+
+WarriorAbility = {}

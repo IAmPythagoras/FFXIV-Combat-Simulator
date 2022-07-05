@@ -425,3 +425,5 @@ PitchPerfect3 = BardSpell(24, False, 0, 360, ApplyPitchPerfect3, [PitchPerfect3R
 RadiantFinaleBuff = buff(1.02)
 RagingStrikeBuff = buff(1.15)
 MageBalladBuff = buff(1.01)
+
+BardAbility = {}

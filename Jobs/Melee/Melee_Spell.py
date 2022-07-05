@@ -125,3 +125,5 @@ Bloodbath = MeleeSpell(0, False, Lock, 0, 0, 0, ApplyBloodbath, [BloodbathRequir
 Feint = MeleeSpell(0, False, Lock, 0, 0, 0, ApplyFeint, [FeintRequirement])
 ArmLength = MeleeSpell(0, False, Lock, 0, 0, 0, ApplyArmLength, [ArmLengthRequirement])
 TrueNorth = MeleeSpell(0, False, Lock, 0, 0, 0, ApplyTrueNorth, [TrueNorthRequirement])
+
+MeleeAbility = {}

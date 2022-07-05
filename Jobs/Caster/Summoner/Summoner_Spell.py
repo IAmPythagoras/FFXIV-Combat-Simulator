@@ -251,3 +251,5 @@ SearingLight = SummonerSpell(20, False, Lock, 0, 0, 0, ApplySearingLight, [Seari
 
 #buff
 SearingLightbuff = buff(1.03)
+
+SummonerAbility = {}

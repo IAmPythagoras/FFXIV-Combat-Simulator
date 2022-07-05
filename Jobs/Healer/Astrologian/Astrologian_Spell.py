@@ -275,4 +275,4 @@ def Arcanum(Target, Type):
 
     return AstrologianSpell(0, False, Lock, 0, 0, 0, ApplyArcanum, [ArcanumRequirement])
 
-        
+AstrologianAbility = {}

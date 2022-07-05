@@ -311,3 +311,5 @@ Overdrive = MachinistSpell(13, False, 0, Lock, 0, 0, ApplyOverdrive, [], False)
 #These will be casted by the machinist, so they have no damage. Their only effect is to add into Queen's Queue
 Bunker = MachinistSpell(15, True, 0, 2.5, 680, 0, ApplyCollider, [], False)   #Triggered by Overdrive
 Collider = MachinistSpell(16, True, 0 , 2.5, 780, 0, ApplyCollider, [], False)  #Spell Queen will cast
+
+MachinistAbility = {}
