@@ -137,7 +137,6 @@ class Fight:
         #Even though low and high are not integers, the AverageCritMult is a continuous stricly increasing function, so we can use it on
         #non integer value to get an "in-between" value
 
-        input(max(y_list))
         top_graph = max(y_list) * 1.3 #top of graph
         lab = "\u03BC = " + str(round(Player.ExpectedDPS,1)) + " \u03C3 = " + str(round(std,2))
         axs.plot(expected_dps_list, y_list,label=lab) #Distribution
@@ -449,7 +448,7 @@ class Fight:
 
 
 
-def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
+def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
 
     #Still remains to change the f_MAIN_DAMAGE function for pets
 
@@ -469,7 +468,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
 
     Enemy = Player.CurrentFight.Enemy #Enemy targetted
 
-    MainStat = Player.Stat["MainStat"] * 1.05 # Player.CurrentFight.TeamCompositionBonus #Scaling %bonus on mainstat
+    MainStat = Player.Stat["MainStat"] *  Player.CurrentFight.TeamCompositionBonus #Scaling %bonus on mainstat
 
     #Computing values used throughout all computations
     if isinstance(Player, Tank) : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*145/baseMain))/100 #This is experimental, and I do not have any actual proof to back up, but tanks do have a different f_MAIN_DMG formula
@@ -493,31 +492,32 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
     DHRate += Player.DHRateBonus #Adding Bonus
     CritRate += Player.CritRateBonus #Adding bonus
 
-    if isinstance(Player, Machinist): 
-        #print(Player.ActionSet[Player.NextSpell])  #Then if machinist, has to check if direct crit guarantee
-        if Player.ActionSet[Player.NextSpell].id != -1 and Player.ActionSet[Player.NextSpell].id != -2 and Player.Reassemble and Player.ActionSet[Player.NextSpell].Weaponskill:    #Checks if reassemble is on and if its a weapon skill
-            CritRate = 1
-            DHRate = 1
-            Player.Reassemble = False #Uses Reassemble       
-    elif isinstance(Player, Warrior):
-        if Player.InnerReleaseStack >= 1 and (Player.NextSpell < len(Player.ActionSet)) and (Player.ActionSet[Player.NextSpell].id == 9 or Player.ActionSet[Player.NextSpell].id == 8):
-            CritRate = 1#If inner release weaponskill
-            DHRate = 1
-            Player.InnerReleaseStack -= 1
-    elif isinstance(Player, Samurai):
-        if Player.DirectCrit:
-            CritRate = 1
-            DHRate = 1
-            Player.DirectCrit = False
-    elif isinstance(Player, Dancer):
-        if Player.NextDirectCrit:
-            CritRate = 1
-            DHRate = 1
-            Player.NextDirectCrit = False
-    elif isinstance(Player, Dragoon):
-        if Player.NextCrit and Player.ActionSet[Player.NextSpell].Weaponskill: #If next crit and weaponskill
-            CritRate = 1
-            Player.NextCrit = False
+    if type == 0: #Making sure its not an AA or DOT
+        if isinstance(Player, Machinist): 
+            #Then if machinist, has to check if direct crit guarantee
+            if Player.ActionSet[Player.NextSpell].id != -1 and Player.ActionSet[Player.NextSpell].id != -2 and Player.Reassemble and Player.ActionSet[Player.NextSpell].Weaponskill:    #Checks if reassemble is on and if its a weapon skill
+                CritRate = 1
+                DHRate = 1
+                Player.Reassemble = False #Uses Reassemble       
+        elif isinstance(Player, Warrior):
+            if Player.InnerReleaseStack >= 1 and (Player.NextSpell < len(Player.ActionSet)) and (Player.ActionSet[Player.NextSpell].id == 9 or Player.ActionSet[Player.NextSpell].id == 8):
+                CritRate = 1#If inner release weaponskill
+                DHRate = 1
+                Player.InnerReleaseStack -= 1
+        elif isinstance(Player, Samurai):
+            if Player.DirectCrit:
+                CritRate = 1
+                DHRate = 1
+                Player.DirectCrit = False
+        elif isinstance(Player, Dancer):
+            if Player.NextDirectCrit:
+                CritRate = 1
+                DHRate = 1
+                Player.NextDirectCrit = False
+        elif isinstance(Player, Dragoon):
+            if Player.NextCrit and Player.ActionSet[Player.NextSpell].Weaponskill: #If next crit and weaponskill
+                CritRate = 1
+                Player.NextCrit = False
 
 
     if type == 0: #Type 0 is direct damage
@@ -527,18 +527,59 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type):
         Player.CritRateHistory += [CritRate]
     elif type == 1 : #Type 1 is magical DOT
         Damage = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_WD) * f_MAIN_DMG) * f_SPD) * f_DET) * f_TEN) * Player.Trait) + 1
+        
+        if not spellObj.onceThroughFlag:#If we haven't gotten through with this DOT once, we have to snapshot the buffs
+
+            if Enemy.ChainStratagem: spellObj.CritBonus += 0.1    #If ChainStratagem is active, increase crit rate
+            if Enemy.WanderingMinuet: spellObj.CritBonus += 0.02 #If WanderingMinuet is active, increase crit rate
+            if Enemy.BattleVoice: spellObj.DHBonus += 0.2 #If WanderingMinuet is active, increase DHRate
+            spellObj.DHBonus += Player.DHRateBonus #Adding Bonus
+            spellObj.CritBonus += Player.CritRateBonus #Adding bonus
+
+            for buffs in Player.buffList: 
+                spellObj.MultBonus += [buffs] #Adding buff to DOT
+            for buffs in Enemy.buffList:
+                spellObj.MultBonus += [buffs] #Adding buff to DOT
+
+            #Now the DOT has completely snapshot all possible buff. So we save those
+            #and never come back here
+
+            spellObj.onceThroughFlag = True #set flag to True, so never snapshot again
+
     elif type == 2: #Physical DOT
         Damage = math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN) * f_SPD) * f_WD) * Player.Trait) +1
+    
+        if not spellObj.onceThroughFlag:#If we haven't gotten through with this DOT once, we have to snapshot the buffs
+
+            if Enemy.ChainStratagem: spellObj.CritBonus += 0.1    #If ChainStratagem is active, increase crit rate
+            if Enemy.WanderingMinuet: spellObj.CritBonus += 0.02 #If WanderingMinuet is active, increase crit rate
+            if Enemy.BattleVoice: spellObj.DHBonus += 0.2 #If WanderingMinuet is active, increase DHRate
+            spellObj.DHBonus += Player.DHRateBonus #Adding Bonus
+            spellObj.CritBonus += Player.CritRateBonus #Adding bonus
+
+            for buffs in Player.buffList: 
+                spellObj.MultBonus += [buffs] #Adding buff to DOT
+            for buffs in Enemy.buffList:
+                spellObj.MultBonus += [buffs] #Adding buff to DOT
+
+            #Now the DOT has completely snapshot all possible buff. So we save those
+            #and never come back here
+
+            spellObj.onceThroughFlag = True #set flag to True, so never snapshot again
+
     elif type == 3: #Auto-attacks
         Damage = math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN) * f_SPD)
         Damage = math.floor(math.floor(Damage * math.floor(f_WD * (Player.Delay/3) *100 )/100) * Player.Trait)
     #Now applying buffs
 
-    for buffs in Player.buffList: 
-        Damage = math.floor(Damage * buffs.MultDPS) #Multiplying all buffs
-        
-    for buffs in Enemy.buffList:
-        Damage = math.floor(Damage * buffs.MultDPS) #Multiplying all buffs
+    if type == 0 or type == 3: #If Action or AA, then we apply the current buffs
+        for buffs in Player.buffList: 
+            Damage = math.floor(Damage * buffs.MultDPS) #Multiplying all buffs
+        for buffs in Enemy.buffList:
+            Damage = math.floor(Damage * buffs.MultDPS) #Multiplying all buffs
+    else: #if type is 1 or 2, then its a DOT, so we have to use the snapshotted buffs
+        for buffs in spellObj.MultBonus:
+            Damage = math.floor(Damage * buffs.MultDPS)
     
     if CritRate == 1: #If sure to crit, add crit to min expected damage
         return math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))), math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))) #If we have auto crit, we return full damage

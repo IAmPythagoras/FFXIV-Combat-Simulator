@@ -107,7 +107,7 @@ class Spell:
         elif isinstance(self, Auto_Attack):
             type = 3   
         
-        if self.Potency != 0 : minDamage,Damage= ComputeDamage(player, self.Potency, Enemy, self.DPSBonus, type)    #Damage computation
+        if self.Potency != 0 : minDamage,Damage= ComputeDamage(player, self.Potency, Enemy, self.DPSBonus, type, self)    #Damage computation
         else: minDamage, Damage = 0,0
         ##input("Damage : " + str(Damage))
         ##input("Damage from v1.0 " + str(ComputeDamageV2(player, self.Potency, 1, 1)))
@@ -186,6 +186,15 @@ class DOTSpell(Spell):
         #Note that here Potency is the potency of the dot, not of the ability
         self.DOTTimer = 0   #This represents the timer of the dot, and it will apply at each 3 seconds
         self.isPhysical = isPhysical #True if physical dot, false if magical dot
+
+        #This part will keep in memory the buffs when the DOT is applied.
+        self.CritBonus = 0
+        self.DHBonus = 0
+        self.MultBonus = []
+        self.onceThroughFlag = False #This flag will be set to True once the DOT damage has been through damage computation once
+        #so we can snapshot the buffs only once
+        #Note that AAs do not snapshot buffs, but in the code they will still have these fields
+
     def CheckDOT(self, Player, Enemy, TimeUnit):
         ##print("The dot Timer is :  " + str(self.DOTTimer))
         if(self.DOTTimer <= 0):

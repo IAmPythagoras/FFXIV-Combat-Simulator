@@ -363,7 +363,7 @@ StandardFinishBuff = buff(1) #We will adapt the buff depending on number of step
 #Dance Partner
 Ending = DancerSpell(32, False, 0, 0, ApplyEnding, [], False)
 
-def ClosedPosition(Partner, InFight):
+def ClosedPosition(Partner, InFight="True"):
 
     def ApplyClosedPosition(Player, Enemy):
         if InFight : Player.ClosedPositionCD = 30 #Only update CD if in Fight, since we can dance partner before begins

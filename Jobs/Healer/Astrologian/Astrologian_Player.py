@@ -33,6 +33,16 @@ class Astrologian(Healer):
         self.SynastryCD = 0
         self.EssentialDignityCD = 0
 
+        #timer
+        self.CumbustDOTTimer = 0
+        self.LightspeedTimer = 0
+        self.DivinationTimer = 0
+        self.BodyTimer = 0
+
+        #DOT
+        self.CumbustDOT = None
+
+
 
     def updateCD(self, time):
         super().updateCD(time)

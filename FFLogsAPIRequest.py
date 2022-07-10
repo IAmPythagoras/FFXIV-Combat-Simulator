@@ -9,7 +9,6 @@ how to get the data. You can DM him on discord if you have questions : Bri-kun#6
 """
 from Jobs.Base_Spell import WaitAbility
 
-
 #CASTER
 from Jobs.Caster.Summoner.Summoner_Player import *
 from Jobs.Caster.Blackmage.BlackMage_Player import * 
@@ -29,7 +28,6 @@ from Jobs.Healer.Sage.Sage_Spell import SageAbility
 from Jobs.Healer.Astrologian.Astrologian_Spell import AstrologianAbility
 from Jobs.Healer.Scholar.Scholar_Spell import ScholarAbility
 from Jobs.Healer.Whitemage.Whitemage_Spell import WhiteMageAbility
-
 
 #RANGED
 from Jobs.Ranged.Machinist.Machinist_Player import *
@@ -67,9 +65,9 @@ from Jobs.Melee.Monk.Monk_Spell import MonkAbility
 
 import http.client, json 
 
-class ActionNotFound(Exception):#Exception called if a spell fails to cast
+class ActionNotFound(Exception):#Exception called if an action isn't found in the dictionnary
     pass
-class JobNotFound(Exception):#Exception called if a spell fails to cast
+class JobNotFound(Exception):#Exception called if a Job isn't found
     pass
 
 def getAccessToken(conn, client_id, client_secret):
@@ -83,16 +81,17 @@ def getAccessToken(conn, client_id, client_secret):
 
 def getAbilityList(client_id, client_secret):
 
-
-    def lookup_abilityID(actionID, targetID, sourceID):
+    def lookup_abilityID(actionID, targetID, sourceID, targetEnemy):
         #Will first get the job of the sourceID so we know in what dictionnary to search for
 
         def lookup(JobDict, ClassDict):
             if not (int(actionID) in JobDict.keys()): #if not in, then the action is in the ClassDict
                 if not (int(actionID) in ClassDict.keys()):
                     raise ActionNotFound #Did not find action
-                return ClassDict[int(actionID)]
-            return JobDict[int(actionID)]
+                return ClassDict[int(actionID)] #Class actions do not have the possibility to target other allies, so we assume itll target an enemy
+            if targetEnemy : return JobDict[int(actionID)]
+            else: return JobDict[int(actionID)](player_list[str(targetID)]["job_object"]) #Otherwise it returns what
+            #we assume to be a function with one input as the object of the target
 
         job_name = player_list[str(sourceID)]["job"] #getting job name
 
@@ -144,7 +143,7 @@ def getAbilityList(client_id, client_secret):
     conn = http.client.HTTPSConnection("www.fflogs.com")
     access_token = getAccessToken(conn, client_id, client_secret)
 
-    payload = "{\"query\":\"query trio{\\n    reportData {\\n        report(code: \\\"RQwfx3vATFWGahJc\\\") {\\n            playerDetails(fightIDs:8,endTime:999999999)\\n        }\\n\\n    }\\n}\",\"operationName\":\"trio\"}"
+    payload = "{\"query\":\"query trio{\\n\\treportData {\\n\\t\\treport(code: \\\"RQwfx3vATFWGahJc\\\") {\\n\\t\\t\\tplayerDetails(fightIDs:8,endTime:999999999),\\n\\t\\t\\tfights(fightIDs:8){\\n\\t\\t\\t\\tenemyNPCs{\\n\\t\\t\\t\\t\\tid\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tstartTime\\n\\t\\t\\t}\\n\\t\\t}\\n\\t\\t\\t\\n\\t}\\n}\",\"operationName\":\"trio\"}"
 
     headers = {
         'Content-Type': "application/json",
@@ -156,17 +155,19 @@ def getAbilityList(client_id, client_secret):
     res = conn.getresponse()
     data = res.read()
     data_json = json.loads(data.decode("utf-8"))
-    #print(data_json["data"]["reportData"]["report"]["playerDetails"])
-    #print(json.dumps(data_json["data"]["reportData"]["report"]["playerDetails"]["data"]["playerDetails"], indent=4, sort_keys=False))
-
 
     #Getting Player's Class, ids and name
 
     player_data = data_json["data"]["reportData"]["report"]["playerDetails"]["data"]["playerDetails"]
+    enemy_data = data_json["data"]["reportData"]["report"]["fights"][0]["enemyNPCs"]
     #Mix of dictionnary and array with relevant information
     #The goal of this request and the following code is to parse the JSON file into relevant information
-
     player_list = {} #Dict which will have all a list of players with their ids, role and name
+    enemy_list = [] #List with all ids of enemies in the fight
+    relative_timestamp_zero = int(data_json["data"]["reportData"]["report"]["fights"][0]["startTime"]) #relative 0 of the report
+
+    for enemy in enemy_data:
+        enemy_list += [enemy["id"]] #Getting the enemies id so we can identifiate who an enemy is not targeted by an action
 
     for player_class in player_data: #player_data is a dictionnary with key "healers", "DPS", "tanks"
         for player in player_data[player_class]:
@@ -211,16 +212,14 @@ def getAbilityList(client_id, client_secret):
 
     #Second request will fetch all the abilities done in the fight and make an array associated with each player's ID
 
-    payload = "{\"query\":\"query trio{\\n    reportData {\\n        report(code: \\\"RQwfx3vATFWGahJc\\\") {\\n\\t\\t\\t\\tendTime,\\n            events(\\n\\t\\t\\t\\t\\t\\t\\tfightIDs:8,\\n\\t\\t\\t\\t\\t\\t\\tendTime:99999999999999,\\n\\t\\t\\t\\t\\t\\t\\tincludeResources:false,\\n\\t\\t\\t\\t\\t\\t\\tfilterExpression:\\\"type = 'cast' OR type = 'begincast' OR type = 'calculateddamage' OR type = 'applybuff'\\\",\\n\\t\\t\\t\\t\\t\\t\\tlimit:10000\\n\\t\\t\\t\\t\\t\\t\\t\\n\\t\\t\\t\\t\\t\\t){data}\\n        }\\n\\n    }\\n}\",\"operationName\":\"trio\"}"
+    payload = "{\"query\":\"query trio{\\n    reportData {\\n        report(code: \\\"RQwfx3vATFWGahJc\\\") {\\n\\t\\t\\t\\tendTime,\\n            events(\\n\\t\\t\\t\\t\\t\\t\\tfightIDs:8,\\n\\t\\t\\t\\t\\t\\t\\tendTime:99999999999999,\\n\\t\\t\\t\\t\\t\\t\\tincludeResources:false,\\n\\t\\t\\t\\t\\t\\t\\tfilterExpression:\\\"type = 'cast' OR type = 'begincast' OR type = 'calculateddamage' OR type = 'applybuff or type = 'calculatedheal''\\\",\\n\\t\\t\\t\\t\\t\\t\\tlimit:10000\\n\\t\\t\\t\\t\\t\\t\\t\\n\\t\\t\\t\\t\\t\\t){data}\\n        }\\n\\n    }\\n}\",\"operationName\":\"trio\"}"
     conn.request("POST", "/api/v2/client", payload, headers)
 
     res = conn.getresponse()
     data = res.read()
     data_json = json.loads(data.decode("utf-8"))
 
-    #print(json.dumps(data_json["data"], indent=4, sort_keys=False))
     action_list = data_json["data"]["reportData"]["report"]["events"]["data"] #Array of all actions done
-    relative_timestamp_zero = data_json["data"]["reportData"]["report"]["events"]["data"][0]["timestamp"] #value in millisecond of the first damaging ability done in the fight, this will be the relative 0
 
     class action_object():
         def __init__(self, action_id, timestamp, type, targetID):
@@ -228,6 +227,8 @@ def getAbilityList(client_id, client_secret):
             self.timestamp = timestamp #relative timestamp
             self.type = type
             self.targetID = targetID
+            self.targetEnemy = targetID in enemy_list #if the targetID is one of the enemy ID, then we are targeting an enemy.
+            #If we are not, we will have to do some more stuff later on.
 
         def __str__(self):
             return "action_id : " + str(self.action_id) + " type : " + self.type + " timestamp : " + str(self.timestamp/1000)
@@ -248,20 +249,16 @@ def getAbilityList(client_id, client_secret):
             action_dict[str(action["sourceID"])] += [action_object(action["abilityGameID"], rel_timestamp, action["type"], action["targetID"])]#Will be assumed to be damaging spell
 
     #Will now go through each player and build their action set
-    #input(action_list)
-    #input(action_dict)
-
-
     for player in action_dict:
         player_action_list = [] #will contain the action list that we have to give to the sim for the player
         #player is each player's id
-        raw_action_list = action_dict[str(player)] #list of action_object object
-
-        wait_flag = False #a flag that is set to true if we have to add a WaitAbility() in the player_action_list
         wait_timestamp = 0 #timestamp value of an action so we can compare it to the next action to add WaitAbility
+        raw_action_list = action_dict[str(player)] #list of action_object object
+        wait_flag = False #a flag that is set to true if we have to add a WaitAbility() in the player_action_list
         wait_cast = False #a flag that is set to true if we are waiting for the next cast type
         wait_calculateddamage = False #a flag that is set to true if we are waiting for calculated damage
         is_casted = False #flag that is set to true if the spell is casted (the server has a shorter casting time cuz why not) so have to play around that
+        is_heal = False #flag that is set to true if the spell is a healing spell
 
         for action in raw_action_list:
             #will check the type since we have to do different stuff in accordance to what it is
@@ -277,56 +274,64 @@ def getAbilityList(client_id, client_secret):
 
             next_action = lookup_abilityID(action.action_id, action.targetID, player) #returns the action object of the specified spell NOT YET IMPLEMENTED
 
-            if not wait_cast and not wait_calculateddamage:
-                if action.type == "begincast":#If begining cast, we simply add the spell to the list
-                    wait_cast = True #set flag to true
-                    player_action_list.append(next_action)
-                    is_casted = True
-                    #if player == "1" : input("1adding id : " + str(action.action_id))
-                elif action.type == "cast":
-                    if next_action != None: 
+            if is_heal:
+                #If this flag is set to true, we wait until we do not have type = 'calculatedheal'
+                if type != 'calculatedheal':
+                    is_heal = False
+
+            if not is_heal: #We first have to check if we aren't waiting on an AOE heal to finish
+                if not wait_cast and not wait_calculateddamage:
+                    if action.type == "begincast":#If begining cast, we simply add the spell to the list
                         player_action_list.append(next_action)
-                    #    if player == "1" :
-                      #      input("2adding id : " + str(action.action_id))
-                    wait_calculateddamage = True
-                    wait_flag = True
-                    wait_timestamp = action.timestamp
-                elif action.type == "calculateddamage":#insta cast, so we want to add but also check how long until next action. Calculated damage might also be right after a "cast", so we want to have
-                    #it such that it can detect if it is an "insta-cast" or the damage from a casted action (which will affect how we add it to the action_list)
-                    #if player == "1" : print("adding")
-                    player_action_list.append(next_action)
-                    #if player == "1" : input("3adding id : " + str(action.action_id))
-                    wait_flag = True #We have to add a WaitAbility, so we will check this time and next action's timestamp and add a relevant WaitAbility
-                    wait_timestamp = action.timestamp
-            elif wait_cast:
-                #Waiting for a cast
-                if action.type == "cast":
-                    #wait_flag = True #We have to add a WaitAbility, so we will check this time and next action's timestamp and add a relevant WaitAbility
-                    #wait_timestamp = action.timestamp
-                    wait_cast = False
-                    wait_calculateddamage = True
-            elif wait_calculateddamage:
-                if action.type == "calculateddamage" or action.type == "applybuff":
-                    wait_calculateddamage = False
-                    wait_flag = True #Waiting on next action
-                    if is_casted: 
-                        wait_timestamp = 500 + action.timestamp
-                        is_casted = False
-                    else:wait_timestamp = action.timestamp
-                elif action.type == "cast":
-                    if next_action != None: 
+                        wait_cast = True #set flag to true
+                        is_casted = True #says the action is a casted action
+                    elif action.type == "cast":
+                        if next_action != None: player_action_list.append(next_action)
+                        wait_calculateddamage = True
+                        wait_flag = True
+                        wait_timestamp = action.timestamp
+                    elif action.type == "calculateddamage":#insta cast, so we want to add but also check how long until next action. Calculated damage might also be right after a "cast", so we want to have
+                        #it such that it can detect if it is an "insta-cast" or the damage from a casted action (which will affect how we add it to the action_list)
                         player_action_list.append(next_action)
-
-                
-
-
-
+                        wait_flag = True #We have to add a WaitAbility, so we will check this time and next action's timestamp and add a relevant WaitAbility
+                        wait_timestamp = action.timestamp
+                    elif action.type == "calculatedhealing":
+                        #same as calculateddamage, but since its a healing, we want to make sure we do not add the action
+                        #for each player it hits (if it is an AOE heal)
+                        player_action_list.append(next_action)
+                        wait_flag = True #We have to add a WaitAbility, so we will check this time and next action's timestamp and add a relevant WaitAbility
+                        wait_timestamp = action.timestamp
+                        is_heal = True
+                elif wait_cast:
+                    #Waiting for a cast
+                    if action.type == "cast":
+                        wait_cast = False
+                        wait_calculateddamage = True
+                elif wait_calculateddamage:
+                    if action.type == "calculateddamage" or action.type == "applybuff":
+                        wait_calculateddamage = False
+                        wait_flag = True #Waiting on next action
+                        if is_casted: 
+                            wait_timestamp = 500 + action.timestamp
+                            is_casted = False
+                        else:wait_timestamp = action.timestamp
+                    elif action.type == "calculateddamage": #Same as calculateddamage, but with heal check
+                        wait_calculateddamage = False
+                        wait_flag = True #Waiting on next action
+                        if is_casted: 
+                            wait_timestamp = 500 + action.timestamp
+                            is_casted = False
+                        else:wait_timestamp = action.timestamp
+                        is_heal = True
+                    elif action.type == "cast":
+                        if next_action != None: 
+                            player_action_list.append(next_action)
 
         action_dict[player] = player_action_list
 
-    return action_dict["1"] #just for testing purposes
-
-
+    return action_dict["1"]
+"""
+#Function to test timing
 def test(client_id,client_secret):
     conn = http.client.HTTPSConnection("www.fflogs.com")
     access_token = getAccessToken(conn, client_id, client_secret)
@@ -357,12 +362,11 @@ def test(client_id,client_secret):
         elif event["type"] == "cast" and wait_cast:
              end_time = event["timestamp"]
              input("Fire 4 had a casttime of " + str((end_time - begin_time)/1000))
-             
              wait_calculated = True
              wait_cast = False
         elif wait_calculated and event["type"] == "calculateddamage":
              wait_calculated = False
-
-client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
-client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE"
+"""
+#client_id = "" #Put your own client_id and client_secret obtained from FFLogs
+#client_secret = ""
 #test(client_id, client_secret)

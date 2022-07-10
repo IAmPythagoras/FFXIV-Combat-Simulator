@@ -248,7 +248,7 @@ AstrodyneBuff = buff(1.05)
 DivinatonBuff = buff(1.06)
 
 
-def Arcanum(Target, Type):
+def Arcanum(Target, Type="Lunar"):
     #Target is the player object to which we will apply the buff
     #Type will specify which Astrosign
 
@@ -262,7 +262,6 @@ def Arcanum(Target, Type):
     def ApplyArcanum(Player, Spell):
         Player.HasCard = False
         if Target.ArcanumTimer == 0 : #Can only have 1 buff at a time
-            #input("Will affect target with Arcana :" + str(Target))
             Target.buffList.append(ArcanumBuff)
             Target.EffectCDList.append(ArcanumCheck)
 
