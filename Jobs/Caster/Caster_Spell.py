@@ -1,7 +1,6 @@
-
 from Jobs.Base_Spell import ManaRequirement, Spell, empty
 from Jobs.Caster.Blackmage.BlackMage_Player import BlackMage
-Lock = 0.75
+Lock = 0
 class CasterSpell(Spell):
 
     def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
@@ -108,8 +107,10 @@ def LucidDreamingCheck(Player, Enemy):
             Player.EffectToRemove.append(LucidDreamingCheck)
 
 #Class Action
-Swiftcast = CasterSpell(0, False,0, Lock, 0, 0, ApplySwiftcast, [SwiftcastRequirement])
-LucidDreaming = CasterSpell(0, False, Lock,0,0, 0, ApplyLucidDreaming, [LucidDreamingRequirement])
-Surecast = CasterSpell(0, False, Lock, 0, 0, 0, ApplySurecast, [SurecastRequirement])
-Addle = CasterSpell(0, False, Lock, 0, 0, 0, ApplyAddle, [AddleRequirement])
-Sleep = CasterSpell(0, True, 2.5, 2.5, 0, 800, empty, [ManaRequirement])
+Swiftcast = CasterSpell(1001, False,0, Lock, 0, 0, ApplySwiftcast, [SwiftcastRequirement])
+LucidDreaming = CasterSpell(1002, False, Lock,0,0, 0, ApplyLucidDreaming, [LucidDreamingRequirement])
+Surecast = CasterSpell(1003, False, Lock, 0, 0, 0, ApplySurecast, [SurecastRequirement])
+Addle = CasterSpell(1004, False, Lock, 0, 0, 0, ApplyAddle, [AddleRequirement])
+Sleep = CasterSpell(1005, True, 2.5, 2.5, 0, 800, empty, [ManaRequirement])
+
+CasterAbility = {7561 : Swiftcast, 7562 : LucidDreaming,  7559 : Surecast, 7560 : Addle, 25880 : Sleep}

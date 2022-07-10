@@ -1,6 +1,8 @@
 #########################################
 ########## MACHINIST SPELL  #############
 #########################################
+
+
 import copy
 from Jobs.Base_Spell import DOTSpell, Melee_AA, Queen_AA, empty, WaitAbility
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
@@ -55,7 +57,13 @@ def ChainSawRequirement(Player, Spell):
 def AutomatonRequirement(Player, Spell):
     return (not Player.Overdrive) and Player.BatteryGauge >= 50, -1
 
+def TacticianRequirement(Player, Spell):
+    return Player.TacticianCD <= 0, Player.TacticianCD
+
 #Apply
+
+def ApplyTactician(Player, Enemy):
+    Player.TacticianCD = 90
 
 def ApplyScattergun(Player, Enemy):
     AddGauge(Player, 0, 10)
@@ -262,27 +270,30 @@ def QueenAACheck(Player, Enemy):
         Player.DOTList = [] #Reset DOTList
         Player.EffectToRemove.append(QueenAACheck)
 
-Wildfire = MachinistSpell(0, False, 0, Lock, 0, 0, ApplyWildFire, [WildFireRequirement], False)
+
+
+Wildfire = MachinistSpell(1, False, 0, Lock, 0, 0, ApplyWildFire, [WildFireRequirement], False)
 AirAnchor = MachinistSpell(2, True, 0, 2.5, 580, 0, ApplyAirAnchor, [AirAnchorRequirement], True)
 BarrelStabilizer = MachinistSpell(3, False, 0, Lock, 0, 0, ApplyBarrelStabilizer, [BarrelStabilizerRequirement], False)
-HeatBlast = MachinistSpell(7, True, Lock, 1.5, 180, 0, ApplyHeatBlast, [OverheatedRequirement], True)
-Hypercharge = MachinistSpell(8, False, 0, Lock, 0, 0, ApplyHypercharge, [HyperchargeRequirement], False)
-Reassemble = MachinistSpell(9, False, 0, Lock, 0, 0, ApplyReassemble, [ReassembleRequirement], False)
-GaussRound = MachinistSpell(10, False, 0, Lock, 120, 0, ApplyGaussRound, [GaussRoundRequirement], False)
-Ricochet = MachinistSpell(11, False, 0, Lock, 120, 0, ApplyRicochet, [RicochetRequirement], False)
-Drill = MachinistSpell(12, True, 0, 2.5, 580, 0, ApplyDrill, [DrillRequirement], True)
-ChainSaw = MachinistSpell(17, True, 0, 2.5, 580, 0, ApplyChainSaw, [ChainSawRequirement], True)
+HeatBlast = MachinistSpell(4, True, Lock, 1.5, 180, 0, ApplyHeatBlast, [OverheatedRequirement], True)
+Hypercharge = MachinistSpell(5, False, 0, Lock, 0, 0, ApplyHypercharge, [HyperchargeRequirement], False)
+Reassemble = MachinistSpell(6, False, 0, Lock, 0, 0, ApplyReassemble, [ReassembleRequirement], False)
+GaussRound = MachinistSpell(7, False, 0, Lock, 120, 0, ApplyGaussRound, [GaussRoundRequirement], False)
+Ricochet = MachinistSpell(8, False, 0, Lock, 120, 0, ApplyRicochet, [RicochetRequirement], False)
+Drill = MachinistSpell(9, True, 0, 2.5, 580, 0, ApplyDrill, [DrillRequirement], True)
+ChainSaw = MachinistSpell(10, True, 0, 2.5, 580, 0, ApplyChainSaw, [ChainSawRequirement], True)
+Tactician = MachinistSpell(11, False, 0, 0, 0, 0, ApplyTactician, [TacticianRequirement], False)
 #Combo Action
 
-SplitShot = MachinistSpell(4, True, Lock, 2.5, 200, 0, ApplySplitShot, [], True)
-SlugShot = MachinistSpell(5, True, Lock, 2.5, 120, 0, ApplySlugShot, [], True )
-CleanShot = MachinistSpell(6, True, Lock, 2.5, 110, 0, ApplyCleanShot, [], True)
+SplitShot = MachinistSpell(12, True, Lock, 2.5, 200, 0, ApplySplitShot, [], True)
+SlugShot = MachinistSpell(13, True, Lock, 2.5, 120, 0, ApplySlugShot, [], True )
+CleanShot = MachinistSpell(14, True, Lock, 2.5, 110, 0, ApplyCleanShot, [], True)
 
 
 #AOE GCD
-AutoCrossbow = MachinistSpell(1, True, 0, 1.5, 140, 0, empty, [OverheatedRequirement], True)
-Scattergun = MachinistSpell(1, True, 0, 2.5, 150, 0, ApplyScattergun, [], True)
-Bioblaster = MachinistSpell(1, True, 0, 0, 50, 0, ApplyBioblaster, [DrillRequirement], True) #Shares CD with Drill
+AutoCrossbow = MachinistSpell(15, True, 0, 1.5, 140, 0, empty, [OverheatedRequirement], True)
+Scattergun = MachinistSpell(16, True, 0, 2.5, 150, 0, ApplyScattergun, [], True)
+Bioblaster = MachinistSpell(17, True, 0, 0, 50, 0, ApplyBioblaster, [DrillRequirement], True) #Shares CD with Drill
 BioblasterDOT = DOTSpell(-2, 50, True)
 FlamethrowerDOT = DOTSpell(-3, 80, True)
 def Flamethrower(time):
@@ -300,7 +311,7 @@ def Flamethrower(time):
         Player.DOTList.append(Player.FlamethrowerDOT)
         Player.EffectCDList.append(FlamethrowerDOTCheck)
 
-    return MachinistSpell(1, True, time, time, 0, 0, ApplyFlamethrower, [FlamethrowerRequirement], False)
+    return MachinistSpell(18, True, time, time, 0, 0, ApplyFlamethrower, [FlamethrowerRequirement], False)
 
 #Queen's Ability
 
@@ -311,3 +322,7 @@ Overdrive = MachinistSpell(13, False, 0, Lock, 0, 0, ApplyOverdrive, [], False)
 #These will be casted by the machinist, so they have no damage. Their only effect is to add into Queen's Queue
 Bunker = MachinistSpell(15, True, 0, 2.5, 680, 0, ApplyCollider, [], False)   #Triggered by Overdrive
 Collider = MachinistSpell(16, True, 0 , 2.5, 780, 0, ApplyCollider, [], False)  #Spell Queen will cast
+
+MachinistAbility = {7411 : SplitShot, 7412 : SlugShot, 25788 : ChainSaw, 25768 : Scattergun, 17209 : Hypercharge, 16889 : Tactician, 16502:Overdrive, 16501:Automaton,
+16500 : AirAnchor, 16499 : Bioblaster, 16498:Drill, 16497 : AutoCrossbow, 7418 : Flamethrower, 7414 : BarrelStabilizer, 7413 : CleanShot, 7410 : HeatBlast, 2878 : Wildfire,
+2874 : GaussRound, 2890 : Ricochet }

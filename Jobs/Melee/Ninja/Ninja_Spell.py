@@ -461,3 +461,5 @@ HellfrogMedium = NinjaSpell(35, False, Lock, 0, 160, ApplyBhavacakra, [Bhavacakr
 #buff
 MugBuff = buff(1.05)
 TrickAttackBuff = buff(1.1)
+
+NinjaAbility = {}

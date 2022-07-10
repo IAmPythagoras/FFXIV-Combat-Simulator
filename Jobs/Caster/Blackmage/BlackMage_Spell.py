@@ -5,7 +5,7 @@ import copy
 import math
 
 from Jobs.Tank.Paladin.Paladin_Spell import ApplyFastBlade
-Lock = 0.75
+Lock = 0
 #Requirement
 
 def ManawardRequirement(Player, Spell):
@@ -347,6 +347,9 @@ def Thunder4DOTCheck(Player, Enemy):
 
 #GCD
 
+def ApplyFire4(Player, Enemy):
+    input("Applying fire4 at : " + str(Player.CurrentFight.TimeStamp))
+
 #Fire Spell
 Fire1 = BLMSpell(1, True, 2.5, 2.5, 180, 800, True, False, ApplyFire1, [ManaRequirement])
 Fire2 = BLMSpell(2, True, 3, 2.5, 100, 1500, True, False, ApplyFire3, [ManaRequirement]) #Same effect as Fire 3
@@ -391,3 +394,9 @@ Manaward = BLMSpell(28, False, 0, 0, 0, 0, False, False, ApplyManaward, [Manawar
 
 #buff
 Enochian = buff(1.2)
+
+
+#All BlackMage abilities with their id in a dictionnary
+
+BlackMageAbility = {141 : Fire1, 142 : Blizzard1, 147 : Fire2, 149 : Transpose, 152 : Fire3,155 :  AetherialManipulation, 156 :  Scathe,157 : Manaward, 153 : Thunder3, 154 : Blizzard3, 158 : Manafront, 159 : Freeze, 162 : Flare, 3573 : LeyLines, 3574 : SharpCast, 
+3576 : Blizzard4, 3577 : Fire4, 7419 : BetweenTheLine, 7420 : Thunder4, 7421 : Triplecast, 7422 : Foul, 16505 : Despair, 16506 : UmbralSoul, 16507 : Xenoglossy, 25794 : HighFire, 25795 : HighBlizzard, 25796 : Amplifier, 25797 : Paradox}

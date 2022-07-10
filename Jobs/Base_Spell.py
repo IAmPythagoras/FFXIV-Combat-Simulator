@@ -34,8 +34,8 @@ class Spell:
     def Cast(self, player, Enemy):
         #This function will cast the spell given by the Fight, it will apply whatever effects it has and do its potency
 
-        ##print("Begining Cast of : " + str(self.id))
-        ##input("Time stamp is : " + str(player.CurrentFight.TimeStamp))
+        #print("Begining Cast of : " + str(self.id))
+        #input("Time stamp is : " + str(player.CurrentFight.TimeStamp))
 
         tempSpell = copy.deepcopy(self)
         #Creating a tempSpell which will have its values changed according that what effect
@@ -68,9 +68,8 @@ class Spell:
                 ##input("timeleft : " + str(timeLeft))
                 #Will check if timeLeft is within a margin, so we will just wait for it to come
                 #timeLeft is the remaining time before the spell is available
-                if timeLeft <= 1 and timeLeft > 0: #Limit of waiting for 1 sec
-                    #input("Waiting for " + str(timeLeft))
-                    tempSpell = WaitAbility(timeLeft)
+                if timeLeft <= 5 and timeLeft > 0: #Limit of waiting for 1 sec
+                    tempSpell = WaitAbility(timeLeft + 0.01)
                     player.ActionSet.insert(player.NextSpell, tempSpell)
                     return tempSpell #Makes the character wait
                     #Might remove some stuff tho, might have to check into that (for when effects are applied)
@@ -82,17 +81,16 @@ class Spell:
                 print("The timestamp is : " + str(player.CurrentFight.TimeStamp))
                 raise FailedToCast("Failed to cast the spell")
         #Will make sure CastTime is at least Lock
-        if tempSpell.id > 0 and tempSpell.CastTime < Lock : tempSpell.CastTime = 0.5 #id < 0 are special abilities like DOT, so we do not want them to be affected by that
-            
+        #if tempSpell.id > 0 and tempSpell.CastTime < Lock : tempSpell.CastTime = 0.5 #id < 0 are special abilities like DOT, so we do not want them to be affected by that
         return tempSpell
-
         #Will put casting spell in player, and do damage/effect once the casting time is over
 
 
     def CastFinal(self, player, Enemy):
         ##print("##################################")
         ##print("Potency of spell: " + str(self.Potency))
-        ##print("Spell has finally been cast: " + str(self.id))
+        #print("Spell is casted: " + str(self.id))
+        #input("timestamp : " + str(player.CurrentFight.TimeStamp) )
 
         
         for Effect in self.Effect:
@@ -109,7 +107,7 @@ class Spell:
         elif isinstance(self, Auto_Attack):
             type = 3   
         
-        if self.Potency != 0 : minDamage,Damage= ComputeDamage(player, self.Potency, Enemy, self.DPSBonus, type)    #Damage computation
+        if self.Potency != 0 : minDamage,Damage= ComputeDamage(player, self.Potency, Enemy, self.DPSBonus, type, self)    #Damage computation
         else: minDamage, Damage = 0,0
         ##input("Damage : " + str(Damage))
         ##input("Damage from v1.0 " + str(ComputeDamageV2(player, self.Potency, 1, 1)))
@@ -159,7 +157,7 @@ def ManaRequirement(player, Spell):
     if player.Mana >= Spell.ManaCost :
         player.Mana -= Spell.ManaCost   #ManaRequirement is the only Requirement that actually removes Ressources
         return True, -1
-    return False, -1
+    return True, -1
 
 def empty(Player, Enemy):
     pass
@@ -188,6 +186,15 @@ class DOTSpell(Spell):
         #Note that here Potency is the potency of the dot, not of the ability
         self.DOTTimer = 0   #This represents the timer of the dot, and it will apply at each 3 seconds
         self.isPhysical = isPhysical #True if physical dot, false if magical dot
+
+        #This part will keep in memory the buffs when the DOT is applied.
+        self.CritBonus = 0
+        self.DHBonus = 0
+        self.MultBonus = []
+        self.onceThroughFlag = False #This flag will be set to True once the DOT damage has been through damage computation once
+        #so we can snapshot the buffs only once
+        #Note that AAs do not snapshot buffs, but in the code they will still have these fields
+
     def CheckDOT(self, Player, Enemy, TimeUnit):
         ##print("The dot Timer is :  " + str(self.DOTTimer))
         if(self.DOTTimer <= 0):

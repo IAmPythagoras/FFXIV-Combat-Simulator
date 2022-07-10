@@ -230,3 +230,5 @@ HeartOfCorundum = GunbreakerSpell(26, False, 0, 0, ApplyHeartOfCorundum, [HeartO
 
 #buff
 NoMercyBuff = buff(1.2)
+
+GunbreakerAbility = {}

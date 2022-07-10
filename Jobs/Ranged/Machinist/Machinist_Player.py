@@ -26,6 +26,7 @@ class Machinist(Ranged):
         self.RicochetCD = 0
         self.AutomatonQueenCD = 0
         self.FlamethrowerCD = 0
+        self.TacticianCD = 0
 
         #Timer
         self.WildFireTimer = 0
@@ -68,6 +69,7 @@ class Machinist(Ranged):
         if (self.RicochetCD > 0) : self.RicochetCD = max(0,self.RicochetCD - time)
         if (self.AutomatonQueenCD > 0) : self.AutomatonQueenCD = max(0,self.AutomatonQueenCD - time)
         if (self.FlamethrowerCD > 0) : self.FlamethrowerCD = max(0,self.FlamethrowerCD - time)
+        if (self.TacticianCD > 0) : self.TacticianCD = max(0,self.TacticianCD - time)
 
     def updateTimer(self, time):
         super().updateTimer(time)

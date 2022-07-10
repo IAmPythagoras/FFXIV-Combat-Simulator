@@ -331,3 +331,4 @@ def DragonSight(Target):
     return DragoonSpell(26, False, 0, 0, ApplyDragonSight, [DragonSightRequirement], False)
 
 
+DragoonAbility = {}

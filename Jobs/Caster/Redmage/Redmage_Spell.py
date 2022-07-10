@@ -3,6 +3,7 @@
 #########################################
 from Jobs.Base_Spell import ManaRequirement, buff, empty
 from Jobs.Caster.Caster_Spell import RedmageSpell, SwiftcastEffect
+from Jobs.Caster.Redmage.Redmage_Player import Redmage
 Lock = 0.75
 #Special
 
@@ -60,6 +61,9 @@ def MagickBarrierRequirement(Player, Spell):
     return Player.MagickBarrierCD <= 0, Player.MagickBarrierCD
 
 #Apply
+
+def ApplyEnchantedMoulinet(Player, Enemy):
+    Player.ManaStack = min(3, Player.ManaStack + 1) #Max of 3 stacks
 
 def ApplyMagickBarrier(Player, Enemy):
     Player.MagickBarrierCD = 120
@@ -275,17 +279,19 @@ Impact = RedmageSpell(6, True, 5, 2.5, 210, 400, ApplyImpact, [ManaRequirement],
 Riposte = RedmageSpell(7, True, 0, 2.5, 130, 0, ApplyRiposte, [], 0, 0)
 Zwerchhau = RedmageSpell(8, True, 0, 2.5, 100, 0, empty, [], 0, 0)
 Redoublement = RedmageSpell(9, True, 0, 2.5, 100, 0, empty, [], 0, 0)
+Reprise = RedmageSpell(28, True, 0, 2.5, 100, 0, empty, [], 0, 0)
 #Enchanted
 EnchantedRiposte = RedmageSpell(10, True, 0, 1.5, 220, 0, ApplyEnchantedRiposte, [RDMManaRequirement], 20,20)
 EnchantedZwerchhau = RedmageSpell(11, True, 0, 1.5, 100, 0, ApplyZwerchhau, [RDMManaRequirement], 15, 15)
 EnchantedRedoublement = RedmageSpell(12, True, 0, 2.2, 100, 0, ApplyRedoublement, [RDMManaRequirement], 15, 15)
+EnchantedReprise = RedmageSpell(29, True, 0, 2.5, 330, 0, empty, [RDMManaRequirement], 5, 5)
 Verholy = RedmageSpell(13, True, 0, 2.5, 580, 400, ApplyVerholy, [ManaRequirement, VerholyRequirement], 0, 0)
 Verflare = RedmageSpell(14, True, 0, 2.5, 580, 400, ApplyVerflare, [ManaRequirement, VerholyRequirement], 0, 0) #Same Requirement as Verholy, just need 3 Mana stacks
 Scorch = RedmageSpell(15, True, 0, 2.5, 680, 400, ApplyScorch, [ManaRequirement, ScorchRequirement], 0, 0)
 Resolution = RedmageSpell(16, True, 0, 2.5, 750, 400, ApplyResolution, [ManaRequirement, ResolutionRequirement], 0, 0)
 #AOE Melee Action
 Moulinet = RedmageSpell(17, True, 0, 1.5, 130, 0, ApplyMoulinet, [RDMManaRequirement], 20, 20)
-
+EnchantedMoulinet = RedmageSpell(30, True, 0, 1.5, 130, 0, ApplyEnchantedMoulinet, [RDMManaRequirement], 20, 20)
 #For now combo action cannot be cancelled by doing something else
 Manafication = RedmageSpell(18, False, 0, Lock, 0, 0, ApplyManafication, [ManaficationRequirement], 0, 0)
 Embolden = RedmageSpell(19, False, 0, Lock, 0, 0, ApplyEmbolden, [EmboldenRequirement], 0, 0)
@@ -300,5 +306,13 @@ MagickBarrier = RedmageSpell(25, False, 0, 0, 0, 0, ApplyMagickBarrier, [MagickB
 Verraise = RedmageSpell(26, True,10, 2.5, 0,2400, empty, [RDMManaRequirement], 0, 0)
 Vercure = RedmageSpell(27, True, 2, 2.5, 0, 500, empty, [RDMManaRequirement], 0, 0)
 
+
+
 #buff
 EmboldenBuff = buff(1.05)
+
+#ActionList
+RedMageAbility = {7504 : Riposte, 7506 : Corps, 7507 : Verareo, 7510 : Verfire, 7511 : Verstone, 7512 : Zwerchhau, 7513 : Moulinet, 7514 : Vercure, 7515 : Engagement,
+7516 : Redoublement, 7517 : Fleche, 7518 : Acceleration, 7519 : Contre, 7520 : Embolden, 7521 : Manafication , 7523 : Verraise, 7524 : Jolt, 25855 : Verthunder, 25856 : Verareo, 
+16526 : Impact, 16527 : Engagement, 16529 : Reprise,  25857 : MagickBarrier, 7527 : EnchantedRiposte, 7528:EnchantedZwerchhau,7529:EnchantedRedoublement,  7530:EnchantedMoulinet, 16528:EnchantedReprise,
+25858 : Resolution, 7526 : Verholy, 7525 : Verflare, 16530 : Scorch}

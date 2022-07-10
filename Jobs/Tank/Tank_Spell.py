@@ -138,3 +138,5 @@ Shirk = TankSpell(0, False, Lock, 0, 0, 0, ApplyShirk, [ShirkRequirement])
 BigMit = TankSpell(0, False, 0, 0, 0, 0, ApplyBigMit, [BigMitRequirement]) #30% mit
 TankStance = TankSpell(0, False, 0, 0, 0, 0, ApplyTankStance, [TankStanceRequirement]) #Turn on Tank Stance
 TurnOffTankStance = TankSpell(0, False, 0, 0, 0, 0, ApplyTurnOffTankStance, [])#Turn off Tank Stance
+
+TankAbility = {}

@@ -30,3 +30,5 @@ def CoeurlFormRequirement(Player, Spell):
 
 def RaptorFormRequirement(Player, Spell):
     return Player.PerfectBalance > 0 or Player.Bootshine or Player.ArmOfTheDestroyer or Player.DragonKick or Player.ShadowOfTheDestroyer
+
+MonkAbility = {}

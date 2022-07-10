@@ -174,3 +174,5 @@ Kerachole = SageSpell(18, False, 0, 0, 0, 0, ApplyKerachole, [KeracholeRequireme
 Icarus = SageSpell(19, False, 0, 0, 0, 0, ApplyIcarus, [IcarusRequirement])
 Soteria = SageSpell(20, False, 0, 0, 0, 0, ApplySoteria, [SoteriaRequirement])
 Druochole = SageSpell(21, False, 0, 0, 0, 0, ApplyDruochole, [AddersgallRequirement])
+
+SageAbility = {}

@@ -60,3 +60,5 @@ def ApplyRescue(Player, Enemy):
 Repose = HealerSpell(0, True, 2.5, 2.5, 0, 600, empty, [ManaRequirement])
 Esuna = HealerSpell(0, True, 1, 2.5, 0, 0, 400, [ManaRequirement])
 Rescue = HealerSpell(0, False, 0, 0, 0, 0, ApplyRescue, [RescueRequirement])
+
+HealerAbility = {}

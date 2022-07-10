@@ -11,7 +11,7 @@ class Caster(Player):
         #CD
         self.SwiftcastCD = 0
         self.LucidDreamingCD = 0
-        self.SureCastCD = 0
+        self.SurecastCD = 0
         self.AddleCD = 0
 
         #Timer
@@ -26,7 +26,7 @@ class Caster(Player):
     def updateCD(self,time):
         if (self.SwiftcastCD > 0) : self.SwiftcastCD = max(0,self.SwiftcastCD - time)
         if (self.LucidDreamingCD > 0) : self.LucidDreamingCD = max(0,self.LucidDreamingCD - time)
-        if (self.SureCastCD > 0) : self.SureCastCD = max(0,self.SureCastCD - time)
+        if (self.SurecastCD > 0) : self.SurecastCD = max(0,self.SurecastCD - time)
         if (self.AddleCD > 0) : self.AddleCD = max(0,self.AddleCD - time)
 
     def updateTimer(self, time):

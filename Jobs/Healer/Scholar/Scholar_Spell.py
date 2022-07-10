@@ -2,6 +2,7 @@
 ########## SCHOLAR PLAYER ###############
 #########################################
 
+from ast import Add
 from Jobs.Healer.Healer_Spell import ScholarSpell
 
 from Jobs.Base_Spell import DOTSpell, empty, ManaRequirement
@@ -178,20 +179,18 @@ Broil = ScholarSpell(1, True, 1.5, 2.5, 295,  400, empty, [ManaRequirement])
 Ruin = ScholarSpell(2, True, 0, 2.5, 220,  300, empty, [ManaRequirement])
 Biolysis = ScholarSpell(3, True, 0, 2.5, 0, 300, ApplyBiolysis, [ManaRequirement])
 BiolysisDOT = DOTSpell(4, 70, False)
-ArtOfWard = ScholarSpell(5, True, 0, 2.5, 165, 400, empty, [ManaRequirement])#AOE
+ArtOfWar = ScholarSpell(5, True, 0, 2.5, 165, 400, empty, [ManaRequirement])#AOE
 
 #HealGCD
 Succor = ScholarSpell(6, True, 2, 2.5, 0, 1000, ApplyAdloquium, [AdloquiumRequirement]) ##This action has apply and requirement because of recitation
-Adloduium = ScholarSpell(7, True, 2, 2.5, 0, 1000, ApplyAdloquium, [AdloquiumRequirement]) #This action has apply and requirement because of recitation
+Adloquium = ScholarSpell(7, True, 2, 2.5, 0, 1000, ApplyAdloquium, [AdloquiumRequirement]) #This action has apply and requirement because of recitation
 Physick = ScholarSpell(8, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement])
-
+SummonEos = ScholarSpell(29, True, 1.5, 2.5, 0, 200, empty, [ManaRequirement])
 #Damage oGCD
 ChainStratagem = ScholarSpell(9, False, 0, Lock, 0, 0, ApplyChainStratagem, [ChainStratagemRequirement])
 EnergyDrain = ScholarSpell(10, False, 0, Lock, 100, 0, ApplyEnergyDrain, [AetherStackRequirement])
 Aetherflow = ScholarSpell(11, False, 0, Lock, 0, 0, ApplyAetherflow, [AetherflowRequirement])
 Dissipation = ScholarSpell(12, False, 0, Lock, 0, 0, ApplyDissipation, [DissipationRequirement])
-
-
 #Heal oGCD
 Expedient = ScholarSpell(13, False, 0, 0, 0, 0, ApplyExpedient, [ExpedientRequirement])
 Protraction = ScholarSpell(14, False, 0, 0, 0, 0, ApplyProtraction, [ProtractionRequirement])
@@ -214,3 +213,6 @@ DissolveUnion = ScholarSpell(26, False, 0, 0, 0, 0, empty, [])
 FeyIllumination = ScholarSpell(27, False, 0, 0, 0, 0, ApplyFeyIllumination, [FeyIlluminationRequirement])
 WhisperingDawn = ScholarSpell(28, False, 0, 0, 0, 0, ApplyWhisperingDawn, [WhisperingDawnRequirement])
 
+ScholarAbility = {166 : Aetherflow, 167 : EnergyDrain, 185 : Adloquium,  186 : Succor, 188 : SacredSoil, 189 : Lustrate, 190 : Physick, 3583 : Indomitability, 3585 : DeploymentTactic, 3586 : EmergencyTactic
+, 3587 : Dissipation, 7434 : Excogitation, 7436 : ChainStratagem, 7437 : Aetherpact, 16537 : WhisperingDawn, 16538 : FeyIllumination, 16542 : Recitation, 16542 : FeyBlessing, 16545 : SummonSeraph,
+16545 : SummonEos, 17216 : SummonEos, 25868 : Expedient, 25867 : Protraction, 25866 : ArtOfWar, 25865 : Broil, 17870 : Ruin, 17865 : Biolysis }

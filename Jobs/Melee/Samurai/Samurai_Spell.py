@@ -421,3 +421,5 @@ def Meditate(time):
         Player.MedidateCD = 60
 
     return SamuraiSpell(31, False, time, time, 0, ApplyMedidate, [MeditateRequirement], 0)
+
+SamuraiAbility = {}
