@@ -302,15 +302,16 @@ class Fight:
             while(self.TimeStamp <= TimeLimit):
 
                 for player in self.PlayerList:
-                    #print("MainStat : " + str(player.Stat["MainStat"]))
+                    if player.ActionSet[player.NextSpell] == None : player.TrueLock = True #Locking the player if None
                     #Will first Check if the NextSpell is a GCD or not
                     if(not player.TrueLock):#If it is we do nothing
                         if(player.ActionSet[player.NextSpell].GCD):
                             #Is a GCD
-
                             #Have to check if the player can cast the spell
                             #So check if Animation Lock, if Casting or if GCDLock
                             if(not (player.oGCDLock or player.GCDLock or player.Casting)):
+                                if isinstance(player, Bard): input("Bard casts : " + str(player.ActionSet[player.NextSpell].id))
+
                                 player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)#Cast the spell
                                 #Locking the player
                                 #print(Player.CastingSpell.CastTime)

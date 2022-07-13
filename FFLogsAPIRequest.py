@@ -81,16 +81,21 @@ def getAccessToken(conn, client_id, client_secret):
 
 def getAbilityList(client_id, client_secret):
 
-    def lookup_abilityID(actionID, targetID, sourceID, targetEnemy):
+    def lookup_abilityID(actionID, targetID, sourceID, targetEnemy, targetSelf):
         #Will first get the job of the sourceID so we know in what dictionnary to search for
 
         def lookup(JobDict, ClassDict):
             if not (int(actionID) in JobDict.keys()): #if not in, then the action is in the ClassDict
                 if not (int(actionID) in ClassDict.keys()):
+                    return WaitAbility(1) #Currently at none so we can debug
                     raise ActionNotFound #Did not find action
                 return ClassDict[int(actionID)] #Class actions do not have the possibility to target other allies, so we assume itll target an enemy
-            if targetEnemy : return JobDict[int(actionID)]
-            else: return JobDict[int(actionID)](player_list[str(targetID)]["job_object"]) #Otherwise it returns what
+            
+            if targetEnemy or targetSelf or targetID == -1: 
+                return JobDict[int(actionID)]
+            else: 
+                input("sourceID : " + str(sourceID) + "targetID " + str(targetID) + "actionID : " + str(actionID))
+                return JobDict[int(actionID)](player_list[str(targetID)]["job_object"]) #Otherwise it returns what
             #we assume to be a function with one input as the object of the target
 
         job_name = player_list[str(sourceID)]["job"] #getting job name
@@ -196,7 +201,6 @@ def getAbilityList(client_id, client_secret):
                 elif job_name == "Dancer" : job_object = Dancer(2.5, [], [], [], None, {})
                 elif job_name == "Machinist" : job_object = Machinist(2.5, [], [], [], None, {})
                 elif job_name == "Bard" : job_object = Bard(2.5, [], [], [], None, {})
-                elif job_name == "Summoner" : job_object = Summoner(2.5, [], [], [], None, {})
                 #melee
                 elif job_name == "Reaper" : job_object = Reaper(2.5, [], [], [], None, {})
                 #elif job_name == "Monk" : job_object = Machinist(2.5, [], [], [], None, {}) #Monk is not yet implemented
@@ -206,13 +210,12 @@ def getAbilityList(client_id, client_secret):
                 
                 
 
-            player_list[str(player["id"])] = {"name" : player["name"], "job" : player["type"], "job_object" : job_object} #Adding new Key
+            player_list[str(player["id"])] = {"name" : player["name"], "job" : job_name, "job_object" : job_object} #Adding new Key
             #We can access the information using the player's id
-
 
     #Second request will fetch all the abilities done in the fight and make an array associated with each player's ID
 
-    payload = "{\"query\":\"query trio{\\n    reportData {\\n        report(code: \\\"RQwfx3vATFWGahJc\\\") {\\n\\t\\t\\t\\tendTime,\\n            events(\\n\\t\\t\\t\\t\\t\\t\\tfightIDs:8,\\n\\t\\t\\t\\t\\t\\t\\tendTime:99999999999999,\\n\\t\\t\\t\\t\\t\\t\\tincludeResources:false,\\n\\t\\t\\t\\t\\t\\t\\tfilterExpression:\\\"type = 'cast' OR type = 'begincast' OR type = 'calculateddamage' OR type = 'applybuff or type = 'calculatedheal''\\\",\\n\\t\\t\\t\\t\\t\\t\\tlimit:10000\\n\\t\\t\\t\\t\\t\\t\\t\\n\\t\\t\\t\\t\\t\\t){data}\\n        }\\n\\n    }\\n}\",\"operationName\":\"trio\"}"
+    payload = "{\"query\":\"query trio{\\n    reportData {\\n        report(code: \\\"RQwfx3vATFWGahJc\\\") {\\n\\t\\t\\t\\tendTime,\\n            events(\\n\\t\\t\\t\\t\\t\\t\\tfightIDs:8,\\n\\t\\t\\t\\t\\t\\t\\tendTime:99999999999999,\\n\\t\\t\\t\\t\\t\\t\\tincludeResources:false,\\n\\t\\t\\t\\t\\t\\t\\tfilterExpression:\\\"type = 'cast' OR type = 'begincast' OR type = 'calculateddamage' OR type = 'applybuff' or type = 'calculatedheal'\\\",\\n\\t\\t\\t\\t\\t\\t\\tlimit:10000\\n\\t\\t\\t\\t\\t\\t\\t\\n\\t\\t\\t\\t\\t\\t){data}\\n        }\\n\\n    }\\n}\",\"operationName\":\"trio\"}"
     conn.request("POST", "/api/v2/client", payload, headers)
 
     res = conn.getresponse()
@@ -220,15 +223,16 @@ def getAbilityList(client_id, client_secret):
     data_json = json.loads(data.decode("utf-8"))
 
     action_list = data_json["data"]["reportData"]["report"]["events"]["data"] #Array of all actions done
-
     class action_object():
-        def __init__(self, action_id, timestamp, type, targetID):
+        def __init__(self, action_id, timestamp, type, targetID, sourceID):
             self.action_id = action_id #actionID
             self.timestamp = timestamp #relative timestamp
             self.type = type
             self.targetID = targetID
             self.targetEnemy = targetID in enemy_list #if the targetID is one of the enemy ID, then we are targeting an enemy.
+            self.targetSelf = targetID == sourceID #if the action targets the player casting it
             #If we are not, we will have to do some more stuff later on.
+
 
         def __str__(self):
             return "action_id : " + str(self.action_id) + " type : " + self.type + " timestamp : " + str(self.timestamp/1000)
@@ -246,7 +250,7 @@ def getAbilityList(client_id, client_secret):
         if str(action["sourceID"]) in action_dict.keys(): #Making sure the sourceID is a player
             #input("hey")
             rel_timestamp = action["timestamp"] - relative_timestamp_zero
-            action_dict[str(action["sourceID"])] += [action_object(action["abilityGameID"], rel_timestamp, action["type"], action["targetID"])]#Will be assumed to be damaging spell
+            action_dict[str(action["sourceID"])] += [action_object(action["abilityGameID"], rel_timestamp, action["type"], action["targetID"], action["sourceID"])]#Will be assumed to be damaging spell
 
     #Will now go through each player and build their action set
     for player in action_dict:
@@ -272,8 +276,8 @@ def getAbilityList(client_id, client_secret):
                 wait_flag = False #reset
                 wait_timestamp = 0 #reset
 
-            next_action = lookup_abilityID(action.action_id, action.targetID, player) #returns the action object of the specified spell NOT YET IMPLEMENTED
-
+            next_action = lookup_abilityID(action.action_id, action.targetID, player, action.targetEnemy, action.targetSelf) #returns the action object of the specified spell
+            
             if is_heal:
                 #If this flag is set to true, we wait until we do not have type = 'calculatedheal'
                 if type != 'calculatedheal':
@@ -328,15 +332,16 @@ def getAbilityList(client_id, client_secret):
                             player_action_list.append(next_action)
 
         action_dict[player] = player_action_list
-
-    return action_dict["1"]
-"""
+    return action_dict, player_list
+    #action_dict is a dictionnary with a list of actions done by each player. Accessible by using their IDs
+    #player_list is a dictionnary with relevant information to all players. Accessible by using their IDs
 #Function to test timing
 def test(client_id,client_secret):
     conn = http.client.HTTPSConnection("www.fflogs.com")
     access_token = getAccessToken(conn, client_id, client_secret)
+    actionID = 16495
 
-    payload = "{\"query\":\"query trio{\\n\\treportData {\\n\\t\\treport(code: \\\"RQwfx3vATFWGahJc\\\") {\\n\\t\\t\\ttitle,\\n\\t\\t\\tendTime,\\n\\t\\t\\tevents(\\n\\t\\t\\t\\tendTime:1651557651925,\\n\\t\\t\\t\\tfightIDs:8,\\n\\t\\t\\t\\tincludeResources: false,\\n\\t\\t\\t\\tfilterExpression:\\\"ability.ID = 25797\\\"\\n\\t\\t\\t){data\\n\\t\\t\\t}\\n\\t\\t\\t\\n\\t\\t}\\n\\t}\\n}\",\"operationName\":\"trio\"}"
+    payload = "{\"query\":\"query trio{\\n\\treportData {\\n\\t\\treport(code: \\\"RQwfx3vATFWGahJc\\\") {\\n\\t\\t\\ttitle,\\n\\t\\t\\tendTime,\\n\\t\\t\\tevents(\\n\\t\\t\\t\\tendTime:1651557651925,\\n\\t\\t\\t\\tfightIDs:8,\\n\\t\\t\\t\\tincludeResources: false,\\n\\t\\t\\t\\tfilterExpression:\\\"ability.ID = " + str(actionID) +"\\\"\\n\\t\\t\\t){data\\n\\t\\t\\t}\\n\\t\\t\\t\\n\\t\\t}\\n\\t}\\n}\",\"operationName\":\"trio\"}"
     
     headers = {
         'Content-Type': "application/json",
@@ -366,7 +371,8 @@ def test(client_id,client_secret):
              wait_cast = False
         elif wait_calculated and event["type"] == "calculateddamage":
              wait_calculated = False
-"""
-#client_id = "" #Put your own client_id and client_secret obtained from FFLogs
-#client_secret = ""
-#test(client_id, client_secret)
+
+client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
+client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE"
+test(client_id, client_secret)
+#getAbilityList(client_id, client_secret)

@@ -116,8 +116,6 @@ BRDOpener = [WaitAbility(19.5), Potion, Stormbite, WandererMinuet, RagingStrike,
 DNCOpener = [ClosedPosition(NINPlayer, False),WaitAbility(4.5), StandardStep, Emboite, Entrechat, WaitAbility(11.74),Potion, StandardFinish, TechnicalStep, Emboite, Entrechat, Jete, Pirouette, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Emboite, Entrechat, StandardFinish]
 MCHOpener = [Ranged_AA,WaitAbility(15), Reassemble, WaitAbility(2.25), Potion, WaitAbility(1.5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, Reassemble, WaitAbility(1), Wildfire, ChainSaw, Automaton,WaitAbility(1), Hypercharge, HeatBlast, Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet, Drill]
 
-client_id = "" #Put your own client_id and client_secret obtained from FFLogs
-client_secret = ""
 #BLMPlayer.ActionSet = getAbilityList(client_id, client_secret)
 BLMPlayer.ActionSet = BLMOpener
 SCHPlayer.ActionSet = SCHOpener
@@ -136,9 +134,71 @@ BRDPlayer.ActionSet = BRDOpener
 DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 RPRPlayer.ActionSet = RPROpener
-#print(PLDPlayer, PLDPlayer2)
-Event.PlayerList = [BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
+Event.PlayerList = [] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
+
+
+client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
+client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE"
+action_dict, player_dict = getAbilityList(client_id, client_secret)
+
+for playerID in player_dict:
+    player_dict[playerID]["job_object"].ActionSet = action_dict[playerID]
+    player_dict[playerID]["job_object"].CurrentFight = Event
+    job_name = player_dict[playerID]["job"] #getting job name
+
+    if job_name == "Sage" : player_dict[playerID]["job_object"].Stat = BLMStat
+    elif job_name == "Scholar" : player_dict[playerID]["job_object"].Stat = SCHStat
+    elif job_name == "WhiteMage" : player_dict[playerID]["job_object"].Stat = WHMStat
+    elif job_name == "Astrologian" : player_dict[playerID]["job_object"].Stat = ASTStat
+    elif job_name == "Warrior" : 
+        player_dict[playerID]["job_object"].Stat = WARStat
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+    elif job_name == "DarkKnight" : 
+        player_dict[playerID]["job_object"].Stat = DRKStat
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+    elif job_name == "Paladin" : 
+        player_dict[playerID]["job_object"].Stat = PLDStat
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+    elif job_name == "Gunbreaker" : 
+        player_dict[playerID]["job_object"].Stat = GNBStat
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+    #Caster
+    elif job_name == "BlackMage" : 
+        player_dict[playerID]["job_object"].Stat = BLMCRITStat
+        player_dict[playerID]["job_object"].EffectList = [EnochianEffect, ElementalEffect]
+    elif job_name == "RedMage" : 
+        player_dict[playerID]["job_object"].Stat = RDMStat
+        player_dict[playerID]["job_object"].EffectList = [DualCastEffect]
+    elif job_name == "Summoner" : player_dict[playerID]["job_object"].Stat = SMNStat
+    #Ranged
+    elif job_name == "Dancer" : 
+        player_dict[playerID]["job_object"].Stat = DNCStat
+        player_dict[playerID]["job_object"].EffectList = [EspritEffect]
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Ranged_AA)
+    elif job_name == "Machinist" : 
+        player_dict[playerID]["job_object"].Stat = MCHStat
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Ranged_AA)
+    elif job_name == "Bard" : 
+        player_dict[playerID]["job_object"].Stat = BRDStat
+        player_dict[playerID]["job_object"].EffectList = [SongEffect]
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Ranged_AA)
+    #melee
+    elif job_name == "Reaper" : 
+        player_dict[playerID]["job_object"].Stat = RPRStat
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+    #elif job_name == "Monk" : job_object = Machinist(2.5, [], [], [], None, {}) #Monk is not yet implemented
+    elif job_name == "Dragoon" : 
+        player_dict[playerID]["job_object"].Stat = DRGStat
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+    elif job_name == "Ninja" : 
+        player_dict[playerID]["job_object"].Stat = NINStat
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+    elif job_name == "Samurai" : 
+        player_dict[playerID]["job_object"].Stat = SAMStat
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+
+    Event.PlayerList.append(player_dict[playerID]["job_object"])
 
 Event.ShowGraph = True
-Event.SimulateFight(0.01, 1000, 20)
+Event.SimulateFight(0.01, 1000, 0)
 
