@@ -34,8 +34,9 @@ class Spell:
     def Cast(self, player, Enemy):
         #This function will cast the spell given by the Fight, it will apply whatever effects it has and do its potency
 
-        #print("Begining Cast of : " + str(self.id))
-        #input("Time stamp is : " + str(player.CurrentFight.TimeStamp))
+        #if self.GCD: 
+        #    print("Spell is casted: " + str(self.id))
+        #    input("timestamp : " + str(player.CurrentFight.TimeStamp) )
 
         tempSpell = copy.deepcopy(self)
         #Creating a tempSpell which will have its values changed according that what effect
@@ -89,8 +90,8 @@ class Spell:
     def CastFinal(self, player, Enemy):
         ##print("##################################")
         ##print("Potency of spell: " + str(self.Potency))
-        #print("Spell is casted: " + str(self.id))
-        #input("timestamp : " + str(player.CurrentFight.TimeStamp) )
+        #if self.GCD: 
+        #    input("Recast is  "+ str(self.RecastTime))
 
         
         for Effect in self.Effect:
@@ -166,7 +167,7 @@ def WaitAbility(time):
     return Spell(-1, False, time, time, 0, 0, empty, [])
 
 def ApplyPotion(Player, Enemy):
-    Player.Stat["MainStat"] *= 1.1
+    Player.Stat["MainStat"] = min(Player.Stat["MainStat"] * 1.1, Player.Stat["MainStat"] + 189)
 
     Player.PotionTimer = 30
 

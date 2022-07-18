@@ -3,7 +3,7 @@ from Jobs.Melee.Melee_Spell import NinjaSpell
 import copy
 
 from Jobs.Melee.Ninja.Ninja_Player import Shadow
-Lock = 0.75
+Lock = 0.5
 
 
 #Requirement
@@ -123,6 +123,10 @@ def ApplyHide(Player, Enemy):
 
 def ApplyPhantomKamaitachi(Player, Enemy):
     Player.PhantomKamaitachiReady = False
+    #Will give Action to the Shadow
+    Shadow = Player.Shadow
+    Shadow.TrueLock = False #Delocking the shadow
+    Shadow.ActionSet.insert(Shadow.NextSpell + 1, PhantomKamaitachiShadow) #Adding the spell
     Player.AddHuton(10)
     Player.AddNinki(10)
 
@@ -298,14 +302,14 @@ def TenChiJinEffect(Player, Spell):
     ##input(Player.EffectList)
 
 def HutonEffect(Player, Spell):
-    if isinstance(Spell, NinjaSpell) and Spell.Weaponskill : Spell.RecastTime *= 0.85
+    if isinstance(Spell, NinjaSpell) and Spell.Weaponskill and Spell.GCD : Spell.RecastTime *= 0.85
 
 def BunshinEffect(Player, Spell):
-    if isinstance(Spell, NinjaSpell) and Spell.Weaponskill:
+    if isinstance(Spell, NinjaSpell) and Spell.Weaponskill and Spell.id != 8: #We don't want Kamataichi to have bunshin effect
         #Will give Action to the Shadow
         Shadow = Player.Shadow
         Shadow.TrueLock = False #Delocking the shadow
-        Shadow.ActionSet.insert(Shadow.NextSpell + 1, NinjaSpell(35, True, 0, Shadow.GCDTimer, 160, empty, [], True, False)) #Adding the spell
+        Shadow.ActionSet.insert(Shadow.NextSpell + 1, NinjaSpell(35, False, 0, Shadow.GCDTimer, 160, empty, [], True, False)) #Adding the spell
         Player.BunshinStack -= 1
         Player.AddNinki(5)
         if Player.BunshinStack == 0:
@@ -417,7 +421,8 @@ ArmorCrush = NinjaSpell(4, True, Lock, 2.5, 200, empty, [], True, False)
 Huraijin = NinjaSpell(5, True, Lock, 2.5, 200, ApplyHuraijin, [], True, False)
 FleetingRaiju = NinjaSpell(6, True, Lock, 2.5, 560, ApplyFleetingRaiju, [FleetingRaijuRequirement], True, False)
 ThrowingDagger = NinjaSpell(7, True, Lock, 2.5, 120, ApplyThrowingDagger, [], True, False)
-PhantomKamaitachi = NinjaSpell(8, True, Lock, 2.5, 600, ApplyPhantomKamaitachi, [PhantomKamaitachiRequirement], True, False)
+PhantomKamaitachi = NinjaSpell(8, True, Lock, 2.5, 0, ApplyPhantomKamaitachi, [PhantomKamaitachiRequirement], True, False)
+PhantomKamaitachiShadow = NinjaSpell(8, False, 0, 0, 600, empty, [], False, False) #Action done by the shadow
 DeathBlossom = NinjaSpell(33, True, Lock, 2.5, 100, ApplyDeathBlossom, [],True, False )
 HakkeMujinsatsu = NinjaSpell(34, True, Lock, 2.5, 100, empty, [], True, False)
 
@@ -457,7 +462,7 @@ Kassatsu = NinjaSpell(26, False, Lock, 0, 0, ApplyKassatsu,[KassatsuRequirement]
 Bunshin = NinjaSpell(27, False, Lock, 0, 0, ApplyBunshin, [BunshinRequirement], False, False)
 Hide = NinjaSpell(28, True, 0, 0, 0, ApplyHide, [], False, False)
 ShadeShift = NinjaSpell(32, False, Lock, 0, 0, ApplyShadeShift, [ShadeShiftRequirement], False, False)
-HellfrogMedium = NinjaSpell(35, False, Lock, 0, 160, ApplyBhavacakra, [BhavacakraRequirement], False, False)
+HellfrogMedium = NinjaSpell(36, False, Lock, 0, 160, ApplyBhavacakra, [BhavacakraRequirement], False, False)
 #buff
 MugBuff = buff(1.05)
 TrickAttackBuff = buff(1.1)
