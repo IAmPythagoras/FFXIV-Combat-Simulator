@@ -372,7 +372,7 @@ def test(client_id,client_secret):
         elif wait_calculated and event["type"] == "calculateddamage":
              wait_calculated = False
 
-client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
-client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE"
-test(client_id, client_secret)
+#client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
+#client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE"
+#test(client_id, client_secret)
 #getAbilityList(client_id, client_secret)

@@ -210,9 +210,11 @@ def DualCastEffect(Player, Spell):
         #print("Spell satisfies DualCast")
         #print("Spell is : " + str(Spell.id))
         #print("CastTime : " + str(Spell.CastTime))
+        #input("timestmap : " + str(Player.CurrentFight.TimeStamp))
         if Player.DualCast:
             Spell.CastTime = 0 #Insta cast half of the spells, will be put by default for RedMage
             Player.DualCast = False #Remove Dualcast
+            #print("using it")
         else: Player.DualCast = True    #Give Dual cast
 
 def ManaficationEffect(Player, Spell):
@@ -249,7 +251,6 @@ def AccelerationStackCheck(Player, Enemy):
 def EngagementStackCheck(Player, Enemy):
     if Player.EngagementCD <= 0:
         Player.EngagementStack += 1
-
         if Player.EngagementStack == 2:
             Player.EffectToRemove.append(EngagementStackCheck)
         else:

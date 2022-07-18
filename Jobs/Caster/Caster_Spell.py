@@ -69,7 +69,7 @@ def ApplyLucidDreaming(Player, Enemy):
 
 def ApplySwiftcast(Player, Enemy):
     Player.SwiftcastCD = 60
-    Player.EffectList.append(SwiftcastEffect)
+    Player.EffectList.insert(0,SwiftcastEffect)
 
 def ApplySurecast(Player, Enemy):
     Player.SurecastCD = 120

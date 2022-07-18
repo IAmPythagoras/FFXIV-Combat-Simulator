@@ -302,7 +302,7 @@ class Fight:
             while(self.TimeStamp <= TimeLimit):
 
                 for player in self.PlayerList:
-                    if player.ActionSet[player.NextSpell] == None : player.TrueLock = True #Locking the player if None
+                    #if player.ActionSet[player.NextSpell] == None : player.TrueLock = True #Locking the player if None
                     #Will first Check if the NextSpell is a GCD or not
                     if(not player.TrueLock):#If it is we do nothing
                         if(player.ActionSet[player.NextSpell].GCD):

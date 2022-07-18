@@ -56,6 +56,10 @@ class Redmage(Caster):
         if (self.AccelerationCD > 0) : self.AccelerationCD = max(0,self.AccelerationCD - time)
         if (self.FlecheCD > 0) : self.FlecheCD = max(0,self.FlecheCD - time)
         if (self.ContreCD > 0) : self.ContreCD = max(0,self.ContreCD - time)
+        if (self.EngagementCD > 0) : self.EngagementCD = max(0,self.EngagementCD - time)
+        if (self.CorpsCD > 0) : self.CorpsCD = max(0,self.CorpsCD - time)
+        if (self.MagickBarrierCD > 0) : self.MagickBarrierCD = max(0,self.MagickBarrierCD - time)
+
 
     def updateTimer(self, time):
         super().updateTimer(time)

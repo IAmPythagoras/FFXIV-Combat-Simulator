@@ -63,11 +63,6 @@ class Player:
         self.DHRate = 0
 
 
-
-
-
-
-
     def updateTimer(self, time):
         ##input("Update called at : " + str(self.CurrentFight.TimeStamp))
         if (self.GCDLockTimer > 0) : self.GCDLockTimer = max(0, self.GCDLockTimer-time)
