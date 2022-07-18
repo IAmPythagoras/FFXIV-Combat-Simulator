@@ -281,6 +281,7 @@ def TenChiJinEffect(Player, Spell):
             if Player.TenChiJinRitual == [0,1,2] or Player.TenChiJinRitual == [1,0,2]: #Suiton
                 Spell.Potency += Suiton.Potency
                 Spell.Effect = Suiton.Effect
+                Spell.RecastTime += 0.5
             elif Player.TenChiJinRitual == [2,1,0] or Player.TenChiJinRitual == [1,2,0]: #Huton
                 Spell.Potency = 0
                 Spell.Effect = Huton.Effect
@@ -446,9 +447,9 @@ Jin = NinjaSpell(16, True, 1, 1, 0, ApplyJin, [NinjutsuRequirement], False, Fals
 #TenChiJin
 TenChiJin = NinjaSpell(17, False, Lock, 0, 0, ApplyTenChiJin, [TenChiJinRequirement], False, False)
 #TenChiJin will trigger the TenChiJinEffect. The actions we can take will be different from the Ninjutsu
-Ten2 = NinjaSpell(18, True, Lock, 1.5, 0, empty, [TenChiJinOnRequirement], False, True)
-Chi2 = NinjaSpell(19, True, Lock, 1.5, 0, empty, [TenChiJinOnRequirement], False, True)
-Jin2 = NinjaSpell(20, True, Lock, 1.5, 0, empty, [TenChiJinOnRequirement], False, True) 
+Ten2 = NinjaSpell(18, True, Lock, 1, 0, empty, [TenChiJinOnRequirement], False, True)
+Chi2 = NinjaSpell(19, True, Lock, 1, 0, empty, [TenChiJinOnRequirement], False, True)
+Jin2 = NinjaSpell(20, True, Lock, 1, 0, empty, [TenChiJinOnRequirement], False, True) 
 #These Ninjutsu are only to be used in TenChiJin
 #Their potency/apply will be changed according to what spell should be casted
 
