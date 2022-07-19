@@ -476,7 +476,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
     Enemy = Player.CurrentFight.Enemy #Enemy targetted
 
     if isinstance(Player, Queen) or isinstance(Player, Esteem) or isinstance(Player, Shadow) or isinstance(Player, BigSummon): MainStat = Player.Stat["MainStat"] #Summons do not receive bonus
-    else: MainStat = Player.Stat["MainStat"] * 1# Player.CurrentFight.TeamCompositionBonus #Scaling %bonus on mainstat
+    else: MainStat = math.floor(Player.Stat["MainStat"] * 1)# Player.CurrentFight.TeamCompositionBonus #Scaling %bonus on mainstat
 
     #Computing values used throughout all computations
     if isinstance(Player, Tank) : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*145/baseMain))/100 #This is experimental, and I do not have any actual proof to back up, but tanks do have a different f_MAIN_DMG formula
@@ -588,11 +588,17 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
     else: #if type is 1 or 2, then its a DOT, so we have to use the snapshotted buffs
         for buffs in spellObj.MultBonus:
             Damage = math.floor(Damage * buffs.MultDPS)
+
     
     if CritRate == 1: #If sure to crit, add crit to min expected damage
-        return math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))), math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))) #If we have auto crit, we return full damage
+        return math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))), math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) #If we have auto crit, we return full damage
     else:
-        return math.floor(Damage * ( 1 + (DHRate * 0.25))), math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))) #Non crit expected damage, expected damage with crit
+        return math.floor(Damage * ( 1 + roundDown((DHRate * 0.25), 2))), math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) #Non crit expected damage, expected damage with crit
+
+
+def roundDown(x, precision):
+    return math.floor(x * 10**precision)/10**precision
+    #Imagine not having a built in function to rounddown floats :x
 
 """
 #Original ComputeDamage function

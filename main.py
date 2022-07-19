@@ -123,7 +123,7 @@ Verfire, Verareo, Contre, Verstone, Verthunder,  EnchantedRiposte, EnchantedZwer
 EnchantedRiposte, EnchantedZwerchhau,Fleche, EnchantedRedoublement, Verflare, Scorch, Resolution]
 """
 
-NINOpener = [Melee_AA,WaitAbility(9.5), Jin, Chi, Ten, Huton, Hide,WaitAbility(1.47), Ten, Chi, Jin, Suiton, Kassatsu, SpinningEdge, Potion, GustSlash, Mug, Bunshin, PhantomKamaitachi, 
+NINOpener = [Melee_AA,WaitAbility(9.5), Jin, Chi, Ten, Huton, Hide,WaitAbility(1.47), Ten, Chi, Jin, Suiton, Kassatsu, SpinningEdge,Potion,  GustSlash, Mug, Bunshin, PhantomKamaitachi, 
 WaitAbility(0.6), TrickAttack, AeolianEdge, DreamWithinADream, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, TenChiJin, Ten2, Chi2, Jin2, Meisui, FleetingRaiju, Bhavacakra, 
 FleetingRaiju, Bhavacakra, Ten, Chi, Raiton, FleetingRaiju ]
 

@@ -1,7 +1,7 @@
 import copy
 
 from Fight import ComputeDamage
-from Jobs.Base_Player import Player
+import math
 from Jobs.Caster.Summoner.Summoner_Player import BigSummon
 from Jobs.Melee.Ninja.Ninja_Player import Shadow
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
@@ -169,8 +169,7 @@ def WaitAbility(time):
     return Spell(-1, False, time, time, 0, 0, empty, [])
 
 def ApplyPotion(Player, Enemy):
-    Player.Stat["MainStat"] = min(Player.Stat["MainStat"] * 1.1, Player.Stat["MainStat"] + 189)
-
+    Player.Stat["MainStat"] = min(math.floor(Player.Stat["MainStat"] * 1.1), Player.Stat["MainStat"] + 189)
     Player.PotionTimer = 30
 
     Player.EffectCDList.append(PotionCheck)
