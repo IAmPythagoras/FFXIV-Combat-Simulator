@@ -398,5 +398,33 @@ Enochian = buff(1.2)
 
 #All BlackMage abilities with their id in a dictionnary
 
-BlackMageAbility = {141 : Fire1, 142 : Blizzard1, 147 : Fire2, 149 : Transpose, 152 : Fire3,155 :  AetherialManipulation, 156 :  Scathe,157 : Manaward, 153 : Thunder3, 154 : Blizzard3, 158 : Manafront, 159 : Freeze, 162 : Flare, 3573 : LeyLines, 3574 : SharpCast, 
-3576 : Blizzard4, 3577 : Fire4, 7419 : BetweenTheLine, 7420 : Thunder4, 7421 : Triplecast, 7422 : Foul, 16505 : Despair, 16506 : UmbralSoul, 16507 : Xenoglossy, 25794 : HighFire, 25795 : HighBlizzard, 25796 : Amplifier, 25797 : Paradox}
+BlackMageAbility = {
+141 : Fire1, 
+142 : Blizzard1, 
+147 : Fire2, 
+149 : Transpose, 
+152 : Fire3,
+155 :  AetherialManipulation, 
+156 :  Scathe,
+157 : Manaward, 
+153 : Thunder3, 
+154 : Blizzard3, 
+158 : Manafront, 
+159 : Freeze, 
+162 : Flare, 
+3573 : LeyLines, 
+3574 : SharpCast, 
+3576 : Blizzard4, 
+3577 : Fire4, 
+7419 : BetweenTheLine, 
+7420 : Thunder4, 
+7421 : Triplecast, 
+7422 : Foul, 
+16505 : Despair, 
+16506 : UmbralSoul, 
+16507 : Xenoglossy, 
+25794 : HighFire, 
+25795 : HighBlizzard, 
+25796 : Amplifier, 
+25797 : Paradox
+}

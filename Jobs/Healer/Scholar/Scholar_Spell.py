@@ -213,6 +213,32 @@ DissolveUnion = ScholarSpell(26, False, 0, 0, 0, 0, empty, [])
 FeyIllumination = ScholarSpell(27, False, 0, 0, 0, 0, ApplyFeyIllumination, [FeyIlluminationRequirement])
 WhisperingDawn = ScholarSpell(28, False, 0, 0, 0, 0, ApplyWhisperingDawn, [WhisperingDawnRequirement])
 
-ScholarAbility = {166 : Aetherflow, 167 : EnergyDrain, 185 : Adloquium,  186 : Succor, 188 : SacredSoil, 189 : Lustrate, 190 : Physick, 3583 : Indomitability, 3585 : DeploymentTactic, 3586 : EmergencyTactic
-, 3587 : Dissipation, 7434 : Excogitation, 7436 : ChainStratagem, 7437 : Aetherpact, 16537 : WhisperingDawn, 16538 : FeyIllumination, 16542 : Recitation, 16542 : FeyBlessing, 16545 : SummonSeraph,
-16545 : SummonEos, 17216 : SummonEos, 25868 : Expedient, 25867 : Protraction, 25866 : ArtOfWar, 25865 : Broil, 17870 : Ruin, 17865 : Biolysis }
+ScholarAbility = {
+166 : Aetherflow, 
+167 : EnergyDrain, 
+185 : Adloquium,  
+186 : Succor, 
+188 : SacredSoil, 
+189 : Lustrate, 
+190 : Physick, 
+3583 : Indomitability, 
+3585 : DeploymentTactic, 
+3586 : EmergencyTactic,
+3587 : Dissipation, 
+7434 : Excogitation, 
+7436 : ChainStratagem, 
+7437 : Aetherpact, 
+16537 : WhisperingDawn, 
+16538 : FeyIllumination, 
+16542 : Recitation, 
+16542 : FeyBlessing, 
+16545 : SummonSeraph,
+16545 : SummonEos, 
+17216 : SummonEos, 
+25868 : Expedient, 
+25867 : Protraction, 
+25866 : ArtOfWar, 
+25865 : Broil, 
+17870 : Ruin, 
+17865 : Biolysis
+}

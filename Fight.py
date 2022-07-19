@@ -45,10 +45,13 @@ def GCDReductionEffect(Player, Spell):
         Spell.RecastTime *= Player.GCDReduction
 
 def Normal(mean, std, x):#returns value from NormalDistribution
+    if std == 0 : return 0
     return 1/(std * np.sqrt(2 * np.pi)) * np.exp(-1/2 * ((x-mean)/std)**2)
+
 
 def AverageCritMult(Player, k):
     n = Player.NumberDamageSpell #Total number of damage Spell
+    if n == 0 : return 0
     #k is the number of success, so the number of crit
     return ((k) * (1 + Player.CritMult)  + (n-k))/n #Average crit multiplier over the run, this can be seen as a fix bonus on the whole fight
 
@@ -189,11 +192,19 @@ class Fight:
         j = 0
 
         for player in self.PlayerList:
+
+            if player.TotalPotency == 0:
+                PPS = 0
+                DPS = 0
+            else:
+                PPS = player.TotalPotency / time
+                DPS = player.TotalDamage / time
+
             print("The Total Potency done by player " + str(type(player)) + " was : " + str(player.TotalPotency))
-            print("This same player had a Potency Per Second of: " + str(player.TotalPotency/time))
+            print("This same player had a Potency Per Second of: " + str(PPS))
             print("This same Player had an average of " + str(player.TotalPotency/player.NextSpell) + " Potency/Spell")
-            print("This same Player had an average of " + str(player.TotalPotency/(time/player.GCDTimer)) + " Potency/GCD")
-            print("The DPS is : " + str(player.TotalDamage / time))
+            print("This same Player had an average of " + str(PPS/player.GCDTimer) + " Potency/GCD")
+            print("The DPS is : " + str(DPS))
             print("=======================================================")
 
             #Plot part
@@ -237,7 +248,7 @@ class Fight:
             axs[0].plot(TimeStamp,player.DPSGraph, label=job)
             axs[1].plot(TimeStamp,player.PotencyGraph, label=job)
 
-            self.ComputeDPSDistribution(player, fig2, axs2[j][i], job)
+            if DPS != 0 : self.ComputeDPSDistribution(player, fig2, axs2[j][i], job)
             ##input((i,j))
             i+=1
             if i == 4:
@@ -310,7 +321,7 @@ class Fight:
                             #Have to check if the player can cast the spell
                             #So check if Animation Lock, if Casting or if GCDLock
                             if(not (player.oGCDLock or player.GCDLock or player.Casting)):
-                                if isinstance(player, Bard): input("Bard casts : " + str(player.ActionSet[player.NextSpell].id))
+                                #if isinstance(player, Bard): input("Bard casts : " + str(player.ActionSet[player.NextSpell].id))
 
                                 player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)#Cast the spell
                                 #Locking the player

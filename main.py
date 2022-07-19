@@ -21,6 +21,7 @@ from Jobs.Healer.Sage.Sage_Player import *
 from Jobs.Healer.Scholar.Scholar_Player import *
 from Jobs.Healer.Whitemage.Whitemage_Player import *
 from Jobs.Healer.Astrologian.Astrologian_Player import *
+from Jobs.Melee.Monk.Monk_Player import Monk
 
 #RANGED
 from Jobs.Ranged.Machinist.Machinist_Spell import *
@@ -147,9 +148,9 @@ BRDPlayer.ActionSet = BRDOpener
 DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 RPRPlayer.ActionSet = RPROpener
-Event.PlayerList = [NINPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
+Event.PlayerList = [] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
 
-"""
+
 client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
 client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE"
 action_dict, player_dict = getAbilityList(client_id, client_secret)
@@ -182,7 +183,8 @@ for playerID in player_dict:
     elif job_name == "RedMage" : 
         player_dict[playerID]["job_object"].Stat = RDMStat
         player_dict[playerID]["job_object"].EffectList = [DualCastEffect]
-    elif job_name == "Summoner" : player_dict[playerID]["job_object"].Stat = SMNStat
+    elif job_name == "Summoner" : 
+        player_dict[playerID]["job_object"].Stat = SMNStat
     #Ranged
     elif job_name == "Dancer" : 
         player_dict[playerID]["job_object"].Stat = DNCStat
@@ -199,7 +201,7 @@ for playerID in player_dict:
     elif job_name == "Reaper" : 
         player_dict[playerID]["job_object"].Stat = RPRStat
         player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
-    #elif job_name == "Monk" : job_object = Machinist(2.5, [], [], [], None, {}) #Monk is not yet implemented
+    elif job_name == "Monk" :  pass #Not yet Implemented
     elif job_name == "Dragoon" : 
         player_dict[playerID]["job_object"].Stat = DRGStat
         player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
@@ -211,7 +213,7 @@ for playerID in player_dict:
         player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
 
     Event.PlayerList.append(player_dict[playerID]["job_object"])
-"""
-Event.ShowGraph = False
+
+Event.ShowGraph = True
 Event.SimulateFight(0.01, 1000, 20)
 

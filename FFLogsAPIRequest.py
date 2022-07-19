@@ -33,7 +33,7 @@ from Jobs.Healer.Whitemage.Whitemage_Spell import WhiteMageAbility
 from Jobs.Ranged.Machinist.Machinist_Player import *
 from Jobs.Ranged.Bard.Bard_Player import *
 from Jobs.Ranged.Dancer.Dancer_Player import *
-from Jobs.Ranged.Ranged_Spell import RangedAbility
+from Jobs.Ranged.Ranged_Spell import BardSpell, RangedAbility
 from Jobs.Ranged.Bard.Bard_Spell import BardAbility
 from Jobs.Ranged.Machinist.Machinist_Spell import MachinistAbility
 from Jobs.Ranged.Dancer.Dancer_Spell import DancerAbility
@@ -264,6 +264,12 @@ def getAbilityList(client_id, client_secret):
         is_casted = False #flag that is set to true if the spell is casted (the server has a shorter casting time cuz why not) so have to play around that
         is_heal = False #flag that is set to true if the spell is a healing spell
 
+
+        #Edge case flags
+
+        in_barrage = False #Flag that is set to true if we are looking for the barrage pattern (for bard)
+        once_through = False #A flag to know if we have gone through barrage once
+        calculated_damage_couter = 0 #A counter to know how much calculated damage we have seen
         for action in raw_action_list:
             #will check the type since we have to do different stuff in accordance to what it is
 
@@ -283,22 +289,54 @@ def getAbilityList(client_id, client_secret):
                 if type != 'calculatedheal':
                     is_heal = False
 
-            if not is_heal: #We first have to check if we aren't waiting on an AOE heal to finish
+
+            if in_barrage:
+                #If barrage was the last ability, then we need to wait for 3 calculated damage in a row
+                #We will first check if the action is a weaponskill, which is required for barrage to work
+                #This is so if we do an oGCD after barrage, it still works
+                if once_through:
+                    calculated_damage_couter += 1 #We do nothing
+                    #input("here 2")
+                elif isinstance(next_action, BardSpell) and next_action.Weaponskill:
+                    #If we get here, we have to wait for 1 cast and  3 calculated damage
+                    #We will still let the action go through the selection, but for the next time we will intercept it here
+                    once_through = True
+                    calculated_damage_couter = 0
+                    #input("here 1")
+                if calculated_damage_couter == 3: #If we have seen two other (for a total of 3)
+                    #Then we are done with this edge case, so we reset all flags and counters
+                    calculated_damage_couter = 0
+                    once_through = False
+                    in_barrage = False
+                    #input("here 3")
+            #We will check for edge cases so we do not have to worry about them
+            elif action.action_id == 107: #Bard barrage
+                #It will follow with 1 cast and 3 calculated damage since it actually use 3 of the next weaponskill
+                #But the sim only needs to know which weaponskill is done after, so we will filter it
+                in_barrage = True #Setting flag to true]
+                #input("Detected barrage")
+
+
+
+            if not is_heal and calculated_damage_couter < 1: #No edge cases. Just proceed normally
                 if not wait_cast and not wait_calculateddamage:
                     if action.type == "begincast":#If begining cast, we simply add the spell to the list
                         player_action_list.append(next_action)
                         wait_cast = True #set flag to true
                         is_casted = True #says the action is a casted action
+                        #if isinstance(next_action, BardSpell) : input("Adding : " + str(next_action.id))
                     elif action.type == "cast":
                         if next_action != None: player_action_list.append(next_action)
                         wait_calculateddamage = True
                         wait_flag = True
                         wait_timestamp = action.timestamp
+                        #if isinstance(next_action, BardSpell) : input("Adding : " + str(next_action.id))
                     elif action.type == "calculateddamage":#insta cast, so we want to add but also check how long until next action. Calculated damage might also be right after a "cast", so we want to have
                         #it such that it can detect if it is an "insta-cast" or the damage from a casted action (which will affect how we add it to the action_list)
                         player_action_list.append(next_action)
                         wait_flag = True #We have to add a WaitAbility, so we will check this time and next action's timestamp and add a relevant WaitAbility
                         wait_timestamp = action.timestamp
+                        #if isinstance(next_action, BardSpell) : input("Adding : " + str(next_action.id))
                     elif action.type == "calculatedhealing":
                         #same as calculateddamage, but since its a healing, we want to make sure we do not add the action
                         #for each player it hits (if it is an AOE heal)
