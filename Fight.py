@@ -439,7 +439,7 @@ class Fight:
             JobMod = Player.JobMod #Level 90 jobmod value, specific to each job
 
             Player.f_WD = (Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))/100
-            Player.f_DET = math.floor(1000+math.floor(130*(Player.Stat["Det"]-baseMain)/levelMod))/1000#Determination damage
+            Player.f_DET = math.floor(1000+math.floor(140*(Player.Stat["Det"]-baseMain)/levelMod))/1000#Determination damage
             if isinstance(Player, Tank) : Player.f_TEN = (1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000 #Tenacity damage, 1 for non-tank player
             else : Player.f_TEN = 1 #if non-tank
             Player.f_SPD = (1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000 #Used only for dots
@@ -447,6 +447,12 @@ class Fight:
             Player.CritMult = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000 #Crit Damage multiplier
             Player.DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000 #DH rate in decimal
 
+            #print("f_WD : " + str(Player.f_WD))
+            #print("f_DET : " + str(Player.f_DET))
+            #print("f_SPD : " + str(Player.f_SPD))
+            #print("CritRate : " + str(Player.CritRate))
+            #print("CritMult : " + str(Player.CritMult))
+            #print("DHRate : " + str(Player.DHRate))
 
 
 def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
@@ -469,7 +475,8 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
 
     Enemy = Player.CurrentFight.Enemy #Enemy targetted
 
-    MainStat = Player.Stat["MainStat"] *  Player.CurrentFight.TeamCompositionBonus #Scaling %bonus on mainstat
+    if isinstance(Player, Queen) or isinstance(Player, Esteem) or isinstance(Player, Shadow) or isinstance(Player, BigSummon): MainStat = Player.Stat["MainStat"] #Summons do not receive bonus
+    else: MainStat = Player.Stat["MainStat"] * 1# Player.CurrentFight.TeamCompositionBonus #Scaling %bonus on mainstat
 
     #Computing values used throughout all computations
     if isinstance(Player, Tank) : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*145/baseMain))/100 #This is experimental, and I do not have any actual proof to back up, but tanks do have a different f_MAIN_DMG formula

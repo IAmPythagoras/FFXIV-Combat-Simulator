@@ -127,6 +127,8 @@ class Spell:
         Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage
 
+        if self.id > 0 and Damage > 0: print("The action with id : " + str(self.id) + " did " + str(Damage) + " damage")
+
 
         #Will update the NextSpell of the player
 
@@ -217,7 +219,7 @@ class Auto_Attack(DOTSpell):
         if Ranged : super().__init__(id, 100, True)
         else: super().__init__(id, 110, True)
 
-        self.DOTTimer = 20 #The timer is intentionally set at a longer time, so it won't go off before the countdown is over
+        self.DOTTimer = 23 #The timer is intentionally set at a longer time, so it won't go off before the countdown is over
 
 class Queen_Auto(Auto_Attack):
 

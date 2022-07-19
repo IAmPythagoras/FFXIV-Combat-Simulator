@@ -127,7 +127,6 @@ NINOpener = [Melee_AA,WaitAbility(9.5), Jin, Chi, Ten, Huton, Hide,WaitAbility(1
 WaitAbility(0.6), TrickAttack, AeolianEdge, DreamWithinADream, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, TenChiJin, Ten2, Chi2, Jin2, Meisui, FleetingRaiju, Bhavacakra, 
 FleetingRaiju, Bhavacakra, Ten, Chi, Raiton, FleetingRaiju ]
 
-
 #BLMPlayer.ActionSet = getAbilityList(client_id, client_secret)
 BLMPlayer.ActionSet = BLMOpener
 SCHPlayer.ActionSet = SCHOpener
@@ -211,6 +210,6 @@ for playerID in player_dict:
 
     Event.PlayerList.append(player_dict[playerID]["job_object"])
 """
-Event.ShowGraph = True
+Event.ShowGraph = False
 Event.SimulateFight(0.01, 1000, 20)
 
