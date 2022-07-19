@@ -49,6 +49,8 @@ from Jobs.Melee.Samurai.Samurai_Player import *
 from Jobs.Melee.Ninja.Ninja_Player import *
 from Jobs.Melee.Dragoon.Dragoon_Player import *
 from Jobs.Melee.Reaper.Reaper_Player import *
+
+
 from FFLogsAPIRequest import getAbilityList
 
 Dummy = Enemy()
