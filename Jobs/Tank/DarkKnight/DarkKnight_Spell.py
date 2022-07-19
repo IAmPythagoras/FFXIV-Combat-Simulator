@@ -1,9 +1,13 @@
 #########################################
 ########## DARK KNIGHT SKILLS ###########
 #########################################
-from Jobs.Base_Spell import DOTSpell, buff, empty
+from Jobs import Base_Spell
+from Jobs.Base_Spell import DOTSpell, buff, empty, Spell
 import copy
+
+from Jobs.Melee import Melee_Spell
 from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
+from Jobs.Tank import Tank_Spell
 from Jobs.Tank.Tank_Spell import DRKSkill
 Lock = 0
 
@@ -302,4 +306,38 @@ Oblation = DRKSkill(33, False, 0, 0, 0, 0, 0, ApplyOblation, [OblationRequiremen
 #buff
 EdgeShadowBuff = buff(1.1)
 
-DarkKnightAbility = {}
+# Maps Ability IDs from FFlogs to Skill objects
+# Not exhaustive: If an ability is missing, check log for id and add it into the mapping.
+DarkKnightAbility = {
+    3617: HardSlash,
+    3623: SyphonStrike,
+    3624: Unmend,
+    3625: BloodWeapon,
+    3629: Tank_Spell.TankStance,
+    3632: Souleater,
+    3634: DarkMind,
+    3636: Tank_Spell.BigMit,
+    3638: LivingDead,
+    3639: SaltedEarth,
+    3640: Plunge,
+    3643: CarveSpit,
+    7390: Delirium,
+    7392: Bloodspiller,
+    7393: TBN,
+    7531: Tank_Spell.Rampart,
+    7548: Melee_Spell.ArmLength,
+    16470: EdgeShadow,
+    16471: DarkMissionary,
+    16472: LivingShadow,
+    17904: PAbyssalDrain,
+    17905: PPlunge,
+    17906: PQuietus,
+    17908: PEdgeShadow,
+    17909: PBloodspiller,
+    17915: PCarveSpit,
+    25881: PShadowbringer,
+    25754: Oblation,
+    25755: SaltDarkness,
+    25757: Shadowbringer,
+    34590541: Base_Spell.Potion,  # This is assumed to be strength pot grade 6
+}

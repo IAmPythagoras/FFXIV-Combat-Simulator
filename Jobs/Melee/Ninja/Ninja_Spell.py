@@ -1,4 +1,6 @@
+from Jobs import Base_Spell
 from Jobs.Base_Spell import DOTSpell, WaitAbility, buff, empty
+from Jobs.Melee import Melee_Spell
 from Jobs.Melee.Melee_Spell import NinjaSpell
 import copy
 
@@ -462,4 +464,38 @@ HellfrogMedium = NinjaSpell(35, False, Lock, 0, 160, ApplyBhavacakra, [Bhavacakr
 MugBuff = buff(1.05)
 TrickAttackBuff = buff(1.1)
 
-NinjaAbility = {}
+# Maps Ability IDs from FFlogs to Skill objects
+# Not exhaustive: If an ability is missing, check log for id and add it into the mapping.
+NinjaAbility = {
+    2240: SpinningEdge,
+    2241: ShadeShift,
+    2242: GustSlash,
+    2248: Mug,
+    2255: AeolianEdge,
+    2258: TrickAttack,
+    2259: Ten,
+    2264: Kassatsu,
+    2267: Raiton,
+    2271: Suiton,
+    3563: ArmorCrush,
+    3566: DreamWithinADream,
+    7402: Bhavacakra,
+    7403: TenChiJin,
+    7541: Melee_Spell.SecondWind,
+    7542: Melee_Spell.Bloodbath,
+    7546: Melee_Spell.TrueNorth,
+    7548: Melee_Spell.ArmLength,
+    7549: Melee_Spell.Feint,
+    16489: Meisui,
+    16492: HyoshoRanryu,
+    16493: Bunshin,
+    18805: Ten,  # Unsure why there's a duplicate, doesn't seem to happen with TCJ
+    18806: Chi,
+    18807: Jin,
+    18873: FumaShuriken,
+    18877: Raiton,
+    18881: Suiton,
+    25774: PhantomKamaitachi,
+    25778: FleetingRaiju,
+    34590542: Base_Spell.Potion,  # Assumed to be Dex pot grade 6
+}
