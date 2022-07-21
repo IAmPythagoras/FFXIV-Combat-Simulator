@@ -227,4 +227,29 @@ Equilibrium = WarriorSpell(23, False, 0, 0, 0, 0, ApplyEquilibrium, [Equilibrium
 #buff
 SurgingTempestBuff = buff(1.1)
 
-WarriorAbility = {}
+WarriorAbility = {
+43 : Holmgang,
+46 : Tomahawk,
+7368 : Onslaught,
+52 : Infuriate,
+38 : InnerRelease,
+31 : HeavySwing,
+37 : Maim,
+42 : StormPath,
+45 : StormEye,
+3549 : FellCleave,
+16465 : InnerChaos,
+25753 : PrimalRend,
+7387 : Upheaval,
+41 : Overpower,
+16462 : MythrilTempest,
+51 : Decimate,
+16463 : ChaoticCyclone,
+25752 : Orogeny,
+#44 : Vengeance,
+40 : ThrillOfBattle,
+3552 : Equilibrium,
+3551 : Bloodwhetting,
+16464 : NascentFlash,
+7388 : ShakeItOff
+}

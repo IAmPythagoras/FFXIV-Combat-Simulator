@@ -16,6 +16,9 @@ class Melee(Player):
         self.FeintCD = 0 #90
         self.ArmLengthCD = 0 #120s
         self.TrueNorthCD = 0 #45s, but 2 stacks
+
+        #Stacks
+        self.TrueNorthStack = 2
         
         #Trait
         self.Trait = 1

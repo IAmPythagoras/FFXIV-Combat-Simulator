@@ -1,4 +1,5 @@
 from Jobs.Base_Spell import ManaRequirement, Spell, empty
+from Jobs.Caster.Caster_Spell import LucidDreaming, Surecast, Swiftcast
 Lock = 0.75
 class HealerSpell(Spell):
 
@@ -61,4 +62,11 @@ Repose = HealerSpell(0, True, 2.5, 2.5, 0, 600, empty, [ManaRequirement])
 Esuna = HealerSpell(0, True, 1, 2.5, 0, 0, 400, [ManaRequirement])
 Rescue = HealerSpell(0, False, 0, 0, 0, 0, ApplyRescue, [RescueRequirement])
 
-HealerAbility = {}
+HealerAbility = {
+16560 : Repose,
+7568 : Esuna,
+7571 : Rescue,
+7561 : Swiftcast,
+7562 : LucidDreaming,
+7559 : Surecast
+}

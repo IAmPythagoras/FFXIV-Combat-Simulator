@@ -126,4 +126,11 @@ Feint = MeleeSpell(0, False, Lock, 0, 0, 0, ApplyFeint, [FeintRequirement])
 ArmLength = MeleeSpell(0, False, Lock, 0, 0, 0, ApplyArmLength, [ArmLengthRequirement])
 TrueNorth = MeleeSpell(0, False, Lock, 0, 0, 0, ApplyTrueNorth, [TrueNorthRequirement])
 
-MeleeAbility = {}
+MeleeAbility = {
+7541 : SecondWind,
+7863 : LegSweep,
+7542 : Bloodbath,
+7549 : Feint,
+7546 : TrueNorth,
+7548 : ArmLength
+}

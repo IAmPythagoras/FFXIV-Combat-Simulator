@@ -30,6 +30,7 @@ class Gunbreaker(Tank):
         self.SuperbolideCD = 0
         self.HeartOfLightCD = 0
         self.HeartOfCorundumCD = 0
+        self.CamouflageCD = 0
 
         #Timer
         self.BowShockTimer = 0
@@ -56,6 +57,7 @@ class Gunbreaker(Tank):
         if (self.SuperbolideCD > 0) : self.SuperbolideCD = max(0,self.SuperbolideCD - time)
         if (self.HeartOfLightCD > 0) : self.HeartOfLightCD = max(0,self.HeartOfLightCD - time)
         if (self.HeartOfCorundumCD > 0) : self.HeartOfCorundumCD = max(0,self.HeartOfCorundumCD - time)
+        if (self.CamouflageCD > 0) : self.CamouflageCD = max(0,self.CamouflageCD - time)
 
 
     def updateTimer(self, time):

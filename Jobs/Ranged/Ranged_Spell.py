@@ -1,4 +1,5 @@
 from Jobs.Base_Spell import Spell
+from Jobs.Melee.Melee_Spell import ArmLength, SecondWind
 Lock = 0.75
 class RangedSpell(Spell):
 
@@ -80,4 +81,11 @@ FootGraze = RangedSpell(0, False, Lock, 0, 0, 0, ApplyFootGraze, [FootGrazeRequi
 Peloton = RangedSpell(0, False, Lock, 0, 0, 0, ApplyPeloton, [PelotonRequirement])
 HeadGraze = RangedSpell(0, False, Lock, 0, 0, 0, ApplyHeadGraze, [HeadGrazeRequirement])
 
-RangedAbility = {}
+RangedAbility = {
+7554 : LegGraze,
+7553 : FootGraze,
+7551: HeadGraze,
+7557 : Peloton,
+7541 : SecondWind,
+7548 : ArmLength
+}

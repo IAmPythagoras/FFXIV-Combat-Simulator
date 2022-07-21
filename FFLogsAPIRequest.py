@@ -87,14 +87,15 @@ def getAbilityList(client_id, client_secret):
         def lookup(JobDict, ClassDict):
             if not (int(actionID) in JobDict.keys()): #if not in, then the action is in the ClassDict
                 if not (int(actionID) in ClassDict.keys()):
-                    return WaitAbility(1) #Currently at none so we can debug
+                    return WaitAbility(0) #Currently at none so we can debug
                     raise ActionNotFound #Did not find action
                 return ClassDict[int(actionID)] #Class actions do not have the possibility to target other allies, so we assume itll target an enemy
             
             if targetEnemy or targetSelf or targetID == -1: 
                 return JobDict[int(actionID)]
             else: 
-                input("sourceID : " + str(sourceID) + "targetID " + str(targetID) + "actionID : " + str(actionID))
+                #print(actionID)
+                if int(actionID) == 7388 or int(actionID) == 7393 or int(actionID) == 25754: return JobDict[int(actionID)] #Edge case for TBN/Oblation/ShakeItOff
                 return JobDict[int(actionID)](player_list[str(targetID)]["job_object"]) #Otherwise it returns what
             #we assume to be a function with one input as the object of the target
 
@@ -266,10 +267,12 @@ def getAbilityList(client_id, client_secret):
 
 
         #Edge case flags
-
         in_barrage = False #Flag that is set to true if we are looking for the barrage pattern (for bard)
         once_through = False #A flag to know if we have gone through barrage once
         calculated_damage_couter = 0 #A counter to know how much calculated damage we have seen
+
+        wait_potion = False #Flag to know if we wait one cycle for a tincture
+
         for action in raw_action_list:
             #will check the type since we have to do different stuff in accordance to what it is
 
@@ -315,10 +318,15 @@ def getAbilityList(client_id, client_secret):
                 #But the sim only needs to know which weaponskill is done after, so we will filter it
                 in_barrage = True #Setting flag to true]
                 #input("Detected barrage")
+            elif action.action_id == 1000049: #Tincture
+                player_action_list.append(next_action)
+                wait_potion = True
+                wait_flag = True
+                wait_timestamp = action.timestamp
 
 
 
-            if not is_heal and calculated_damage_couter < 1: #No edge cases. Just proceed normally
+            if not is_heal and calculated_damage_couter < 1 and not wait_potion: #No edge cases. Just proceed normally
                 if not wait_cast and not wait_calculateddamage:
                     if action.type == "begincast":#If begining cast, we simply add the spell to the list
                         player_action_list.append(next_action)
@@ -368,6 +376,8 @@ def getAbilityList(client_id, client_secret):
                     elif action.type == "cast":
                         if next_action != None: 
                             player_action_list.append(next_action)
+
+            wait_potion = False #We have waited for the potion
 
         action_dict[player] = player_action_list
     return action_dict, player_list

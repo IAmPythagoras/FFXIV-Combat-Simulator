@@ -313,10 +313,10 @@ class Fight:
             while(self.TimeStamp <= TimeLimit):
 
                 for player in self.PlayerList:
-                    #if player.ActionSet[player.NextSpell] == None : player.TrueLock = True #Locking the player if None
+                    if player.ActionSet[player.NextSpell] == None : player.TrueLock = True #Locking the player if None
                     #Will first Check if the NextSpell is a GCD or not
                     if(not player.TrueLock):#If it is we do nothing
-                        if(player.ActionSet[player.NextSpell].GCD):
+                        if (player.ActionSet[player.NextSpell].GCD):
                             #Is a GCD
                             #Have to check if the player can cast the spell
                             #So check if Animation Lock, if Casting or if GCDLock
@@ -487,7 +487,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
     Enemy = Player.CurrentFight.Enemy #Enemy targetted
 
     if isinstance(Player, Queen) or isinstance(Player, Esteem) or isinstance(Player, Shadow) or isinstance(Player, BigSummon): MainStat = Player.Stat["MainStat"] #Summons do not receive bonus
-    else: MainStat = math.floor(Player.Stat["MainStat"] * 1)# Player.CurrentFight.TeamCompositionBonus #Scaling %bonus on mainstat
+    else: MainStat = math.floor(Player.Stat["MainStat"] *  Player.CurrentFight.TeamCompositionBonus) #Scaling %bonus on mainstat
 
     #Computing values used throughout all computations
     if isinstance(Player, Tank) : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*145/baseMain))/100 #This is experimental, and I do not have any actual proof to back up, but tanks do have a different f_MAIN_DMG formula

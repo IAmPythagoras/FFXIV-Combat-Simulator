@@ -215,5 +215,6 @@ for playerID in player_dict:
     Event.PlayerList.append(player_dict[playerID]["job_object"])
 
 Event.ShowGraph = True
-Event.SimulateFight(0.01, 1000, 20)
+#Event.PlayerList = [Event.PlayerList[-5]] #For testing purposes
+Event.SimulateFight(0.01, 1000, 3.37)
 
