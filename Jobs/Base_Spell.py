@@ -6,7 +6,7 @@ from Jobs.Caster.Summoner.Summoner_Player import BigSummon
 from Jobs.Melee.Ninja.Ninja_Player import Shadow
 from Jobs.Ranged.Bard.Bard_Player import Bard
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
-from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
+from Jobs.Tank.DarkKnight.DarkKnight_Player import DarkKnight, Esteem
 Lock = 0.75
 
 class FailedToCast(Exception):#Exception called if a spell fails to cast
@@ -112,8 +112,6 @@ class Spell:
         
         if self.Potency != 0 : minDamage,Damage= ComputeDamage(player, self.Potency, Enemy, self.DPSBonus, type, self)    #Damage computation
         else: minDamage, Damage = 0,0
-        ##input("Damage : " + str(Damage))
-        ##input("Damage from v1.0 " + str(ComputeDamageV2(player, self.Potency, 1, 1)))
 
         #input("Adding " + str(self.Potency) + " to player : " + str(player))
 
@@ -129,7 +127,9 @@ class Spell:
         Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage
 
-        #if self.id > 0 and Damage > 0: print("The action with id : " + str(self.id) + " did " + str(Damage) + " damage")
+        #if self.id > 0 and Damage > 0: 
+        #    print("The action with id : " + str(self.id) + " did " + str(Damage) + " damage")
+        #    if isinstance(player, DarkKnight) : input("blood " + str(player.Blood))
 
 
         #Will update the NextSpell of the player

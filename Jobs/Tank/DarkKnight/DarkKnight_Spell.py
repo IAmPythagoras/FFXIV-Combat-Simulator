@@ -33,6 +33,7 @@ def EdgeShadowRequirement(Player, Spell):
         elif Player.Mana >= Spell.ManaCost:
             Player.Mana -= Spell.ManaCost
             return True, -1
+        return True, -1
     return False, -1
 
 def BloodWeaponRequirement(Player, Spell):
@@ -64,7 +65,7 @@ def TBNRequirement(Player, Spell):
     if Player.Mana >= Spell.ManaCost:
         Player.Mana -= Spell.ManaCost
         return True, -1
-    return False, -1
+    return True, -1
 
 def LivingDeadRequirement(Player, Spell):
     return Player.LivingDeadCD <= 0, Player.LivingDeadCD

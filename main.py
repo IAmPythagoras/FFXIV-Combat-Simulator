@@ -148,7 +148,7 @@ BRDPlayer.ActionSet = BRDOpener
 DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 RPRPlayer.ActionSet = RPROpener
-Event.PlayerList = [] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
+Event.PlayerList = [NINPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
 
 
 client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
@@ -170,6 +170,8 @@ for playerID in player_dict:
     elif job_name == "DarkKnight" : 
         player_dict[playerID]["job_object"].Stat = DRKStat
         player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+        player_dict[playerID]["job_object"].EffectList = [BloodWeaponEffect]
+        player_dict[playerID]["job_object"].EffectCDList = [BloodWeaponCheck]
     elif job_name == "Paladin" : 
         player_dict[playerID]["job_object"].Stat = PLDStat
         player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
@@ -214,7 +216,8 @@ for playerID in player_dict:
 
     Event.PlayerList.append(player_dict[playerID]["job_object"])
 
-Event.ShowGraph = True
-#Event.PlayerList = [Event.PlayerList[-5]] #For testing purposes
-Event.SimulateFight(0.01, 1000, 3.37)
+Event.ShowGraph = False
+Event.PlayerList = [Event.PlayerList[-3]] #For testing purposes
+
+Event.SimulateFight(0.01, 1000, 0)
 

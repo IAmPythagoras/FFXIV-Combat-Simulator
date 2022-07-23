@@ -297,12 +297,14 @@ class Fight:
                 elif isinstance(player, Tank) : hasTank = True
                 elif isinstance(player, Healer) : hasHealer = True
 
-            
-            if hasMelee: self.TeamCompositionBonus += 0.01
-            if hasCaster: self.TeamCompositionBonus += 0.01
-            if hasRanged: self.TeamCompositionBonus += 0.01
-            if hasTank: self.TeamCompositionBonus += 0.01
-            if hasHealer: self.TeamCompositionBonus += 0.01
+            if len(self.PlayerList) == 1 : self.TeamCompositionBonus = 1 #If only one player, there is not bonus
+            else:
+                if hasMelee: self.TeamCompositionBonus += 0.01
+                if hasCaster: self.TeamCompositionBonus += 0.01
+                if hasRanged: self.TeamCompositionBonus += 0.01
+                if hasTank: self.TeamCompositionBonus += 0.01
+                if hasHealer: self.TeamCompositionBonus += 0.01
+
 
             #Will first compute each player's GCD reduction value based on their Spell Speed or Skill Speed Value
 
@@ -313,7 +315,7 @@ class Fight:
             while(self.TimeStamp <= TimeLimit):
 
                 for player in self.PlayerList:
-                    if player.ActionSet[player.NextSpell] == None : player.TrueLock = True #Locking the player if None
+                   # if player.ActionSet[player.NextSpell] == None : player.TrueLock = True #Locking the player if None
                     #Will first Check if the NextSpell is a GCD or not
                     if(not player.TrueLock):#If it is we do nothing
                         if (player.ActionSet[player.NextSpell].GCD):
@@ -464,6 +466,7 @@ class Fight:
             #print("CritRate : " + str(Player.CritRate))
             #print("CritMult : " + str(Player.CritMult))
             #print("DHRate : " + str(Player.DHRate))
+            #input("")
 
 
 def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
@@ -487,10 +490,10 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
     Enemy = Player.CurrentFight.Enemy #Enemy targetted
 
     if isinstance(Player, Queen) or isinstance(Player, Esteem) or isinstance(Player, Shadow) or isinstance(Player, BigSummon): MainStat = Player.Stat["MainStat"] #Summons do not receive bonus
-    else: MainStat = math.floor(Player.Stat["MainStat"] *  Player.CurrentFight.TeamCompositionBonus) #Scaling %bonus on mainstat
+    else: MainStat = math.floor(Player.Stat["MainStat"])* (Player.CurrentFight.TeamCompositionBonus) #Scaling %bonus on mainstat
 
     #Computing values used throughout all computations
-    if isinstance(Player, Tank) : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*145/baseMain))/100 #This is experimental, and I do not have any actual proof to back up, but tanks do have a different f_MAIN_DMG formula
+    if isinstance(Player, Tank) : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*153/baseMain))/100 #This is experimental, and I do not have any actual proof to back up, but tanks do have a different f_MAIN_DMG formula
     else: f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100
     #These values are all already computed since they do not change
     f_WD = Player.f_WD
