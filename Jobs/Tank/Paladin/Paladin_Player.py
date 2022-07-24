@@ -52,6 +52,7 @@ class Paladin(Tank):
         self.JobMod = 100
 
     def updateCD(self, time):
+        super().updateCD(time)
         if (self.RequestACatCD > 0) : self.RequestACatCD = max(0,self.RequestACatCD - time)
         if (self.CircleScornCD > 0) : self.CircleScornCD = max(0,self.CircleScornCD - time)
         if (self.InterveneCD > 0) : self.InterveneCD = max(0,self.InterveneCD - time)

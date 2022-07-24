@@ -1,5 +1,5 @@
 from Jobs.Base_Spell import DOTSpell, buff, empty
-from Jobs.Melee.Melee_Spell import DragoonSpell
+from Jobs.Melee.Melee_Spell import Bloodbath, DragoonSpell, SecondWind
 import copy
 
 #Requirement
@@ -331,4 +331,26 @@ def DragonSight(Target):
     return DragoonSpell(26, False, 0, 0, ApplyDragonSight, [DragonSightRequirement], False)
 
 
-DragoonAbility = {}
+DragoonAbility = {
+75 : TrueThrust,
+78 : VorpalThrust,
+83 : LifeSurge,
+85 : LanceCharge,
+87 : Disembowel,
+94 : ElusiveJump,
+95 : SpineshafterDive,
+96 : DragonFireDive,
+3554 : FangAndClaw,
+3555 : Geirskogul,
+3556 : WheelingThrust,
+3557 : BattleLitany,
+7398 : DragonSight,
+7399 : MirageDive,
+7400 : Nastrond,
+16478 : HighJump,
+16479 : RaidenThrust,
+16480 : Stardiver,
+25771 : HeavenThrust,
+15772 : ChaoticSpring,
+25773 : WyrmwindThrust
+}

@@ -88,9 +88,7 @@ def InterjectRequirement(Player, Spell):
     return Player.InterjectCD <= 0, Player.InterjectCD
 
 def ReprisalRequirement(Player, Spell):
-    #print(Player.ReprisalCD)
-    #return Player.ReprisalCD <= 0, Player.ArmLengthCD
-    return True, -1
+    return Player.ReprisalCD <= 0, Player.ReprisalCD
     
 def ShirkRequirement(Player, Spell):
     return Player.ShirkCD <= 0, Player.ShirkCD

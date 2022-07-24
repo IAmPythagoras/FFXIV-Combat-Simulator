@@ -55,6 +55,7 @@ class Dragoon(Melee):
         self.JobMod = 115
 
     def updateCD(self, time):
+        super().updateCD(time)
         if (self.LanceChargeCD > 0) : self.LanceChargeCD = max(0,self.LanceChargeCD - time)
         if (self.BattleLitanyCD > 0) : self.BattleLitanyCD = max(0,self.BattleLitanyCD - time)
         if (self.DragonSightCD > 0) : self.DragonSightCD = max(0,self.DragonSightCD - time)

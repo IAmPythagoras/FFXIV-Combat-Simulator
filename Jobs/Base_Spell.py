@@ -168,7 +168,10 @@ def empty(Player, Enemy):
     pass
 
 def WaitAbility(time):
-    return Spell(-1, False, time, time, 0, 0, empty, [])
+    def ApplyWaitAbility(Player, Enemy):
+        return 0
+        input("waiting for : " + str(time))
+    return Spell(-1, False, time, time, 0, 0, ApplyWaitAbility, [])
 
 def ApplyPotion(Player, Enemy):
     Player.Stat["MainStat"] = min(math.floor(Player.Stat["MainStat"] * 1.1), Player.Stat["MainStat"] + 189)

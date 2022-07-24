@@ -62,6 +62,7 @@ class Samurai(Melee):
         self.JobMod = 112
 
     def updateCD(self, time):
+        super().updateCD(time)
         if (self.MeikyoCD > 0) : self.MeikyoCD = max(0,self.MeikyoCD - time)
         if (self.IkishotenCD > 0) : self.IkishotenCD = max(0,self.IkishotenCD - time)
         if (self.KaeshiCD > 0) : self.KaeshiCD = max(0,self.KaeshiCD - time)

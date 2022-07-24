@@ -45,6 +45,7 @@ class Gunbreaker(Tank):
         self.JobMod = 100
 
     def updateCD(self, time):
+        super().updateCD(time)
         if (self.GnashingFangCD > 0) : self.GnashingFangCD = max(0,self.GnashingFangCD - time)
         if (self.BlastingZoneCD > 0) : self.BlastingZoneCD = max(0,self.BlastingZoneCD - time)
         if (self.BloodfestCD > 0) : self.BloodfestCD = max(0,self.BloodfestCD - time)

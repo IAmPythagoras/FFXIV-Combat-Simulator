@@ -67,6 +67,7 @@ class Ninja(Melee):
 
 
     def updateCD(self, time):
+        super().updateCD(time)
         if (self.DreamWithinADreamCD > 0) : self.DreamWithinADreamCD = max(0,self.DreamWithinADreamCD - time)
         if (self.MugCD > 0) : self.MugCD = max(0,self.MugCD - time)
         if (self.TrickAttackCD > 0) : self.TrickAttackCD = max(0,self.TrickAttackCD - time)

@@ -422,4 +422,24 @@ def Meditate(time):
 
     return SamuraiSpell(31, False, time, time, 0, ApplyMedidate, [MeditateRequirement], 0)
 
-SamuraiAbility = {}
+SamuraiAbility = {
+7477 : Hakaze,
+7478 : Jinpu,
+7479 : Shifu,
+7480 : Yukikaze,
+7481 : Gekko,
+7482 : Kasha,
+7486 : Enpi,
+7487 : Midare,
+7489 : Higanbana,
+7490 : Shinten,
+7492 : Gyoten,
+7489 : ThirdEye,
+7499 : Meikyo,
+16481 : Senei,
+16482 : Ikishoten,
+16486 : KaeshiSetsugekka,
+16487 : Shoha,
+25781 : OgiNamikiri,
+25782 : KaeshiNamikiri
+}

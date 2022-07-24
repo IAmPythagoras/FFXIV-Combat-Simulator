@@ -56,6 +56,7 @@ class Reaper(Melee):
         self.ShroudGauge = min(100, self.ShroudGauge + Amount)
 
     def updateCD(self, time):
+        super().updateCD(time)
         if (self.SoulSliceCD > 0) : self.SoulSliceCD = max(0,self.SoulSliceCD - time)
         if (self.ArcaneCircleCD > 0) : self.ArcaneCircleCD = max(0,self.ArcaneCircleCD - time)
         if (self.GluttonyCD > 0) : self.GluttonyCD = max(0,self.GluttonyCD - time)

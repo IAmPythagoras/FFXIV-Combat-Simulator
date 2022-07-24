@@ -361,4 +361,26 @@ LemureScythe = ReaperSpell(30, False, 0, 0, 100, ApplyLemureSlice, [LemureSliceR
 DeathDesignBuff = buff(1.1)
 ArcaneCircleBuff = buff(1.03)
 
-ReaperAbility = {}
+ReaperAbility = {
+24373 : Slice,
+24374 : WaxingSlice,
+24375 : InfernalSlice,
+24378 : ShadowOfDeath,
+24380 : SoulSlice,
+24382 : Gibbet,
+24383 : Gallows,
+24385 : PlentifulHarvest,
+24386 : Harpe,
+24388 : HarvestMoon,
+24390 : UnveiledGibbet,
+24391 : UnveiledGallows,
+24393 : Gluttony,
+24394 : Enshroud,
+24395 : VoidReaping,
+24396 : CrossReaping,
+24398 : Communio,
+24399 : LemureSlice,
+24401 : HellIngress,
+24404 : ArcaneCrest,
+24405 : ArcaneCircle
+}

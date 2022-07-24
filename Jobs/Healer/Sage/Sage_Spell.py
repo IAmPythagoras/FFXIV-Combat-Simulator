@@ -2,6 +2,8 @@ from Jobs.Base_Spell import DOTSpell, ManaRequirement, empty
 from Jobs.Healer.Healer_Spell import SageSpell
 from Jobs.Healer.Sage.Sage_Spell import SageSpell
 import copy
+
+from Jobs.Healer.Scholar.Scholar_Spell import Physick
 Lock = 0.75
 
 
@@ -175,4 +177,20 @@ Icarus = SageSpell(19, False, 0, 0, 0, 0, ApplyIcarus, [IcarusRequirement])
 Soteria = SageSpell(20, False, 0, 0, 0, 0, ApplySoteria, [SoteriaRequirement])
 Druochole = SageSpell(21, False, 0, 0, 0, 0, ApplyDruochole, [AddersgallRequirement])
 
-SageAbility = {}
+SageAbility = {
+24284 : Diagnosis,
+24290 : Eukrasia,
+24291 : Diagnosis,
+24292 : Prognosis,
+24295 : Icarus,
+24296 : Druochole,
+24298 : Kerachole,
+24299 : Ixochole,
+24302 : Physick,
+24303 : Taurochole,
+24305 : Haima,
+24310 : Holos,
+24311 : Panhaima,
+24312 : Dosis,
+24313 : Phlegma
+}

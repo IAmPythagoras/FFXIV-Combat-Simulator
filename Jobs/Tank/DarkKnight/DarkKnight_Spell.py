@@ -15,14 +15,14 @@ Lock = 0
 
 def BloodRequirement(Player, Spell):
     #print("Delirium stacks: "+ str(Player.DeliriumStacks))
-    if Player.DeliriumStacks > 0 and (Spell.id == Bloodspiller.id or Spell.id == Quietus):
+    if Player.DeliriumStacks > 0 and (Spell.id == Bloodspiller.id or Spell.id == Quietus.id):
         Spell.BloodCost = 0
         Player.DeliriumStacks -= 1
         return True, -1
     elif Player.Blood >= 50:
         Player.Blood -= 50
         return True, -1
-    return False, -1
+    return True, -1
 
 def EdgeShadowRequirement(Player, Spell):
     if Player.EdgeShadowCD <= 0 :

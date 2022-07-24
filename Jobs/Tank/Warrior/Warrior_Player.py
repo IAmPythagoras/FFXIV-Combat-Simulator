@@ -42,6 +42,7 @@ class Warrior(Tank):
         self.JobMod = 105
 
     def updateCD(self, time):
+        super().updateCD(time)
         if (self.InfuriateCD > 0) : self.InfuriateCD = max(0,self.InfuriateCD - time)
         if (self.UpheavalCD > 0) : self.UpheavalCD = max(0,self.UpheavalCD - time)
         if (self.InnerReleaseCD > 0) : self.InnerReleaseCD = max(0,self.InnerReleaseCD - time)

@@ -170,7 +170,7 @@ for playerID in player_dict:
     elif job_name == "DarkKnight" : 
         player_dict[playerID]["job_object"].Stat = DRKStat
         player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
-        player_dict[playerID]["job_object"].EffectList = [BloodWeaponEffect]
+        player_dict[playerID]["job_object"].EffectList = [BloodWeaponEffect] #Assuming we pre pull it
         player_dict[playerID]["job_object"].EffectCDList = [BloodWeaponCheck]
     elif job_name == "Paladin" : 
         player_dict[playerID]["job_object"].Stat = PLDStat
@@ -217,7 +217,7 @@ for playerID in player_dict:
     Event.PlayerList.append(player_dict[playerID]["job_object"])
 
 Event.ShowGraph = False
-Event.PlayerList = [Event.PlayerList[-3]] #For testing purposes
-
-Event.SimulateFight(0.01, 1000, 0)
+#Event.PlayerList = [Event.PlayerList[-1]] #For testing purposes
+print("Starting simulator")
+Event.SimulateFight(0.01, 1000, 3.37)
 

@@ -468,4 +468,34 @@ HellfrogMedium = NinjaSpell(36, False, Lock, 0, 160, ApplyBhavacakra, [Bhavacakr
 MugBuff = buff(1.05)
 TrickAttackBuff = buff(1.1)
 
-NinjaAbility = {}
+NinjaAbility = {
+2240 : SpinningEdge,
+2241 : ShadeShift,
+2242 : GustSlash,
+2248 : Mug,
+2255 : AeolianEdge,
+2258 : TrickAttack,
+2259 : Ten,
+2263 : Jin,
+2264 : Kassatsu,
+2267 : Raiton,
+2269 : Huton,
+2271 : Suiton,
+3563 : ArmorCrush,
+3566 : DreamWithinADream,
+7402 : Bhavacakra,
+7403 : TenChiJin,
+16489 : Meisui,
+16492 : HyoshoRanryu,
+16493 : Bunshin,
+18805 : Ten2,
+18806 : Chi2,
+18807 : Jin2,
+18873 : FumaShuriken,
+18877 : Raiton,
+18881 : Suiton,
+25774 : PhantomKamaitachi,
+25778 : FleetingRaiju,
+25876 : Huraijin
+}
+#Missing a lot of actions
