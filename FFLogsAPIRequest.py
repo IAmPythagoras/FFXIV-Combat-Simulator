@@ -81,22 +81,23 @@ def getAccessToken(conn, client_id, client_secret):
 
 def getAbilityList(client_id, client_secret):
 
-    def lookup_abilityID(actionID, targetID, sourceID, targetEnemy, targetSelf):
+    def lookup_abilityID(actionID, targetID, sourceID, targetEnemy, targetSelf, isHeal):
         #Will first get the job of the sourceID so we know in what dictionnary to search for
 
         def lookup(JobDict, ClassDict):
             if not (int(actionID) in JobDict.keys()): #if not in, then the action is in the ClassDict
                 if not (int(actionID) in ClassDict.keys()):
+                    #if job_name == "Warrior" : input("Missing action : " + str(actionID))
                     return WaitAbility(0) #Currently at none so we can debug
                     raise ActionNotFound #Did not find action
                 return ClassDict[int(actionID)] #Class actions do not have the possibility to target other allies, so we assume itll target an enemy
-            
-            if targetEnemy or targetSelf or targetID == -1: 
+
+            if targetEnemy or targetSelf or targetID == -1 or not isHeal: 
                 return JobDict[int(actionID)]
             else: 
                 #print(actionID)
-                if int(actionID) == 7388 or int(actionID) == 7393 or int(actionID) == 25754: return JobDict[int(actionID)] #Edge case for TBN/Oblation/ShakeItOff
-                return JobDict[int(actionID)](player_list[str(targetID)]["job_object"]) #Otherwise it returns what
+                if int(actionID) == 7388 or int(actionID) == 7393 or int(actionID) == 25754 or int(actionID) == 24296: return JobDict[int(actionID)] #Edge case for TBN/Oblation/ShakeItOff
+                return JobDict[int(actionID)](player_list[str(targetID)]["job_object"]) #Otherwise it returns that
             #we assume to be a function with one input as the object of the target
 
         job_name = player_list[str(sourceID)]["job"] #getting job name
@@ -243,11 +244,8 @@ def getAbilityList(client_id, client_secret):
                 player_obj.Soulsow = True
             elif aura["name"] == "Medicated":
                 #Potion
-
-
                 def PrepullPotion(Player, Enemy):
                     ApplyPotion(Player, Enemy)
-
                 player_obj.EffectList.append(PrepullPotion) #Adding this effect that will automatically apply the potion
                 #on the first go through of the sim
                 player_obj.PotionTimer = 27 #Assume we loose a bit on it
@@ -283,6 +281,7 @@ def getAbilityList(client_id, client_secret):
             self.targetID = targetID
             self.targetEnemy = targetID in enemy_list #if the targetID is one of the enemy ID, then we are targeting an enemy.
             self.targetSelf = targetID == sourceID #if the action targets the player casting it
+            self.isHeal = type == "calculatedheal"
             #If we are not, we will have to do some more stuff later on.
 
         def isequal(self, action): #This checks if two consecutive actions are equivalent. 
@@ -341,7 +340,7 @@ def getAbilityList(client_id, client_secret):
                         wait_flag = False #reset
                         wait_timestamp = 0 #reset
 
-                next_action = lookup_abilityID(action.action_id, action.targetID, player, action.targetEnemy, action.targetSelf) #returns the action object of the specified spell
+                next_action = lookup_abilityID(action.action_id, action.targetID, player, action.targetEnemy, action.targetSelf, action.isHeal) #returns the action object of the specified spell
                 
                 if is_heal:
                     #If this flag is set to true, we wait until we do not have type = 'calculatedheal'
@@ -443,7 +442,7 @@ def getAbilityList(client_id, client_secret):
 def test(client_id,client_secret):
     conn = http.client.HTTPSConnection("www.fflogs.com")
     access_token = getAccessToken(conn, client_id, client_secret)
-    actionID = 16495
+    actionID = 7
 
     payload = "{\"query\":\"query trio{\\n\\treportData {\\n\\t\\treport(code: \\\"RQwfx3vATFWGahJc\\\") {\\n\\t\\t\\ttitle,\\n\\t\\t\\tendTime,\\n\\t\\t\\tevents(\\n\\t\\t\\t\\tendTime:1651557651925,\\n\\t\\t\\t\\tfightIDs:8,\\n\\t\\t\\t\\tincludeResources: false,\\n\\t\\t\\t\\tfilterExpression:\\\"ability.ID = " + str(actionID) +"\\\"\\n\\t\\t\\t){data\\n\\t\\t\\t}\\n\\t\\t\\t\\n\\t\\t}\\n\\t}\\n}\",\"operationName\":\"trio\"}"
     
@@ -463,7 +462,7 @@ def test(client_id,client_secret):
     wait_calculated = False
     for event in data:
 
-        if event["type"] == "cast": input("Applying fire 4 at : " + str((event["timestamp"] - 14825136)/1000))
+        if event["type"] == "cast" and event["sourceID"] == 56: input("Applying fire 4 at : " + str((event["timestamp"] - 14825136)/1000))
 
         if event["type"] == "begincast": 
              begin_time = event["timestamp"]

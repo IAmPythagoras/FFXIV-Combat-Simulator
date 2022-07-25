@@ -490,10 +490,10 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
     Enemy = Player.CurrentFight.Enemy #Enemy targetted
 
     if isinstance(Player, Queen) or isinstance(Player, Esteem) or isinstance(Player, Shadow) or isinstance(Player, BigSummon): MainStat = Player.Stat["MainStat"] #Summons do not receive bonus
-    else: MainStat = math.floor(Player.Stat["MainStat"])*  (Player.CurrentFight.TeamCompositionBonus) #Scaling %bonus on mainstat
+    else: MainStat = math.floor(Player.Stat["MainStat"]) * (Player.CurrentFight.TeamCompositionBonus) #Scaling %bonus on mainstat
 
     #Computing values used throughout all computations
-    if isinstance(Player, Tank) : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*153/baseMain))/100 #This is experimental, and I do not have any actual proof to back up, but tanks do have a different f_MAIN_DMG formula
+    if isinstance(Player, Tank) : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*153/baseMain))/100 #Tanks have a difference constant 
     else: f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100
     #These values are all already computed since they do not change
     f_WD = Player.f_WD
@@ -522,7 +522,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
                 DHRate = 1
                 Player.Reassemble = False #Uses Reassemble       
         elif isinstance(Player, Warrior):
-            if Player.InnerReleaseStack >= 1 and (Player.NextSpell < len(Player.ActionSet)) and (Player.ActionSet[Player.NextSpell].id == 9 or Player.ActionSet[Player.NextSpell].id == 8):
+            if Player.InnerReleaseStack >= 1 and (Player.NextSpell < len(Player.ActionSet)) and (Player.ActionSet[Player.NextSpell].id == 9 or Player.ActionSet[Player.NextSpell].id == 8 or Player.ActionSet[Player.NextSpell].id == 10):
                 CritRate = 1#If inner release weaponskill
                 DHRate = 1
                 Player.InnerReleaseStack -= 1
@@ -603,7 +603,6 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
         for buffs in spellObj.MultBonus:
             Damage = math.floor(Damage * buffs.MultDPS)
 
-    
     if CritRate == 1: #If sure to crit, add crit to min expected damage
         return math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))), math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) #If we have auto crit, we return full damage
     else:

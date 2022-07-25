@@ -256,14 +256,14 @@ GunbreakerAbility = {
 16158 : EyeGouge,
 25759 : Hypervelocity,
 16153 : SonicBreak,
-16144 : BlastingZone,
+16165 : BlastingZone,
 25760 : DoubleDown,
 16141 : DemonSlice,
 16149 : DemonSlaughter,
 16163 : FatedCircle,
 16148 : BigMit,
 16140 : Camouflage,
-16161 : HeartOfCorundum,
+25758 : HeartOfCorundum,
 16151 : Aurora,
 16160 : HeartOfLight
 }

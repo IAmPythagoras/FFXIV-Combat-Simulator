@@ -7,6 +7,7 @@ from Jobs.Melee.Ninja.Ninja_Player import Shadow
 from Jobs.Ranged.Bard.Bard_Player import Bard
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
 from Jobs.Tank.DarkKnight.DarkKnight_Player import DarkKnight, Esteem
+from Jobs.Tank.Warrior.Warrior_Player import Warrior
 Lock = 0.75
 
 class FailedToCast(Exception):#Exception called if a spell fails to cast
@@ -99,16 +100,15 @@ class Spell:
         for Effect in self.Effect:
             Effect(player, Enemy)#Put effects on Player and/or Enemy
         #This will include substracting the mana (it has been verified before that the mana was enough)
-        
-        ##print("Current MP: " + str(player.Mana))
-        ##print("Current Blood: " + str(player.Blood))
+
         type = 0 #Default value for type
-        if isinstance(self, DOTSpell): #Then dot
+        if isinstance(self, Auto_Attack):
+            type = 3
+        elif isinstance(self, DOTSpell): #Then dot
             #We have to figure out if its a physical dot or not
             if self.isPhysical: type = 2
-            else: type = 1
-        elif isinstance(self, Auto_Attack):
-            type = 3   
+            else: type = 1   
+
         
         if self.Potency != 0 : minDamage,Damage= ComputeDamage(player, self.Potency, Enemy, self.DPSBonus, type, self)    #Damage computation
         else: minDamage, Damage = 0,0
@@ -127,9 +127,10 @@ class Spell:
         Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage
 
-        #if self.id > 0 and Damage > 0: 
-        #    print("The action with id : " + str(self.id) + " did " + str(Damage) + " damage")
+        if self.id > 0 and Damage > 0: 
+            print("The action with id : " + str(self.id) + " did " + str(Damage) + " damage")
         #    if isinstance(player, DarkKnight) : input("blood " + str(player.Blood))
+            if isinstance(player, Warrior) : input("beast : " + str(player.BeastGauge))
 
 
         #Will update the NextSpell of the player
@@ -169,8 +170,7 @@ def empty(Player, Enemy):
 
 def WaitAbility(time):
     def ApplyWaitAbility(Player, Enemy):
-        return 0
-        input("waiting for : " + str(time))
+        if time > 2.5 : input("wait for more than necessary")
     return Spell(-1, False, time, time, 0, 0, ApplyWaitAbility, [])
 
 def ApplyPotion(Player, Enemy):
@@ -203,12 +203,12 @@ class DOTSpell(Spell):
         #Note that AAs do not snapshot buffs, but in the code they will still have these fields
 
     def CheckDOT(self, Player, Enemy, TimeUnit):
-        ##print("The dot Timer is :  " + str(self.DOTTimer))
+        #print("The dot Timer is :  " + str(self.DOTTimer))
         if(self.DOTTimer <= 0):
             #Apply DOT
             tempSpell  = self.Cast(Player, Enemy)#Cast the DOT
             ##print(self.id)
-            ##print("Timestamp is : " + str(Player.CurrentFight.TimeStamp))
+            #print("Timestamp is : " + str(Player.CurrentFight.TimeStamp))
             #input("applying dot with potency : " + str(tempSpell.Potency))
             tempSpell.CastFinal(Player, Enemy)
             self.DOTTimer = 3
@@ -223,7 +223,7 @@ class Auto_Attack(DOTSpell):
         if Ranged : super().__init__(id, 100, True)
         else: super().__init__(id, 110, True)
 
-        self.DOTTimer = 23 #The timer is intentionally set at a longer time, so it won't go off before the countdown is over
+        self.DOTTimer = 3 #The timer is intentionally set at a longer time, so it won't go off before the countdown is over
 
 class Queen_Auto(Auto_Attack):
 

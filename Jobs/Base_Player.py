@@ -22,6 +22,7 @@ class Player:
         self.oGCDLockTimer = 0
         self.GCDLockTimer = 0
         self.PotionTimer = 0
+        self.Delay = 3
 
         self.Mana = 10000 #Starting mana
         self.HP = 1000  #Could be changed

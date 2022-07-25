@@ -3,7 +3,7 @@
 #########################################
 
 from Jobs.Base_Spell import buff, empty
-from Jobs.Tank.Tank_Spell import WarriorSpell
+from Jobs.Tank.Tank_Spell import BigMit, WarriorSpell
 Lock = 0.75
 
 def BeastGaugeRequirement(Player, Spell):
@@ -134,9 +134,10 @@ def ApplyInnerChaos(Player, Enemy):
 #Effect
 
 def InnerReleaseEffect(Player, Spell):
-    if isinstance(Spell, WarriorSpell) and Spell.Cost != 0:
+    if Spell.id == FellCleave.id:
         Player.NoBeastCostStack -= 1
         Spell.Cost = 0
+        Player.InnerReleaseStack += 1
         if Player.NoBeastCostStack == 0: 
             Player.EffectToRemove.append(InnerReleaseEffect)
 
@@ -229,10 +230,9 @@ SurgingTempestBuff = buff(1.1)
 
 WarriorAbility = {
 43 : Holmgang,
-46 : Tomahawk,
-7368 : Onslaught,
+7386 : Onslaught,
 52 : Infuriate,
-38 : InnerRelease,
+7389 : InnerRelease,
 31 : HeavySwing,
 37 : Maim,
 42 : StormPath,
@@ -243,13 +243,14 @@ WarriorAbility = {
 7387 : Upheaval,
 41 : Overpower,
 16462 : MythrilTempest,
-51 : Decimate,
+3550 : Decimate,
 16463 : ChaoticCyclone,
 25752 : Orogeny,
-#44 : Vengeance,
+44 : BigMit,
 40 : ThrillOfBattle,
 3552 : Equilibrium,
-3551 : Bloodwhetting,
+25751 : Bloodwhetting,
 16464 : NascentFlash,
-7388 : ShakeItOff
+7388 : ShakeItOff,
+46 : Tomahawk
 }

@@ -166,7 +166,7 @@ for playerID in player_dict:
     elif job_name == "Astrologian" : player_dict[playerID]["job_object"].Stat = ASTStat
     elif job_name == "Warrior" : 
         player_dict[playerID]["job_object"].Stat = WARStat
-        player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+        #player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
     elif job_name == "DarkKnight" : 
         player_dict[playerID]["job_object"].Stat = DRKStat
         player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
@@ -217,7 +217,10 @@ for playerID in player_dict:
     Event.PlayerList.append(player_dict[playerID]["job_object"])
 
 Event.ShowGraph = False
-#Event.PlayerList = [Event.PlayerList[-1]] #For testing purposes
+Event.PlayerList = [Event.PlayerList[-1]] #For testing purposes
+#for player in Event.PlayerList:
+#    input(player)
 print("Starting simulator")
-Event.SimulateFight(0.01, 1000, 3.37)
+#exit()
+Event.SimulateFight(0.01, 1000, 0)
 

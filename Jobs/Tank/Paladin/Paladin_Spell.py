@@ -307,7 +307,7 @@ PaladinAbility = {
 23 : CircleScorn,
 16458 : HolyCircle,
 17 : BigMit,
-3542 : HolySheltron,
+25746 : HolySheltron,
 7382 : Intervention,
 27 : Cover,
 3541 : Clemency,

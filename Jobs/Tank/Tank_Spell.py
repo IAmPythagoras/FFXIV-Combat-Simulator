@@ -1,4 +1,4 @@
-from Jobs.Base_Spell import Spell, Auto_Attack
+from Jobs.Base_Spell import Potion, Spell, Auto_Attack
 from Jobs.Melee.Melee_Spell import ArmLength
 Lock = 0.75
 
@@ -150,6 +150,6 @@ TankAbility = {
 16142 : TankStance, #Gunbreaker Tank Stance
 3629 : TankStance, #DarkKnight Tank Stance
 48 : TankStance, #Warrior Tank Stance
-28 : TankStance #Paladin Tank Stance
-
+28 : TankStance, #Paladin Tank Stance
+34590541 : Potion
 }
