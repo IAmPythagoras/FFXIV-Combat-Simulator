@@ -92,14 +92,18 @@ def getAbilityList(client_id, client_secret):
                     raise ActionNotFound #Did not find action
                 return ClassDict[int(actionID)] #Class actions do not have the possibility to target other allies, so we assume itll target an enemy
 
-            if targetEnemy or targetSelf or targetID == -1 or not isHeal: 
+
+            if callable(JobDict[int(actionID)]): #If the action is a function
+                return JobDict[int(actionID)](player_list[str(targetID)]["job_object"])
+            return JobDict[int(actionID)] #Else return object
+            """
+            if targetEnemy or targetSelf or targetID == -1 or isHeal: 
                 return JobDict[int(actionID)]
             else: 
-                #print(actionID)
                 if int(actionID) == 7388 or int(actionID) == 7393 or int(actionID) == 25754 or int(actionID) == 24296: return JobDict[int(actionID)] #Edge case for TBN/Oblation/ShakeItOff
                 return JobDict[int(actionID)](player_list[str(targetID)]["job_object"]) #Otherwise it returns that
             #we assume to be a function with one input as the object of the target
-
+             """
         job_name = player_list[str(sourceID)]["job"] #getting job name
 
         #Will now go through all possible job and find what action is being used based on the ID. If the ID is not right, it will

@@ -217,10 +217,11 @@ for playerID in player_dict:
     Event.PlayerList.append(player_dict[playerID]["job_object"])
 
 Event.ShowGraph = False
-Event.PlayerList = [Event.PlayerList[-1]] #For testing purposes
-#for player in Event.PlayerList:
-#    input(player)
+Event.PlayerList = [Event.PlayerList[2]] #For testing purposes
+for player in Event.PlayerList:
+    input(player)
 print("Starting simulator")
+print(Event.PlayerList)
 #exit()
 Event.SimulateFight(0.01, 1000, 0)
 
