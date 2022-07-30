@@ -130,7 +130,6 @@ class Spell:
         if self.id > 0 and Damage > 0: 
             print("The action with id : " + str(self.id) + " did " + str(Damage) + " damage")
         #    if isinstance(player, DarkKnight) : input("blood " + str(player.Blood))
-            if isinstance(player, Warrior) : input("beast : " + str(player.BeastGauge))
 
 
         #Will update the NextSpell of the player

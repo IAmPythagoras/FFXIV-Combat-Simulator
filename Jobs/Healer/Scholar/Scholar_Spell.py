@@ -231,14 +231,14 @@ ScholarAbility = {
 16537 : WhisperingDawn, 
 16538 : FeyIllumination, 
 16542 : Recitation, 
-16542 : FeyBlessing, 
+16543 : FeyBlessing, 
 16545 : SummonSeraph,
 16545 : SummonEos, 
-17216 : SummonEos, 
+17215 : SummonEos, 
 25868 : Expedient, 
 25867 : Protraction, 
 25866 : ArtOfWar, 
 25865 : Broil, 
 17870 : Ruin, 
-17865 : Biolysis
+16540 : Biolysis
 }

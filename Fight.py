@@ -249,7 +249,6 @@ class Fight:
             axs[1].plot(TimeStamp,player.PotencyGraph, label=job)
 
             if DPS != 0 : self.ComputeDPSDistribution(player, fig2, axs2[j][i], job)
-            ##input((i,j))
             i+=1
             if i == 4:
                 i = 0
@@ -265,7 +264,6 @@ class Fight:
         axs[0].legend()
         axs[1].legend()
         if self.ShowGraph: plt.show()
-        #input("Press any button to exit the program")
 
 
 
@@ -489,9 +487,9 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
 
     Enemy = Player.CurrentFight.Enemy #Enemy targetted
 
-    if isinstance(Player, Queen) or isinstance(Player, Esteem) or isinstance(Player, Shadow) or isinstance(Player, BigSummon): MainStat = Player.Stat["MainStat"] #Summons do not receive bonus
-    else: MainStat = math.floor(Player.Stat["MainStat"]) * (Player.CurrentFight.TeamCompositionBonus) #Scaling %bonus on mainstat
 
+    if isinstance(Player, Queen) or isinstance(Player, Esteem) or isinstance(Player, Shadow) or isinstance(Player, BigSummon): MainStat = Player.Stat["MainStat"] #Summons do not receive bonus
+    else: MainStat = math.floor(Player.Stat["MainStat"]) * 1.05 * (Player.CurrentFight.TeamCompositionBonus) #Scaling %bonus on mainstat
     #Computing values used throughout all computations
     if isinstance(Player, Tank) : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*153/baseMain))/100 #Tanks have a difference constant 
     else: f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100

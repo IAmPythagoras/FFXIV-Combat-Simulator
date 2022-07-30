@@ -79,7 +79,7 @@ def getAccessToken(conn, client_id, client_secret):
     res_json = json.loads(res_str)
     return res_json["access_token"]
 
-def getAbilityList(client_id, client_secret):
+def getAbilityList(client_id, client_secret, fightID, fightNumber):
 
     def lookup_abilityID(actionID, targetID, sourceID, targetEnemy, targetSelf, isHeal):
         #Will first get the job of the sourceID so we know in what dictionnary to search for
@@ -154,7 +154,7 @@ def getAbilityList(client_id, client_secret):
     conn = http.client.HTTPSConnection("www.fflogs.com")
     access_token = getAccessToken(conn, client_id, client_secret)
 
-    payload = "{\"query\":\"query trio{\\n\\treportData {\\n\\t\\treport(code: \\\"RQwfx3vATFWGahJc\\\") {\\n\\t\\t\\tplayerDetails(fightIDs:8,endTime:999999999),\\n\\t\\t\\tfights(fightIDs:8){\\n\\t\\t\\t\\tenemyNPCs{\\n\\t\\t\\t\\t\\tid\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tstartTime\\n\\t\\t\\t}\\n\\t\\t}\\n\\t\\t\\t\\n\\t}\\n}\",\"operationName\":\"trio\"}"
+    payload = "{\"query\":\"query trio{\\n\\treportData {\\n\\t\\treport(code: \\\"" + fightID + "\\\") {\\n\\t\\t\\tplayerDetails(fightIDs:" + fightNumber +",endTime:999999999),\\n\\t\\t\\tfights(fightIDs:8){\\n\\t\\t\\t\\tenemyNPCs{\\n\\t\\t\\t\\t\\tid\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tstartTime\\n\\t\\t\\t}\\n\\t\\t}\\n\\t\\t\\t\\n\\t}\\n}\",\"operationName\":\"trio\"}"
 
     headers = {
         'Content-Type': "application/json",
@@ -225,7 +225,7 @@ def getAbilityList(client_id, client_secret):
 
     #2nd request will look at all prepull actions done by the players
 
-    payload = "{\"query\":\"query trio{\\n\\treportData {\\n\\t\\treport(code: \\\"RQwfx3vATFWGahJc\\\") {\\n\\t\\t\\ttitle,\\n\\t\\t\\tendTime,\\n\\t\\t\\tevents(\\n\\t\\t\\t\\tendTime:1649370483952,\\n\\t\\t\\t\\tfightIDs:8,\\n\\t\\t\\t\\tincludeResources: false,\\n\\t\\t\\t\\tfilterExpression:\\\"type = 'combatantinfo'\\\"\\n\\t\\t\\t){data\\n\\t\\t\\t}\\n\\t\\t\\t\\n\\t\\t}\\n\\t}\\n}\",\"operationName\":\"trio\"}"
+    payload = "{\"query\":\"query trio{\\n\\treportData {\\n\\t\\treport(code: \\\""+fightID+"\\\") {\\n\\t\\t\\ttitle,\\n\\t\\t\\tendTime,\\n\\t\\t\\tevents(\\n\\t\\t\\t\\tendTime:1649370483952,\\n\\t\\t\\t\\tfightIDs:"+fightNumber+",\\n\\t\\t\\t\\tincludeResources: false,\\n\\t\\t\\t\\tfilterExpression:\\\"type = 'combatantinfo'\\\"\\n\\t\\t\\t){data\\n\\t\\t\\t}\\n\\t\\t\\t\\n\\t\\t}\\n\\t}\\n}\",\"operationName\":\"trio\"}"
     conn.request("POST", "/api/v2/client", payload, headers)
 
     res = conn.getresponse()
@@ -250,6 +250,7 @@ def getAbilityList(client_id, client_secret):
                 #Potion
                 def PrepullPotion(Player, Enemy):
                     ApplyPotion(Player, Enemy)
+                    Player.EffectToRemove.append(PrepullPotion)
                 player_obj.EffectList.append(PrepullPotion) #Adding this effect that will automatically apply the potion
                 #on the first go through of the sim
                 player_obj.PotionTimer = 27 #Assume we loose a bit on it
@@ -267,7 +268,7 @@ def getAbilityList(client_id, client_secret):
 
     #Third request will fetch all the abilities done in the fight and make an array associated with each player's ID
 
-    payload = "{\"query\":\"query trio{\\n    reportData {\\n        report(code: \\\"RQwfx3vATFWGahJc\\\") {\\n\\t\\t\\t\\tendTime,\\n            events(\\n\\t\\t\\t\\t\\t\\t\\tfightIDs:8,\\n\\t\\t\\t\\t\\t\\t\\tendTime:99999999999999,\\n\\t\\t\\t\\t\\t\\t\\tincludeResources:false,\\n\\t\\t\\t\\t\\t\\t\\tfilterExpression:\\\"type = 'cast' OR type = 'begincast' OR type = 'calculateddamage' OR type = 'applybuff' or type = 'calculatedheal'\\\",\\n\\t\\t\\t\\t\\t\\t\\tlimit:10000\\n\\t\\t\\t\\t\\t\\t\\t\\n\\t\\t\\t\\t\\t\\t){data}\\n        }\\n\\n    }\\n}\",\"operationName\":\"trio\"}"
+    payload = "{\"query\":\"query trio{\\n    reportData {\\n        report(code: \\\""+fightID+"\\\") {\\n\\t\\t\\t\\tendTime,\\n            events(\\n\\t\\t\\t\\t\\t\\t\\tfightIDs:"+fightNumber+",\\n\\t\\t\\t\\t\\t\\t\\tendTime:99999999999999,\\n\\t\\t\\t\\t\\t\\t\\tincludeResources:false,\\n\\t\\t\\t\\t\\t\\t\\tfilterExpression:\\\"type = 'cast' OR type = 'begincast' OR type = 'calculateddamage' OR type = 'applybuff' or type = 'calculatedheal'\\\",\\n\\t\\t\\t\\t\\t\\t\\tlimit:10000\\n\\t\\t\\t\\t\\t\\t\\t\\n\\t\\t\\t\\t\\t\\t){data}\\n        }\\n\\n    }\\n}\",\"operationName\":\"trio\"}"
     conn.request("POST", "/api/v2/client", payload, headers)
 
     res = conn.getresponse()

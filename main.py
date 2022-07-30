@@ -153,7 +153,9 @@ Event.PlayerList = [NINPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKP
 
 client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
 client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE"
-action_dict, player_dict = getAbilityList(client_id, client_secret)
+fightID = 'jf4FJ8YtkqdcxZWD'
+fightNumber = '35'
+action_dict, player_dict = getAbilityList(client_id, client_secret, fightID, fightNumber)
 
 for playerID in player_dict:
     player_dict[playerID]["job_object"].ActionSet = action_dict[playerID]
@@ -216,10 +218,10 @@ for playerID in player_dict:
 
     Event.PlayerList.append(player_dict[playerID]["job_object"])
 
-Event.ShowGraph = False
-Event.PlayerList = [Event.PlayerList[2]] #For testing purposes
-for player in Event.PlayerList:
-    input(player)
+Event.ShowGraph = True
+Event.PlayerList = [Event.PlayerList[5]] #For testing purposes
+#for player in Event.PlayerList:
+#    input(player)
 print("Starting simulator")
 print(Event.PlayerList)
 #exit()

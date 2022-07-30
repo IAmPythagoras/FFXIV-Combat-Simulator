@@ -52,7 +52,6 @@ def SwiftcastRequirement(Player, Spell):
     return Player.SwiftcastCD <= 0, Player.SwiftcastCD
 
 def LucidDreamingRequirement(Player, Spell):
-    input(Player)
     return Player.LucidDreamingCD <= 0, Player.LucidDreamingCD
 
 def SurecastRequirement(Player, Spell):

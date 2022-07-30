@@ -9,6 +9,9 @@ Lock = 0.75
 def DrawRequirement(Player, Spell):
     return Player.DrawStack > 0, Player.DrawCD
 
+def RedrawRequirement(Player, Spell):
+    return Player.Redraw, -1
+
 def ArcanumRequirement(Player, Spell):
     return Player.HasCard, -1
 
@@ -40,7 +43,7 @@ def HoroscopeRequirement(Player, Spell):
     return Player.HoroscopeCD <= 0, Player.HoroscopeCD
 
 def CelestialIntersectionRequirement(Player, Spell):
-    return Player.CelestialIntersectionCD <= 0, Player.CelestialIntersectionCD
+    return Player.CelestialIntersectionStack > 0, Player.CelestialIntersectionCD
 
 def EarthlyStarRequirement(Player, Spell):
     return Player.EarthlyStarCD <= 0, Player.EarthlyStarCD
@@ -83,7 +86,13 @@ def ApplyEarthlyStar(Player, Enemy):
     Player.EarthlyStarCD = 60
 
 def ApplyCelestialIntersection(Player, Enemy):
-    Player.CelestialIntersectionCD = 30
+
+    if Player.CelestialIntersectionStack == 2:
+        Player.EffectCDList.append(CelestialIntersectionStackCheck)
+        Player.CelestialIntersectionCD = 30
+    
+    Player.CelestialIntersectionStack -= 1
+
 
 def ApplyHoroscope(Player, Enemy):
     Player.HoroscopeCD = 60
@@ -121,11 +130,15 @@ def ApplyAstrodyne(Player, Enemy):
 
 def ApplyDraw(Player, Enemy):
     Player.HasCard = True
+    Player.Redraw = True
 
     if Player.DrawStack == 2:
         Player.EffectCDList.append(DrawStackCheck)
         Player.DrawCD = 30
     Player.DrawStack -= 1
+
+def ApplyRedraw(Player, Enemy):
+    Player.Redraw = False
 
 def ApplyMinorArcana(Player, Enemy):
     Player.LordOfCrown = True
@@ -209,6 +222,14 @@ def CumbustDOTCheck(Player, Enemy):
         Player.CumbustDOT = None
         Player.EffectToRemove.append(CumbustDOTCheck)
 
+def CelestialIntersectionStackCheck(Player, Enemy):
+    if Player.CelestialIntersectionCD <= 0:
+        if Player.CelestialIntersectionStack == 1:
+            Player.EffectToRemove.append(CelestialIntersectionStackCheck)
+        else:
+            Player.CelestialIntersectionCD = 30
+        Player.CelestialIntersectionStack += 1
+
 #GCD
 Malefic = AstrologianSpell(1, True, 1.5, 2.5, 250, 400, empty, [ManaRequirement])
 Combust = AstrologianSpell(2, True, Lock, 2.5, 0, 400, ApplyCombust, [ManaRequirement])
@@ -218,17 +239,19 @@ Gravity = AstrologianSpell(4, True, 1.5, 2.5, 130, 400, empty, [ManaRequirement]
 #Heal GCD
 AspectedHelios = AstrologianSpell(5, True, 1.5, 2.5, 0, 800, empty, [ManaRequirement])
 AspectedBenific = AstrologianSpell(6, True, 0, 2.5, 0, 400, empty, [ManaRequirement])
-Benefic = AstrologianSpell(7, True, 1.5, 2.5, 0, 700, empty, [ManaRequirement])
+Benefic2 = AstrologianSpell(7, True, 1.5, 2.5, 0, 700, empty, [ManaRequirement])
 Benefic = AstrologianSpell(8, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement])
 Helios = AstrologianSpell(9, True, 1.5, 2.5, 0, 700, empty, [ManaRequirement])
 EssentialDignity = AstrologianSpell(10, False, 0, 0, 0, 0, ApplyEssentialDignity, [EssentialDignityRequirement])
 Macrocosmos = AstrologianSpell(16, True, 0, 0, 250, 600, ApplyMacrocosmos, [MacrocosmosRequirement, ManaRequirement])
 Microcosmos = AstrologianSpell(17, True, 0, 0, 0, 0, empty, [MicrocosmosRequirement])
+LadyOfCrown = AstrologianSpell(27, True, 0, 1, 0, 0, empty, [])
 #oGCD
 Lightspeed = AstrologianSpell(11, False, Lock, 0, 0, 0, ApplyLightspeed, [LightspeedRequirement])
 Divination = AstrologianSpell(12, False, Lock, 0, 0, 0, ApplyDivination, [DivinationRequirement])
 MinorArcana = AstrologianSpell(13, False, Lock, 0, 0, 0, ApplyMinorArcana, [MinorArcanaRequirement])
 Draw = AstrologianSpell(14, False, Lock,0, 0, 0, ApplyDraw, [DrawRequirement])
+Redraw = AstrologianSpell(28, False, Lock, 0, 0, 0, ApplyRedraw, [RedrawRequirement])
 Astrodyne = AstrologianSpell(15, False, Lock, 0, 0, 0, ApplyAstrodyne, [])
 #Heal oGCD
 Exaltation = AstrologianSpell(18, False, 0, 0, 0, 0, ApplyExaltation, [ExaltationRequirement])
@@ -248,13 +271,13 @@ AstrodyneBuff = buff(1.05)
 DivinatonBuff = buff(1.06)
 
 
-def Arcanum(Target, Type="Lunar"):
+def Arcanum(Target, Type):
     #Target is the player object to which we will apply the buff
     #Type will specify which Astrosign
 
     def ArcanumCheck(Player, Enemy):
         if Player.ArcanumTimer <= 0:
-            #input("Effect has been removed on : " + str(Player))
+            input("Effect has been removed on : " + str(Player))
             Player.EffectToRemove.append(ArcanumCheck)
             Player.buffList.remove(ArcanumBuff)
         pass #This function is just to know if the Target has already been given a buff
@@ -274,4 +297,45 @@ def Arcanum(Target, Type="Lunar"):
 
     return AstrologianSpell(0, False, Lock, 0, 0, 0, ApplyArcanum, [ArcanumRequirement])
 
-AstrologianAbility = {}
+def LunarAranum(target):
+    return Arcanum(target,"Lunar")
+
+def SolarAranum(target):
+    return Arcanum(target,"Solar")
+
+def CelestialAranum(target):
+    return Arcanum(target,"Celestial")
+
+AstrologianAbility = {
+25871 : Malefic,
+16554 : Combust,
+25872 : Gravity,
+3590 : Draw,
+3593 : Redraw, 
+7443 : MinorArcana,
+4401 : SolarAranum,
+4404 : SolarAranum,
+4402 : LunarAranum,
+4405 : LunarAranum,
+4403 : CelestialAranum,
+4406 : CelestialAranum,
+7444 : LordOfCrown,
+7445 : LadyOfCrown,
+25870 : Astrodyne,
+16552 : Divination,
+16559 : NeutralSect,
+7439 : EarthlyStar,
+3594 : Benefic,
+3610 : Benefic2,
+2595 : AspectedBenific,
+3600 : Helios,
+3601 : AspectedHelios,
+3612 : Synastry,
+3613 : Collective,
+16553 : CelestialOpposition,
+16556 : CelestialIntersection,
+16557 : Horoscope,
+25873 : Exaltation,
+25874 : Macrocosmos
+
+}
