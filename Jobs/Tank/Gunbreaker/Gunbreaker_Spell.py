@@ -105,7 +105,7 @@ def ApplySonicBreak(Player, Enemy):
     Player.EffectCDList.append(SonicBreakDOTCheck)
 
 def ApplyDoubleDown(Player, Enemy):
-    Player.DoubleDownCD = 120
+    Player.DoubleDownCD = 60
 
 def ApplyHypervelocity(Player, Enemy):
     Player.ReadyToBurst = False
@@ -188,7 +188,7 @@ def RoughDivideStackCheck(Player, Enemy):
 
 def AuroraStackCheck(Player, Enemy):
     if Player.AuroraCD <= 0:
-        if Player.Aurora == 1:
+        if Player.AuroraStack == 1:
             Player.EffectToRemove.append(AuroraStackCheck)
         else:
             Player.AuroraCD = 30

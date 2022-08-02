@@ -2,7 +2,7 @@ import copy
 
 from Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
 from Jobs.Healer.Healer_Spell import AstrologianSpell
-Lock = 0.75
+Lock = 0
 
 #Requirement
 

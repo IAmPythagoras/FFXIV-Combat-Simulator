@@ -259,8 +259,8 @@ class Fight:
         print("The Enemy's total DPS is " + str(self.Enemy.TotalDamage / time))
         axs[0].xaxis.grid(True)
         axs[1].xaxis.grid(True)
-        axs[0].xaxis.set_ticks(np.arange(2.5, max(TimeStamp)+1, 2.5))
-        axs[1].xaxis.set_ticks(np.arange(2.5, max(TimeStamp)+1, 2.5))
+        axs[0].xaxis.set_ticks(np.arange(0, max(TimeStamp)+1, 25))
+        axs[1].xaxis.set_ticks(np.arange(0, max(TimeStamp)+1, 25))
         axs[0].legend()
         axs[1].legend()
         if self.ShowGraph: plt.show()
@@ -368,7 +368,6 @@ class Fight:
                         player.EffectCDList.remove(remove) #Removing relevant spell
                     for add in player.EffectToAdd:
                         player.EffectCDList.append(add)
-
                     player.EffectToRemove = []
                     player.EffectToAdd = []
                 
@@ -489,7 +488,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
 
 
     if isinstance(Player, Queen) or isinstance(Player, Esteem) or isinstance(Player, Shadow) or isinstance(Player, BigSummon): MainStat = Player.Stat["MainStat"] #Summons do not receive bonus
-    else: MainStat = math.floor(Player.Stat["MainStat"]) * 1.05 * (Player.CurrentFight.TeamCompositionBonus) #Scaling %bonus on mainstat
+    else: MainStat = math.floor(Player.Stat["MainStat"]) * (Player.CurrentFight.TeamCompositionBonus) #Scaling %bonus on mainstat
     #Computing values used throughout all computations
     if isinstance(Player, Tank) : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*153/baseMain))/100 #Tanks have a difference constant 
     else: f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100

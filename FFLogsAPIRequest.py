@@ -7,7 +7,7 @@ I only did the code relevant to how we used the data, he did everything regardin
 how to get the data. You can DM him on discord if you have questions : Bri-kun#6539
 
 """
-from Jobs.Base_Spell import ApplyPotion, WaitAbility
+from Jobs.Base_Spell import ApplyPotion, PrepullPotion, WaitAbility
 
 #CASTER
 from Jobs.Caster.Summoner.Summoner_Player import *
@@ -209,7 +209,7 @@ def getAbilityList(client_id, client_secret, fightID, fightNumber):
                 elif job_name == "Bard" : job_object = Bard(2.5, [], [], [], None, {})
                 #melee
                 elif job_name == "Reaper" : job_object = Reaper(2.5, [], [], [], None, {})
-                #elif job_name == "Monk" : job_object = Machinist(2.5, [], [], [], None, {}) #Monk is not yet implemented
+                elif job_name == "Monk" : job_object = Machinist(2.5, [], [], [], None, {}) #Monk is not yet implemented
                 elif job_name == "Dragoon" : job_object = Dragoon(2.5, [], [], [], None, {})
                 elif job_name == "Ninja" : job_object = Ninja(2.5, [], [], [], None, {})
                 elif job_name == "Samurai" : job_object = Samurai(2.5, [], [], [], None, {})
@@ -248,12 +248,8 @@ def getAbilityList(client_id, client_secret, fightID, fightNumber):
                 player_obj.Soulsow = True
             elif aura["name"] == "Medicated":
                 #Potion
-                def PrepullPotion(Player, Enemy):
-                    ApplyPotion(Player, Enemy)
-                    Player.EffectToRemove.append(PrepullPotion)
-                player_obj.EffectList.append(PrepullPotion) #Adding this effect that will automatically apply the potion
+                player_obj.EffectCDList.append(PrepullPotion) #Adding this effect that will automatically apply the potion
                 #on the first go through of the sim
-                player_obj.PotionTimer = 27 #Assume we loose a bit on it
             elif aura["name"] == "Meikyo Shisui":
                 player_obj.EffectCDList.append(MeikyoStackCheck)
                 player_obj.MeikyoCD = 46

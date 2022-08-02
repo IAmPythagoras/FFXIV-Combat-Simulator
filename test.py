@@ -1,4 +1,6 @@
 def f(x):
-    return 2
+    return x
 
-print(callable(f))
+a = [f]
+print(a[0] == f)
+a.remove(f)

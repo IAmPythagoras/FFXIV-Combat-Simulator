@@ -178,6 +178,11 @@ def ApplyPotion(Player, Enemy):
 
     Player.EffectCDList.append(PotionCheck)
 
+def PrepullPotion(Player, Enemy): #If potion is prepull
+    ApplyPotion(Player, Enemy)
+    Player.PotionTimer = 25 #Assume we loose a bit on it
+    Player.EffectToRemove.append(PrepullPotion)
+
 def PotionCheck(Player, Enemy):
     if Player.PotionTimer <= 0:
         ##input("removing potion")

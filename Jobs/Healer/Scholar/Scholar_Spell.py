@@ -64,7 +64,7 @@ def ConsolationRequirement(Player, Spell):
     return Player.ConsolationStack > 0, -1
 
 def FeyBlessingRequirement(Player, Spell):
-    return Player.FeyBlessingCD <= 0, Player.FeyBlessing
+    return Player.FeyBlessingCD <= 0, Player.FeyBlessingCD
 
 def FeyIlluminationRequirement(Player, Spell):
     return Player.FeyIlluminationCD <= 0, Player.FeyIlluminationCD
