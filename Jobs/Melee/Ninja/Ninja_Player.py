@@ -76,6 +76,7 @@ class Ninja(Melee):
         if (self.KassatsuCD > 0) : self.KassatsuCD = max(0,self.KassatsuCD - time)
         if (self.TenChiJinCD > 0) : self.TenChiJinCD = max(0,self.TenChiJinCD - time)
         if (self.BunshinCD > 0) : self.BunshinCD = max(0,self.BunshinCD - time)
+        if (self.ShadeShiftCD > 0) : self.ShadeShiftCD = max(0,self.ShadeShiftCD - time)
  
 
     def updateTimer(self, time):
@@ -91,7 +92,7 @@ class Ninja(Melee):
 
     def AddNinki(self, amount):
         self.NinkiGauge = min(100, self.NinkiGauge + amount)
-        #print("NinkiGauge is now : " + str(self.NinkiGauge))
+        #input("NinkiGauge is now : " + str(self.NinkiGauge))
 
     def AddHuton(self, amount):
         self.HutonTimer = min(60, self.HutonTimer + amount)

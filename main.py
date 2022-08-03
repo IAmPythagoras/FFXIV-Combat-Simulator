@@ -148,13 +148,13 @@ BRDPlayer.ActionSet = BRDOpener
 DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 RPRPlayer.ActionSet = RPROpener
-Event.PlayerList = [NINPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
+#Event.PlayerList = [NINPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
 
 
 client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
 client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE"
-fightID = 'VFfta1wcgLCYj2Py'
-fightNumber = '5'
+fightID = 'nc1y6NHwDdZXW9P2'
+fightNumber = '6'
 action_dict, player_dict = getAbilityList(client_id, client_secret, fightID, fightNumber)
 
 for playerID in player_dict:
@@ -218,19 +218,10 @@ for playerID in player_dict:
 
     Event.PlayerList.append(player_dict[playerID]["job_object"])
 
-Event.ShowGraph = False
-Event.PlayerList
-#Event.PlayerList = [Event.PlayerList[-1], Event.PlayerList[-2]] #For testing purposes
-for player in Event.PlayerList:
-    print(player)
-    x = input()
-    if x == "":
-        pass
-    elif x == "y":
-        Event.PlayerList = [player]
-        break
-    elif x == "q":
-        break
+Event.ShowGraph = True
+#input(Event.PlayerList)
+Event.PlayerList = [Event.PlayerList[1]]
+input(Event.PlayerList)
 print("Starting simulator")
 #exit()
 Event.SimulateFight(0.01, 1000, 0)

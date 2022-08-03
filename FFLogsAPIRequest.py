@@ -57,7 +57,7 @@ from Jobs.Melee.Reaper.Reaper_Player import *
 from Jobs.Melee.Monk.Monk_Player import *
 from Jobs.Melee.Melee_Spell import MeleeAbility
 from Jobs.Melee.Samurai.Samurai_Spell import MeikyoCheck, MeikyoEffect, MeikyoStackCheck, SamuraiAbility
-from Jobs.Melee.Ninja.Ninja_Spell import NinjaAbility
+from Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton, NinjaAbility
 from Jobs.Melee.Dragoon.Dragoon_Spell import DragoonAbility
 from Jobs.Melee.Reaper.Reaper_Spell import ReaperAbility
 from Jobs.Melee.Monk.Monk_Spell import MonkAbility
@@ -96,14 +96,7 @@ def getAbilityList(client_id, client_secret, fightID, fightNumber):
             if callable(JobDict[int(actionID)]): #If the action is a function
                 return JobDict[int(actionID)](player_list[str(targetID)]["job_object"])
             return JobDict[int(actionID)] #Else return object
-            """
-            if targetEnemy or targetSelf or targetID == -1 or isHeal: 
-                return JobDict[int(actionID)]
-            else: 
-                if int(actionID) == 7388 or int(actionID) == 7393 or int(actionID) == 25754 or int(actionID) == 24296: return JobDict[int(actionID)] #Edge case for TBN/Oblation/ShakeItOff
-                return JobDict[int(actionID)](player_list[str(targetID)]["job_object"]) #Otherwise it returns that
-            #we assume to be a function with one input as the object of the target
-             """
+
         job_name = player_list[str(sourceID)]["job"] #getting job name
 
         #Will now go through all possible job and find what action is being used based on the ID. If the ID is not right, it will
@@ -257,6 +250,12 @@ def getAbilityList(client_id, client_secret, fightID, fightNumber):
                 player_obj.EffectList.append(MeikyoEffect)
                 player_obj.EffectCDList.append(MeikyoCheck) #Could be a problem if do it before finishing 3 weaponskills
                 player_obj.Meikyo = 3
+            elif aura["name"] == "Mudra":
+                #Will also assume huton has been done
+                ApplyHuton(player_obj, None) #Giving Huton
+                player_obj.HutonTimer = 600 #Assuming some loss
+                #If mudra is detected, we will assume we have casted it for Suiton
+                player_obj.CurrentRitual = [0,1,2]
 
 
 

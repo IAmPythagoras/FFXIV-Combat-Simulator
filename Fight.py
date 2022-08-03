@@ -475,12 +475,15 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
 
     #type = 0 (Direct Damage), type = 1 (magical DOT), type = 2(physical DOT), type = 3 (Auto-attacks)
 
-    #All relevant formulas were taken from https://finalfantasy.fandom.com/wiki/Final_Fantasy_XIV_attributes#Damage_and_healing_formulae
+    #All relevant formulas were taken from https://finalfantasy.fandom.com/wiki/Final_Fantasy_XIV_attributes#Damage_and_healing_formulae ,
+    #were given to me by javaJake#0001 on discord or were taken from the Allagan Studies discord server.
     #The formulas on the website assume a random function that will randomise the ouput. We instead compute the expected outcome.
     #Also thanks to whoever did the DPS computation code on the black mage gear comparison sheet : https://docs.google.com/spreadsheets/d/1t3EYSOPuMceqCFrU4WAbzSd4gbYi-J7YeMB36dNmaWM/edit#gid=654212594
     #It helped me a lot to understand better the DPS computation of this game
     #Also, note that this function is still in development, and so some of these formulas might be a bit off. Use at your own risk.
     #This function will compute the DPS given the stats of a player
+
+    #THESE COMPUTATIONS ARE NOT COMPLETELY UP TO DATE FOR ENDWALKER AND SOME PARTS OF IT STILL WON'T COMPLETELY WORK.
 
     baseMain = 390  
 
@@ -488,7 +491,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
 
 
     if isinstance(Player, Queen) or isinstance(Player, Esteem) or isinstance(Player, Shadow) or isinstance(Player, BigSummon): MainStat = Player.Stat["MainStat"] #Summons do not receive bonus
-    else: MainStat = math.floor(Player.Stat["MainStat"]) * (Player.CurrentFight.TeamCompositionBonus) #Scaling %bonus on mainstat
+    else: MainStat = math.floor(Player.Stat["MainStat"]) * 1.05 *  (Player.CurrentFight.TeamCompositionBonus) #Scaling %bonus on mainstat
     #Computing values used throughout all computations
     if isinstance(Player, Tank) : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*153/baseMain))/100 #Tanks have a difference constant 
     else: f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100

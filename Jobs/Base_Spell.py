@@ -127,8 +127,10 @@ class Spell:
         Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage
 
-        if self.id > 0 and Damage > 0: 
-            print("The action with id : " + str(self.id) + " did " + str(Damage) + " damage")
+        if self.id > 0: 
+            print("The action with id : " + str(self.id) + " did " + str(Damage) + " damage and was casted at : " + str(player.CurrentFight.TimeStamp))
+            #print("Huton Timer " + str(player.HutonTimer))
+            #if self.GCD: print("GCD TIMER IS : " + str(self.RecastTime))
         #    if isinstance(player, DarkKnight) : input("blood " + str(player.Blood))
 
 
@@ -152,9 +154,6 @@ def ApplyQueen_AA(Player, Enemy):
 Melee_AA = Spell(-30, False, 0, 0, 0, 0, ApplyMelee_AA, [])
 Ranged_AA = Spell(-30, False, 0, 0, 0, 0, ApplyRanged_AA, [])
 Queen_AA = Spell(-30, False, 0, 0, 0, 0, ApplyQueen_AA, [])
-
-
-#Function to generate Waiting
 
 def ManaRequirement(player, Spell):
     ##print("Total mana : " + str(player.Mana))

@@ -45,9 +45,11 @@ def FleetingRaijuRequirement(Player, Spell):
     return Player.RaijuStack > 0, -1
 
 def MeisuiRequirement(Player, Spell):
+    print(Player.MeisuiCD)
     return Player.Suiton and Player.MeisuiCD <= 0, -1
 
 def BhavacakraRequirement(Player, Spell):
+    print(Player.NinkiGauge)
     return Player.NinkiGauge >= 50, -1
 
 def TrickAttackRequirement(Player, Spell):
@@ -60,7 +62,6 @@ def DreamWithinADreamRequirement(Player, Spell):
     return Player.DreamWithinADreamCD <= 0, Player.DreamWithinADreamCD
 
 def TenChiJinOnRequirement(Player, Spell): #TenChiJin Ninjutsu
-    #input("Tenchijintimer : " + str(Player.TenChiJinTimer))
     return Player.TenChiJinTimer > 0, -1
 
 #Ninjutsu Requirement
@@ -145,8 +146,6 @@ def ApplyBunshin(Player, Enemy):
     Player.EffectCDList.append(PhantomKamaitachiCheck)
 
 def ApplyTenChiJin(Player, Enemy):
-    #print("ApplyingTenChiJin")
-    #input(Player.CurrentFight.TimeStamp)
     Player.TenChiJinCD = 120
     Player.TenChiJinTimer = 6
     Player.EffectCDList.append(TenChiJinCheck)
@@ -183,9 +182,6 @@ def ApplyRaiton(Player, Enemy):
 
 def ApplyNinjutsu(Player, Enemy):
     if len(Player.CurrentRitual) == 0 and not Player.Kassatsu: #If we are not already in a ritual
-        #print("Removing one stack")
-        #print("casting : " + str(Player.CastingSpell.id))
-        #input("Time stamp is : " + str(Player.CurrentFight.TimeStamp))
         if Player.NinjutsuStack == 2:
             Player.EffectCDList.append(NinjutsuStackCheck)
             Player.NinjutsuCD = 20
@@ -249,14 +245,12 @@ def DeathBlossomCombo(Player, Spell):
 def TenChiJinEffect(Player, Spell):
     if Spell.id == Ten2.id or Spell.id == Chi2.id or Spell.id == Jin2.id: #If not one of these spells, we simply stop
 
-
         if Spell.id == Ten2.id:
             Player.TenChiJinRitual += [0] #Ten is 0
         elif Spell.id == Chi2.id:
             Player.TenChiJinRitual += [1] #Chi is 1
         elif Spell.id == Jin2.id:
             Player.TenChiJinRitual += [2] #Jin is 2
-        ##input(Player.TenChiJinRitual)
 
         #We will now check how we change the action
 
@@ -288,6 +282,7 @@ def TenChiJinEffect(Player, Spell):
 
             #Since last possible Ninjutsu, we will set TenChiJin Timer to 0.01 so it terminates
             Player.TenChiJinTimer = 0.01
+            Player.TenChiJinRitual = [] #Reseting TenChiJin Ritual
             #input("Finishing")
             #Effect will be removed in Check
 
@@ -347,7 +342,7 @@ def GustSlashCombo(Player, Spell):
     elif Spell.id == ArmorCrush.id:
         Spell.Potency += 220
         Player.AddNinki(15)
-        Player.AddHuton(30)
+        Player.AddHuton(40)
         Player.EffectToRemove.append(GustSlashCombo)
 
 #Check
@@ -428,15 +423,15 @@ DeathBlossom = NinjaSpell(33, True, Lock, 2.5, 100, ApplyDeathBlossom, [],True, 
 HakkeMujinsatsu = NinjaSpell(34, True, Lock, 2.5, 100, empty, [], True, False)
 
 #Ninjutsu
-FumaShuriken = NinjaSpell(9, True, Lock,1.5, 450, ApplyHyoshoRanryu, [FumaShurikenRequirement], False, True) #Same effect as HyoshoRanruy, since only reset Player.CurrentRitual list
-Raiton = NinjaSpell(10, True, Lock,1.5, 650, ApplyRaiton, [RaitonRequirement], False, True )
-Huton = NinjaSpell(11, True, Lock,1.5, 0, ApplyHuton, [HutonRequirement], False, True)
-Suiton = NinjaSpell(12, True, Lock,1.5, 500, ApplySuiton, [SuitonRequirement], False, True)
-Hyoton = NinjaSpell(13, True, Lock, 1.5, 350, ApplyHyoshoRanryu, [HyotonRequirement], False, True)
-HyoshoRanryu = NinjaSpell(13, True, Lock,1.5, 1300, ApplyHyoshoRanryu, [HyotonRequirement, KassatsuOnRequirement], False, True)
-Katon = NinjaSpell(29, True, Lock, 1.5, 350, ApplyHyoshoRanryu, [KatonRequirement], False, True)
-GokaMekkyaku = NinjaSpell(30, True, Lock, 1.5, 600, HyoshoRanryu, [KatonRequirement, KassatsuOnRequirement], False, True)
-Doton = NinjaSpell(31, True, Lock, 1.5, 0, ApplyDoton, [DotonRequirement], False, True)
+FumaShuriken = NinjaSpell(9, True, Lock,0.5, 450, ApplyHyoshoRanryu, [FumaShurikenRequirement], False, True) #Same effect as HyoshoRanruy, since only reset Player.CurrentRitual list
+Raiton = NinjaSpell(10, True, Lock,0.5, 650, ApplyRaiton, [RaitonRequirement], False, True )
+Huton = NinjaSpell(11, True, Lock,0.5, 0, ApplyHuton, [HutonRequirement], False, True)
+Suiton = NinjaSpell(12, True, Lock,0.5, 500, ApplySuiton, [SuitonRequirement], False, True)
+Hyoton = NinjaSpell(13, True, Lock, 0.5, 350, ApplyHyoshoRanryu, [HyotonRequirement], False, True)
+HyoshoRanryu = NinjaSpell(13, True, Lock,0.5, 1300, ApplyHyoshoRanryu, [HyotonRequirement, KassatsuOnRequirement], False, True)
+Katon = NinjaSpell(29, True, Lock, 0.5, 350, ApplyHyoshoRanryu, [KatonRequirement], False, True)
+GokaMekkyaku = NinjaSpell(30, True, Lock, 0.5, 600, ApplyHyoshoRanryu, [KatonRequirement, KassatsuOnRequirement], False, True)
+Doton = NinjaSpell(31, True, Lock, 0.5, 0, ApplyDoton, [DotonRequirement], False, True)
 DotonDOT = DOTSpell(-33, 80, True)
 
 #Ritual
@@ -468,34 +463,48 @@ HellfrogMedium = NinjaSpell(36, False, Lock, 0, 160, ApplyBhavacakra, [Bhavacakr
 MugBuff = buff(1.05)
 TrickAttackBuff = buff(1.1)
 
+
 NinjaAbility = {
 2240 : SpinningEdge,
-2241 : ShadeShift,
 2242 : GustSlash,
-2248 : Mug,
 2255 : AeolianEdge,
+3563 : ArmorCrush,
+2247 : ThrowingDagger,
+2241 : ShadeShift,
+2254 : DeathBlossom,
+16488 : HakkeMujinsatsu,
+2245 : Hide,
+2248 : Mug,
 2258 : TrickAttack,
 2259 : Ten,
+2261 : Chi,
 2263 : Jin,
-2264 : Kassatsu,
+2265 : FumaShuriken,
+2266 : Katon,
 2267 : Raiton,
+2268 : Hyoton,
 2269 : Huton,
+2270 : Doton,
 2271 : Suiton,
-3563 : ArmorCrush,
+16491 : GokaMekkyaku,
+16492: HyoshoRanryu,
+25774 : PhantomKamaitachi,
+#25776 : Hollow Nozuchi,
 3566 : DreamWithinADream,
+25876 : Huraijin,
+2264 : Kassatsu,
+2262 : WaitAbility(0.5), #Shukuchi,
+7401 : HellfrogMedium,
 7402 : Bhavacakra,
 7403 : TenChiJin,
 16489 : Meisui,
-16492 : HyoshoRanryu,
 16493 : Bunshin,
-18805 : Ten2,
-18806 : Chi2,
-18807 : Jin2,
-18873 : FumaShuriken,
-18877 : Raiton,
-18881 : Suiton,
-25774 : PhantomKamaitachi,
+25777 : FleetingRaiju,
 25778 : FleetingRaiju,
-25876 : Huraijin
+18805 : Ten,
+18806 : Chi,
+18807 : Jin,
+18873 : Ten2,
+18877 : Chi2,
+18881 : Jin2
 }
-#Missing a lot of actions
