@@ -1,3 +1,4 @@
+from ast import Global
 from Jobs.Base_Spell import buff, empty
 from Jobs.Melee.Melee_Spell import ReaperSpell
 Lock = 0
@@ -356,6 +357,7 @@ Guillotine = ReaperSpell(29, False, 0, 0, 200, ApplyGuillotine, [GibbetRequireme
 #AOE oGCD
 GrimSwath = ReaperSpell(27, False, 0, 0, 140, ApplyBloodStalk, [BloodStalkRequirement], False) #AOE version of bloodstalk
 SoulScyte = ReaperSpell(28, False, 0, 0, 180, ApplySoulSlice, [SoulSliceRequirement], False) #AOE version of SoulSlice
+GrimReaping = ReaperSpell(31, True, 0, 2.5,200, ApplyGrimReaping, [VoidReapingRequirement] )
 LemureScythe = ReaperSpell(30, False, 0, 0, 100, ApplyLemureSlice, [LemureSliceRequirement], False) #AOE version of Lemure Slice
 #buff
 DeathDesignBuff = buff(1.1)
@@ -369,18 +371,29 @@ ReaperAbility = {
 24380 : SoulSlice,
 24382 : Gibbet,
 24383 : Gallows,
-24385 : PlentifulHarvest,
-24386 : Harpe,
-24388 : HarvestMoon,
+24376 : SpinningScythe,
+24377 : NightmareScythe,
+24379 : WhorlOfDeath,
+24381 : SoulScyte,
+24384 : Guillotine,
+24389 : BloodStalk,
 24390 : UnveiledGibbet,
 24391 : UnveiledGallows,
+24392 : GrimSwath,
 24393 : Gluttony,
+24387 : Soulsow,
+24388 : HarvestMoon,
+24385 : PlentifulHarvest,
 24394 : Enshroud,
 24395 : VoidReaping,
 24396 : CrossReaping,
-24398 : Communio,
+24397 : GrimReaping,
 24399 : LemureSlice,
-24401 : HellIngress,
+24400 : LemureScythe,
+24398 : Communio,
 24404 : ArcaneCrest,
-24405 : ArcaneCircle
+24405 : ArcaneCircle,
+24402 : HellIngress,
+24401 : HellIngress,
+24386 : Harpe
 }

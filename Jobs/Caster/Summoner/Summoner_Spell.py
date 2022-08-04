@@ -3,6 +3,8 @@ from Jobs.Caster.Caster_Spell import SummonerSpell
 import copy
 
 from Jobs.Caster.Summoner.Summoner_Player import BigSummon
+from Jobs.Healer.Healer_Spell import Raise
+from Jobs.Healer.Scholar.Scholar_Spell import Physick
 Lock = 0.75
 
 #Requirement
@@ -252,4 +254,41 @@ SearingLight = SummonerSpell(20, False, Lock, 0, 0, 0, ApplySearingLight, [Seari
 #buff
 SearingLightbuff = buff(1.03)
 
-SummonerAbility = {}
+SummonerAbility = {
+3579 : Ruin3,
+7426 : Ruin4,
+25826 : TryDisaster,
+25801 : SearingLight,
+#25789 : Carbunle,
+7427 : Summon, #Bahamut
+25820 : AstralImpulse,
+25821 : AstralImpulse, #Astral Flare
+3582 : Deathflare,
+7429 : Enkindle, #Enkindle Bahamut
+#7428 : Wyrmwave, #Bahamut Autos
+25831 : Summon, #Summon Phoenix
+16514 : FoF, #Fountain Of Fire
+16515 : FoF, #AOE of FoF
+16516 : Enkindle, #Phoenix Enkindle
+#16519 : ScarletFlame, #Pheonix AA
+25838 : Ifrit,
+25823 : Ruby,
+25832 : RubyCatastrophe,
+25835 : Cyclone,
+25885 : Strike,
+25839 : Titan,
+25824 : Topaz,
+25833 : TopazCatastrophe,
+25836 : Mountain,
+25840 : Garuda,
+25825 : Emerald,
+25834 : EmeraldCatastrophe,
+25837 : Slipstream,
+16508 : EnergyDrainSMN,
+16510 : EnergyDrainSMN, #Energy Syphon
+181 : Fester,
+3578 : PainFlare,
+#25799 : RadiantAegis,
+16230 : Physick,
+173 : Raise
+}
