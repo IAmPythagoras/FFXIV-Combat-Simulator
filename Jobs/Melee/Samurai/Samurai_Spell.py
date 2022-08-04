@@ -40,6 +40,9 @@ def ShohaRequirement(Player, Spell):
     return Player.MeditationGauge == 3, -1
 
 def MidareRequirement(Player, Spell):
+    print(Player.Setsu)
+    print(Player.Ka)
+    print(Player.Getsu)
     return Player.Setsu and Player.Ka and Player.Getsu, -1 #need all of them
 
 def TenkaGokenRequirement(Player, Spell): #Need 2 
@@ -250,6 +253,7 @@ def ShifuEffect(Player, Spell):
         Spell.Potency += 210
         AddKenki(Player, 10)
         Player.Ka = True
+        input("Ka is true")
         Player.EffectToRemove.append(ShifuEffect)
 
 def JinpuEffect(Player, Spell):
@@ -363,6 +367,9 @@ def MeikyoStackCheck(Player, Enemy):
         Player.MeikyoStack +=1
 
 
+def ApplyKasha(Player, Enemy):
+    print("DID IT")
+
 #GCD
 OgiNamikiri = SamuraiSpell(1, True, 1.8, 2.5, 800, ApplyOgiNamikiri, [OgiNamikiriRequirement], 0)
 KaeshiNamikiri = SamuraiSpell(2, True, 1.3, 1, 800, ApplyKaeshiNamikiri, [KaeshiNamikiriRequirement], 0)
@@ -384,7 +391,7 @@ Hakaze = SamuraiSpell(10, True, Lock, 2.5, 200, ApplyHakaze, [], 0 )
 Jinpu = SamuraiSpell(11, True, Lock, 2.5, 120, ApplyJinpu, [], 0)
 Gekko = SamuraiSpell(12, True, Lock, 2.5, 170, empty, [], 0)
 Shifu = SamuraiSpell(13, True, Lock, 2.5, 120, empty, [], 0)
-Kasha = SamuraiSpell(14, True, Lock, 2.5, 170, empty, [], 0)
+Kasha = SamuraiSpell(14, True, Lock, 2.5, 170, ApplyKasha, [], 0)
 Yukikaze = SamuraiSpell(15, True, Lock, 2.5, 120, empty, [], 0)
 
 #AOE Combo Action
@@ -424,22 +431,35 @@ def Meditate(time):
 
 SamuraiAbility = {
 7477 : Hakaze,
-7478 : Jinpu,
 7479 : Shifu,
-7480 : Yukikaze,
-7481 : Gekko,
 7482 : Kasha,
-7486 : Enpi,
-7487 : Midare,
-7489 : Higanbana,
-7490 : Shinten,
-7492 : Gyoten,
-7489 : ThirdEye,
+7478 : Jinpu,
+7481 : Gekko,
+7480 : Yukikaze,
+25780 : Fuko,
+7485 : Oka,
+7484 : Mangetsu,
 7499 : Meikyo,
-16481 : Senei,
-16482 : Ikishoten,
-16486 : KaeshiSetsugekka,
-16487 : Shoha,
+7489 : Higanbana,
+7488 : TenkaGoken,
+7487 : Midare,
 25781 : OgiNamikiri,
-25782 : KaeshiNamikiri
+16484 : KaeshiHiganbana,
+16485 : KaeshiGoken,
+16486 : KaeshiSetsugekka,
+25782 : KaeshiNamikiri,
+7490 : Shinten,
+7491 : Kyuten,
+16481 : Senei,
+7496 : Guren,
+16487 : Shoha,
+25779 : Shoha2,
+16482 : Ikishoten,
+7497 : Meditate (3),
+7495 : Hagakure,
+7492 : Gyoten,
+7493 : Yaten,
+7486 : Enpi
+
+
 }

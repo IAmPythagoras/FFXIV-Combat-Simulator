@@ -57,7 +57,7 @@ class Sage(Healer):
         if (self.KeracholeCD > 0) : self.KeracholeCD = max(0,self.KeracholeCD - time)
         if (self.IcarusCD > 0) : self.IcarusCD = max(0,self.IcarusCD - time)
         if (self.SoteriaCD > 0) : self.SoteriaCD = max(0,self.SoteriaCD - time)
-        if (self.Physis > 0) : self.PhysisCD = max(0,self.PhysisCD - time)
+        if (self.PhysisCD > 0) : self.PhysisCD = max(0,self.PhysisCD - time)
 
     def updateTimer(self, time):
         super().updateTimer(time)

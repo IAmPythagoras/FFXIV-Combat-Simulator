@@ -154,8 +154,8 @@ RPRPlayer.ActionSet = RPROpener
 
 client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
 client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE"
-fightID = 'FjnVkgzCmXQARTax'
-fightNumber = '14'
+fightID = 'kDgwP8LQ4W3KHVMc'
+fightNumber = '7'
 action_dict, player_dict = getAbilityList(client_id, client_secret, fightID, fightNumber)
 
 for playerID in player_dict:
@@ -221,8 +221,7 @@ for playerID in player_dict:
 
 Event.ShowGraph = True
 #input(Event.PlayerList)
-#Event.PlayerList = [Event.PlayerList[1],Event.PlayerList[-1],Event.PlayerList[-2], Event.PlayerList[2],Event.PlayerList[4]
-#, Event.PlayerList[5], Event.PlayerList[3]]
+Event.PlayerList = [Event.PlayerList[4]]
 #input(Event.PlayerList)
 print("Starting simulator")
 #exit()
