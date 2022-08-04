@@ -1,4 +1,4 @@
-from Jobs.Base_Spell import Spell
+from Jobs.Base_Spell import Potion, Spell
 from Jobs.Melee.Melee_Spell import ArmLength, SecondWind
 Lock = 0.75
 class RangedSpell(Spell):
@@ -87,5 +87,6 @@ RangedAbility = {
 7551: HeadGraze,
 7557 : Peloton,
 7541 : SecondWind,
-7548 : ArmLength
+7548 : ArmLength,
+34590542 : Potion
 }

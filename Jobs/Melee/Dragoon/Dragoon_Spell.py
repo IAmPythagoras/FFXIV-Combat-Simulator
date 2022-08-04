@@ -101,7 +101,6 @@ def ApplyBattleLitany(Player, Enemy):
 
     for player in Player.CurrentFight.PlayerList:  
         player.CritRateBonus += 0.1
-        #input("BUFFING CRIT : " + str(player.CritRateBonus))
 
     Player.EffectCDList.append(BattleLitanyCheck)
 
@@ -252,7 +251,6 @@ def SpineshafterStackCheck(Player, Enemy):
 
 def BattleLitanyCheck(Player, Enemy):
     if Player.BattleLitanyTimer <= 0:
-        #input("Removing battle litany")
         for player in Player.CurrentFight.PlayerList:  player.CritRateBonus -= 0.1 #Removing buff
         Player.EffectToRemove.append(BattleLitanyCheck)
 

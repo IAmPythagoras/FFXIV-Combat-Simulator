@@ -1,4 +1,4 @@
-from Jobs.Base_Spell import Spell
+from Jobs.Base_Spell import Potion, Spell
 Lock = 0.75
 class MeleeSpell(Spell):
 
@@ -132,5 +132,7 @@ MeleeAbility = {
 7542 : Bloodbath,
 7549 : Feint,
 7546 : TrueNorth,
-7548 : ArmLength
+7548 : ArmLength,
+34590541 : Potion,  #STR
+34590542 : Potion   #DEX
 }

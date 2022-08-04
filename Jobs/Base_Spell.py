@@ -127,8 +127,8 @@ class Spell:
         Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage
 
-        if self.id > 0: 
-            print("The action with id : " + str(self.id) + " did " + str(Damage) + " damage and was casted at : " + str(player.CurrentFight.TimeStamp))
+        #if self.id > 0 and Damage > 0: 
+        #    print("The action with id : " + str(self.id) + " did " + str(Damage) + " damage and was casted by : " + str(player.CurrentFight.TimeStamp))
             #print("Huton Timer " + str(player.HutonTimer))
             #if self.GCD: print("GCD TIMER IS : " + str(self.RecastTime))
         #    if isinstance(player, DarkKnight) : input("blood " + str(player.Blood))
@@ -176,6 +176,7 @@ def ApplyPotion(Player, Enemy):
     Player.PotionTimer = 30
 
     Player.EffectCDList.append(PotionCheck)
+    #input("ADDING MainStat of " + str(Player) + " is now : " + str(Player.Stat["MainStat"]))
 
 def PrepullPotion(Player, Enemy): #If potion is prepull
     ApplyPotion(Player, Enemy)
@@ -184,9 +185,9 @@ def PrepullPotion(Player, Enemy): #If potion is prepull
 
 def PotionCheck(Player, Enemy):
     if Player.PotionTimer <= 0:
-        ##input("removing potion")
-        Player.Stat["MainStat"] /= 1.1
+        Player.Stat["MainStat"] -= 189 #Assuming we are capped
         Player.EffectCDList.remove(PotionCheck)
+        #input("REMOVING MainStat of " + str(Player) + " is now : " + str(Player.Stat["MainStat"]))
 
 
 class DOTSpell(Spell):

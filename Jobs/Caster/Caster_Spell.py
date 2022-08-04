@@ -119,5 +119,5 @@ CasterAbility = {
 7559 : Surecast, 
 7560 : Addle, 
 25880 : Sleep,
-1000049 : Potion
+34590544 : Potion
 }

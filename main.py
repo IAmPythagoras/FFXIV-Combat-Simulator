@@ -1,5 +1,6 @@
 from Enemy import *
 from Fight import *
+import copy
 
 from Jobs.Base_Spell import Melee_AA, Ranged_AA, WaitAbility, Potion
 from Jobs.Caster.Caster_Spell import Swiftcast, LucidDreaming
@@ -167,60 +168,61 @@ for playerID in player_dict:
     elif job_name == "WhiteMage" : player_dict[playerID]["job_object"].Stat = WHMStat
     elif job_name == "Astrologian" : player_dict[playerID]["job_object"].Stat = ASTStat
     elif job_name == "Warrior" : 
-        player_dict[playerID]["job_object"].Stat = WARStat
-        #player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(WARStat)
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
     elif job_name == "DarkKnight" : 
-        player_dict[playerID]["job_object"].Stat = DRKStat
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(DRKStat)
         player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
         player_dict[playerID]["job_object"].EffectList = [BloodWeaponEffect] #Assuming we pre pull it
         player_dict[playerID]["job_object"].EffectCDList = [BloodWeaponCheck]
     elif job_name == "Paladin" : 
-        player_dict[playerID]["job_object"].Stat = PLDStat
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(PLDStat)
         player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
     elif job_name == "Gunbreaker" : 
-        player_dict[playerID]["job_object"].Stat = GNBStat
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(GNBStat)
         player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
     #Caster
     elif job_name == "BlackMage" : 
-        player_dict[playerID]["job_object"].Stat = BLMCRITStat
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(BLMCRITStat)
         player_dict[playerID]["job_object"].EffectList = [EnochianEffect, ElementalEffect]
     elif job_name == "RedMage" : 
-        player_dict[playerID]["job_object"].Stat = RDMStat
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(RDMStat)
         player_dict[playerID]["job_object"].EffectList = [DualCastEffect]
     elif job_name == "Summoner" : 
-        player_dict[playerID]["job_object"].Stat = SMNStat
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(SMNStat)
     #Ranged
     elif job_name == "Dancer" : 
-        player_dict[playerID]["job_object"].Stat = DNCStat
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(DNCStat)
         player_dict[playerID]["job_object"].EffectList = [EspritEffect]
         player_dict[playerID]["job_object"].ActionSet.insert(0, Ranged_AA)
     elif job_name == "Machinist" : 
-        player_dict[playerID]["job_object"].Stat = MCHStat
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(MCHStat)
         player_dict[playerID]["job_object"].ActionSet.insert(0, Ranged_AA)
     elif job_name == "Bard" : 
-        player_dict[playerID]["job_object"].Stat = BRDStat
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(BRDStat)
         player_dict[playerID]["job_object"].EffectList = [SongEffect]
         player_dict[playerID]["job_object"].ActionSet.insert(0, Ranged_AA)
     #melee
     elif job_name == "Reaper" : 
-        player_dict[playerID]["job_object"].Stat = RPRStat
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(RPRStat)
         player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
     elif job_name == "Monk" :  pass #Not yet Implemented
     elif job_name == "Dragoon" : 
-        player_dict[playerID]["job_object"].Stat = DRGStat
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(DRGStat)
         player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
     elif job_name == "Ninja" : 
-        player_dict[playerID]["job_object"].Stat = NINStat
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(NINStat)
         player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
     elif job_name == "Samurai" : 
-        player_dict[playerID]["job_object"].Stat = SAMStat
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(SAMStat)
         player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
 
     Event.PlayerList.append(player_dict[playerID]["job_object"])
 
 Event.ShowGraph = True
 #input(Event.PlayerList)
-#Event.PlayerList = [Event.PlayerList[1]]
+#Event.PlayerList = [Event.PlayerList[1],Event.PlayerList[-1],Event.PlayerList[-2], Event.PlayerList[2],Event.PlayerList[4]
+#, Event.PlayerList[5], Event.PlayerList[3]]
 #input(Event.PlayerList)
 print("Starting simulator")
 #exit()

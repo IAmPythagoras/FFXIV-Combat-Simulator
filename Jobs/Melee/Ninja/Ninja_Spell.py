@@ -45,11 +45,11 @@ def FleetingRaijuRequirement(Player, Spell):
     return Player.RaijuStack > 0, -1
 
 def MeisuiRequirement(Player, Spell):
-    print(Player.MeisuiCD)
+    #print(Player.MeisuiCD)
     return Player.Suiton and Player.MeisuiCD <= 0, -1
 
 def BhavacakraRequirement(Player, Spell):
-    print(Player.NinkiGauge)
+    #print(Player.NinkiGauge)
     return Player.NinkiGauge >= 50, -1
 
 def TrickAttackRequirement(Player, Spell):

@@ -40,6 +40,8 @@ class DarkKnight(Tank):
         self.DarkMindCD = 0
         self.DarkMissionaryCD = 0
         self.OblationCD = 0
+        #DOT
+        self.SaltedEarthDOT = None
         #JobMod
         self.JobMod = 105
 

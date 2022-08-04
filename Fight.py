@@ -1,6 +1,7 @@
 import math
 import matplotlib.pyplot as plt
 import numpy as np
+import copy
 
 
 #Class
@@ -303,7 +304,6 @@ class Fight:
                 if hasTank: self.TeamCompositionBonus += 0.01
                 if hasHealer: self.TeamCompositionBonus += 0.01
 
-
             #Will first compute each player's GCD reduction value based on their Spell Speed or Skill Speed Value
 
             for Player in self.PlayerList:
@@ -491,7 +491,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
 
 
     if isinstance(Player, Queen) or isinstance(Player, Esteem) or isinstance(Player, Shadow) or isinstance(Player, BigSummon): MainStat = Player.Stat["MainStat"] #Summons do not receive bonus
-    else: MainStat = math.floor(Player.Stat["MainStat"]) * 1* (Player.CurrentFight.TeamCompositionBonus) #Scaling %bonus on mainstat
+    else: MainStat = math.floor(Player.Stat["MainStat"] * 1.05) # (Player.CurrentFight.TeamCompositionBonus)) #Scaling %bonus on mainstat
     #Computing values used throughout all computations
     if isinstance(Player, Tank) : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*153/baseMain))/100 #Tanks have a difference constant 
     else: f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100
@@ -500,7 +500,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
     f_DET = Player.f_DET
     f_TEN = Player.f_TEN
     f_SPD = Player.f_SPD
-    CritRate = Player.CritRate
+    CritRate = (Player.CritRate)
     CritMult = Player.CritMult
     DHRate = Player.DHRate
 
@@ -508,11 +508,24 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
 
     if Enemy.WanderingMinuet: CritRate += 0.02 #If WanderingMinuet is active, increase crit rate
 
-    if Enemy.BattleVoice: DHRate += 0.2 #If WanderingMinuet is active, increase DHRate
+    if Enemy.BattleVoice: DHRate += 0.2 #If BattleVoice is active, increase DHRate
 
 
     DHRate += Player.DHRateBonus #Adding Bonus
     CritRate += Player.CritRateBonus #Adding bonus
+    #if CritRate - save  > 0.22 : input("HEY " + str(CritRate) + " : " + str(Player))
+    """
+    print("Current Buffs are " + str(Player.DHRateBonus) + " : " + str(Player.CritRateBonus))
+    totalbuff = 1
+    for buffs in Player.buffList: 
+        totalbuff *= buffs.MultDPS
+    for buffs in Enemy.buffList:
+        totalbuff *= buffs.MultDPS
+    print("DPS BUFF : " + str(totalbuff))
+    """
+
+
+
 
     if type == 0: #Making sure its not an AA or DOT
         if isinstance(Player, Machinist): 
@@ -602,6 +615,29 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
     else: #if type is 1 or 2, then its a DOT, so we have to use the snapshotted buffs
         for buffs in spellObj.MultBonus:
             Damage = math.floor(Damage * buffs.MultDPS)
+    """
+    if math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) > 100000 : 
+        print("WOWOWOW HIGH DAMAGE : " + str(math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2)))))
+        print(spellObj)
+        print(DHRate)
+        print(Player.DHRate)
+        print(Player.CritRate)
+        print(CritRate)
+        print("Damage : " + str(Damage))
+        print("DH Damage : " + str(math.floor(Damage * ( 1 + roundDown((DHRate * 0.25), 2)))))
+        print("Crit damage : " + str(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) )))
+        x = 1
+        for buffs in Player.buffList: 
+            input("buff : " + str(buffs.MultDPS))
+            x *= buffs.MultDPS
+            input("x " + str(x))
+        print("ONTO BOSS")
+        for buffs in Enemy.buffList:
+            input("buff : " + str(buffs.MultDPS))
+            x *= buffs.MultDPS
+            input("x " + str(x))
+        input(spellObj.id)
+        """
 
     if CritRate == 1: #If sure to crit, add crit to min expected damage
         return math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))), math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) #If we have auto crit, we return full damage

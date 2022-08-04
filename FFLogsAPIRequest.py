@@ -73,8 +73,10 @@ class JobNotFound(Exception):#Exception called if a Job isn't found
 def getAccessToken(conn, client_id, client_secret):
     payload = "grant_type=client_credentials&client_id=%s&client_secret=%s" % (client_id, client_secret)
     headers = {'content-type':"application/x-www-form-urlencoded"}
+    print("Sending Request...")
     conn.request("POST","/oauth/token", payload, headers)
     res = conn.getresponse()
+    print("Received Request")
     res_str = res.read().decode("utf-8")
     res_json = json.loads(res_str)
     return res_json["access_token"]
@@ -153,10 +155,11 @@ def getAbilityList(client_id, client_secret, fightID, fightNumber):
         'Content-Type': "application/json",
         'Authorization': "Bearer %s" % access_token
         }
-
+    print("Sending Request...")
     conn.request("POST", "/api/v2/client", payload, headers)
 
     res = conn.getresponse()
+    print("Received Request...")
     data = res.read()
     data_json = json.loads(data.decode("utf-8"))
 
@@ -220,8 +223,9 @@ def getAbilityList(client_id, client_secret, fightID, fightNumber):
 
     payload = "{\"query\":\"query trio{\\n\\treportData {\\n\\t\\treport(code: \\\""+fightID+"\\\") {\\n\\t\\t\\ttitle,\\n\\t\\t\\tendTime,\\n\\t\\t\\tevents(\\n\\t\\t\\t\\tendTime:1649370483952,\\n\\t\\t\\t\\tfightIDs:"+fightNumber+",\\n\\t\\t\\t\\tincludeResources: false,\\n\\t\\t\\t\\tfilterExpression:\\\"type = 'combatantinfo'\\\"\\n\\t\\t\\t){data\\n\\t\\t\\t}\\n\\t\\t\\t\\n\\t\\t}\\n\\t}\\n}\",\"operationName\":\"trio\"}"
     conn.request("POST", "/api/v2/client", payload, headers)
-
+    print("Sending Request...")
     res = conn.getresponse()
+    print("Received Request...")
     data = res.read()
     data_json = json.loads(data.decode("utf-8"))
 
@@ -265,8 +269,9 @@ def getAbilityList(client_id, client_secret, fightID, fightNumber):
 
     payload = "{\"query\":\"query trio{\\n    reportData {\\n        report(code: \\\""+fightID+"\\\") {\\n\\t\\t\\t\\tendTime,\\n            events(\\n\\t\\t\\t\\t\\t\\t\\tfightIDs:"+fightNumber+",\\n\\t\\t\\t\\t\\t\\t\\tendTime:99999999999999,\\n\\t\\t\\t\\t\\t\\t\\tincludeResources:false,\\n\\t\\t\\t\\t\\t\\t\\tfilterExpression:\\\"type = 'cast' OR type = 'begincast' OR type = 'calculateddamage' OR type = 'applybuff' or type = 'calculatedheal'\\\",\\n\\t\\t\\t\\t\\t\\t\\tlimit:10000\\n\\t\\t\\t\\t\\t\\t\\t\\n\\t\\t\\t\\t\\t\\t){data}\\n        }\\n\\n    }\\n}\",\"operationName\":\"trio\"}"
     conn.request("POST", "/api/v2/client", payload, headers)
-
+    print("Sending Request...")
     res = conn.getresponse()
+    print("Received Request...")
     data = res.read()
     data_json = json.loads(data.decode("utf-8"))
 

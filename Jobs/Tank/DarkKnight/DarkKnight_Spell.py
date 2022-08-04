@@ -134,7 +134,8 @@ def DeliriumCheck(Player, Spell):
 
 def SaltedEarthCheck(Player, Spell):
     if Player.SaltedEarthTimer <= 0:
-        Player.DOTList.remove(SaltedEarthDOT)
+        Player.DOTList.remove(Player.SaltedEarthDOT)
+        Player.SaltedEarthDOT = None
         Player.SaltedEarthTimer = 0
         Player.EffectToRemove.append(SaltedEarthCheck)
 
@@ -211,7 +212,9 @@ def ApplyAbyssalDrainEffect(Player, Spell):
 def ApplySaltedEarth(Player, Spell):
     Player.SaltedEarthCD = 90
     Player.SaltedEarthTimer = 15
-    Player.DOTList.append(SaltedEarthDOT)
+    Player.SaltedEarthDOT = copy.deepcopy(SaltedEarthDOT)
+    Player.DOTList.append(Player.SaltedEarthDOT)
+    Player.EffectCDList.append(SaltedEarthCheck)
 
 def ApplySaltDarknessEffect(Player, Spell):
     Player.SaltDarknessCD = 15

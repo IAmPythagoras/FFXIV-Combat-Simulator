@@ -1,4 +1,4 @@
-from Jobs.Base_Spell import ManaRequirement, Spell, empty
+from Jobs.Base_Spell import ManaRequirement, Potion, Spell, empty
 from Jobs.Caster.Caster_Spell import LucidDreaming, Surecast, Swiftcast
 Lock = 0.75
 class HealerSpell(Spell):
@@ -72,5 +72,6 @@ HealerAbility = {
 173 : Raise, #Scholar Raise
 3603 : Raise, #Astro raise
 24287 : Raise, #sage raise
-125 : Raise #whitemage raise
+125 : Raise, #whitemage raise
+34590545 : Potion
 }
