@@ -201,8 +201,8 @@ def ApplyDevilment(Player, Enemy):
 def ApplyTillana(Player, Enemy):
     Player.FlourishingFinish = False 
     #We have to apply or reapply StandardFinish with a bonus of 5%, so reset, set bonus to 5% and apply
-
-    Player.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
+    print(Player.StandardFinishBuff)
+    if Player.StandardFinishBuff != None : Player.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
     if Player.DancePartner != None : Player.DancePartner.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
     Player.StandardFinishBuff.MultDPS = 1.05
     ApplyStandardFinish(Player, Enemy) #Will give StandardFinish with a bonus of 5%

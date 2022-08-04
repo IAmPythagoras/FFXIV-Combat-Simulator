@@ -140,7 +140,7 @@ def ApplySummon(Player, Enemy):
         #Then we summon birdy
         Player.LastTranceBahamut = False
         Player.SummonDOT = copy.deepcopy(PhoenixDOT)
-        Player.PhoenixTrance = True
+        Player.FirebirdTrance = True
         Player.Summon.ActionSet.insert(Player.Summon.NextSpell + 1, PhoenixAA)#Applying AA
     Player.EffectCDList.append(SummonDOTCheck)
     Player.SummonDOTTimer = 15
@@ -155,6 +155,7 @@ def ApplyDeathflare(Player, Enemy):
 def ApplyEnergyDrain(Player, Enemy):
     Player.AetherflowGauge = 2
     Player.AetherflowCD = 60
+    Player.FurtherRuin = True
 
 def ApplyFester(Player, Enemy):
     Player.AetherflowGauge -= 1
@@ -186,7 +187,7 @@ def IfritCombo(Player, Spell):
 
 def SlipstreamDOTCheck(Player, Enemy):
     if Player.SlipstreamDOTTimer <= 0:
-        Player.DOTList.remove(Player.SlipStreamDOT)
+        Player.DOTList.remove(Player.SlipstreamDOT)
         Player.EffectToRemove.append(SlipstreamDOTCheck)
         Player.SlipstreamDOT = None
 
@@ -196,7 +197,7 @@ def SummonDOTCheck(Player, Enemy):
         Player.Summon.DOTList = [] #Reseting DOTList
 
         Player.EffectToRemove.append(SummonDOTCheck)
-        Player.PhoenixTrance = False
+        Player.FirebirdTrance = False
         Player.BahamutTrance = False
         Player.Deathflare = False
 
@@ -236,8 +237,8 @@ SlipstreamDOT = DOTSpell(-13, 30, False)
 #Summon
 Summon = SummonerSpell(14, True, Lock, 2.5, 0, 0, ApplySummon, [SummonRequirement])
 #Bahamut and Phoenix damage will simply be a dot
-BahamutAA = SummonerSpell(15, False, 0, 0, 0, 0, ApplyBahamutAA, [])
-PhoenixAA = SummonerSpell(15, False, 0, 0, 0, 0, ApplyPhoenixAA, [])
+BahamutAA = SummonerSpell(115, False, 0, 0, 0, 0, ApplyBahamutAA, [])
+PhoenixAA = SummonerSpell(115, False, 0, 0, 0, 0, ApplyPhoenixAA, [])
 BahamutDOT = DOTSpell(-14, 180, False)
 PhoenixDOT = DOTSpell(-15, 240, False)
 EnkindleSummon = SummonerSpell(17, False, 0, 0, 1300, 0, empty, []) #Enkindle done by pet

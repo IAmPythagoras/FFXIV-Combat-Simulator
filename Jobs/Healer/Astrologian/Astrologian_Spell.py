@@ -277,7 +277,7 @@ def Arcanum(Target, Type):
 
     def ArcanumCheck(Player, Enemy):
         if Player.ArcanumTimer <= 0:
-            input("Effect has been removed on : " + str(Player))
+            #input("Effect has been removed on : " + str(Player))
             Player.EffectToRemove.append(ArcanumCheck)
             Player.buffList.remove(ArcanumBuff)
         pass #This function is just to know if the Target has already been given a buff

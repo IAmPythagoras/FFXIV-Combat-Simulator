@@ -52,8 +52,10 @@ class Reaper(Melee):
 
     def AddGauge(self, Amount):
         self.SoulGauge = min(100, self.SoulGauge + Amount)
+        #input("Soul is now at : " + str(self.SoulGauge))
     def AddShroud(self, Amount):
         self.ShroudGauge = min(100, self.ShroudGauge + Amount)
+        #input("Shroud is now at : " + str(self.ShroudGauge))
 
     def updateCD(self, time):
         super().updateCD(time)

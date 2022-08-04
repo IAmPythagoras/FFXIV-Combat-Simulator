@@ -15,8 +15,8 @@ class DarkKnight(Tank):
         self.EsteemPointer = None
 
         #Stacks and Ability timers
-        self.BloodWeaponStacks = 5
-        self.BloodWeaponTimer = 15       #Duration of Blood Weapon buff.
+        self.BloodWeaponStacks = 0
+        self.BloodWeaponTimer = 0       #Duration of Blood Weapon buff.
         self.DeliriumStacks = 0         #Stacks of Delirium.
         self.DeliriumTimer = 0          #Duration of Delirium stacks.
         self.SaltedEarthTimer = 0       #Salted Earth duration, required to use Salt and Darkness.
@@ -26,7 +26,7 @@ class DarkKnight(Tank):
         self.OblationStack = 2
         #Cooldowns for all abilities, starting at 0 and adjusted by Apply.
 
-        self.BloodWeaponCD = 59          #60s
+        self.BloodWeaponCD = 0          #60s
         self.DeliriumCD = 0             #60s
         self.EdgeShadowCD = 0           #1s     Shares a CD with FloodShadow.
         self.CarveSpitCD = 0            #60s    Shares a CD with AbyssalDrain.

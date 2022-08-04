@@ -317,9 +317,7 @@ def KassatsuEffect(Player, Spell):
         Player.KassatsuTimer = 0
 
 def RaitonEffect(Player, Spell):
-    if (Spell.Weaponskill or Player.RaijuStack == 0) and Spell.id != FleetingRaiju.id:
-        ##input('removed')
-        ##print(Spell.id)
+    if Spell.id < 2000 and (Spell.Weaponskill or Player.RaijuStack == 0) and (Spell.id != FleetingRaiju.id and Spell.id != PhantomKamaitachi.id):
         Player.RaijuStack = 0
         Player.EffectToRemove.append(RaitonEffect)
 

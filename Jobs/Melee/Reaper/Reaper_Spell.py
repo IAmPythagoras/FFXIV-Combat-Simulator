@@ -15,6 +15,8 @@ def ArcaneCircleRequirement(Player, Spell):
     return Player.ArcaneCircleCD <= 0, Player.ArcaneCircleCD
 
 def GluttonyRequirement(Player, Spell):
+    print(Player.GluttonyCD)
+    print(Player.SoulGauge)
     return Player.GluttonyCD <= 0 and Player.SoulGauge >= 50, Player.GluttonyCD
 
 def BloodStalkRequirement(Player, Spell):
@@ -56,7 +58,7 @@ def UnveiledGallowsRequirement(Player, Spell):
     return Player.EnhancedGallows, -1
 
 def HellIngressRequirement(Player, Spell):
-    return Player.HellIngressCD <= 0, Player.HellIngress
+    return Player.HellIngressCD <= 0, Player.HellIngressCD
 
 def ArcaneCrestRequirement(Player, Spell):
     return Player.ArcaneCrestCD <= 0, Player.ArcaneCrestCD
@@ -197,15 +199,13 @@ def ApplyArcaneCircle(Player, Enemy):
     
 
 def ApplySoulSlice(Player, Enemy):
+    Player.AddGauge(50) #Adding 50 SoulGauge
     if Player.SoulSliceStack == 2: #If max stack, we add check
         Player.EffectCDList.append(SoulSliceStackCheck)
         Player.SoulSliceCD = 30
     Player.SoulSliceStack -= 1
 
 def ApplyShadowOfDeath(Player, Enemy):
-
-    Player.AddGauge(50) #Adding 50 SoulGauge
-
     if Player.DeathDesignTimer <= 0:
         #If not already applied
         Player.buffList.append(DeathDesignBuff) #10% bonus
@@ -357,7 +357,7 @@ Guillotine = ReaperSpell(29, False, 0, 0, 200, ApplyGuillotine, [GibbetRequireme
 #AOE oGCD
 GrimSwath = ReaperSpell(27, False, 0, 0, 140, ApplyBloodStalk, [BloodStalkRequirement], False) #AOE version of bloodstalk
 SoulScyte = ReaperSpell(28, False, 0, 0, 180, ApplySoulSlice, [SoulSliceRequirement], False) #AOE version of SoulSlice
-GrimReaping = ReaperSpell(31, True, 0, 2.5,200, ApplyGrimReaping, [VoidReapingRequirement] )
+GrimReaping = ReaperSpell(31, True, 0, 2.5,200, ApplyGrimReaping, [VoidReapingRequirement], False)
 LemureScythe = ReaperSpell(30, False, 0, 0, 100, ApplyLemureSlice, [LemureSliceRequirement], False) #AOE version of Lemure Slice
 #buff
 DeathDesignBuff = buff(1.1)
