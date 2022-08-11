@@ -15,9 +15,6 @@ def AddKenki(Player, Add):
 
 #Requirement
 
-def KenkiRequirement(Player, Spell): #By default present in Samurai spell requirements
-    return Spell.KenkiCost <= Player.KenkiGauge, -1
-
 def MeikyoRequirement(Player, Spell):
     return Player.MeikyoStack > 0, Player.MeikyoCD
 
@@ -131,7 +128,9 @@ def ApplyFuko(Player, Enemy):
 
 def ApplyHakaze(Player, Enemy):
     AddKenki(Player, 5)
-    if not (HakazeEffect in Player.EffectList) : Player.EffectList.append(HakazeEffect)
+    if not (HakazeEffect in Player.EffectList) : 
+        Player.EffectList.append(HakazeEffect)
+        input("COMBO EFFECT")
 
 def ApplyJinpu(Player, Enemy):
     if not (JinpuEffect in Player.EffectList) : Player.EffectList.append(JinpuEffect)
@@ -241,6 +240,7 @@ def HakazeEffect(Player, Spell):
         Player.FukaTimer = 40
         AddKenki(Player, 5)
         Player.EffectToRemove.append(HakazeEffect)
+        ApplyShifu(Player, Spell)
     elif Spell.id == Yukikaze.id:
         Spell.Potency += 180
         AddKenki(Player, 15)
@@ -253,7 +253,6 @@ def ShifuEffect(Player, Spell):
         Spell.Potency += 210
         AddKenki(Player, 10)
         Player.Ka = True
-        input("Ka is true")
         Player.EffectToRemove.append(ShifuEffect)
 
 def JinpuEffect(Player, Spell):
@@ -367,9 +366,6 @@ def MeikyoStackCheck(Player, Enemy):
         Player.MeikyoStack +=1
 
 
-def ApplyKasha(Player, Enemy):
-    print("DID IT")
-
 #GCD
 OgiNamikiri = SamuraiSpell(1, True, 1.8, 2.5, 800, ApplyOgiNamikiri, [OgiNamikiriRequirement], 0)
 KaeshiNamikiri = SamuraiSpell(2, True, 1.3, 1, 800, ApplyKaeshiNamikiri, [KaeshiNamikiriRequirement], 0)
@@ -391,7 +387,7 @@ Hakaze = SamuraiSpell(10, True, Lock, 2.5, 200, ApplyHakaze, [], 0 )
 Jinpu = SamuraiSpell(11, True, Lock, 2.5, 120, ApplyJinpu, [], 0)
 Gekko = SamuraiSpell(12, True, Lock, 2.5, 170, empty, [], 0)
 Shifu = SamuraiSpell(13, True, Lock, 2.5, 120, empty, [], 0)
-Kasha = SamuraiSpell(14, True, Lock, 2.5, 170, ApplyKasha, [], 0)
+Kasha = SamuraiSpell(14, True, Lock, 2.5, 170, empty, [], 0)
 Yukikaze = SamuraiSpell(15, True, Lock, 2.5, 120, empty, [], 0)
 
 #AOE Combo Action

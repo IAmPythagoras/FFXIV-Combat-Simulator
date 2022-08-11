@@ -29,6 +29,7 @@ class SamuraiSpell(MeleeSpell):
         self.Requirement += [KenkiRequirement]
 
 def KenkiRequirement(Player, Spell): #By default present in Samurai spell requirements
+    input("Current Gauge is " + str(Player.KenkiGauge - Spell.KenkiCost))
     return Spell.KenkiCost <= Player.KenkiGauge, -1
 
 #########################################
