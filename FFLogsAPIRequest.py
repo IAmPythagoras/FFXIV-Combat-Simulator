@@ -89,7 +89,7 @@ def getAbilityList(client_id, client_secret, fightID, fightNumber):
         def lookup(JobDict, ClassDict):
             if not (int(actionID) in JobDict.keys()): #if not in, then the action is in the ClassDict
                 if not (int(actionID) in ClassDict.keys()):
-                    #if job_name == "Warrior" : input("Missing action : " + str(actionID))
+                    #if job_name == "Samurai" : input("Missing action : " + str(actionID))
                     return WaitAbility(0) #Currently at none so we can debug
                     raise ActionNotFound #Did not find action
                 return ClassDict[int(actionID)] #Class actions do not have the possibility to target other allies, so we assume itll target an enemy

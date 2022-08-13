@@ -10,7 +10,7 @@ Lock = 0
 #Special
 def AddKenki(Player, Add):
     Player.KenkiGauge = min(100, Player.KenkiGauge + Add)
-    #print("Kenki Gauge : " + str(Player.KenkiGauge))
+    #input("Kenki Gauge : " + str(Player.KenkiGauge))
 
 
 #Requirement
@@ -455,7 +455,8 @@ SamuraiAbility = {
 7495 : Hagakure,
 7492 : Gyoten,
 7493 : Yaten,
-7486 : Enpi
+7486 : Enpi,
+7498 : ThirdEye
 
 
 }

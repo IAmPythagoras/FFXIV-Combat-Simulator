@@ -221,7 +221,7 @@ for playerID in player_dict:
 
 Event.ShowGraph = True
 input(Event.PlayerList)
-Event.PlayerList = [Event.PlayerList[-1]]
+#Event.PlayerList = [Event.PlayerList[-4]]
 #input(Event.PlayerList)
 print("Starting simulator")
 #exit()

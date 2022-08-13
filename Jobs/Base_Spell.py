@@ -127,7 +127,7 @@ class Spell:
         Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage
 
-        #if self.id > 0 and Damage > 0: 
+        #if self.id > 0:# and Damage > 0: 
         #    print("The action with id : " + str(self.id) + " did " + str(Damage) + " damage and was casted by : " + str(player.CurrentFight.TimeStamp))
             #print("Huton Timer " + str(player.HutonTimer))
             #if self.GCD: print("GCD TIMER IS : " + str(self.RecastTime))
