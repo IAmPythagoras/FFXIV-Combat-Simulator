@@ -50,7 +50,7 @@ class Spell:
             for Effect in Enemy.EffectList:
                 Effect(player, tempSpell)#Changes tempSpell
         #Checks if we meet the spell requirement
-        ##input("out of effect")
+        #input("out of effect")
 
         #Remove all effects that have to be removed
 
@@ -61,14 +61,14 @@ class Spell:
         
         player.EffectToRemove = [] #Empty the remove list
         player.EffectToAdd = []
-        ##input("id : " + str(self.id))
+        #input("id : " + str(self.id))
         for Requirement in tempSpell.Requirement:
-            ##input("in requirement")
-            ##input("tenchijind : " + str(player.TenChiJinTimer))
-            ##input(Requirement.__name__)
+            #input("in requirement")
+            #input("tenchijind : " + str(player.TenChiJinTimer))
+            #print(Requirement.__name__)
             ableToCast, timeLeft = Requirement(player, tempSpell)
             if(not ableToCast) : #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
-                ##input("timeleft : " + str(timeLeft))
+                #input("timeleft : " + str(timeLeft))
                 #Will check if timeLeft is within a margin, so we will just wait for it to come
                 #timeLeft is the remaining time before the spell is available
                 if timeLeft <= 5 and timeLeft > 0: #Limit of waiting for 1 sec
@@ -78,7 +78,7 @@ class Spell:
                     #Might remove some stuff tho, might have to check into that (for when effects are applied)
                 
 
-
+                print("Player : " + str(player))
                 print("Failed to cast the spell : " + str(self.id))
                 print("The Requirement that failed was : " + str(Requirement.__name__))
                 print("The timestamp is : " + str(player.CurrentFight.TimeStamp))
@@ -90,8 +90,8 @@ class Spell:
 
 
     def CastFinal(self, player, Enemy):
-        ##print("##################################")
-        ##print("Potency of spell: " + str(self.Potency))
+        #print("#################")
+        #print("Potency of spell: " + str(self.Potency))
         #if self.GCD: 
         #    input("Recast is  "+ str(self.RecastTime))
         #if isinstance(player, Bard) : input("Using : " + str(self.id))
@@ -156,7 +156,7 @@ Ranged_AA = Spell(-30, False, 0, 0, 0, 0, ApplyRanged_AA, [])
 Queen_AA = Spell(-30, False, 0, 0, 0, 0, ApplyQueen_AA, [])
 
 def ManaRequirement(player, Spell):
-    ##print("Total mana : " + str(player.Mana))
+    #print("Total mana : " + str(player.Mana))
     #input("Spell mana cost " + str(Spell.ManaCost))
     if player.Mana >= Spell.ManaCost :
         player.Mana -= Spell.ManaCost   #ManaRequirement is the only Requirement that actually removes Ressources
@@ -168,7 +168,8 @@ def empty(Player, Enemy):
 
 def WaitAbility(time):
     def ApplyWaitAbility(Player, Enemy):
-        if time > 2.5 : input("wait for more than necessary")
+        pass
+        #if time > 2.5 : input("wait for more than necessary")
     return Spell(-1, False, time, time, 0, 0, ApplyWaitAbility, [])
 
 def ApplyPotion(Player, Enemy):
@@ -176,7 +177,6 @@ def ApplyPotion(Player, Enemy):
     Player.PotionTimer = 30
 
     Player.EffectCDList.append(PotionCheck)
-    #input("ADDING MainStat of " + str(Player) + " is now : " + str(Player.Stat["MainStat"]))
 
 def PrepullPotion(Player, Enemy): #If potion is prepull
     ApplyPotion(Player, Enemy)
@@ -211,7 +211,7 @@ class DOTSpell(Spell):
         if(self.DOTTimer <= 0):
             #Apply DOT
             tempSpell  = self.Cast(Player, Enemy)#Cast the DOT
-            ##print(self.id)
+            #print(self.id)
             #print("Timestamp is : " + str(Player.CurrentFight.TimeStamp))
             #input("applying dot with potency : " + str(tempSpell.Potency))
             tempSpell.CastFinal(Player, Enemy)

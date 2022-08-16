@@ -16,6 +16,7 @@ def EukrasianDosisRequirement(Player, Spell):
     return Player.Eukrasia, -1
 
 def PneumaRequirement(Player, Spell):
+    print(Player.PneumaCD)
     return Player.PneumaCD <= 0, Player.PneumaCD
 
 def PhlegmaRequirement(Player, Spell):
@@ -82,6 +83,7 @@ def ApplyKrasis(Player, Enemy):
     Player.KrasisCD = 60
 
 def ApplyPanhaima(Player, Enemy):
+    Player.AdderstingStack = min(3, Player.AdderstingStack + 1)
     Player.PanhaimaCD = 120
 
 def ApplyHolos(Player, Enemy):
@@ -95,6 +97,7 @@ def Apply(Player, Enemy):
     Player.CD = 0
 
 def ApplyHaima(Player, Enemy):
+    Player.AdderstingStack = min(3, Player.AdderstingStack + 1)
     Player.HaimaCD = 120
 
 def ApplyTaurochole(Player, Enemy):
@@ -141,6 +144,7 @@ def ApplyEukrasian(Player, Enemy):
     if Player.Eukrasian == None:
         Player.Eukrasian = copy.deepcopy(EukrasianDOT)
         Player.EffectCDList.append(EukrasianDOTCheck)
+        Player.DOTList.append(Player.Eukrasian)
     Player.EukrasianTimer = 30
 
 
@@ -166,7 +170,7 @@ def EukrasianDOTCheck(Player, Enemy):
 
 #Damage GCD
 Dosis = SageSpell(1, True, 1.5, 2.5, 330, 400, empty, [ManaRequirement])
-EukrasianDosis = SageSpell(2, True, Lock, 1.5, 0, 400, ApplyEukrasian, [ManaRequirement, EukrasianDosisRequirement])
+EukrasianDosis = SageSpell(2, True, 0, 1.5, 0, 400, ApplyEukrasian, [ManaRequirement, EukrasianDosisRequirement])
 EukrasianDOT = DOTSpell(-12, 70, False)
 Phlegma = SageSpell(3, True, Lock, 2.5, 510, 400, ApplyPhlegma, [PhlegmaRequirement])
 Pneuma = SageSpell(4, True, 1.5, 2.5, 330, 700, ApplyPneuma, [ManaRequirement, PneumaRequirement])
@@ -177,9 +181,9 @@ Egeiro = SageSpell(5, True, 8, 2.5, 0, 2400, empty, [ManaRequirement])
 Prognosis = SageSpell(6, True, 2, 2.5, 0, 800, empty, [ManaRequirement])
 EukrasianPrognosis = SageSpell(26, True, 0, 1.5, 0, 900, empty, [ManaRequirement])
 Diagnosis = SageSpell(7, True, 1.5, 2.5, 0, 400, ApplyDiagnosis, [ManaRequirement])
-EukrasianDiagnosis = SageSpell(22, True, 1.5, 2.5, 0, 900, ApplyEukrasianDiagnosis, [ManaRequirement])
+EukrasianDiagnosis = SageSpell(22, True, 1.5, 1.5, 0, 900, ApplyEukrasianDiagnosis, [ManaRequirement])
 #Damage oGCD
-Eukrasia = SageSpell(8, False, Lock, 0, 0, 0, ApplyEukrasia, []) #Since only 1 sec CD, no real need to put a requirement
+Eukrasia = SageSpell(8, True, 1, 1, 0, 0, ApplyEukrasia, []) #Since only 1 sec CD, no real need to put a requirement
 #Healing oGCD
 Krasis = SageSpell(9, False, 0, 0, 0, 0, ApplyKrasis, [KrasisRequirement])
 Panhaima = SageSpell(10, False, 0, 0, 0, 0, ApplyPanhaima, [PanhaimaRequirement])

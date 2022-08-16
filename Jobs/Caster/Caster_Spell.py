@@ -52,7 +52,9 @@ def SwiftcastRequirement(Player, Spell):
     return Player.SwiftcastCD <= 0, Player.SwiftcastCD
 
 def LucidDreamingRequirement(Player, Spell):
-    return Player.LucidDreamingCD <= 0, Player.LucidDreamingCD
+    #if Player.LucidDreamingCD > 0: input("LUCID IS OUT OF SYNC BY : " + str(Player.LucidDreamingCD))
+    #return Player.LucidDreamingCD <= 0, Player.LucidDreamingCD
+    return True, -1
 
 def SurecastRequirement(Player, Spell):
     return Player.SurecastCD <= 0, Player.SurecastCD

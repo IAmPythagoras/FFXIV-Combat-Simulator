@@ -7,7 +7,7 @@ class Paladin(Tank):
         self.EffectCDList.append(ManaRegenCheck) #Mana Regen
 
         #Gauge
-        self.OathGauge = 0
+        self.OathGauge = 100
 
 
         #Stack
@@ -74,5 +74,5 @@ class Paladin(Tank):
 
 #Oath Gauge Effect
 def OathGauge(Player, Spell):
-    if Spell.id == -1: #AA's DOT have id -1
+    if Spell.id == -22: #AA's DOT have id -1
         Player.OathGauge = min(100, Player.OathGauge + 5) #adding 5 Gauge each AA

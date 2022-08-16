@@ -178,6 +178,7 @@ for playerID in player_dict:
     elif job_name == "Paladin" : 
         player_dict[playerID]["job_object"].Stat = copy.deepcopy(PLDStat)
         player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+        player_dict[playerID]["job_object"].EffectList = [OathGauge]
     elif job_name == "Gunbreaker" : 
         player_dict[playerID]["job_object"].Stat = copy.deepcopy(GNBStat)
         player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
@@ -220,10 +221,9 @@ for playerID in player_dict:
     Event.PlayerList.append(player_dict[playerID]["job_object"])
 
 Event.ShowGraph = True
-input(Event.PlayerList)
+#input(Event.PlayerList)
 #Event.PlayerList = [Event.PlayerList[-4]]
 #input(Event.PlayerList)
 print("Starting simulator")
-#exit()
 Event.SimulateFight(0.01, 1000, 0)
 

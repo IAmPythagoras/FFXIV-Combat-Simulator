@@ -37,9 +37,6 @@ def ShohaRequirement(Player, Spell):
     return Player.MeditationGauge == 3, -1
 
 def MidareRequirement(Player, Spell):
-    print(Player.Setsu)
-    print(Player.Ka)
-    print(Player.Getsu)
     return Player.Setsu and Player.Ka and Player.Getsu, -1 #need all of them
 
 def TenkaGokenRequirement(Player, Spell): #Need 2 
@@ -130,7 +127,7 @@ def ApplyHakaze(Player, Enemy):
     AddKenki(Player, 5)
     if not (HakazeEffect in Player.EffectList) : 
         Player.EffectList.append(HakazeEffect)
-        input("COMBO EFFECT")
+        #input("COMBO EFFECT")
 
 def ApplyJinpu(Player, Enemy):
     if not (JinpuEffect in Player.EffectList) : Player.EffectList.append(JinpuEffect)

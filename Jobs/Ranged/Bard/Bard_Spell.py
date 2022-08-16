@@ -81,8 +81,9 @@ def BloodLetterRequirement(Player, Spell):
         #We will first check if a blood letter at this point is even possible by looking at the maximal possible reduction
         need = 15 - Player.BloodLetterCD #What reduction we need
         #input("maxblood : " + str(Player.MaximumBloodLetterReduction))
-        #print("Need : " + str(need))
-        if Player.MaximumBloodLetterReduction - need < 0 : return False #If it is bigger, than this rotation is impossible
+        if Player.MaximumBloodLetterReduction - need < -10 : 
+            print("Bard rotation might not be feasible")
+            # return False, -1 #If it is bigger, than this rotation is impossible
 
 
         Player.MaximumBloodLetterReduction -= need #Updating new MaximumBloodLetterReduction

@@ -29,8 +29,8 @@ class Sage(Healer):
         self.PhysisCD = 0
         #Timer
         self.EukrasianTimer = 0
-        self.AddersgallTimer = 40 #Starting at 40 since 20 sec countdown
-
+        self.AddersgallTimer = 0 #Starting at 40 since 20 sec countdown
+        self.PhlegmaTimer = 0
         #DOT
         self.Eukrasian = None
 
@@ -63,6 +63,7 @@ class Sage(Healer):
         super().updateTimer(time)
         if (self.EukrasianTimer > 0) : self.EukrasianTimer = max(0,self.EukrasianTimer - time)
         if (self.AddersgallTimer > 0) : self.AddersgallTimer = max(0,self.AddersgallTimer - time)
+        if (self.PhlegmaTimer > 0) : self.PhlegmaTimer = max(0,self.PhlegmaTimer - time)
 
 def AddersgallCheck(Player, Enemy):
     if Player.AddersgallTimer <= 0:

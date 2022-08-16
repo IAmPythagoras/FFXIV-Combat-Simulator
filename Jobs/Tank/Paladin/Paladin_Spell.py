@@ -1,5 +1,4 @@
 from Jobs.Base_Spell import buff, empty, DOTSpell, ManaRequirement
-from Jobs.Caster.Summoner.Summoner_Spell import FoF
 from Jobs.Tank.Tank_Spell import BigMit, PaladinSpell
 import copy
 Lock = 0
@@ -72,7 +71,6 @@ def ApplyCover(Player, Enemy):
 def ApplyIntervention(Player, Enemy):
     Player.InterventionCD = 5
     Player.OathGauge -= 50
-
 
 def ApplyDivineVeil(Player, Enemy):
     Player.DivineVeilCD = 90
@@ -229,7 +227,7 @@ def GoringDOTCheck(Player, Enemy):
 def ValorDOTCheck(Player, Enemy):
     if Player.ValorDOTTimer <= 0:
         Player.DOTList.remove(Player.ValorDOT)
-        Player.EffectToRemove(ValorDOTCheck)
+        Player.EffectToRemove.append(ValorDOTCheck)
         Player.ValorDOT = None
 
 
@@ -289,7 +287,7 @@ PaladinAbility = {
 30 : HallowedGround,
 24 : ShieldLob,
 16461 : Intervene,
-20 : FoF,
+20 : FightOrFlight,
 7383 : RequestACat,
 9 : FastBlade,
 15 : RiotBlade,
@@ -312,5 +310,5 @@ PaladinAbility = {
 27 : Cover,
 3541 : Clemency,
 3540 : DivineVeil,
-7358 : PassageOfArms(0.5)
+7385 : PassageOfArms(1)
 }
