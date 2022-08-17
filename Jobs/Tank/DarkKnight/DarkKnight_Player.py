@@ -40,10 +40,13 @@ class DarkKnight(Tank):
         self.DarkMindCD = 0
         self.DarkMissionaryCD = 0
         self.OblationCD = 0
+        #DOT
+        self.SaltedEarthDOT = None
         #JobMod
         self.JobMod = 105
 
     def updateCD(self, time):
+        super().updateCD(time)
         if (self.BloodWeaponCD > 0) : self.BloodWeaponCD = max(0,self.BloodWeaponCD - time)
         if (self.DeliriumCD > 0) :self.DeliriumCD = max(0,self.DeliriumCD - time)
         if (self.EdgeShadowCD > 0) :self.EdgeShadowCD = max(0,self.EdgeShadowCD - time)

@@ -1,10 +1,10 @@
 #########################################
 ########## DARK KNIGHT SKILLS ###########
 #########################################
-from Jobs.Base_Spell import DOTSpell, buff, empty
+from Jobs.Base_Spell import DOTSpell, Potion, buff, empty
 import copy
 from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
-from Jobs.Tank.Tank_Spell import DRKSkill
+from Jobs.Tank.Tank_Spell import BigMit, DRKSkill
 Lock = 0
 
 #def DarksideEffect(Player, Spell):
@@ -15,14 +15,14 @@ Lock = 0
 
 def BloodRequirement(Player, Spell):
     #print("Delirium stacks: "+ str(Player.DeliriumStacks))
-    if Player.DeliriumStacks > 0 and (Spell.id == Bloodspiller.id or Spell.id == Quietus):
+    if Player.DeliriumStacks > 0 and (Spell.id == Bloodspiller.id or Spell.id == Quietus.id):
         Spell.BloodCost = 0
         Player.DeliriumStacks -= 1
         return True, -1
     elif Player.Blood >= 50:
         Player.Blood -= 50
         return True, -1
-    return False, -1
+    return True, -1
 
 def EdgeShadowRequirement(Player, Spell):
     if Player.EdgeShadowCD <= 0 :
@@ -33,6 +33,7 @@ def EdgeShadowRequirement(Player, Spell):
         elif Player.Mana >= Spell.ManaCost:
             Player.Mana -= Spell.ManaCost
             return True, -1
+        return True, -1
     return False, -1
 
 def BloodWeaponRequirement(Player, Spell):
@@ -64,7 +65,7 @@ def TBNRequirement(Player, Spell):
     if Player.Mana >= Spell.ManaCost:
         Player.Mana -= Spell.ManaCost
         return True, -1
-    return False, -1
+    return True, -1
 
 def LivingDeadRequirement(Player, Spell):
     return Player.LivingDeadCD <= 0, Player.LivingDeadCD
@@ -133,7 +134,8 @@ def DeliriumCheck(Player, Spell):
 
 def SaltedEarthCheck(Player, Spell):
     if Player.SaltedEarthTimer <= 0:
-        Player.DOTList.remove(SaltedEarthDOT)
+        Player.DOTList.remove(Player.SaltedEarthDOT)
+        Player.SaltedEarthDOT = None
         Player.SaltedEarthTimer = 0
         Player.EffectToRemove.append(SaltedEarthCheck)
 
@@ -210,7 +212,9 @@ def ApplyAbyssalDrainEffect(Player, Spell):
 def ApplySaltedEarth(Player, Spell):
     Player.SaltedEarthCD = 90
     Player.SaltedEarthTimer = 15
-    Player.DOTList.append(SaltedEarthDOT)
+    Player.SaltedEarthDOT = copy.deepcopy(SaltedEarthDOT)
+    Player.DOTList.append(Player.SaltedEarthDOT)
+    Player.EffectCDList.append(SaltedEarthCheck)
 
 def ApplySaltDarknessEffect(Player, Spell):
     Player.SaltDarknessCD = 15
@@ -302,4 +306,35 @@ Oblation = DRKSkill(33, False, 0, 0, 0, 0, 0, ApplyOblation, [OblationRequiremen
 #buff
 EdgeShadowBuff = buff(1.1)
 
-DarkKnightAbility = {}
+# Maps Ability IDs from FFlogs to Skill objects
+# Not exhaustive: If an ability is missing, check log for id and add it into the mapping.
+DarkKnightAbility = {
+    3617: HardSlash,
+    3623: SyphonStrike,
+    3624: Unmend,
+    3625: BloodWeapon,
+    3632: Souleater,
+    3634: DarkMind,
+    3636: BigMit,
+    3638: LivingDead,
+    3639: SaltedEarth,
+    3640: Plunge,
+    3643: CarveSpit,
+    7390: Delirium,
+    7392: Bloodspiller,
+    7393: TBN,
+    16470: EdgeShadow,
+    16471: DarkMissionary,
+    16472: LivingShadow,
+    17904: PAbyssalDrain,
+    17905: PPlunge,
+    17906: PQuietus,
+    17908: PEdgeShadow,
+    17909: PBloodspiller,
+    17915: PCarveSpit,
+    25881: PShadowbringer,
+    25754: Oblation,
+    25755: SaltDarkness,
+    25757: Shadowbringer,
+    34590541: Potion  # This is assumed to be strength pot grade 6
+}

@@ -1,4 +1,5 @@
-from Jobs.Base_Spell import Spell, Auto_Attack
+from Jobs.Base_Spell import Potion, Spell, Auto_Attack
+from Jobs.Melee.Melee_Spell import ArmLength
 Lock = 0.75
 
 
@@ -87,8 +88,8 @@ def InterjectRequirement(Player, Spell):
     return Player.InterjectCD <= 0, Player.InterjectCD
 
 def ReprisalRequirement(Player, Spell):
-    return Player.ReprisalCD <= 0, Player.ArmLengthCD
-
+    return Player.ReprisalCD <= 0, Player.ReprisalCD
+    
 def ShirkRequirement(Player, Spell):
     return Player.ShirkCD <= 0, Player.ShirkCD
 
@@ -139,4 +140,16 @@ BigMit = TankSpell(0, False, 0, 0, 0, 0, ApplyBigMit, [BigMitRequirement]) #30% 
 TankStance = TankSpell(0, False, 0, 0, 0, 0, ApplyTankStance, [TankStanceRequirement]) #Turn on Tank Stance
 TurnOffTankStance = TankSpell(0, False, 0, 0, 0, 0, ApplyTurnOffTankStance, [])#Turn off Tank Stance
 
-TankAbility = {}
+TankAbility = {
+7531 : Rampart,
+7535 : Reprisal, 
+7548 : ArmLength,
+7540 : LowBlow,
+7533 : Provoke,
+7537 : Shirk,
+16142 : TankStance, #Gunbreaker Tank Stance
+3629 : TankStance, #DarkKnight Tank Stance
+48 : TankStance, #Warrior Tank Stance
+28 : TankStance, #Paladin Tank Stance
+34590541 : Potion
+}

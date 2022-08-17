@@ -8,11 +8,13 @@ class Astrologian(Healer):
         #Stack
         self.DrawStack = 2
         self.EssentialDignityStack = 2
+        self.CelestialIntersectionStack = 2
         #Gauge
         self.Lunar = False #Balance and Bole
         self.Solar = False #Arrow and Ewer
         self.Celestial = False #Spear and Spire
         self.HasCard = True #Assumed to True since we can just draw before. Easier for Pre Pull
+        self.Redraw = False #True if we can redraw
 
         #Buff
         self.LordOfCrown = False

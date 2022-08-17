@@ -2,15 +2,21 @@ from Jobs.Base_Spell import DOTSpell, ManaRequirement, empty
 from Jobs.Healer.Healer_Spell import SageSpell
 from Jobs.Healer.Sage.Sage_Spell import SageSpell
 import copy
+
+from Jobs.Healer.Scholar.Scholar_Spell import Physick
 Lock = 0.75
 
 
 #Requirement
 
+def PhysisRequirement(Player, Spell):
+    return Player.PhysisCD <= 0, Player.PhysisCD
+
 def EukrasianDosisRequirement(Player, Spell):
     return Player.Eukrasia, -1
 
 def PneumaRequirement(Player, Spell):
+    print(Player.PneumaCD)
     return Player.PneumaCD <= 0, Player.PneumaCD
 
 def PhlegmaRequirement(Player, Spell):
@@ -55,7 +61,20 @@ def IcarusRequirement(Player, Spell):
 def SoteriaRequirement(Player, Spell):
     return Player.SoteriaCD <= 0, Player.SoteriaCD
 
+def ToxikonRequirement(Player, Spell):
+    return Player.AdderstingStack > 0, -1
+
 #Apply
+
+def ApplyPhysis(Player, Enemy):
+    Player.PhysisCD = 60
+
+def ApplyToxikon(Player, Enemy):
+    Player.AdderstingStack -= 1
+
+def ApplyEukrasianDiagnosis(Player, Enemy):
+    Player.AdderstingStack = min(3, Player.AdderstingStack + 1)
+    #We assume we can cast a Toxikon after casting this shield by assuming it breaks
 
 def ApplyDiagnosis(Player, Enemy):
     Player.AdderstingStack = min(3, Player.AdderstingStack + 1) #Will be assumed each time we do it gives a stack
@@ -64,6 +83,7 @@ def ApplyKrasis(Player, Enemy):
     Player.KrasisCD = 60
 
 def ApplyPanhaima(Player, Enemy):
+    Player.AdderstingStack = min(3, Player.AdderstingStack + 1)
     Player.PanhaimaCD = 120
 
 def ApplyHolos(Player, Enemy):
@@ -77,6 +97,7 @@ def Apply(Player, Enemy):
     Player.CD = 0
 
 def ApplyHaima(Player, Enemy):
+    Player.AdderstingStack = min(3, Player.AdderstingStack + 1)
     Player.HaimaCD = 120
 
 def ApplyTaurochole(Player, Enemy):
@@ -123,6 +144,7 @@ def ApplyEukrasian(Player, Enemy):
     if Player.Eukrasian == None:
         Player.Eukrasian = copy.deepcopy(EukrasianDOT)
         Player.EffectCDList.append(EukrasianDOTCheck)
+        Player.DOTList.append(Player.Eukrasian)
     Player.EukrasianTimer = 30
 
 
@@ -148,18 +170,20 @@ def EukrasianDOTCheck(Player, Enemy):
 
 #Damage GCD
 Dosis = SageSpell(1, True, 1.5, 2.5, 330, 400, empty, [ManaRequirement])
-EukrasianDosis = SageSpell(2, True, Lock, 1.5, 0, 400, ApplyEukrasian, [ManaRequirement, EukrasianDosisRequirement])
+EukrasianDosis = SageSpell(2, True, 0, 1.5, 0, 400, ApplyEukrasian, [ManaRequirement, EukrasianDosisRequirement])
 EukrasianDOT = DOTSpell(-12, 70, False)
 Phlegma = SageSpell(3, True, Lock, 2.5, 510, 400, ApplyPhlegma, [PhlegmaRequirement])
 Pneuma = SageSpell(4, True, 1.5, 2.5, 330, 700, ApplyPneuma, [ManaRequirement, PneumaRequirement])
-
+Toxikon = SageSpell(23, True, 0, 2.5, 330, 0, ApplyToxikon, [ToxikonRequirement])
+Dyskrasia = SageSpell(24, True, 0, 2.5, 170, 400, empty, [ManaRequirement])
 #Healing GCD
 Egeiro = SageSpell(5, True, 8, 2.5, 0, 2400, empty, [ManaRequirement])
 Prognosis = SageSpell(6, True, 2, 2.5, 0, 800, empty, [ManaRequirement])
+EukrasianPrognosis = SageSpell(26, True, 0, 1.5, 0, 900, empty, [ManaRequirement])
 Diagnosis = SageSpell(7, True, 1.5, 2.5, 0, 400, ApplyDiagnosis, [ManaRequirement])
+EukrasianDiagnosis = SageSpell(22, True, 1.5, 1.5, 0, 900, ApplyEukrasianDiagnosis, [ManaRequirement])
 #Damage oGCD
-Eukrasia = SageSpell(8, False, Lock, 0, 0, 0, ApplyEukrasia, []) #Since only 1 sec CD, no real need to put a requirement
-
+Eukrasia = SageSpell(8, True, 1, 1, 0, 0, ApplyEukrasia, []) #Since only 1 sec CD, no real need to put a requirement
 #Healing oGCD
 Krasis = SageSpell(9, False, 0, 0, 0, 0, ApplyKrasis, [KrasisRequirement])
 Panhaima = SageSpell(10, False, 0, 0, 0, 0, ApplyPanhaima, [PanhaimaRequirement])
@@ -174,5 +198,36 @@ Kerachole = SageSpell(18, False, 0, 0, 0, 0, ApplyKerachole, [KeracholeRequireme
 Icarus = SageSpell(19, False, 0, 0, 0, 0, ApplyIcarus, [IcarusRequirement])
 Soteria = SageSpell(20, False, 0, 0, 0, 0, ApplySoteria, [SoteriaRequirement])
 Druochole = SageSpell(21, False, 0, 0, 0, 0, ApplyDruochole, [AddersgallRequirement])
+Kardia = SageSpell(25, False, 0, 0, 0, 0, empty, [])
+Physis = SageSpell(27, False, 0, 0, 0, 0, ApplyPhysis, [PhysisRequirement])
 
-SageAbility = {}
+SageAbility = {
+24287 : Egeiro,
+24312 : Dosis,
+24314 : EukrasianDosis,
+24316 : Toxikon,
+24315 : Dyskrasia,
+24313 : Phlegma,
+24285 : Kardia,
+24290 : Eukrasia,
+24284 : Diagnosis,
+24291 : EukrasianDiagnosis,
+24286 : Prognosis,
+24292 : EukrasianPrognosis,
+24302 : Physis,
+24294 : Soteria,
+24295 : Icarus,
+24296 : Druochole,
+24298 : Kerachole,
+24299 : Ixochole,
+24300 : Zoe,
+24301 : Pepsi,
+24303 : Taurochole,
+24305 : Haima,
+24309 : Rhizomata,
+24310 : Holos,
+24311 : Panhaima,
+24317 : Krasis,
+24318 : Pneuma
+
+}

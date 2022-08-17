@@ -26,15 +26,17 @@ class Sage(Healer):
         self.KeracholeCD = 0
         self.IcarusCD = 0
         self.SoteriaCD = 0
+        self.PhysisCD = 0
         #Timer
         self.EukrasianTimer = 0
-        self.AddersgallTimer = 40 #Starting at 40 since 20 sec countdown
-
+        self.AddersgallTimer = 0 #Starting at 40 since 20 sec countdown
+        self.PhlegmaTimer = 0
         #DOT
         self.Eukrasian = None
 
         #Stack
         self.PhlegmaStack = 2
+        self.AdderstingStack = 0
 
         self.EffectCDList.append(AddersgallCheck)
 
@@ -55,11 +57,13 @@ class Sage(Healer):
         if (self.KeracholeCD > 0) : self.KeracholeCD = max(0,self.KeracholeCD - time)
         if (self.IcarusCD > 0) : self.IcarusCD = max(0,self.IcarusCD - time)
         if (self.SoteriaCD > 0) : self.SoteriaCD = max(0,self.SoteriaCD - time)
+        if (self.PhysisCD > 0) : self.PhysisCD = max(0,self.PhysisCD - time)
 
     def updateTimer(self, time):
         super().updateTimer(time)
         if (self.EukrasianTimer > 0) : self.EukrasianTimer = max(0,self.EukrasianTimer - time)
         if (self.AddersgallTimer > 0) : self.AddersgallTimer = max(0,self.AddersgallTimer - time)
+        if (self.PhlegmaTimer > 0) : self.PhlegmaTimer = max(0,self.PhlegmaTimer - time)
 
 def AddersgallCheck(Player, Enemy):
     if Player.AddersgallTimer <= 0:

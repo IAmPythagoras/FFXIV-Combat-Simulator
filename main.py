@@ -1,5 +1,6 @@
 from Enemy import *
 from Fight import *
+import copy
 
 from Jobs.Base_Spell import Melee_AA, Ranged_AA, WaitAbility, Potion
 from Jobs.Caster.Caster_Spell import Swiftcast, LucidDreaming
@@ -21,6 +22,7 @@ from Jobs.Healer.Sage.Sage_Player import *
 from Jobs.Healer.Scholar.Scholar_Player import *
 from Jobs.Healer.Whitemage.Whitemage_Player import *
 from Jobs.Healer.Astrologian.Astrologian_Player import *
+from Jobs.Melee.Monk.Monk_Player import Monk
 
 #RANGED
 from Jobs.Ranged.Machinist.Machinist_Spell import *
@@ -49,6 +51,8 @@ from Jobs.Melee.Samurai.Samurai_Player import *
 from Jobs.Melee.Ninja.Ninja_Player import *
 from Jobs.Melee.Dragoon.Dragoon_Player import *
 from Jobs.Melee.Reaper.Reaper_Player import *
+
+
 from FFLogsAPIRequest import getAbilityList
 
 Dummy = Enemy()
@@ -72,6 +76,7 @@ BRDStat = {"MainStat": 2575, "WD":120, "Det" : 1381, "Ten" : 400, "SS": 479, "Cr
 DNCStat = {"MainStat": 2575, "WD":120, "Det" : 1453, "Ten" : 400, "SS": 549, "Crit" : 2283, "DH" : 1477}
 DRGStat = {"MainStat": 2575, "WD":120, "Det" : 1846, "Ten" : 400, "SS": 400, "Crit" : 2281, "DH" : 1235}
 RPRStat ={"MainStat": 2575, "WD":120, "Det" : 1846, "Ten" : 400, "SS": 400, "Crit" : 2281, "DH" : 1235}
+SGEStat ={"MainStat": 2563, "WD":120, "Det" : 1953, "Ten" : 400, "SS": 656, "Crit" : 2244, "DH" : 904}
 Event = Fight([], Dummy, False)
 
 #DRKPlayer = DarkKnight(2.41, DRKAction, [], [DarksideEffect], Event)
@@ -110,14 +115,23 @@ GNBOpener = [Melee_AA,WaitAbility(20), KeenEdge, BrutalShell, Potion, SolidBarre
 ASTOpener = [WaitAbility(17.5), Potion, Malefic, Lightspeed, Combust, Arcanum(NINPlayer, "Solar"), Draw, Malefic, Arcanum(DRGPlayer, "Lunar"), Draw, Malefic, Divination, Arcanum(BRDPlayer, "Celestial"), Malefic, MinorArcana, Astrodyne, Malefic, LordOfCrown, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic ]
 SMNOpener = [WaitAbility(18.5), Ruin3, Summon, SearingLight, AstralImpulse, Potion, AstralImpulse, AstralImpulse, EnergyDrainSMN, Enkindle, AstralImpulse, Deathflare, Fester, AstralImpulse, Fester, AstralImpulse, Titan, Topaz, Mountain, Topaz, Mountain,Topaz, Mountain,Topaz, Mountain, Garuda, Swiftcast, Slipstream]
 RPROpener = [Melee_AA,Soulsow, WaitAbility(13.7), Harpe, ShadowOfDeath, Potion, SoulSlice, ArcaneCircle, Gluttony, Gibbet, Gallows, PlentifulHarvest, Enshroud, VoidReaping, CrossReaping, LemureSlice, VoidReaping, CrossReaping, LemureSlice, Communio, SoulSlice, UnveiledGibbet, Gibbet, Slice, WaxingSlice, ShadowOfDeath, InfernalSlice, Slice, WaxingSlice, UnveiledGallows, Gallows, InfernalSlice, Slice]
-NINOpener = [Melee_AA, WaitAbility(9.5), Jin, Chi, Ten, Huton, Hide,WaitAbility(1.5), Ten, Chi, Jin, Suiton, Kassatsu, SpinningEdge, Potion, GustSlash, Mug, Bunshin, PhantomKamaitachi, WaitAbility(0.6), TrickAttack, AeolianEdge, DreamWithinADream, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, TenChiJin, Ten2, Chi2, Jin2, Meisui, FleetingRaiju, Bhavacakra, FleetingRaiju, Bhavacakra, Ten, Chi, Raiton, FleetingRaiju ]
 DRGOpener = [Melee_AA,WaitAbility(20), TrueThrust, Potion, Disembowel, LanceCharge, DragonSight(NINPlayer), ChaoticSpring, BattleLitany, WheelingThrust, Geirskogul, LifeSurge, FangAndClaw, HighJump, RaidenThrust, DragonFireDive, VorpalThrust, LifeSurge, MirageDive, HeavenThrust, SpineshafterDive, FangAndClaw, SpineshafterDive, WheelingThrust, RaidenThrust, WyrmwindThrust, Disembowel, ChaoticSpring, WheelingThrust]
 BRDOpener = [WaitAbility(19.5), Potion, Stormbite, WandererMinuet, RagingStrike, Causticbite, EmpyrealArrow, BloodLetter, BurstShot, RadiantFinale, BattleVoice, BurstShot, Sidewinder,RefulgentArrow, Barrage, RefulgentArrow, BurstShot, RefulgentArrow, EmpyrealArrow, IronJaws]
 DNCOpener = [ClosedPosition(NINPlayer, False),WaitAbility(4.5), StandardStep, Emboite, Entrechat, WaitAbility(11.74),Potion, StandardFinish, TechnicalStep, Emboite, Entrechat, Jete, Pirouette, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Emboite, Entrechat, StandardFinish]
 MCHOpener = [Ranged_AA,WaitAbility(15), Reassemble, WaitAbility(2.25), Potion, WaitAbility(1.5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, Reassemble, WaitAbility(1), Wildfire, ChainSaw, Automaton,WaitAbility(1), Hypercharge, HeatBlast, Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet, Drill]
+"""
+RDMFight = [WaitAbility(15), Verareo, Verthunder, Acceleration, Swiftcast, Verareo, Potion, Verareo, Embolden, Manafication, EnchantedRiposte, Fleche, EnchantedZwerchhau, Contre, EnchantedRedoublement, Corps, 
+Engagement, Verflare, Engagement, Corps, Scorch, LucidDreaming, Resolution, Verfire, Verthunder, Verstone, Verareo, Verstone, Verthunder, Fleche,Jolt, Verthunder, Verfire, Verareo, Contre, EnchantedRiposte, EnchantedZwerchhau,Engagement, EnchantedRedoublement,
+ Corps, Verholy, Scorch, Acceleration, Resolution, Verthunder, Fleche, Verfire, Verthunder, Verstone, Verareo, Verfire, Verareo, Jolt, Verthunder, Contre, Verfire, Verareo,
+Fleche, Acceleration, Verareo, Engagement, Verstone, Verthunder , Verfire, Verareo, Corps, Swiftcast, Verthunder, LucidDreaming, Verfire, Verareo, MagickBarrier, Verstone, Verthunder, Fleche,
+Verfire, Verareo, Contre, Verstone, Verthunder,  EnchantedRiposte, EnchantedZwerchhau, EnchantedRedoublement, Manafication, Verholy, Embolden, Engagement, Scorch, Corps, Resolution,
+EnchantedRiposte, EnchantedZwerchhau,Fleche, EnchantedRedoublement, Verflare, Scorch, Resolution]
+"""
 
-client_id = "" #Put your own client_id and client_secret obtained from FFLogs
-client_secret = ""
+NINOpener = [Melee_AA,WaitAbility(9.5), Jin, Chi, Ten, Huton, Hide,WaitAbility(1.47), Ten, Chi, Jin, Suiton, Kassatsu, SpinningEdge,Potion,  GustSlash, Mug, Bunshin, PhantomKamaitachi, 
+WaitAbility(0.6), TrickAttack, AeolianEdge, DreamWithinADream, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, TenChiJin, Ten2, Chi2, Jin2, Meisui, FleetingRaiju, Bhavacakra, 
+FleetingRaiju, Bhavacakra, Ten, Chi, Raiton, FleetingRaiju ]
+
 #BLMPlayer.ActionSet = getAbilityList(client_id, client_secret)
 BLMPlayer.ActionSet = BLMOpener
 SCHPlayer.ActionSet = SCHOpener
@@ -136,9 +150,81 @@ BRDPlayer.ActionSet = BRDOpener
 DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 RPRPlayer.ActionSet = RPROpener
-#print(PLDPlayer, PLDPlayer2)
-Event.PlayerList = [BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
+#Event.PlayerList = [NINPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
+
+
+client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
+client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE"
+fightID = 'kDgwP8LQ4W3KHVMc'
+fightNumber = '7'
+action_dict, player_dict = getAbilityList(client_id, client_secret, fightID, fightNumber)
+
+for playerID in player_dict:
+    player_dict[playerID]["job_object"].ActionSet = action_dict[playerID]
+    player_dict[playerID]["job_object"].CurrentFight = Event
+    job_name = player_dict[playerID]["job"] #getting job name
+
+    if job_name == "Sage" : player_dict[playerID]["job_object"].Stat = SGEStat
+    elif job_name == "Scholar" : player_dict[playerID]["job_object"].Stat = SCHStat
+    elif job_name == "WhiteMage" : player_dict[playerID]["job_object"].Stat = WHMStat
+    elif job_name == "Astrologian" : player_dict[playerID]["job_object"].Stat = ASTStat
+    elif job_name == "Warrior" : 
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(WARStat)
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+    elif job_name == "DarkKnight" : 
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(DRKStat)
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+        player_dict[playerID]["job_object"].EffectList = [BloodWeaponEffect] #Assuming we pre pull it
+        player_dict[playerID]["job_object"].EffectCDList = [BloodWeaponCheck]
+    elif job_name == "Paladin" : 
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(PLDStat)
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+        player_dict[playerID]["job_object"].EffectList = [OathGauge]
+    elif job_name == "Gunbreaker" : 
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(GNBStat)
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+    #Caster
+    elif job_name == "BlackMage" : 
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(BLMStat)
+        player_dict[playerID]["job_object"].EffectList = [EnochianEffect, ElementalEffect]
+    elif job_name == "RedMage" : 
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(RDMStat)
+        player_dict[playerID]["job_object"].EffectList = [DualCastEffect]
+    elif job_name == "Summoner" : 
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(SMNStat)
+    #Ranged
+    elif job_name == "Dancer" : 
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(DNCStat)
+        player_dict[playerID]["job_object"].EffectList = [EspritEffect]
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Ranged_AA)
+    elif job_name == "Machinist" : 
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(MCHStat)
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Ranged_AA)
+    elif job_name == "Bard" : 
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(BRDStat)
+        player_dict[playerID]["job_object"].EffectList = [SongEffect]
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Ranged_AA)
+    #melee
+    elif job_name == "Reaper" : 
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(RPRStat)
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+    elif job_name == "Monk" :  pass #Not yet Implemented
+    elif job_name == "Dragoon" : 
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(DRGStat)
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+    elif job_name == "Ninja" : 
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(NINStat)
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+    elif job_name == "Samurai" : 
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(SAMStat)
+        player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+
+    Event.PlayerList.append(player_dict[playerID]["job_object"])
 
 Event.ShowGraph = True
-Event.SimulateFight(0.01, 1000, 20)
+#input(Event.PlayerList)
+#Event.PlayerList = [Event.PlayerList[-2]]
+#input(Event.PlayerList)
+print("Starting simulator")
+Event.SimulateFight(0.01, 1000, 0)
 

@@ -323,6 +323,24 @@ Overdrive = MachinistSpell(13, False, 0, Lock, 0, 0, ApplyOverdrive, [], False)
 Bunker = MachinistSpell(15, True, 0, 2.5, 680, 0, ApplyCollider, [], False)   #Triggered by Overdrive
 Collider = MachinistSpell(16, True, 0 , 2.5, 780, 0, ApplyCollider, [], False)  #Spell Queen will cast
 
-MachinistAbility = {7411 : SplitShot, 7412 : SlugShot, 25788 : ChainSaw, 25768 : Scattergun, 17209 : Hypercharge, 16889 : Tactician, 16502:Overdrive, 16501:Automaton,
-16500 : AirAnchor, 16499 : Bioblaster, 16498:Drill, 16497 : AutoCrossbow, 7418 : Flamethrower, 7414 : BarrelStabilizer, 7413 : CleanShot, 7410 : HeatBlast, 2878 : Wildfire,
-2874 : GaussRound, 2890 : Ricochet }
+MachinistAbility = {
+7411 : SplitShot, 
+7412 : SlugShot, 
+25788 : ChainSaw,
+25768 : Scattergun, 
+17209 : Hypercharge, 
+16889 : Tactician, 
+16502:Overdrive, 
+16501:Automaton,
+16500 : AirAnchor, 
+16499 : Bioblaster, 
+16498:Drill,
+16497 : AutoCrossbow, 
+7418 : Flamethrower, 
+7414 : BarrelStabilizer, 
+7413 : CleanShot, 
+7410 : HeatBlast, 
+2878 : Wildfire,
+2874 : GaussRound, 
+2890 : Ricochet 
+}

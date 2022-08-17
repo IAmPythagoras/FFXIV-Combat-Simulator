@@ -3,6 +3,8 @@ from Jobs.Caster.Caster_Spell import SummonerSpell
 import copy
 
 from Jobs.Caster.Summoner.Summoner_Player import BigSummon
+from Jobs.Healer.Healer_Spell import Raise
+from Jobs.Healer.Scholar.Scholar_Spell import Physick
 Lock = 0.75
 
 #Requirement
@@ -138,7 +140,7 @@ def ApplySummon(Player, Enemy):
         #Then we summon birdy
         Player.LastTranceBahamut = False
         Player.SummonDOT = copy.deepcopy(PhoenixDOT)
-        Player.PhoenixTrance = True
+        Player.FirebirdTrance = True
         Player.Summon.ActionSet.insert(Player.Summon.NextSpell + 1, PhoenixAA)#Applying AA
     Player.EffectCDList.append(SummonDOTCheck)
     Player.SummonDOTTimer = 15
@@ -153,6 +155,7 @@ def ApplyDeathflare(Player, Enemy):
 def ApplyEnergyDrain(Player, Enemy):
     Player.AetherflowGauge = 2
     Player.AetherflowCD = 60
+    Player.FurtherRuin = True
 
 def ApplyFester(Player, Enemy):
     Player.AetherflowGauge -= 1
@@ -184,7 +187,7 @@ def IfritCombo(Player, Spell):
 
 def SlipstreamDOTCheck(Player, Enemy):
     if Player.SlipstreamDOTTimer <= 0:
-        Player.DOTList.remove(Player.SlipStreamDOT)
+        Player.DOTList.remove(Player.SlipstreamDOT)
         Player.EffectToRemove.append(SlipstreamDOTCheck)
         Player.SlipstreamDOT = None
 
@@ -194,7 +197,7 @@ def SummonDOTCheck(Player, Enemy):
         Player.Summon.DOTList = [] #Reseting DOTList
 
         Player.EffectToRemove.append(SummonDOTCheck)
-        Player.PhoenixTrance = False
+        Player.FirebirdTrance = False
         Player.BahamutTrance = False
         Player.Deathflare = False
 
@@ -234,8 +237,8 @@ SlipstreamDOT = DOTSpell(-13, 30, False)
 #Summon
 Summon = SummonerSpell(14, True, Lock, 2.5, 0, 0, ApplySummon, [SummonRequirement])
 #Bahamut and Phoenix damage will simply be a dot
-BahamutAA = SummonerSpell(15, False, 0, 0, 0, 0, ApplyBahamutAA, [])
-PhoenixAA = SummonerSpell(15, False, 0, 0, 0, 0, ApplyPhoenixAA, [])
+BahamutAA = SummonerSpell(115, False, 0, 0, 0, 0, ApplyBahamutAA, [])
+PhoenixAA = SummonerSpell(115, False, 0, 0, 0, 0, ApplyPhoenixAA, [])
 BahamutDOT = DOTSpell(-14, 180, False)
 PhoenixDOT = DOTSpell(-15, 240, False)
 EnkindleSummon = SummonerSpell(17, False, 0, 0, 1300, 0, empty, []) #Enkindle done by pet
@@ -252,4 +255,41 @@ SearingLight = SummonerSpell(20, False, Lock, 0, 0, 0, ApplySearingLight, [Seari
 #buff
 SearingLightbuff = buff(1.03)
 
-SummonerAbility = {}
+SummonerAbility = {
+3579 : Ruin3,
+7426 : Ruin4,
+25826 : TryDisaster,
+25801 : SearingLight,
+#25789 : Carbunle,
+7427 : Summon, #Bahamut
+25820 : AstralImpulse,
+25821 : AstralImpulse, #Astral Flare
+3582 : Deathflare,
+7429 : Enkindle, #Enkindle Bahamut
+#7428 : Wyrmwave, #Bahamut Autos
+25831 : Summon, #Summon Phoenix
+16514 : FoF, #Fountain Of Fire
+16515 : FoF, #AOE of FoF
+16516 : Enkindle, #Phoenix Enkindle
+#16519 : ScarletFlame, #Pheonix AA
+25838 : Ifrit,
+25823 : Ruby,
+25832 : RubyCatastrophe,
+25835 : Cyclone,
+25885 : Strike,
+25839 : Titan,
+25824 : Topaz,
+25833 : TopazCatastrophe,
+25836 : Mountain,
+25840 : Garuda,
+25825 : Emerald,
+25834 : EmeraldCatastrophe,
+25837 : Slipstream,
+16508 : EnergyDrainSMN,
+16510 : EnergyDrainSMN, #Energy Syphon
+181 : Fester,
+3578 : PainFlare,
+#25799 : RadiantAegis,
+16230 : Physick,
+173 : Raise
+}

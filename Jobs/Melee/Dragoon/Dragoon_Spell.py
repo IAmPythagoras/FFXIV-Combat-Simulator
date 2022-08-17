@@ -1,5 +1,5 @@
 from Jobs.Base_Spell import DOTSpell, buff, empty
-from Jobs.Melee.Melee_Spell import DragoonSpell
+from Jobs.Melee.Melee_Spell import Bloodbath, DragoonSpell, SecondWind
 import copy
 
 #Requirement
@@ -101,7 +101,6 @@ def ApplyBattleLitany(Player, Enemy):
 
     for player in Player.CurrentFight.PlayerList:  
         player.CritRateBonus += 0.1
-        #input("BUFFING CRIT : " + str(player.CritRateBonus))
 
     Player.EffectCDList.append(BattleLitanyCheck)
 
@@ -252,7 +251,6 @@ def SpineshafterStackCheck(Player, Enemy):
 
 def BattleLitanyCheck(Player, Enemy):
     if Player.BattleLitanyTimer <= 0:
-        #input("Removing battle litany")
         for player in Player.CurrentFight.PlayerList:  player.CritRateBonus -= 0.1 #Removing buff
         Player.EffectToRemove.append(BattleLitanyCheck)
 
@@ -331,4 +329,31 @@ def DragonSight(Target):
     return DragoonSpell(26, False, 0, 0, ApplyDragonSight, [DragonSightRequirement], False)
 
 
-DragoonAbility = {}
+DragoonAbility = {
+75 : TrueThrust,
+78 : VorpalThrust,
+25771 : HeavenThrust,
+87 : Disembowel,
+25772 : ChaoticSpring,
+16479 : RaidenThrust,
+3554 : FangAndClaw,
+3556 : WheelingThrust,
+86 : DoomSpike,
+7397 : SonicThrust,
+16477 : CoerthanTorment,
+25770 : DraconianFury,
+90 : PiercingTalon,
+16478 : HighJump,
+7399 : MirageDive,
+95 : SpineshafterDive,
+96 : DragonFireDive,
+3557 : BattleLitany,
+7398 : DragonSight,
+83 : LifeSurge,
+85 : LanceCharge,
+94 : ElusiveJump,
+3555 : Geirskogul,
+7400 : Nastrond,
+16480 : Stardiver,
+25773 : WyrmwindThrust
+}

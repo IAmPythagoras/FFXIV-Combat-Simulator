@@ -1,6 +1,5 @@
-
 from Jobs.Base_Spell import buff, empty, DOTSpell, ManaRequirement
-from Jobs.Tank.Tank_Spell import PaladinSpell
+from Jobs.Tank.Tank_Spell import BigMit, PaladinSpell
 import copy
 Lock = 0
 
@@ -72,7 +71,6 @@ def ApplyCover(Player, Enemy):
 def ApplyIntervention(Player, Enemy):
     Player.InterventionCD = 5
     Player.OathGauge -= 50
-
 
 def ApplyDivineVeil(Player, Enemy):
     Player.DivineVeilCD = 90
@@ -229,7 +227,7 @@ def GoringDOTCheck(Player, Enemy):
 def ValorDOTCheck(Player, Enemy):
     if Player.ValorDOTTimer <= 0:
         Player.DOTList.remove(Player.ValorDOT)
-        Player.EffectToRemove(ValorDOTCheck)
+        Player.EffectToRemove.append(ValorDOTCheck)
         Player.ValorDOT = None
 
 
@@ -253,6 +251,7 @@ BladeValorDOT = DOTSpell(-11, 80, True)
 HolySpirit = PaladinSpell(9, True, 1.5, 2.5, 270, 1000, empty, [ManaRequirement], False)
 Atonement = PaladinSpell(10, True, Lock, 2.5, 420, 0, ApplyAtonement, [AtonementRequirement], True)
 Clemency = PaladinSpell(11, True, 1.5, 2.5, 0, 1000, empty, [ManaRequirement], False)
+ShieldLob = PaladinSpell(25, True, 0, 2.5, 100, 0, empty, [], True )
 #AOE GCD
 HolyCircle = PaladinSpell(12, True, 1.5, 2.5,130, 1000, empty, [ManaRequirement], False)
 TotalEclipse = PaladinSpell(13, True, 0, 2.5, 100, 0, ApplyTotalEclipse, [], True)
@@ -284,4 +283,32 @@ def PassageOfArms(time):
 #buff
 FightOrFlightBuff = buff(1.25)
 
-PaladinAbility = {}
+PaladinAbility = {
+30 : HallowedGround,
+24 : ShieldLob,
+16461 : Intervene,
+20 : FightOrFlight,
+7383 : RequestACat,
+9 : FastBlade,
+15 : RiotBlade,
+3538 : GoringBlade,
+3539 : RoyalAuthority,
+16460 : Atonement,
+7384 : HolySpirit,
+16459 : Confetti,
+25748 : BladeFaith,
+25749 : BladeTruth,
+25750 : BladeValor,
+25747 : Expiacion,
+7381 : TotalEclipse,
+16457 : Prominence,
+23 : CircleScorn,
+16458 : HolyCircle,
+17 : BigMit,
+25746 : HolySheltron,
+7382 : Intervention,
+27 : Cover,
+3541 : Clemency,
+3540 : DivineVeil,
+7385 : PassageOfArms(1)
+}

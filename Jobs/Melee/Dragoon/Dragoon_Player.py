@@ -41,7 +41,7 @@ class Dragoon(Melee):
         self.PowerSurgeTimer = 0
         self.ChaoticSpringDOTTimer = 0
         self.LanceChargeTimer = 0
-        self.BattleLittanyTimer = 0
+        self.BattleLitanyTimer = 0
         self.DragonSightTimer = 0
         self.LifeOfTheDragonTimer = 0
 
@@ -55,6 +55,7 @@ class Dragoon(Melee):
         self.JobMod = 115
 
     def updateCD(self, time):
+        super().updateCD(time)
         if (self.LanceChargeCD > 0) : self.LanceChargeCD = max(0,self.LanceChargeCD - time)
         if (self.BattleLitanyCD > 0) : self.BattleLitanyCD = max(0,self.BattleLitanyCD - time)
         if (self.DragonSightCD > 0) : self.DragonSightCD = max(0,self.DragonSightCD - time)
@@ -73,6 +74,6 @@ class Dragoon(Melee):
         if (self.PowerSurgeTimer > 0) : self.PowerSurgeTimer = max(0,self.PowerSurgeTimer - time)
         if (self.ChaoticSpringDOTTimer > 0) : self.ChaoticSpringDOTTimer = max(0,self.ChaoticSpringDOTTimer - time)
         if (self.LanceChargeTimer > 0) : self.LanceChargeTimer = max(0,self.LanceChargeTimer - time)
-        if (self.BattleLittanyTimer > 0) : self.BattleLittanyTimer = max(0,self.BattleLittanyTimer - time)
+        if (self.BattleLitanyTimer > 0) : self.BattleLitanyTimer = max(0,self.BattleLitanyTimer - time)
         if (self.DragonSightTimer > 0) : self.DragonSightTimer = max(0,self.DragonSightTimer - time)
         if (self.LifeOfTheDragonTimer > 0) : self.LifeOfTheDragonTimer = max(0,self.LifeOfTheDragonTimer - time)

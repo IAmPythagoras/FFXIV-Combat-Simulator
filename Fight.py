@@ -1,6 +1,7 @@
 import math
 import matplotlib.pyplot as plt
 import numpy as np
+import copy
 
 
 #Class
@@ -45,10 +46,13 @@ def GCDReductionEffect(Player, Spell):
         Spell.RecastTime *= Player.GCDReduction
 
 def Normal(mean, std, x):#returns value from NormalDistribution
+    if std == 0 : return 0
     return 1/(std * np.sqrt(2 * np.pi)) * np.exp(-1/2 * ((x-mean)/std)**2)
+
 
 def AverageCritMult(Player, k):
     n = Player.NumberDamageSpell #Total number of damage Spell
+    if n == 0 : return 0
     #k is the number of success, so the number of crit
     return ((k) * (1 + Player.CritMult)  + (n-k))/n #Average crit multiplier over the run, this can be seen as a fix bonus on the whole fight
 
@@ -189,11 +193,19 @@ class Fight:
         j = 0
 
         for player in self.PlayerList:
+
+            if player.TotalPotency == 0:
+                PPS = 0
+                DPS = 0
+            else:
+                PPS = player.TotalPotency / time
+                DPS = player.TotalDamage / time
+
             print("The Total Potency done by player " + str(type(player)) + " was : " + str(player.TotalPotency))
-            print("This same player had a Potency Per Second of: " + str(player.TotalPotency/time))
+            print("This same player had a Potency Per Second of: " + str(PPS))
             print("This same Player had an average of " + str(player.TotalPotency/player.NextSpell) + " Potency/Spell")
-            print("This same Player had an average of " + str(player.TotalPotency/(time/player.GCDTimer)) + " Potency/GCD")
-            print("The DPS is : " + str(player.TotalDamage / time))
+            print("This same Player had an average of " + str(PPS/player.GCDTimer) + " Potency/GCD")
+            print("The DPS is : " + str(DPS))
             print("=======================================================")
 
             #Plot part
@@ -237,8 +249,7 @@ class Fight:
             axs[0].plot(TimeStamp,player.DPSGraph, label=job)
             axs[1].plot(TimeStamp,player.PotencyGraph, label=job)
 
-            self.ComputeDPSDistribution(player, fig2, axs2[j][i], job)
-            ##input((i,j))
+            if DPS != 0 : self.ComputeDPSDistribution(player, fig2, axs2[j][i], job)
             i+=1
             if i == 4:
                 i = 0
@@ -249,12 +260,11 @@ class Fight:
         print("The Enemy's total DPS is " + str(self.Enemy.TotalDamage / time))
         axs[0].xaxis.grid(True)
         axs[1].xaxis.grid(True)
-        axs[0].xaxis.set_ticks(np.arange(2.5, max(TimeStamp)+1, 2.5))
-        axs[1].xaxis.set_ticks(np.arange(2.5, max(TimeStamp)+1, 2.5))
+        axs[0].xaxis.set_ticks(np.arange(0, max(TimeStamp)+1, 25))
+        axs[1].xaxis.set_ticks(np.arange(0, max(TimeStamp)+1, 25))
         axs[0].legend()
         axs[1].legend()
         if self.ShowGraph: plt.show()
-        #input("Press any button to exit the program")
 
 
 
@@ -286,12 +296,13 @@ class Fight:
                 elif isinstance(player, Tank) : hasTank = True
                 elif isinstance(player, Healer) : hasHealer = True
 
-            
-            if hasMelee: self.TeamCompositionBonus += 0.01
-            if hasCaster: self.TeamCompositionBonus += 0.01
-            if hasRanged: self.TeamCompositionBonus += 0.01
-            if hasTank: self.TeamCompositionBonus += 0.01
-            if hasHealer: self.TeamCompositionBonus += 0.01
+            if len(self.PlayerList) == 1 : self.TeamCompositionBonus = 1 #If only one player, there is not bonus
+            else:
+                if hasMelee: self.TeamCompositionBonus += 0.01
+                if hasCaster: self.TeamCompositionBonus += 0.01
+                if hasRanged: self.TeamCompositionBonus += 0.01
+                if hasTank: self.TeamCompositionBonus += 0.01
+                if hasHealer: self.TeamCompositionBonus += 0.01
 
             #Will first compute each player's GCD reduction value based on their Spell Speed or Skill Speed Value
 
@@ -302,15 +313,16 @@ class Fight:
             while(self.TimeStamp <= TimeLimit):
 
                 for player in self.PlayerList:
-                    #print("MainStat : " + str(player.Stat["MainStat"]))
+                   # if player.ActionSet[player.NextSpell] == None : player.TrueLock = True #Locking the player if None
                     #Will first Check if the NextSpell is a GCD or not
                     if(not player.TrueLock):#If it is we do nothing
-                        if(player.ActionSet[player.NextSpell].GCD):
+                        if (player.ActionSet[player.NextSpell].GCD):
                             #Is a GCD
-
                             #Have to check if the player can cast the spell
                             #So check if Animation Lock, if Casting or if GCDLock
                             if(not (player.oGCDLock or player.GCDLock or player.Casting)):
+                                #if isinstance(player, Bard): input("Bard casts : " + str(player.ActionSet[player.NextSpell].id))
+
                                 player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)#Cast the spell
                                 #Locking the player
                                 #print(Player.CastingSpell.CastTime)
@@ -356,7 +368,6 @@ class Fight:
                         player.EffectCDList.remove(remove) #Removing relevant spell
                     for add in player.EffectToAdd:
                         player.EffectCDList.append(add)
-
                     player.EffectToRemove = []
                     player.EffectToAdd = []
                 
@@ -438,7 +449,7 @@ class Fight:
             JobMod = Player.JobMod #Level 90 jobmod value, specific to each job
 
             Player.f_WD = (Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))/100
-            Player.f_DET = math.floor(1000+math.floor(130*(Player.Stat["Det"]-baseMain)/levelMod))/1000#Determination damage
+            Player.f_DET = math.floor(1000+math.floor(140*(Player.Stat["Det"]-baseMain)/levelMod))/1000#Determination damage
             if isinstance(Player, Tank) : Player.f_TEN = (1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000 #Tenacity damage, 1 for non-tank player
             else : Player.f_TEN = 1 #if non-tank
             Player.f_SPD = (1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000 #Used only for dots
@@ -446,6 +457,13 @@ class Fight:
             Player.CritMult = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000 #Crit Damage multiplier
             Player.DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000 #DH rate in decimal
 
+            #print("f_WD : " + str(Player.f_WD))
+            #print("f_DET : " + str(Player.f_DET))
+            #print("f_SPD : " + str(Player.f_SPD))
+            #print("CritRate : " + str(Player.CritRate))
+            #print("CritMult : " + str(Player.CritMult))
+            #print("DHRate : " + str(Player.DHRate))
+            #input("")
 
 
 def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
@@ -457,28 +475,32 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
 
     #type = 0 (Direct Damage), type = 1 (magical DOT), type = 2(physical DOT), type = 3 (Auto-attacks)
 
-    #All relevant formulas were taken from https://finalfantasy.fandom.com/wiki/Final_Fantasy_XIV_attributes#Damage_and_healing_formulae
+    #All relevant formulas were taken from https://finalfantasy.fandom.com/wiki/Final_Fantasy_XIV_attributes#Damage_and_healing_formulae ,
+    #were given to me by javaJake#0001 on discord or were taken from the Allagan Studies discord server.
     #The formulas on the website assume a random function that will randomise the ouput. We instead compute the expected outcome.
     #Also thanks to whoever did the DPS computation code on the black mage gear comparison sheet : https://docs.google.com/spreadsheets/d/1t3EYSOPuMceqCFrU4WAbzSd4gbYi-J7YeMB36dNmaWM/edit#gid=654212594
     #It helped me a lot to understand better the DPS computation of this game
     #Also, note that this function is still in development, and so some of these formulas might be a bit off. Use at your own risk.
     #This function will compute the DPS given the stats of a player
 
+    #THESE COMPUTATIONS ARE NOT COMPLETELY UP TO DATE FOR ENDWALKER AND SOME PARTS OF IT STILL WON'T COMPLETELY WORK.
+
     baseMain = 390  
 
     Enemy = Player.CurrentFight.Enemy #Enemy targetted
 
-    MainStat = Player.Stat["MainStat"] *  Player.CurrentFight.TeamCompositionBonus #Scaling %bonus on mainstat
 
+    if isinstance(Player, Queen) or isinstance(Player, Esteem) or isinstance(Player, Shadow) or isinstance(Player, BigSummon): MainStat = Player.Stat["MainStat"] #Summons do not receive bonus
+    else: MainStat = math.floor(Player.Stat["MainStat"] * 1.05 )# Player.CurrentFight.TeamCompositionBonus) #Scaling %bonus on mainstat
     #Computing values used throughout all computations
-    if isinstance(Player, Tank) : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*145/baseMain))/100 #This is experimental, and I do not have any actual proof to back up, but tanks do have a different f_MAIN_DMG formula
+    if isinstance(Player, Tank) : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*153/baseMain))/100 #Tanks have a difference constant 
     else: f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100
     #These values are all already computed since they do not change
     f_WD = Player.f_WD
     f_DET = Player.f_DET
     f_TEN = Player.f_TEN
     f_SPD = Player.f_SPD
-    CritRate = Player.CritRate
+    CritRate = (Player.CritRate)
     CritMult = Player.CritMult
     DHRate = Player.DHRate
 
@@ -486,11 +508,24 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
 
     if Enemy.WanderingMinuet: CritRate += 0.02 #If WanderingMinuet is active, increase crit rate
 
-    if Enemy.BattleVoice: DHRate += 0.2 #If WanderingMinuet is active, increase DHRate
+    if Enemy.BattleVoice: DHRate += 0.2 #If BattleVoice is active, increase DHRate
 
 
     DHRate += Player.DHRateBonus #Adding Bonus
     CritRate += Player.CritRateBonus #Adding bonus
+    #if CritRate - save  > 0.22 : input("HEY " + str(CritRate) + " : " + str(Player))
+    """
+    print("Current Buffs are " + str(Player.DHRateBonus) + " : " + str(Player.CritRateBonus))
+    totalbuff = 1
+    for buffs in Player.buffList: 
+        totalbuff *= buffs.MultDPS
+    for buffs in Enemy.buffList:
+        totalbuff *= buffs.MultDPS
+    print("DPS BUFF : " + str(totalbuff))
+    """
+
+
+
 
     if type == 0: #Making sure its not an AA or DOT
         if isinstance(Player, Machinist): 
@@ -500,7 +535,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
                 DHRate = 1
                 Player.Reassemble = False #Uses Reassemble       
         elif isinstance(Player, Warrior):
-            if Player.InnerReleaseStack >= 1 and (Player.NextSpell < len(Player.ActionSet)) and (Player.ActionSet[Player.NextSpell].id == 9 or Player.ActionSet[Player.NextSpell].id == 8):
+            if Player.InnerReleaseStack >= 1 and (Player.NextSpell < len(Player.ActionSet)) and (Player.ActionSet[Player.NextSpell].id == 9 or Player.ActionSet[Player.NextSpell].id == 8 or Player.ActionSet[Player.NextSpell].id == 10):
                 CritRate = 1#If inner release weaponskill
                 DHRate = 1
                 Player.InnerReleaseStack -= 1
@@ -580,11 +615,39 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
     else: #if type is 1 or 2, then its a DOT, so we have to use the snapshotted buffs
         for buffs in spellObj.MultBonus:
             Damage = math.floor(Damage * buffs.MultDPS)
-    
+    """
+    if math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) > 100000 : 
+        print("WOWOWOW HIGH DAMAGE : " + str(math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2)))))
+        print(spellObj)
+        print(DHRate)
+        print(Player.DHRate)
+        print(Player.CritRate)
+        print(CritRate)
+        print("Damage : " + str(Damage))
+        print("DH Damage : " + str(math.floor(Damage * ( 1 + roundDown((DHRate * 0.25), 2)))))
+        print("Crit damage : " + str(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) )))
+        x = 1
+        for buffs in Player.buffList: 
+            input("buff : " + str(buffs.MultDPS))
+            x *= buffs.MultDPS
+            input("x " + str(x))
+        print("ONTO BOSS")
+        for buffs in Enemy.buffList:
+            input("buff : " + str(buffs.MultDPS))
+            x *= buffs.MultDPS
+            input("x " + str(x))
+        input(spellObj.id)
+        """
+
     if CritRate == 1: #If sure to crit, add crit to min expected damage
-        return math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))), math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))) #If we have auto crit, we return full damage
+        return math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))), math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) #If we have auto crit, we return full damage
     else:
-        return math.floor(Damage * ( 1 + (DHRate * 0.25))), math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))) #Non crit expected damage, expected damage with crit
+        return math.floor(Damage * ( 1 + roundDown((DHRate * 0.25), 2))), math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) #Non crit expected damage, expected damage with crit
+
+
+def roundDown(x, precision):
+    return math.floor(x * 10**precision)/10**precision
+    #Imagine not having a built in function to rounddown floats :x
 
 """
 #Original ComputeDamage function

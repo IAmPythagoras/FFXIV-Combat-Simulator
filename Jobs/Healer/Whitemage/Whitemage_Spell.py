@@ -164,4 +164,27 @@ Tetragrammaton = WhitemageSpell(21, False, 0, 0, 0, 0, ApplyTetragrammaton, [Tet
 Asylum = WhitemageSpell(22, False, 0, 0, 0, 0, ApplyAsylum, [AsylumRequirement])
 Benediction = WhitemageSpell(23, False, 0, 0, 0, 0, ApplyBenediction, [BenedictionRequirement])
 
-WhiteMageAbility = {}
+WhiteMageAbility = {
+25859 : Glare,
+16532 : Dia,
+25860 : Holy,
+16535 : AfflatusMisery,
+3571 : Assize,
+120 : Cure,
+135 : Cure2,
+131 : Cure3,
+124 : Medica,
+133 : Medica2,
+137 : Regen,
+3570 : Tetragrammaton,
+3569 : Asylum,
+7432 : DivineBenison,
+140 : Benediction,
+16531 : AfflatusSolace,
+16534 : AfflatusRapture,
+136 : PresenceOfMind,
+7430 : ThinAir,
+16536 : Temperance,
+25861 : Aquaveil,
+25862 : Bell
+}

@@ -81,6 +81,7 @@ class Bard(Ranged):
         self.RadiantFinalBuff = None
     
     def updateCD(self, time):
+        super().updateCD(time)
         if (self.SidewinderCD > 0) : self.SidewinderCD = max(0,self.SidewinderCD - time)
         if (self.EmpyrealArrowCD > 0) : self.EmpyrealArrowCD = max(0,self.EmpyrealArrowCD - time)
         if (self.WandererMinuetCD > 0) : self.WandererMinuetCD = max(0,self.WandererMinuetCD - time)

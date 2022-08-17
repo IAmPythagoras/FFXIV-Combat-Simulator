@@ -7,7 +7,7 @@ class Paladin(Tank):
         self.EffectCDList.append(ManaRegenCheck) #Mana Regen
 
         #Gauge
-        self.OathGauge = 0
+        self.OathGauge = 100
 
 
         #Stack
@@ -52,6 +52,7 @@ class Paladin(Tank):
         self.JobMod = 100
 
     def updateCD(self, time):
+        super().updateCD(time)
         if (self.RequestACatCD > 0) : self.RequestACatCD = max(0,self.RequestACatCD - time)
         if (self.CircleScornCD > 0) : self.CircleScornCD = max(0,self.CircleScornCD - time)
         if (self.InterveneCD > 0) : self.InterveneCD = max(0,self.InterveneCD - time)
@@ -73,5 +74,5 @@ class Paladin(Tank):
 
 #Oath Gauge Effect
 def OathGauge(Player, Spell):
-    if Spell.id == -1: #AA's DOT have id -1
+    if Spell.id == -22: #AA's DOT have id -1
         Player.OathGauge = min(100, Player.OathGauge + 5) #adding 5 Gauge each AA

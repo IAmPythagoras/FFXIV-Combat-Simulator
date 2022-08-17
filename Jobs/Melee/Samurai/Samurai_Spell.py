@@ -10,13 +10,10 @@ Lock = 0
 #Special
 def AddKenki(Player, Add):
     Player.KenkiGauge = min(100, Player.KenkiGauge + Add)
-    #print("Kenki Gauge : " + str(Player.KenkiGauge))
+    #input("Kenki Gauge : " + str(Player.KenkiGauge))
 
 
 #Requirement
-
-def KenkiRequirement(Player, Spell): #By default present in Samurai spell requirements
-    return Spell.KenkiCost <= Player.KenkiGauge, -1
 
 def MeikyoRequirement(Player, Spell):
     return Player.MeikyoStack > 0, Player.MeikyoCD
@@ -128,7 +125,9 @@ def ApplyFuko(Player, Enemy):
 
 def ApplyHakaze(Player, Enemy):
     AddKenki(Player, 5)
-    if not (HakazeEffect in Player.EffectList) : Player.EffectList.append(HakazeEffect)
+    if not (HakazeEffect in Player.EffectList) : 
+        Player.EffectList.append(HakazeEffect)
+        #input("COMBO EFFECT")
 
 def ApplyJinpu(Player, Enemy):
     if not (JinpuEffect in Player.EffectList) : Player.EffectList.append(JinpuEffect)
@@ -238,6 +237,7 @@ def HakazeEffect(Player, Spell):
         Player.FukaTimer = 40
         AddKenki(Player, 5)
         Player.EffectToRemove.append(HakazeEffect)
+        ApplyShifu(Player, Spell)
     elif Spell.id == Yukikaze.id:
         Spell.Potency += 180
         AddKenki(Player, 15)
@@ -422,4 +422,38 @@ def Meditate(time):
 
     return SamuraiSpell(31, False, time, time, 0, ApplyMedidate, [MeditateRequirement], 0)
 
-SamuraiAbility = {}
+SamuraiAbility = {
+7477 : Hakaze,
+7479 : Shifu,
+7482 : Kasha,
+7478 : Jinpu,
+7481 : Gekko,
+7480 : Yukikaze,
+25780 : Fuko,
+7485 : Oka,
+7484 : Mangetsu,
+7499 : Meikyo,
+7489 : Higanbana,
+7488 : TenkaGoken,
+7487 : Midare,
+25781 : OgiNamikiri,
+16484 : KaeshiHiganbana,
+16485 : KaeshiGoken,
+16486 : KaeshiSetsugekka,
+25782 : KaeshiNamikiri,
+7490 : Shinten,
+7491 : Kyuten,
+16481 : Senei,
+7496 : Guren,
+16487 : Shoha,
+25779 : Shoha2,
+16482 : Ikishoten,
+7497 : Meditate (3),
+7495 : Hagakure,
+7492 : Gyoten,
+7493 : Yaten,
+7486 : Enpi,
+7498 : ThirdEye
+
+
+}

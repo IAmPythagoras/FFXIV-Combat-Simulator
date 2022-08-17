@@ -74,6 +74,7 @@ class Dancer(Ranged):
 
 
     def updateCD(self, time):
+        super().updateCD(time)
         if (self.StandardStepCD > 0) : self.StandardStepCD = max(0,self.StandardStepCD - time)
         if (self.TechnicalStepCD > 0) : self.TechnicalStepCD = max(0,self.TechnicalStepCD - time)
         if (self.DevilmentCD > 0) : self.DevilmentCD = max(0,self.DevilmentCD - time)

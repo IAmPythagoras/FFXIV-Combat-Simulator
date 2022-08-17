@@ -1,4 +1,4 @@
-from Jobs.Base_Spell import Spell
+from Jobs.Base_Spell import Potion, Spell
 Lock = 0.75
 class MeleeSpell(Spell):
 
@@ -29,6 +29,7 @@ class SamuraiSpell(MeleeSpell):
         self.Requirement += [KenkiRequirement]
 
 def KenkiRequirement(Player, Spell): #By default present in Samurai spell requirements
+    #input("Current Gauge is " + str(Player.KenkiGauge - Spell.KenkiCost))
     return Spell.KenkiCost <= Player.KenkiGauge, -1
 
 #########################################
@@ -119,11 +120,20 @@ def TrueNorthStackCheck(Player, Enemy):
             Player.TrueNorthCD = 45
         Player.TrueNorthStack += 1
 #Class Action (no effect as of now)
-SecondWind = MeleeSpell(0, False, Lock, 0, 0, 0, ApplySecondWind, [SecondWindRequirement])
-LegSweep = MeleeSpell(0, False, Lock, 0, 0, 0, ApplyLegSweep, [LegSweepRequirement])
-Bloodbath = MeleeSpell(0, False, Lock, 0, 0, 0, ApplyBloodbath, [BloodbathRequirement])
-Feint = MeleeSpell(0, False, Lock, 0, 0, 0, ApplyFeint, [FeintRequirement])
-ArmLength = MeleeSpell(0, False, Lock, 0, 0, 0, ApplyArmLength, [ArmLengthRequirement])
-TrueNorth = MeleeSpell(0, False, Lock, 0, 0, 0, ApplyTrueNorth, [TrueNorthRequirement])
+SecondWind = MeleeSpell(2001, False, Lock, 0, 0, 0, ApplySecondWind, [SecondWindRequirement])
+LegSweep = MeleeSpell(2002, False, Lock, 0, 0, 0, ApplyLegSweep, [LegSweepRequirement])
+Bloodbath = MeleeSpell(2003, False, Lock, 0, 0, 0, ApplyBloodbath, [BloodbathRequirement])
+Feint = MeleeSpell(2004, False, Lock, 0, 0, 0, ApplyFeint, [FeintRequirement])
+ArmLength = MeleeSpell(2005, False, Lock, 0, 0, 0, ApplyArmLength, [ArmLengthRequirement])
+TrueNorth = MeleeSpell(2006, False, Lock, 0, 0, 0, ApplyTrueNorth, [TrueNorthRequirement])
 
-MeleeAbility = {}
+MeleeAbility = {
+7541 : SecondWind,
+7863 : LegSweep,
+7542 : Bloodbath,
+7549 : Feint,
+7546 : TrueNorth,
+7548 : ArmLength,
+34590541 : Potion,  #STR
+34590542 : Potion   #DEX
+}

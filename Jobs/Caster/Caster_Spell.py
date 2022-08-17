@@ -1,4 +1,4 @@
-from Jobs.Base_Spell import ManaRequirement, Spell, empty
+from Jobs.Base_Spell import ManaRequirement, Potion, Spell, empty
 from Jobs.Caster.Blackmage.BlackMage_Player import BlackMage
 Lock = 0
 class CasterSpell(Spell):
@@ -52,7 +52,9 @@ def SwiftcastRequirement(Player, Spell):
     return Player.SwiftcastCD <= 0, Player.SwiftcastCD
 
 def LucidDreamingRequirement(Player, Spell):
-    return Player.LucidDreamingCD <= 0, Player.LucidDreamingCD
+    #if Player.LucidDreamingCD > 0: input("LUCID IS OUT OF SYNC BY : " + str(Player.LucidDreamingCD))
+    #return Player.LucidDreamingCD <= 0, Player.LucidDreamingCD
+    return True, -1
 
 def SurecastRequirement(Player, Spell):
     return Player.SurecastCD <= 0, Player.SurecastCD
@@ -69,7 +71,7 @@ def ApplyLucidDreaming(Player, Enemy):
 
 def ApplySwiftcast(Player, Enemy):
     Player.SwiftcastCD = 60
-    Player.EffectList.append(SwiftcastEffect)
+    Player.EffectList.insert(0,SwiftcastEffect)
 
 def ApplySurecast(Player, Enemy):
     Player.SurecastCD = 120
@@ -113,4 +115,11 @@ Surecast = CasterSpell(1003, False, Lock, 0, 0, 0, ApplySurecast, [SurecastRequi
 Addle = CasterSpell(1004, False, Lock, 0, 0, 0, ApplyAddle, [AddleRequirement])
 Sleep = CasterSpell(1005, True, 2.5, 2.5, 0, 800, empty, [ManaRequirement])
 
-CasterAbility = {7561 : Swiftcast, 7562 : LucidDreaming,  7559 : Surecast, 7560 : Addle, 25880 : Sleep}
+CasterAbility = {
+7561 : Swiftcast, 
+7562 : LucidDreaming,  
+7559 : Surecast, 
+7560 : Addle, 
+25880 : Sleep,
+34590544 : Potion
+}

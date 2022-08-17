@@ -1,7 +1,7 @@
-from Jobs.Base_Spell import DOTSpell, buff, empty
+from Jobs.Base_Spell import DOTSpell, WaitAbility, buff, empty
 from Jobs.Ranged.Ranged_Spell import BardSpell
 import copy
-Lock = 0.75
+Lock = 0.5
 
 #Thanks for birdy for da help lol. Bitchiest bard I've ever known, much love
 
@@ -38,7 +38,7 @@ def PitchPerfectRequirement(Player, Spell):
 """
 def PitchPerfect1Requirement(Player, Spell):
     if Player.MaximumRepertoire < 1:#It will not be possible to cast in any case
-        return False
+        return False, -1
     else:
         #We can cast it, and we have to check the chances
         need = max(0, 1 - Player.ExpectedRepertoire)#This represents how much we would be missing, compared to the expected value
@@ -47,7 +47,7 @@ def PitchPerfect1Requirement(Player, Spell):
 
 def PitchPerfect2Requirement(Player, Spell):
     if Player.MaximumRepertoire < 2:#It will not be possible to cast in any case
-        return False
+        return False, -1
     else:
         #We can cast it, and we have to check the chances
         need = max(0, 2 - Player.ExpectedRepertoire)#This represents how much we would be missing, compared to the expected value
@@ -56,7 +56,7 @@ def PitchPerfect2Requirement(Player, Spell):
 
 def PitchPerfect3Requirement(Player, Spell):
     if Player.MaximumRepertoire < 3:#It will not be possible to cast in any case
-        return False
+        return True, -1
     else:
         #We can cast it, and we have to check the chances
         need = max(0, 3 - Player.ExpectedRepertoire) #This represents how much we would be missing, compared to the expected value
@@ -81,8 +81,9 @@ def BloodLetterRequirement(Player, Spell):
         #We will first check if a blood letter at this point is even possible by looking at the maximal possible reduction
         need = 15 - Player.BloodLetterCD #What reduction we need
         #input("maxblood : " + str(Player.MaximumBloodLetterReduction))
-        #print("Need : " + str(need))
-        if Player.MaximumBloodLetterReduction - need < 0 : return False #If it is bigger, than this rotation is impossible
+        if Player.MaximumBloodLetterReduction - need < -10 : 
+            print("Bard rotation might not be feasible")
+            # return False, -1 #If it is bigger, than this rotation is impossible
 
 
         Player.MaximumBloodLetterReduction -= need #Updating new MaximumBloodLetterReduction
@@ -260,6 +261,7 @@ def ApplyRadiantFinale(Player, Enemy):
     if Player.WandererCoda: coda += 1
     Player.RadiantFinalBuff = copy.deepcopy(RadiantFinaleBuff)
     Player.RadiantFinalBuff.MultDPS *= coda
+    Player.RadiantFinalBuff.MultDPS = round(1 + Player.RadiantFinalBuff.MultDPS%1, 2)
     Enemy.buffList.append(Player.RadiantFinalBuff)
     Player.RadiantFinaleTimer = 15
     Player.EffectCDList.append(RadiantFinaleCheck)
@@ -429,7 +431,6 @@ RadiantFinale = BardSpell(21, False, 0, 0, ApplyRadiantFinale, [RadiantFinaleReq
 Troubadour = BardSpell(22, False, 0, 0, ApplyTroubadour, [TroubadourRequirement], False)
 RepellingShot = BardSpell(23, False, 0, 0, empty, [], False) #No requirement, do that shit forever
 WardenPaean = BardSpell(27, False, 0, 0, ApplyWardenPaean, [WardenPaeanRequirement], False)
-NatureMinne = BardSpell(28, False, 0, 0, ApplyNatureMinne, [NatureMinneRequirement], False)
 #Each PitchPerfecti represents a PitchPerfect with i repertoire
 PitchPerfect1 = BardSpell(24, False, 0, 100, ApplyPitchPerfect1, [PitchPerfect1Requirement],False)
 PitchPerfect2 = BardSpell(25, False, 0, 220, ApplyPitchPerfect2, [PitchPerfect2Requirement],False)
@@ -440,7 +441,33 @@ RadiantFinaleBuff = buff(1.02)
 RagingStrikeBuff = buff(1.15)
 MageBalladBuff = buff(1.01)
 
-BardAbility = {101 : RagingStrike, 107 : Barrage, 114 : MageBallad, 116 : ArmyPaeon, 117 : RainOfDeath, 118 : BattleVoice, 3558 : EmpyrealArrow, 3559 : WandererMinuet, 
-3560 : IronJaws, 3561 : WardenPaean, 3562 : Sidewinder ,7404 : PitchPerfect3, 7405 : Troubadour, 7406 : Causticbite, 7407 : Stormbite, 7408 : NatureMinne, 
-7409 : RefulgentArrow, 16494 : Shadowbite, 16495 : BurstShot, 16496 : ApexArrow80, 25783 : Ladonsbite, 25785 : RadiantFinale, 112 : RepellingShot, 110 : BloodLetter,
-25784 : BlastArrow }
+def NatureMinne(target):
+    return BardSpell(28, False, 0, 0, ApplyNatureMinne, [NatureMinneRequirement], False)
+
+BardAbility = {
+101 : RagingStrike, 
+107 : Barrage, 
+114 : MageBallad, 
+116 : ArmyPaeon, 
+117 : RainOfDeath, 
+118 : BattleVoice, 
+3558 : EmpyrealArrow, 
+3559 : WandererMinuet, 
+3560 : IronJaws, 
+3561 : WardenPaean, 
+3562 : Sidewinder ,
+7404 : PitchPerfect3, 
+7405 : Troubadour, 
+7406 : Causticbite, 
+7407 : Stormbite, 
+7408 : NatureMinne, 
+7409 : RefulgentArrow, 
+16494 : Shadowbite, 
+16495 : BurstShot, 
+16496 : ApexArrow80, 
+25783 : Ladonsbite, 
+25785 : RadiantFinale, 
+112 : RepellingShot, 
+110 : BloodLetter,
+25784 : BlastArrow, 
+8 : WaitAbility(0) }

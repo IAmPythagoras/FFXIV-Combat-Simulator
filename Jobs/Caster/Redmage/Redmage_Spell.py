@@ -210,9 +210,11 @@ def DualCastEffect(Player, Spell):
         #print("Spell satisfies DualCast")
         #print("Spell is : " + str(Spell.id))
         #print("CastTime : " + str(Spell.CastTime))
+        #input("timestmap : " + str(Player.CurrentFight.TimeStamp))
         if Player.DualCast:
             Spell.CastTime = 0 #Insta cast half of the spells, will be put by default for RedMage
             Player.DualCast = False #Remove Dualcast
+            #print("using it")
         else: Player.DualCast = True    #Give Dual cast
 
 def ManaficationEffect(Player, Spell):
@@ -249,7 +251,6 @@ def AccelerationStackCheck(Player, Enemy):
 def EngagementStackCheck(Player, Enemy):
     if Player.EngagementCD <= 0:
         Player.EngagementStack += 1
-
         if Player.EngagementStack == 2:
             Player.EffectToRemove.append(EngagementStackCheck)
         else:
@@ -312,7 +313,37 @@ Vercure = RedmageSpell(27, True, 2, 2.5, 0, 500, empty, [RDMManaRequirement], 0,
 EmboldenBuff = buff(1.05)
 
 #ActionList
-RedMageAbility = {7504 : Riposte, 7506 : Corps, 7507 : Verareo, 7510 : Verfire, 7511 : Verstone, 7512 : Zwerchhau, 7513 : Moulinet, 7514 : Vercure, 7515 : Engagement,
-7516 : Redoublement, 7517 : Fleche, 7518 : Acceleration, 7519 : Contre, 7520 : Embolden, 7521 : Manafication , 7523 : Verraise, 7524 : Jolt, 25855 : Verthunder, 25856 : Verareo, 
-16526 : Impact, 16527 : Engagement, 16529 : Reprise,  25857 : MagickBarrier, 7527 : EnchantedRiposte, 7528:EnchantedZwerchhau,7529:EnchantedRedoublement,  7530:EnchantedMoulinet, 16528:EnchantedReprise,
-25858 : Resolution, 7526 : Verholy, 7525 : Verflare, 16530 : Scorch}
+RedMageAbility = {
+7504 : Riposte, 
+7506 : Corps, 
+7507 : Verareo, 
+7510 : Verfire, 
+7511 : Verstone, 
+7512 : Zwerchhau, 
+7513 : Moulinet, 
+7514 : Vercure, 
+7515 : Engagement,
+7516 : Redoublement, 
+7517 : Fleche, 
+7518 : Acceleration, 
+7519 : Contre,
+7520 : Embolden, 
+7521 : Manafication , 
+7523 : Verraise, 
+7524 : Jolt, 
+25855 : Verthunder, 
+25856 : Verareo, 
+16526 : Impact, 
+16527 : Engagement, 
+16529 : Reprise,  
+25857 : MagickBarrier, 
+7527 : EnchantedRiposte, 
+7528:EnchantedZwerchhau,
+7529:EnchantedRedoublement,  
+7530:EnchantedMoulinet, 
+16528:EnchantedReprise,
+25858 : Resolution, 
+7526 : Verholy, 
+7525 : Verflare, 
+16530 : Scorch
+}

@@ -58,6 +58,7 @@ class Machinist(Ranged):
         
 
     def updateCD(self, time):
+        super().updateCD(time)
         if (self.ChainSawCD > 0) : self.ChainSawCD = max(0,self.ChainSawCD - time)
         if (self.AirAnchorCD > 0) : self.AirAnchorCD = max(0,self.AirAnchorCD - time)
         if (self.BarrelStabilizerCD > 0) : self.BarrelStabilizerCD = max(0,self.BarrelStabilizerCD - time)

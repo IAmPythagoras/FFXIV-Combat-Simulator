@@ -1,10 +1,14 @@
 from Jobs.Base_Spell import buff, empty, DOTSpell
-from Jobs.Tank.Tank_Spell import GunbreakerSpell
+from Jobs.Tank.Paladin.Paladin_Spell import RoyalAuthority
+from Jobs.Tank.Tank_Spell import BigMit, GunbreakerSpell
 import copy
 Lock = 0.75
 
 
 #Requirement
+
+def CamouflageRequirement(Player, Spell):
+    return Player.CamouflageCD <= 0, Player.CamouflageCD
 
 def NoMercyRequirement(Player, Spell):
     return Player.NoMercyCD <= 0, Player.NoMercyCD
@@ -53,6 +57,9 @@ def HeartOfCorundumRequirement(Player, Spell):
 
 #Apply
 
+def ApplyCamouflage(Player, Enemy):
+    Player.CamouflageCD = 90
+
 def ApplyDemonSlice(Player, Enemy):
     if not (DemonSliceCombo in Player.EffectList) : Player.EffectList.append(DemonSliceCombo)
 
@@ -98,7 +105,7 @@ def ApplySonicBreak(Player, Enemy):
     Player.EffectCDList.append(SonicBreakDOTCheck)
 
 def ApplyDoubleDown(Player, Enemy):
-    Player.DoubleDownCD = 120
+    Player.DoubleDownCD = 60
 
 def ApplyHypervelocity(Player, Enemy):
     Player.ReadyToBurst = False
@@ -181,7 +188,7 @@ def RoughDivideStackCheck(Player, Enemy):
 
 def AuroraStackCheck(Player, Enemy):
     if Player.AuroraCD <= 0:
-        if Player.Aurora == 1:
+        if Player.AuroraStack == 1:
             Player.EffectToRemove.append(AuroraStackCheck)
         else:
             Player.AuroraCD = 30
@@ -227,8 +234,36 @@ Aurora = GunbreakerSpell(23, False, 0, 0, ApplyAurora, [AuroraRequirement], 0)
 Superbolide = GunbreakerSpell(24, False, 0, 0, ApplySuperbolide, [SuperbolideRequirement], 0)
 HeartOfLight = GunbreakerSpell(25, False, 0, 0, ApplyHeartOfLight, [HeartOfLightRequirement], 0)
 HeartOfCorundum = GunbreakerSpell(26, False, 0, 0, ApplyHeartOfCorundum, [HeartOfCorundumRequirement], 0)
-
+Camouflage = GunbreakerSpell(27, False, 0, 0, ApplyCamouflage, [CamouflageRequirement], 0)
 #buff
 NoMercyBuff = buff(1.2)
 
-GunbreakerAbility = {}
+GunbreakerAbility = {
+16152 : Superbolide,
+16143 : LightningShot,
+16154 : RoughDivide,
+16138 : NoMercy,
+16164 : Bloodfest,
+16137 : KeenEdge,
+16139 : BrutalShell,
+16145 : SolidBarrel,
+16162 : BurstStrike,
+16146 : GnashingFang,
+16147 : SavageClaw,
+16150 : WickedTalon,
+16156 : JugularRip,
+16157 : AbdomenTear,
+16158 : EyeGouge,
+25759 : Hypervelocity,
+16153 : SonicBreak,
+16165 : BlastingZone,
+25760 : DoubleDown,
+16141 : DemonSlice,
+16149 : DemonSlaughter,
+16163 : FatedCircle,
+16148 : BigMit,
+16140 : Camouflage,
+25758 : HeartOfCorundum,
+16151 : Aurora,
+16160 : HeartOfLight
+}
