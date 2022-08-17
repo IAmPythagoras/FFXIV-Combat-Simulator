@@ -76,6 +76,7 @@ BRDStat = {"MainStat": 2575, "WD":120, "Det" : 1381, "Ten" : 400, "SS": 479, "Cr
 DNCStat = {"MainStat": 2575, "WD":120, "Det" : 1453, "Ten" : 400, "SS": 549, "Crit" : 2283, "DH" : 1477}
 DRGStat = {"MainStat": 2575, "WD":120, "Det" : 1846, "Ten" : 400, "SS": 400, "Crit" : 2281, "DH" : 1235}
 RPRStat ={"MainStat": 2575, "WD":120, "Det" : 1846, "Ten" : 400, "SS": 400, "Crit" : 2281, "DH" : 1235}
+SGEStat ={"MainStat": 2563, "WD":120, "Det" : 1953, "Ten" : 400, "SS": 656, "Crit" : 2244, "DH" : 904}
 Event = Fight([], Dummy, False)
 
 #DRKPlayer = DarkKnight(2.41, DRKAction, [], [DarksideEffect], Event)
@@ -163,7 +164,7 @@ for playerID in player_dict:
     player_dict[playerID]["job_object"].CurrentFight = Event
     job_name = player_dict[playerID]["job"] #getting job name
 
-    if job_name == "Sage" : player_dict[playerID]["job_object"].Stat = BLMStat
+    if job_name == "Sage" : player_dict[playerID]["job_object"].Stat = SGEStat
     elif job_name == "Scholar" : player_dict[playerID]["job_object"].Stat = SCHStat
     elif job_name == "WhiteMage" : player_dict[playerID]["job_object"].Stat = WHMStat
     elif job_name == "Astrologian" : player_dict[playerID]["job_object"].Stat = ASTStat
@@ -184,7 +185,7 @@ for playerID in player_dict:
         player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
     #Caster
     elif job_name == "BlackMage" : 
-        player_dict[playerID]["job_object"].Stat = copy.deepcopy(BLMCRITStat)
+        player_dict[playerID]["job_object"].Stat = copy.deepcopy(BLMStat)
         player_dict[playerID]["job_object"].EffectList = [EnochianEffect, ElementalEffect]
     elif job_name == "RedMage" : 
         player_dict[playerID]["job_object"].Stat = copy.deepcopy(RDMStat)
@@ -222,7 +223,7 @@ for playerID in player_dict:
 
 Event.ShowGraph = True
 #input(Event.PlayerList)
-#Event.PlayerList = [Event.PlayerList[-4]]
+#Event.PlayerList = [Event.PlayerList[-2]]
 #input(Event.PlayerList)
 print("Starting simulator")
 Event.SimulateFight(0.01, 1000, 0)

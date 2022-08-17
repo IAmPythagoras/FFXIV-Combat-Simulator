@@ -491,7 +491,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
 
 
     if isinstance(Player, Queen) or isinstance(Player, Esteem) or isinstance(Player, Shadow) or isinstance(Player, BigSummon): MainStat = Player.Stat["MainStat"] #Summons do not receive bonus
-    else: MainStat = math.floor(Player.Stat["MainStat"] * Player.CurrentFight.TeamCompositionBonus) #Scaling %bonus on mainstat
+    else: MainStat = math.floor(Player.Stat["MainStat"] * 1.05 )# Player.CurrentFight.TeamCompositionBonus) #Scaling %bonus on mainstat
     #Computing values used throughout all computations
     if isinstance(Player, Tank) : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*153/baseMain))/100 #Tanks have a difference constant 
     else: f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100

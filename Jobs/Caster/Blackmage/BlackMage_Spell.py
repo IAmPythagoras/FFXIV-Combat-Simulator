@@ -24,6 +24,7 @@ def ParadoxRequirement(Player, Spell):
     return Player.Paradox, -1
 
 def PolyglotRequirement(Player, Spell):
+    print(Player.PolyglotTimer)
     return Player.PolyglotStack > 0, Player.PolyglotTimer
 
 def TransposeRequirement(Player, Spell):
