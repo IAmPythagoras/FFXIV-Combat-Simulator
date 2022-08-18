@@ -110,10 +110,10 @@ def LucidDreamingCheck(Player, Enemy):
 
 #Class Action
 Swiftcast = CasterSpell(7561, False,0, Lock, 0, 0, ApplySwiftcast, [SwiftcastRequirement])
-LucidDreaming = CasterSpell(1002, False, Lock,0,0, 0, ApplyLucidDreaming, [LucidDreamingRequirement])
-Surecast = CasterSpell(1003, False, Lock, 0, 0, 0, ApplySurecast, [SurecastRequirement])
-Addle = CasterSpell(1004, False, Lock, 0, 0, 0, ApplyAddle, [AddleRequirement])
-Sleep = CasterSpell(1005, True, 2.5, 2.5, 0, 800, empty, [ManaRequirement])
+LucidDreaming = CasterSpell(7562, False, Lock,0,0, 0, ApplyLucidDreaming, [LucidDreamingRequirement])
+Surecast = CasterSpell(7559, False, Lock, 0, 0, 0, ApplySurecast, [SurecastRequirement])
+Addle = CasterSpell(7560, False, Lock, 0, 0, 0, ApplyAddle, [AddleRequirement])
+Sleep = CasterSpell(25880, True, 2.5, 2.5, 0, 800, empty, [ManaRequirement])
 
 CasterAbility = {
 7561 : Swiftcast, 

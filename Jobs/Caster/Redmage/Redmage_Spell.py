@@ -268,44 +268,44 @@ def CorpsStackCheck(Player, Enemy):
 
 #GCD    
 
-Jolt = RedmageSpell(1, True, 2, 2.5,310, 200, ApplyJolt, [ManaRequirement], 0, 0 )
-Verfire = RedmageSpell(2, True, 2, 2.5, 330, 200, ApplyVerfire, [ManaRequirement], 0, 0)
-Verstone = RedmageSpell(3, True, 2, 2.5, 330, 200, ApplyVerstone, [ManaRequirement], 0, 0)
-Verthunder = RedmageSpell(4, True, 5, 2.5, 380, 300, ApplyVerthunder, [ManaRequirement], 0, 0)
-Verareo = RedmageSpell(5, True, 5, 2.5, 380, 300, ApplyVerareao, [ManaRequirement], 0, 0)
+Jolt = RedmageSpell(7524, True, 2, 2.5,310, 200, ApplyJolt, [ManaRequirement], 0, 0 )
+Verfire = RedmageSpell(7510, True, 2, 2.5, 330, 200, ApplyVerfire, [ManaRequirement], 0, 0)
+Verstone = RedmageSpell(7511, True, 2, 2.5, 330, 200, ApplyVerstone, [ManaRequirement], 0, 0)
+Verthunder = RedmageSpell(25855, True, 5, 2.5, 380, 300, ApplyVerthunder, [ManaRequirement], 0, 0)
+Verareo = RedmageSpell(25856, True, 5, 2.5, 380, 300, ApplyVerareao, [ManaRequirement], 0, 0)
 #AoEs
-Impact = RedmageSpell(6, True, 5, 2.5, 210, 400, ApplyImpact, [ManaRequirement], 0, 0)
+Impact = RedmageSpell(16526, True, 5, 2.5, 210, 400, ApplyImpact, [ManaRequirement], 0, 0)
 #Combo actions
 #NonEnchanted
-Riposte = RedmageSpell(7, True, 0, 2.5, 130, 0, ApplyRiposte, [], 0, 0)
-Zwerchhau = RedmageSpell(8, True, 0, 2.5, 100, 0, empty, [], 0, 0)
-Redoublement = RedmageSpell(9, True, 0, 2.5, 100, 0, empty, [], 0, 0)
-Reprise = RedmageSpell(28, True, 0, 2.5, 100, 0, empty, [], 0, 0)
+Riposte = RedmageSpell(7504, True, 0, 2.5, 130, 0, ApplyRiposte, [], 0, 0)
+Zwerchhau = RedmageSpell(7512, True, 0, 2.5, 100, 0, empty, [], 0, 0)
+Redoublement = RedmageSpell(7516, True, 0, 2.5, 100, 0, empty, [], 0, 0)
+Reprise = RedmageSpell(16529, True, 0, 2.5, 100, 0, empty, [], 0, 0)
 #Enchanted
-EnchantedRiposte = RedmageSpell(10, True, 0, 1.5, 220, 0, ApplyEnchantedRiposte, [RDMManaRequirement], 20,20)
-EnchantedZwerchhau = RedmageSpell(11, True, 0, 1.5, 100, 0, ApplyZwerchhau, [RDMManaRequirement], 15, 15)
-EnchantedRedoublement = RedmageSpell(12, True, 0, 2.2, 100, 0, ApplyRedoublement, [RDMManaRequirement], 15, 15)
-EnchantedReprise = RedmageSpell(29, True, 0, 2.5, 330, 0, empty, [RDMManaRequirement], 5, 5)
-Verholy = RedmageSpell(13, True, 0, 2.5, 580, 400, ApplyVerholy, [ManaRequirement, VerholyRequirement], 0, 0)
-Verflare = RedmageSpell(14, True, 0, 2.5, 580, 400, ApplyVerflare, [ManaRequirement, VerholyRequirement], 0, 0) #Same Requirement as Verholy, just need 3 Mana stacks
-Scorch = RedmageSpell(15, True, 0, 2.5, 680, 400, ApplyScorch, [ManaRequirement, ScorchRequirement], 0, 0)
-Resolution = RedmageSpell(16, True, 0, 2.5, 750, 400, ApplyResolution, [ManaRequirement, ResolutionRequirement], 0, 0)
+EnchantedRiposte = RedmageSpell(7527, True, 0, 1.5, 220, 0, ApplyEnchantedRiposte, [RDMManaRequirement], 20,20)
+EnchantedZwerchhau = RedmageSpell(7528, True, 0, 1.5, 100, 0, ApplyZwerchhau, [RDMManaRequirement], 15, 15)
+EnchantedRedoublement = RedmageSpell(7529, True, 0, 2.2, 100, 0, ApplyRedoublement, [RDMManaRequirement], 15, 15)
+EnchantedReprise = RedmageSpell(16528, True, 0, 2.5, 330, 0, empty, [RDMManaRequirement], 5, 5)
+Verholy = RedmageSpell(7526, True, 0, 2.5, 580, 400, ApplyVerholy, [ManaRequirement, VerholyRequirement], 0, 0)
+Verflare = RedmageSpell(7525, True, 0, 2.5, 580, 400, ApplyVerflare, [ManaRequirement, VerholyRequirement], 0, 0) #Same Requirement as Verholy, just need 3 Mana stacks
+Scorch = RedmageSpell(16530, True, 0, 2.5, 680, 400, ApplyScorch, [ManaRequirement, ScorchRequirement], 0, 0)
+Resolution = RedmageSpell(25858, True, 0, 2.5, 750, 400, ApplyResolution, [ManaRequirement, ResolutionRequirement], 0, 0)
 #AOE Melee Action
-Moulinet = RedmageSpell(17, True, 0, 1.5, 130, 0, ApplyMoulinet, [RDMManaRequirement], 20, 20)
+Moulinet = RedmageSpell(7513, True, 0, 1.5, 130, 0, ApplyMoulinet, [RDMManaRequirement], 20, 20)
 EnchantedMoulinet = RedmageSpell(30, True, 0, 1.5, 130, 0, ApplyEnchantedMoulinet, [RDMManaRequirement], 20, 20)
 #For now combo action cannot be cancelled by doing something else
-Manafication = RedmageSpell(18, False, 0, Lock, 0, 0, ApplyManafication, [ManaficationRequirement], 0, 0)
-Embolden = RedmageSpell(19, False, 0, Lock, 0, 0, ApplyEmbolden, [EmboldenRequirement], 0, 0)
-Acceleration = RedmageSpell(20, False, 0, Lock, 0, 0, ApplyAcceleration, [AccelerationRequirement], 0, 0)
-Fleche = RedmageSpell(21, False, 0, Lock, 460, 0, ApplyFleche, [FlecheRequirement], 0, 0)
-Contre = RedmageSpell(22, False, 0, Lock, 360, 0, ApplyContre, [ContreRequirement], 0, 0)
-Engagement = RedmageSpell(23, False, 0, Lock, 180, 0, ApplyEngagement, [EngagementRequirement], 0, 0)
-Corps = RedmageSpell(24, False, 0, Lock, 130, 0, ApplyCorps, [CorpsRequirement], 0, 0)
+Manafication = RedmageSpell(7521, False, 0, Lock, 0, 0, ApplyManafication, [ManaficationRequirement], 0, 0)
+Embolden = RedmageSpell(7520, False, 0, Lock, 0, 0, ApplyEmbolden, [EmboldenRequirement], 0, 0)
+Acceleration = RedmageSpell(7518, False, 0, Lock, 0, 0, ApplyAcceleration, [AccelerationRequirement], 0, 0)
+Fleche = RedmageSpell(7517, False, 0, Lock, 460, 0, ApplyFleche, [FlecheRequirement], 0, 0)
+Contre = RedmageSpell(7519, False, 0, Lock, 360, 0, ApplyContre, [ContreRequirement], 0, 0)
+Engagement = RedmageSpell(16527, False, 0, Lock, 180, 0, ApplyEngagement, [EngagementRequirement], 0, 0)
+Corps = RedmageSpell(7506, False, 0, Lock, 130, 0, ApplyCorps, [CorpsRequirement], 0, 0)
 
 #Other GCD/oGCD with no DPS goal
-MagickBarrier = RedmageSpell(25, False, 0, 0, 0, 0, ApplyMagickBarrier, [MagickBarrierRequirement], 0, 0)
-Verraise = RedmageSpell(26, True,10, 2.5, 0,2400, empty, [RDMManaRequirement], 0, 0)
-Vercure = RedmageSpell(27, True, 2, 2.5, 0, 500, empty, [RDMManaRequirement], 0, 0)
+MagickBarrier = RedmageSpell(25857, False, 0, 0, 0, 0, ApplyMagickBarrier, [MagickBarrierRequirement], 0, 0)
+Verraise = RedmageSpell(7523, True,10, 2.5, 0,2400, empty, [RDMManaRequirement], 0, 0)
+Vercure = RedmageSpell(7514, True, 2, 2.5, 0, 500, empty, [RDMManaRequirement], 0, 0)
 
 
 
@@ -338,10 +338,10 @@ RedMageAbility = {
 16529 : Reprise,  
 25857 : MagickBarrier, 
 7527 : EnchantedRiposte, 
-7528:EnchantedZwerchhau,
-7529:EnchantedRedoublement,  
-7530:EnchantedMoulinet, 
-16528:EnchantedReprise,
+7528 : EnchantedZwerchhau,
+7529 : EnchantedRedoublement,  
+7530 : EnchantedMoulinet, 
+16528 : EnchantedReprise,
 25858 : Resolution, 
 7526 : Verholy, 
 7525 : Verflare, 
