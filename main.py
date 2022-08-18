@@ -54,6 +54,7 @@ from Jobs.Melee.Reaper.Reaper_Player import *
 
 
 from FFLogsAPIRequest import getAbilityList
+from UI_backend import SaveFight
 
 Dummy = Enemy()
 
@@ -149,9 +150,11 @@ BRDPlayer.ActionSet = BRDOpener
 DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 RPRPlayer.ActionSet = RPROpener
-#Event.PlayerList = [NINPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
+Event.PlayerList = [BLMPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
 
-
+Event.SimulateFight(0.01, 1000, 20)
+#SaveFight(Event, 20, 1000, "hey")
+input("stop here")
 client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
 client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE"
 fightID = 'kDgwP8LQ4W3KHVMc'

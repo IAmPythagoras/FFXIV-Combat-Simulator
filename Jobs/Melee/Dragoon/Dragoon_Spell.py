@@ -325,8 +325,9 @@ def DragonSight(Target):
         Player.buffList.append(RightEyeBuff)
         Target.buffList.append(LeftEyeBuff)
         Player.EffectCDList.append(DragonSightCheck)
-
-    return DragoonSpell(26, False, 0, 0, ApplyDragonSight, [DragonSightRequirement], False)
+    DragonSightSpell = DragoonSpell(26, False, 0, 0, ApplyDragonSight, [DragonSightRequirement], False)
+    DragonSightSpell.TargetID = Target.playerID
+    return DragonSightSpell
 
 
 DragoonAbility = {

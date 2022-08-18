@@ -57,14 +57,14 @@ def SaveFight(Event, countdown, fightDuration, saveName):
 
     #The file will be saved as a JSON format
 
-    PlayerList = []
+    PlayerListDict = []
 
     for Player in Event.PlayerList:
         #Going through all players in the Event
         PlayerDict = {} #Empty dictionnary
 
-        if isinstance(Player, BlackMage) : PlayerDict["JobName"] = "Blackmage"
-        elif isinstance(Player, Redmage) : PlayerDict["JobName"] = "Redmage"
+        if isinstance(Player, BlackMage) : PlayerDict["JobName"] = "BlackMage"
+        elif isinstance(Player, Redmage) : PlayerDict["JobName"] = "RedMage"
         elif isinstance(Player, DarkKnight) : PlayerDict["JobName"] = "DarkKnight"
         elif isinstance(Player, Warrior) : PlayerDict["JobName"] = "Warrior"
         elif isinstance(Player, Paladin) : PlayerDict["JobName"] = "Paladin"
@@ -73,7 +73,7 @@ def SaveFight(Event, countdown, fightDuration, saveName):
         elif isinstance(Player, Samurai) : PlayerDict["JobName"] = "Samurai"
         elif isinstance(Player, Ninja) : PlayerDict["JobName"] = "Ninja"
         elif isinstance(Player, Scholar) : PlayerDict["JobName"] = "Scholar"
-        elif isinstance(Player, Whitemage) : PlayerDict["JobName"] = "Whitemage"
+        elif isinstance(Player, Whitemage) : PlayerDict["JobName"] = "WhiteMage"
         elif isinstance(Player, Astrologian) : PlayerDict["JobName"] = "Astrologian"
         elif isinstance(Player, Summoner) : PlayerDict["JobName"] = "Summoner"
         elif isinstance(Player, Dragoon) : PlayerDict["JobName"] = "Dragoon"
@@ -87,14 +87,24 @@ def SaveFight(Event, countdown, fightDuration, saveName):
 
         for action in Player.ActionSet:
             actionDict = {}
-            actionDict["actionID"] = action.id
-            actionDict["sourceID"] = Player.playerID
-            actionDict["targetID"] = action.TargetID
-            actionDict["isGCD"] = action.GCD
-            actionDict["actionName"] = action.Name
+            #Special case for WaitAbility
+            if action.id == 212 : #WaitAbility
+                actionDict["actionID"] = action.id 
+                actionDict["sourceID"] = Player.playerID
+                actionDict["targetID"] = action.TargetID #id 0 is by default the main enemy
+                actionDict["isGCD"] = action.GCD
+                actionDict["waitTime"] = action.waitTime
+            else: #Normal ability
+                actionDict["actionID"] = action.id 
+                actionDict["sourceID"] = Player.playerID
+                actionDict["targetID"] = action.TargetID #id 0 is by default the main enemy
+                actionDict["isGCD"] = action.GCD
+
             actionList.append(copy.deepcopy(actionDict))
 
-        PlayerList.append(copy.deepcopy(PlayerDict))
+        PlayerDict["actionList"] = copy.deepcopy(actionList)
+
+        PlayerListDict.append(copy.deepcopy(PlayerDict))
 
 
     data = {"data" : {
@@ -102,11 +112,11 @@ def SaveFight(Event, countdown, fightDuration, saveName):
                     "countdownValue" : countdown,
                     "fightDuration" : fightDuration
                 },
-                "PlayerList" : PlayerList
+                "PlayerList" : PlayerListDict
     }}
 
     with open(saveName + ".json", "w") as write_files:
-        json.dump(write_files, indent=4) #saving file
+        json.dump(data,write_files, indent=4) #saving file
 
 
 
@@ -117,7 +127,7 @@ def SimulateFightBackend():
 
     #the name of the save file will always be "save.json"
 
-    f = open('Save.json') #Opening save
+    f = open('hey.json') #Opening save
 
     data = json.load(f) #Loading json file
 
@@ -229,7 +239,7 @@ def SimulateFightBackend():
 
                 if int(action["actionID"]) == 212 : 
                     #WaitAbility. WaitAbility has a special field where the waited time is specified
-                    actionObject = WaitAbility(int(action["waitTime"]))
+                    actionObject = WaitAbility(action["waitTime"])
                 else: actionObject = lookup_abilityID(action["actionID"],action["targetID"], action["sourceID"],PlayerActionList) #Getting action object
 
                 PlayerActionList[playerID]["actionObject"] += [actionObject]

@@ -294,8 +294,9 @@ def Arcanum(Target, Type):
         elif Type == "Solar" : Player.Solar = True
         elif Type == "Celestial" : Player.Celestial = True
 
-
-    return AstrologianSpell(0, False, Lock, 0, 0, 0, ApplyArcanum, [ArcanumRequirement])
+    ArcanumSpell = AstrologianSpell(0, False, Lock, 0, 0, 0, ApplyArcanum, [ArcanumRequirement])
+    ArcanumSpell.TargetID = Target.playerID 
+    return ArcanumSpell
 
 def LunarAranum(target):
     return Arcanum(target,"Lunar")

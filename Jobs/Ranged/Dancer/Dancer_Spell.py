@@ -377,8 +377,9 @@ def ClosedPosition(Partner, InFight="True"):
 
 
         #Will have to switch buff
-
-    return DancerSpell(33, False, 0, 0, ApplyClosedPosition, [ClosedPositionRequirement], False)
+    ClosedPositionSpell = DancerSpell(33, False, 0, 0, ApplyClosedPosition, [ClosedPositionRequirement], False)
+    ClosedPositionSpell.TargetID = Partner.playerID
+    return ClosedPositionSpell
 
 DancerAbility = {
 25792 : StarfallDance, 

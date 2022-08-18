@@ -109,7 +109,7 @@ def LucidDreamingCheck(Player, Enemy):
             Player.EffectToRemove.append(LucidDreamingCheck)
 
 #Class Action
-Swiftcast = CasterSpell(1001, False,0, Lock, 0, 0, ApplySwiftcast, [SwiftcastRequirement])
+Swiftcast = CasterSpell(7561, False,0, Lock, 0, 0, ApplySwiftcast, [SwiftcastRequirement])
 LucidDreaming = CasterSpell(1002, False, Lock,0,0, 0, ApplyLucidDreaming, [LucidDreamingRequirement])
 Surecast = CasterSpell(1003, False, Lock, 0, 0, 0, ApplySurecast, [SurecastRequirement])
 Addle = CasterSpell(1004, False, Lock, 0, 0, 0, ApplyAddle, [AddleRequirement])
@@ -121,5 +121,6 @@ CasterAbility = {
 7559 : Surecast, 
 7560 : Addle, 
 25880 : Sleep,
-34590544 : Potion
+34590544 : Potion,
+-2 : Potion
 }
