@@ -32,6 +32,7 @@ class Spell:
         self.Effect = [Effect]
         self.Requirement = Requirement
         self.DPSBonus = 1
+        self.TargetID = 0
 
     def Cast(self, player, Enemy):
         #This function will cast the spell given by the Fight, it will apply whatever effects it has and do its potency
@@ -170,7 +171,7 @@ def WaitAbility(time):
     def ApplyWaitAbility(Player, Enemy):
         pass
         #if time > 2.5 : input("wait for more than necessary")
-    return Spell(-1, False, time, time, 0, 0, ApplyWaitAbility, [])
+    return Spell(212, False, time, time, 0, 0, ApplyWaitAbility, [])
 
 def ApplyPotion(Player, Enemy):
     Player.Stat["MainStat"] = min(math.floor(Player.Stat["MainStat"] * 1.1), Player.Stat["MainStat"] + 189)

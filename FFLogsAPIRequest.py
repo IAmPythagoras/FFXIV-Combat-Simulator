@@ -70,20 +70,7 @@ class ActionNotFound(Exception):#Exception called if an action isn't found in th
 class JobNotFound(Exception):#Exception called if a Job isn't found
     pass
 
-def getAccessToken(conn, client_id, client_secret):
-    payload = "grant_type=client_credentials&client_id=%s&client_secret=%s" % (client_id, client_secret)
-    headers = {'content-type':"application/x-www-form-urlencoded"}
-    print("Sending Request...")
-    conn.request("POST","/oauth/token", payload, headers)
-    res = conn.getresponse()
-    print("Received Request")
-    res_str = res.read().decode("utf-8")
-    res_json = json.loads(res_str)
-    return res_json["access_token"]
-
-def getAbilityList(client_id, client_secret, fightID, fightNumber):
-
-    def lookup_abilityID(actionID, targetID, sourceID, targetEnemy, targetSelf, isHeal):
+def lookup_abilityID(actionID, targetID, sourceID, player_list):
         #Will first get the job of the sourceID so we know in what dictionnary to search for
 
         def lookup(JobDict, ClassDict):
@@ -144,6 +131,20 @@ def getAbilityList(client_id, client_secret, fightID, fightNumber):
 
         raise JobNotFound #If we get here, then we have not found the job in question
         #This should not happen, and if it does it means we either have a serious problem or the names aren't correct
+
+def getAccessToken(conn, client_id, client_secret):
+    payload = "grant_type=client_credentials&client_id=%s&client_secret=%s" % (client_id, client_secret)
+    headers = {'content-type':"application/x-www-form-urlencoded"}
+    print("Sending Request...")
+    conn.request("POST","/oauth/token", payload, headers)
+    res = conn.getresponse()
+    print("Received Request")
+    res_str = res.read().decode("utf-8")
+    res_json = json.loads(res_str)
+    return res_json["access_token"]
+
+def getAbilityList(client_id, client_secret, fightID, fightNumber):
+
 
 
     conn = http.client.HTTPSConnection("www.fflogs.com")
@@ -347,7 +348,7 @@ def getAbilityList(client_id, client_secret, fightID, fightNumber):
                         wait_flag = False #reset
                         wait_timestamp = 0 #reset
 
-                next_action = lookup_abilityID(action.action_id, action.targetID, player, action.targetEnemy, action.targetSelf, action.isHeal) #returns the action object of the specified spell
+                next_action = lookup_abilityID(action.action_id, action.targetID, player, player_list) #returns the action object of the specified spell
                 
                 if is_heal:
                     #If this flag is set to true, we wait until we do not have type = 'calculatedheal'

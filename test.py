@@ -1,6 +1,7 @@
-def f(x):
-    return x
+import json
 
-a = [f]
-print(a[0] == f)
-a.remove(f)
+f = open("save.json")
+
+data = json.load(f)
+
+print(data["data"]["PlayerList"][0])

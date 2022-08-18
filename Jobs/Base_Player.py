@@ -13,6 +13,7 @@ class Player:
         self.CastingSpell = []
         self.CurrentFight = CurrentFight
         self.ManaTick = 1.5 #Starts Mana tick at this value
+        self.playerID = 0 #Might not be necessary so by default 0
 
         self.TrueLock = False   #Used to know when a player has finished all of its ActionSet
         self.Casting = False    #used to know if an action is possible

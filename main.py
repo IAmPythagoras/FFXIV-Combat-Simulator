@@ -102,7 +102,6 @@ RPRPlayer = Reaper(2.5, [], [], [], Event, RPRStat)
 PLDPlayer2 = Paladin(2.5, [], [], [], Event, PLDStat)
 PLDPlayer3 = Paladin(2.5, [], [], [], Event, PLDStat)
 
-
 BLMOpener = [SharpCast, WaitAbility(16.5), Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, Triplecast, Despair, Manafront, Fire4, Swiftcast, LucidDreaming, Despair, Transpose, SharpCast, Paradox, Xenoglossy, Thunder3,Transpose,Fire3, Fire4, Fire4, Fire4, Despair, Xenoglossy, Transpose, Paradox]
 SCHOpener = [WaitAbility(17), Potion, WaitAbility(1), Broil, Biolysis, Aetherflow, Broil, Swiftcast, Broil, ChainStratagem, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Broil, Broil, Broil, Broil]
 RDMOpener = [WaitAbility(15), Verthunder, Verareo, Swiftcast, Acceleration, Verthunder, Potion, Verthunder, Embolden, Manafication, EnchantedRiposte, Fleche, EnchantedZwerchhau, Contre, EnchantedRedoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verfire, Verthunder, Verstone, Verareo, Verfire, Verthunder,Verfire, Verthunder,Verfire,Fleche]
@@ -222,9 +221,6 @@ for playerID in player_dict:
     Event.PlayerList.append(player_dict[playerID]["job_object"])
 
 Event.ShowGraph = True
-#input(Event.PlayerList)
-#Event.PlayerList = [Event.PlayerList[-2]]
-#input(Event.PlayerList)
 print("Starting simulator")
 Event.SimulateFight(0.01, 1000, 0)
 
