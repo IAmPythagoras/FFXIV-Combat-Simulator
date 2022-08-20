@@ -4,7 +4,6 @@ import copy
 
 from Jobs.Caster.Summoner.Summoner_Player import BigSummon
 from Jobs.Healer.Healer_Spell import Raise
-from Jobs.Healer.Scholar.Scholar_Spell import Physick
 Lock = 0.75
 
 #Requirement
@@ -208,34 +207,34 @@ def SearingLightCheck(Player, Enemy):
 
 
 #GCD
-Ruin3 = SummonerSpell(1, True, 1.5, 2.5, 310, 300, empty, [ManaRequirement])
-Ruin4 = SummonerSpell(2, True, Lock, 2.5, 430, 400, ApplyRuin4, [ManaRequirement, Ruin4Requirement])
-FoF = SummonerSpell(15, True, Lock, 2.5, 540, 300, empty, [FoFRequirement, ManaRequirement])
-AstralImpulse = SummonerSpell(16, True, Lock, 2.5, 440, 300, empty, [AstralImpulseRequirement, ManaRequirement])
-TryDisaster = SummonerSpell(17, True, 1.5, 2.5, 120, 300, empty, [ManaRequirement])
+Ruin3 = SummonerSpell(3579, True, 1.5, 2.5, 310, 300, empty, [ManaRequirement])
+Ruin4 = SummonerSpell(7426, True, Lock, 2.5, 430, 400, ApplyRuin4, [ManaRequirement, Ruin4Requirement])
+FoF = SummonerSpell(16514, True, Lock, 2.5, 540, 300, empty, [FoFRequirement, ManaRequirement])
+AstralImpulse = SummonerSpell(25820, True, Lock, 2.5, 440, 300, empty, [AstralImpulseRequirement, ManaRequirement])
+TryDisaster = SummonerSpell(25826, True, 1.5, 2.5, 120, 300, empty, [ManaRequirement])
 #Primal
-Titan = SummonerSpell(3, True, Lock, 2.5, 700, 0, ApplyTitan, [TitanRequirement])
-Garuda = SummonerSpell(4, True, Lock, 2.5, 700, 0, ApplyGaruda, [GarudaRequirement])
-Ifrit = SummonerSpell(5, True, Lock, 2.5, 700, 0, ApplyIfrit, [IfritRequirement])
+Titan = SummonerSpell(25839, True, Lock, 2.5, 700, 0, ApplyTitan, [TitanRequirement])
+Garuda = SummonerSpell(25840, True, Lock, 2.5, 700, 0, ApplyGaruda, [GarudaRequirement])
+Ifrit = SummonerSpell(25838, True, Lock, 2.5, 700, 0, ApplyIfrit, [IfritRequirement])
 
 #Titan Ability
-Topaz = SummonerSpell(6, True, Lock, 2.5, 140, 330, ApplyTopaz, [ManaRequirement, TopazRequirement])
-Mountain = SummonerSpell(7, False, Lock, 0, 150, 0, ApplyMountain, [MountainRequirement])
-TopazCatastrophe = SummonerSpell(8, True, 0, 2.5, 140, 300, ApplyTopaz, [ManaRequirement, TopazRequirement] ) #same effect and requirement as Topaz
+Topaz = SummonerSpell(25824, True, Lock, 2.5, 140, 330, ApplyTopaz, [ManaRequirement, TopazRequirement])
+Mountain = SummonerSpell(25836, False, Lock, 0, 150, 0, ApplyMountain, [MountainRequirement])
+TopazCatastrophe = SummonerSpell(25833, True, 0, 2.5, 140, 300, ApplyTopaz, [ManaRequirement, TopazRequirement] ) #same effect and requirement as Topaz
 
 #IfritAbility
-Ruby = SummonerSpell(8, True, 2.8, 3, 510, 300, ApplyRuby, [RubyRequirement, ManaRequirement] )
-Cyclone = SummonerSpell(9, True, Lock, 2.5, 430, 0, ApplyCyclone, [CycloneRequirement])
-Strike = SummonerSpell(10, True, Lock, 2.5, 430, 0, ApplyStrike, [StrikeRequirement])
-RubyCatastrophe = SummonerSpell(11, True, 2.8, 2.5, 210, 300, ApplyRuby, [RubyRequirement, ManaRequirement]) #Same as Ruby
+Ruby = SummonerSpell(25823, True, 2.8, 3, 510, 300, ApplyRuby, [RubyRequirement, ManaRequirement] )
+Cyclone = SummonerSpell(25835, True, Lock, 2.5, 430, 0, ApplyCyclone, [CycloneRequirement])
+Strike = SummonerSpell(25885, True, Lock, 2.5, 430, 0, ApplyStrike, [StrikeRequirement])
+RubyCatastrophe = SummonerSpell(25832, True, 2.8, 2.5, 210, 300, ApplyRuby, [RubyRequirement, ManaRequirement]) #Same as Ruby
 #GarudaAbility
-Emerald = SummonerSpell(11, True, Lock, 1.5, 230, 300, ApplyEmerald, [EmeraldRequirement, ManaRequirement])
-EmeraldCatastrophe = SummonerSpell(12, True, 0, 1.5, 100, 300, ApplyEmerald, [ManaRequirement, EmeraldRequirement])
-Slipstream = SummonerSpell(12, True, 3, 3.5, 430, 0, ApplySlipstream, [SlipstreamRequirement])
+Emerald = SummonerSpell(25825, True, Lock, 1.5, 230, 300, ApplyEmerald, [EmeraldRequirement, ManaRequirement])
+EmeraldCatastrophe = SummonerSpell(25834, True, 0, 1.5, 100, 300, ApplyEmerald, [ManaRequirement, EmeraldRequirement])
+Slipstream = SummonerSpell(25837, True, 3, 3.5, 430, 0, ApplySlipstream, [SlipstreamRequirement])
 SlipstreamDOT = DOTSpell(-13, 30, False)
 
 #Summon
-Summon = SummonerSpell(14, True, Lock, 2.5, 0, 0, ApplySummon, [SummonRequirement])
+Summon = SummonerSpell(7427, True, Lock, 2.5, 0, 0, ApplySummon, [SummonRequirement])
 #Bahamut and Phoenix damage will simply be a dot
 BahamutAA = SummonerSpell(115, False, 0, 0, 0, 0, ApplyBahamutAA, [])
 PhoenixAA = SummonerSpell(115, False, 0, 0, 0, 0, ApplyPhoenixAA, [])
@@ -245,13 +244,14 @@ EnkindleSummon = SummonerSpell(17, False, 0, 0, 1300, 0, empty, []) #Enkindle do
 #autos of summon seems to be faster if uses Enkindle, but always max 5
 
 #oGCD
-Enkindle = SummonerSpell(17, False, 0, 0, 0, 0, ApplyEnkindle, [EnkindleRequirement]) #Smaller lock since executed by pet, might have to reconsider... >.>
-Deathflare = SummonerSpell(18, False, Lock, 0, 500, 0, ApplyDeathflare, [DeathflareRequirement])
-EnergyDrainSMN = SummonerSpell(19, False, Lock, 0, 200, 0, ApplyEnergyDrain, [EnergyDrainRequirement])
-Fester = SummonerSpell(21, False, Lock, 0, 300, 0, ApplyFester, [FesterRequirement])
-PainFlare = SummonerSpell(22, False, 0, 0, 150, 0, ApplyFester, [FesterRequirement]) #AOE version of Fester
-SearingLight = SummonerSpell(20, False, Lock, 0, 0, 0, ApplySearingLight, [SearingLightRequirement])
-
+Enkindle = SummonerSpell(7429, False, 0, 0, 0, 0, ApplyEnkindle, [EnkindleRequirement]) #Smaller lock since executed by pet, might have to reconsider... >.>
+Deathflare = SummonerSpell(3582, False, Lock, 0, 500, 0, ApplyDeathflare, [DeathflareRequirement])
+EnergyDrainSMN = SummonerSpell(16508, False, Lock, 0, 200, 0, ApplyEnergyDrain, [EnergyDrainRequirement])
+Fester = SummonerSpell(181, False, Lock, 0, 300, 0, ApplyFester, [FesterRequirement])
+PainFlare = SummonerSpell(3578, False, 0, 0, 150, 0, ApplyFester, [FesterRequirement]) #AOE version of Fester
+SearingLight = SummonerSpell(25801, False, Lock, 0, 0, 0, ApplySearingLight, [SearingLightRequirement])
+PhysickSMN = SummonerSpell(16230, True, 1.5, 2.5, 0, 0, empty, [ManaRequirement])
+Resurrection = SummonerSpell(173, True, 8, 2.5, 0, 2400, empty, [ManaRequirement])
 #buff
 SearingLightbuff = buff(1.03)
 
@@ -290,6 +290,6 @@ SummonerAbility = {
 181 : Fester,
 3578 : PainFlare,
 #25799 : RadiantAegis,
-16230 : Physick,
-173 : Raise
+16230 : PhysickSMN,
+173 : Resurrection
 }

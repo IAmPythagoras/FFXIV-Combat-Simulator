@@ -231,34 +231,34 @@ def CelestialIntersectionStackCheck(Player, Enemy):
         Player.CelestialIntersectionStack += 1
 
 #GCD
-Malefic = AstrologianSpell(1, True, 1.5, 2.5, 250, 400, empty, [ManaRequirement])
-Combust = AstrologianSpell(2, True, Lock, 2.5, 0, 400, ApplyCombust, [ManaRequirement])
-LordOfCrown = AstrologianSpell(3, True, Lock, 1, 250, 0,  ApplyLordOfCrown, [LordOfCrownRequirement])
+Malefic = AstrologianSpell(25871, True, 1.5, 2.5, 250, 400, empty, [ManaRequirement])
+Combust = AstrologianSpell(16554, True, Lock, 2.5, 0, 400, ApplyCombust, [ManaRequirement])
+LordOfCrown = AstrologianSpell(7444, True, Lock, 1, 250, 0,  ApplyLordOfCrown, [LordOfCrownRequirement])
 CumbustDOT = DOTSpell(-12, 55, False)
-Gravity = AstrologianSpell(4, True, 1.5, 2.5, 130, 400, empty, [ManaRequirement])
+Gravity = AstrologianSpell(25872, True, 1.5, 2.5, 130, 400, empty, [ManaRequirement])
 #Heal GCD
 AspectedHelios = AstrologianSpell(5, True, 1.5, 2.5, 0, 800, empty, [ManaRequirement])
-AspectedBenific = AstrologianSpell(6, True, 0, 2.5, 0, 400, empty, [ManaRequirement])
-Benefic2 = AstrologianSpell(7, True, 1.5, 2.5, 0, 700, empty, [ManaRequirement])
-Benefic = AstrologianSpell(8, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement])
+AspectedBenific = AstrologianSpell(2595, True, 0, 2.5, 0, 400, empty, [ManaRequirement])
+Benefic2 = AstrologianSpell(3610, True, 1.5, 2.5, 0, 700, empty, [ManaRequirement])
+Benefic = AstrologianSpell(3594, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement])
 Helios = AstrologianSpell(9, True, 1.5, 2.5, 0, 700, empty, [ManaRequirement])
 EssentialDignity = AstrologianSpell(10, False, 0, 0, 0, 0, ApplyEssentialDignity, [EssentialDignityRequirement])
 Macrocosmos = AstrologianSpell(16, True, 0, 0, 250, 600, ApplyMacrocosmos, [MacrocosmosRequirement, ManaRequirement])
 Microcosmos = AstrologianSpell(17, True, 0, 0, 0, 0, empty, [MicrocosmosRequirement])
-LadyOfCrown = AstrologianSpell(27, True, 0, 1, 0, 0, empty, [])
+LadyOfCrown = AstrologianSpell(7445, True, 0, 1, 0, 0, empty, [])
 #oGCD
 Lightspeed = AstrologianSpell(11, False, Lock, 0, 0, 0, ApplyLightspeed, [LightspeedRequirement])
-Divination = AstrologianSpell(12, False, Lock, 0, 0, 0, ApplyDivination, [DivinationRequirement])
-MinorArcana = AstrologianSpell(13, False, Lock, 0, 0, 0, ApplyMinorArcana, [MinorArcanaRequirement])
-Draw = AstrologianSpell(14, False, Lock,0, 0, 0, ApplyDraw, [DrawRequirement])
-Redraw = AstrologianSpell(28, False, Lock, 0, 0, 0, ApplyRedraw, [RedrawRequirement])
-Astrodyne = AstrologianSpell(15, False, Lock, 0, 0, 0, ApplyAstrodyne, [])
+Divination = AstrologianSpell(16552, False, Lock, 0, 0, 0, ApplyDivination, [DivinationRequirement])
+MinorArcana = AstrologianSpell(7443, False, Lock, 0, 0, 0, ApplyMinorArcana, [MinorArcanaRequirement])
+Draw = AstrologianSpell(3590, False, Lock,0, 0, 0, ApplyDraw, [DrawRequirement])
+Redraw = AstrologianSpell(3593, False, Lock, 0, 0, 0, ApplyRedraw, [RedrawRequirement])
+Astrodyne = AstrologianSpell(25870, False, Lock, 0, 0, 0, ApplyAstrodyne, [])
 #Heal oGCD
 Exaltation = AstrologianSpell(18, False, 0, 0, 0, 0, ApplyExaltation, [ExaltationRequirement])
-NeutralSect = AstrologianSpell(19, False, 0, 0, 0, 0, ApplyNeutralSect, [NeutralSectRequirement])
+NeutralSect = AstrologianSpell(16559, False, 0, 0, 0, 0, ApplyNeutralSect, [NeutralSectRequirement])
 Horoscope = AstrologianSpell(20, False, 0, 0, 0, 0, ApplyHoroscope, [HoroscopeRequirement])
 CelestialIntersection = AstrologianSpell(21, False, 0, 0, 0, 0, ApplyCelestialIntersection, [CelestialIntersectionRequirement])
-EarthlyStar = AstrologianSpell(22, False, 0, 0, 0, 0, ApplyEarthlyStar, [EarthlyStarRequirement])
+EarthlyStar = AstrologianSpell(7439, False, 0, 0, 0, 0, ApplyEarthlyStar, [EarthlyStarRequirement])
 StellarDetonation = AstrologianSpell(23, False, 0, 0, 0, 0, empty, [StellarDetonationRequirement])
 CelestialOpposition = AstrologianSpell(24, False, 0, 0, 0, 0, ApplyCelestialOpposition, [CelestialOppositionRequirement])
 Collective = AstrologianSpell(25, False, 0, 0, 0, 0, ApplyCollective, [CollectiveRequirement])
@@ -299,13 +299,19 @@ def Arcanum(Target, Type):
     return ArcanumSpell
 
 def LunarAranum(target):
-    return Arcanum(target,"Lunar")
+    returnSpell = Arcanum(target,"Lunar")
+    returnSpell.id = 4402
+    return returnSpell
 
 def SolarAranum(target):
-    return Arcanum(target,"Solar")
+    returnSpell = Arcanum(target,"Solar")
+    returnSpell.id = 4401
+    return returnSpell
 
 def CelestialAranum(target):
-    return Arcanum(target,"Celestial")
+    returnSpell = Arcanum(target,"Celestial")
+    returnSpell.id = 4403
+    return returnSpell
 
 AstrologianAbility = {
 25871 : Malefic,
