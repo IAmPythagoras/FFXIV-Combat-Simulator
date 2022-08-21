@@ -58,10 +58,10 @@ def ApplyRescue(Player, Enemy):
     Player.RescueCD = 120
 
 #Swiftcast, Surecast and LucidDreaming are in Caster_Spell.py
-Repose = HealerSpell(0, True, 2.5, 2.5, 0, 600, empty, [ManaRequirement])
-Esuna = HealerSpell(0, True, 1, 2.5, 0, 0, 400, [ManaRequirement])
-Rescue = HealerSpell(0, False, 0, 0, 0, 0, ApplyRescue, [RescueRequirement])
-Raise = HealerSpell(0, True, 8, 2.5, 0, 2400, empty, [ManaRequirement])
+Repose = HealerSpell(16560, True, 2.5, 2.5, 0, 600, empty, [ManaRequirement])
+Esuna = HealerSpell(7568, True, 1, 2.5, 0, 0, 400, [ManaRequirement])
+Rescue = HealerSpell(7571, False, 0, 0, 0, 0, ApplyRescue, [RescueRequirement])
+Raise = HealerSpell(173, True, 8, 2.5, 0, 2400, empty, [ManaRequirement])
 HealerAbility = {
 16560 : Repose,
 7568 : Esuna,
@@ -73,5 +73,6 @@ HealerAbility = {
 3603 : Raise, #Astro raise
 24287 : Raise, #sage raise
 125 : Raise, #whitemage raise
-34590545 : Potion
+34590545 : Potion,
+-2 : Potion
 }

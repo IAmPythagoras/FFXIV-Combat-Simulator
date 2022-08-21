@@ -269,39 +269,39 @@ def PowerSurgeCheck(Player, Enemy):
 
 #GCD
 #Combo Action
-TrueThrust = DragoonSpell(1, True, 2.5, 230, ApplyTrueThrust, [TrueThrustRequirement], True)
-Disembowel = DragoonSpell(2, True, 2.5, 140, empty, [], True)
-VorpalThrust = DragoonSpell(3, True, 2.5, 130, empty, [], True)
-ChaoticSpring = DragoonSpell(4, True, 2.5, 140, empty, [], True)
+TrueThrust = DragoonSpell(75, True, 2.5, 230, ApplyTrueThrust, [TrueThrustRequirement], True)
+Disembowel = DragoonSpell(87, True, 2.5, 140, empty, [], True)
+VorpalThrust = DragoonSpell(78, True, 2.5, 130, empty, [], True)
+ChaoticSpring = DragoonSpell(25772, True, 2.5, 140, empty, [], True)
 ChaoticSpringDOT = DOTSpell(-22, 45, True)
-HeavenThrust = DragoonSpell(5, True, 2.5, 100, empty, [], True)
+HeavenThrust = DragoonSpell(25771, True, 2.5, 100, empty, [], True)
 
-WheelingThrust = DragoonSpell(6, True, 2.5, 300, ApplyWheelingThrust, [WheelingThrustRequirement], True )
-FangAndClaw = DragoonSpell(7, True, 2.5, 300, ApplyFangAndClaw, [FangAndClawRequirement], True)
-RaidenThrust = DragoonSpell(8, True, 2.5, 280, ApplyRaidenThrust, [RaidenThrustRequirement], True)
-PiercingTalon = DragoonSpell(9, True, 2.5, 150, empty, [], True)
+WheelingThrust = DragoonSpell(3556, True, 2.5, 300, ApplyWheelingThrust, [WheelingThrustRequirement], True )
+FangAndClaw = DragoonSpell(3554, True, 2.5, 300, ApplyFangAndClaw, [FangAndClawRequirement], True)
+RaidenThrust = DragoonSpell(16479, True, 2.5, 280, ApplyRaidenThrust, [RaidenThrustRequirement], True)
+PiercingTalon = DragoonSpell(90, True, 2.5, 150, empty, [], True)
 
 #AOE combo Action
-DoomSpike = DragoonSpell(10, True, 2.5, 110, ApplyDoomSpike, [], True)
-SonicThrust = DragoonSpell(11, True, 2.5, 100, empty, [], True)
-CoerthanTorment = DragoonSpell(12, True, 2.5, 100, empty, [], True)
-DraconianFury = DragoonSpell(13, True, 2.5, 130, ApplyRaidenThrust, [RaidenThrustRequirement], True) #AOE version of Raiden Thrust
+DoomSpike = DragoonSpell(86, True, 2.5, 110, ApplyDoomSpike, [], True)
+SonicThrust = DragoonSpell(7397, True, 2.5, 100, empty, [], True)
+CoerthanTorment = DragoonSpell(16477, True, 2.5, 100, empty, [], True)
+DraconianFury = DragoonSpell(25770, True, 2.5, 130, ApplyRaidenThrust, [RaidenThrustRequirement], True) #AOE version of Raiden Thrust
 
 #oGCD
-LanceCharge = DragoonSpell(14, False, 0, 0, ApplyLanceCharge, [LanceChargeRequirement], False)
-BattleLitany = DragoonSpell(15, False, 0, 0, ApplyBattleLitany, [BattleLitanyRequirement], False)
-Geirskogul = DragoonSpell(16, False, 0, 260, ApplyGeirskogul, [GeirskogulRequirement], False)
-Nastrond = DragoonSpell(17, False, 0, 300, ApplyNastrond, [NastrondRequirement], False)
-HighJump = DragoonSpell(18, False, 0, 400, ApplyHighJump, [HighJumpRequirement], False)
-MirageDive = DragoonSpell(19, False, 0, 200, ApplyMirageDive, [MirageDiveRequirement], False)
-SpineshafterDive = DragoonSpell(20, False, 0, 250, ApplySpineshafter, [SpineshafterRequirement], False)
-LifeSurge = DragoonSpell(21, False, 0, 0, ApplyLifeSurge, [LifeSurgeRequirement], False)
-Stardiver = DragoonSpell(22, False, 0, 620, ApplyStardiver, [StardiverRequirement], False)
-WyrmwindThrust = DragoonSpell(23, False, 0, 420, ApplyWyrmwindThrust, [WyrmwindThrustRequirement], False)
-DragonFireDive = DragoonSpell(24, False, 0, 300, ApplyDragonFireDive, [DragonFireDiveRequirement], False)
+LanceCharge = DragoonSpell(85, False, 0, 0, ApplyLanceCharge, [LanceChargeRequirement], False)
+BattleLitany = DragoonSpell(3557, False, 0, 0, ApplyBattleLitany, [BattleLitanyRequirement], False)
+Geirskogul = DragoonSpell(3555, False, 0, 260, ApplyGeirskogul, [GeirskogulRequirement], False)
+Nastrond = DragoonSpell(7400, False, 0, 300, ApplyNastrond, [NastrondRequirement], False)
+HighJump = DragoonSpell(16478, False, 0, 400, ApplyHighJump, [HighJumpRequirement], False)
+MirageDive = DragoonSpell(7399, False, 0, 200, ApplyMirageDive, [MirageDiveRequirement], False)
+SpineshafterDive = DragoonSpell(95, False, 0, 250, ApplySpineshafter, [SpineshafterRequirement], False)
+LifeSurge = DragoonSpell(83, False, 0, 0, ApplyLifeSurge, [LifeSurgeRequirement], False)
+Stardiver = DragoonSpell(16480, False, 0, 620, ApplyStardiver, [StardiverRequirement], False)
+WyrmwindThrust = DragoonSpell(25773, False, 0, 420, ApplyWyrmwindThrust, [WyrmwindThrustRequirement], False)
+DragonFireDive = DragoonSpell(96, False, 0, 300, ApplyDragonFireDive, [DragonFireDiveRequirement], False)
 
 #funny oGCD
-ElusiveJump = DragoonSpell(25, False, 0, 0, empty, [], 0) #No requirement, I will let a Dragoon spam this shit
+ElusiveJump = DragoonSpell(94, False, 0, 0, empty, [], 0) #No requirement, I will let a Dragoon spam this shit
 
 
 #buff
@@ -325,7 +325,7 @@ def DragonSight(Target):
         Player.buffList.append(RightEyeBuff)
         Target.buffList.append(LeftEyeBuff)
         Player.EffectCDList.append(DragonSightCheck)
-    DragonSightSpell = DragoonSpell(26, False, 0, 0, ApplyDragonSight, [DragonSightRequirement], False)
+    DragonSightSpell = DragoonSpell(7398, False, 0, 0, ApplyDragonSight, [DragonSightRequirement], False)
     DragonSightSpell.TargetID = Target.playerID
     return DragonSightSpell
 

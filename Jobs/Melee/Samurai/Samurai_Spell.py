@@ -364,49 +364,49 @@ def MeikyoStackCheck(Player, Enemy):
 
 
 #GCD
-OgiNamikiri = SamuraiSpell(1, True, 1.8, 2.5, 800, ApplyOgiNamikiri, [OgiNamikiriRequirement], 0)
-KaeshiNamikiri = SamuraiSpell(2, True, 1.3, 1, 800, ApplyKaeshiNamikiri, [KaeshiNamikiriRequirement], 0)
-Enpi = SamuraiSpell(3, True, 0, 1.5, 100, Add10Kenki, [], 0)
+OgiNamikiri = SamuraiSpell(25781, True, 1.8, 2.5, 800, ApplyOgiNamikiri, [OgiNamikiriRequirement], 0)
+KaeshiNamikiri = SamuraiSpell(25782, True, 1.3, 1, 800, ApplyKaeshiNamikiri, [KaeshiNamikiriRequirement], 0)
+Enpi = SamuraiSpell(7486, True, 0, 1.5, 100, Add10Kenki, [], 0)
 
 #Iaijutsu
-Higanbana = SamuraiSpell(4, True, 1.3, 2.5, 200, ApplyHiganbana, [HiganbanaRequirement], 0)
+Higanbana = SamuraiSpell(7489, True, 1.3, 2.5, 200, ApplyHiganbana, [HiganbanaRequirement], 0)
 HiganbanaDOT = DOTSpell(-1, 60, True)
-TenkaGoken = SamuraiSpell(5, True, 1.3, 2.5, 280, ApplyTenkaGoken, [TenkaGokenRequirement], 0)
-Midare = SamuraiSpell(6, True, 1.3, 2.5, 640, ApplyMidare, [MidareRequirement], 0)
+TenkaGoken = SamuraiSpell(7488, True, 1.3, 2.5, 280, ApplyTenkaGoken, [TenkaGokenRequirement], 0)
+Midare = SamuraiSpell(7487, True, 1.3, 2.5, 640, ApplyMidare, [MidareRequirement], 0)
 
 #Kaeshi
-KaeshiHiganbana = SamuraiSpell(7, True, 0, 2.5, 200, ApplyKaeshiHiganbana, [KaeshiHiganbanaRequirement,TsubamegaeshiRequirement], 0)
-KaeshiGoken = SamuraiSpell(8, True, 0, 2.5, 280, ApplyKaeshiGoken, [KaeshiGokenRequirement,TsubamegaeshiRequirement], 0)
-KaeshiSetsugekka = SamuraiSpell(9, True, 0, 2.5, 640, ApplyKaeshi, [KaeshiSetsugekkaRequirement,TsubamegaeshiRequirement], 0)
+KaeshiHiganbana = SamuraiSpell(16484, True, 0, 2.5, 200, ApplyKaeshiHiganbana, [KaeshiHiganbanaRequirement,TsubamegaeshiRequirement], 0)
+KaeshiGoken = SamuraiSpell(16485, True, 0, 2.5, 280, ApplyKaeshiGoken, [KaeshiGokenRequirement,TsubamegaeshiRequirement], 0)
+KaeshiSetsugekka = SamuraiSpell(16486, True, 0, 2.5, 640, ApplyKaeshi, [KaeshiSetsugekkaRequirement,TsubamegaeshiRequirement], 0)
 
 #Combo Actions
-Hakaze = SamuraiSpell(10, True, Lock, 2.5, 200, ApplyHakaze, [], 0 )
-Jinpu = SamuraiSpell(11, True, Lock, 2.5, 120, ApplyJinpu, [], 0)
-Gekko = SamuraiSpell(12, True, Lock, 2.5, 170, empty, [], 0)
-Shifu = SamuraiSpell(13, True, Lock, 2.5, 120, empty, [], 0)
-Kasha = SamuraiSpell(14, True, Lock, 2.5, 170, empty, [], 0)
-Yukikaze = SamuraiSpell(15, True, Lock, 2.5, 120, empty, [], 0)
+Hakaze = SamuraiSpell(7477, True, Lock, 2.5, 200, ApplyHakaze, [], 0 )
+Jinpu = SamuraiSpell(7478, True, Lock, 2.5, 120, ApplyJinpu, [], 0)
+Gekko = SamuraiSpell(7481, True, Lock, 2.5, 170, empty, [], 0)
+Shifu = SamuraiSpell(7479, True, Lock, 2.5, 120, empty, [], 0)
+Kasha = SamuraiSpell(7482, True, Lock, 2.5, 170, empty, [], 0)
+Yukikaze = SamuraiSpell(7480, True, Lock, 2.5, 120, empty, [], 0)
 
 #AOE Combo Action
-Fuko = SamuraiSpell(16, True, 0, 2.5, 100, ApplyFuko, [], 0 )
-Mangetsu = SamuraiSpell(17, True, 0, 2.5, 100, empty, [], 0)
-Oka = SamuraiSpell(18, True, 0, 2.5, 100, empty, [], 0)
+Fuko = SamuraiSpell(25780, True, 0, 2.5, 100, ApplyFuko, [], 0 )
+Mangetsu = SamuraiSpell(7484, True, 0, 2.5, 100, empty, [], 0)
+Oka = SamuraiSpell(7485, True, 0, 2.5, 100, empty, [], 0)
 
 #oGCD
-Meikyo = SamuraiSpell(19, False, Lock, Lock, 0, ApplyMeikyo, [MeikyoRequirement], 0)
-Ikishoten = SamuraiSpell(20, False, Lock, Lock, 0, ApplyIkishoten, [IkishotenRequirement], 0)
-Shoha = SamuraiSpell(21, False, Lock, Lock, 520, ApplyShoha, [ShohaRequirement], 0)
-Shoha2 = SamuraiSpell(22, False, Lock, Lock, 200, ApplyShoha, [ShohaRequirement], 0) #AOEVersion of Shoha
-ThirdEye = SamuraiSpell(23, False, 0, 0, 0, ApplyThirdEye, [ThirdEyeRequirement], 0)
-Hagakure = SamuraiSpell(24, False, 0, 0, 0, ApplyHagakure, [HagakureRequirement], 0)
+Meikyo = SamuraiSpell(7499, False, Lock, Lock, 0, ApplyMeikyo, [MeikyoRequirement], 0)
+Ikishoten = SamuraiSpell(16482, False, Lock, Lock, 0, ApplyIkishoten, [IkishotenRequirement], 0)
+Shoha = SamuraiSpell(16487, False, Lock, Lock, 520, ApplyShoha, [ShohaRequirement], 0)
+Shoha2 = SamuraiSpell(25779, False, Lock, Lock, 200, ApplyShoha, [ShohaRequirement], 0) #AOEVersion of Shoha
+ThirdEye = SamuraiSpell(7498, False, 0, 0, 0, ApplyThirdEye, [ThirdEyeRequirement], 0)
+Hagakure = SamuraiSpell(7495, False, 0, 0, 0, ApplyHagakure, [HagakureRequirement], 0)
 
 #Kenki Action
-Senei = SamuraiSpell(25, False, Lock, 2.5, 800, ApplySenei, [SeneiRequirement], 25)
-Guren = SamuraiSpell(26, False, 0, 0, 500, ApplySenei, [SeneiRequirement], 25) #AOE version of Senei
-Shinten = SamuraiSpell(27, False, Lock, 1, 250, ApplyShinten, [], 25)
-Gyoten = SamuraiSpell(28, False, 0, 0, 100, ApplyGyoten,[GyotenRequirement],10 )
-Yaten = SamuraiSpell(29, False, 0, 0, 100, ApplyYaten, [YatenRequirement], 10)
-Kyuten = SamuraiSpell(30, False, 0, 0, 110, empty, [], 25)
+Senei = SamuraiSpell(16481, False, Lock, 2.5, 800, ApplySenei, [SeneiRequirement], 25)
+Guren = SamuraiSpell(7496, False, 0, 0, 500, ApplySenei, [SeneiRequirement], 25) #AOE version of Senei
+Shinten = SamuraiSpell(7490, False, Lock, 1, 250, ApplyShinten, [], 25)
+Gyoten = SamuraiSpell(7492, False, 0, 0, 100, ApplyGyoten,[GyotenRequirement],10 )
+Yaten = SamuraiSpell(7493, False, 0, 0, 100, ApplyYaten, [YatenRequirement], 10)
+Kyuten = SamuraiSpell(7491, False, 0, 0, 110, empty, [], 25)
 #buff
 HakazeBuff = buff(1.13)
 
@@ -420,7 +420,7 @@ def Meditate(time):
         AddKenki(Player, 10 * math.floor(time/3))
         Player.MedidateCD = 60
 
-    return SamuraiSpell(31, False, time, time, 0, ApplyMedidate, [MeditateRequirement], 0)
+    return SamuraiSpell(7497, False, time, time, 0, ApplyMedidate, [MeditateRequirement], 0)
 
 SamuraiAbility = {
 7477 : Hakaze,
@@ -448,7 +448,7 @@ SamuraiAbility = {
 16487 : Shoha,
 25779 : Shoha2,
 16482 : Ikishoten,
-7497 : Meditate (3),
+7497 : Meditate(3),
 7495 : Hagakure,
 7492 : Gyoten,
 7493 : Yaten,

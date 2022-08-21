@@ -197,44 +197,44 @@ def AuroraStackCheck(Player, Enemy):
 
 #Combo Action
 
-KeenEdge = GunbreakerSpell(1, True, 2.5, 170, ApplyKeenEdge, [], 0)
-BrutalShell = GunbreakerSpell(2, True, 2.5, 120, empty, [], 0)
-SolidBarrel = GunbreakerSpell(3, True, 2.5, 120, empty, [], 0)
+KeenEdge = GunbreakerSpell(16137, True, 2.5, 170, ApplyKeenEdge, [], 0)
+BrutalShell = GunbreakerSpell(16139, True, 2.5, 120, empty, [], 0)
+SolidBarrel = GunbreakerSpell(16145, True, 2.5, 120, empty, [], 0)
 
-GnashingFang = GunbreakerSpell(4, True, 2.5, 360, ApplyGnashingFang, [], 1)
-JugularRip = GunbreakerSpell(5, False, 0, 180, empty, [JugularRipRequirement], 0)
-SavageClaw = GunbreakerSpell(6, True, 2.5, 440, ApplySavageClaw, [JugularRipRequirement], 0)
-AbdomenTear = GunbreakerSpell(7, False, 0, 220, empty, [AbdomenTearRequirement], 0)
-WickedTalon = GunbreakerSpell(8, True, 2.5, 520, ApplyWickedTalon, [AbdomenTearRequirement], 0)
-EyeGouge = GunbreakerSpell(9, False, 0, 260, ApplyEyeGouge, [EyeGougeRequirement], 0)
+GnashingFang = GunbreakerSpell(16146, True, 2.5, 360, ApplyGnashingFang, [], 1)
+JugularRip = GunbreakerSpell(16156, False, 0, 180, empty, [JugularRipRequirement], 0)
+SavageClaw = GunbreakerSpell(16147, True, 2.5, 440, ApplySavageClaw, [JugularRipRequirement], 0)
+AbdomenTear = GunbreakerSpell(16157, False, 0, 220, empty, [AbdomenTearRequirement], 0)
+WickedTalon = GunbreakerSpell(16150, True, 2.5, 520, ApplyWickedTalon, [AbdomenTearRequirement], 0)
+EyeGouge = GunbreakerSpell(16158, False, 0, 260, ApplyEyeGouge, [EyeGougeRequirement], 0)
 
-BurstStrike = GunbreakerSpell(10, True, 2.5, 380, ApplyBurstStrike, [], 1)
-Hypervelocity = GunbreakerSpell(11, False, 0, 180, ApplyHypervelocity,[HypervelocityRequirement], 0)
+BurstStrike = GunbreakerSpell(16162, True, 2.5, 380, ApplyBurstStrike, [], 1)
+Hypervelocity = GunbreakerSpell(25759, False, 0, 180, ApplyHypervelocity,[HypervelocityRequirement], 0)
 
 #oGCD
-BlastingZone = GunbreakerSpell(12, False, 0, 700, ApplyBlastingZone, [BlastingZoneRequirement], 0)
-Bloodfest = GunbreakerSpell(13, False, 0, 0, ApplyBloodfest, [BloodfestRequirement], 0)
+BlastingZone = GunbreakerSpell(16165, False, 0, 700, ApplyBlastingZone, [BlastingZoneRequirement], 0)
+Bloodfest = GunbreakerSpell(16164, False, 0, 0, ApplyBloodfest, [BloodfestRequirement], 0)
 BowShock = GunbreakerSpell(14, False, 0, 150, ApplyBowShock, [BowShockRequirement], 0)
 BowShockDOT = DOTSpell(-10, 60, True)
-RoughDivide = GunbreakerSpell(15, False, 0, 150, ApplyRoughDivide, [RoughDivideRequirement], 0)
-NoMercy = GunbreakerSpell(16, False, 0, 0, ApplyNoMercy, [NoMercyRequirement], 0)
+RoughDivide = GunbreakerSpell(16154, False, 0, 150, ApplyRoughDivide, [RoughDivideRequirement], 0)
+NoMercy = GunbreakerSpell(16138, False, 0, 0, ApplyNoMercy, [NoMercyRequirement], 0)
 #GCD
-DoubleDown = GunbreakerSpell(17, True, 2.5, 1200, ApplyDoubleDown, [DoubleDownRequirement], 2)
-SonicBreak = GunbreakerSpell(18, True, 2.5, 300, ApplySonicBreak, [SonicBreakRequirement], 0)
+DoubleDown = GunbreakerSpell(25760, True, 2.5, 1200, ApplyDoubleDown, [DoubleDownRequirement], 2)
+SonicBreak = GunbreakerSpell(16153, True, 2.5, 300, ApplySonicBreak, [SonicBreakRequirement], 0)
 SonicBreakDOT = DOTSpell(-9, 60,True)
-LightningShot = GunbreakerSpell(19, True, 2.5, 150, empty, [], 0)
+LightningShot = GunbreakerSpell(16143, True, 2.5, 150, empty, [], 0)
 #AOE GCD
-FatedCircle = GunbreakerSpell(20, True, 2.5, 290, empty, [], 1)
-DemonSlice = GunbreakerSpell(21, True, 2.5, 100, ApplyDemonSlice, [], 0)
-DemonSlaughter = GunbreakerSpell(22, True, 2.5, 100, empty, [], 1)
+FatedCircle = GunbreakerSpell(16163, True, 2.5, 290, empty, [], 1)
+DemonSlice = GunbreakerSpell(16141, True, 2.5, 100, ApplyDemonSlice, [], 0)
+DemonSlaughter = GunbreakerSpell(16149, True, 2.5, 100, empty, [], 1)
 
 
 #Mit
-Aurora = GunbreakerSpell(23, False, 0, 0, ApplyAurora, [AuroraRequirement], 0)
-Superbolide = GunbreakerSpell(24, False, 0, 0, ApplySuperbolide, [SuperbolideRequirement], 0)
-HeartOfLight = GunbreakerSpell(25, False, 0, 0, ApplyHeartOfLight, [HeartOfLightRequirement], 0)
-HeartOfCorundum = GunbreakerSpell(26, False, 0, 0, ApplyHeartOfCorundum, [HeartOfCorundumRequirement], 0)
-Camouflage = GunbreakerSpell(27, False, 0, 0, ApplyCamouflage, [CamouflageRequirement], 0)
+Aurora = GunbreakerSpell(16151, False, 0, 0, ApplyAurora, [AuroraRequirement], 0)
+Superbolide = GunbreakerSpell(16152, False, 0, 0, ApplySuperbolide, [SuperbolideRequirement], 0)
+HeartOfLight = GunbreakerSpell(16160, False, 0, 0, ApplyHeartOfLight, [HeartOfLightRequirement], 0)
+HeartOfCorundum = GunbreakerSpell(25758, False, 0, 0, ApplyHeartOfCorundum, [HeartOfCorundumRequirement], 0)
+Camouflage = GunbreakerSpell(16140, False, 0, 0, ApplyCamouflage, [CamouflageRequirement], 0)
 #buff
 NoMercyBuff = buff(1.2)
 

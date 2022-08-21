@@ -192,39 +192,39 @@ def InfuriateStackCheck(Player, Enemy):
     
 
 #Combo Action
-HeavySwing = WarriorSpell(1, True, Lock, 2.5, 200, 0, ApplyHeavySwing, [],0)
-Maim = WarriorSpell(2, True, Lock, 2.5, 130, 0, ApplyMaim, [],0)
-StormEye = WarriorSpell(3, True, Lock, 2.5, 120, 0, ApplyStormEye, [],0)
-StormPath = WarriorSpell(4, True, Lock, 2.5, 120, 0, ApplyStormPath, [], 0)
+HeavySwing = WarriorSpell(31, True, Lock, 2.5, 200, 0, ApplyHeavySwing, [],0)
+Maim = WarriorSpell(37, True, Lock, 2.5, 130, 0, ApplyMaim, [],0)
+StormEye = WarriorSpell(45, True, Lock, 2.5, 120, 0, ApplyStormEye, [],0)
+StormPath = WarriorSpell(42, True, Lock, 2.5, 120, 0, ApplyStormPath, [], 0)
 #Missing Storm's path
 
 #oGCD
-Upheaval = WarriorSpell(5, False, Lock, 0, 350, 0, ApplyUpheaval, [UpheavalRequirement],0)
-Onslaught = WarriorSpell(6, False, Lock, 0, 150, 0, ApplyOnslaught, [OnslaughtRequirement],0)
-Infuriate = WarriorSpell(7, False, Lock, 0, 0, 0, ApplyInfuriate, [InfuriateRequirement],0)
-InnerRelease = WarriorSpell(8, False, Lock, 0, 0, 0, ApplyInnerRelease, [InnerReleaseRequirement],0)
+Upheaval = WarriorSpell(7387, False, Lock, 0, 350, 0, ApplyUpheaval, [UpheavalRequirement],0)
+Onslaught = WarriorSpell(7386, False, Lock, 0, 150, 0, ApplyOnslaught, [OnslaughtRequirement],0)
+Infuriate = WarriorSpell(52, False, Lock, 0, 0, 0, ApplyInfuriate, [InfuriateRequirement],0)
+InnerRelease = WarriorSpell(7389, False, Lock, 0, 0, 0, ApplyInnerRelease, [InnerReleaseRequirement],0)
 
 
 #GCD
-PrimalRend = WarriorSpell(9, True, Lock, 2.5, 700, 0, ApplyPrimalRend, [PrimalRendRequirement],0)
-FellCleave = WarriorSpell(10, True, Lock, 2.5, 460, 0, empty, [],50)
-InnerChaos = WarriorSpell(11, True, Lock, 2.5, 650,0, ApplyInnerChaos, [InnerChaosRequirement], 50)
-Tomahawk = WarriorSpell(12, True, Lock, 2.5, 150, 0, empty, [], 0)
+PrimalRend = WarriorSpell(25753, True, Lock, 2.5, 700, 0, ApplyPrimalRend, [PrimalRendRequirement],0)
+FellCleave = WarriorSpell(3549, True, Lock, 2.5, 460, 0, empty, [],50)
+InnerChaos = WarriorSpell(16465, True, Lock, 2.5, 650,0, ApplyInnerChaos, [InnerChaosRequirement], 50)
+Tomahawk = WarriorSpell(46, True, Lock, 2.5, 150, 0, empty, [], 0)
 
 #AOE GCD
-Overpower = WarriorSpell(13,True, 0, 2.5, 110, 0 , ApplyOverpower, [], 0 )
-MythrilTempest = WarriorSpell(14, True, 0, 2.5, 100, 0, empty, [], 0)
-Decimate = WarriorSpell(15, True, 0, 2.5, 200, 0, empty, [], 50)
-ChaoticCyclone = WarriorSpell(16, True, Lock, 2.5, 320,0, ApplyInnerChaos, [InnerChaosRequirement], 50) #AOE Version of Inner chaos
+Overpower = WarriorSpell(41,True, 0, 2.5, 110, 0 , ApplyOverpower, [], 0 )
+MythrilTempest = WarriorSpell(16462, True, 0, 2.5, 100, 0, empty, [], 0)
+Decimate = WarriorSpell(3550, True, 0, 2.5, 200, 0, empty, [], 50)
+ChaoticCyclone = WarriorSpell(16463, True, Lock, 2.5, 320,0, ApplyInnerChaos, [InnerChaosRequirement], 50) #AOE Version of Inner chaos
 #AOE oGCD
-Orogeny = WarriorSpell(17, False, Lock, 0, 150, 0, ApplyUpheaval, [UpheavalRequirement],0) #AOE Version of Upheaval
+Orogeny = WarriorSpell(25752, False, Lock, 0, 150, 0, ApplyUpheaval, [UpheavalRequirement],0) #AOE Version of Upheaval
 #Mit
-ThrillOfBattle = WarriorSpell(18, False, 0, 0, 0, 0, ApplyThrillOfBattle, [ThrillOfBattleRequirement], 0)
-Holmgang = WarriorSpell(19, False, 0, 0, 0, 0, ApplyHolmgang, [HolmgangRequirement], 0)
-ShakeItOff = WarriorSpell(20, False, 0, 0, 0, 0, ApplyShakeItOff, [ShakeItOffRequirement], 0)
-NascentFlash = WarriorSpell(21, False, 0, 0, 0, 0, ApplyNascentFlash, [NascentFlashRequirement], 0)
-Bloodwhetting = WarriorSpell(22, False, 0, 0, 0, 0, ApplyBloodwhetting, [BloodwhettingRequirement], 0)
-Equilibrium = WarriorSpell(23, False, 0, 0, 0, 0, ApplyEquilibrium, [EquilibriumRequirement], 0)
+ThrillOfBattle = WarriorSpell(40, False, 0, 0, 0, 0, ApplyThrillOfBattle, [ThrillOfBattleRequirement], 0)
+Holmgang = WarriorSpell(43, False, 0, 0, 0, 0, ApplyHolmgang, [HolmgangRequirement], 0)
+ShakeItOff = WarriorSpell(7388, False, 0, 0, 0, 0, ApplyShakeItOff, [ShakeItOffRequirement], 0)
+NascentFlash = WarriorSpell(16464, False, 0, 0, 0, 0, ApplyNascentFlash, [NascentFlashRequirement], 0)
+Bloodwhetting = WarriorSpell(25751, False, 0, 0, 0, 0, ApplyBloodwhetting, [BloodwhettingRequirement], 0)
+Equilibrium = WarriorSpell(3552, False, 0, 0, 0, 0, ApplyEquilibrium, [EquilibriumRequirement], 0)
 #buff
 SurgingTempestBuff = buff(1.1)
 

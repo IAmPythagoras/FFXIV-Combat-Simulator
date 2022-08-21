@@ -408,55 +408,55 @@ def TenChiJinCheck(Player, Enemy):
 
 
 #GCD
-SpinningEdge = NinjaSpell(1, True, Lock, 2.5, 220, ApplySpinningEdge, [], True, False)
-GustSlash = NinjaSpell(2, True, Lock, 2.5, 160, empty, [], True, False)
-AeolianEdge = NinjaSpell(3, True, Lock, 2.5, 200, empty, [], True, False)
-ArmorCrush = NinjaSpell(4, True, Lock, 2.5, 200, empty, [], True, False)
-Huraijin = NinjaSpell(5, True, Lock, 2.5, 200, ApplyHuraijin, [], True, False)
-FleetingRaiju = NinjaSpell(6, True, Lock, 2.5, 560, ApplyFleetingRaiju, [FleetingRaijuRequirement], True, False)
-ThrowingDagger = NinjaSpell(7, True, Lock, 2.5, 120, ApplyThrowingDagger, [], True, False)
-PhantomKamaitachi = NinjaSpell(8, True, Lock, 2.5, 0, ApplyPhantomKamaitachi, [PhantomKamaitachiRequirement], True, False)
+SpinningEdge = NinjaSpell(2240, True, Lock, 2.5, 220, ApplySpinningEdge, [], True, False)
+GustSlash = NinjaSpell(2242, True, Lock, 2.5, 160, empty, [], True, False)
+AeolianEdge = NinjaSpell(2255, True, Lock, 2.5, 200, empty, [], True, False)
+ArmorCrush = NinjaSpell(3563, True, Lock, 2.5, 200, empty, [], True, False)
+Huraijin = NinjaSpell(25876, True, Lock, 2.5, 200, ApplyHuraijin, [], True, False)
+FleetingRaiju = NinjaSpell(25777, True, Lock, 2.5, 560, ApplyFleetingRaiju, [FleetingRaijuRequirement], True, False)
+ThrowingDagger = NinjaSpell(2247, True, Lock, 2.5, 120, ApplyThrowingDagger, [], True, False)
+PhantomKamaitachi = NinjaSpell(25774, True, Lock, 2.5, 0, ApplyPhantomKamaitachi, [PhantomKamaitachiRequirement], True, False)
 PhantomKamaitachiShadow = NinjaSpell(8, False, 0, 0, 600, empty, [], False, False) #Action done by the shadow
-DeathBlossom = NinjaSpell(33, True, Lock, 2.5, 100, ApplyDeathBlossom, [],True, False )
-HakkeMujinsatsu = NinjaSpell(34, True, Lock, 2.5, 100, empty, [], True, False)
+DeathBlossom = NinjaSpell(2254, True, Lock, 2.5, 100, ApplyDeathBlossom, [],True, False )
+HakkeMujinsatsu = NinjaSpell(16488, True, Lock, 2.5, 100, empty, [], True, False)
 
 #Ninjutsu
-FumaShuriken = NinjaSpell(9, True, Lock,0.5, 450, ApplyHyoshoRanryu, [FumaShurikenRequirement], False, True) #Same effect as HyoshoRanruy, since only reset Player.CurrentRitual list
-Raiton = NinjaSpell(10, True, Lock,0.5, 650, ApplyRaiton, [RaitonRequirement], False, True )
-Huton = NinjaSpell(11, True, Lock,0.5, 0, ApplyHuton, [HutonRequirement], False, True)
-Suiton = NinjaSpell(12, True, Lock,0.5, 500, ApplySuiton, [SuitonRequirement], False, True)
-Hyoton = NinjaSpell(13, True, Lock, 0.5, 350, ApplyHyoshoRanryu, [HyotonRequirement], False, True)
-HyoshoRanryu = NinjaSpell(13, True, Lock,0.5, 1300, ApplyHyoshoRanryu, [HyotonRequirement, KassatsuOnRequirement], False, True)
-Katon = NinjaSpell(29, True, Lock, 0.5, 350, ApplyHyoshoRanryu, [KatonRequirement], False, True)
-GokaMekkyaku = NinjaSpell(30, True, Lock, 0.5, 600, ApplyHyoshoRanryu, [KatonRequirement, KassatsuOnRequirement], False, True)
-Doton = NinjaSpell(31, True, Lock, 0.5, 0, ApplyDoton, [DotonRequirement], False, True)
+FumaShuriken = NinjaSpell(2265, True, Lock,0.5, 450, ApplyHyoshoRanryu, [FumaShurikenRequirement], False, True) #Same effect as HyoshoRanruy, since only reset Player.CurrentRitual list
+Raiton = NinjaSpell(2267, True, Lock,0.5, 650, ApplyRaiton, [RaitonRequirement], False, True )
+Huton = NinjaSpell(2269, True, Lock,0.5, 0, ApplyHuton, [HutonRequirement], False, True)
+Suiton = NinjaSpell(2271, True, Lock,0.5, 500, ApplySuiton, [SuitonRequirement], False, True)
+Hyoton = NinjaSpell(2268, True, Lock, 0.5, 350, ApplyHyoshoRanryu, [HyotonRequirement], False, True)
+HyoshoRanryu = NinjaSpell(16492, True, Lock,0.5, 1300, ApplyHyoshoRanryu, [HyotonRequirement, KassatsuOnRequirement], False, True)
+Katon = NinjaSpell(2266, True, Lock, 0.5, 350, ApplyHyoshoRanryu, [KatonRequirement], False, True)
+GokaMekkyaku = NinjaSpell(16491, True, Lock, 0.5, 600, ApplyHyoshoRanryu, [KatonRequirement, KassatsuOnRequirement], False, True)
+Doton = NinjaSpell(2270, True, Lock, 0.5, 0, ApplyDoton, [DotonRequirement], False, True)
 DotonDOT = DOTSpell(-33, 80, True)
 
 #Ritual
-Ten = NinjaSpell(14, True, 1, 1, 0, ApplyTen, [NinjutsuRequirement], False, False)
-Chi = NinjaSpell(15, True, 1, 1, 0, ApplyChi, [NinjutsuRequirement], False, False)
-Jin = NinjaSpell(16, True, 1, 1, 0, ApplyJin, [NinjutsuRequirement], False, False)
+Ten = NinjaSpell(2259, True, 1, 1, 0, ApplyTen, [NinjutsuRequirement], False, False)
+Chi = NinjaSpell(2261, True, 1, 1, 0, ApplyChi, [NinjutsuRequirement], False, False)
+Jin = NinjaSpell(2263, True, 1, 1, 0, ApplyJin, [NinjutsuRequirement], False, False)
 
 #TenChiJin
-TenChiJin = NinjaSpell(17, False, Lock, 0, 0, ApplyTenChiJin, [TenChiJinRequirement], False, False)
+TenChiJin = NinjaSpell(7403, False, Lock, 0, 0, ApplyTenChiJin, [TenChiJinRequirement], False, False)
 #TenChiJin will trigger the TenChiJinEffect. The actions we can take will be different from the Ninjutsu
-Ten2 = NinjaSpell(18, True, Lock, 1, 0, empty, [TenChiJinOnRequirement], False, True)
-Chi2 = NinjaSpell(19, True, Lock, 1, 0, empty, [TenChiJinOnRequirement], False, True)
-Jin2 = NinjaSpell(20, True, Lock, 1, 0, empty, [TenChiJinOnRequirement], False, True) 
+Ten2 = NinjaSpell(18873, True, Lock, 1, 0, empty, [TenChiJinOnRequirement], False, True)
+Chi2 = NinjaSpell(18877, True, Lock, 1, 0, empty, [TenChiJinOnRequirement], False, True)
+Jin2 = NinjaSpell(18881, True, Lock, 1, 0, empty, [TenChiJinOnRequirement], False, True) 
 #These Ninjutsu are only to be used in TenChiJin
 #Their potency/apply will be changed according to what spell should be casted
 
 #oGCD
-DreamWithinADream = NinjaSpell(21, False, Lock, 0, 3*150, ApplyDreamWithinADream, [DreamWithinADreamRequirement], False, False)
-Mug = NinjaSpell(22, False, Lock, 0, 150, ApplyMug, [MugRequirement], False, False)
-TrickAttack = NinjaSpell(23, False, Lock, 0, 400, ApplyTrickAttack, [TrickAttackRequirement], False, False)
-Bhavacakra = NinjaSpell(24, False, Lock, 0, 350, ApplyBhavacakra, [BhavacakraRequirement], False, False)
-Meisui = NinjaSpell(25, False, Lock, 0, 0, ApplyMeisui, [MeisuiRequirement], False, False)
-Kassatsu = NinjaSpell(26, False, Lock, 0, 0, ApplyKassatsu,[KassatsuRequirement], False, False)
-Bunshin = NinjaSpell(27, False, Lock, 0, 0, ApplyBunshin, [BunshinRequirement], False, False)
-Hide = NinjaSpell(28, True, 0, 0, 0, ApplyHide, [], False, False)
-ShadeShift = NinjaSpell(32, False, Lock, 0, 0, ApplyShadeShift, [ShadeShiftRequirement], False, False)
-HellfrogMedium = NinjaSpell(36, False, Lock, 0, 160, ApplyBhavacakra, [BhavacakraRequirement], False, False)
+DreamWithinADream = NinjaSpell(3566, False, Lock, 0, 3*150, ApplyDreamWithinADream, [DreamWithinADreamRequirement], False, False)
+Mug = NinjaSpell(2248, False, Lock, 0, 150, ApplyMug, [MugRequirement], False, False)
+TrickAttack = NinjaSpell(2258, False, Lock, 0, 400, ApplyTrickAttack, [TrickAttackRequirement], False, False)
+Bhavacakra = NinjaSpell(7402, False, Lock, 0, 350, ApplyBhavacakra, [BhavacakraRequirement], False, False)
+Meisui = NinjaSpell(16489, False, Lock, 0, 0, ApplyMeisui, [MeisuiRequirement], False, False)
+Kassatsu = NinjaSpell(2264, False, Lock, 0, 0, ApplyKassatsu,[KassatsuRequirement], False, False)
+Bunshin = NinjaSpell(16493, False, Lock, 0, 0, ApplyBunshin, [BunshinRequirement], False, False)
+Hide = NinjaSpell(2245, True, 0, 0, 0, ApplyHide, [], False, False)
+ShadeShift = NinjaSpell(2241, False, Lock, 0, 0, ApplyShadeShift, [ShadeShiftRequirement], False, False)
+HellfrogMedium = NinjaSpell(7401, False, Lock, 0, 160, ApplyBhavacakra, [BhavacakraRequirement], False, False)
 #buff
 MugBuff = buff(1.05)
 TrickAttackBuff = buff(1.1)

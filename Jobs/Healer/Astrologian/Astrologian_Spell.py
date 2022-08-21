@@ -237,13 +237,13 @@ LordOfCrown = AstrologianSpell(7444, True, Lock, 1, 250, 0,  ApplyLordOfCrown, [
 CumbustDOT = DOTSpell(-12, 55, False)
 Gravity = AstrologianSpell(25872, True, 1.5, 2.5, 130, 400, empty, [ManaRequirement])
 #Heal GCD
-AspectedHelios = AstrologianSpell(5, True, 1.5, 2.5, 0, 800, empty, [ManaRequirement])
+AspectedHelios = AstrologianSpell(3601, True, 1.5, 2.5, 0, 800, empty, [ManaRequirement])
 AspectedBenific = AstrologianSpell(2595, True, 0, 2.5, 0, 400, empty, [ManaRequirement])
 Benefic2 = AstrologianSpell(3610, True, 1.5, 2.5, 0, 700, empty, [ManaRequirement])
 Benefic = AstrologianSpell(3594, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement])
-Helios = AstrologianSpell(9, True, 1.5, 2.5, 0, 700, empty, [ManaRequirement])
+Helios = AstrologianSpell(3600, True, 1.5, 2.5, 0, 700, empty, [ManaRequirement])
 EssentialDignity = AstrologianSpell(10, False, 0, 0, 0, 0, ApplyEssentialDignity, [EssentialDignityRequirement])
-Macrocosmos = AstrologianSpell(16, True, 0, 0, 250, 600, ApplyMacrocosmos, [MacrocosmosRequirement, ManaRequirement])
+Macrocosmos = AstrologianSpell(25874, True, 0, 0, 250, 600, ApplyMacrocosmos, [MacrocosmosRequirement, ManaRequirement])
 Microcosmos = AstrologianSpell(17, True, 0, 0, 0, 0, empty, [MicrocosmosRequirement])
 LadyOfCrown = AstrologianSpell(7445, True, 0, 1, 0, 0, empty, [])
 #oGCD
@@ -256,13 +256,13 @@ Astrodyne = AstrologianSpell(25870, False, Lock, 0, 0, 0, ApplyAstrodyne, [])
 #Heal oGCD
 Exaltation = AstrologianSpell(18, False, 0, 0, 0, 0, ApplyExaltation, [ExaltationRequirement])
 NeutralSect = AstrologianSpell(16559, False, 0, 0, 0, 0, ApplyNeutralSect, [NeutralSectRequirement])
-Horoscope = AstrologianSpell(20, False, 0, 0, 0, 0, ApplyHoroscope, [HoroscopeRequirement])
-CelestialIntersection = AstrologianSpell(21, False, 0, 0, 0, 0, ApplyCelestialIntersection, [CelestialIntersectionRequirement])
+Horoscope = AstrologianSpell(16557, False, 0, 0, 0, 0, ApplyHoroscope, [HoroscopeRequirement])
+CelestialIntersection = AstrologianSpell(16556, False, 0, 0, 0, 0, ApplyCelestialIntersection, [CelestialIntersectionRequirement])
 EarthlyStar = AstrologianSpell(7439, False, 0, 0, 0, 0, ApplyEarthlyStar, [EarthlyStarRequirement])
 StellarDetonation = AstrologianSpell(23, False, 0, 0, 0, 0, empty, [StellarDetonationRequirement])
-CelestialOpposition = AstrologianSpell(24, False, 0, 0, 0, 0, ApplyCelestialOpposition, [CelestialOppositionRequirement])
-Collective = AstrologianSpell(25, False, 0, 0, 0, 0, ApplyCollective, [CollectiveRequirement])
-Synastry = AstrologianSpell(26, False, 0, 0, 0, 0, ApplySynastry, [SynastryRequirement])
+CelestialOpposition = AstrologianSpell(16553, False, 0, 0, 0, 0, ApplyCelestialOpposition, [CelestialOppositionRequirement])
+Collective = AstrologianSpell(3613, False, 0, 0, 0, 0, ApplyCollective, [CollectiveRequirement])
+Synastry = AstrologianSpell(3612, False, 0, 0, 0, 0, ApplySynastry, [SynastryRequirement])
 
 #Arcanum require a target within the team, so it will be a function that will return a spell that
 #will target the given player. It is also assumed that the bonus is 6%
@@ -344,5 +344,4 @@ AstrologianAbility = {
 16557 : Horoscope,
 25873 : Exaltation,
 25874 : Macrocosmos
-
 }
