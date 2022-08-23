@@ -399,42 +399,42 @@ def SongEffectCheck(Player, Enemy):
 
 
 #GCD
-BurstShot = BardSpell(1, True, 2.5, 220, ApplyBurstShot, [], True)
-RefulgentArrow = BardSpell(2, True, 2.5, 280, ApplyRefulgentArrow, [RefulgentArrowRequirement], True)
-Stormbite = BardSpell(3, True, 2.5, 100, ApplyStormbite, [], True)
-Causticbite = BardSpell(4, True, 2.5, 150, ApplyCausticbite, [], True)
+BurstShot = BardSpell(16495, True, 2.5, 220, ApplyBurstShot, [], True)
+RefulgentArrow = BardSpell(7409, True, 2.5, 280, ApplyRefulgentArrow, [RefulgentArrowRequirement], True)
+Stormbite = BardSpell(7407, True, 2.5, 100, ApplyStormbite, [], True)
+Causticbite = BardSpell(7406, True, 2.5, 150, ApplyCausticbite, [], True)
 StormbiteDOT = DOTSpell(-20, 25, True) #25
 CausticbiteDOT = DOTSpell(-21, 20, True) #20
-IronJaws = BardSpell(5, True, 2.5, 100, ApplyIronJaws, [], True)
+IronJaws = BardSpell(3560, True, 2.5, 100, ApplyIronJaws, [], True)
 ApexArrow20 = BardSpell(6, True, 2.5, 200, ApplyApexArrow20, [], True)
-ApexArrow80 = BardSpell(7, True, 2.5, 500, ApplyApexArrow80, [], True)
-BlastArrow = BardSpell(8, True, 2.5, 600, ApplyBlastArrow, [BlastArrowRequirement],True)
+ApexArrow80 = BardSpell(16496, True, 2.5, 500, ApplyApexArrow80, [], True)
+BlastArrow = BardSpell(25784, True, 2.5, 600, ApplyBlastArrow, [BlastArrowRequirement],True)
 
 #AOE GCD
-Ladonsbite = BardSpell(9, True, 0, 2.5, ApplyLadonsbite, [], True)
-Shadowbite = BardSpell(10, True, 2.5, 170, ApplyShadowbite, [ShadowbiteRequirement], True )
+Ladonsbite = BardSpell(25783, True, 0, 2.5, ApplyLadonsbite, [], True)
+Shadowbite = BardSpell(16494, True, 2.5, 170, ApplyShadowbite, [ShadowbiteRequirement], True )
 
 
 #Song
-WandererMinuet = BardSpell(11, False, 0, 100, ApplyWandererMinuet, [WandererMinuetRequirement], False)
-ArmyPaeon = BardSpell(12, False, 0, 100, ApplyArmyPaeon, [ArmyPaeonRequirement],False)
-MageBallad = BardSpell(13, False, 0, 100, ApplyMageBallad, [MageBalladRequirement],False)
+WandererMinuet = BardSpell(3559, False, 0, 100, ApplyWandererMinuet, [WandererMinuetRequirement], False)
+ArmyPaeon = BardSpell(116, False, 0, 100, ApplyArmyPaeon, [ArmyPaeonRequirement],False)
+MageBallad = BardSpell(114, False, 0, 100, ApplyMageBallad, [MageBalladRequirement],False)
 #oGCD
-Sidewinder = BardSpell(14, False, 0, 300, ApplySidewinder, [SidewinderRequirement],False)
-EmpyrealArrow = BardSpell(15, False, 0, 200, ApplyEmpyrealArrow, [EmpyrealArrowRequirement],False)
-BattleVoice = BardSpell(16, False, 0, 0, ApplyBattleVoice, [BattleVoiceRequirement],False)
-BloodLetter = BardSpell(17, False, 0, 110, ApplyBloodLetter, [BloodLetterRequirement],False)
-RainOfDeath = BardSpell(18, False, 0, 110, ApplyBloodLetter, [BloodLetterRequirement],False) #AOE Version of BloodLetter
-Barrage = BardSpell(19, False, 0, 0, ApplyBarrage, [BarrageRequirement],False)
-RagingStrike = BardSpell(20, False, 0, 0, ApplyRagingStrike, [RagingStrikeRequirement],False)
-RadiantFinale = BardSpell(21, False, 0, 0, ApplyRadiantFinale, [RadiantFinaleRequirement],False)
-Troubadour = BardSpell(22, False, 0, 0, ApplyTroubadour, [TroubadourRequirement], False)
-RepellingShot = BardSpell(23, False, 0, 0, empty, [], False) #No requirement, do that shit forever
-WardenPaean = BardSpell(27, False, 0, 0, ApplyWardenPaean, [WardenPaeanRequirement], False)
+Sidewinder = BardSpell(3562, False, 0, 300, ApplySidewinder, [SidewinderRequirement],False)
+EmpyrealArrow = BardSpell(3558, False, 0, 200, ApplyEmpyrealArrow, [EmpyrealArrowRequirement],False)
+BattleVoice = BardSpell(118, False, 0, 0, ApplyBattleVoice, [BattleVoiceRequirement],False)
+BloodLetter = BardSpell(110, False, 0, 110, ApplyBloodLetter, [BloodLetterRequirement],False)
+RainOfDeath = BardSpell(117, False, 0, 110, ApplyBloodLetter, [BloodLetterRequirement],False) #AOE Version of BloodLetter
+Barrage = BardSpell(107, False, 0, 0, ApplyBarrage, [BarrageRequirement],False)
+RagingStrike = BardSpell(101, False, 0, 0, ApplyRagingStrike, [RagingStrikeRequirement],False)
+RadiantFinale = BardSpell(25785, False, 0, 0, ApplyRadiantFinale, [RadiantFinaleRequirement],False)
+Troubadour = BardSpell(7405, False, 0, 0, ApplyTroubadour, [TroubadourRequirement], False)
+RepellingShot = BardSpell(112, False, 0, 0, empty, [], False) #No requirement, do that shit forever
+WardenPaean = BardSpell(3561, False, 0, 0, ApplyWardenPaean, [WardenPaeanRequirement], False)
 #Each PitchPerfecti represents a PitchPerfect with i repertoire
 PitchPerfect1 = BardSpell(24, False, 0, 100, ApplyPitchPerfect1, [PitchPerfect1Requirement],False)
 PitchPerfect2 = BardSpell(25, False, 0, 220, ApplyPitchPerfect2, [PitchPerfect2Requirement],False)
-PitchPerfect3 = BardSpell(26, False, 0, 360, ApplyPitchPerfect3, [PitchPerfect3Requirement],False)
+PitchPerfect3 = BardSpell(7404, False, 0, 360, ApplyPitchPerfect3, [PitchPerfect3Requirement],False)
 
 #buff
 RadiantFinaleBuff = buff(1.02)
@@ -442,7 +442,7 @@ RagingStrikeBuff = buff(1.15)
 MageBalladBuff = buff(1.01)
 
 def NatureMinne(target):
-    return BardSpell(28, False, 0, 0, ApplyNatureMinne, [NatureMinneRequirement], False)
+    return BardSpell(7408, False, 0, 0, ApplyNatureMinne, [NatureMinneRequirement], False)
 
 BardAbility = {
 101 : RagingStrike, 
@@ -469,5 +469,5 @@ BardAbility = {
 25785 : RadiantFinale, 
 112 : RepellingShot, 
 110 : BloodLetter,
-25784 : BlastArrow, 
-8 : WaitAbility(0) }
+25784 : BlastArrow
+}
