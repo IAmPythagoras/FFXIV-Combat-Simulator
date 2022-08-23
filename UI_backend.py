@@ -1,15 +1,18 @@
 import copy
 import json
+import os
+
 
 from Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
 from Jobs.Ranged.Bard.Bard_Spell import SongEffect
+from Jobs.Tank.DarkKnight.DarkKnight_Spell import BloodWeaponCheck, BloodWeaponEffect
 from Jobs.Tank.Warrior.Warrior_Spell import SurgingTempestEffect
 from Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
 from Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, EnochianEffect
 
 from Fight import Fight
 from Enemy import Enemy
-from FFLogsAPIRequest import lookup_abilityID
+from FFLogsAPIRequest import getAbilityList, lookup_abilityID
 from Jobs.Base_Spell import Melee_AA, Ranged_AA, WaitAbility
 
 #CASTER
@@ -39,10 +42,101 @@ from Jobs.Melee.Monk.Monk_Player import *
 
 #This file will take care of request by TUI.py and return whatever needs to be returned
 
+BLMCRITStat = {"MainStat": 2571, "WD":120, "Det" : 1752, "Ten" : 390, "SS": 758, "Crit" : 2287, "DH" : 965} 
+BLMStat = {"MainStat": 2571, "WD":120, "Det" : 1422, "Ten" : 400, "SS": 2171, "Crit" : 715, "DH" : 1454} 
+SCHStat = {"MainStat": 2560, "WD":120, "Det" : 1951, "Ten" : 400, "SS": 944, "Crit" : 2277, "DH" : 616}
+RDMStat = {"MainStat": 2563, "WD":120, "Det" : 1669, "Ten" : 400, "SS": 400, "Crit" : 2348, "DH" : 1340}
+MCHStat = {"MainStat": 2572, "WD":120, "Det" : 1615, "Ten" : 400, "SS": 400, "Crit" : 2121, "DH" : 1626}
+NINStat = {"MainStat": 2555, "WD":120, "Det" : 1749, "Ten" : 400, "SS": 400, "Crit" : 2283, "DH" : 1330}
+DRKStat = {"MainStat": 2521, "WD":120, "Det" : 1680, "Ten" : 539, "SS": 650, "Crit" : 2343, "DH" : 976}
+WARStat = {"MainStat": 2521, "WD":120, "Det" : 2130, "Ten" : 1018, "SS": 400, "Crit" : 2240, "DH" : 400}
+WHMStat = {"MainStat": 2571, "WD":120, "Det" : 1830, "Ten" : 400, "SS": 489, "Crit" : 2301, "DH" : 940}
+SAMStat = {"MainStat": 2563, "WD":120, "Det" : 1654, "Ten" : 400, "SS": 579, "Crit" : 2310, "DH" : 1217}
+PLDStat = {"MainStat": 2502, "WD":120, "Det" : 1680, "Ten" : 527, "SS": 650, "Crit" : 2319, "DH" : 1012}
+GNBStat = {"MainStat": 2517, "WD":120, "Det" : 1612, "Ten" : 527, "SS": 950, "Crit" : 2205, "DH" : 868}
+ASTStat = {"MainStat": 2560, "WD":120, "Det" : 1951, "Ten" : 400, "SS": 716, "Crit" : 2277, "DH" : 844}
+SMNStat = {"MainStat": 2575, "WD":120, "Det" : 1688, "Ten" : 400, "SS": 489, "Crit" : 2296, "DH" : 1289}
+BRDStat = {"MainStat": 2575, "WD":120, "Det" : 1381, "Ten" : 400, "SS": 479, "Crit" : 2229, "DH" : 1662}
+DNCStat = {"MainStat": 2575, "WD":120, "Det" : 1453, "Ten" : 400, "SS": 549, "Crit" : 2283, "DH" : 1477}
+DRGStat = {"MainStat": 2575, "WD":120, "Det" : 1846, "Ten" : 400, "SS": 400, "Crit" : 2281, "DH" : 1235}
+RPRStat ={"MainStat": 2575, "WD":120, "Det" : 1846, "Ten" : 400, "SS": 400, "Crit" : 2281, "DH" : 1235}
+SGEStat ={"MainStat": 2563, "WD":120, "Det" : 1953, "Ten" : 400, "SS": 656, "Crit" : 2244, "DH" : 904}
+
+def ImportFightBackend(fightID,fightNumber):
+
+    Event = Fight([], Enemy(), False) #Creating event
+
+    action_dict, player_dict = getAbilityList(fightID, fightNumber) #getting 
+
+    for playerID in player_dict:
+        player_dict[playerID]["job_object"].ActionSet = action_dict[playerID]
+        player_dict[playerID]["job_object"].CurrentFight = Event
+        job_name = player_dict[playerID]["job"] #getting job name
+
+        if job_name == "Sage" : player_dict[playerID]["job_object"].Stat = SGEStat
+        elif job_name == "Scholar" : player_dict[playerID]["job_object"].Stat = SCHStat
+        elif job_name == "WhiteMage" : player_dict[playerID]["job_object"].Stat = WHMStat
+        elif job_name == "Astrologian" : player_dict[playerID]["job_object"].Stat = ASTStat
+        elif job_name == "Warrior" : 
+            player_dict[playerID]["job_object"].Stat = copy.deepcopy(WARStat)
+            player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+        elif job_name == "DarkKnight" : 
+            player_dict[playerID]["job_object"].Stat = copy.deepcopy(DRKStat)
+            player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+            player_dict[playerID]["job_object"].EffectList = [BloodWeaponEffect] #Assuming we pre pull it
+            player_dict[playerID]["job_object"].EffectCDList = [BloodWeaponCheck]
+        elif job_name == "Paladin" : 
+            player_dict[playerID]["job_object"].Stat = copy.deepcopy(PLDStat)
+            player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+            player_dict[playerID]["job_object"].EffectList = [OathGauge]
+        elif job_name == "Gunbreaker" : 
+            player_dict[playerID]["job_object"].Stat = copy.deepcopy(GNBStat)
+            player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+        #Caster
+        elif job_name == "BlackMage" : 
+            player_dict[playerID]["job_object"].Stat = copy.deepcopy(BLMStat)
+            player_dict[playerID]["job_object"].EffectList = [EnochianEffect, ElementalEffect]
+        elif job_name == "RedMage" : 
+            player_dict[playerID]["job_object"].Stat = copy.deepcopy(RDMStat)
+            player_dict[playerID]["job_object"].EffectList = [DualCastEffect]
+        elif job_name == "Summoner" : 
+            player_dict[playerID]["job_object"].Stat = copy.deepcopy(SMNStat)
+        #Ranged
+        elif job_name == "Dancer" : 
+            player_dict[playerID]["job_object"].Stat = copy.deepcopy(DNCStat)
+            player_dict[playerID]["job_object"].EffectList = [EspritEffect]
+            player_dict[playerID]["job_object"].ActionSet.insert(0, Ranged_AA)
+        elif job_name == "Machinist" : 
+            player_dict[playerID]["job_object"].Stat = copy.deepcopy(MCHStat)
+            player_dict[playerID]["job_object"].ActionSet.insert(0, Ranged_AA)
+        elif job_name == "Bard" : 
+            player_dict[playerID]["job_object"].Stat = copy.deepcopy(BRDStat)
+            player_dict[playerID]["job_object"].EffectList = [SongEffect]
+            player_dict[playerID]["job_object"].ActionSet.insert(0, Ranged_AA)
+        #melee
+        elif job_name == "Reaper" : 
+            player_dict[playerID]["job_object"].Stat = copy.deepcopy(RPRStat)
+            player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+        elif job_name == "Monk" :  pass #Not yet Implemented
+        elif job_name == "Dragoon" : 
+            player_dict[playerID]["job_object"].Stat = copy.deepcopy(DRGStat)
+            player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+        elif job_name == "Ninja" : 
+            player_dict[playerID]["job_object"].Stat = copy.deepcopy(NINStat)
+            player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+        elif job_name == "Samurai" : 
+            player_dict[playerID]["job_object"].Stat = copy.deepcopy(SAMStat)
+            player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
+
+        Event.PlayerList.append(player_dict[playerID]["job_object"])
+
+    return Event
+
+
 def AskInput(range):
     #This function will ask a numerical value to the user where range is the number of options
     #The inputs are assumed to be numerically ordered and starting at 1 and finishing at (range)
-    user_input = input("Enter a number to use that feature : ")
+    user_input = input("Enter a number to select that option : ")
 
     while True:
         if int(user_input) >= 1 and int(user_input) <= range: #if input is valid
@@ -75,6 +169,7 @@ def SaveFight(Event, countdown, fightDuration, saveName):
         elif isinstance(Player, Scholar) : PlayerDict["JobName"] = "Scholar"
         elif isinstance(Player, Whitemage) : PlayerDict["JobName"] = "WhiteMage"
         elif isinstance(Player, Astrologian) : PlayerDict["JobName"] = "Astrologian"
+        elif isinstance(Player, Sage) : PlayerDict["JobName"] = "Sage"
         elif isinstance(Player, Summoner) : PlayerDict["JobName"] = "Summoner"
         elif isinstance(Player, Dragoon) : PlayerDict["JobName"] = "Dragoon"
         elif isinstance(Player, Reaper) : PlayerDict["JobName"] = "Reaper"
@@ -89,18 +184,21 @@ def SaveFight(Event, countdown, fightDuration, saveName):
             actionDict = {}
             #Special case for WaitAbility
             if action.id == 212 : #WaitAbility
-                actionDict["actionID"] = action.id 
-                actionDict["sourceID"] = Player.playerID
-                actionDict["targetID"] = action.TargetID #id 0 is by default the main enemy
-                actionDict["isGCD"] = action.GCD
-                actionDict["waitTime"] = action.waitTime
+                if action.waitTime != 0:
+                    actionDict["actionID"] = 212
+                    actionDict["sourceID"] = Player.playerID
+                    actionDict["targetID"] = 0 #id 0 is by default the main enemy
+                    actionDict["isGCD"] = False
+                    actionDict["waitTime"] = action.waitTime
+
+                    actionList.append(copy.deepcopy(actionDict))#adding to dict
             else: #Normal ability
                 actionDict["actionID"] = action.id 
                 actionDict["sourceID"] = Player.playerID
                 actionDict["targetID"] = action.TargetID #id 0 is by default the main enemy
                 actionDict["isGCD"] = action.GCD
 
-            actionList.append(copy.deepcopy(actionDict))
+                actionList.append(copy.deepcopy(actionDict))#adding to dict
 
         PlayerDict["actionList"] = copy.deepcopy(actionList)
 
@@ -114,20 +212,20 @@ def SaveFight(Event, countdown, fightDuration, saveName):
                 },
                 "PlayerList" : PlayerListDict
     }}
-
-    with open(saveName + ".json", "w") as write_files:
+    save_dir = os.getcwd() + "\\saved"
+    with open(save_dir + "\\" + saveName + ".json", "w") as write_files:
         json.dump(data,write_files, indent=4) #saving file
 
 
 
-def SimulateFightBackend():
+def SimulateFightBackend(file_name):
     #Will read the fight in memory and transform it into an Event we can simulate
     #The memory will contain a file with a Job name and a list of actionID that we will transform into
     #an event.
 
     #the name of the save file will always be "save.json"
 
-    f = open('hey.json') #Opening save
+    f = open(file_name) #Opening save
 
     data = json.load(f) #Loading json file
 
@@ -186,7 +284,6 @@ def SimulateFightBackend():
 
     print("Restoring save file into Event object...")
     PlayerActionList = {} #Dictionnary containing all player with their action
-    input(PlayerList)
     for player in PlayerList: #Going through all player in PlayerList and creating JobObject
         #Will check what job the player is so we can create a player object of the relevant job
 
@@ -254,13 +351,12 @@ def SimulateFightBackend():
             Event.PlayerList.append(PlayerActionList[playerID]["job_object"]) #Adding job_object to Event
             PlayerActionList[playerID]["job_object"].CurrentFight = Event
 
-        input(Event.PlayerList)
 
-        Event.ShowGraph = True #Default
-        Event.SimulateFight(0.01,fightInfo["fightDuration"], fightInfo["countdownValue"]) #Simulates the fight
+    Event.ShowGraph = True #Default
+    Event.SimulateFight(0.01,fightInfo["fightDuration"], fightInfo["countdownValue"]) #Simulates the fight
 
 
-        print(
-            "========================================="
-            )
-        input("Press any key to return to the Main menu : ")
+    print(
+        "========================================="
+        )
+    input("Press any key to return to the Main menu : ")

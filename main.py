@@ -155,11 +155,9 @@ Event.PlayerList = [BLMPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKP
 Event.SimulateFight(0.01, 1000, 20)
 #SaveFight(Event, 20, 1000, "hey")
 input("stop here")
-client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
-client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE"
 fightID = 'kDgwP8LQ4W3KHVMc'
 fightNumber = '7'
-action_dict, player_dict = getAbilityList(client_id, client_secret, fightID, fightNumber)
+action_dict, player_dict = getAbilityList(fightID, fightNumber)
 
 for playerID in player_dict:
     player_dict[playerID]["job_object"].ActionSet = action_dict[playerID]
