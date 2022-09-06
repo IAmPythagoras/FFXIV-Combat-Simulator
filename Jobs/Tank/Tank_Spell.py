@@ -130,14 +130,14 @@ def ApplyShirk(Player, Enemy):
     Player.ShirkCD = 120
 
 #ArmLength in Melee_Spell.py
-Rampart = TankSpell(0, False, Lock, 0, 0, 0, ApplyRampart, [RampartRequirement])
-LowBlow = TankSpell(0, False, Lock, 0, 0, 0, ApplyLowBlow, [LowBlowRequirement])
-Provoke = TankSpell(0, False, Lock, 0, 0, 0, ApplyProvoke, [ProvokeRequirement])
+Rampart = TankSpell(7531, False, Lock, 0, 0, 0, ApplyRampart, [RampartRequirement])
+LowBlow = TankSpell(7540, False, Lock, 0, 0, 0, ApplyLowBlow, [LowBlowRequirement])
+Provoke = TankSpell(7533, False, Lock, 0, 0, 0, ApplyProvoke, [ProvokeRequirement])
 Interject = TankSpell(0, False, Lock, 0, 0, 0, ApplyInterject, [InterjectRequirement])
-Reprisal = TankSpell(0, False, Lock, 0, 0, 0, ApplyReprisal, [ReprisalRequirement])
-Shirk = TankSpell(0, False, Lock, 0, 0, 0, ApplyShirk, [ShirkRequirement])
-BigMit = TankSpell(0, False, 0, 0, 0, 0, ApplyBigMit, [BigMitRequirement]) #30% mit
-TankStance = TankSpell(0, False, 0, 0, 0, 0, ApplyTankStance, [TankStanceRequirement]) #Turn on Tank Stance
+Reprisal = TankSpell(7535, False, Lock, 0, 0, 0, ApplyReprisal, [ReprisalRequirement])
+Shirk = TankSpell(7537, False, Lock, 0, 0, 0, ApplyShirk, [ShirkRequirement])
+BigMit = TankSpell(44, False, 0, 0, 0, 0, ApplyBigMit, [BigMitRequirement]) #30% mit
+TankStance = TankSpell(16142, False, 0, 0, 0, 0, ApplyTankStance, [TankStanceRequirement]) #Turn on Tank Stance
 TurnOffTankStance = TankSpell(0, False, 0, 0, 0, 0, ApplyTurnOffTankStance, [])#Turn off Tank Stance
 
 TankAbility = {
@@ -151,5 +151,10 @@ TankAbility = {
 3629 : TankStance, #DarkKnight Tank Stance
 48 : TankStance, #Warrior Tank Stance
 28 : TankStance, #Paladin Tank Stance
-34590541 : Potion
+34590541 : Potion,
+-2 : Potion,
+44 : BigMit,
+17 : BigMit,
+16148 : BigMit,
+3636 : BigMit
 }

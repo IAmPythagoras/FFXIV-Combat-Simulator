@@ -54,6 +54,7 @@ from Jobs.Melee.Reaper.Reaper_Player import *
 
 
 from FFLogsAPIRequest import getAbilityList
+from UI_backend import SaveFight
 
 Dummy = Enemy()
 
@@ -102,7 +103,6 @@ RPRPlayer = Reaper(2.5, [], [], [], Event, RPRStat)
 PLDPlayer2 = Paladin(2.5, [], [], [], Event, PLDStat)
 PLDPlayer3 = Paladin(2.5, [], [], [], Event, PLDStat)
 
-
 BLMOpener = [SharpCast, WaitAbility(16.5), Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, Triplecast, Despair, Manafront, Fire4, Swiftcast, LucidDreaming, Despair, Transpose, SharpCast, Paradox, Xenoglossy, Thunder3,Transpose,Fire3, Fire4, Fire4, Fire4, Despair, Xenoglossy, Transpose, Paradox]
 SCHOpener = [WaitAbility(17), Potion, WaitAbility(1), Broil, Biolysis, Aetherflow, Broil, Swiftcast, Broil, ChainStratagem, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Broil, Broil, Broil, Broil]
 RDMOpener = [WaitAbility(15), Verthunder, Verareo, Swiftcast, Acceleration, Verthunder, Potion, Verthunder, Embolden, Manafication, EnchantedRiposte, Fleche, EnchantedZwerchhau, Contre, EnchantedRedoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verfire, Verthunder, Verstone, Verareo, Verfire, Verthunder,Verfire, Verthunder,Verfire,Fleche]
@@ -150,14 +150,14 @@ BRDPlayer.ActionSet = BRDOpener
 DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 RPRPlayer.ActionSet = RPROpener
-#Event.PlayerList = [NINPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
+Event.PlayerList = [BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
+Event.ShowGraph = True
+Event.SimulateFight(0.01, 1000, 20)
+exit()
 
-
-client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
-client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE"
 fightID = 'kDgwP8LQ4W3KHVMc'
 fightNumber = '7'
-action_dict, player_dict = getAbilityList(client_id, client_secret, fightID, fightNumber)
+action_dict, player_dict = getAbilityList(fightID, fightNumber)
 
 for playerID in player_dict:
     player_dict[playerID]["job_object"].ActionSet = action_dict[playerID]
@@ -222,9 +222,6 @@ for playerID in player_dict:
     Event.PlayerList.append(player_dict[playerID]["job_object"])
 
 Event.ShowGraph = True
-#input(Event.PlayerList)
-#Event.PlayerList = [Event.PlayerList[-2]]
-#input(Event.PlayerList)
 print("Starting simulator")
 Event.SimulateFight(0.01, 1000, 0)
 

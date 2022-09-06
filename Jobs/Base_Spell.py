@@ -32,6 +32,7 @@ class Spell:
         self.Effect = [Effect]
         self.Requirement = Requirement
         self.DPSBonus = 1
+        self.TargetID = 0 #By default 0
 
     def Cast(self, player, Enemy):
         #This function will cast the spell given by the Fight, it will apply whatever effects it has and do its potency
@@ -127,8 +128,8 @@ class Spell:
         Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage
 
-        #if self.id > 0:# and Damage > 0: 
-        #    print("The action with id : " + str(self.id) + " did " + str(Damage) + " damage and was casted by : " + str(player.CurrentFight.TimeStamp))
+        if self.id > 0:# and Damage > 0: 
+            print("The action with id : " + str(self.id) + " did " + str(Damage) + " damage and was casted by : " + str(player.CurrentFight.TimeStamp))
             #print("Huton Timer " + str(player.HutonTimer))
             #if self.GCD: print("GCD TIMER IS : " + str(self.RecastTime))
         #    if isinstance(player, DarkKnight) : input("blood " + str(player.Blood))
@@ -170,7 +171,9 @@ def WaitAbility(time):
     def ApplyWaitAbility(Player, Enemy):
         pass
         #if time > 2.5 : input("wait for more than necessary")
-    return Spell(-1, False, time, time, 0, 0, ApplyWaitAbility, [])
+    WaitAction = Spell(212, False, time, time, 0, 0, ApplyWaitAbility, [])
+    WaitAction.waitTime = time #Special field just for wait ability
+    return WaitAction
 
 def ApplyPotion(Player, Enemy):
     Player.Stat["MainStat"] = min(math.floor(Player.Stat["MainStat"] * 1.1), Player.Stat["MainStat"] + 189)

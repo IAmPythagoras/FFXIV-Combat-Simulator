@@ -70,20 +70,7 @@ class ActionNotFound(Exception):#Exception called if an action isn't found in th
 class JobNotFound(Exception):#Exception called if a Job isn't found
     pass
 
-def getAccessToken(conn, client_id, client_secret):
-    payload = "grant_type=client_credentials&client_id=%s&client_secret=%s" % (client_id, client_secret)
-    headers = {'content-type':"application/x-www-form-urlencoded"}
-    print("Sending Request...")
-    conn.request("POST","/oauth/token", payload, headers)
-    res = conn.getresponse()
-    print("Received Request")
-    res_str = res.read().decode("utf-8")
-    res_json = json.loads(res_str)
-    return res_json["access_token"]
-
-def getAbilityList(client_id, client_secret, fightID, fightNumber):
-
-    def lookup_abilityID(actionID, targetID, sourceID, targetEnemy, targetSelf, isHeal):
+def lookup_abilityID(actionID, targetID, sourceID, player_list):
         #Will first get the job of the sourceID so we know in what dictionnary to search for
 
         def lookup(JobDict, ClassDict):
@@ -145,6 +132,21 @@ def getAbilityList(client_id, client_secret, fightID, fightNumber):
         raise JobNotFound #If we get here, then we have not found the job in question
         #This should not happen, and if it does it means we either have a serious problem or the names aren't correct
 
+def getAccessToken(conn, client_id, client_secret):
+    payload = "grant_type=client_credentials&client_id=%s&client_secret=%s" % (client_id, client_secret)
+    headers = {'content-type':"application/x-www-form-urlencoded"}
+    print("Sending Request...")
+    conn.request("POST","/oauth/token", payload, headers)
+    res = conn.getresponse()
+    print("Received Request")
+    res_str = res.read().decode("utf-8")
+    res_json = json.loads(res_str)
+    return res_json["access_token"]
+
+def getAbilityList(fightID, fightNumber):
+
+    client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
+    client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE" #Supposed to be secret >.>
 
     conn = http.client.HTTPSConnection("www.fflogs.com")
     access_token = getAccessToken(conn, client_id, client_secret)
@@ -211,8 +213,9 @@ def getAbilityList(client_id, client_secret, fightID, fightNumber):
                 elif job_name == "Samurai" : job_object = Samurai(2.5, [], [], [], None, {})
                 
                 
-
+            job_object.playerID = str(player["id"])
             player_list[str(player["id"])] = {"name" : player["name"], "job" : job_name, "job_object" : job_object} #Adding new Key
+
             #We can access the information using the player's id
 
     
@@ -347,7 +350,7 @@ def getAbilityList(client_id, client_secret, fightID, fightNumber):
                         wait_flag = False #reset
                         wait_timestamp = 0 #reset
 
-                next_action = lookup_abilityID(action.action_id, action.targetID, player, action.targetEnemy, action.targetSelf, action.isHeal) #returns the action object of the specified spell
+                next_action = lookup_abilityID(action.action_id, action.targetID, player, player_list) #returns the action object of the specified spell
                 
                 if is_heal:
                     #If this flag is set to true, we wait until we do not have type = 'calculatedheal'
@@ -442,6 +445,7 @@ def getAbilityList(client_id, client_secret, fightID, fightNumber):
                 wait_potion = False #We have waited for the potion
 
         action_dict[player] = player_action_list
+
     return action_dict, player_list
     #action_dict is a dictionnary with a list of actions done by each player. Accessible by using their IDs
     #player_list is a dictionnary with relevant information to all players. Accessible by using their IDs

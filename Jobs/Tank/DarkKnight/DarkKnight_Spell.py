@@ -257,52 +257,52 @@ def ApplyOblation(Player, Enemy):
 DRKGCD = 2.5         #GCD speed
 Lock = 0            #Fixed value for animation lock.
 
-HardSlash = DRKSkill(1, True, Lock, DRKGCD, 170, 0, 0, ApplyHardSlashEffect, [])
-SyphonStrike = DRKSkill(2, True, Lock, DRKGCD, 120, 0, 0, ApplySyphonEffect, [])
-Souleater = DRKSkill(3, True, Lock, DRKGCD, 120, 0, 0, empty, [])
-Bloodspiller = DRKSkill(4, True, Lock, DRKGCD, 500, 0, 50, empty, [BloodRequirement])
+HardSlash = DRKSkill(3617, True, Lock, DRKGCD, 170, 0, 0, ApplyHardSlashEffect, [])
+SyphonStrike = DRKSkill(3623, True, Lock, DRKGCD, 120, 0, 0, ApplySyphonEffect, [])
+Souleater = DRKSkill(3632, True, Lock, DRKGCD, 120, 0, 0, empty, [])
+Bloodspiller = DRKSkill(7392, True, Lock, DRKGCD, 500, 0, 50, empty, [BloodRequirement])
 Quietus = DRKSkill(5, True, Lock, DRKGCD, 200, 0, 50, empty, [BloodRequirement])
-Unmend = DRKSkill(6, True, Lock, 2.50, 150, 0, 0, empty, [])
+Unmend = DRKSkill(3624, True, Lock, 2.50, 150, 0, 0, empty, [])
 
 #List of Buffs used by a Dark Knight Player.
 
-BloodWeapon = DRKSkill(7, False, Lock, 0, 0, 0, 0, ApplyBloodWeaponEffect, [BloodWeaponRequirement])
-Delirium = DRKSkill(8, False, Lock, 0, 0, 0, 0, ApplyDeliriumEffect, [DeliriumRequirement])
+BloodWeapon = DRKSkill(3625, False, Lock, 0, 0, 0, 0, ApplyBloodWeaponEffect, [BloodWeaponRequirement])
+Delirium = DRKSkill(7390, False, Lock, 0, 0, 0, 0, ApplyDeliriumEffect, [DeliriumRequirement])
 
 #List of Abilities used by a Dark Knight Player.
 
-EdgeShadow = DRKSkill(9, False, Lock, 0, 460, 3000, 0, ApplyEdgeShadowEffect, [EdgeShadowRequirement])
+EdgeShadow = DRKSkill(16470, False, Lock, 0, 460, 3000, 0, ApplyEdgeShadowEffect, [EdgeShadowRequirement])
 FloodShadow = DRKSkill(10, False, Lock, 0, 160, 3000, 0, ApplyEdgeShadowEffect, [EdgeShadowRequirement])
-CarveSpit = DRKSkill(11, False, Lock, 0, 510, 0, 0, ApplyCarveSpitEffect, [CarveSpitRequirement])
+CarveSpit = DRKSkill(3643, False, Lock, 0, 510, 0, 0, ApplyCarveSpitEffect, [CarveSpitRequirement])
 AbyssalDrain = DRKSkill(12, False, Lock, 0, 150, 0, 0, ApplyAbyssalDrainEffect, [AbyssalDrainRequirement])
-SaltedEarth = DRKSkill(13, False, Lock, 0, 50, 0, 0, ApplySaltedEarth, [SaltedEarthRequirement]) #Ground target DOT, ticks once upon placement.
+SaltedEarth = DRKSkill(3639, False, Lock, 0, 50, 0, 0, ApplySaltedEarth, [SaltedEarthRequirement]) #Ground target DOT, ticks once upon placement.
 SaltedEarthDOT = DOTSpell(14, 50, True)
-SaltDarkness = DRKSkill(15, False, Lock, 0, 500, 0, 0, empty, [SaltDarknessRequirement])
-Shadowbringer = DRKSkill(16, False, Lock, 0, 600, 0, 0, SpendShadowbringer, [ShadowbringerRequirement])
-LivingShadow = DRKSkill(17, False, Lock, 0, 0, 0, 50, SummonLivingShadow, [BloodRequirement])
-Plunge = DRKSkill(18, False, Lock, 0, 150, 0, 0, SpendPlunge, [PlungeRequirement])
+SaltDarkness = DRKSkill(25755, False, Lock, 0, 500, 0, 0, empty, [SaltDarknessRequirement])
+Shadowbringer = DRKSkill(25757, False, Lock, 0, 600, 0, 0, SpendShadowbringer, [ShadowbringerRequirement])
+LivingShadow = DRKSkill(16472, False, Lock, 0, 0, 0, 50, SummonLivingShadow, [BloodRequirement])
+Plunge = DRKSkill(3640, False, Lock, 0, 150, 0, 0, SpendPlunge, [PlungeRequirement])
 
-TBN = DRKSkill(19, False, Lock, 0, 0, 3000, 0, ApplyDarkArts, [TBNRequirement])     #Simply makes the next EdgeShadow free for now.
+TBN = DRKSkill(7393, False, Lock, 0, 0, 3000, 0, ApplyDarkArts, [TBNRequirement])     #Simply makes the next EdgeShadow free for now.
 
 #AOE GCD
 Unleash = DRKSkill(20, True, 0, 2.5, 120, 0, 0, ApplyUnleash, [])
 StalwartSoul = DRKSkill(21, True, 0, 2.5, 100, 0, 0, empty, [])
 #List of Abilities performed by Living Shadow.
 
-PAbyssalDrain = DRKSkill(22, True, 0.5, 2.36, 300, 0, 0, empty, [])
-PPlunge = DRKSkill(23, True, 0.5, 2.36, 300, 0, 0, empty, [])
-PQuietus = DRKSkill(24, True, 0.5, 2.36, 300, 0, 0, empty, [])
-PShadowbringer = DRKSkill(25, True, 0.5, 2.36, 450, 0, 0, empty, [])
-PEdgeShadow = DRKSkill(26, True, 0.5, 2.36, 300, 0, 0, empty, [])
-PBloodspiller = DRKSkill(27, True, 0.5, 2.36, 300, 0, 0, empty, [])
-PCarveSpit = DRKSkill(28, True, 0.5, 2.36, 300, 0, 0, empty, [])
+PAbyssalDrain = DRKSkill(22, True, 0.5, 2.5, 300, 0, 0, empty, [])
+PPlunge = DRKSkill(23, True, 0.5, 2.5, 300, 0, 0, empty, [])
+PQuietus = DRKSkill(24, True, 0.5, 2.5, 300, 0, 0, empty, [])
+PShadowbringer = DRKSkill(25, True, 0.5, 2.5, 450, 0, 0, empty, [])
+PEdgeShadow = DRKSkill(26, True, 0.5, 2.5, 300, 0, 0, empty, [])
+PBloodspiller = DRKSkill(27, True, 0.5, 2.5, 300, 0, 0, empty, [])
+PCarveSpit = DRKSkill(28, True, 0.5, 2.5, 300, 0, 0, empty, [])
 PDelay = DRKSkill(29, True, 0, 4.50, 0, 0, 0, empty, [])    #6s animation before it starts attacking.
 
 #Mit
-LivingDead = DRKSkill(30, False, 0, 0, 0, 0, 0, ApplyLivingDead, [LivingDeadRequirement])
-DarkMind = DRKSkill(31, False, 0, 0, 0, 0, 0, ApplyDarkMind, [DarkMindRequirement])
-DarkMissionary = DRKSkill(32, False, 0, 0, 0, 0, 0, ApplyDarkMissionary, [DarkMissionaryRequirement])
-Oblation = DRKSkill(33, False, 0, 0, 0, 0, 0, ApplyOblation, [OblationRequirement])
+LivingDead = DRKSkill(3638, False, 0, 0, 0, 0, 0, ApplyLivingDead, [LivingDeadRequirement])
+DarkMind = DRKSkill(3634, False, 0, 0, 0, 0, 0, ApplyDarkMind, [DarkMindRequirement])
+DarkMissionary = DRKSkill(16471, False, 0, 0, 0, 0, 0, ApplyDarkMissionary, [DarkMissionaryRequirement])
+Oblation = DRKSkill(25754, False, 0, 0, 0, 0, 0, ApplyOblation, [OblationRequirement])
 #buff
 EdgeShadowBuff = buff(1.1)
 
@@ -326,13 +326,13 @@ DarkKnightAbility = {
     16470: EdgeShadow,
     16471: DarkMissionary,
     16472: LivingShadow,
-    17904: PAbyssalDrain,
-    17905: PPlunge,
-    17906: PQuietus,
-    17908: PEdgeShadow,
-    17909: PBloodspiller,
-    17915: PCarveSpit,
-    25881: PShadowbringer,
+    #17904: PAbyssalDrain,
+    #17905: PPlunge,
+    #17906: PQuietus,
+    #17908: PEdgeShadow,
+    #17909: PBloodspiller,
+    #17915: PCarveSpit,
+    #25881: PShadowbringer,
     25754: Oblation,
     25755: SaltDarkness,
     25757: Shadowbringer,

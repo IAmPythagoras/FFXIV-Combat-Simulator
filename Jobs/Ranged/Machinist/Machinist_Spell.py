@@ -272,28 +272,28 @@ def QueenAACheck(Player, Enemy):
 
 
 
-Wildfire = MachinistSpell(1, False, 0, Lock, 0, 0, ApplyWildFire, [WildFireRequirement], False)
-AirAnchor = MachinistSpell(2, True, 0, 2.5, 580, 0, ApplyAirAnchor, [AirAnchorRequirement], True)
-BarrelStabilizer = MachinistSpell(3, False, 0, Lock, 0, 0, ApplyBarrelStabilizer, [BarrelStabilizerRequirement], False)
-HeatBlast = MachinistSpell(4, True, Lock, 1.5, 180, 0, ApplyHeatBlast, [OverheatedRequirement], True)
-Hypercharge = MachinistSpell(5, False, 0, Lock, 0, 0, ApplyHypercharge, [HyperchargeRequirement], False)
-Reassemble = MachinistSpell(6, False, 0, Lock, 0, 0, ApplyReassemble, [ReassembleRequirement], False)
-GaussRound = MachinistSpell(7, False, 0, Lock, 120, 0, ApplyGaussRound, [GaussRoundRequirement], False)
-Ricochet = MachinistSpell(8, False, 0, Lock, 120, 0, ApplyRicochet, [RicochetRequirement], False)
-Drill = MachinistSpell(9, True, 0, 2.5, 580, 0, ApplyDrill, [DrillRequirement], True)
-ChainSaw = MachinistSpell(10, True, 0, 2.5, 580, 0, ApplyChainSaw, [ChainSawRequirement], True)
-Tactician = MachinistSpell(11, False, 0, 0, 0, 0, ApplyTactician, [TacticianRequirement], False)
+Wildfire = MachinistSpell(2878, False, 0, Lock, 0, 0, ApplyWildFire, [WildFireRequirement], False)
+AirAnchor = MachinistSpell(16500, True, 0, 2.5, 580, 0, ApplyAirAnchor, [AirAnchorRequirement], True)
+BarrelStabilizer = MachinistSpell(7414, False, 0, Lock, 0, 0, ApplyBarrelStabilizer, [BarrelStabilizerRequirement], False)
+HeatBlast = MachinistSpell(7410, True, Lock, 1.5, 180, 0, ApplyHeatBlast, [OverheatedRequirement], True)
+Hypercharge = MachinistSpell(17209, False, 0, Lock, 0, 0, ApplyHypercharge, [HyperchargeRequirement], False)
+Reassemble = MachinistSpell(2876, False, 0, Lock, 0, 0, ApplyReassemble, [ReassembleRequirement], False)
+GaussRound = MachinistSpell(2874, False, 0, Lock, 120, 0, ApplyGaussRound, [GaussRoundRequirement], False)
+Ricochet = MachinistSpell(2890, False, 0, Lock, 120, 0, ApplyRicochet, [RicochetRequirement], False)
+Drill = MachinistSpell(16498, True, 0, 2.5, 580, 0, ApplyDrill, [DrillRequirement], True)
+ChainSaw = MachinistSpell(25788, True, 0, 2.5, 580, 0, ApplyChainSaw, [ChainSawRequirement], True)
+Tactician = MachinistSpell(16889, False, 0, 0, 0, 0, ApplyTactician, [TacticianRequirement], False)
 #Combo Action
 
-SplitShot = MachinistSpell(12, True, Lock, 2.5, 200, 0, ApplySplitShot, [], True)
-SlugShot = MachinistSpell(13, True, Lock, 2.5, 120, 0, ApplySlugShot, [], True )
-CleanShot = MachinistSpell(14, True, Lock, 2.5, 110, 0, ApplyCleanShot, [], True)
+SplitShot = MachinistSpell(7411, True, Lock, 2.5, 200, 0, ApplySplitShot, [], True)
+SlugShot = MachinistSpell(7412, True, Lock, 2.5, 120, 0, ApplySlugShot, [], True )
+CleanShot = MachinistSpell(7413, True, Lock, 2.5, 110, 0, ApplyCleanShot, [], True)
 
 
 #AOE GCD
-AutoCrossbow = MachinistSpell(15, True, 0, 1.5, 140, 0, empty, [OverheatedRequirement], True)
-Scattergun = MachinistSpell(16, True, 0, 2.5, 150, 0, ApplyScattergun, [], True)
-Bioblaster = MachinistSpell(17, True, 0, 0, 50, 0, ApplyBioblaster, [DrillRequirement], True) #Shares CD with Drill
+AutoCrossbow = MachinistSpell(16497, True, 0, 1.5, 140, 0, empty, [OverheatedRequirement], True)
+Scattergun = MachinistSpell(25768, True, 0, 2.5, 150, 0, ApplyScattergun, [], True)
+Bioblaster = MachinistSpell(16499, True, 0, 0, 50, 0, ApplyBioblaster, [DrillRequirement], True) #Shares CD with Drill
 BioblasterDOT = DOTSpell(-2, 50, True)
 FlamethrowerDOT = DOTSpell(-3, 80, True)
 def Flamethrower(time):
@@ -311,14 +311,14 @@ def Flamethrower(time):
         Player.DOTList.append(Player.FlamethrowerDOT)
         Player.EffectCDList.append(FlamethrowerDOTCheck)
 
-    return MachinistSpell(18, True, time, time, 0, 0, ApplyFlamethrower, [FlamethrowerRequirement], False)
+    return MachinistSpell(7418, True, time, time, 0, 0, ApplyFlamethrower, [FlamethrowerRequirement], False)
 
 #Queen's Ability
 
 #These abilities will write into the Queen's ability list.
 #If they are not done the queen will do them automatically
-Automaton = MachinistSpell(14, False, 0, Lock, 0, 0, ApplyAutomaton, [], False)
-Overdrive = MachinistSpell(13, False, 0, Lock, 0, 0, ApplyOverdrive, [], False)
+Automaton = MachinistSpell(16501, False, 0, Lock, 0, 0, ApplyAutomaton, [], False)
+Overdrive = MachinistSpell(16502, False, 0, Lock, 0, 0, ApplyOverdrive, [], False)
 #These will be casted by the machinist, so they have no damage. Their only effect is to add into Queen's Queue
 Bunker = MachinistSpell(15, True, 0, 2.5, 680, 0, ApplyCollider, [], False)   #Triggered by Overdrive
 Collider = MachinistSpell(16, True, 0 , 2.5, 780, 0, ApplyCollider, [], False)  #Spell Queen will cast
@@ -330,17 +330,18 @@ MachinistAbility = {
 25768 : Scattergun, 
 17209 : Hypercharge, 
 16889 : Tactician, 
-16502:Overdrive, 
-16501:Automaton,
+16502 : Overdrive, 
+16501 : Automaton,
 16500 : AirAnchor, 
 16499 : Bioblaster, 
-16498:Drill,
+16498 : Drill,
 16497 : AutoCrossbow, 
-7418 : Flamethrower, 
+7418 : Flamethrower(2.5), 
 7414 : BarrelStabilizer, 
 7413 : CleanShot, 
 7410 : HeatBlast, 
 2878 : Wildfire,
 2874 : GaussRound, 
-2890 : Ricochet 
+2890 : Ricochet,
+2876 : Reassemble
 }

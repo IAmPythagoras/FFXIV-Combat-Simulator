@@ -175,43 +175,43 @@ def CheckBiolysis(Player, Enemy):
 
 
 #DamageGCD
-Broil = ScholarSpell(1, True, 1.5, 2.5, 295,  400, empty, [ManaRequirement])
-Ruin = ScholarSpell(2, True, 0, 2.5, 220,  300, empty, [ManaRequirement])
-Biolysis = ScholarSpell(3, True, 0, 2.5, 0, 300, ApplyBiolysis, [ManaRequirement])
+Broil = ScholarSpell(25865, True, 1.5, 2.5, 295,  400, empty, [ManaRequirement])
+Ruin = ScholarSpell(17870, True, 0, 2.5, 220,  300, empty, [ManaRequirement])
+Biolysis = ScholarSpell(16540, True, 0, 2.5, 0, 300, ApplyBiolysis, [ManaRequirement])
 BiolysisDOT = DOTSpell(4, 70, False)
-ArtOfWar = ScholarSpell(5, True, 0, 2.5, 165, 400, empty, [ManaRequirement])#AOE
+ArtOfWar = ScholarSpell(25866, True, 0, 2.5, 165, 400, empty, [ManaRequirement])#AOE
 
 #HealGCD
-Succor = ScholarSpell(6, True, 2, 2.5, 0, 1000, ApplyAdloquium, [AdloquiumRequirement]) ##This action has apply and requirement because of recitation
-Adloquium = ScholarSpell(7, True, 2, 2.5, 0, 1000, ApplyAdloquium, [AdloquiumRequirement]) #This action has apply and requirement because of recitation
-Physick = ScholarSpell(8, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement])
+Succor = ScholarSpell(186, True, 2, 2.5, 0, 1000, ApplyAdloquium, [AdloquiumRequirement]) ##This action has apply and requirement because of recitation
+Adloquium = ScholarSpell(185, True, 2, 2.5, 0, 1000, ApplyAdloquium, [AdloquiumRequirement]) #This action has apply and requirement because of recitation
+Physick = ScholarSpell(190, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement])
 SummonEos = ScholarSpell(29, True, 1.5, 2.5, 0, 200, empty, [ManaRequirement])
 #Damage oGCD
-ChainStratagem = ScholarSpell(9, False, 0, Lock, 0, 0, ApplyChainStratagem, [ChainStratagemRequirement])
-EnergyDrain = ScholarSpell(10, False, 0, Lock, 100, 0, ApplyEnergyDrain, [AetherStackRequirement])
-Aetherflow = ScholarSpell(11, False, 0, Lock, 0, 0, ApplyAetherflow, [AetherflowRequirement])
-Dissipation = ScholarSpell(12, False, 0, Lock, 0, 0, ApplyDissipation, [DissipationRequirement])
+ChainStratagem = ScholarSpell(7436, False, 0, Lock, 0, 0, ApplyChainStratagem, [ChainStratagemRequirement])
+EnergyDrain = ScholarSpell(167, False, 0, Lock, 100, 0, ApplyEnergyDrain, [AetherStackRequirement])
+Aetherflow = ScholarSpell(166, False, 0, Lock, 0, 0, ApplyAetherflow, [AetherflowRequirement])
+Dissipation = ScholarSpell(3587, False, 0, Lock, 0, 0, ApplyDissipation, [DissipationRequirement])
 #Heal oGCD
-Expedient = ScholarSpell(13, False, 0, 0, 0, 0, ApplyExpedient, [ExpedientRequirement])
-Protraction = ScholarSpell(14, False, 0, 0, 0, 0, ApplyProtraction, [ProtractionRequirement])
-Recitation = ScholarSpell(15, False, 0, 0, 0, 0, ApplyRecitation, [RecitationRequirement])
-EmergencyTactic = ScholarSpell(16, False, 0, 0, 0, 0, ApplyEmergencyTactic, [EmergencyTacticRequirement])
-DeploymentTactic = ScholarSpell(17, False, 0, 0, 0, 0, ApplyDeploymentTactic, [DeploymentTacticRequirement])
+Expedient = ScholarSpell(25868, False, 0, 0, 0, 0, ApplyExpedient, [ExpedientRequirement])
+Protraction = ScholarSpell(25867, False, 0, 0, 0, 0, ApplyProtraction, [ProtractionRequirement])
+Recitation = ScholarSpell(16542, False, 0, 0, 0, 0, ApplyRecitation, [RecitationRequirement])
+EmergencyTactic = ScholarSpell(3586, False, 0, 0, 0, 0, ApplyEmergencyTactic, [EmergencyTacticRequirement])
+DeploymentTactic = ScholarSpell(3585, False, 0, 0, 0, 0, ApplyDeploymentTactic, [DeploymentTacticRequirement])
 
 #AetherFlow Heal spell
-Excogitation = ScholarSpell(18, False, 0, 0, 0, 0, ApplyExcogitation, [ExcogitationRequirement,AetherHealRequirement]) #Can be used by recitation
-SacredSoil = ScholarSpell(19, False, 0, 0, 0, 0, ApplySacredSoil, [SacredSoilRequirement,AetherflowRequirement])
-Lustrate = ScholarSpell(20, False, 0, 0, 0, 0, ApplyLustrate, [LustrateRequirement,AetherflowRequirement])
-Indomitability = ScholarSpell(21, False, 0, 0, 0, 0, ApplyIndomitability, [IndomitabilityRequirement,AetherHealRequirement])#Can be used by recitation
+Excogitation = ScholarSpell(7434, False, 0, 0, 0, 0, ApplyExcogitation, [ExcogitationRequirement,AetherHealRequirement]) #Can be used by recitation
+SacredSoil = ScholarSpell(188, False, 0, 0, 0, 0, ApplySacredSoil, [SacredSoilRequirement,AetherflowRequirement])
+Lustrate = ScholarSpell(189, False, 0, 0, 0, 0, ApplyLustrate, [LustrateRequirement,AetherflowRequirement])
+Indomitability = ScholarSpell(3583, False, 0, 0, 0, 0, ApplyIndomitability, [IndomitabilityRequirement,AetherHealRequirement])#Can be used by recitation
 
 #Fey Healing
 Consolation = ScholarSpell(22, False, 0, 0, 0, 0, ApplyConsolation, [ConsolationRequirement])
-SummonSeraph = ScholarSpell(23, False, 0, 0, 0, 0, ApplySummonSeraph, [SummonSeraphRequirement])
-FeyBlessing =ScholarSpell(24, False, 0, 0, 0, 0, ApplyFeyBlessing, [FeyBlessingRequirement])
-Aetherpact = ScholarSpell(25, False, 0, 0, 0, 0, empty, []) #No requirement, since 3 sec cd, so not really worth it imo
+SummonSeraph = ScholarSpell(16545, False, 0, 0, 0, 0, ApplySummonSeraph, [SummonSeraphRequirement])
+FeyBlessing =ScholarSpell(16543, False, 0, 0, 0, 0, ApplyFeyBlessing, [FeyBlessingRequirement])
+Aetherpact = ScholarSpell(7437, False, 0, 0, 0, 0, empty, []) #No requirement, since 3 sec cd, so not really worth it imo
 DissolveUnion = ScholarSpell(26, False, 0, 0, 0, 0, empty, [])
-FeyIllumination = ScholarSpell(27, False, 0, 0, 0, 0, ApplyFeyIllumination, [FeyIlluminationRequirement])
-WhisperingDawn = ScholarSpell(28, False, 0, 0, 0, 0, ApplyWhisperingDawn, [WhisperingDawnRequirement])
+FeyIllumination = ScholarSpell(16538, False, 0, 0, 0, 0, ApplyFeyIllumination, [FeyIlluminationRequirement])
+WhisperingDawn = ScholarSpell(16537, False, 0, 0, 0, 0, ApplyWhisperingDawn, [WhisperingDawnRequirement])
 
 ScholarAbility = {
 166 : Aetherflow, 

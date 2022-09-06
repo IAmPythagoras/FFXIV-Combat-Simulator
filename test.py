@@ -1,6 +1,2 @@
-def f(x):
-    return x
-
-a = [f]
-print(a[0] == f)
-a.remove(f)
+k = {"hey" : 2}
+print(k.keys())

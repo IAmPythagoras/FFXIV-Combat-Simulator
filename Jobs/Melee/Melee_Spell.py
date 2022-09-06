@@ -120,12 +120,12 @@ def TrueNorthStackCheck(Player, Enemy):
             Player.TrueNorthCD = 45
         Player.TrueNorthStack += 1
 #Class Action (no effect as of now)
-SecondWind = MeleeSpell(2001, False, Lock, 0, 0, 0, ApplySecondWind, [SecondWindRequirement])
-LegSweep = MeleeSpell(2002, False, Lock, 0, 0, 0, ApplyLegSweep, [LegSweepRequirement])
-Bloodbath = MeleeSpell(2003, False, Lock, 0, 0, 0, ApplyBloodbath, [BloodbathRequirement])
-Feint = MeleeSpell(2004, False, Lock, 0, 0, 0, ApplyFeint, [FeintRequirement])
-ArmLength = MeleeSpell(2005, False, Lock, 0, 0, 0, ApplyArmLength, [ArmLengthRequirement])
-TrueNorth = MeleeSpell(2006, False, Lock, 0, 0, 0, ApplyTrueNorth, [TrueNorthRequirement])
+SecondWind = MeleeSpell(7541, False, Lock, 0, 0, 0, ApplySecondWind, [SecondWindRequirement])
+LegSweep = MeleeSpell(7863, False, Lock, 0, 0, 0, ApplyLegSweep, [LegSweepRequirement])
+Bloodbath = MeleeSpell(7542, False, Lock, 0, 0, 0, ApplyBloodbath, [BloodbathRequirement])
+Feint = MeleeSpell(7549, False, Lock, 0, 0, 0, ApplyFeint, [FeintRequirement])
+ArmLength = MeleeSpell(7548, False, Lock, 0, 0, 0, ApplyArmLength, [ArmLengthRequirement])
+TrueNorth = MeleeSpell(7546, False, Lock, 0, 0, 0, ApplyTrueNorth, [TrueNorthRequirement])
 
 MeleeAbility = {
 7541 : SecondWind,
@@ -135,5 +135,6 @@ MeleeAbility = {
 7546 : TrueNorth,
 7548 : ArmLength,
 34590541 : Potion,  #STR
-34590542 : Potion   #DEX
+34590542 : Potion,   #DEX
+-2 : Potion
 }

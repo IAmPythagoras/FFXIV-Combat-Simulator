@@ -233,44 +233,44 @@ def ValorDOTCheck(Player, Enemy):
 
 #Combo action
 
-FastBlade = PaladinSpell(1, True, Lock, 2.5, 200, 0, ApplyFastBlade, [], True)
-RiotBlade = PaladinSpell(2, True, Lock, 2.5, 170, 0, empty, [], True)
-RoyalAuthority = PaladinSpell(3, True, Lock, 2.5, 130,0, empty, [], True)
-GoringBlade = PaladinSpell(4, True, Lock, 2.5, 100, 0, empty, [], True)
+FastBlade = PaladinSpell(9, True, Lock, 2.5, 200, 0, ApplyFastBlade, [], True)
+RiotBlade = PaladinSpell(15, True, Lock, 2.5, 170, 0, empty, [], True)
+RoyalAuthority = PaladinSpell(3539, True, Lock, 2.5, 130,0, empty, [], True)
+GoringBlade = PaladinSpell(3538, True, Lock, 2.5, 100, 0, empty, [], True)
 GoringDOT = DOTSpell(-5, 65, True)
 
 #Confiteor Combo Action
 
-Confetti = PaladinSpell(5, True, Lock, 2.5, 900, 1000, ApplyConfetti, [ManaRequirement, ConfettiRequirement], False) # >.>
-BladeFaith = PaladinSpell(6, True, Lock, 2.5, 420, 0, ApplyBladeFaith, [BladeFaithRequirement], False)
-BladeTruth = PaladinSpell(7, True, Lock, 2.5, 500, 0, ApplyBladeTruth, [BladeTruthRequirement], False)
-BladeValor = PaladinSpell(8, True, Lock, 2.5, 580, 0, ApplyBladeValor, [BladeValorRequirement], False)
+Confetti = PaladinSpell(16459, True, Lock, 2.5, 900, 1000, ApplyConfetti, [ManaRequirement, ConfettiRequirement], False) # >.>
+BladeFaith = PaladinSpell(25748, True, Lock, 2.5, 420, 0, ApplyBladeFaith, [BladeFaithRequirement], False)
+BladeTruth = PaladinSpell(25749, True, Lock, 2.5, 500, 0, ApplyBladeTruth, [BladeTruthRequirement], False)
+BladeValor = PaladinSpell(25750, True, Lock, 2.5, 580, 0, ApplyBladeValor, [BladeValorRequirement], False)
 BladeValorDOT = DOTSpell(-11, 80, True)
 
 #GCD
-HolySpirit = PaladinSpell(9, True, 1.5, 2.5, 270, 1000, empty, [ManaRequirement], False)
-Atonement = PaladinSpell(10, True, Lock, 2.5, 420, 0, ApplyAtonement, [AtonementRequirement], True)
-Clemency = PaladinSpell(11, True, 1.5, 2.5, 0, 1000, empty, [ManaRequirement], False)
-ShieldLob = PaladinSpell(25, True, 0, 2.5, 100, 0, empty, [], True )
+HolySpirit = PaladinSpell(7384, True, 1.5, 2.5, 270, 1000, empty, [ManaRequirement], False)
+Atonement = PaladinSpell(16460, True, Lock, 2.5, 420, 0, ApplyAtonement, [AtonementRequirement], True)
+Clemency = PaladinSpell(3541, True, 1.5, 2.5, 0, 1000, empty, [ManaRequirement], False)
+ShieldLob = PaladinSpell(24, True, 0, 2.5, 100, 0, empty, [], True )
 #AOE GCD
-HolyCircle = PaladinSpell(12, True, 1.5, 2.5,130, 1000, empty, [ManaRequirement], False)
-TotalEclipse = PaladinSpell(13, True, 0, 2.5, 100, 0, ApplyTotalEclipse, [], True)
-Prominence = PaladinSpell(14, True, 0, 2.5, 100, 0, empty, [], True)
+HolyCircle = PaladinSpell(16458, True, 1.5, 2.5,130, 1000, empty, [ManaRequirement], False)
+TotalEclipse = PaladinSpell(7381, True, 0, 2.5, 100, 0, ApplyTotalEclipse, [], True)
+Prominence = PaladinSpell(16457, True, 0, 2.5, 100, 0, empty, [], True)
 
 #oGCD
-RequestACat = PaladinSpell(15, False, 0, Lock, 400, 0, ApplyRequestACat, [RequestACatRequirement], True) #I NEED ONE RIGHT NOW :x
-CircleScorn = PaladinSpell(16, False, 0, Lock, 100, 0, ApplyCircleScorn, [CircleScornRequirement], True)
+RequestACat = PaladinSpell(7383, False, 0, Lock, 400, 0, ApplyRequestACat, [RequestACatRequirement], True) #I NEED ONE RIGHT NOW :x
+CircleScorn = PaladinSpell(23, False, 0, Lock, 100, 0, ApplyCircleScorn, [CircleScornRequirement], True)
 CircleScornDOT = DOTSpell(-6, 30, True)
-Intervene = PaladinSpell(17, False, 0, Lock, 150, 0, ApplyIntervene, [InterveneRequirement], True)
-Expiacion = PaladinSpell(18, False, 0, Lock, 340, 0, ApplyExpiacion, [ExpiacionRequirement], True)
-FightOrFlight = PaladinSpell(19, False, 0, Lock, 0, 0, ApplyFightOrFlight, [FightOrFlightRequirement], True)
+Intervene = PaladinSpell(16461, False, 0, Lock, 150, 0, ApplyIntervene, [InterveneRequirement], True)
+Expiacion = PaladinSpell(25747, False, 0, Lock, 340, 0, ApplyExpiacion, [ExpiacionRequirement], True)
+FightOrFlight = PaladinSpell(20, False, 0, Lock, 0, 0, ApplyFightOrFlight, [FightOrFlightRequirement], True)
 
 #Mitigation Actions
-DivineVeil = PaladinSpell(20, False, 0, 0, 0, 0, ApplyDivineVeil, [DivineVeilRequirement], False)
-HolySheltron = PaladinSpell(21, False, 0, 0, 0, 0, ApplyHolySheltron, [HolySheltronRequirement,SheltronRequirement], False)
-Cover = PaladinSpell(22, False, 0, 0, 0, 0, ApplyCover, [SheltronRequirement, CoverRequirement], False)
-HallowedGround = PaladinSpell(25, False, 0, 0, 0, 0, ApplyHallowedGround, [HallowedGroundRequirement], False)
-Intervention = PaladinSpell(23, False, 0, 0, 0, 0, ApplyIntervention, [SheltronRequirement, InterventionRequirement], False)
+DivineVeil = PaladinSpell(3540, False, 0, 0, 0, 0, ApplyDivineVeil, [DivineVeilRequirement], False)
+HolySheltron = PaladinSpell(25746, False, 0, 0, 0, 0, ApplyHolySheltron, [HolySheltronRequirement,SheltronRequirement], False)
+Cover = PaladinSpell(27, False, 0, 0, 0, 0, ApplyCover, [SheltronRequirement, CoverRequirement], False)
+HallowedGround = PaladinSpell(30, False, 0, 0, 0, 0, ApplyHallowedGround, [HallowedGroundRequirement], False)
+Intervention = PaladinSpell(7382, False, 0, 0, 0, 0, ApplyIntervention, [SheltronRequirement, InterventionRequirement], False)
 def PassageOfArms(time):
     #Function since we will be using it for a set time
     def PassageOfArmsRequirement(Player, Spell):
@@ -279,7 +279,7 @@ def PassageOfArms(time):
     def ApplyPassageOfArms(Player, Enemy):
         Player.PassageOfArmsCD = 120
 
-    return PaladinSpell(24, False, time, time, 0, 0, ApplyPassageOfArms, [PassageOfArmsRequirement], False)
+    return PaladinSpell(7385, False, time, time, 0, 0, ApplyPassageOfArms, [PassageOfArmsRequirement], False)
 #buff
 FightOrFlightBuff = buff(1.25)
 

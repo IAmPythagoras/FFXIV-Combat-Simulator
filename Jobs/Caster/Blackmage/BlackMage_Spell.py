@@ -24,7 +24,6 @@ def ParadoxRequirement(Player, Spell):
     return Player.Paradox, -1
 
 def PolyglotRequirement(Player, Spell):
-    print(Player.PolyglotTimer)
     return Player.PolyglotStack > 0, Player.PolyglotTimer
 
 def TransposeRequirement(Player, Spell):
@@ -352,45 +351,45 @@ def ApplyFire4(Player, Enemy):
     input("Applying fire4 at : " + str(Player.CurrentFight.TimeStamp))
 
 #Fire Spell
-Fire1 = BLMSpell(1, True, 2.5, 2.5, 180, 800, True, False, ApplyFire1, [ManaRequirement])
-Fire2 = BLMSpell(2, True, 3, 2.5, 100, 1500, True, False, ApplyFire3, [ManaRequirement]) #Same effect as Fire 3
-Fire3 = BLMSpell(3, True, 3.5, 2.5, 260, 2000, True, False, ApplyFire3, [ManaRequirement])
-Fire4 = BLMSpell(4, True, 2.8, 2.5, 310, 800, True, False, empty, [EnochianRequirement, FireRequirement, ManaRequirement]) #BIG PP DAMAGE LETS GOOOOOOOOOOOOOo
-Despair = BLMSpell(5, True, 3, 2.5, 340, 800, True, False, ApplyDespair, [FireRequirement, ManaRequirement])
-Flare = BLMSpell(6, True, 4, 2.5, 220, 800, True, False, ApplyFlare, [ManaRequirement, FireRequirement])
-HighFire = BLMSpell(7, True, 3, 2.5, 140, 1500, True, False, ApplyHighFire, [ManaRequirement])
+Fire1 = BLMSpell(141, True, 2.5, 2.5, 180, 800, True, False, ApplyFire1, [ManaRequirement])
+Fire2 = BLMSpell(147, True, 3, 2.5, 100, 1500, True, False, ApplyFire3, [ManaRequirement]) #Same effect as Fire 3
+Fire3 = BLMSpell(152, True, 3.5, 2.5, 260, 2000, True, False, ApplyFire3, [ManaRequirement])
+Fire4 = BLMSpell(3577, True, 2.8, 2.5, 310, 800, True, False, empty, [EnochianRequirement, FireRequirement, ManaRequirement]) #BIG PP DAMAGE LETS GOOOOOOOOOOOOOo
+Despair = BLMSpell(16505, True, 3, 2.5, 340, 800, True, False, ApplyDespair, [FireRequirement, ManaRequirement])
+Flare = BLMSpell(162, True, 4, 2.5, 220, 800, True, False, ApplyFlare, [ManaRequirement, FireRequirement])
+HighFire = BLMSpell(25794, True, 3, 2.5, 140, 1500, True, False, ApplyHighFire, [ManaRequirement])
 
 
 
 #Ice Spell
-UmbralSoul = BLMSpell(25, True, 0, 2.5, 0, 0, False, True, ApplyUmbralSoul, [IceRequirement])
-Blizzard1 = BLMSpell(8, True, 2.5, 2.5, 180, 400, False, True, ApplyBlizzard1, [ManaRequirement])
-Blizzard3 = BLMSpell(9, True, 3.5, 2.5, 260, 800, False, True, ApplyBlizzard3, [ManaRequirement])
-Blizzard4 = BLMSpell(10, True, 2.5, 2.5, 310, 800, False, True, ApplyBlizzard4, [EnochianRequirement, IceRequirement, ManaRequirement])
-Freeze = BLMSpell(11, True, 2.8, 2.5, 120, 1000, False, True, ApplyBlizzard4, [EnochianRequirement, IceRequirement, ManaRequirement]) #Same as B4
-HighBlizzard = BLMSpell(12, True, 3, 2.5, 140, 800, False, True, ApplyBlizzard3, [ManaRequirement])
+UmbralSoul = BLMSpell(16506, True, 0, 2.5, 0, 0, False, True, ApplyUmbralSoul, [IceRequirement])
+Blizzard1 = BLMSpell(142, True, 2.5, 2.5, 180, 400, False, True, ApplyBlizzard1, [ManaRequirement])
+Blizzard3 = BLMSpell(154, True, 3.5, 2.5, 260, 800, False, True, ApplyBlizzard3, [ManaRequirement])
+Blizzard4 = BLMSpell(3576, True, 2.5, 2.5, 310, 800, False, True, ApplyBlizzard4, [EnochianRequirement, IceRequirement, ManaRequirement])
+Freeze = BLMSpell(159, True, 2.8, 2.5, 120, 1000, False, True, ApplyBlizzard4, [EnochianRequirement, IceRequirement, ManaRequirement]) #Same as B4
+HighBlizzard = BLMSpell(25795, True, 3, 2.5, 140, 800, False, True, ApplyBlizzard3, [ManaRequirement])
 
 #Unaspected Spell
-Scathe = BLMSpell(13, True, Lock, 2.5, 100, 800, False, False, empty, [ManaRequirement])
-Paradox = BLMSpell(14, True, 2.5, 2.5, 500, 1600, False, False, ApplyParadox, [ParadoxRequirement, ManaRequirement]) 
-Xenoglossy = BLMSpell(15, True, Lock, 2.5, 760, 0, False, False, ApplyXenoglossy, [PolyglotRequirement])
-Foul = BLMSpell(16, True, Lock, 2.5, 560, 0, False, False, ApplyXenoglossy, [PolyglotRequirement]) #Same effect as Xeno
-Thunder3 = BLMSpell(17, True, 2.5, 2.5, 50, 400, False, False, ApplyThunder3, [ManaRequirement])
+Scathe = BLMSpell(156, True, Lock, 2.5, 100, 800, False, False, empty, [ManaRequirement])
+Paradox = BLMSpell(25797, True, 2.5, 2.5, 500, 1600, False, False, ApplyParadox, [ParadoxRequirement, ManaRequirement]) 
+Xenoglossy = BLMSpell(16507, True, Lock, 2.5, 760, 0, False, False, ApplyXenoglossy, [PolyglotRequirement])
+Foul = BLMSpell(7422, True, Lock, 2.5, 560, 0, False, False, ApplyXenoglossy, [PolyglotRequirement]) #Same effect as Xeno
+Thunder3 = BLMSpell(153, True, 2.5, 2.5, 50, 400, False, False, ApplyThunder3, [ManaRequirement])
 Thunder3DOT = DOTSpell(-21, 35, False)
-Thunder4 = BLMSpell(18, True, 2.5, 2.5, 50, 400, False, False, ApplyThunder4, [ManaRequirement])
+Thunder4 = BLMSpell(7420, True, 2.5, 2.5, 50, 400, False, False, ApplyThunder4, [ManaRequirement])
 Thunder4DOT = DOTSpell(-40, 20, False)
 
 
 #oGCD
-Transpose = BLMSpell(19, False, Lock, 0, 0, 0, False, False, ApplyTranspose, [TransposeRequirement])
-Amplifier = BLMSpell(20, False, Lock, 0, 0, 0, False, False, ApplyAmplifier, [AmplifierRequirement])
-LeyLines = BLMSpell(21, False, Lock, 0, 0, 0, False, False, ApplyLeyLines, [LeyLinesRequirement])
-Triplecast = BLMSpell(22, False, Lock, 0, 0, 0, False, False, ApplyTripleCast, [TripleCastRequirement])
-SharpCast = BLMSpell(23, False, Lock, 0, 0, 0, False, False, ApplySharpCast, [SharpCastRequirement])
-Manafront = BLMSpell(24, False, Lock, 0, 0, 0, False, False, ApplyManafront, [ManafrontRequirement])
-BetweenTheLine = BLMSpell(26, False, 0, 0, 0, 0, False, False, empty, [])
-AetherialManipulation = BLMSpell(27, False, 0, 0, 0, 0, False, False, empty, [])
-Manaward = BLMSpell(28, False, 0, 0, 0, 0, False, False, ApplyManaward, [ManawardRequirement])
+Transpose = BLMSpell(149, False, Lock, 0, 0, 0, False, False, ApplyTranspose, [TransposeRequirement])
+Amplifier = BLMSpell(25796, False, Lock, 0, 0, 0, False, False, ApplyAmplifier, [AmplifierRequirement])
+LeyLines = BLMSpell(3573, False, Lock, 0, 0, 0, False, False, ApplyLeyLines, [LeyLinesRequirement])
+Triplecast = BLMSpell(7421, False, Lock, 0, 0, 0, False, False, ApplyTripleCast, [TripleCastRequirement])
+SharpCast = BLMSpell(3574, False, Lock, 0, 0, 0, False, False, ApplySharpCast, [SharpCastRequirement])
+Manafront = BLMSpell(158, False, Lock, 0, 0, 0, False, False, ApplyManafront, [ManafrontRequirement])
+BetweenTheLine = BLMSpell(7419, False, 0, 0, 0, 0, False, False, empty, [])
+AetherialManipulation = BLMSpell(155, False, 0, 0, 0, 0, False, False, empty, [])
+Manaward = BLMSpell(157, False, 0, 0, 0, 0, False, False, ApplyManaward, [ManawardRequirement])
 
 
 #buff
