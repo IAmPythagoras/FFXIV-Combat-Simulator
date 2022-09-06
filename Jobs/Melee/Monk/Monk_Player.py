@@ -15,6 +15,13 @@ class Monk(Melee):
         # Does action -> Changes form by Apply and adds FormChangeCheck -> Checks if any combo effect -> Effect removes itself
         # FormChangeCheck -> Changes form according to self.CurrentForm -> FormChangeCheck removes itself
 
+        #Timer
+        self.LeadenFistTimer = 0
+        self.DisciplinedFistTimer = 0
+        self.DemolishDOTTimer = 0
+
+        #DOT
+        self.DemolishDOT = None
 
         #Guaranteed Crit
         self.GuaranteedCrit = False #Flag used to know if ability is a guaranteed crit
