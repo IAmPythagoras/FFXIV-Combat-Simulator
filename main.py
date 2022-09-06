@@ -153,7 +153,6 @@ RPRPlayer.ActionSet = RPROpener
 Event.PlayerList = [BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
 Event.ShowGraph = True
 Event.SimulateFight(0.01, 1000, 20)
-exit()
 
 fightID = 'kDgwP8LQ4W3KHVMc'
 fightNumber = '7'
