@@ -1,7 +1,6 @@
 import math
 import matplotlib.pyplot as plt
 import numpy as np
-import copy
 
 
 #Class
@@ -525,7 +524,13 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
     """
 
 
+    #We will check if the ability is an assured crit and/ord DH, in which case we will have to buff the damage
+    #Depending on the buffs the player is currently receiving
 
+    auto_crit = False
+    auto_DH = False
+    CritRateBonus = CritRate #Saving value for later use if necessary
+    DHRateBonus = DHRate #Saving value for later use if necessary
 
     if type == 0: #Making sure its not an AA or DOT
         if isinstance(Player, Machinist): 
@@ -533,26 +538,35 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
             if Player.ActionSet[Player.NextSpell].id != -1 and Player.ActionSet[Player.NextSpell].id != -2 and Player.Reassemble and Player.ActionSet[Player.NextSpell].Weaponskill:    #Checks if reassemble is on and if its a weapon skill
                 CritRate = 1
                 DHRate = 1
-                Player.Reassemble = False #Uses Reassemble       
+                Player.Reassemble = False #Uses Reassemble    
+                auto_crit = True
+                auto_DH = True   
         elif isinstance(Player, Warrior):
             if Player.InnerReleaseStack >= 1 and (Player.NextSpell < len(Player.ActionSet)) and (Player.ActionSet[Player.NextSpell].id == 9 or Player.ActionSet[Player.NextSpell].id == 8 or Player.ActionSet[Player.NextSpell].id == 10):
                 CritRate = 1#If inner release weaponskill
                 DHRate = 1
                 Player.InnerReleaseStack -= 1
+                auto_crit = True
+                auto_DH = True
         elif isinstance(Player, Samurai):
             if Player.DirectCrit:
                 CritRate = 1
                 DHRate = 1
                 Player.DirectCrit = False
+                auto_crit = True
+                auto_DH = True
         elif isinstance(Player, Dancer):
             if Player.NextDirectCrit:
                 CritRate = 1
                 DHRate = 1
                 Player.NextDirectCrit = False
+                auto_crit = True
+                auto_DH = True
         elif isinstance(Player, Dragoon):
             if Player.NextCrit and Player.ActionSet[Player.NextSpell].Weaponskill: #If next crit and weaponskill
                 CritRate = 1
                 Player.NextCrit = False
+                auto_crit = True
 
 
     if type == 0: #Type 0 is direct damage
@@ -638,12 +652,25 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
             input("x " + str(x))
         input(spellObj.id)
         """
+#crit = (1 + status_effect_rate * cdmg bonus)
+#dh = ( 1 + status_effect_rate * 0.25)
 
-    if CritRate == 1: #If sure to crit, add crit to min expected damage
-        return math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))), math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) #If we have auto crit, we return full damage
-    else:
-        return math.floor(Damage * ( 1 + roundDown((DHRate * 0.25), 2))), math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) #Non crit expected damage, expected damage with crit
+    #Here I am returning both the damage assuming no crit and expected dh_rate and the damage with expected dh_rate and crit_rate.
+    #I am also adding all buffs before sending it
 
+    
+    if auto_crit and auto_DH: #If both 
+        auto_crit_bonus = (1 + roundDown(CritRateBonus * CritMult, 3)) #Auto_crit bonus if buffed
+        auto_dh_bonus = (1 + roundDown(DHRateBonus * 0.25, 2)) #Auto_DH bonus if buffed
+        non_crit_dh_expected, dh_crit_expected = math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))), math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2)))
+        return math.floor(math.floor(non_crit_dh_expected * auto_crit_bonus) * auto_dh_bonus), math.floor(math.floor(dh_crit_expected * auto_crit_bonus) * auto_dh_bonus)
+    elif auto_crit: #If sure to crit, add crit to min expected damage
+        auto_crit_bonus = (1 + roundDown(CritRateBonus * CritMult, 3)) #Auto_crit bonus if buffed
+        non_crit_dh_expected, dh_crit_expected = math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))), math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) #If we have auto crit, we return full damage
+        return math.floor(non_crit_dh_expected * auto_crit_bonus), math.floor(dh_crit_expected * auto_crit_bonus) 
+    else:#No auto_crit or auto_DH
+        non_crit_dh_expected, dh_crit_expected = math.floor(Damage * ( 1 + roundDown((DHRate * 0.25), 2))), math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) #Non crit expected damage, expected damage with crit
+        return non_crit_dh_expected , dh_crit_expected
 
 def roundDown(x, precision):
     return math.floor(x * 10**precision)/10**precision
