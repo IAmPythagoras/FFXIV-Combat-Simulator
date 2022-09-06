@@ -150,11 +150,11 @@ BRDPlayer.ActionSet = BRDOpener
 DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 RPRPlayer.ActionSet = RPROpener
-Event.PlayerList = [BLMPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
-
+Event.PlayerList = [BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
+Event.ShowGraph = True
 Event.SimulateFight(0.01, 1000, 20)
-#SaveFight(Event, 20, 1000, "hey")
-input("stop here")
+exit()
+
 fightID = 'kDgwP8LQ4W3KHVMc'
 fightNumber = '7'
 action_dict, player_dict = getAbilityList(fightID, fightNumber)
