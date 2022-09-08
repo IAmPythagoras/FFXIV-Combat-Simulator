@@ -32,6 +32,8 @@ def CelestialRevolutionRequirement(Player, Spell):
 def NadiRequirement(Player, Spell):
     return Player.MasterGauge[0] and Player.MasterGauge[4], -1
 
+def BrotherhoodRequirement(Player, Spell):
+    return Player.BrotherhoodCD <= 0, Player.BrotherhoodCD
 
 #Apply
 
@@ -88,8 +90,51 @@ def ApplyPerfectBalance(Player, Enemy):
         Player.PerfectBalanceCD = 40
     Player.PerfectBalanceStack -= 1
 
+def ApplyMeditation(Player, Enemy):
+    Player.MaxChakraGate += 1
+
+def ApplyBrotherhood(Player, Enemy):
+    # We will give everyone the 5% buff, and the effect that will
+    # check for weaponskil/casted actions and we will assume that
+    # all of them open a chakra gate
+
+    def MeditativeBrotherhoodEffect(Target, Spell):
+        if Spell.GCD:
+            Player.OpenChakra() #Adds 1 chakra
+            Player.ExpectedChakraGate += 0.2 #Add expected Chakra
+    
+    def MeditativeBrotherhoodCheck(Target, Enemy):
+        if Target.MeditativeBrotherhoodTimer <= 0:
+            Target.EffectList.remove(MeditativeBrotherhoodEffect)
+            Target.EffectToRemove.append(MeditativeBrotherhoodCheck)
+            Target.buffList.remove(BrotherhoodBuff)
 
 
+    def MonkMeditativeEffect(Target, Spell):
+        #This one goes on the Monk
+        if Spell.GCD:
+            Target.ExpectedChakraGate += 1
+            Target.OpenChakra()
+            
+    def MonkMeditativeCheck(Target, Spell):
+        if Target.MeditativeBrotherhoodTimer <= 0:
+            Target.EffectList.remove(MonkMeditativeEffect)
+            Target.EffectToRemove.append(MonkMeditativeCheck)
+            Target.buffList.remove(BrotherhoodBuff)
+
+
+
+    for Target in Player.CurrentFight.PlayerList:
+        if Target == Player:
+            #Need special effect for the Monk
+            Target.EffectList.append(MonkMeditativeEffect)
+            Target.EffectCDList.append(MonkMeditativeCheck)
+            Target.buffList.append(BrotherhoodBuff)
+        else:
+            #Applying MeditativeBrotherhood to every other player
+            Target.EffectList.append(MeditativeBrotherhoodEffect)
+            Target.EffectCDList.append(MeditativeBrotherhoodCheck)
+            Target.buffList.append(BrotherhoodBuff) #Adding buff
 #Effect
 
 def LeadenFistEffect(Player, Spell):
@@ -208,13 +253,19 @@ Rockbreaker = MonkSpell(9, True, 2, 130, ApplyOpoOpo, [CoeurlFormRequirement], T
 #Masterful Blitz
 ElixirField = MonkSpell(14, True, 2, 600, ApplyElixirField, [ElixirFieldRequirement], True, False)
 
+#Other GCD
+Meditation = MonkSpell(15, True, 1, 0, ApplyMeditation, [], False, False)
+
 #oGCD
 PerfectBalance = MonkSpell(13, False, 0, 0, ApplyPerfectBalance, [PerfectBalanceRequirement], False, False)
-
+Brotherhood = MonkSpell(16, False, 0, 0, ApplyBrotherhood, [BrotherhoodRequirement], False, False)
+RiddleOfFire = MonkSpell(17, False, 0, 0, ApplyRiddleOfFire, [RiddleOfFireRequirement], False, False)
+RiddleOfEarth = MonkSpell(18, False, 0, 0, ApplyRiddleOfEarth, [RiddleOfEarthRequirement], False, False)
+RiddleOfWind = MonkSpell(19, False, 0, 0, ApplyRiddleOfWind, [RiddleOfWindRequirement], False, False)
 #non Damage oGCD
 Thunderclap = MonkSpell(11, False, 0, 0, ApplyThunderclap, [ThunderclapRequirement],False, False)
 Mantra = MonkSpell(12, False, 0, 0, ApplyMantra, [MantraRequirement], False, False)
 #Buff
 DisciplinedFistBuff = buff(1.15)
-
+BrotherhoodBuff = buff(1.05)
 #MonkAbility = {}

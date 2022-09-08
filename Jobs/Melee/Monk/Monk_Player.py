@@ -20,17 +20,21 @@ class Monk(Melee):
         # For nadis, False -> closed, True -> open.
         # For chakras , 0 -> Empty, 1 -> Opo-opo, 2-> Raptor, 3-> Coeurl
         self.FormlessFistStack = 0 #Number of formless actions the player can do
-
+        self.ExpectedChakraGate = 0 #This is a random value, so we will keep track of Expected, used value and maximum value
+        self.MaxChakraGate = 0 #This is the one used to see if an action is even possible
+        self.UsedChakraGate = 0 #Number of used Chakra Gates
 
         #Timer
         self.LeadenFistTimer = 0
         self.DisciplinedFistTimer = 0
         self.DemolishDOTTimer = 0
+        self.BrotherhoodTimer = 0 #Brotherhood effectTimer
         
         #CD
         self.ThunderclapCD = 0
         self.MantraCD = 0
         self.PerfectBalanceCD = 0
+        self.BrotherhoodCD = 0
 
         #DOT
         self.DemolishDOT = None
@@ -69,6 +73,8 @@ class Monk(Melee):
         if (self.MantraTimer > 0) : self.MantraTimer = max(0,self.MantraTimer - time)
         if (self.AnatmanTimer > 0) : self.AnatmanTimer = max(0,self.AnatmanTimer - time)
 
+    def OpenChakra(self):
+        self.MaxChakraGate = min(5, self.MaxChakraGate)
 
     def BeastChakraType(self):
         #Returns number of BeastChakra

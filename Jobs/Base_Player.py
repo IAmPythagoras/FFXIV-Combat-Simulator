@@ -43,6 +43,7 @@ class Player:
         self.EffectToAdd = [] #List that will add effect to the effectlist or effectcdlist once it has been gone through once
 
         self.ArcanumTimer = 0 #ArcanumTimer
+        self.MeditativeBrotherhoodTimer = 0 #Meditative Brotherhood Timer
 
         #Used for DPS graph and Potency/S graph
 
@@ -72,6 +73,7 @@ class Player:
         if (self.ManaTick > 0) : self.ManaTick = max(0, self.ManaTick-time)
         if (self.ArcanumTimer > 0) : self.ArcanumTimer = max(0, self.ArcanumTimer-time)
         if (self.PotionTimer > 0) : self.PotionTimer = max(0, self.PotionTimer-time)
+        if (self.MeditativeBrotherhoodTimer > 0) : self.MeditativeBrotherhoodTimer = max(0, self.MeditativeBrotherhoodTimer-time)
 
     def updateLock(self):
         if (self.GCDLockTimer <= 0):
