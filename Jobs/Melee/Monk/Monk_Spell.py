@@ -11,7 +11,23 @@ def RaptorFormRequirement(Player, Spell):
 def CoeurlFormRequirement(Player, Spell):
     return Player.CurrentForm == 3 , -1
 
+def ThunderclapRequirement(Player, Spell):
+    return Player.ThunderclapStack > 0, Player.ThunderclapCD
+
+def MantraRequirement(Player, Spell):
+    return Player.MantraCD <= 0, Player.MantraCD
+
+def PerfectBalanceRequirement(Player, Spell):
+    return Player.PerfectBalanceStack > 0, Player.PerfectBalanceCD
+
 #Apply
+
+def ApplyThunderclap(Player, Spell):
+    if Player.ThunderclapStack == 3:
+        Player.EffectCDList.append(ThunderclapStackCheck)
+        Player.ThunderclapCD = 30
+    Player.ThunderclapStack -= 1
+
 
 def ApplyOpoOpo(Player, Enemy):
     Player.CurrentForm = 1
@@ -25,6 +41,14 @@ def ApplyCoeurl(Player, Enemy):
     Player.CurrentForm = 3 #Into Coeurl
     AddChangeFormCheck(Player)
 
+def ApplyMantra(Player, Enemy):
+    Player.MantraCD = 90
+
+def ApplyPerfectBalance(Player, Enemy):
+    if Player.PerfectBalanceStack == 2:
+        Player.EffectCDList.append(PerfectBalanceStackCheck)
+        Player.PerfectBalanceCD = 40
+    Player.PerfectBalanceStack -= 1
 
 #Effect
 
@@ -32,6 +56,22 @@ def LeadenFistEffect(Player, Spell):
     if Spell.id == Bootshine.id: Spell.Potency += 100
 
 #Check
+
+def PerfectBalanceStackCheck(Player, Enemy):
+    if Player.PerfectBalanceCD <= 0:
+        if Player.PerfectBalanceStack == 1:
+            Player.EffectToRemove.append(PerfectBalanceStackCheck)
+        else:
+            Player.PerfectBalanceTimer = 40
+        Player.PerfectBalanceStack += 1
+
+def ThunderclapStackCheck(Player, Enemy):
+    if Player.ThunderclapCD <= 0:
+        if Player.ThunderclapStack == 2:
+            Player.EffectToRemove.append(ThunderclapStackCheck)
+        else:
+            Player.ThunderclapTimer = 30
+        Player.ThunderclapStack += 1
 
 def DemolishDOTCheck(Player, Enemy):
     if Player.DemolishDOTTimer <= 0:
@@ -125,7 +165,12 @@ DemolishDOT = DOTSpell(10, 70, True)
 SnapPunch = MonkSpell(8, True,2 ,310, ApplyOpoOpo, [CoeurlFormRequirement], True, False)
 Rockbreaker = MonkSpell(9, True, 2, 130, ApplyOpoOpo, [CoeurlFormRequirement], True, False)
 
+#oGCD
+PerfectBalance = MonkSpell(13, False, 0, 0, ApplyPerfectBalance, [PerfectBalanceRequirement], False, False)
 
+#non Damage oGCD
+Thunderclap = MonkSpell(11, False, 0, 0, ApplyThunderclap, [ThunderclapRequirement],False, False)
+Mantra = MonkSpell(12, False, 0, 0, ApplyMantra, [MantraRequirement], False, False)
 #Buff
 DisciplinedFistBuff = buff(1.15)
 
