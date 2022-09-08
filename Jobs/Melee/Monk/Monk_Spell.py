@@ -20,9 +20,47 @@ def MantraRequirement(Player, Spell):
 def PerfectBalanceRequirement(Player, Spell):
     return Player.PerfectBalanceStack > 0, Player.PerfectBalanceCD
 
+def ElixirFieldRequirement(Player, Spell):
+    return Player.BeastChakraType() == 1, -1
+
+def RisingPhoenixRequirement(Player, Spell):
+    return Player.BeastChakraType() == 3, -1
+
+def CelestialRevolutionRequirement(Player, Spell):
+    return Player.BestChakraType() == 2, -1
+
+def NadiRequirement(Player, Spell):
+    return Player.MasterGauge[0] and Player.MasterGauge[4], -1
+
+
 #Apply
 
-def ApplyThunderclap(Player, Spell):
+def ApplyElixirField(Player, Enemy):
+    Player.ResetMasterGauge()
+
+    Player.MasterGauge[4] = True #Opening Lunar Nadi
+    Player.FormlessFistStack += 1
+
+def ApplyCelestialRevolution(Player, Enemy):
+    Player.ResetMasterGauge()
+    Player.FormlessFistStack += 1
+
+    if Player.MasterGauge[0]: Player.MasterGauge[-1] = True #If lunar already opened open Solar
+    else: Player.MasterGauge[0] = True
+
+def ApplyRisingPhoenix(Player, Enemy):
+    Player.ResetMasterGauge()
+
+    Player.Mastergauge[-1] = True
+    Player.FormlessFistStack += 1
+
+def ApplyPhantomRush(Player, Enemy):
+    Player.ResetMasterGauge()
+    Player.MasterGauge[0], Player.MasterGauge[-1] = False, False
+    #Reset the whole Gauge
+    Player.FormlessFistStack += 1
+
+def ApplyThunderclap(Player, Enemy):
     if Player.ThunderclapStack == 3:
         Player.EffectCDList.append(ThunderclapStackCheck)
         Player.ThunderclapCD = 30
@@ -49,6 +87,8 @@ def ApplyPerfectBalance(Player, Enemy):
         Player.EffectCDList.append(PerfectBalanceStackCheck)
         Player.PerfectBalanceCD = 40
     Player.PerfectBalanceStack -= 1
+
+
 
 #Effect
 
@@ -164,6 +204,9 @@ Demolish = MonkSpell(7, True, 2, 130, ApplyOpoOpo, [CoeurlFormRequirement], True
 DemolishDOT = DOTSpell(10, 70, True)
 SnapPunch = MonkSpell(8, True,2 ,310, ApplyOpoOpo, [CoeurlFormRequirement], True, False)
 Rockbreaker = MonkSpell(9, True, 2, 130, ApplyOpoOpo, [CoeurlFormRequirement], True, False)
+
+#Masterful Blitz
+ElixirField = MonkSpell(14, True, 2, 600, ApplyElixirField, [ElixirFieldRequirement], True, False)
 
 #oGCD
 PerfectBalance = MonkSpell(13, False, 0, 0, ApplyPerfectBalance, [PerfectBalanceRequirement], False, False)

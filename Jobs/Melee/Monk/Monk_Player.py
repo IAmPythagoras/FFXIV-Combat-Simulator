@@ -1,5 +1,5 @@
 #########################################
-########## MONK PLAYER ###############
+##########  MONK PLAYER   ###############
 #########################################
 
 from Jobs.Melee.Melee_Player import Melee
@@ -14,6 +14,13 @@ class Monk(Melee):
         #After each execution of a relevant GCD, the form will be changed here.
         # Does action -> Changes form by Apply and adds FormChangeCheck -> Checks if any combo effect -> Effect removes itself
         # FormChangeCheck -> Changes form according to self.CurrentForm -> FormChangeCheck removes itself
+        self.MasterGauge = [False,0,0,0,False]
+        # This array will represent the master gauge
+        # [Lunar Nadi, Chakra1, Chakra2, Chakra3, Solar Nadi]
+        # For nadis, False -> closed, True -> open.
+        # For chakras , 0 -> Empty, 1 -> Opo-opo, 2-> Raptor, 3-> Coeurl
+        self.FormlessFistStack = 0 #Number of formless actions the player can do
+
 
         #Timer
         self.LeadenFistTimer = 0
@@ -62,6 +69,32 @@ class Monk(Melee):
         if (self.MantraTimer > 0) : self.MantraTimer = max(0,self.MantraTimer - time)
         if (self.AnatmanTimer > 0) : self.AnatmanTimer = max(0,self.AnatmanTimer - time)
 
+
+    def BeastChakraType(self):
+        #Returns number of BeastChakra
+        OpoOpo = False
+        Raptor = False
+        Coeurl = False
+
+        number_chakra = 0
+
+        for i in self.MasterGauge[1:4]:
+            if not OpoOpo and i == 1: 
+                OpoOpo = True
+                number_chakra += 1
+            elif not Raptor and i == 2:
+                Raptor = True
+                number_chakra += 1
+            elif not Coeurl and i == 3: 
+                Coeurl = True
+                number_chakra += 1
+
+        return number_chakra
+
+    def ResetMasterGauge(self):
+        self.MasterGauge[1:4] = [0,0,0] #Reset Chakra
+
+        
 
 
 """
