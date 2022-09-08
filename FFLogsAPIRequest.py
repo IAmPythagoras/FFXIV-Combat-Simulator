@@ -60,7 +60,6 @@ from Jobs.Melee.Samurai.Samurai_Spell import MeikyoCheck, MeikyoEffect, MeikyoSt
 from Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton, NinjaAbility
 from Jobs.Melee.Dragoon.Dragoon_Spell import DragoonAbility
 from Jobs.Melee.Reaper.Reaper_Spell import ReaperAbility
-from Jobs.Melee.Monk.Monk_Spell import MonkAbility
 
 
 import http.client, json 

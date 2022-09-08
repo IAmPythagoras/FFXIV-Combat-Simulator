@@ -1,15 +1,15 @@
 from copy import deepcopy
-from Jobs.Base_Spell import DOTSpell, buff, empty
+from Jobs.Base_Spell import DOTSpell, Melee_Auto, buff, empty
 from Jobs.Melee.Melee_Spell import MonkSpell
 Lock = 0.75 #skill animation lock - simulating 75ms ping
 
 #Requirements
 
 def RaptorFormRequirement(Player, Spell):
-    return Player.CurrentForm == 2, -1
+    return Player.CurrentForm == 2 or Player.FormlessFistStack > 0, -1
 
 def CoeurlFormRequirement(Player, Spell):
-    return Player.CurrentForm == 3 , -1
+    return Player.CurrentForm == 3 or Player.FormlessFistStack > 0 , -1
 
 def ThunderclapRequirement(Player, Spell):
     return Player.ThunderclapStack > 0, Player.ThunderclapCD
@@ -48,6 +48,9 @@ def ChakraRequirement(Player, Spell):
     return Player.MaxChakraGate == 5, -1
 
 #Apply
+
+def ApplyFormShift(Player, Enemy):
+    Player.FormlessFistStack += 1
 
 def ApplyChakra(Player, Enemy):
     Player.UsedChakraGate += 5
@@ -104,15 +107,12 @@ def ApplyThunderclap(Player, Enemy):
 
 def ApplyOpoOpo(Player, Enemy):
     Player.CurrentForm = 1
-    AddChangeFormCheck(Player)
 
 def ApplyRaptor(Player, Enemy):
     Player.CurrentForm = 2 #Into Raptor
-    AddChangeFormCheck(Player)
 
 def ApplyCoeurl(Player, Enemy):
     Player.CurrentForm = 3 #Into Coeurl
-    AddChangeFormCheck(Player)
 
 def ApplyMantra(Player, Enemy):
     Player.MantraCD = 90
@@ -215,18 +215,6 @@ def DisciplinedFistCheck(Player, Enemy):
         Player.buffList.remove(DisciplinedFistBuff)
         Player.EffectToRemove.append(DisciplinedFistCheck)
 
-def ChangeFormCheck(Player, Enemy):
-    if Player.CurrentForm == 1: #Opo-Opo
-        Player.EffectList.append(OpoOpoCombo)
-    elif Player.CurrentForm == 2: #Raptor
-        Player.EffectList.append(RaptorCombo)
-    elif Player.CurrentForm == 3: #Coeurl
-        Player.EffectList.append(CoeurlCombo)
-    elif Player.CurrentForm == 4: #Formless
-        pass
-
-    Player.EffectToRemove.append(ChangeFormCheck) #Removing itself
-
 def LeadenFistCheck(Player, Enemy):
     if Player.LeadenFistTimer <= 0:
         Player.EffectList.remove(LeadenFistEffect)
@@ -234,50 +222,68 @@ def LeadenFistCheck(Player, Enemy):
 
 #Combo Effect
 
-def OpoOpoCombo(Player, Spell):
+def ComboEffect(Player, Spell):
+    # This effect will always be on and will check what form the player is in and use the
+    # necessary effect
     if Spell.GCD:
-        if Spell.id == Bootshine.id or Spell.id == ShadowOfTheDestroyer.id:
-            Player.GuaranteedCrit = True
-        elif Spell.id == DragonKick.id:
-            #Grants Leaden Fist
-            if Player.LeadenFistTimer == 0: #If not already applied
-                Player.EffectList.append(LeadenFistEffect)
-                Player.EffectCDList.append(LeadenFistCheck)
-            Player.LeadenFistTimer = 30
-        
-        Player.EffectToRemove.append(OpoOpoCombo) #Removing itself
+        if Player.FormlessFistStack > 0 :#Then we are in formless, so we can do whichever
+            Player.FormlessFistStack -= 1
+            #Opo-Opo Form
+            if Spell.id == Bootshine.id or Spell.id == ShadowOfTheDestroyer.id:
+                Player.GuaranteedCrit = True
+            elif Spell.id == DragonKick.id:
+                #Grants Leaden Fist
+                if Player.LeadenFistTimer == 0: #If not already applied
+                    Player.EffectList.append(LeadenFistEffect)
+                    Player.EffectCDList.append(LeadenFistCheck)
+                Player.LeadenFistTimer = 30
 
-        
+            #Raptor Form
 
-def RaptorCombo(Player, Spell):
-    if Spell.GCD:
-        if Spell.id == TrueStrike.id: #Nothing happens
-            pass
-        elif Spell.id == TwinSnakes.id or Spell.id == FourpointFurry.id:
-            if Player.DisciplinedFistTimer == 0:
-                Player.buffList.append(DisciplinedFistBuff)
-                Player.EffectCDList.append(DisciplinedFistCheck)
-            Player.DisciplinedFistTimer = 15
+            elif Spell.id == TrueStrike.id: #Nothing happens
+                pass
+            elif Spell.id == TwinSnakes.id or Spell.id == FourpointFurry.id:
+                if Player.DisciplinedFistTimer == 0:
+                    Player.buffList.append(DisciplinedFistBuff)
+                    Player.EffectCDList.append(DisciplinedFistCheck)
+                Player.DisciplinedFistTimer = 15
 
-        Player.EffectToRemove.append(RaptorCombo)
-        
+            #Coeurl Form
 
-def CoeurlCombo(Player, Spell):
-    if Spell.GCD:
-        if Spell.id == Demolish.id:
-            if Player.DemolishDOT == None:
-                Player.DemolishDOT = deepcopy(DemolishDOT)
-                Player.EffectCDList.append(DemolishDOTCheck)
-                Player.DOTList.append(Player.DemolishDOT)
-            Player.DemolishDOTTimer = 18
-        elif Spell.id == SnapPunch.id or Spell.id == Rockbreaker.id:
-            pass #Nothing happens
-        Player.EffectToRemove.append(CoeurlCombo)
-
-#Other relevant functions
-
-def AddChangeFormCheck(Player):
-    Player.EffectCDList.append(ChangeFormCheck)
+            elif Spell.id == Demolish.id:
+                if Player.DemolishDOT == None:
+                    Player.DemolishDOT = deepcopy(DemolishDOT)
+                    Player.EffectCDList.append(DemolishDOTCheck)
+                    Player.DOTList.append(Player.DemolishDOT)
+                Player.DemolishDOTTimer = 18
+            elif Spell.id == SnapPunch.id or Spell.id == Rockbreaker.id:
+                pass #Nothing happens
+        elif Player.CurrentForm == 1: #Opo-Opo form
+            if Spell.id == Bootshine.id or Spell.id == ShadowOfTheDestroyer.id:
+                Player.GuaranteedCrit = True
+            elif Spell.id == DragonKick.id:
+                #Grants Leaden Fist
+                if Player.LeadenFistTimer == 0: #If not already applied
+                    Player.EffectList.append(LeadenFistEffect)
+                    Player.EffectCDList.append(LeadenFistCheck)
+                Player.LeadenFistTimer = 30
+        elif Player.CurrentForm == 2 : #Raptor Form
+            if Spell.id == TrueStrike.id: #Nothing happens
+                pass
+            elif Spell.id == TwinSnakes.id or Spell.id == FourpointFurry.id:
+                if Player.DisciplinedFistTimer == 0:
+                    Player.buffList.append(DisciplinedFistBuff)
+                    Player.EffectCDList.append(DisciplinedFistCheck)
+                Player.DisciplinedFistTimer = 15
+        elif Player.CurrentForm == 3 : #Coeurl Form
+            if Spell.id == Demolish.id:
+                if Player.DemolishDOT == None:
+                    Player.DemolishDOT = deepcopy(DemolishDOT)
+                    Player.EffectCDList.append(DemolishDOTCheck)
+                    Player.DOTList.append(Player.DemolishDOT)
+                Player.DemolishDOTTimer = 18
+            elif Spell.id == SnapPunch.id or Spell.id == Rockbreaker.id:
+                pass #Nothing happens
 
 #Opo-opo form  -> Raptor Form
 Bootshine = MonkSpell(0, True, 2, 210, ApplyRaptor, [], True, False)
@@ -305,7 +311,7 @@ RisingPhoenix = MonkSpell(23, True, 2, 700, ApplyRisingPhoenix, [RisingPhoenixRe
 PhantomRush = MonkSpell(24, True, 2, 1150, ApplyPhantomRush, [RisingPhoenixRequirement, NadiRequirement], True, False)
 #Other GCD
 Meditation = MonkSpell(15, False, 0, 0, ApplyMeditation, [], False, False)
-
+FormShift = MonkSpell(25, True, 2, 0, ApplyFormShift, [], False, False)
 #oGCD
 PerfectBalance = MonkSpell(13, False, 0, 0, ApplyPerfectBalance, [PerfectBalanceRequirement], False, False)
 Brotherhood = MonkSpell(16, False, 0, 0, ApplyBrotherhood, [BrotherhoodRequirement], False, False)
@@ -319,4 +325,25 @@ Mantra = MonkSpell(12, False, 0, 0, ApplyMantra, [MantraRequirement], False, Fal
 DisciplinedFistBuff = buff(1.15)
 BrotherhoodBuff = buff(1.05)
 RiddleOfFireBuff = buff(1.15)
+
+#Special AA's for Monk
+
+class Monk_AA(Melee_Auto):
+    def __init__(self):
+        super().__init__(-1, False)
+        self.DOTTimer = 0
+
+    def CheckDOT(self, Player, Enemy, TimeUnit):
+        if(self.DOTTimer <= 0):
+            #Apply AA
+            tempSpell  = self.Cast(Player, Enemy)#Cast the DOT
+            tempSpell.CastFinal(Player, Enemy)
+            if Player.RiddleOfWindTimer > 0 : self.DOTTimer = 1.2
+            else: self.DOTTimer = 2.4
+
+def ApplyMonk_Auto(Player, Enemy):
+    Player.DOTList.append(deepcopy(Monk_Auto))
+Monk_Auto = Monk_AA()
+Give_Monk_Auto = MonkSpell(-1, False, 0, 0, ApplyMonk_Auto, [], False, False)
+
 #MonkAbility = {}

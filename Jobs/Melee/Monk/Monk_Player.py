@@ -3,6 +3,7 @@
 #########################################
 
 from Jobs.Melee.Melee_Player import Melee
+from .Monk_Spell import ComboEffect
 
 class Monk(Melee):
 
@@ -20,8 +21,8 @@ class Monk(Melee):
         # For nadis, False -> closed, True -> open.
         # For chakras , 0 -> Empty, 1 -> Opo-opo, 2-> Raptor, 3-> Coeurl
         self.FormlessFistStack = 0 #Number of formless actions the player can do
-        self.ExpectedChakraGate = 0 #This is a random value, so we will keep track of Expected, used value and maximum value
-        self.MaxChakraGate = 0 #This is the one used to see if an action is even possible
+        self.ExpectedChakraGate = 5 #This is a random value, so we will keep track of Expected, used value and maximum value
+        self.MaxChakraGate = 5 #This is the one used to see if an action is even possible
         self.UsedChakraGate = 0 #Number of used Chakra Gates
 
         #Timer
@@ -52,32 +53,30 @@ class Monk(Melee):
         #Guaranteed Crit
         self.GuaranteedCrit = False #Flag used to know if ability is a guaranteed crit
 
-
+        self.EffectList.append(ComboEffect) #Appending effect
         #JobMod
         self.JobMod = 110
 
     def updateCD(self, time):
-        if (self.PerfectBalanceCD > 0) : self.PerfectBalanceCD = max(0,self.PerfectBalanceCD - time)
-        if (self.RiddleOfFireCD > 0) : self.RiddleOfFireCD = max(0,self.RiddleOfFireCD - time)
-        if (self.RiddleOfWindCD > 0) : self.RiddleOfWindCD = max(0,self.RiddleOfWindCD - time)
-        if (self.RiddleOfEarthCD > 0) : self.RiddleOfEarthCD = max(0,self.RiddleOfEarthCD - time)
-        if (self.BrotherhoodCD > 0) : self.BrotherhoodCD  = max(0,self.BrotherhoodCD  - time)
+        super().updateCD(time)
         if (self.ThunderclapCD > 0) : self.ThunderclapCD = max(0,self.ThunderclapCD - time)
         if (self.MantraCD > 0) : self.MantraCD = max(0,self.MantraCD - time)
-        if (self.AnatmanCD > 0) : self.AnatmanCD  = max(0,self.AnatmanCD - time)
+        if (self.PerfectBalanceCD > 0) : self.PerfectBalanceCD = max(0,self.PerfectBalanceCD - time)
+        if (self.BrotherhoodCD > 0) : self.BrotherhoodCD = max(0,self.BrotherhoodCD - time)
+        if (self.RiddleOfEarthCD > 0) : self.RiddleOfEarthCD = max(0,self.RiddleOfEarthCD - time)
+        if (self.RiddleOfFireCD > 0) : self.RiddleOfFireCD = max(0,self.RiddleOfFireCD - time)
+        if (self.RiddleOfWindCD > 0) : self.RiddleOfWindCD = max(0,self.RiddleOfWindCD - time)
+
 
     def updateTimer(self, time):
         super().updateTimer(time)
+        if (self.LeadenFistTimer  > 0) : self.LeadenFistTimer  = max(0,self.LeadenFistTimer - time)
+        if (self.DisciplinedFistTimer  > 0) : self.DisciplinedFistTimer  = max(0,self.DisciplinedFistTimer - time)
         if (self.DemolishDOTTimer  > 0) : self.DemolishDOTTimer  = max(0,self.DemolishDOTTimer - time)
-        if (self.DisciplinedFistTimer > 0) : self.DisciplinedFistTimer = max(0,self.DisciplinedFistTimer - time)
-        if (self.LeadenFistTimer > 0) : self.LeadenFistTimer = max(0,self.LeadenFistTimer - time)
-        if (self.RiddleOfWindTimer > 0) : self.RiddleOfWindTimer = max(0,self.RiddleOfWindTimer - time)
-        if (self.RiddleOfFireTimer > 0) : self.RiddleOfFireTimer = max(0,self.RiddleOfFireTimer - time)
-        if (self.BrotherhoodTimer > 0) : self.BrotherhoodTimer = max(0,self.BrotherhoodTimer - time)
-        if (self.PerfectBalanceTimer > 0) : self.PerfectBalanceTimer = max(0,self.PerfectBalanceTimer - time)
-        if (self.ThunderclapTimer > 0) : self.ThunderclapTimer = max(0,self.ThunderclapTimer - time)
-        if (self.MantraTimer > 0) : self.MantraTimer = max(0,self.MantraTimer - time)
-        if (self.AnatmanTimer > 0) : self.AnatmanTimer = max(0,self.AnatmanTimer - time)
+        if (self.BrotherhoodTimer  > 0) : self.BrotherhoodTimer  = max(0,self.BrotherhoodTimer - time)
+        if (self.RiddleOfFireTimer  > 0) : self.RiddleOfFireTimer  = max(0,self.RiddleOfFireTimer - time)
+        if (self.RiddleOfWindTimer  > 0) : self.RiddleOfWindTimer  = max(0,self.RiddleOfWindTimer - time)
+
 
     def OpenChakra(self):
         self.MaxChakraGate = min(5, self.MaxChakraGate)

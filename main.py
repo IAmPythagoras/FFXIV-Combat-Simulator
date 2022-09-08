@@ -22,7 +22,6 @@ from Jobs.Healer.Sage.Sage_Player import *
 from Jobs.Healer.Scholar.Scholar_Player import *
 from Jobs.Healer.Whitemage.Whitemage_Player import *
 from Jobs.Healer.Astrologian.Astrologian_Player import *
-from Jobs.Melee.Monk.Monk_Player import Monk
 
 #RANGED
 from Jobs.Ranged.Machinist.Machinist_Spell import *
@@ -47,10 +46,12 @@ from Jobs.Melee.Samurai.Samurai_Spell import *
 from Jobs.Melee.Ninja.Ninja_Spell import *
 from Jobs.Melee.Dragoon.Dragoon_Spell import *
 from Jobs.Melee.Reaper.Reaper_Spell import *
+from Jobs.Melee.Monk.Monk_Spell import *
 from Jobs.Melee.Samurai.Samurai_Player import *
 from Jobs.Melee.Ninja.Ninja_Player import *
 from Jobs.Melee.Dragoon.Dragoon_Player import *
 from Jobs.Melee.Reaper.Reaper_Player import *
+from Jobs.Melee.Monk.Monk_Player import *
 
 
 from FFLogsAPIRequest import getAbilityList
@@ -78,6 +79,8 @@ DNCStat = {"MainStat": 2575, "WD":120, "Det" : 1453, "Ten" : 400, "SS": 549, "Cr
 DRGStat = {"MainStat": 2575, "WD":120, "Det" : 1846, "Ten" : 400, "SS": 400, "Crit" : 2281, "DH" : 1235}
 RPRStat ={"MainStat": 2575, "WD":120, "Det" : 1846, "Ten" : 400, "SS": 400, "Crit" : 2281, "DH" : 1235}
 SGEStat ={"MainStat": 2563, "WD":120, "Det" : 1953, "Ten" : 400, "SS": 656, "Crit" : 2244, "DH" : 904}
+MNKStat ={"MainStat": 3076, "WD":126, "Det" : 1546, "Ten" : 400, "SS": 769, "Crit" : 2490, "DH" : 1179}
+
 Event = Fight([], Dummy, False)
 
 #DRKPlayer = DarkKnight(2.41, DRKAction, [], [DarksideEffect], Event)
@@ -99,6 +102,8 @@ BRDPlayer = Bard(2.5, [], [], [SongEffect], Event, BRDStat)
 DNCPlayer = Dancer(2.5, [], [], [EspritEffect], Event, DNCStat)
 DRGPlayer = Dragoon(2.5, [], [], [], Event, DRGStat)
 RPRPlayer = Reaper(2.5, [], [], [], Event, RPRStat)
+MNKPlayer = Monk(2.5, [], [], [], Event, MNKStat)
+
 
 PLDPlayer2 = Paladin(2.5, [], [], [], Event, PLDStat)
 PLDPlayer3 = Paladin(2.5, [], [], [], Event, PLDStat)
@@ -119,25 +124,14 @@ DRGOpener = [Melee_AA,WaitAbility(20), TrueThrust, Potion, Disembowel, LanceChar
 BRDOpener = [WaitAbility(19.5), Potion, Stormbite, WandererMinuet, RagingStrike, Causticbite, EmpyrealArrow, BloodLetter, BurstShot, RadiantFinale, BattleVoice, BurstShot, Sidewinder,RefulgentArrow, Barrage, RefulgentArrow, BurstShot, RefulgentArrow, EmpyrealArrow, IronJaws]
 DNCOpener = [ClosedPosition(NINPlayer, False),WaitAbility(4.5), StandardStep, Emboite, Entrechat, WaitAbility(11.74),Potion, StandardFinish, TechnicalStep, Emboite, Entrechat, Jete, Pirouette, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Emboite, Entrechat, StandardFinish]
 MCHOpener = [Ranged_AA,WaitAbility(15), Reassemble, WaitAbility(2.25), Potion, WaitAbility(1.5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, Reassemble, WaitAbility(1), Wildfire, ChainSaw, Automaton,WaitAbility(1), Hypercharge, HeatBlast, Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet, Drill]
-"""
-RDMFight = [WaitAbility(15), Verareo, Verthunder, Acceleration, Swiftcast, Verareo, Potion, Verareo, Embolden, Manafication, EnchantedRiposte, Fleche, EnchantedZwerchhau, Contre, EnchantedRedoublement, Corps, 
-Engagement, Verflare, Engagement, Corps, Scorch, LucidDreaming, Resolution, Verfire, Verthunder, Verstone, Verareo, Verstone, Verthunder, Fleche,Jolt, Verthunder, Verfire, Verareo, Contre, EnchantedRiposte, EnchantedZwerchhau,Engagement, EnchantedRedoublement,
- Corps, Verholy, Scorch, Acceleration, Resolution, Verthunder, Fleche, Verfire, Verthunder, Verstone, Verareo, Verfire, Verareo, Jolt, Verthunder, Contre, Verfire, Verareo,
-Fleche, Acceleration, Verareo, Engagement, Verstone, Verthunder , Verfire, Verareo, Corps, Swiftcast, Verthunder, LucidDreaming, Verfire, Verareo, MagickBarrier, Verstone, Verthunder, Fleche,
-Verfire, Verareo, Contre, Verstone, Verthunder,  EnchantedRiposte, EnchantedZwerchhau, EnchantedRedoublement, Manafication, Verholy, Embolden, Engagement, Scorch, Corps, Resolution,
-EnchantedRiposte, EnchantedZwerchhau,Fleche, EnchantedRedoublement, Verflare, Scorch, Resolution]
-"""
-
-NINOpener = [Melee_AA,WaitAbility(9.5), Jin, Chi, Ten, Huton, Hide,WaitAbility(1.47), Ten, Chi, Jin, Suiton, Kassatsu, SpinningEdge,Potion,  GustSlash, Mug, Bunshin, PhantomKamaitachi, 
-WaitAbility(0.6), TrickAttack, AeolianEdge, DreamWithinADream, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, TenChiJin, Ten2, Chi2, Jin2, Meisui, FleetingRaiju, Bhavacakra, 
-FleetingRaiju, Bhavacakra, Ten, Chi, Raiton, FleetingRaiju ]
+MNKOpener = [WaitAbility(18), FormShift, Give_Monk_Auto,DragonKick, Potion, TwinSnakes, WaitAbility(1), RiddleOfFire, Demolish, TheForbiddenChakra, Bootshine, Brotherhood, WaitAbility(1), PerfectBalance, DragonKick, RiddleOfWind, Bootshine, DragonKick, ElixirField, Bootshine, PerfectBalance, TwinSnakes, DragonKick, Demolish, RisingPhoenix]
 
 #BLMPlayer.ActionSet = getAbilityList(client_id, client_secret)
 BLMPlayer.ActionSet = BLMOpener
 SCHPlayer.ActionSet = SCHOpener
 RDMPlayer.ActionSet = RDMOpener
 MCHPlayer.ActionSet = MCHOpener
-NINPlayer.ActionSet = NINOpener
+#NINPlayer.ActionSet = NINOpener
 DRKPlayer.ActionSet = DRKOpener
 WARPlayer.ActionSet = WAROpener
 WHMPlayer.ActionSet = WHMOpener
@@ -150,10 +144,11 @@ BRDPlayer.ActionSet = BRDOpener
 DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 RPRPlayer.ActionSet = RPROpener
-Event.PlayerList = [BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
+MNKPlayer.ActionSet = MNKOpener
+Event.PlayerList = [MNKPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
 Event.ShowGraph = True
 Event.SimulateFight(0.01, 1000, 20)
-
+exit()
 fightID = 'kDgwP8LQ4W3KHVMc'
 fightNumber = '7'
 action_dict, player_dict = getAbilityList(fightID, fightNumber)
