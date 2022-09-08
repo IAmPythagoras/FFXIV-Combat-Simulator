@@ -29,12 +29,17 @@ class Monk(Melee):
         self.DisciplinedFistTimer = 0
         self.DemolishDOTTimer = 0
         self.BrotherhoodTimer = 0 #Brotherhood effectTimer
+        self.RiddleOfFireTimer = 0
+        self.RiddleOfWindTimer = 0
         
         #CD
         self.ThunderclapCD = 0
         self.MantraCD = 0
         self.PerfectBalanceCD = 0
         self.BrotherhoodCD = 0
+        self.RiddleOfEarthCD = 0
+        self.RiddleOfFireCD = 0
+        self.RiddleOfWindCD = 0
 
         #DOT
         self.DemolishDOT = None
@@ -42,6 +47,7 @@ class Monk(Melee):
         #Stack
         self.ThunderclapStack = 3
         self.PerfectBalanceStack = 2
+        self.RiddleOfEarthStack = 3
 
         #Guaranteed Crit
         self.GuaranteedCrit = False #Flag used to know if ability is a guaranteed crit

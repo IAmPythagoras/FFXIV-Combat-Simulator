@@ -3,6 +3,7 @@ import copy
 from Fight import ComputeDamage
 import math
 from Jobs.Caster.Summoner.Summoner_Player import BigSummon
+from .Melee.Monk.Monk_Player import Monk
 from Jobs.Melee.Ninja.Ninja_Player import Shadow
 from Jobs.Ranged.Bard.Bard_Player import Bard
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
@@ -218,7 +219,10 @@ class DOTSpell(Spell):
             #print("Timestamp is : " + str(Player.CurrentFight.TimeStamp))
             #input("applying dot with potency : " + str(tempSpell.Potency))
             tempSpell.CastFinal(Player, Enemy)
-            self.DOTTimer = 3
+            if isinstance(Player, Monk) and self != Player.DemolishDOT and Player.RiddleOfWindTimer > 0: #Have to update to half
+                #Since not DemolishDOT and RiddleOfWind is on
+                self.DOTTimer = 1.5 #Half value
+            else: self.DOTTimer = 3
         else:
             #input("updating : " + str(self.id))
             self.DOTTimer = max(0, self.DOTTimer-TimeUnit)

@@ -35,12 +35,45 @@ def NadiRequirement(Player, Spell):
 def BrotherhoodRequirement(Player, Spell):
     return Player.BrotherhoodCD <= 0, Player.BrotherhoodCD
 
+def RiddleOfEarthRequirement(Player, Spell):
+    return Player.RiddleOfEarthStack > 0, Player.RiddleOfEarthCD
+
+def RiddleOfFireRequirement(Player, Spell):
+    return Player.RiddleOfFireCD <= 0, Player.RiddleOfFireCD
+
+def RiddleOfWindRequirement(Player, Spell):
+    return Player.RiddleOfWindCD <= 0, Player.RiddleOfWindCD
+
+def ChakraRequirement(Player, Spell):
+    return Player.MaxChakraGate == 5, -1
+
 #Apply
+
+def ApplyChakra(Player, Enemy):
+    Player.UsedChakraGate += 5
+    Player.MaxChakraGate = 0
+
+def ApplyRiddleOfWind(Player, Enemy):
+    Player.RiddleOfWindCD = 90
+    Player.RiddleOfWindTimer = 15
+
+def ApplyRiddleOfFire(Player, Enemy):
+    Player.RiddleOfFireCD = 60
+    Player.RiddleOfFireTimer = 20
+
+    Player.EffectCDList.append(RiddleOfFireCheck)
+    Player.buffList.append(RiddleOfFireBuff)
+
+def ApplyRiddleOfEarth(Player, Enemy):
+    if Player.RiddleOfEarthStack == 3:
+        Player.EffectCDList.append(RiddleOfEarthStackCheck)
+        Player.RiddleOfEarthCD = 30
+    Player.RiddleOfEarthStack -= 1
 
 def ApplyElixirField(Player, Enemy):
     Player.ResetMasterGauge()
 
-    Player.MasterGauge[4] = True #Opening Lunar Nadi
+    Player.MasterGauge[0] = True #Opening Lunar Nadi
     Player.FormlessFistStack += 1
 
 def ApplyCelestialRevolution(Player, Enemy):
@@ -53,7 +86,7 @@ def ApplyCelestialRevolution(Player, Enemy):
 def ApplyRisingPhoenix(Player, Enemy):
     Player.ResetMasterGauge()
 
-    Player.Mastergauge[-1] = True
+    Player.Mastergauge[-1] = True #Opening Solar Nadi
     Player.FormlessFistStack += 1
 
 def ApplyPhantomRush(Player, Enemy):
@@ -141,6 +174,19 @@ def LeadenFistEffect(Player, Spell):
     if Spell.id == Bootshine.id: Spell.Potency += 100
 
 #Check
+
+def RiddleOfFireCheck(Player, Enemy):
+    if Player.RiddleOfFireTimer <= 0:
+        Player.buffList.remove(RiddleOfFireBuff)
+        Player.EffectToRemove.append(RiddleOfFireCheck)
+
+def RiddleOfEarthStackCheck(Player, Enemy):
+    if Player.RiddleOfEarthCD <= 0:
+        if Player.RiddleOfEarthStack == 2:
+            Player.EffectToRemove.append(RiddleOfEarthStackCheck)
+        else:
+            Player.RiddleOfEarthCD = 30
+        Player.RiddleOfEarthStack += 1
 
 def PerfectBalanceStackCheck(Player, Enemy):
     if Player.PerfectBalanceCD <= 0:
@@ -233,7 +279,6 @@ def CoeurlCombo(Player, Spell):
 def AddChangeFormCheck(Player):
     Player.EffectCDList.append(ChangeFormCheck)
 
-
 #Opo-opo form  -> Raptor Form
 Bootshine = MonkSpell(0, True, 2, 210, ApplyRaptor, [], True, False)
 DragonKick = MonkSpell(1, True, 2, 320, ApplyRaptor, [], True, False)
@@ -250,11 +295,16 @@ DemolishDOT = DOTSpell(10, 70, True)
 SnapPunch = MonkSpell(8, True,2 ,310, ApplyOpoOpo, [CoeurlFormRequirement], True, False)
 Rockbreaker = MonkSpell(9, True, 2, 130, ApplyOpoOpo, [CoeurlFormRequirement], True, False)
 
+#Chakra
+TheForbiddenChakra = MonkSpell(20, False, 0, 340, ApplyChakra, [ChakraRequirement], False, False )
+Enlightenment = MonkSpell(21, False, 0, 170, ApplyChakra, [ChakraRequirement], False, False)
 #Masterful Blitz
 ElixirField = MonkSpell(14, True, 2, 600, ApplyElixirField, [ElixirFieldRequirement], True, False)
-
+CelestialRevolution = MonkSpell(22, True, 2, 450, ApplyCelestialRevolution, [CelestialRevolutionRequirement], True, False)
+RisingPhoenix = MonkSpell(23, True, 2, 700, ApplyRisingPhoenix, [RisingPhoenixRequirement], True, False)
+PhantomRush = MonkSpell(24, True, 2, 1150, ApplyPhantomRush, [RisingPhoenixRequirement, NadiRequirement], True, False)
 #Other GCD
-Meditation = MonkSpell(15, True, 1, 0, ApplyMeditation, [], False, False)
+Meditation = MonkSpell(15, False, 0, 0, ApplyMeditation, [], False, False)
 
 #oGCD
 PerfectBalance = MonkSpell(13, False, 0, 0, ApplyPerfectBalance, [PerfectBalanceRequirement], False, False)
@@ -268,4 +318,5 @@ Mantra = MonkSpell(12, False, 0, 0, ApplyMantra, [MantraRequirement], False, Fal
 #Buff
 DisciplinedFistBuff = buff(1.15)
 BrotherhoodBuff = buff(1.05)
+RiddleOfFireBuff = buff(1.15)
 #MonkAbility = {}
