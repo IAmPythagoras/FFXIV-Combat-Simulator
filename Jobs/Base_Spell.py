@@ -66,7 +66,7 @@ class Spell:
             #input("tenchijind : " + str(player.TenChiJinTimer))
             #print(Requirement.__name__)
             ableToCast, timeLeft = Requirement(player, tempSpell)
-            if(not ableToCast) : #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
+            if(not ableToCast) and (player.CurrentFight.RequirementOn): #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
                 #input("timeleft : " + str(timeLeft))
                 #Will check if timeLeft is within a margin, so we will just wait for it to come
                 #timeLeft is the remaining time before the spell is available
@@ -126,12 +126,12 @@ class Spell:
         Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage
 
-        if self.id > 0:# and Damage > 0: 
-            print("The action with id : " + str(self.id) + " did " + str(Damage) + " damage and was casted by : " + str(player.CurrentFight.TimeStamp))
-            #print("Huton Timer " + str(player.HutonTimer))
-            #if self.GCD: print("GCD TIMER IS : " + str(self.RecastTime))
-        #    if isinstance(player, DarkKnight) : input("blood " + str(player.Blood))
+#        if self.id > 0:# and Damage > 0: 
+#            print("The action with id : " + str(self.id) + " did " + str(Damage) + " damage and was casted by : " + str(player.CurrentFight.TimeStamp))
 
+        if not (player.CurrentFight.FirstHit) and Damage > 0 : 
+            player.CurrentFight.FirstHit = True
+            print("The first damaging action was done at : " + str(player.CurrentFight.TimeStamp))
 
         #Will update the NextSpell of the player
 

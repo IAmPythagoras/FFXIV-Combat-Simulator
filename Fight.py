@@ -67,6 +67,8 @@ class Fight:
         self.ShowGraph = ShowGraph
         self.TimeStamp = 0
         self.TeamCompositionBonus = 1
+        self.FirstHit = False # False until the first damaging action is done
+        self.RequirementOn = True # By default True
 
 
 
