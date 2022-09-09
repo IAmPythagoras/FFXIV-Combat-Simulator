@@ -1,6 +1,5 @@
 import os
-from FFLogsAPIRequest import getAbilityList
-
+from SimulationInput import ExecuteMemoryCode
 from UI_backend import AskInput, ImportFightBackend, SaveFight, SimulateFightBackend
 
 
@@ -109,20 +108,22 @@ def MainMenu():
     "===================== DPS CALCULATOR PROGRAM =====================" + "\n" + 
     "MAIN MENU (input what you want and press ENTER)" + "\n" + 
     "======================================" + "\n" + 
-    "1- Simulate fight in memory" + "\n" + 
-    "2- Import fight from FFLogs" + "\n" + 
-    "3- Create a fight"  + "\n" + 
-    "4- Credits" + "\n" + 
-    "5- Exit" + "\n" + 
+    "1- Simulate fight in code memory" + "\n" + 
+    "2- Simulate a saved fight" + "\n" + 
+    "3- Import fight from FFLogs" + "\n" + 
+    "4- Save fight in code memory"  + "\n" + 
+    "5- Credits" + "\n" + 
+    "6- Exit" + "\n" + 
     "======================================"
     )
-    user_input = AskInput(5)
+    user_input = AskInput(6)
 
-    if user_input == "1": SimulateFightMemory()
-    elif user_input == "2" : ImportFight()
-    elif user_input == "3" : CreateFight()
-    elif user_input == "4" : Credits()
-    elif user_input == "5" : exit() #Closes program
+    if user_input == "1" : ExecuteMemoryCode(False)
+    elif user_input == "2": SimulateFightMemory()
+    elif user_input == "3" : ImportFight()
+    elif user_input == "4" : ExecuteMemoryCode(True)
+    elif user_input == "5" : Credits()
+    elif user_input == "6" : exit() #Closes program
     
 
 #This python file will serve as a GUI for the time I do not have an actual GUI

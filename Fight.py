@@ -28,6 +28,7 @@ from Jobs.Melee.Samurai.Samurai_Player import Samurai
 from Jobs.Melee.Ninja.Ninja_Player import Ninja, Shadow
 from Jobs.Melee.Dragoon.Dragoon_Player import Dragoon
 from Jobs.Melee.Reaper.Reaper_Player import Reaper
+from Jobs.Melee.Monk.Monk_Player import Monk
 
 from Jobs.Healer.Whitemage.Whitemage_Player import Whitemage
 from Jobs.Healer.Scholar.Scholar_Player import Scholar
@@ -226,6 +227,7 @@ class Fight:
             elif isinstance(player, Summoner) : job = "Summoner"
             elif isinstance(player, Dragoon) : job = "Dragoon"
             elif isinstance(player, Reaper) : job = "Reaper"
+            elif isinstance(player, Monk) : job = "Monk"
             elif isinstance(player, Bard) : 
                 job = "Bard"
                 print("==================")
@@ -567,7 +569,11 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
                 CritRate = 1
                 Player.NextCrit = False
                 auto_crit = True
-
+        elif isinstance(Player, Monk):
+            if Player.GuaranteedCrit and Player.ActionSet[Player.NextSpell].Weaponskill:
+                CritRate = 1
+                Player.GuaranteedCrit = False
+                auto_crit = True
 
     if type == 0: #Type 0 is direct damage
         Damage = math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN ) *f_WD) * Player.Trait) #Player.Trait is trait DPS bonus

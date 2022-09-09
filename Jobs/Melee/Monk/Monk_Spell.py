@@ -1,5 +1,5 @@
 from copy import deepcopy
-from Jobs.Base_Spell import DOTSpell, Melee_Auto, buff, empty
+from Jobs.Base_Spell import DOTSpell, Melee_Auto, buff
 from Jobs.Melee.Melee_Spell import MonkSpell
 Lock = 0.75 #skill animation lock - simulating 75ms ping
 
@@ -89,7 +89,7 @@ def ApplyCelestialRevolution(Player, Enemy):
 def ApplyRisingPhoenix(Player, Enemy):
     Player.ResetMasterGauge()
 
-    Player.Mastergauge[-1] = True #Opening Solar Nadi
+    Player.MasterGauge[-1] = True #Opening Solar Nadi
     Player.FormlessFistStack += 1
 
 def ApplyPhantomRush(Player, Enemy):
@@ -122,6 +122,9 @@ def ApplyPerfectBalance(Player, Enemy):
         Player.EffectCDList.append(PerfectBalanceStackCheck)
         Player.PerfectBalanceCD = 40
     Player.PerfectBalanceStack -= 1
+    Player.PerfectBalanceEffectStack = 3
+    Player.FormlessFistStack += 3
+    Player.EffectList.append(PerfectBalanceEffect)
 
 def ApplyMeditation(Player, Enemy):
     Player.MaxChakraGate += 1
@@ -222,12 +225,26 @@ def LeadenFistCheck(Player, Enemy):
 
 #Combo Effect
 
+def PerfectBalanceEffect(Player, Spell):
+    if Spell.GCD:
+        if Spell.id == Bootshine.id or Spell.id == ShadowOfTheDestroyer.id or Spell.id == DragonKick.id:
+            Player.addBeastChakra(1)
+            Player.PerfectBalanceEffectStack -= 1
+        elif Spell.id == TrueStrike.id or Spell.id == TwinSnakes.id or Spell.id == FourpointFurry.id:
+            Player.addBeastChakra(2)
+            Player.PerfectBalanceEffectStack -= 1
+        elif Spell.id == Demolish.id or Spell.id == SnapPunch.id or Spell.id == Rockbreaker.id:
+            Player.addBeastChakra(3)
+            Player.PerfectBalanceEffectStack -= 1
+
+    if Player.PerfectBalanceEffectStack == 0:
+        Player.EffectToRemove.append(PerfectBalanceEffect)
+
 def ComboEffect(Player, Spell):
     # This effect will always be on and will check what form the player is in and use the
     # necessary effect
     if Spell.GCD:
         if Player.FormlessFistStack > 0 :#Then we are in formless, so we can do whichever
-            Player.FormlessFistStack -= 1
             #Opo-Opo Form
             if Spell.id == Bootshine.id or Spell.id == ShadowOfTheDestroyer.id:
                 Player.GuaranteedCrit = True
@@ -285,6 +302,14 @@ def ComboEffect(Player, Spell):
             elif Spell.id == SnapPunch.id or Spell.id == Rockbreaker.id:
                 pass #Nothing happens
 
+
+#Other
+
+def FormlessStackCheck(Player, Enemy):
+    if Player.UsedFormlessStack:
+        Player.UsedFormlessStack = False
+        Player.Player.FormlessFistStack -= 1
+
 #Opo-opo form  -> Raptor Form
 Bootshine = MonkSpell(0, True, 2, 210, ApplyRaptor, [], True, False)
 DragonKick = MonkSpell(1, True, 2, 320, ApplyRaptor, [], True, False)
@@ -297,7 +322,7 @@ FourpointFurry = MonkSpell(6, True, 2, 120, ApplyCoeurl, [RaptorFormRequirement]
 
 #Coeurl form combo -> Opo-opo form
 Demolish = MonkSpell(7, True, 2, 130, ApplyOpoOpo, [CoeurlFormRequirement], True, False)
-DemolishDOT = DOTSpell(10, 70, True)
+DemolishDOT = DOTSpell(-10, 70, True)
 SnapPunch = MonkSpell(8, True,2 ,310, ApplyOpoOpo, [CoeurlFormRequirement], True, False)
 Rockbreaker = MonkSpell(9, True, 2, 130, ApplyOpoOpo, [CoeurlFormRequirement], True, False)
 
@@ -346,4 +371,4 @@ def ApplyMonk_Auto(Player, Enemy):
 Monk_Auto = Monk_AA()
 Give_Monk_Auto = MonkSpell(-1, False, 0, 0, ApplyMonk_Auto, [], False, False)
 
-#MonkAbility = {}
+MonkAbility = {}

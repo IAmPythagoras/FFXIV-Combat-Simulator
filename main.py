@@ -102,7 +102,7 @@ BRDPlayer = Bard(2.5, [], [], [SongEffect], Event, BRDStat)
 DNCPlayer = Dancer(2.5, [], [], [EspritEffect], Event, DNCStat)
 DRGPlayer = Dragoon(2.5, [], [], [], Event, DRGStat)
 RPRPlayer = Reaper(2.5, [], [], [], Event, RPRStat)
-MNKPlayer = Monk(2.5, [], [], [], Event, MNKStat)
+MNKPlayer = Monk(2.5, [], [], [ComboEffect,FormlessStackCheck], Event, MNKStat)
 
 
 PLDPlayer2 = Paladin(2.5, [], [], [], Event, PLDStat)
@@ -125,7 +125,7 @@ BRDOpener = [WaitAbility(19.5), Potion, Stormbite, WandererMinuet, RagingStrike,
 DNCOpener = [ClosedPosition(NINPlayer, False),WaitAbility(4.5), StandardStep, Emboite, Entrechat, WaitAbility(11.74),Potion, StandardFinish, TechnicalStep, Emboite, Entrechat, Jete, Pirouette, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Emboite, Entrechat, StandardFinish]
 MCHOpener = [Ranged_AA,WaitAbility(15), Reassemble, WaitAbility(2.25), Potion, WaitAbility(1.5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, Reassemble, WaitAbility(1), Wildfire, ChainSaw, Automaton,WaitAbility(1), Hypercharge, HeatBlast, Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet, Drill]
 MNKOpener = [WaitAbility(18), FormShift, Give_Monk_Auto,DragonKick, Potion, TwinSnakes, WaitAbility(1), RiddleOfFire, Demolish, TheForbiddenChakra, Bootshine, Brotherhood, WaitAbility(1), PerfectBalance, DragonKick, RiddleOfWind, Bootshine, DragonKick, ElixirField, Bootshine, PerfectBalance, TwinSnakes, DragonKick, Demolish, RisingPhoenix]
-
+MNKOpener2 = [WaitAbility(15), FormShift, WaitAbility(3), Potion, Give_Monk_Auto, TwinSnakes, WaitAbility(1), RiddleOfFire, Demolish, TheForbiddenChakra, DragonKick, Brotherhood, PerfectBalance, Bootshine, RiddleOfWind, TrueStrike, SnapPunch, RisingPhoenix, DragonKick, PerfectBalance, TwinSnakes, Bootshine, Demolish, RisingPhoenix]
 #BLMPlayer.ActionSet = getAbilityList(client_id, client_secret)
 BLMPlayer.ActionSet = BLMOpener
 SCHPlayer.ActionSet = SCHOpener
@@ -144,11 +144,11 @@ BRDPlayer.ActionSet = BRDOpener
 DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 RPRPlayer.ActionSet = RPROpener
-MNKPlayer.ActionSet = MNKOpener
+MNKPlayer.ActionSet = MNKOpener2
 Event.PlayerList = [MNKPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
 Event.ShowGraph = True
 Event.SimulateFight(0.01, 1000, 20)
-exit()
+
 fightID = 'kDgwP8LQ4W3KHVMc'
 fightNumber = '7'
 action_dict, player_dict = getAbilityList(fightID, fightNumber)
