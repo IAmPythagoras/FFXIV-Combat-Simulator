@@ -174,7 +174,7 @@ def WaitAbility(time):
     return WaitAction
 
 def ApplyPotion(Player, Enemy):
-    Player.Stat["MainStat"] = min(math.floor(Player.Stat["MainStat"] * 1.1), Player.Stat["MainStat"] + 189)
+    Player.Stat["MainStat"] = min(math.floor(Player.Stat["MainStat"] * 1.1), Player.Stat["MainStat"] + 223) #Grade 7 HQ tincture
     Player.PotionTimer = 30
 
     Player.EffectCDList.append(PotionCheck)

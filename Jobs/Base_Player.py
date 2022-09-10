@@ -34,6 +34,8 @@ class Player:
 
         self.Stat = Stat #Stats of the player
 
+        self.auras = [] # List containing all Auras at the start of the fight
+
         self.Trait = 1  #DPS mult from trait
         self.buffList = []
         self.GCDReduction = 1 #Mult GCD reduction based on Spell Speed or Skill Speed (computed before fight)

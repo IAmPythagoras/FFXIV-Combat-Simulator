@@ -28,6 +28,7 @@ from Jobs.Healer.Sage.Sage_Spell import SageAbility
 from Jobs.Healer.Astrologian.Astrologian_Spell import AstrologianAbility
 from Jobs.Healer.Scholar.Scholar_Spell import ScholarAbility
 from Jobs.Healer.Whitemage.Whitemage_Spell import WhiteMageAbility
+from Jobs.Melee.Monk.Monk_Spell import MonkAbility
 
 #RANGED
 from Jobs.Ranged.Machinist.Machinist_Player import *
@@ -150,7 +151,7 @@ def getAbilityList(fightID, fightNumber):
     conn = http.client.HTTPSConnection("www.fflogs.com")
     access_token = getAccessToken(conn, client_id, client_secret)
 
-    payload = "{\"query\":\"query trio{\\n\\treportData {\\n\\t\\treport(code: \\\"" + fightID + "\\\") {\\n\\t\\t\\tplayerDetails(fightIDs:" + fightNumber +",endTime:999999999),\\n\\t\\t\\tfights(fightIDs:8){\\n\\t\\t\\t\\tenemyNPCs{\\n\\t\\t\\t\\t\\tid\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tstartTime\\n\\t\\t\\t}\\n\\t\\t}\\n\\t\\t\\t\\n\\t}\\n}\",\"operationName\":\"trio\"}"
+    payload = "{\"query\":\"query trio{\\n\\treportData {\\n\\t\\treport(code: \\\"" + fightID + "\\\") {\\n\\t\\t\\tplayerDetails(fightIDs:" + fightNumber +",endTime:999999999),\\n\\t\\t\\tfights(fightIDs:" + fightNumber +"){\\n\\t\\t\\t\\tenemyNPCs{\\n\\t\\t\\t\\t\\tid\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tstartTime\\n\\t\\t\\t}\\n\\t\\t}\\n\\t\\t\\t\\n\\t}\\n}\",\"operationName\":\"trio\"}"
 
     headers = {
         'Content-Type': "application/json",
@@ -165,7 +166,7 @@ def getAbilityList(fightID, fightNumber):
     data_json = json.loads(data.decode("utf-8"))
 
     #Getting Player's Class, ids and name
-
+    input(data_json)
     player_data = data_json["data"]["reportData"]["report"]["playerDetails"]["data"]["playerDetails"]
     enemy_data = data_json["data"]["reportData"]["report"]["fights"][0]["enemyNPCs"]
     #Mix of dictionnary and array with relevant information
@@ -206,7 +207,7 @@ def getAbilityList(fightID, fightNumber):
                 elif job_name == "Bard" : job_object = Bard(2.5, [], [], [], None, {})
                 #melee
                 elif job_name == "Reaper" : job_object = Reaper(2.5, [], [], [], None, {})
-                elif job_name == "Monk" : job_object = Machinist(2.5, [], [], [], None, {}) #Monk is not yet implemented
+                elif job_name == "Monk" : job_object = Monk(2.5, [], [], [], None, {})
                 elif job_name == "Dragoon" : job_object = Dragoon(2.5, [], [], [], None, {})
                 elif job_name == "Ninja" : job_object = Ninja(2.5, [], [], [], None, {})
                 elif job_name == "Samurai" : job_object = Samurai(2.5, [], [], [], None, {})
@@ -214,7 +215,6 @@ def getAbilityList(fightID, fightNumber):
                 
             job_object.playerID = str(player["id"])
             player_list[str(player["id"])] = {"name" : player["name"], "job" : job_name, "job_object" : job_object} #Adding new Key
-
             #We can access the information using the player's id
 
     
@@ -237,9 +237,13 @@ def getAbilityList(fightID, fightNumber):
         sourceID = str(info["sourceID"])
         player_obj = player_list[sourceID]["job_object"]
         auras = info["auras"]
+
         for aura in auras: #Going through all buffs in the player
             #We will look for a selection of buffs that are important. We will assume
             #the optimal scenario. So if we use a potion, we will assume its right before the fight begins
+            
+            player_obj.auras += [aura["name"]] #Adding aura. Used for when restoring a fight using a saved file.
+            
             if aura["name"] == "SharpCast":
                 #SharpCast for BLM.
                 player_obj.SharpCast = True
@@ -264,6 +268,23 @@ def getAbilityList(fightID, fightNumber):
                 player_obj.CurrentRitual = [0,1,2]
             elif aura["name"] == "Eukrasia":
                 player_obj.Eukrasia = True
+            elif aura["name"] == "Standard Step":
+                #Assuming Dancer did 2 step
+                player_obj.Emboite = True
+                player_obj.Entrechat = True
+                player_obj.StandardFinish = True
+            elif aura["name"] == "ClosedPosition":
+                if dance_partner_flag:
+                    player_obj.DancePartner = dance_partner
+                else:
+                    closed_position = True
+                    dancer = player_obj
+            elif aura["name"] == "Dance partner":
+                if closed_position:
+                    dancer.DancePartner = player_obj
+                else:
+                    dance_partner_flag = True
+                    dance_partner = player_obj
 
 
 

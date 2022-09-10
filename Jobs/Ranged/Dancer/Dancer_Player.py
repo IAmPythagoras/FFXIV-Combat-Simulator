@@ -60,9 +60,9 @@ class Dancer(Ranged):
         self.DevilmentCD = 0
         self.FlourishCD = 0
         self.ClosedPositionCD = 0
-        self.CurinWaltzCD = 0
+        self.CuringWaltzCD = 0
         self.SambaCD = 0
-        self.ImprovisingCD = 0
+        self.ImprovisationCD = 0
 
         #Timer
         self.StandardFinishTimer = 0
@@ -80,9 +80,9 @@ class Dancer(Ranged):
         if (self.DevilmentCD > 0) : self.DevilmentCD = max(0,self.DevilmentCD - time)
         if (self.FlourishCD > 0) : self.FlourishCD = max(0,self.FlourishCD - time)
         if (self.ClosedPositionCD > 0) : self.ClosedPositionCD = max(0,self.ClosedPositionCD - time)
-        if (self.CurinWaltzCD > 0) : self.CurinWaltzCD = max(0,self.CurinWaltzCD - time)
+        if (self.CuringWaltzCD > 0) : self.CuringWaltzCD = max(0,self.CuringWaltzCD - time)
         if (self.SambaCD > 0) : self.SambaCD = max(0,self.SambaCD - time)
-        if (self.ImprovisingCD > 0) : self.ImprovisingCD = max(0,self.ImprovisingCD - time)
+        if (self.ImprovisationCD > 0) : self.ImprovisationCD = max(0,self.ImprovisationCD - time)
 
 
     def updateTimer(self, time):

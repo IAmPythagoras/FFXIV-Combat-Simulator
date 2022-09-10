@@ -33,7 +33,6 @@ def SimulateFightMemory():
             "Select one of the saved fights : "+ "\n" + 
             "=========================================================="
             )
-
         for i in range(1,number_saved_fight+1):
             print(str(i) + " -> " + saved_fight[i-1])
 
@@ -105,12 +104,12 @@ def MainMenu():
     os.system('CLS') #clearing HUD
     #Welcome Message
     print(
-    "===================== DPS CALCULATOR PROGRAM =====================" + "\n" + 
+    "===================== Advanced Combat Simulator (ACS) =====================" + "\n" + 
     "MAIN MENU (input what you want and press ENTER)" + "\n" + 
     "======================================" + "\n" + 
     "1- Simulate fight in code memory" + "\n" + 
     "2- Simulate a saved fight" + "\n" + 
-    "3- Import fight from FFLogs" + "\n" + 
+    "3- Import fight from FFLogs (Experimental)" + "\n" + 
     "4- Save fight in code memory"  + "\n" + 
     "5- Credits" + "\n" + 
     "6- Exit" + "\n" + 

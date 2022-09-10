@@ -39,7 +39,7 @@ class Scholar(Healer):
         #DOT
         self.Biolysis = None
         #Buff
-        self.RecitationBuff = False #True if we have it
+        self.Recitation = True #True if we have it
 
 
     def updateCD(self, time):
