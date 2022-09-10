@@ -4,7 +4,7 @@ from Enemy import Enemy
 from Fight import Fight
 
 
-from Jobs.Base_Spell import Melee_AA, Ranged_AA, WaitAbility, Potion
+from Jobs.Base_Spell import WaitAbility, Potion
 from Jobs.Caster.Caster_Spell import *
 from Jobs.Melee.Melee_Spell import *
 from Jobs.Ranged.Ranged_Spell import *
@@ -159,22 +159,22 @@ def ExecuteMemoryCode(SaveFight):
     SGEOpener = []
 
     # Physical Ranged
-    BRDOpener = []
-    MCHOpener = []
-    DNCOpener = []
+    BRDOpener = [WaitAbility(50)]
+    MCHOpener = [WaitAbility(50)]
+    DNCOpener = [WaitAbility(50)]
 
     # Melee
-    SAMOpener = []
-    GNBOpener = []
+    SAMOpener = [WaitAbility(50)]
     DRGOpener = [WaitAbility(50)]
-    MNKOpener = []
-    NINOpener = []
+    MNKOpener = [WaitAbility(50)]
+    NINOpener = [WaitAbility(50)]
+    RPROpener = [WaitAbility(50)]
 
     # Tank
-    DRKOpener = []
-    WAROpener = []
-    PLDOpener = []
-    RPROpener = []
+    DRKOpener = [WaitAbility(50)]
+    WAROpener = [WaitAbility(50)]
+    PLDOpener = [WaitAbility(50)]
+    GNBOpener = [WaitAbility(50)]
 
 
     # ===============================================================================================
@@ -219,7 +219,7 @@ def ExecuteMemoryCode(SaveFight):
     # So if you want to simulate the BlackMage and a RedMage, you would do: 
     # PlayerList = [BLMPlayer, RDMPlayer]
 
-    PlayerList = [BLMPlayer, DRGPlayer]
+    PlayerList = [BLMPlayer, DRGPlayer, RPRPlayer, MNKPlayer, SAMPlayer, NINPlayer, WARPlayer, DRKPlayer, PLDPlayer, GNBPlayer, DNCPlayer, BRDPlayer, MCHPlayer]
 
     Event.PlayerList = PlayerList
 

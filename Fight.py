@@ -257,11 +257,12 @@ class Fight:
             axs[0].plot(TimeStamp,player.DPSGraph, label=job)
             axs[1].plot(TimeStamp,player.PotencyGraph, label=job)
 
-            if DPS != 0 : self.ComputeDPSDistribution(player, fig2, axs2[j][i], job)
-            i+=1
-            if i == 4:
-                i = 0
-                j+=1
+            if len(self.PlayerList) <= 8:
+                if DPS != 0 : self.ComputeDPSDistribution(player, fig2, axs2[j][i], job)
+                i+=1
+                if i == 4:
+                    i = 0
+                    j+=1
         
         print("The Enemy has received a total potency of: " + str(self.Enemy.TotalPotency))
         print("The Potency Per Second on the Enemy is: " + str(self.Enemy.TotalPotency/time))
@@ -421,7 +422,7 @@ class Fight:
                     start = True
 
                     # Progress bar
-                    p_bar = tqdm(range(int(TimeLimit) * 100))
+                    p_bar = tqdm(range(int(TimeLimit) * 100), desc="Simulating fight assuming TimeLimit")
 
 
 

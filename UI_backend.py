@@ -15,7 +15,7 @@ from Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, EnochianEffec
 from Fight import Fight
 from Enemy import Enemy
 from FFLogsAPIRequest import getAbilityList, lookup_abilityID
-from Jobs.Base_Spell import Melee_AA, PrepullPotion, Ranged_AA, WaitAbility
+from Jobs.Base_Spell import PrepullPotion, WaitAbility
 
 #CASTER
 from Jobs.Caster.Summoner.Summoner_Player import *
@@ -96,19 +96,15 @@ def ImportFightBackend(fightID,fightNumber):
         elif job_name == "Astrologian" : player_dict[playerID]["job_object"].Stat = ASTStat
         elif job_name == "Warrior" : 
             player_dict[playerID]["job_object"].Stat = copy.deepcopy(WARStat)
-            player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
         elif job_name == "DarkKnight" : 
             player_dict[playerID]["job_object"].Stat = copy.deepcopy(DRKStat)
-            player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
             player_dict[playerID]["job_object"].EffectList = [BloodWeaponEffect] #Assuming we pre pull it
             player_dict[playerID]["job_object"].EffectCDList = [BloodWeaponCheck]
         elif job_name == "Paladin" : 
             player_dict[playerID]["job_object"].Stat = copy.deepcopy(PLDStat)
-            player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
             player_dict[playerID]["job_object"].EffectList = [OathGauge]
         elif job_name == "Gunbreaker" : 
             player_dict[playerID]["job_object"].Stat = copy.deepcopy(GNBStat)
-            player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
         #Caster
         elif job_name == "BlackMage" : 
             player_dict[playerID]["job_object"].Stat = copy.deepcopy(BLMStat)

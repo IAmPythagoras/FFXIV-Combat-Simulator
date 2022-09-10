@@ -11,6 +11,7 @@ from Jobs.Ranged.Dancer.Dancer_Player import Dancer
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
 from Jobs.Ranged.Ranged_Player import Ranged
 from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
+from Jobs.Tank.Tank_Player import Tank
 Lock = 0.75
 
 class FailedToCast(Exception):#Exception called if a spell fails to cast
@@ -132,7 +133,7 @@ class Spell:
 
             for gamer in player.CurrentFight.PlayerList:
                 if isinstance(gamer, Monk): gamer.DOTList.append(copy.deepcopy(Monk_Auto))
-                if isinstance(gamer, Melee) or isinstance(gamer, Dancer):
+                if isinstance(gamer, Melee) or isinstance(gamer, Dancer) or isinstance(gamer, Tank):
                     gamer.DOTList.append(copy.deepcopy(Melee_AADOT))
                 elif isinstance(gamer, Ranged):
                     gamer.DOTList.append(copy.deepcopy(Ranged_AADOT))
@@ -231,7 +232,7 @@ class Auto_Attack(DOTSpell):
         if Ranged : super().__init__(id, 100, True)
         else: super().__init__(id, 110, True)
 
-        self.DOTTimer = 3 #The timer is intentionally set at a longer time, so it won't go off before the countdown is over
+        self.DOTTimer = 0 #The timer is intentionally set at a longer time, so it won't go off before the countdown is over
 
 class Queen_Auto(Auto_Attack):
 
