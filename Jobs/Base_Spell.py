@@ -131,7 +131,7 @@ class Spell:
 
         if not (player.CurrentFight.FirstHit) and Damage > 0 : 
             player.CurrentFight.FirstHit = True
-            print("The first damaging action was done at : " + str(player.CurrentFight.TimeStamp))
+            #print("The first damaging action was done at : " + str(player.CurrentFight.TimeStamp))
 
         #Will update the NextSpell of the player
 

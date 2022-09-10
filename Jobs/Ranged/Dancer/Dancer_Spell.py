@@ -19,8 +19,6 @@ def StandardFinishRequirement(Player, Spell):
     #Will check how many step we have
     #Not done in apply since we want to acces the spell easily
 
-    if Player.StandardFinishBuff != None : Player.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
-    if Player.DancePartner != None and Player.StandardFinishBuff != None : Player.DancePartner.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
     Player.StandardFinishBuff = copy.deepcopy(StandardFinishBuff)
     step = 0
     if Player.Emboite : step +=1
@@ -41,9 +39,6 @@ def TechnicalFinishRequirement(Player, Spell):
     #Will check how many step we have
     #Not done in apply since we want to acces the spell easily
 
-    if Player.TechnicalFinishBuff != None : 
-        input(Player.TechnicalFinishBuff)
-        Player.CurrentFight.Enemy.buffList.remove(Player.TechnicalFinishBuff)#Reset DPSBonus
     Player.TechnicalFinishBuff = copy.deepcopy(TechnicalFinishBuff)
     step = 0
     if Player.Emboite : step +=1
@@ -203,7 +198,6 @@ def ApplyDevilment(Player, Enemy):
 def ApplyTillana(Player, Enemy):
     Player.FlourishingFinish = False 
     #We have to apply or reapply StandardFinish with a bonus of 5%, so reset, set bonus to 5% and apply
-    print(Player.StandardFinishBuff)
     if Player.StandardFinishBuff != None : Player.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
     if Player.DancePartner != None : Player.DancePartner.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
     
@@ -305,11 +299,13 @@ def StandardFinishCheck(Player, Enemy):
         Player.buffList.remove(Player.StandardFinishBuff)
         if Player.DancePartner != None : Player.DancePartner.buffList.remove(Player.StandardFinishBuff)
         Player.EffectToRemove.append(StandardFinishCheck)
+        Player.StandardFinishBuff = None
 
 def TechnicalFinishCheck(Player, Enemy):
     if Player.TechnicalFinishTimer <= 0:
         Enemy.buffList.remove(Player.TechnicalFinishBuff)
         Player.EffectToRemove.append(TechnicalFinishCheck)
+        Player.TechnicalFinishBuff = None
 
 
 #GCD

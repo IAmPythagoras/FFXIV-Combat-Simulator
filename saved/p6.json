@@ -2,9 +2,9 @@
     "data": {
         "fightInfo": {
             "countdownValue": 0,
-            "fightDuration": 1000,
+            "fightDuration": 400,
             "time_unit": 0.01,
-            "ShowGraph": false,
+            "ShowGraph": true,
             "RequirementOn": false
         },
         "PlayerList": [

@@ -76,13 +76,13 @@ def Credits():
     os.system('CLS') #clearing HUD
     #This menu displays credits
     print(
-        "===================== CREDITS =====================" + "\n" + 
+        "=================================================== CREDITS =======================================================" + "\n" + 
         "This program was made mainly by myself, but I was helped by a lot of friends" + "\n" +
         "and other people without whomst this project would not have been possible." + "\n" +
         "I listed here all those that helped with a short description of what they did." + "\n" +
         "I personally thank everyone here for the help they brought :)" + "\n" +
         "I will put their discord IDs in case you wish to contact them." + "\n" +
-        "==============================================================================" + "\n" +
+        "=================================================================================================================" + "\n" +
         "Pythagoras#6312 -> That's me! Did most of it" + "\n" +
         "ne0dym#7837 -> Helped me with code for Dark Knight" + "\n" +
         "Bri-kun#6539 -> Helped me with networking code and other FFLogsAPI related stuff" + "\n" +
@@ -94,26 +94,26 @@ def Credits():
         "I also give my thanks to The Balance, which provided me with a lot of knowleadge about the different" + "\n" +
         "jobs so I could implement them and also gave me access to ressources like the Blackmage gear comparison" + "\n" +
         "spreadsheet which I used a lot when trying to better understand how damage computation work in this game." + "\n" +
-        "=============================================================================="
+        "================================================================================================================="
     )
 
-    input("Press Enter to go back to the Main Menu")
+    input("Press Enter to go back to the Main Menu : ")
 
 
 def MainMenu():
     os.system('CLS') #clearing HUD
     #Welcome Message
     print(
-    "===================== Advanced Combat Simulator (ACS) =====================" + "\n" + 
+    "===================== FF XIV Combat Simulator =====================" + "\n" + 
     "MAIN MENU (input what you want and press ENTER)" + "\n" + 
-    "======================================" + "\n" + 
+    "===================================================================" + "\n" + 
     "1- Simulate fight in code memory" + "\n" + 
     "2- Simulate a saved fight" + "\n" + 
     "3- Import fight from FFLogs (Experimental)" + "\n" + 
     "4- Save fight in code memory"  + "\n" + 
     "5- Credits" + "\n" + 
     "6- Exit" + "\n" + 
-    "======================================"
+    "==================================================================="
     )
     user_input = AskInput(6)
 
