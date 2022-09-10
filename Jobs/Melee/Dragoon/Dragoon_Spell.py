@@ -86,9 +86,7 @@ def ApplyFangAndClaw(Player, Enemy):
     else:
         Player.LanceMastery = False
 def ApplyLanceCharge(Player, Enemy):
-    #print("BUFFING LANCE CHARGE")
     Player.buffList.append(LanceChargeBuff)
-    #input(Player.MultDPSBonus)
     Player.LanceChargeCD = 60
     Player.LanceChargeTimer = 20
     Player.EffectCDList.append(LanceChargeCheck)
@@ -158,12 +156,9 @@ def DoomSpikeCombo(Player, Spell):
             #Gain PowerSurge, 10% damage
 
         if Player.PowerSurgeTimer <= 0: #Not already applied
-            #print("Buffing")
             Player.buffList.append(PowerSurgeBuff)
-            #input(Player.MultDPSBonus)
             Player.EffectCDList.append(PowerSurgeCheck)
         Player.PowerSurgeTimer = 30
-        #input(Player.PowerSurgeTimer)
         Player.EffectList.append(SonicThrustCombo)
         Player.EffectToRemove.append(DoomSpikeCombo)
 
@@ -182,12 +177,9 @@ def TrueThrustCombo(Player, Spell):
         #Gain PowerSurge, 10% damage
 
         if Player.PowerSurgeTimer <= 0: #Not already applied
-            #print("Buffing")
             Player.buffList.append(PowerSurgeBuff)
-            #input(Player.MultDPSBonus)
             Player.EffectCDList.append(PowerSurgeCheck)
         Player.PowerSurgeTimer = 30
-        #input(Player.PowerSurgeTimer)
 
         Player.EffectList.append(DisembowelCombo)
         Player.EffectToRemove.append(TrueThrustCombo)

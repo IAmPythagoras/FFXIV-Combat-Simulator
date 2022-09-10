@@ -7,7 +7,8 @@ I only did the code relevant to how we used the data, he did everything regardin
 how to get the data. You can DM him on discord if you have questions : Bri-kun#6539
 
 """
-from Jobs.Base_Spell import ApplyPotion, PrepullPotion, WaitAbility
+from tqdm import tqdm
+from Jobs.Base_Spell import PrepullPotion, WaitAbility
 
 #CASTER
 from Jobs.Caster.Summoner.Summoner_Player import *
@@ -83,6 +84,10 @@ def lookup_abilityID(actionID, targetID, sourceID, player_list):
 
 
             if callable(JobDict[int(actionID)]): #If the action is a function
+                #print(targetID)
+                #print(sourceID)
+                #print(actionID)
+                #input(player_list.keys())
                 return JobDict[int(actionID)](player_list[str(targetID)]["job_object"])
             return JobDict[int(actionID)] #Else return object
 
@@ -135,10 +140,8 @@ def lookup_abilityID(actionID, targetID, sourceID, player_list):
 def getAccessToken(conn, client_id, client_secret):
     payload = "grant_type=client_credentials&client_id=%s&client_secret=%s" % (client_id, client_secret)
     headers = {'content-type':"application/x-www-form-urlencoded"}
-    print("Sending Request...")
     conn.request("POST","/oauth/token", payload, headers)
     res = conn.getresponse()
-    print("Received Request")
     res_str = res.read().decode("utf-8")
     res_json = json.loads(res_str)
     return res_json["access_token"]
@@ -147,6 +150,9 @@ def getAbilityList(fightID, fightNumber):
 
     client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
     client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE" #Supposed to be secret >.>
+
+    # Progress Bar
+    p_bar = tqdm(range(3), desc="Requesting info from FFLogs")
 
     conn = http.client.HTTPSConnection("www.fflogs.com")
     access_token = getAccessToken(conn, client_id, client_secret)
@@ -157,16 +163,16 @@ def getAbilityList(fightID, fightNumber):
         'Content-Type': "application/json",
         'Authorization': "Bearer %s" % access_token
         }
-    print("Sending Request...")
     conn.request("POST", "/api/v2/client", payload, headers)
 
     res = conn.getresponse()
-    print("Received Request...")
     data = res.read()
-    data_json = json.loads(data.decode("utf-8"))
+    data_json = json.loads(data.decode("utf-8"))\
+    
+    p_bar.update(1)
+    p_bar.refresh() #Updating progress
 
     #Getting Player's Class, ids and name
-    input(data_json)
     player_data = data_json["data"]["reportData"]["report"]["playerDetails"]["data"]["playerDetails"]
     enemy_data = data_json["data"]["reportData"]["report"]["fights"][0]["enemyNPCs"]
     #Mix of dictionnary and array with relevant information
@@ -225,11 +231,11 @@ def getAbilityList(fightID, fightNumber):
 
     payload = "{\"query\":\"query trio{\\n\\treportData {\\n\\t\\treport(code: \\\""+fightID+"\\\") {\\n\\t\\t\\ttitle,\\n\\t\\t\\tendTime,\\n\\t\\t\\tevents(\\n\\t\\t\\t\\tendTime:1649370483952,\\n\\t\\t\\t\\tfightIDs:"+fightNumber+",\\n\\t\\t\\t\\tincludeResources: false,\\n\\t\\t\\t\\tfilterExpression:\\\"type = 'combatantinfo'\\\"\\n\\t\\t\\t){data\\n\\t\\t\\t}\\n\\t\\t\\t\\n\\t\\t}\\n\\t}\\n}\",\"operationName\":\"trio\"}"
     conn.request("POST", "/api/v2/client", payload, headers)
-    print("Sending Request...")
     res = conn.getresponse()
-    print("Received Request...")
     data = res.read()
     data_json = json.loads(data.decode("utf-8"))
+    p_bar.update(1)
+    p_bar.refresh() #Updating progress
 
     combatantinfo_list = data_json["data"]["reportData"]["report"]["events"]["data"] #Array of combatantinfo
 
@@ -294,11 +300,11 @@ def getAbilityList(fightID, fightNumber):
 
     payload = "{\"query\":\"query trio{\\n    reportData {\\n        report(code: \\\""+fightID+"\\\") {\\n\\t\\t\\t\\tendTime,\\n            events(\\n\\t\\t\\t\\t\\t\\t\\tfightIDs:"+fightNumber+",\\n\\t\\t\\t\\t\\t\\t\\tendTime:99999999999999,\\n\\t\\t\\t\\t\\t\\t\\tincludeResources:false,\\n\\t\\t\\t\\t\\t\\t\\tfilterExpression:\\\"type = 'cast' OR type = 'begincast' OR type = 'calculateddamage' OR type = 'applybuff' or type = 'calculatedheal'\\\",\\n\\t\\t\\t\\t\\t\\t\\tlimit:10000\\n\\t\\t\\t\\t\\t\\t\\t\\n\\t\\t\\t\\t\\t\\t){data}\\n        }\\n\\n    }\\n}\",\"operationName\":\"trio\"}"
     conn.request("POST", "/api/v2/client", payload, headers)
-    print("Sending Request...")
     res = conn.getresponse()
-    print("Received Request...")
     data = res.read()
     data_json = json.loads(data.decode("utf-8"))
+    p_bar.update(1)
+    p_bar.refresh() #Updating progress
 
     action_list = data_json["data"]["reportData"]["report"]["events"]["data"] #Array of all actions done
 
@@ -470,6 +476,7 @@ def getAbilityList(fightID, fightNumber):
     #action_dict is a dictionnary with a list of actions done by each player. Accessible by using their IDs
     #player_list is a dictionnary with relevant information to all players. Accessible by using their IDs
 #Function to test timing
+
 def test(client_id,client_secret):
     conn = http.client.HTTPSConnection("www.fflogs.com")
     access_token = getAccessToken(conn, client_id, client_secret)

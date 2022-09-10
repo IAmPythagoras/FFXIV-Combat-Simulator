@@ -45,11 +45,9 @@ def FleetingRaijuRequirement(Player, Spell):
     return Player.RaijuStack > 0, -1
 
 def MeisuiRequirement(Player, Spell):
-    #print(Player.MeisuiCD)
     return Player.Suiton and Player.MeisuiCD <= 0, -1
 
 def BhavacakraRequirement(Player, Spell):
-    #print(Player.NinkiGauge)
     return Player.NinkiGauge >= 50, -1
 
 def TrickAttackRequirement(Player, Spell):
@@ -290,12 +288,8 @@ def TenChiJinEffect(Player, Spell):
 
 
     elif not (isinstance(Spell, DOTSpell)): #If not a DOTSpell
-        #Remove it
-        #print(Spell.id)
-        #input("in here lol")
         Player.TenChiJinTimer = 0
 
-    ##input(Player.EffectList)
 
 def HutonEffect(Player, Spell):
     if isinstance(Spell, NinjaSpell) and Spell.Weaponskill and Spell.GCD : Spell.RecastTime *= 0.85
@@ -370,7 +364,6 @@ def SuitonCheck(Player, Enemy):
 
 def KassatsuCheck(Player, Enemy):
     if Player.KassatsuTimer <= 0:
-        ##print("removed kassatsu")
         Player.EffectList.remove(KassatsuEffect)
         Player.EffectToRemove.append(KassatsuCheck)
         Player.Kassatsu = False
@@ -400,8 +393,6 @@ def MugCheck(Player, Enemy):
 
 def TenChiJinCheck(Player, Enemy):
     if Player.TenChiJinTimer <= 0:
-        #input("removing it lol")
-        #print(Player.CurrentFight.TimeStamp)
         Player.EffectList.remove(TenChiJinEffect)
         Player.EffectToRemove.append(TenChiJinCheck)
 

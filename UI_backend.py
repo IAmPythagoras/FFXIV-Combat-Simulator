@@ -1,6 +1,8 @@
 import copy
 import json
 import os
+from tqdm import tqdm
+
 from Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton
 from Jobs.Melee.Samurai.Samurai_Spell import MeikyoCheck, MeikyoEffect, MeikyoStackCheck
 
@@ -83,9 +85,10 @@ def ImportFightBackend(fightID,fightNumber):
 
     Event = Fight([], Enemy(), False) #Creating event
 
-    action_dict, player_dict = getAbilityList(fightID, fightNumber) #getting 
-
+    action_dict, player_dict = getAbilityList(fightID, fightNumber) #getting ability List
+    
     for playerID in player_dict:
+
         player_dict[playerID]["job_object"].ActionSet = action_dict[playerID]
         player_dict[playerID]["job_object"].CurrentFight = Event
         job_name = player_dict[playerID]["job"] #getting job name
@@ -137,6 +140,7 @@ def ImportFightBackend(fightID,fightNumber):
             player_dict[playerID]["job_object"].Stat = copy.deepcopy(SAMStat)
 
         Event.PlayerList.append(player_dict[playerID]["job_object"])
+
     Event.RequirementOn = False #By default making false
     return Event
 

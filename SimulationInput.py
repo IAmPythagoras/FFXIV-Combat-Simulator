@@ -159,22 +159,22 @@ def ExecuteMemoryCode(SaveFight):
     SGEOpener = []
 
     # Physical Ranged
-    BRDOpener = [WaitAbility(50)]
-    MCHOpener = [WaitAbility(50)]
-    DNCOpener = [WaitAbility(50)]
+    BRDOpener = []
+    MCHOpener = []
+    DNCOpener = []
 
     # Melee
-    SAMOpener = [WaitAbility(50)]
-    DRGOpener = [WaitAbility(50)]
-    MNKOpener = [WaitAbility(50)]
-    NINOpener = [WaitAbility(50)]
-    RPROpener = [WaitAbility(50)]
+    SAMOpener = []
+    DRGOpener = [WaitAbility(5)]
+    MNKOpener = []
+    NINOpener = []
+    RPROpener = []
 
     # Tank
-    DRKOpener = [WaitAbility(50)]
-    WAROpener = [WaitAbility(50)]
-    PLDOpener = [WaitAbility(50)]
-    GNBOpener = [WaitAbility(50)]
+    DRKOpener = []
+    WAROpener = []
+    PLDOpener = []
+    GNBOpener = []
 
 
     # ===============================================================================================
@@ -219,7 +219,7 @@ def ExecuteMemoryCode(SaveFight):
     # So if you want to simulate the BlackMage and a RedMage, you would do: 
     # PlayerList = [BLMPlayer, RDMPlayer]
 
-    PlayerList = [BLMPlayer, DRGPlayer, RPRPlayer, MNKPlayer, SAMPlayer, NINPlayer, WARPlayer, DRKPlayer, PLDPlayer, GNBPlayer, DNCPlayer, BRDPlayer, MCHPlayer]
+    PlayerList = [BLMPlayer, DRGPlayer]
 
     Event.PlayerList = PlayerList
 

@@ -223,7 +223,6 @@ def WildFireCheck(Player, Enemy):
 
 def HyperchargeCheck(Player, Enemy):
     if Player.HyperchargeTimer <= 0:
-        #print("Hypercharge went off at : " + str(Player.CurrentFight.TimeStamp))
         Player.EffectList.remove(HyperchargeEffect)
         Player.EffectToRemove.append(HyperchargeCheck)
 

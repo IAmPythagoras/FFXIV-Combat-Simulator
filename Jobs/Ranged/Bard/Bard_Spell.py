@@ -82,8 +82,8 @@ def BloodLetterRequirement(Player, Spell):
         need = 15 - Player.BloodLetterCD #What reduction we need
         #input("maxblood : " + str(Player.MaximumBloodLetterReduction))
         if Player.MaximumBloodLetterReduction - need < -10 : 
-            print("Bard rotation might not be feasible")
-            # return False, -1 #If it is bigger, than this rotation is impossible
+            input("Bard rotation might not be feasible")
+            #return False, -1 #If it is bigger, than this rotation is impossible
 
 
         Player.MaximumBloodLetterReduction -= need #Updating new MaximumBloodLetterReduction
@@ -336,11 +336,7 @@ def WandererCheck(Player, Enemy):
 
     #This effect is in the check since we want it to be called each frames
     if (int(Player.SongTimer*100)/100)%3 == 0 and Player.SongTimer != 45:
-        #input("increasing repertoire : " + str(Player.SongTimer))
-        #input(Player.MaximumRepertoire)
         Player.MaximumRepertoire = min(3, Player.MaximumRepertoire + 1) #Adding to MaximumRepertoire, this is to make sure a Pitch Perfect is at least possible
-        #input("New max is :" + str(Player.MaximumRepertoire))
-        #print("Timer is : " + str(Player.SongTimer))
         Player.ExpectedRepertoire = min(3, Player.ExpectedRepertoire + 0.8)
         Player.ExpectedTotalWandererRepertoire += 0.8
 
@@ -367,8 +363,6 @@ def ArmyPaeonCheck(Player, Enemy):
 def MageBalladCheck(Player, Enemy):
 
     if Player.SongTimer != 45 and (int(Player.SongTimer*100)/100)%3 == 0: #The effect applies each 3 seconds, so we check each such interval 
-        #input("Reducing : " + str(Player.SongTimer))
-        #print(Player.MaximumBloodLetterReduction)
         Player.ExpectedBloodLetterReduction += 7.5 * 0.8 #Adding expected reduction
         Player.MaximumBloodLetterReduction += 7.5
 
@@ -442,7 +436,9 @@ RagingStrikeBuff = buff(1.15)
 MageBalladBuff = buff(1.01)
 
 def NatureMinne(target):
-    return BardSpell(7408, False, 0, 0, ApplyNatureMinne, [NatureMinneRequirement], False)
+    Nature = BardSpell(7408, False, 0, 0, ApplyNatureMinne, [NatureMinneRequirement], False)
+    Nature.TargetID = target.playerID
+    return Nature
 
 BardAbility = {
 101 : RagingStrike, 

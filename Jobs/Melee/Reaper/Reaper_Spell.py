@@ -15,8 +15,6 @@ def ArcaneCircleRequirement(Player, Spell):
     return Player.ArcaneCircleCD <= 0, Player.ArcaneCircleCD
 
 def GluttonyRequirement(Player, Spell):
-    print(Player.GluttonyCD)
-    print(Player.SoulGauge)
     return Player.GluttonyCD <= 0 and Player.SoulGauge >= 50, Player.GluttonyCD
 
 def BloodStalkRequirement(Player, Spell):

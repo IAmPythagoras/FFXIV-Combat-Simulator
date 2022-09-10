@@ -14,7 +14,6 @@ Lock = 0
 #Requirements for each Skill and Ability.
 
 def BloodRequirement(Player, Spell):
-    #print("Delirium stacks: "+ str(Player.DeliriumStacks))
     if Player.DeliriumStacks > 0 and (Spell.id == Bloodspiller.id or Spell.id == Quietus.id):
         Spell.BloodCost = 0
         Player.DeliriumStacks -= 1
@@ -82,13 +81,11 @@ def OblationRequirement(Player, Spell):
 #Effect functions that persist after action use
 
 def BloodWeaponEffect(Player, Spell):
-    #print("Blood Weapon active")
     if Spell.GCD:
         Player.Mana = min(Player.Mana + 600, 10000)
         Player.Blood = min(100, Player.Blood + 10)
 
 def DeliriumEffect(Player, Spell):
-    #print("Delirium active")
     if Spell.id == Bloodspiller.id:
         Player.Mana = min(Player.Mana + 200, 10000)
     elif Spell.id == Quietus.id:
@@ -230,7 +227,6 @@ def SummonLivingShadow(Player, Spell):
     Pet = Esteem(2.5,Actions,[],[],Player.CurrentFight,Player)
     Player.CurrentFight.PlayerList.append(Pet)
     Player.EsteemPointer = Pet
-    #print("Esteem enters the battlefield.")
 
 def SpendPlunge(Player,Spell):
     if Player.PlungeCharges == 2 :
