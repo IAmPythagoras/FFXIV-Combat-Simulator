@@ -62,7 +62,7 @@ def AverageCritMult(Player, k):
 class Fight:
 
     # This class will be the environment in which the fight happens. It will hold a list of players, an enemy, etc.
-    #  It will be called upon for when we want to start the simulation
+    # It will be called upon for when we want to start the simulation
 
     def __init__(self, PlayerList, Enemy, ShowGraph):
         self.PlayerList = PlayerList
@@ -70,8 +70,9 @@ class Fight:
         self.ShowGraph = ShowGraph
         self.TimeStamp = 0
         self.TeamCompositionBonus = 1
-        self.FirstHit = False #  False until the first damaging action is done
-        self.RequirementOn = True #  By default True
+        self.FirstHit = False # False until the first damaging action is done
+        self.RequirementOn = True # By default True
+        self.FightStart = False # If Fight is started
 
 
 
@@ -129,9 +130,9 @@ class Fight:
 
 
         # for i in range(max(0, mean - radius), mean + radius+1): # Here i is the number of success
-         #    y_list += [math.floor(Normal(decimal_mean, std, i) * 1000) /10] # Sampling from the distribution
-          #   average_crit_mult = AverageCritMult(Player, i)
-           #  expected_dps_list += [average_crit_mult * Player.DPS]
+         # y_list += [math.floor(Normal(decimal_mean, std, i) * 1000) /10] # Sampling from the distribution
+          # average_crit_mult = AverageCritMult(Player, i)
+           # expected_dps_list += [average_crit_mult * Player.DPS]
 
 
         high_crit_mult_list = []
@@ -290,7 +291,7 @@ class Fight:
 
             # The first thing we will do is compute the TEAM composition DPS bonus
             # each class will give 1%
-            #  Tank, Healer, Caster, Ranged, Melee
+            # Tank, Healer, Caster, Ranged, Melee
             hasMelee = False
             hasCaster = False
             hasRanged = False
@@ -320,7 +321,7 @@ class Fight:
             while(self.TimeStamp <= TimeLimit):
 
                 for player in self.PlayerList:
-                   #  if player.ActionSet[player.NextSpell] == None : player.TrueLock = True # Locking the player if None
+                   # if player.ActionSet[player.NextSpell] == None : player.TrueLock = True # Locking the player if None
                     # Will first Check if the NextSpell is a GCD or not
                     if(not player.TrueLock):# If it is we do nothing
                         if (player.ActionSet[player.NextSpell].GCD):
@@ -415,8 +416,7 @@ class Fight:
                 self.TimeStamp += TimeUnit
                 self.TimeStamp = round(self.TimeStamp, 2)
 
-                FightCD -= TimeUnit
-                if FightCD <= 0 and not start:
+                if self.FightStart and not start:
                     self.TimeStamp = 0
                     start = True
 

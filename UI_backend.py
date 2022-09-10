@@ -1,7 +1,6 @@
 import copy
 import json
 import os
-from Jobs.Melee.Monk.Monk_Spell import Give_Monk_Auto
 from Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton
 from Jobs.Melee.Samurai.Samurai_Spell import MeikyoCheck, MeikyoEffect, MeikyoStackCheck
 
@@ -123,30 +122,23 @@ def ImportFightBackend(fightID,fightNumber):
         elif job_name == "Dancer" : 
             player_dict[playerID]["job_object"].Stat = copy.deepcopy(DNCStat)
             player_dict[playerID]["job_object"].EffectList = [EspritEffect]
-            player_dict[playerID]["job_object"].ActionSet.insert(0, Ranged_AA)
         elif job_name == "Machinist" : 
             player_dict[playerID]["job_object"].Stat = copy.deepcopy(MCHStat)
-            player_dict[playerID]["job_object"].ActionSet.insert(0, Ranged_AA)
         elif job_name == "Bard" : 
             player_dict[playerID]["job_object"].Stat = copy.deepcopy(BRDStat)
             player_dict[playerID]["job_object"].EffectList = [SongEffect]
-            player_dict[playerID]["job_object"].ActionSet.insert(0, Ranged_AA)
         #melee
         elif job_name == "Reaper" : 
             player_dict[playerID]["job_object"].Stat = copy.deepcopy(RPRStat)
-            player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
         elif job_name == "Monk" :              
             player_dict[playerID]["job_object"].Stat = copy.deepcopy(MNKStat)
-            player_dict[playerID]["job_object"].ActionSet.insert(0, Give_Monk_Auto)
+
         elif job_name == "Dragoon" : 
             player_dict[playerID]["job_object"].Stat = copy.deepcopy(DRGStat)
-            player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
         elif job_name == "Ninja" : 
             player_dict[playerID]["job_object"].Stat = copy.deepcopy(NINStat)
-            player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
         elif job_name == "Samurai" : 
             player_dict[playerID]["job_object"].Stat = copy.deepcopy(SAMStat)
-            player_dict[playerID]["job_object"].ActionSet.insert(0, Melee_AA)
 
         Event.PlayerList.append(player_dict[playerID]["job_object"])
     Event.RequirementOn = False #By default making false
@@ -348,8 +340,6 @@ def SimulateFightBackend(file_name):
         elif job_name == "Ninja" : job_object = Ninja(2.5, [], [], [], None, {})
         elif job_name == "Samurai" : job_object = Samurai(2.5, [], [], [], None, {})
         
-        if isinstance(job_object, (Tank, Melee, Dancer)): job_object.ActionSet.insert(0, Melee_AA) #If needs AA
-        elif isinstance(job_object, Ranged) and (not isinstance(job_object, Dancer)) : job_object.ActionSet.insert(0, Ranged_AA) #If needs ranged AA
 
         job_object.playerID = player["playerID"] #Giving the playerID
 

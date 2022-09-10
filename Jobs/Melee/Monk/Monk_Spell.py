@@ -351,24 +351,6 @@ DisciplinedFistBuff = buff(1.15)
 BrotherhoodBuff = buff(1.05)
 RiddleOfFireBuff = buff(1.15)
 
-#Special AA's for Monk
 
-class Monk_AA(Melee_Auto):
-    def __init__(self):
-        super().__init__(-1, False)
-        self.DOTTimer = 0
-
-    def CheckDOT(self, Player, Enemy, TimeUnit):
-        if(self.DOTTimer <= 0):
-            #Apply AA
-            tempSpell  = self.Cast(Player, Enemy)#Cast the DOT
-            tempSpell.CastFinal(Player, Enemy)
-            if Player.RiddleOfWindTimer > 0 : self.DOTTimer = 1.2
-            else: self.DOTTimer = 2.4
-
-def ApplyMonk_Auto(Player, Enemy):
-    Player.DOTList.append(deepcopy(Monk_Auto))
-Monk_Auto = Monk_AA()
-Give_Monk_Auto = MonkSpell(-1, False, 0, 0, ApplyMonk_Auto, [], False, False)
 
 MonkAbility = {}

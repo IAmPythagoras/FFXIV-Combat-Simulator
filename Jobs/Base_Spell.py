@@ -3,8 +3,13 @@ import copy
 from Fight import ComputeDamage
 import math
 from Jobs.Caster.Summoner.Summoner_Player import BigSummon
+from Jobs.Melee.Melee_Player import Melee
+from Jobs.Melee.Monk.Monk_Player import Monk
+#from Jobs.Melee.Monk.Monk_Spell import Monk_Auto
 from Jobs.Melee.Ninja.Ninja_Player import Shadow
+from Jobs.Ranged.Dancer.Dancer_Player import Dancer
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
+from Jobs.Ranged.Ranged_Player import Ranged
 from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
 Lock = 0.75
 
@@ -89,12 +94,6 @@ class Spell:
 
 
     def CastFinal(self, player, Enemy):
-        #print("#################")
-        #print("Potency of spell: " + str(self.Potency))
-        #if self.GCD: 
-        #    input("Recast is  "+ str(self.RecastTime))
-        #if isinstance(player, Bard) : input("Using : " + str(self.id))
-
         
         for Effect in self.Effect:
             Effect(player, Enemy)#Put effects on Player and/or Enemy
@@ -126,12 +125,18 @@ class Spell:
         Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage
 
-#        if self.id > 0:# and Damage > 0: 
-#            print("The action with id : " + str(self.id) + " did " + str(Damage) + " damage and was casted by : " + str(player.CurrentFight.TimeStamp))
+        if not (player.CurrentFight.FightStart) and Damage > 0 : 
+            player.CurrentFight.FightStart = True
 
-        if not (player.CurrentFight.FirstHit) and Damage > 0 : 
-            player.CurrentFight.FirstHit = True
-            #print("The first damaging action was done at : " + str(player.CurrentFight.TimeStamp))
+            #Giving all players AA
+
+            for gamer in player.CurrentFight.PlayerList:
+                if isinstance(gamer, Monk): gamer.DOTList.append(copy.deepcopy(Monk_Auto))
+                if isinstance(gamer, Melee) or isinstance(gamer, Dancer):
+                    gamer.DOTList.append(copy.deepcopy(Melee_AADOT))
+                elif isinstance(gamer, Ranged):
+                    gamer.DOTList.append(copy.deepcopy(Ranged_AADOT))
+
 
         #Will update the NextSpell of the player
 
@@ -155,8 +160,6 @@ Ranged_AA = Spell(-30, False, 0, 0, 0, 0, ApplyRanged_AA, [])
 Queen_AA = Spell(-30, False, 0, 0, 0, 0, ApplyQueen_AA, [])
 
 def ManaRequirement(player, Spell):
-    #print("Total mana : " + str(player.Mana))
-    #input("Spell mana cost " + str(Spell.ManaCost))
     if player.Mana >= Spell.ManaCost :
         player.Mana -= Spell.ManaCost   #ManaRequirement is the only Requirement that actually removes Ressources
         return True, -1
@@ -249,6 +252,22 @@ class Ranged_Auto(Auto_Attack):
         super().__init__(id, Ranged)
         self.Weaponskill = False
 
+class Monk_AA(Melee_Auto):
+    def __init__(self):
+        super().__init__(-1, False)
+        self.DOTTimer = 0
+
+    def CheckDOT(self, Player, Enemy, TimeUnit):
+        if(self.DOTTimer <= 0):
+            #Apply AA
+            tempSpell  = self.Cast(Player, Enemy)#Cast the DOT
+            tempSpell.CastFinal(Player, Enemy)
+            if Player.RiddleOfWindTimer > 0 : self.DOTTimer = 1.2
+            else: self.DOTTimer = 2.4
+
+def ApplyMonk_Auto(Player, Enemy):
+    Player.DOTList.append(copy.deepcopy(Monk_Auto))
+Monk_Auto = Monk_AA()
 
 Melee_AADOT = Melee_Auto(-22, False)
 Ranged_AADOT = Ranged_Auto(-23, True)
