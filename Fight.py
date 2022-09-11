@@ -208,10 +208,10 @@ class Fight:
                 DPS = player.TotalDamage / time
 
             print("The Total Potency done by player " + str(type(player)) + " was : " + str(player.TotalPotency))
-            print("This same player had a Potency Per Second of: " + str(PPS))
-            print("This same Player had an average of " + str(player.TotalPotency/player.NextSpell) + " Potency/Spell")
-            print("This same Player had an average of " + str(PPS/player.GCDTimer) + " Potency/GCD")
-            print("The DPS is : " + str(DPS))
+            print("This same player had a Potency Per Second of: " + str(round(PPS,2)))
+            print("This same Player had an average of " + str(round(player.TotalPotency/player.NextSpell,2)) + " Potency/Spell")
+            print("This same Player had an average of " + str(round(PPS/player.GCDTimer,2)) + " Potency/GCD")
+            print("The DPS is : " + str(round(DPS,2)))
             print("=======================================================")
 
             # Plot part
@@ -264,9 +264,9 @@ class Fight:
                     i = 0
                     j+=1
         
-        print("The Enemy has received a total potency of: " + str(self.Enemy.TotalPotency))
-        print("The Potency Per Second on the Enemy is: " + str(self.Enemy.TotalPotency/time))
-        print("The Enemy's total DPS is " + str(self.Enemy.TotalDamage / time))
+        print("The Enemy has received a total potency of: " + str(round(self.Enemy.TotalPotency,2)))
+        print("The Potency Per Second on the Enemy is: " + str(round(self.Enemy.TotalPotency/time,2)))
+        print("The Enemy's total DPS is " + str(round(self.Enemy.TotalDamage / time, 2)))
         axs[0].xaxis.grid(True)
         axs[1].xaxis.grid(True)
         axs[0].xaxis.set_ticks(np.arange(0, max(TimeStamp)+1, 25))

@@ -412,21 +412,21 @@ DeathBlossom = NinjaSpell(2254, True, Lock, 2.5, 100, ApplyDeathBlossom, [],True
 HakkeMujinsatsu = NinjaSpell(16488, True, Lock, 2.5, 100, empty, [], True, False)
 
 #Ninjutsu
-FumaShuriken = NinjaSpell(2265, True, Lock,0.5, 450, ApplyHyoshoRanryu, [FumaShurikenRequirement], False, True) #Same effect as HyoshoRanruy, since only reset Player.CurrentRitual list
-Raiton = NinjaSpell(2267, True, Lock,0.5, 650, ApplyRaiton, [RaitonRequirement], False, True )
-Huton = NinjaSpell(2269, True, Lock,0.5, 0, ApplyHuton, [HutonRequirement], False, True)
-Suiton = NinjaSpell(2271, True, Lock,0.5, 500, ApplySuiton, [SuitonRequirement], False, True)
-Hyoton = NinjaSpell(2268, True, Lock, 0.5, 350, ApplyHyoshoRanryu, [HyotonRequirement], False, True)
-HyoshoRanryu = NinjaSpell(16492, True, Lock,0.5, 1300, ApplyHyoshoRanryu, [HyotonRequirement, KassatsuOnRequirement], False, True)
-Katon = NinjaSpell(2266, True, Lock, 0.5, 350, ApplyHyoshoRanryu, [KatonRequirement], False, True)
-GokaMekkyaku = NinjaSpell(16491, True, Lock, 0.5, 600, ApplyHyoshoRanryu, [KatonRequirement, KassatsuOnRequirement], False, True)
-Doton = NinjaSpell(2270, True, Lock, 0.5, 0, ApplyDoton, [DotonRequirement], False, True)
+FumaShuriken = NinjaSpell(2265, True, Lock,1.5, 450, ApplyHyoshoRanryu, [FumaShurikenRequirement], False, True) #Same effect as HyoshoRanruy, since only reset Player.CurrentRitual list
+Raiton = NinjaSpell(2267, True, Lock,1.5, 650, ApplyRaiton, [RaitonRequirement], False, True )
+Huton = NinjaSpell(2269, True, Lock,1.5, 0, ApplyHuton, [HutonRequirement], False, True)
+Suiton = NinjaSpell(2271, True, Lock,1.5, 500, ApplySuiton, [SuitonRequirement], False, True)
+Hyoton = NinjaSpell(2268, True, Lock, 1.5, 350, ApplyHyoshoRanryu, [HyotonRequirement], False, True)
+HyoshoRanryu = NinjaSpell(16492, True, Lock,1.5, 1300, ApplyHyoshoRanryu, [HyotonRequirement, KassatsuOnRequirement], False, True)
+Katon = NinjaSpell(2266, True, Lock, 1.5, 350, ApplyHyoshoRanryu, [KatonRequirement], False, True)
+GokaMekkyaku = NinjaSpell(16491, True, Lock, 1.5, 600, ApplyHyoshoRanryu, [KatonRequirement, KassatsuOnRequirement], False, True)
+Doton = NinjaSpell(2270, True, Lock, 1.5, 0, ApplyDoton, [DotonRequirement], False, True)
 DotonDOT = DOTSpell(-33, 80, True)
 
 #Ritual
-Ten = NinjaSpell(2259, True, 1, 1, 0, ApplyTen, [NinjutsuRequirement], False, False)
-Chi = NinjaSpell(2261, True, 1, 1, 0, ApplyChi, [NinjutsuRequirement], False, False)
-Jin = NinjaSpell(2263, True, 1, 1, 0, ApplyJin, [NinjutsuRequirement], False, False)
+Ten = NinjaSpell(2259, True, 0, 0.5, 0, ApplyTen, [NinjutsuRequirement], False, False)
+Chi = NinjaSpell(2261, True, 0, 0.5, 0, ApplyChi, [NinjutsuRequirement], False, False)
+Jin = NinjaSpell(2263, True, 0, 0.5, 0, ApplyJin, [NinjutsuRequirement], False, False)
 
 #TenChiJin
 TenChiJin = NinjaSpell(7403, False, Lock, 0, 0, ApplyTenChiJin, [TenChiJinRequirement], False, False)

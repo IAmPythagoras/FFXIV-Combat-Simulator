@@ -86,7 +86,7 @@ class Machinist(Ranged):
 class Queen(Ranged):
 
     def __init__(self, Machinist, Timer):
-        super().__init__(Machinist.GCDTimer * Machinist.GCDREduction, [], [], [], Machinist.CurrentFight, Machinist.Stat)
+        super().__init__(Machinist.GCDTimer * Machinist.GCDReduction, [], [], [], Machinist.CurrentFight, Machinist.Stat)
 
 
         self.Master = Machinist
