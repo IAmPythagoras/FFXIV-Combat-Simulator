@@ -104,7 +104,7 @@ def MainMenu():
     os.system('CLS') #clearing HUD
     #Welcome Message
     print(
-    "===================== FF XIV Combat Simulator =====================" + "\n" + 
+    "===================== FFXIV Combat Simulator ======================" + "\n" + 
     "MAIN MENU (input what you want and press ENTER)" + "\n" + 
     "===================================================================" + "\n" + 
     "1- Simulate fight in code memory" + "\n" + 

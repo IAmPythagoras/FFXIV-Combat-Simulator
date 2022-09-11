@@ -409,8 +409,8 @@ class Fight:
                             Player.PotencyGraph += [round(Player.TotalPotency/self.TimeStamp, 2)]
 
                     # Update progress bar
-                    p_bar.update(1)
-                    p_bar.refresh()
+                    #p_bar.update(1)
+                    #p_bar.refresh()
 
 
                 # update self.TimeStamp
@@ -422,7 +422,7 @@ class Fight:
                     start = True
 
                     # Progress bar
-                    p_bar = tqdm(range(int(TimeLimit) * 100), desc="Simulating fight assuming TimeLimit")
+                    #p_bar = tqdm(range(int(TimeLimit) * 100), desc="Simulating fight assuming TimeLimit")
 
 
 

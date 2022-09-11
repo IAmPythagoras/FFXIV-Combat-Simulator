@@ -86,15 +86,13 @@ def ApplyHeavySwing(Player, Enemy):
     if not (HeavySwingEffect in Player.EffectList) : Player.EffectList.append(HeavySwingEffect)
 
 def ApplyMaim(Player, Enemy):
-    if not (MaimEffect in Player.EffectList) : Player.EffectList.append(MaimEffect)
-    AddBeast(Player, 10)
+    pass
 
 def ApplyStormEye(Player, Enemy):
-    Player.SurgingTempestTimer = min(60, Player.SurgingTempestTimer + 30)
-    AddBeast(Player, 10)
+    pass
 
 def ApplyStormPath(Player, Enemy):
-    AddBeast(Player, 20)
+    pass
 
 def ApplyUpheaval(Player, Enemy):
     Player.UpheavalCD = 30
@@ -156,15 +154,23 @@ def OverpowerCombo(Player, Spell):
         Player.EffectToRemove.append(OverpowerCombo)
 
 def HeavySwingEffect(Player, Spell):
-    if Spell.id == 2:
+    if Spell.id == Maim.id:
         Spell.Potency += 150
         Player.EffectToRemove.append(HeavySwingEffect)
+        if not (MaimEffect in Player.EffectList) : Player.EffectList.append(MaimEffect)
+        AddBeast(Player, 10)
+
 
 def MaimEffect(Player, Spell):
-    if Spell.id == 3 or Spell.id == 11:
+    if Spell.id == StormEye.id:
         Spell.Potency += 280
+        Player.SurgingTempestTimer = min(60, Player.SurgingTempestTimer + 30)
+        AddBeast(Player, 10)
         Player.EffectToRemove.append(MaimEffect)
-
+    elif Spell.id == StormPath.id:
+        Spell.Potency += 280
+        AddBeast(Player, 20)
+        Player.EffectToRemove.append(MaimEffect)
 
 #Check
 
@@ -193,9 +199,9 @@ def InfuriateStackCheck(Player, Enemy):
 
 #Combo Action
 HeavySwing = WarriorSpell(31, True, Lock, 2.5, 200, 0, ApplyHeavySwing, [],0)
-Maim = WarriorSpell(37, True, Lock, 2.5, 130, 0, ApplyMaim, [],0)
-StormEye = WarriorSpell(45, True, Lock, 2.5, 120, 0, ApplyStormEye, [],0)
-StormPath = WarriorSpell(42, True, Lock, 2.5, 120, 0, ApplyStormPath, [], 0)
+Maim = WarriorSpell(37, True, Lock, 2.5, 150, 0, ApplyMaim, [],0)
+StormEye = WarriorSpell(45, True, Lock, 2.5, 130, 0, ApplyStormEye, [],0)
+StormPath = WarriorSpell(42, True, Lock, 2.5, 130, 0, ApplyStormPath, [], 0)
 #Missing Storm's path
 
 #oGCD

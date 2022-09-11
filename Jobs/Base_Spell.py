@@ -112,7 +112,7 @@ class Spell:
         if self.Potency != 0 : minDamage,Damage= ComputeDamage(player, self.Potency, Enemy, self.DPSBonus, type, self)    #Damage computation
         else: minDamage, Damage = 0,0
 
-        #input("Adding " + str(self.Potency) + " to player : " + str(player))
+        
 
         if isinstance(player, Queen) or isinstance(player, Esteem) or isinstance(player, Shadow) or isinstance(player, BigSummon):
             player.Master.TotalPotency+= self.Potency
@@ -125,6 +125,9 @@ class Spell:
         
         Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage
+
+        if self.id > 0 and self.Potency > 0:
+            print("Action with id " + str(self.id) + " has done " + str(self.Potency) + " potency.")
 
         if not (player.CurrentFight.FightStart) and Damage > 0 : 
             player.CurrentFight.FightStart = True

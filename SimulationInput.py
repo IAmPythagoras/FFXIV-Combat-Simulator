@@ -148,7 +148,7 @@ def ExecuteMemoryCode(SaveFight):
     # Refer to page (ADD PAGE NUMBERS) for more information.
 
     # Caster
-    BLMOpener = [SharpCast, WaitAbility(16.5), Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, Triplecast, Despair, Manafront, Fire4, Swiftcast, LucidDreaming, Despair, Transpose, SharpCast, Paradox, Xenoglossy, Thunder3,Transpose,Fire3, Fire4, Fire4, Fire4, Despair, Xenoglossy, Transpose, Paradox]
+    BLMOpener = []
     SMNOpener = []
     RDMOpener = []
     
@@ -165,14 +165,14 @@ def ExecuteMemoryCode(SaveFight):
 
     # Melee
     SAMOpener = []
-    DRGOpener = [WaitAbility(5)]
+    DRGOpener = []
     MNKOpener = []
     NINOpener = []
     RPROpener = []
 
     # Tank
     DRKOpener = []
-    WAROpener = []
+    WAROpener = [Tomahawk, Infuriate,HeavySwing, Maim, Potion, StormEye, InnerRelease,InnerChaos, Upheaval, Onslaught, PrimalRend, Infuriate, InnerChaos, Onslaught, FellCleave, Onslaught, FellCleave, FellCleave, HeavySwing, Maim, StormPath, FellCleave, Infuriate, InnerChaos]
     PLDOpener = []
     GNBOpener = []
 
@@ -219,7 +219,7 @@ def ExecuteMemoryCode(SaveFight):
     # So if you want to simulate the BlackMage and a RedMage, you would do: 
     # PlayerList = [BLMPlayer, RDMPlayer]
 
-    PlayerList = [BLMPlayer, DRGPlayer]
+    PlayerList = [WARPlayer]
 
     Event.PlayerList = PlayerList
 
