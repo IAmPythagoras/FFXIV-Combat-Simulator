@@ -121,6 +121,7 @@ CasterAbility = {
 7559 : Surecast, 
 7560 : Addle, 
 25880 : Sleep,
-34590544 : Potion,
+34590544 : Potion, #Grade 6
+34592398 : Potion, # Grade 7
 -2 : Potion
 }

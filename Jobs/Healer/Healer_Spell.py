@@ -74,5 +74,6 @@ HealerAbility = {
 24287 : Raise, #sage raise
 125 : Raise, #whitemage raise
 34590545 : Potion,
+34592399 : Potion, 
 -2 : Potion
 }

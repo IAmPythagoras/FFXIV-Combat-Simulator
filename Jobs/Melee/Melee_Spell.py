@@ -135,6 +135,8 @@ MeleeAbility = {
 7546 : TrueNorth,
 7548 : ArmLength,
 34590541 : Potion,  #STR
-34590542 : Potion,   #DEX
+34590542 : Potion,   #DEX,
+34592395 : Potion, # STR 7
+34592396 : Potion, # DEX 7
 -2 : Potion
 }

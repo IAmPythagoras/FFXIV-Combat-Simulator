@@ -93,7 +93,7 @@ Event = Fight([], Dummy, False)
 
 #DRKPlayer = DarkKnight(2.41, DRKAction, [], [DarksideEffect], Event)
 
-BLMPlayer = BlackMage(2.5, [], [], [EnochianEffect, ElementalEffect], Event, BLMCRITStat)
+BLMPlayer = BlackMage(2.5, [], [], [EnochianEffect, ElementalEffect], Event, BLMStat)
 SCHPlayer = Scholar(2.5, [], [], [], Event, SCHStat)
 RDMPlayer = Redmage(2.5, [], [], [DualCastEffect], Event, RDMStat)
 MCHPlayer = Machinist(2.5, [], [], [], Event, MCHStat)
@@ -132,8 +132,8 @@ DRGOpener = [Melee_AA,WaitAbility(20), TrueThrust, Potion, Disembowel, LanceChar
 BRDOpener = [WaitAbility(19.5), Potion, Stormbite, WandererMinuet, RagingStrike, Causticbite, EmpyrealArrow, BloodLetter, BurstShot, RadiantFinale, BattleVoice, BurstShot, Sidewinder,RefulgentArrow, Barrage, RefulgentArrow, BurstShot, RefulgentArrow, EmpyrealArrow, IronJaws]
 DNCOpener = [ClosedPosition(NINPlayer, False),WaitAbility(4.5), StandardStep, Emboite, Entrechat, WaitAbility(11.74),Potion, StandardFinish, TechnicalStep, Emboite, Entrechat, Jete, Pirouette, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Emboite, Entrechat, StandardFinish]
 MCHOpener = [Ranged_AA,WaitAbility(15), Reassemble, WaitAbility(2.25), Potion, WaitAbility(1.5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, Reassemble, WaitAbility(1), Wildfire, ChainSaw, Automaton,WaitAbility(1), Hypercharge, HeatBlast, Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet, Drill]
-MNKOpener = [WaitAbility(18), FormShift, Give_Monk_Auto,DragonKick, Potion, TwinSnakes, WaitAbility(1), RiddleOfFire, Demolish, TheForbiddenChakra, Bootshine, Brotherhood, WaitAbility(1), PerfectBalance, DragonKick, RiddleOfWind, Bootshine, DragonKick, ElixirField, Bootshine, PerfectBalance, TwinSnakes, DragonKick, Demolish, RisingPhoenix]
-MNKOpener2 = [WaitAbility(15), FormShift, WaitAbility(3), Potion, Give_Monk_Auto, TwinSnakes, WaitAbility(1), RiddleOfFire, Demolish, TheForbiddenChakra, DragonKick, Brotherhood, PerfectBalance, Bootshine, RiddleOfWind, TrueStrike, SnapPunch, RisingPhoenix, DragonKick, PerfectBalance, TwinSnakes, Bootshine, Demolish, RisingPhoenix]
+#MNKOpener = [WaitAbility(18), FormShift, Give_Monk_Auto,DragonKick, Potion, TwinSnakes, WaitAbility(1), RiddleOfFire, Demolish, TheForbiddenChakra, Bootshine, Brotherhood, WaitAbility(1), PerfectBalance, DragonKick, RiddleOfWind, Bootshine, DragonKick, ElixirField, Bootshine, PerfectBalance, TwinSnakes, DragonKick, Demolish, RisingPhoenix]
+#MNKOpener2 = [WaitAbility(15), FormShift, WaitAbility(3), Potion, Give_Monk_Auto, TwinSnakes, WaitAbility(1), RiddleOfFire, Demolish, TheForbiddenChakra, DragonKick, Brotherhood, PerfectBalance, Bootshine, RiddleOfWind, TrueStrike, SnapPunch, RisingPhoenix, DragonKick, PerfectBalance, TwinSnakes, Bootshine, Demolish, RisingPhoenix]
 #BLMPlayer.ActionSet = getAbilityList(client_id, client_secret)
 BLMPlayer.ActionSet = BLMOpener
 SCHPlayer.ActionSet = SCHOpener
@@ -152,13 +152,13 @@ BRDPlayer.ActionSet = BRDOpener
 DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 RPRPlayer.ActionSet = RPROpener
-MNKPlayer.ActionSet = MNKOpener2
-Event.PlayerList = [MNKPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
+#MNKPlayer.ActionSet = MNKOpener2
+Event.PlayerList = [] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
 Event.ShowGraph = True
-Event.SimulateFight(0.01, 1000, 20)
+#Event.SimulateFight(0.01, 1000, 20)
 
-fightID = 'kDgwP8LQ4W3KHVMc'
-fightNumber = '7'
+fightID = 'Mda2HgqFctWLXwp1'
+fightNumber = '25'
 action_dict, player_dict = getAbilityList(fightID, fightNumber)
 
 for playerID in player_dict:
@@ -224,6 +224,7 @@ for playerID in player_dict:
     Event.PlayerList.append(player_dict[playerID]["job_object"])
 
 Event.ShowGraph = True
+Event.RequirementOn = False
 print("Starting simulator")
 Event.SimulateFight(0.01, 1000, 0)
 

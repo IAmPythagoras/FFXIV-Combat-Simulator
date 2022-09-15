@@ -142,6 +142,9 @@ def ImportFightBackend(fightID,fightNumber):
         Event.PlayerList.append(player_dict[playerID]["job_object"])
 
     Event.RequirementOn = False #By default making false
+
+    Event.SimulateFight(0.01, 1000, 0)
+
     return Event
 
 

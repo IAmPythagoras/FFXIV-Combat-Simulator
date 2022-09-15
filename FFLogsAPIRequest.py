@@ -310,7 +310,7 @@ def getAbilityList(fightID, fightNumber):
 
 
     class action_object():
-        def __init__(self, action_id, timestamp, type, targetID, sourceID):
+        def __init__(self, action_id, timestamp, type, targetID, sourceID, extraAbilityGameID):
             self.action_id = action_id #actionID
             self.timestamp = timestamp #relative timestamp
             self.type = type
@@ -318,6 +318,7 @@ def getAbilityList(fightID, fightNumber):
             self.targetEnemy = targetID in enemy_list #if the targetID is one of the enemy ID, then we are targeting an enemy.
             self.targetSelf = targetID == sourceID #if the action targets the player casting it
             self.isHeal = type == "calculatedheal"
+            self.extraAbilityGameID = extraAbilityGameID
             #If we are not, we will have to do some more stuff later on.
 
         def isequal(self, action): #This checks if two consecutive actions are equivalent. 
@@ -335,11 +336,11 @@ def getAbilityList(fightID, fightNumber):
     #print(action_dict.keys())
     for action in action_list:
         #Will parse each action so each player has a list of all done action
-        #input(action["sourceID"] + 1)
         if str(action["sourceID"]) in action_dict.keys(): #Making sure the sourceID is a player
-            #input("hey")
             rel_timestamp = action["timestamp"] - relative_timestamp_zero
-            action_dict[str(action["sourceID"])] += [action_object(action["abilityGameID"], rel_timestamp, action["type"], action["targetID"], action["sourceID"])]#Will be assumed to be damaging spell
+            if "extraAbilityGameID" in action.keys() and action["abilityGameID"] == 1000049: 
+                action_dict[str(action["sourceID"])] += [action_object(action["abilityGameID"], rel_timestamp, action["type"], action["targetID"], action["sourceID"], action["extraAbilityGameID"])] #Special for tincture
+            else : action_dict[str(action["sourceID"])] += [action_object(action["abilityGameID"], rel_timestamp, action["type"], action["targetID"], action["sourceID"], 0)]#Will be assumed to be damaging spell
 
     #Will now go through each player and build their action set
     for player in action_dict:
@@ -352,7 +353,7 @@ def getAbilityList(fightID, fightNumber):
         wait_calculateddamage = False #a flag that is set to true if we are waiting for calculated damage
         is_casted = False #flag that is set to true if the spell is casted (the server has a shorter casting time cuz why not) so have to play around that
         is_heal = False #flag that is set to true if the spell is a healing spell
-        previous_action = action_object(0, 0, "", 0, 0)
+        previous_action = action_object(0, 0, "", 0, 0, 0)
 
         #Edge case flags
         in_barrage = False #Flag that is set to true if we are looking for the barrage pattern (for bard)
@@ -374,7 +375,13 @@ def getAbilityList(fightID, fightNumber):
                     if wait_time >=500: #otherwise animation lock
                         #player_action_list.append(WaitAbility(max(0,(wait_time))/ 1000)) #Dividing by 1000 since time in milisecond
                         wait_flag = False #reset
-                        wait_timestamp = 0 #reset
+                        wait_timestamp = 0 #
+                        
+                
+                if action.action_id == 1000049: #Tincture
+                    print("action_id :" + str(action.action_id))
+                    input("extra : " + str(action.extraAbilityGameID))
+                    action.action_id = action.extraAbilityGameID
 
                 next_action = lookup_abilityID(action.action_id, action.targetID, player, player_list) #returns the action object of the specified spell
                 

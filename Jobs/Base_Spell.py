@@ -184,11 +184,13 @@ def ApplyPotion(Player, Enemy):
     Player.Stat["MainStat"] = min(math.floor(Player.Stat["MainStat"] * 1.1), Player.Stat["MainStat"] + 223) #Grade 7 HQ tincture
     Player.PotionTimer = 30
 
+    input("Applying potion on : " + str(Player))
+
     Player.EffectCDList.append(PotionCheck)
 
 def PrepullPotion(Player, Enemy): #If potion is prepull
     ApplyPotion(Player, Enemy)
-    Player.PotionTimer = 25 #Assume we loose a bit on it
+    Player.PotionTimer = 27 #Assume we loose a bit on it
     Player.EffectToRemove.append(PrepullPotion)
 
 def PotionCheck(Player, Enemy):
