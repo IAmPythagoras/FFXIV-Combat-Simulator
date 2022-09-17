@@ -180,11 +180,11 @@ def RiotBladeCombo(Player, Spell):
         Player.EffectToRemove.append(RiotBladeCombo)
     elif Spell.id == GoringBlade.id:
         #Apply dot
-        if Player.GoringDOT == None:
-            Player.GoringDOT = copy.deepcopy(GoringDOT)
-            Player.EffectCDList.append(GoringDOTCheck)
-            Player.DOTList.append(Player.GoringDOT)
-            Player.ValorDOTTimer = 0 #Remove other dot if it exists
+
+        Player.GoringDOT = copy.deepcopy(GoringDOT)
+        Player.EffectCDList.append(GoringDOTCheck)
+        Player.DOTList.append(Player.GoringDOT)
+        Player.ValorDOTTimer = 0 #Remove other dot if it exists
         Player.GoringDOTTimer = 21
         Spell.Potency += 150
         Player.EffectToRemove.append(RiotBladeCombo)
@@ -244,7 +244,7 @@ GoringDOT = DOTSpell(-5, 65, True)
 Confetti = PaladinSpell(16459, True, Lock, 2.5, 1000, 1000, ApplyConfetti, [ManaRequirement, ConfettiRequirement], False) # >.>
 BladeFaith = PaladinSpell(25748, True, Lock, 2.5, 480, 0, ApplyBladeFaith, [BladeFaithRequirement], False)
 BladeTruth = PaladinSpell(25749, True, Lock, 2.5, 560, 0, ApplyBladeTruth, [BladeTruthRequirement], False)
-BladeValor = PaladinSpell(25750, True, Lock, 2.5, 580, 0, ApplyBladeValor, [BladeValorRequirement], False)
+BladeValor = PaladinSpell(25750, True, Lock, 2.5, 620, 0, ApplyBladeValor, [BladeValorRequirement], False)
 BladeValorDOT = DOTSpell(-11, 80, True)
 
 #GCD

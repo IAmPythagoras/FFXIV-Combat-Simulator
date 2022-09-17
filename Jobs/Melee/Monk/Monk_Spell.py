@@ -311,7 +311,7 @@ def FormlessStackCheck(Player, Enemy):
         Player.Player.FormlessFistStack -= 1
 
 #Opo-opo form  -> Raptor Form
-Bootshine = MonkSpell(0, True, 2, 210, ApplyRaptor, [], True, False)
+Bootshine = MonkSpell(30, True, 2, 210, ApplyRaptor, [], True, False)
 DragonKick = MonkSpell(1, True, 2, 320, ApplyRaptor, [], True, False)
 ShadowOfTheDestroyer = MonkSpell(2, True,2, 110, ApplyRaptor, [], True, False) #AOE of Bootshine
 

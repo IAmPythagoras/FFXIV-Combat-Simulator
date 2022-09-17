@@ -154,7 +154,7 @@ def KeenEdgeCombo(Player, Spell):
 
 def BrutalShellCombo(Player, Spell):
     if Spell.id == SolidBarrel.id:
-        Spell.Potency += 240
+        Spell.Potency += 220
         Player.PowderGauge = min(3, Player.PowderGauge + 1)
         Player.EffectToRemove.append(BrutalShellCombo)
 
@@ -198,21 +198,21 @@ def AuroraStackCheck(Player, Enemy):
 #Combo Action
 
 KeenEdge = GunbreakerSpell(16137, True, 2.5, 170, ApplyKeenEdge, [], 0)
-BrutalShell = GunbreakerSpell(16139, True, 2.5, 120, empty, [], 0)
-SolidBarrel = GunbreakerSpell(16145, True, 2.5, 120, empty, [], 0)
+BrutalShell = GunbreakerSpell(16139, True, 2.5, 130, empty, [], 0)
+SolidBarrel = GunbreakerSpell(16145, True, 2.5, 140, empty, [], 0)
 
-GnashingFang = GunbreakerSpell(16146, True, 2.5, 360, ApplyGnashingFang, [], 1)
-JugularRip = GunbreakerSpell(16156, False, 0, 180, empty, [JugularRipRequirement], 0)
-SavageClaw = GunbreakerSpell(16147, True, 2.5, 440, ApplySavageClaw, [JugularRipRequirement], 0)
-AbdomenTear = GunbreakerSpell(16157, False, 0, 220, empty, [AbdomenTearRequirement], 0)
-WickedTalon = GunbreakerSpell(16150, True, 2.5, 520, ApplyWickedTalon, [AbdomenTearRequirement], 0)
-EyeGouge = GunbreakerSpell(16158, False, 0, 260, ApplyEyeGouge, [EyeGougeRequirement], 0)
+GnashingFang = GunbreakerSpell(16146, True, 2.5, 380, ApplyGnashingFang, [], 1)
+JugularRip = GunbreakerSpell(16156, False, 0, 200, empty, [JugularRipRequirement], 0)
+SavageClaw = GunbreakerSpell(16147, True, 2.5, 460, ApplySavageClaw, [JugularRipRequirement], 0)
+AbdomenTear = GunbreakerSpell(16157, False, 0, 240, empty, [AbdomenTearRequirement], 0)
+WickedTalon = GunbreakerSpell(16150, True, 2.5, 540, ApplyWickedTalon, [AbdomenTearRequirement], 0)
+EyeGouge = GunbreakerSpell(16158, False, 0, 280, ApplyEyeGouge, [EyeGougeRequirement], 0)
 
 BurstStrike = GunbreakerSpell(16162, True, 2.5, 380, ApplyBurstStrike, [], 1)
 Hypervelocity = GunbreakerSpell(25759, False, 0, 180, ApplyHypervelocity,[HypervelocityRequirement], 0)
 
 #oGCD
-BlastingZone = GunbreakerSpell(16165, False, 0, 700, ApplyBlastingZone, [BlastingZoneRequirement], 0)
+BlastingZone = GunbreakerSpell(16165, False, 0, 720, ApplyBlastingZone, [BlastingZoneRequirement], 0)
 Bloodfest = GunbreakerSpell(16164, False, 0, 0, ApplyBloodfest, [BloodfestRequirement], 0)
 BowShock = GunbreakerSpell(14, False, 0, 150, ApplyBowShock, [BowShockRequirement], 0)
 BowShockDOT = DOTSpell(-10, 60, True)

@@ -148,8 +148,8 @@ def ExecuteMemoryCode(SaveFight):
     # Refer to page (ADD PAGE NUMBERS) for more information.
 
     # Caster
-    BLMOpener = [SharpCast, WaitAbility(16.5), Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, Triplecast, Despair, Manafront, Fire4, Swiftcast, LucidDreaming, Despair, Transpose, SharpCast, Paradox, Xenoglossy, Thunder3,Transpose,Fire3, Fire4, Fire4, Fire4, Despair]
-    SMNOpener = [WaitAbility(20),Ruin3, Summon, SearingLight, AstralImpulse, Potion, AstralImpulse, AstralImpulse, EnergyDrainSMN, Enkindle, AstralImpulse, Deathflare, Fester, AstralImpulse, Fester, AstralImpulse, Titan, Topaz, Mountain, Topaz, Mountain,Topaz, Mountain,Topaz, Mountain, Garuda, Swiftcast, Slipstream]
+    BLMOpener = [SharpCast, WaitAbility(16.5), Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, Triplecast, Despair, Manafront, Fire4, Swiftcast, LucidDreaming, Despair, Transpose, SharpCast, Paradox, Xenoglossy, Thunder3,Transpose,Fire3, Fire4, Fire4, Fire4, Despair, WaitAbility(30), SharpCast]
+    SMNOpener = [WaitAbility(20),Ruin3, Summon, SearingLight, AstralImpulse, Potion, AstralImpulse, AstralImpulse, EnergyDrainSMN, Enkindle, AstralImpulse, Deathflare, Fester, AstralImpulse, Fester, AstralImpulse, Titan, Topaz, Mountain, Topaz, Mountain,Topaz, Mountain,Topaz, Mountain, Garuda, Swiftcast, Slipstream, WaitAbility(60), Swiftcast]
     RDMOpener = [WaitAbility(15), Verthunder, Verareo, Swiftcast, Acceleration, Verthunder, Potion, Verthunder, Embolden, Manafication, EnchantedRiposte, Fleche, EnchantedZwerchhau, Contre, EnchantedRedoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verfire, Verthunder, Verstone, Verareo, Verfire, Verthunder,Verfire, Verthunder,Verfire, Verthunder, Fleche]
     
     # Healer
@@ -161,20 +161,20 @@ def ExecuteMemoryCode(SaveFight):
     # Physical Ranged 
     BRDOpener = [WaitAbility(19), Potion, Stormbite, WandererMinuet, RagingStrike, Causticbite, EmpyrealArrow, BloodLetter, BurstShot, RadiantFinale, BattleVoice, BurstShot, Sidewinder,RefulgentArrow, Barrage, RefulgentArrow, BurstShot, RefulgentArrow, EmpyrealArrow, WaitAbility(50), IronJaws]
     MCHOpener = [WaitAbility(15), Reassemble, WaitAbility(2.25), Potion, WaitAbility(1.5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, Reassemble, WaitAbility(1), Wildfire, ChainSaw, Automaton,WaitAbility(1), Hypercharge, HeatBlast, Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet, Drill]
-    DNCOpener = [ClosedPosition(NINPlayer, False),WaitAbility(4.5), StandardStep, Emboite, Entrechat, WaitAbility(11.74),Potion, StandardFinish, TechnicalStep, Emboite, Entrechat, Jete, Pirouette, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Emboite, Entrechat, StandardFinish]
+    DNCOpener = [ClosedPosition(NINPlayer, False),WaitAbility(4.5), StandardStep, Emboite, Entrechat, WaitAbility(11.74),Potion, StandardFinish, TechnicalStep, Emboite, Entrechat, Jete, Pirouette, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Emboite, Entrechat, StandardFinish, WaitAbility(60),StandardStep, Emboite, Entrechat, WaitAbility(11.74),Potion, StandardFinish, TechnicalStep, Emboite, Entrechat, Jete, Pirouette, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Emboite, Entrechat, StandardFinish, WaitAbility(60)]
 
     # Melee
     SAMOpener = [WaitAbility(11), Meikyo, WaitAbility(8.5), Gekko, Potion, Kasha, Ikishoten, Yukikaze, Midare, Senei, KaeshiSetsugekka, Meikyo, Gekko, Shinten, Higanbana, Shinten, OgiNamikiri, Shoha, KaeshiNamikiri, Kasha, Shinten, Gekko, Gyoten, Hakaze, Yukikaze, Shinten, Midare, KaeshiSetsugekka]
-    DRGOpener = [WaitAbility(20), TrueThrust, Potion, Disembowel, LanceCharge, DragonSight(NINPlayer), ChaoticSpring, BattleLitany, WheelingThrust, Geirskogul, LifeSurge, FangAndClaw, HighJump, RaidenThrust, DragonFireDive, VorpalThrust, LifeSurge, MirageDive, HeavenThrust, SpineshafterDive, FangAndClaw, SpineshafterDive, WheelingThrust, RaidenThrust, WyrmwindThrust, Disembowel, ChaoticSpring, WheelingThrust]
-    MNKOpener = [WaitAbility(18), FormShift,DragonKick, Potion, TwinSnakes, WaitAbility(1), RiddleOfFire, Demolish, TheForbiddenChakra, Bootshine, Brotherhood, WaitAbility(1), PerfectBalance, DragonKick, RiddleOfWind, Bootshine, DragonKick, ElixirField, Bootshine, PerfectBalance, TwinSnakes, DragonKick, Demolish, RisingPhoenix]
+    DRGOpener = [WaitAbility(20), TrueThrust, Potion, Disembowel, LanceCharge, DragonSight(NINPlayer), ChaoticSpring, BattleLitany, WheelingThrust, Geirskogul, LifeSurge, FangAndClaw, HighJump, RaidenThrust, DragonFireDive, VorpalThrust, LifeSurge, MirageDive, HeavenThrust, SpineshafterDive, FangAndClaw, SpineshafterDive, WheelingThrust, RaidenThrust, WyrmwindThrust, Disembowel]
+    MNKOpener = [WaitAbility(18), FormShift,DragonKick, Potion, TwinSnakes, WaitAbility(1), RiddleOfFire, Demolish, TheForbiddenChakra, Bootshine, Brotherhood, WaitAbility(1), PerfectBalance, DragonKick, RiddleOfWind, Bootshine, DragonKick, ElixirField, Bootshine, PerfectBalance, TwinSnakes, DragonKick, Demolish, RisingPhoenix, WaitAbility(50), PerfectBalance,Bootshine, TwinSnakes, Demolish, PhantomRush]
     NINOpener = [WaitAbility(10.5), Chi, Jin, Ten, Huton, Hide, WaitAbility(2), Ten, Chi, Jin, WaitAbility(4.5), Suiton, Kassatsu, SpinningEdge, Potion, GustSlash, Mug, Bunshin, PhantomKamaitachi, WaitAbility(1.5), TrickAttack, AeolianEdge, DreamWithinADream, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, TenChiJin, Ten2, Chi2, Jin2,  Meisui, FleetingRaiju, Bhavacakra, FleetingRaiju, Bhavacakra, Ten, Chi, Raiton, FleetingRaiju ]
-    RPROpener = [Soulsow, WaitAbility(13.7), Harpe, ShadowOfDeath, Potion, SoulSlice, ArcaneCircle, Gluttony, Gibbet, Gallows, PlentifulHarvest, Enshroud, VoidReaping, CrossReaping, LemureSlice, VoidReaping, CrossReaping, LemureSlice, Communio, SoulSlice, UnveiledGibbet, Gibbet, Slice, WaxingSlice, ShadowOfDeath, InfernalSlice, Slice, WaxingSlice, UnveiledGallows, Gallows, InfernalSlice, Slice]
+    RPROpener = [Soulsow, WaitAbility(13.7), Harpe, ShadowOfDeath, Potion, SoulSlice, ArcaneCircle, Gluttony, Gibbet, Gallows, PlentifulHarvest, Enshroud, VoidReaping, CrossReaping, LemureSlice, VoidReaping, CrossReaping, LemureSlice, Communio, SoulSlice, UnveiledGibbet, Gibbet]
 
-    # Tank
-    DRKOpener = [WaitAbility(19.25), BloodWeapon, HardSlash, EdgeShadow, Delirium, SyphonStrike, Potion, Souleater, LivingShadow, SaltedEarth, HardSlash, Shadowbringer, EdgeShadow, Bloodspiller, CarveSpit, Plunge, Bloodspiller, Shadowbringer, EdgeShadow, SyphonStrike, Plunge, EdgeShadow, HardSlash, SyphonStrike, Souleater,HardSlash, SyphonStrike, Souleater,HardSlash, SyphonStrike, Souleater,HardSlash, SyphonStrike]
+    # Tank WaitAbility(2), FightOrFlight, WaitAbility(15), Potion, HolySpirit, Intervene, FastBlade, RequestACat, CircleScorn, RiotBlade, Expiacion, Intervene, GoringBlade, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti, BladeFaith,BladeTruth, BladeValor, WaitAbility(22), FastBlade
+    DRKOpener = [BloodWeapon, HardSlash, EdgeShadow, Delirium, SyphonStrike, Potion, Souleater, LivingShadow, SaltedEarth, HardSlash, Shadowbringer, EdgeShadow, Bloodspiller, CarveSpit, Plunge, Bloodspiller, Shadowbringer, EdgeShadow, Bloodspiller, SaltDarkness, EdgeShadow, SyphonStrike, Plunge, EdgeShadow]
     WAROpener = [WaitAbility(20),Tomahawk, Infuriate,HeavySwing, Maim, Potion, StormEye, InnerRelease,InnerChaos, Upheaval, Onslaught, PrimalRend, Infuriate, InnerChaos, Onslaught, FellCleave, Onslaught, FellCleave, FellCleave, HeavySwing, Maim, StormPath, FellCleave, Infuriate, InnerChaos]
-    PLDOpener = [WaitAbility(20), FastBlade, FightOrFlight, RiotBlade, GoringBlade, FastBlade, Potion, RiotBlade, CircleScorn, Intervene, RoyalAuthority, Expiacion, RequestACat, Atonement, Intervene, Atonement, Atonement, FastBlade, RiotBlade, GoringBlade, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti, WaitAbility(1.75),CircleScorn, BladeFaith, WaitAbility(1.75), Expiacion,BladeTruth, BladeValor]
-    GNBOpener = [WaitAbility(20), KeenEdge, BrutalShell, Potion, SolidBarrel, NoMercy, GnashingFang, Bloodfest, JugularRip, DoubleDown, BlastingZone, BowShock, SonicBreak, RoughDivide, SavageClaw, AbdomenTear, RoughDivide, WickedTalon, EyeGouge, BurstStrike, Hypervelocity, KeenEdge, BrutalShell, SolidBarrel,KeenEdge, BrutalShell, SolidBarrel, GnashingFang, JugularRip, SavageClaw, AbdomenTear, WickedTalon,BlastingZone, EyeGouge, BurstStrike, Hypervelocity]
+    PLDOpener = [WaitAbility(2), FightOrFlight, WaitAbility(15), Potion, HolySpirit, Intervene, FastBlade, RequestACat, CircleScorn, RiotBlade, Expiacion, Intervene, GoringBlade, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti, BladeFaith,BladeTruth, BladeValor, WaitAbility(22), FastBlade]
+    GNBOpener = [WaitAbility(2), KeenEdge, BrutalShell, Potion, SolidBarrel, NoMercy, GnashingFang, Bloodfest, JugularRip, DoubleDown, BlastingZone, BowShock, SonicBreak, RoughDivide, SavageClaw, AbdomenTear, RoughDivide, WickedTalon, EyeGouge, BurstStrike, Hypervelocity, WaitAbility(30), KeenEdge]
 
 
     # ===============================================================================================
@@ -219,8 +219,8 @@ def ExecuteMemoryCode(SaveFight):
     # So if you want to simulate the BlackMage and a RedMage, you would do: 
     # PlayerList = [BLMPlayer, RDMPlayer]
 
-    PlayerList = [SAMPlayer]
-
+    PlayerList = [MNKPlayer, RPRPlayer, NINPlayer, SAMPlayer, DRGPlayer]
+ 
     Event.PlayerList = PlayerList
 
     # ===============================================================================================
@@ -231,7 +231,7 @@ def ExecuteMemoryCode(SaveFight):
     TimeLimit = 500 # Time limit for the simulation in seconds. It will stop once this time has been reached (in simulation time)
     time_unit = 0.01 # Time unit or frame of the simulation. Smallest step the simulator will take between each iterations. It is advised to not change this value
     ShowGraph = False # Parameter to show (or not) the graph generated by the simulator.
-    RequirementOn = True # Parameter that will enable or disable the requirement check for all actions. If False the simulator
+    RequirementOn = False # Parameter that will enable or disable the requirement check for all actions. If False the simulator
                          # will not check if an action can be done
 
     # ===============================================================================================

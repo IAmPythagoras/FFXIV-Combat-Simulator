@@ -100,6 +100,9 @@ def Credits():
     input("Press Enter to go back to the Main Menu : ")
 
 
+def MergeFight():
+    print("")
+
 def MainMenu():
     os.system('CLS') #clearing HUD
     #Welcome Message
@@ -108,21 +111,23 @@ def MainMenu():
     "MAIN MENU (input what you want and press ENTER)" + "\n" + 
     "===================================================================" + "\n" + 
     "1- Simulate fight in code memory" + "\n" + 
-    "2- Simulate a saved fight" + "\n" + 
-    "3- Import fight from FFLogs (Experimental)" + "\n" + 
-    "4- Save fight in code memory"  + "\n" + 
-    "5- Credits" + "\n" + 
-    "6- Exit" + "\n" + 
+    "2- Save fight in code memory"  + "\n" + 
+    "3- Simulate a saved fight" + "\n" + 
+    "4- Merge two saved fights" + "\n" + 
+    "5- Import fight from FFLogs (Experimental)" + "\n" + 
+    "6- Credits" + "\n" + 
+    "7- Exit" + "\n" + 
     "==================================================================="
     )
-    user_input = AskInput(6)
+    user_input = AskInput(7)
 
-    if user_input == "1" : ExecuteMemoryCode(False)
-    elif user_input == "2": SimulateFightMemory()
-    elif user_input == "3" : ImportFight()
-    elif user_input == "4" : ExecuteMemoryCode(True)
-    elif user_input == "5" : Credits()
-    elif user_input == "6" : exit() #Closes program
+    if user_input == "1" : ExecuteMemoryCode(False) #Simulating
+    elif user_input == "2": ExecuteMemoryCode(True) #Saving
+    elif user_input == "3" : SimulateFightMemory()
+    elif user_input == "4" : MergeFight() 
+    elif user_input == "5" : ImportFight()
+    elif user_input == "6" : Credits() #Closes program
+    elif user_input == "7" : exit() #Closes program
     
 
 #This python file will serve as a GUI for the time I do not have an actual GUI

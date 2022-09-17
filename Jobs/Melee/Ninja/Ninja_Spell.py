@@ -295,7 +295,7 @@ def HutonEffect(Player, Spell):
     if isinstance(Spell, NinjaSpell) and Spell.Weaponskill and Spell.GCD : Spell.RecastTime *= 0.85
 
 def BunshinEffect(Player, Spell):
-    if isinstance(Spell, NinjaSpell) and Spell.Weaponskill and Spell.id != 8: #We don't want Kamataichi to have bunshin effect
+    if isinstance(Spell, NinjaSpell) and Spell.Weaponskill and Spell.id != PhantomKamaitachi.id: #We don't want Kamataichi to have bunshin effect
         #Will give Action to the Shadow
         Shadow = Player.Shadow
         Shadow.TrueLock = False #Delocking the shadow
