@@ -178,7 +178,7 @@ def CheckBiolysis(Player, Enemy):
 Broil = ScholarSpell(25865, True, 1.5, 2.5, 295,  400, empty, [ManaRequirement])
 Ruin = ScholarSpell(17870, True, 0, 2.5, 220,  300, empty, [ManaRequirement])
 Biolysis = ScholarSpell(16540, True, 0, 2.5, 0, 300, ApplyBiolysis, [ManaRequirement])
-BiolysisDOT = DOTSpell(4, 70, False)
+BiolysisDOT = DOTSpell(-4, 70, False)
 ArtOfWar = ScholarSpell(25866, True, 0, 2.5, 165, 400, empty, [ManaRequirement])#AOE
 
 #HealGCD

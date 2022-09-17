@@ -157,8 +157,8 @@ Event.PlayerList = [] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WAR
 Event.ShowGraph = True
 #Event.SimulateFight(0.01, 1000, 20)
 
-fightID = 'Mda2HgqFctWLXwp1'
-fightNumber = '25'
+fightID = 'KVgxmW9fC26qhNGt'
+fightNumber = '16'
 action_dict, player_dict = getAbilityList(fightID, fightNumber)
 
 for playerID in player_dict:

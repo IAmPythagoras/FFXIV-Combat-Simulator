@@ -132,7 +132,7 @@ def ApplySummon(Player, Enemy):
         Player.Deathflare = True
         Player.LastTranceBahamut = True
         Player.BahamutTrance = True
-
+        Player.Summon.TrueLock = False
         Player.Summon.ActionSet.insert(Player.Summon.NextSpell + 1, BahamutAA) #Applying AA
 
     else:
@@ -140,12 +140,14 @@ def ApplySummon(Player, Enemy):
         Player.LastTranceBahamut = False
         Player.SummonDOT = copy.deepcopy(PhoenixDOT)
         Player.FirebirdTrance = True
+        Player.Summon.TrueLock = False
         Player.Summon.ActionSet.insert(Player.Summon.NextSpell + 1, PhoenixAA)#Applying AA
     Player.EffectCDList.append(SummonDOTCheck)
     Player.SummonDOTTimer = 15
 
 def ApplyEnkindle(Player, Enemy):
     Player.Enkindle = False
+    Player.Summon.TrueLock = False
     Player.Summon.ActionSet.insert(Player.Summon.NextSpell + 1, EnkindleSummon)
 
 def ApplyDeathflare(Player, Enemy):
@@ -218,7 +220,7 @@ Garuda = SummonerSpell(25840, True, Lock, 2.5, 700, 0, ApplyGaruda, [GarudaRequi
 Ifrit = SummonerSpell(25838, True, Lock, 2.5, 700, 0, ApplyIfrit, [IfritRequirement])
 
 #Titan Ability
-Topaz = SummonerSpell(25824, True, Lock, 2.5, 140, 330, ApplyTopaz, [ManaRequirement, TopazRequirement])
+Topaz = SummonerSpell(25824, True, Lock, 2.5, 330, 0, ApplyTopaz, [ManaRequirement, TopazRequirement])
 Mountain = SummonerSpell(25836, False, Lock, 0, 150, 0, ApplyMountain, [MountainRequirement])
 TopazCatastrophe = SummonerSpell(25833, True, 0, 2.5, 140, 300, ApplyTopaz, [ManaRequirement, TopazRequirement] ) #same effect and requirement as Topaz
 
@@ -238,7 +240,7 @@ Summon = SummonerSpell(7427, True, Lock, 2.5, 0, 0, ApplySummon, [SummonRequirem
 #Bahamut and Phoenix damage will simply be a dot
 BahamutAA = SummonerSpell(115, False, 0, 0, 0, 0, ApplyBahamutAA, [])
 PhoenixAA = SummonerSpell(115, False, 0, 0, 0, 0, ApplyPhoenixAA, [])
-BahamutDOT = DOTSpell(-14, 180, False)
+BahamutDOT = DOTSpell(-14, 180, False) #AA of bahamut and phoenix
 PhoenixDOT = DOTSpell(-15, 240, False)
 EnkindleSummon = SummonerSpell(17, False, 0, 0, 1300, 0, empty, []) #Enkindle done by pet
 #autos of summon seems to be faster if uses Enkindle, but always max 5

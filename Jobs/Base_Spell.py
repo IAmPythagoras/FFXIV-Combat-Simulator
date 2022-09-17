@@ -126,8 +126,8 @@ class Spell:
         Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage
 
-        #if self.id > 0 and self.Potency > 0:
-        #    print("Action with id " + str(self.id) + " has done " + str(self.Potency) + " potency.")
+        if self.id > 0 and self.Potency > 0:
+            print("Action with id " + str(self.id) + " has done " + str(self.Potency) + " potency.")
 
         if not (player.CurrentFight.FightStart) and Damage > 0 : 
             player.CurrentFight.FightStart = True
@@ -184,8 +184,6 @@ def ApplyPotion(Player, Enemy):
     Player.Stat["MainStat"] = min(math.floor(Player.Stat["MainStat"] * 1.1), Player.Stat["MainStat"] + 223) #Grade 7 HQ tincture
     Player.PotionTimer = 30
 
-    input("Applying potion on : " + str(Player))
-
     Player.EffectCDList.append(PotionCheck)
 
 def PrepullPotion(Player, Enemy): #If potion is prepull
@@ -234,8 +232,8 @@ class DOTSpell(Spell):
 class Auto_Attack(DOTSpell):
     #DOT specifically used for auto attack
     def __init__(self, id, Ranged):
-        if Ranged : super().__init__(id, 100, True)
-        else: super().__init__(id, 110, True)
+        if Ranged : super().__init__(id, 0, True) #100, 110
+        else: super().__init__(id, 0, True)
 
         self.DOTTimer = 0 #The timer is intentionally set at a longer time, so it won't go off before the countdown is over
 

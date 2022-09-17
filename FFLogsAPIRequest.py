@@ -84,10 +84,6 @@ def lookup_abilityID(actionID, targetID, sourceID, player_list):
 
 
             if callable(JobDict[int(actionID)]): #If the action is a function
-                #print(targetID)
-                #print(sourceID)
-                #print(actionID)
-                #input(player_list.keys())
                 return JobDict[int(actionID)](player_list[str(targetID)]["job_object"])
             return JobDict[int(actionID)] #Else return object
 

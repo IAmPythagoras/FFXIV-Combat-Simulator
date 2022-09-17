@@ -676,6 +676,10 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
     # Here I am returning both the damage assuming no crit and expected dh_rate and the damage with expected dh_rate and crit_rate.
     # I am also adding all buffs before sending it
 
+    if spellObj.id == -2878: #If wildfire it cannot crit or DH, so we remove it
+        non_crit_dh_expected, dh_crit_expected = Damage, Damage # Non crit expected damage, expected damage with crit
+        return non_crit_dh_expected , dh_crit_expected
+
     
     if auto_crit and auto_DH: # If both 
         auto_crit_bonus = (1 + roundDown(CritRateBonus * CritMult, 3)) # Auto_crit bonus if buffed

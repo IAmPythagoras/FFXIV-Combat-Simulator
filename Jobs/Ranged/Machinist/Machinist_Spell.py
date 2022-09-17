@@ -4,7 +4,7 @@
 
 
 import copy
-from Jobs.Base_Spell import DOTSpell, Melee_AA, Queen_AA, empty, WaitAbility
+from Jobs.Base_Spell import DOTSpell, Queen_AA, empty, WaitAbility
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
 from Jobs.Ranged.Ranged_Spell import MachinistSpell
 
@@ -160,14 +160,13 @@ def ApplyCollider(Queen, Enemy):#Called on queen
 
 def ApplySplitShot(Player, Enemy):
     AddGauge(Player, 0, 5)
-    Player.EffectList.append(SplitShotEffect)
+    if not (SplitShotEffect in Player.EffectList) : Player.EffectList.append(SplitShotEffect)
 
 def ApplySlugShot(Player, Enemy):
-    AddGauge(Player, 0, 5)
-    Player.EffectList.append(SlugShotEffect)
+    pass
 
 def ApplyCleanShot(Player, Enemy):
-    AddGauge(Player, 10, 5)
+    pass
 
 #Effect
 
@@ -180,16 +179,19 @@ def HyperchargeEffect(Player, Spell):
 #Combo Actions effect
 
 def SplitShotEffect(Player, Spell):
-    if Spell.id == 5:
+    if Spell.id == SlugShot.id:
 
-        Spell.Potency =+ 160
+        Spell.Potency += 160
         Player.EffectToRemove.append(SplitShotEffect)
+        if not (SlugShotEffect in Player.EffectList) : Player.EffectList.append(SlugShotEffect)
+        AddGauge(Player, 0, 5)
 
 def SlugShotEffect(Player, Spell):
-    if Spell.id == 6:
+    if Spell.id == CleanShot.id:
 
         Spell.Potency += 250
         Player.EffectToRemove.append(SlugShotEffect)
+        AddGauge(Player, 10, 5)
 
 
 #Check
@@ -203,7 +205,7 @@ def FlamethrowerDOTCheck(Player, Enemy):
     if Player.FlamethrowerDOTTimer <= 0:
         Player.DOTList.remove(Player.FlamethrowerDOT)
         Player.FlamethrowerDOT = None
-        Player.EffectToRemove.append(FlamethrowerDOTCheck )
+        Player.EffectToRemove.append(FlamethrowerDOTCheck)
 
 def BioblasterDOTCheck(Player, Enemy):
     if Player.BioblasterDOTTimer <= 0:
@@ -214,7 +216,7 @@ def BioblasterDOTCheck(Player, Enemy):
 def WildFireCheck(Player, Enemy):
     if Player.WildFireTimer <= 0:
 
-        WildFireOff = MachinistSpell(1, False, 0, 0, 220 * Player.WildFireStack, 0, empty, [], False)
+        WildFireOff = MachinistSpell(-2878, False, 0, 0, 220 * Player.WildFireStack, 0, empty, [], False)
         #Temporary Spell that will be put in front of the Queue
         Player.ActionSet.insert(Player.NextSpell+1, WildFireOff) #Insert in queue, will be instantly executed
         Player.EffectList.remove(WildFireEffect)
@@ -258,8 +260,6 @@ def QueenCheck(Player, Enemy):#This will be called on the queen
         Player.ActionSet.insert(Player.NextSpell+1,Bunker)
         Player.ActionSet.insert(Player.NextSpell+2,Collider)
         Player.EffectToRemove.append(QueenCheck)
-        ##input(Player.ActionSet)
-        ##input(Player.NextSpell)
         Player.EffectCDList.append(QueenAACheck)
 
 

@@ -44,7 +44,7 @@ class Samurai(Melee):
         self.ThirdEyeCD = 0
         self.GyotenCD = 0
         self.YatenCD = 0
-        self.MedidateCD = 0
+        self.MeditateCD = 0
         self.KyutenCD = 0
         self.TsubamegaeshiCD = 0
         self.HagakureCD = 0
@@ -71,7 +71,7 @@ class Samurai(Melee):
         if (self.ThirdEyeCD > 0) : self.ThirdEyeCD = max(0,self.ThirdEyeCD - time)
         if (self.GyotenCD > 0) : self.GyotenCD = max(0,self.GyotenCD - time)
         if (self.YatenCD > 0) : self.YatenCD = max(0,self.YatenCD - time)
-        if (self.MedidateCD > 0) : self.MedidateCD = max(0,self.MedidateCD - time)
+        if (self.MeditateCD > 0) : self.MeditateCD = max(0,self.MeditateCD - time)
         if (self.KyutenCD > 0) : self.KyutenCD = max(0,self.KyutenCD - time)
         if (self.TsubamegaeshiCD > 0) : self.TsubamegaeshiCD = max(0,self.TsubamegaeshiCD - time)
         if (self.HagakureCD > 0) : self.HagakureCD = max(0,self.HagakureCD - time)

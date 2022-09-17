@@ -136,8 +136,8 @@ def CheckPresenceOfMind(Player, Enemy):
 
 #Damage GCD
 Glare = WhitemageSpell(25859, True, 1.5, 2.5, 310, 400, empty, [ManaRequirement])
-Dia = WhitemageSpell(16532, True, 0, 2.5, 0, 400, ApplyDia, [ManaRequirement])
-DiaDOT = DOTSpell(5, 60, False)
+Dia = WhitemageSpell(16532, True, 0, 2.5, 60, 400, ApplyDia, [ManaRequirement])
+DiaDOT = DOTSpell(-5, 60, False)
 AfflatusMisery = WhitemageSpell(16535, True, 0, 2.5, 1240, 0, ApplyAfflatusMisery, [BloomLilyRequirement])
 Holy = WhitemageSpell(25860, True, 2.5, 2.5, 150, 400, empty, [ManaRequirement])
 #Healing GCD
