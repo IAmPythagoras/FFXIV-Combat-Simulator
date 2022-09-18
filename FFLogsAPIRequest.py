@@ -160,9 +160,6 @@ def getAbilityList(fightID, fightNumber):
     res = conn.getresponse()
     data = res.read()
     data_json = json.loads(data.decode("utf-8"))\
-    
-    p_bar.update(1)
-    p_bar.refresh() #Updating progress
 
     #Getting Player's Class, ids and name
     player_data = data_json["data"]["reportData"]["report"]["playerDetails"]["data"]["playerDetails"]
@@ -226,8 +223,6 @@ def getAbilityList(fightID, fightNumber):
     res = conn.getresponse()
     data = res.read()
     data_json = json.loads(data.decode("utf-8"))
-    p_bar.update(1)
-    p_bar.refresh() #Updating progress
 
     combatantinfo_list = data_json["data"]["reportData"]["report"]["events"]["data"] #Array of combatantinfo
 
@@ -295,8 +290,6 @@ def getAbilityList(fightID, fightNumber):
     res = conn.getresponse()
     data = res.read()
     data_json = json.loads(data.decode("utf-8"))
-    p_bar.update(1)
-    p_bar.refresh() #Updating progress
 
     action_list = data_json["data"]["reportData"]["report"]["events"]["data"] #Array of all actions done
 

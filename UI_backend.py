@@ -1,7 +1,6 @@
 import copy
 import json
 import os
-from tqdm import tqdm
 from Jobs.Melee.Monk.Monk_Spell import ComboEffect
 
 from Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton
