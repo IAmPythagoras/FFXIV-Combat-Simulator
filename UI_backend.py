@@ -290,7 +290,7 @@ def SimulateFightBackend(file_name):
         print(
             "This save file has more than one player character : " + "\n" + 
             "1- Simulate only one player character" + "\n" + 
-            "2- Simulate all the player character at the same time" + "\n" + 
+            "2- Simulate all the player characters at the same time" + "\n" + 
             "====================================================="
             )
 
@@ -299,7 +299,7 @@ def SimulateFightBackend(file_name):
         if user_input == "1" : #want to only simulate one player
             print(
                 "=====================================================" + "\n" + 
-                "List of player in this save file : "
+                "List of players in this save file : "
             )
             n_player = len(PlayerList)
             for i in range(n_player):

@@ -51,8 +51,8 @@ def ImportFight():
     os.system('CLS') #clearing HUD
     print(
         "===================== IMPORT FIGHT FROM FFLOGS =====================" + "\n" +
-        "(If you have any question refer to the Help option in the main menu)" + "\n" +
-        "The program does not check if the fight is valid, and will simply reuslt in a crash if it is not."
+        "THIS IS VERY EXPERIMENTAL" + "\n" +
+        "The program does not check if the fight is valid, and will simply result in a crash if it is not."
     )
 
     fightID = input("Please enter the fightID : ")
@@ -78,21 +78,21 @@ def Credits():
     print(
         "=================================================== CREDITS =======================================================" + "\n" + 
         "This program was made mainly by myself, but I was helped by a lot of friends" + "\n" +
-        "and other people without whomst this project would not have been possible." + "\n" +
+        "and other people without whom this project would not have been possible." + "\n" +
         "I listed here all those that helped with a short description of what they did." + "\n" +
         "I personally thank everyone here for the help they brought :)" + "\n" +
         "I will put their discord IDs in case you wish to contact them." + "\n" +
         "=================================================================================================================" + "\n" +
         "Pythagoras#6312 -> That's me! Did most of it" + "\n" +
-        "ne0dym#7837 -> Helped me with code for Dark Knight" + "\n" +
-        "Bri-kun#6539 -> Helped me with networking code and other FFLogsAPI related stuff" + "\n" +
-        "javaJake#0001 -> Helped me with theoretical damage computation stuff" + "\n" +
-        "Saint Germain#0280 -> Helped a bit with Monk code" + "\n" +
+        "ne0dym#7837 -> DarkKnight code and other revisions" + "\n" +
+        "Bri-kun#6539 -> Networking code and other FFLogsAPI related stuff" + "\n" +
+        "javaJake#0001 -> Theoretical damage computation" + "\n" +
+        "Saint Germain#0280 -> Bit of Monk code" + "\n" +
         "apollo#3810 -> Put me in contact with javajake and also provided some background code for working with FFLogsAPI" + "\n" +
         "Ikuni#2735 -> Helped by verifying and correcting some scalar values in the damage formulas" + "\n" +
         "\n" +
         "I also give my thanks to The Balance, which provided me with a lot of knowleadge about the different" + "\n" +
-        "jobs so I could implement them and also gave me access to ressources like the Blackmage gear comparison" + "\n" +
+        "jobs so I could implement them and also gave me access to resources like the Blackmage gear comparison" + "\n" +
         "spreadsheet which I used a lot when trying to better understand how damage computation work in this game." + "\n" +
         "================================================================================================================="
     )

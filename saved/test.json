@@ -1,7 +1,7 @@
 {
     "data": {
         "fightInfo": {
-            "countdownValue": 20,
+            "countdownValue": 0,
             "fightDuration": 500,
             "time_unit": 0.01,
             "ShowGraph": false,
