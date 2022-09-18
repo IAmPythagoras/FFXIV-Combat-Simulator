@@ -107,12 +107,15 @@ def ApplyThunderclap(Player, Enemy):
 
 
 def ApplyOpoOpo(Player, Enemy):
+    FormlessStackCheck(Player)
     Player.CurrentForm = 1
 
 def ApplyRaptor(Player, Enemy):
+    FormlessStackCheck(Player)
     Player.CurrentForm = 2 #Into Raptor
 
 def ApplyCoeurl(Player, Enemy):
+    FormlessStackCheck(Player)
     Player.CurrentForm = 3 #Into Coeurl
 
 def ApplyMantra(Player, Enemy):
@@ -246,6 +249,9 @@ def ComboEffect(Player, Spell):
     # necessary effect
     if Spell.GCD:
         if Player.FormlessFistStack > 0 :#Then we are in formless, so we can do whichever
+
+            Player.UsedFormlessStack = True
+
             #Opo-Opo Form
             if Spell.id == Bootshine.id or Spell.id == ShadowOfTheDestroyer.id:
                 Player.GuaranteedCrit = True
@@ -276,6 +282,8 @@ def ComboEffect(Player, Spell):
                 Player.DemolishDOTTimer = 18
             elif Spell.id == SnapPunch.id or Spell.id == Rockbreaker.id:
                 pass #Nothing happens
+
+        #Not formless
         elif Player.CurrentForm == 1: #Opo-Opo form
             if Spell.id == Bootshine.id or Spell.id == ShadowOfTheDestroyer.id:
                 Player.GuaranteedCrit = True
@@ -306,10 +314,10 @@ def ComboEffect(Player, Spell):
 
 #Other
 
-def FormlessStackCheck(Player, Enemy):
+def FormlessStackCheck(Player):
     if Player.UsedFormlessStack:
         Player.UsedFormlessStack = False
-        Player.Player.FormlessFistStack -= 1
+        Player.FormlessFistStack -= 1
 
 #Opo-opo form  -> Raptor Form
 Bootshine = MonkSpell(53, True, 2, 210, ApplyRaptor, [], True, False)

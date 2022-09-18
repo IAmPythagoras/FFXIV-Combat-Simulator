@@ -129,8 +129,8 @@ class Spell:
         Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage
 
-        if self.Potency > 0 and isinstance(player, Monk):
-            print("Action with id " + str(self.id) + " has done " + str(self.Potency) + " potency.")
+        #if self.Potency > 0 and isinstance(player, Monk):
+        #    print("Action with id " + str(self.id) + " has done " + str(self.Potency) + " potency.")
 
         if not (player.CurrentFight.FightStart) and Damage > 0 : 
             player.CurrentFight.FightStart = True

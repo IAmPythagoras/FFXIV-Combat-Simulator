@@ -87,11 +87,11 @@ Samurai : DONE
 
 Reaper : DONE
 
-Monk : IN WORK
+Monk : DONE
 
 Dragoon : DONE
 
-UPDATED : June 1st 2022
+UPDATED : September 18th 2022
 
 We also plan to add Bluemage once we are done with the core program.
 

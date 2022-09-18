@@ -130,7 +130,7 @@ def ExecuteMemoryCode(SaveFight_check):
     SAMPlayer = Samurai(2.5, [], [], [], Event, SAMStat)
     DRGPlayer = Dragoon(2.5, [], [], [], Event, DRGStat)
     RPRPlayer = Reaper(2.5, [], [], [], Event, RPRStat)
-    MNKPlayer = Monk(2.5, [], [], [ComboEffect,FormlessStackCheck], Event, MNKStat)
+    MNKPlayer = Monk(2.5, [], [], [ComboEffect], Event, MNKStat)
 
     # Tank
     DRKPlayer = DarkKnight(2.5, [], [], [], Event, DRKStat)

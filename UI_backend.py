@@ -2,6 +2,7 @@ import copy
 import json
 import os
 from tqdm import tqdm
+from Jobs.Melee.Monk.Monk_Spell import ComboEffect
 
 from Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton
 from Jobs.Melee.Samurai.Samurai_Spell import MeikyoCheck, MeikyoEffect, MeikyoStackCheck
@@ -346,7 +347,7 @@ def SimulateFightBackend(file_name):
         elif job_name == "Bard" : job_object = Bard(2.5, [], [], [SongEffect], None, {})
         #melee
         elif job_name == "Reaper" : job_object = Reaper(2.5, [], [], [], None, {})
-        elif job_name == "Monk" : job_object = Monk(2.5, [], [], [], None, {})
+        elif job_name == "Monk" : job_object = Monk(2.5, [], [], [ComboEffect], None, {})
         elif job_name == "Dragoon" : job_object = Dragoon(2.5, [], [], [], None, {})
         elif job_name == "Ninja" : job_object = Ninja(2.5, [], [], [], None, {})
         elif job_name == "Samurai" : job_object = Samurai(2.5, [], [], [], None, {})
