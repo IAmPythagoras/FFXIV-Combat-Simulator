@@ -1,6 +1,6 @@
 import os
 from SimulationInput import ExecuteMemoryCode
-from UI_backend import AskInput, ImportFightBackend, SaveFight, SimulateFightBackend
+from UI_backend import AskInput, ImportFightBackend, MergeFightBackEnd, SaveFight, SimulateFightBackend
 
 
 def SimulateFightMemory():
@@ -101,7 +101,58 @@ def Credits():
 
 
 def MergeFight():
-    print("")
+    os.system('CLS') #clearing HUD
+    print(
+        "===================== MERGING TWO FIGHTS =====================" + "\n" 
+    )
+
+    cur_dir = os.getcwd()
+
+    #the saved directory should be in that same folder
+
+    saved_dir = cur_dir + "\\saved"
+
+    saved_fight = os.listdir(saved_dir)
+    number_saved_fight = len(saved_fight)
+    parent_fight = ""
+    child_fight = ""
+
+    if number_saved_fight == 0: #No fight saved
+        print("No saved fights were found. Hit any button to return to the main menu.")
+        input("...")
+        return
+    else: #Saved fight
+        print(
+            "Select one of the saved fights as a parent (will merge into this one) : "+ "\n" + 
+            "=========================================================="
+            )
+        for i in range(1,number_saved_fight+1):
+            print(str(i) + " -> " + saved_fight[i-1])
+
+        print("==========================================================")
+
+        userInput = int(AskInput(number_saved_fight))
+
+        parent_fight = saved_fight[userInput-1] #Selecting fight
+
+    
+        print(
+            "Select one of the saved fights as a child (this one will be merged into) : "+ "\n" + 
+            "=========================================================="
+            )
+        for i in range(1,number_saved_fight+1):
+            print(str(i) + " -> " + saved_fight[i-1])
+
+        print("==========================================================")
+
+        userInput = int(AskInput(number_saved_fight))
+
+        child_fight = saved_fight[userInput-1] #Selecting fight
+
+        MergeFightBackEnd(saved_dir + "\\" + child_fight, saved_dir + "\\" + parent_fight, parent_fight)
+
+        
+
 
 def MainMenu():
     os.system('CLS') #clearing HUD

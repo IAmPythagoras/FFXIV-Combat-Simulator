@@ -1,5 +1,6 @@
+from ast import AnnAssign
 from copy import deepcopy
-from Jobs.Base_Spell import DOTSpell, Melee_Auto, buff
+from Jobs.Base_Spell import DOTSpell, buff, empty
 from Jobs.Melee.Melee_Spell import MonkSpell
 Lock = 0.75 #skill animation lock - simulating 75ms ping
 
@@ -311,41 +312,43 @@ def FormlessStackCheck(Player, Enemy):
         Player.Player.FormlessFistStack -= 1
 
 #Opo-opo form  -> Raptor Form
-Bootshine = MonkSpell(30, True, 2, 210, ApplyRaptor, [], True, False)
-DragonKick = MonkSpell(1, True, 2, 320, ApplyRaptor, [], True, False)
-ShadowOfTheDestroyer = MonkSpell(2, True,2, 110, ApplyRaptor, [], True, False) #AOE of Bootshine
+Bootshine = MonkSpell(53, True, 2, 210, ApplyRaptor, [], True, False)
+DragonKick = MonkSpell(74, True, 2, 320, ApplyRaptor, [], True, False)
+ShadowOfTheDestroyer = MonkSpell(25767, True,2, 110, ApplyRaptor, [], True, False) #AOE of Bootshine
 
 #Raptor form combo -> Coeurl form
-TrueStrike = MonkSpell(4, True, 2, 300, ApplyCoeurl, [RaptorFormRequirement], True, False)
-TwinSnakes = MonkSpell(5, True, 2, 280, ApplyCoeurl, [RaptorFormRequirement], True, False)
-FourpointFurry = MonkSpell(6, True, 2, 120, ApplyCoeurl, [RaptorFormRequirement], True, False) #AOE of Twinsnakes
+TrueStrike = MonkSpell(54, True, 2, 300, ApplyCoeurl, [RaptorFormRequirement], True, False)
+TwinSnakes = MonkSpell(61, True, 2, 280, ApplyCoeurl, [RaptorFormRequirement], True, False)
+FourpointFurry = MonkSpell(16473, True, 2, 120, ApplyCoeurl, [RaptorFormRequirement], True, False) #AOE of Twinsnakes
 
 #Coeurl form combo -> Opo-opo form
-Demolish = MonkSpell(7, True, 2, 130, ApplyOpoOpo, [CoeurlFormRequirement], True, False)
+Demolish = MonkSpell(66, True, 2, 130, ApplyOpoOpo, [CoeurlFormRequirement], True, False)
 DemolishDOT = DOTSpell(-10, 70, True)
-SnapPunch = MonkSpell(8, True,2 ,310, ApplyOpoOpo, [CoeurlFormRequirement], True, False)
-Rockbreaker = MonkSpell(9, True, 2, 130, ApplyOpoOpo, [CoeurlFormRequirement], True, False)
+SnapPunch = MonkSpell(56, True,2 ,310, ApplyOpoOpo, [CoeurlFormRequirement], True, False)
+Rockbreaker = MonkSpell(70, True, 2, 130, ApplyOpoOpo, [CoeurlFormRequirement], True, False)
 
 #Chakra
-TheForbiddenChakra = MonkSpell(20, False, 0, 340, ApplyChakra, [ChakraRequirement], False, False )
-Enlightenment = MonkSpell(21, False, 0, 170, ApplyChakra, [ChakraRequirement], False, False)
+TheForbiddenChakra = MonkSpell(3547, False, 0, 340, ApplyChakra, [ChakraRequirement], False, False )
+Enlightenment = MonkSpell(16474, False, 0, 170, ApplyChakra, [ChakraRequirement], False, False)
 #Masterful Blitz
-ElixirField = MonkSpell(14, True, 2, 600, ApplyElixirField, [ElixirFieldRequirement], True, False)
-CelestialRevolution = MonkSpell(22, True, 2, 450, ApplyCelestialRevolution, [CelestialRevolutionRequirement], True, False)
-RisingPhoenix = MonkSpell(23, True, 2, 700, ApplyRisingPhoenix, [RisingPhoenixRequirement], True, False)
-PhantomRush = MonkSpell(24, True, 2, 1150, ApplyPhantomRush, [RisingPhoenixRequirement, NadiRequirement], True, False)
+ElixirField = MonkSpell(3545, True, 2, 600, ApplyElixirField, [ElixirFieldRequirement], True, False)
+CelestialRevolution = MonkSpell(25765, True, 2, 450, ApplyCelestialRevolution, [CelestialRevolutionRequirement], True, False)
+RisingPhoenix = MonkSpell(25768, True, 2, 700, ApplyRisingPhoenix, [RisingPhoenixRequirement], True, False)
+PhantomRush = MonkSpell(25769, True, 2, 1150, ApplyPhantomRush, [RisingPhoenixRequirement, NadiRequirement], True, False)
 #Other GCD
-Meditation = MonkSpell(15, False, 0, 0, ApplyMeditation, [], False, False)
-FormShift = MonkSpell(25, True, 2, 0, ApplyFormShift, [], False, False)
+Meditation = MonkSpell(3546, False, 0, 0, ApplyMeditation, [], False, False)
+FormShift = MonkSpell(4262, True, 2, 0, ApplyFormShift, [], False, False)
+SixSidedStar = MonkSpell(16476, True, 4, 550, empty, [], True, False)
 #oGCD
-PerfectBalance = MonkSpell(13, False, 0, 0, ApplyPerfectBalance, [PerfectBalanceRequirement], False, False)
-Brotherhood = MonkSpell(16, False, 0, 0, ApplyBrotherhood, [BrotherhoodRequirement], False, False)
-RiddleOfFire = MonkSpell(17, False, 0, 0, ApplyRiddleOfFire, [RiddleOfFireRequirement], False, False)
-RiddleOfEarth = MonkSpell(18, False, 0, 0, ApplyRiddleOfEarth, [RiddleOfEarthRequirement], False, False)
-RiddleOfWind = MonkSpell(19, False, 0, 0, ApplyRiddleOfWind, [RiddleOfWindRequirement], False, False)
+PerfectBalance = MonkSpell(69, False, 0, 0, ApplyPerfectBalance, [PerfectBalanceRequirement], False, False)
+Brotherhood = MonkSpell(7396, False, 0, 0, ApplyBrotherhood, [BrotherhoodRequirement], False, False)
+RiddleOfFire = MonkSpell(7395, False, 0, 0, ApplyRiddleOfFire, [RiddleOfFireRequirement], False, False)
+RiddleOfEarth = MonkSpell(7394, False, 0, 0, ApplyRiddleOfEarth, [RiddleOfEarthRequirement], False, False)
+RiddleOfWind = MonkSpell(25766, False, 0, 0, ApplyRiddleOfWind, [RiddleOfWindRequirement], False, False)
 #non Damage oGCD
-Thunderclap = MonkSpell(11, False, 0, 0, ApplyThunderclap, [ThunderclapRequirement],False, False)
-Mantra = MonkSpell(12, False, 0, 0, ApplyMantra, [MantraRequirement], False, False)
+Anatman = MonkSpell(16475, False, 0, 0, empty, [], False, False)
+Thunderclap = MonkSpell(25762, False, 0, 0, ApplyThunderclap, [ThunderclapRequirement],False, False)
+Mantra = MonkSpell(65, False, 0, 0, ApplyMantra, [MantraRequirement], False, False)
 #Buff
 DisciplinedFistBuff = buff(1.15)
 BrotherhoodBuff = buff(1.05)
@@ -353,4 +356,32 @@ RiddleOfFireBuff = buff(1.15)
 
 
 
-MonkAbility = {}
+MonkAbility = {
+53 : Bootshine,
+54 : TrueStrike,
+66 : Demolish,
+74 : DragonKick,
+61 : TwinSnakes,
+56 : SnapPunch,
+25767 : ShadowOfTheDestroyer,
+16473 : FourpointFurry,
+70 : Rockbreaker,
+3546 : Meditation,
+3547 : TheForbiddenChakra,
+16474 : Enlightenment,
+69 : PerfectBalance,
+3545 : ElixirField,
+25765 : CelestialRevolution,
+25768 : RisingPhoenix,
+25769 : PhantomRush,
+16476 : SixSidedStar,
+4262 : FormShift,
+25762 : Thunderclap,
+7394 : RiddleOfEarth,
+7395 : RiddleOfFire,
+25766 : RiddleOfWind,
+7396 : Brotherhood,
+16475 : Anatman,
+65 : Mantra
+
+}

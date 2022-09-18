@@ -186,6 +186,7 @@ def ApplyHiganbana(Player, Enemy):
         Player.DOTList.append(Player.Higanbana)
     Player.HiganbanaTimer = 45
     Player.MeditationGauge = min(3, Player.MeditationGauge + 1)
+    Player.EffectCDList.append(HiganbanaCheck)
     Player.Setsu, Player.Ka, Player.Getsu = False, False, False #Reseting
 
 def ApplyOgiNamikiri(Player, Enemy):

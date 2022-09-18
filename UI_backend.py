@@ -167,6 +167,7 @@ def SaveFight(Event, countdown, fightDuration, saveName):
     #The file will be saved as a JSON format
 
     PlayerListDict = []
+    PlayerIDList = [] #list of all player IDs so we don't have duplicates
 
     for Player in Event.PlayerList:
         #Going through all players in the Event
@@ -192,7 +193,14 @@ def SaveFight(Event, countdown, fightDuration, saveName):
         elif isinstance(Player, Dancer): PlayerDict["JobName"] = "Dancer"
         elif isinstance(Player, Monk): PlayerDict["JobName"] = "Monk"
 
+
+        while Player.playerID in PlayerIDList:
+            Player.playerID += 1
+
         PlayerDict["playerID"] = Player.playerID
+
+        PlayerIDList += [Player.playerID]
+
         PlayerDict["stat"] = Player.Stat
         actionList = []
 
@@ -346,11 +354,11 @@ def SimulateFightBackend(file_name):
 
         job_object.playerID = player["playerID"] #Giving the playerID
 
-        PlayerActionList[str(player["playerID"])] = {"job" : job_name, "job_object" : job_object, "actionList" : player["actionList"], "actionObject" : []} #Adding new Key accessible by IDs
+        PlayerActionList[str(job_object.playerID)] = {"job" : job_name, "job_object" : job_object, "actionList" : player["actionList"], "actionObject" : []} #Adding new Key accessible by IDs
 
         #Giving player object the stat dictionnary
 
-        PlayerActionList[str(player["playerID"])]["job_object"].Stat = player["stat"] #Copies dictionnary
+        PlayerActionList[str(job_object.playerID)]["job_object"].Stat = player["stat"] #Copies dictionnary
 
         #We can access the information using the player's id
 
@@ -407,6 +415,7 @@ def SimulateFightBackend(file_name):
 
     #Will now go through every player and give them an ActionList
 
+
     for playerID in PlayerActionList:
 
         for action in PlayerActionList[playerID]["actionList"]:
@@ -438,3 +447,21 @@ def SimulateFightBackend(file_name):
         "========================================="
         )
     input("Press any key to return to the Main menu : ")
+
+
+def MergeFightBackEnd(child_fight, parent_fight, parent_name):
+    #This will merge the two fights.
+
+    
+    child = open(child_fight) #Opening save
+    parent = open(parent_fight)
+    data_child = json.load(child) #Loading json file
+    data_parent = json.load(parent) #Loading json file
+
+    #We will simply put Player list of data_child into player_list of parent
+
+    data_parent["data"]["PlayerList"] += data_child["data"]["PlayerList"]
+
+    save_dir = os.getcwd() + "\\saved"
+    with open(save_dir + "\\" + parent_name, "w") as write_files:
+        json.dump(data_parent,write_files, indent=4) #saving file

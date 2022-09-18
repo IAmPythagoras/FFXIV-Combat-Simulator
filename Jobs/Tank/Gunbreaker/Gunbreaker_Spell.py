@@ -214,7 +214,7 @@ Hypervelocity = GunbreakerSpell(25759, False, 0, 180, ApplyHypervelocity,[Hyperv
 #oGCD
 BlastingZone = GunbreakerSpell(16165, False, 0, 720, ApplyBlastingZone, [BlastingZoneRequirement], 0)
 Bloodfest = GunbreakerSpell(16164, False, 0, 0, ApplyBloodfest, [BloodfestRequirement], 0)
-BowShock = GunbreakerSpell(14, False, 0, 150, ApplyBowShock, [BowShockRequirement], 0)
+BowShock = GunbreakerSpell(16159, False, 0, 150, ApplyBowShock, [BowShockRequirement], 0)
 BowShockDOT = DOTSpell(-10, 60, True)
 RoughDivide = GunbreakerSpell(16154, False, 0, 150, ApplyRoughDivide, [RoughDivideRequirement], 0)
 NoMercy = GunbreakerSpell(16138, False, 0, 0, ApplyNoMercy, [NoMercyRequirement], 0)
@@ -265,5 +265,6 @@ GunbreakerAbility = {
 16140 : Camouflage,
 25758 : HeartOfCorundum,
 16151 : Aurora,
-16160 : HeartOfLight
+16160 : HeartOfLight,
+16159 : BowShock
 }

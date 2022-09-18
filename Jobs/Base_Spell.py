@@ -3,10 +3,13 @@ import copy
 from Fight import ComputeDamage
 import math
 from Jobs.Caster.Summoner.Summoner_Player import BigSummon
+from Jobs.Melee.Dragoon.Dragoon_Player import Dragoon
 from Jobs.Melee.Melee_Player import Melee
 from Jobs.Melee.Monk.Monk_Player import Monk
 #from Jobs.Melee.Monk.Monk_Spell import Monk_Auto
 from Jobs.Melee.Ninja.Ninja_Player import Shadow
+from Jobs.Melee.Reaper.Reaper_Player import Reaper
+from Jobs.Melee.Samurai.Samurai_Player import Samurai
 from Jobs.Ranged.Dancer.Dancer_Player import Dancer
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
 from Jobs.Ranged.Ranged_Player import Ranged
@@ -126,8 +129,8 @@ class Spell:
         Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage
 
-        #if self.id > 0 and self.Potency > 0:
-        #    print("Action with id " + str(self.id) + " has done " + str(self.Potency) + " potency.")
+        if self.Potency > 0 and isinstance(player, Monk):
+            print("Action with id " + str(self.id) + " has done " + str(self.Potency) + " potency.")
 
         if not (player.CurrentFight.FightStart) and Damage > 0 : 
             player.CurrentFight.FightStart = True
