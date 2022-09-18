@@ -183,6 +183,8 @@ def MainMenu():
 
 #This python file will serve as a GUI for the time I do not have an actual GUI
 if __name__ == "__main__" : 
+    working_dir = r" INSERT WORKING DIRECTORY HERE "
+    os.chdir(working_dir)
     while True : MainMenu() #Draws Main Menu
 
 

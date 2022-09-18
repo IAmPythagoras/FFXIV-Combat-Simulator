@@ -1,0 +1,993 @@
+{
+    "data": {
+        "fightInfo": {
+            "countdownValue": 20,
+            "fightDuration": 500,
+            "time_unit": 0.01,
+            "ShowGraph": false,
+            "RequirementOn": true
+        },
+        "PlayerList": [
+            {
+                "JobName": "Dragoon",
+                "playerID": 0,
+                "stat": {
+                    "MainStat": 2949,
+                    "WD": 126,
+                    "Det": 1545,
+                    "Ten": 400,
+                    "SS": 400,
+                    "Crit": 2462,
+                    "DH": 1577
+                },
+                "Auras": [],
+                "actionList": [
+                    {
+                        "actionID": 212,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": false,
+                        "waitTime": 20
+                    },
+                    {
+                        "actionID": 75,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": -2,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 87,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 85,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 7398,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 25772,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 3557,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 3556,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 3555,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 83,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 3554,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 16478,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 16479,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 96,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 78,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 83,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 7399,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 25771,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 95,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 3554,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 95,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 3556,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 16479,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 25773,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 87,
+                        "sourceID": 0,
+                        "targetID": 0,
+                        "isGCD": true
+                    }
+                ]
+            },
+            {
+                "JobName": "Samurai",
+                "playerID": 1,
+                "stat": {
+                    "MainStat": 2937,
+                    "WD": 126,
+                    "Det": 1571,
+                    "Ten": 400,
+                    "SS": 508,
+                    "Crit": 2446,
+                    "DH": 1459
+                },
+                "Auras": [],
+                "actionList": [
+                    {
+                        "actionID": 212,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": false,
+                        "waitTime": 11
+                    },
+                    {
+                        "actionID": 7499,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 212,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": false,
+                        "waitTime": 8.5
+                    },
+                    {
+                        "actionID": 7481,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": -2,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 7482,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 16482,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 7480,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 7487,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 16481,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 16486,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 7499,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 7481,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 7490,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 7489,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 7490,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 25781,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 16487,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 25782,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 7482,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 7490,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 7481,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 7492,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 7477,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 7480,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 7490,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 7487,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 16486,
+                        "sourceID": 1,
+                        "targetID": 0,
+                        "isGCD": true
+                    }
+                ]
+            },
+            {
+                "JobName": "Ninja",
+                "playerID": 2,
+                "stat": {
+                    "MainStat": 2921,
+                    "WD": 126,
+                    "Det": 1669,
+                    "Ten": 400,
+                    "SS": 400,
+                    "Crit": 2399,
+                    "DH": 1511
+                },
+                "Auras": [],
+                "actionList": [
+                    {
+                        "actionID": 212,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": false,
+                        "waitTime": 10.5
+                    },
+                    {
+                        "actionID": 2261,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 2263,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 2259,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 2269,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 2245,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 212,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": false,
+                        "waitTime": 2
+                    },
+                    {
+                        "actionID": 2259,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 2261,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 2263,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 212,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": false,
+                        "waitTime": 4.5
+                    },
+                    {
+                        "actionID": 2271,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 2264,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 2240,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": -2,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 2242,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 2248,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 16493,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 25774,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 212,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": false,
+                        "waitTime": 1.5
+                    },
+                    {
+                        "actionID": 2258,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 2255,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 3566,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 2259,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 2263,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 16492,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 2259,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 2261,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 2267,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 7403,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 18873,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 18877,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 18881,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 16489,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 25777,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 7402,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 25777,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 7402,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 2259,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 2261,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 2267,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 25777,
+                        "sourceID": 2,
+                        "targetID": 0,
+                        "isGCD": true
+                    }
+                ]
+            },
+            {
+                "JobName": "Reaper",
+                "playerID": 3,
+                "stat": {
+                    "MainStat": 2946,
+                    "WD": 126,
+                    "Det": 1545,
+                    "Ten": 400,
+                    "SS": 400,
+                    "Crit": 2462,
+                    "DH": 1577
+                },
+                "Auras": [],
+                "actionList": [
+                    {
+                        "actionID": 24387,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 212,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": false,
+                        "waitTime": 15.7
+                    },
+                    {
+                        "actionID": 24386,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 24378,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": -2,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 24380,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 24405,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 24393,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 24382,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 24383,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 24385,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 24394,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 24395,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 24396,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 24399,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 24395,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 24396,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 24399,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 24398,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 24380,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 24390,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 24382,
+                        "sourceID": 3,
+                        "targetID": 0,
+                        "isGCD": true
+                    }
+                ]
+            },
+            {
+                "JobName": "Monk",
+                "playerID": 4,
+                "stat": {
+                    "MainStat": 3076,
+                    "WD": 126,
+                    "Det": 1546,
+                    "Ten": 400,
+                    "SS": 769,
+                    "Crit": 2490,
+                    "DH": 1179
+                },
+                "Auras": [],
+                "actionList": [
+                    {
+                        "actionID": 212,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": false,
+                        "waitTime": 18
+                    },
+                    {
+                        "actionID": 4262,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 74,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": -2,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 61,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 212,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": false,
+                        "waitTime": 1
+                    },
+                    {
+                        "actionID": 7395,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 66,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 3547,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 53,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 7396,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 212,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": false,
+                        "waitTime": 1
+                    },
+                    {
+                        "actionID": 69,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 74,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 25766,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 53,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 74,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 3545,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 53,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 69,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 61,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 74,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 66,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 25768,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 212,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": false,
+                        "waitTime": 50
+                    },
+                    {
+                        "actionID": 69,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": false
+                    },
+                    {
+                        "actionID": 53,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 61,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 66,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": true
+                    },
+                    {
+                        "actionID": 25769,
+                        "sourceID": 4,
+                        "targetID": 0,
+                        "isGCD": true
+                    }
+                ]
+            }
+        ]
+    }
+}

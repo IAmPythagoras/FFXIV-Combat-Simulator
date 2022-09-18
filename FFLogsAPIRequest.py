@@ -7,7 +7,6 @@ I only did the code relevant to how we used the data, he did everything regardin
 how to get the data. You can DM him on discord if you have questions : Bri-kun#6539
 
 """
-from tqdm import tqdm
 from Jobs.Base_Spell import PrepullPotion, WaitAbility
 
 #CASTER
@@ -146,9 +145,6 @@ def getAbilityList(fightID, fightNumber):
 
     client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
     client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE" #Supposed to be secret >.>
-
-    # Progress Bar
-    p_bar = tqdm(range(3), desc="Requesting info from FFLogs")
 
     conn = http.client.HTTPSConnection("www.fflogs.com")
     access_token = getAccessToken(conn, client_id, client_secret)

@@ -2,7 +2,6 @@ import math
 from time import sleep
 import matplotlib.pyplot as plt
 import numpy as np
-from tqdm import tqdm
 
 
 # Class
@@ -420,9 +419,6 @@ class Fight:
                 if self.FightStart and not start:
                     self.TimeStamp = 0
                     start = True
-
-                    # Progress bar
-                    #p_bar = tqdm(range(int(TimeLimit) * 100), desc="Simulating fight assuming TimeLimit")
 
 
 
