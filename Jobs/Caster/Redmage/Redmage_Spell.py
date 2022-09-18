@@ -207,14 +207,9 @@ def ZwerchhauCombo(Player, Spell):
 
 def DualCastEffect(Player, Spell):
     if Spell.CastTime != 0 and  Spell.GCD and Spell.id != -1:   #Want to make sure the spell will affect Dualcast, id != -1 is to make sure this is not WaitAbility
-        #print("Spell satisfies DualCast")
-        #print("Spell is : " + str(Spell.id))
-        #print("CastTime : " + str(Spell.CastTime))
-        #input("timestmap : " + str(Player.CurrentFight.TimeStamp))
         if Player.DualCast:
             Spell.CastTime = 0 #Insta cast half of the spells, will be put by default for RedMage
             Player.DualCast = False #Remove Dualcast
-            #print("using it")
         else: Player.DualCast = True    #Give Dual cast
 
 def ManaficationEffect(Player, Spell):

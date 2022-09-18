@@ -7,7 +7,8 @@ I only did the code relevant to how we used the data, he did everything regardin
 how to get the data. You can DM him on discord if you have questions : Bri-kun#6539
 
 """
-from Jobs.Base_Spell import ApplyPotion, PrepullPotion, WaitAbility
+from tqdm import tqdm
+from Jobs.Base_Spell import PrepullPotion, WaitAbility
 
 #CASTER
 from Jobs.Caster.Summoner.Summoner_Player import *
@@ -28,6 +29,7 @@ from Jobs.Healer.Sage.Sage_Spell import SageAbility
 from Jobs.Healer.Astrologian.Astrologian_Spell import AstrologianAbility
 from Jobs.Healer.Scholar.Scholar_Spell import ScholarAbility
 from Jobs.Healer.Whitemage.Whitemage_Spell import WhiteMageAbility
+from Jobs.Melee.Monk.Monk_Spell import MonkAbility
 
 #RANGED
 from Jobs.Ranged.Machinist.Machinist_Player import *
@@ -60,7 +62,6 @@ from Jobs.Melee.Samurai.Samurai_Spell import MeikyoCheck, MeikyoEffect, MeikyoSt
 from Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton, NinjaAbility
 from Jobs.Melee.Dragoon.Dragoon_Spell import DragoonAbility
 from Jobs.Melee.Reaper.Reaper_Spell import ReaperAbility
-from Jobs.Melee.Monk.Monk_Spell import MonkAbility
 
 
 import http.client, json 
@@ -135,10 +136,8 @@ def lookup_abilityID(actionID, targetID, sourceID, player_list):
 def getAccessToken(conn, client_id, client_secret):
     payload = "grant_type=client_credentials&client_id=%s&client_secret=%s" % (client_id, client_secret)
     headers = {'content-type':"application/x-www-form-urlencoded"}
-    print("Sending Request...")
     conn.request("POST","/oauth/token", payload, headers)
     res = conn.getresponse()
-    print("Received Request")
     res_str = res.read().decode("utf-8")
     res_json = json.loads(res_str)
     return res_json["access_token"]
@@ -148,25 +147,28 @@ def getAbilityList(fightID, fightNumber):
     client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
     client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE" #Supposed to be secret >.>
 
+    # Progress Bar
+    p_bar = tqdm(range(3), desc="Requesting info from FFLogs")
+
     conn = http.client.HTTPSConnection("www.fflogs.com")
     access_token = getAccessToken(conn, client_id, client_secret)
 
-    payload = "{\"query\":\"query trio{\\n\\treportData {\\n\\t\\treport(code: \\\"" + fightID + "\\\") {\\n\\t\\t\\tplayerDetails(fightIDs:" + fightNumber +",endTime:999999999),\\n\\t\\t\\tfights(fightIDs:8){\\n\\t\\t\\t\\tenemyNPCs{\\n\\t\\t\\t\\t\\tid\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tstartTime\\n\\t\\t\\t}\\n\\t\\t}\\n\\t\\t\\t\\n\\t}\\n}\",\"operationName\":\"trio\"}"
+    payload = "{\"query\":\"query trio{\\n\\treportData {\\n\\t\\treport(code: \\\"" + fightID + "\\\") {\\n\\t\\t\\tplayerDetails(fightIDs:" + fightNumber +",endTime:999999999),\\n\\t\\t\\tfights(fightIDs:" + fightNumber +"){\\n\\t\\t\\t\\tenemyNPCs{\\n\\t\\t\\t\\t\\tid\\n\\t\\t\\t\\t}\\n\\t\\t\\t\\tstartTime\\n\\t\\t\\t}\\n\\t\\t}\\n\\t\\t\\t\\n\\t}\\n}\",\"operationName\":\"trio\"}"
 
     headers = {
         'Content-Type': "application/json",
         'Authorization': "Bearer %s" % access_token
         }
-    print("Sending Request...")
     conn.request("POST", "/api/v2/client", payload, headers)
 
     res = conn.getresponse()
-    print("Received Request...")
     data = res.read()
-    data_json = json.loads(data.decode("utf-8"))
+    data_json = json.loads(data.decode("utf-8"))\
+    
+    p_bar.update(1)
+    p_bar.refresh() #Updating progress
 
     #Getting Player's Class, ids and name
-
     player_data = data_json["data"]["reportData"]["report"]["playerDetails"]["data"]["playerDetails"]
     enemy_data = data_json["data"]["reportData"]["report"]["fights"][0]["enemyNPCs"]
     #Mix of dictionnary and array with relevant information
@@ -207,7 +209,7 @@ def getAbilityList(fightID, fightNumber):
                 elif job_name == "Bard" : job_object = Bard(2.5, [], [], [], None, {})
                 #melee
                 elif job_name == "Reaper" : job_object = Reaper(2.5, [], [], [], None, {})
-                elif job_name == "Monk" : job_object = Machinist(2.5, [], [], [], None, {}) #Monk is not yet implemented
+                elif job_name == "Monk" : job_object = Monk(2.5, [], [], [], None, {})
                 elif job_name == "Dragoon" : job_object = Dragoon(2.5, [], [], [], None, {})
                 elif job_name == "Ninja" : job_object = Ninja(2.5, [], [], [], None, {})
                 elif job_name == "Samurai" : job_object = Samurai(2.5, [], [], [], None, {})
@@ -215,7 +217,6 @@ def getAbilityList(fightID, fightNumber):
                 
             job_object.playerID = str(player["id"])
             player_list[str(player["id"])] = {"name" : player["name"], "job" : job_name, "job_object" : job_object} #Adding new Key
-
             #We can access the information using the player's id
 
     
@@ -226,11 +227,11 @@ def getAbilityList(fightID, fightNumber):
 
     payload = "{\"query\":\"query trio{\\n\\treportData {\\n\\t\\treport(code: \\\""+fightID+"\\\") {\\n\\t\\t\\ttitle,\\n\\t\\t\\tendTime,\\n\\t\\t\\tevents(\\n\\t\\t\\t\\tendTime:1649370483952,\\n\\t\\t\\t\\tfightIDs:"+fightNumber+",\\n\\t\\t\\t\\tincludeResources: false,\\n\\t\\t\\t\\tfilterExpression:\\\"type = 'combatantinfo'\\\"\\n\\t\\t\\t){data\\n\\t\\t\\t}\\n\\t\\t\\t\\n\\t\\t}\\n\\t}\\n}\",\"operationName\":\"trio\"}"
     conn.request("POST", "/api/v2/client", payload, headers)
-    print("Sending Request...")
     res = conn.getresponse()
-    print("Received Request...")
     data = res.read()
     data_json = json.loads(data.decode("utf-8"))
+    p_bar.update(1)
+    p_bar.refresh() #Updating progress
 
     combatantinfo_list = data_json["data"]["reportData"]["report"]["events"]["data"] #Array of combatantinfo
 
@@ -238,9 +239,13 @@ def getAbilityList(fightID, fightNumber):
         sourceID = str(info["sourceID"])
         player_obj = player_list[sourceID]["job_object"]
         auras = info["auras"]
+
         for aura in auras: #Going through all buffs in the player
             #We will look for a selection of buffs that are important. We will assume
             #the optimal scenario. So if we use a potion, we will assume its right before the fight begins
+            
+            player_obj.auras += [aura["name"]] #Adding aura. Used for when restoring a fight using a saved file.
+            
             if aura["name"] == "SharpCast":
                 #SharpCast for BLM.
                 player_obj.SharpCast = True
@@ -265,6 +270,23 @@ def getAbilityList(fightID, fightNumber):
                 player_obj.CurrentRitual = [0,1,2]
             elif aura["name"] == "Eukrasia":
                 player_obj.Eukrasia = True
+            elif aura["name"] == "Standard Step":
+                #Assuming Dancer did 2 step
+                player_obj.Emboite = True
+                player_obj.Entrechat = True
+                player_obj.StandardFinish = True
+            elif aura["name"] == "ClosedPosition":
+                if dance_partner_flag:
+                    player_obj.DancePartner = dance_partner
+                else:
+                    closed_position = True
+                    dancer = player_obj
+            elif aura["name"] == "Dance partner":
+                if closed_position:
+                    dancer.DancePartner = player_obj
+                else:
+                    dance_partner_flag = True
+                    dance_partner = player_obj
 
 
 
@@ -274,17 +296,17 @@ def getAbilityList(fightID, fightNumber):
 
     payload = "{\"query\":\"query trio{\\n    reportData {\\n        report(code: \\\""+fightID+"\\\") {\\n\\t\\t\\t\\tendTime,\\n            events(\\n\\t\\t\\t\\t\\t\\t\\tfightIDs:"+fightNumber+",\\n\\t\\t\\t\\t\\t\\t\\tendTime:99999999999999,\\n\\t\\t\\t\\t\\t\\t\\tincludeResources:false,\\n\\t\\t\\t\\t\\t\\t\\tfilterExpression:\\\"type = 'cast' OR type = 'begincast' OR type = 'calculateddamage' OR type = 'applybuff' or type = 'calculatedheal'\\\",\\n\\t\\t\\t\\t\\t\\t\\tlimit:10000\\n\\t\\t\\t\\t\\t\\t\\t\\n\\t\\t\\t\\t\\t\\t){data}\\n        }\\n\\n    }\\n}\",\"operationName\":\"trio\"}"
     conn.request("POST", "/api/v2/client", payload, headers)
-    print("Sending Request...")
     res = conn.getresponse()
-    print("Received Request...")
     data = res.read()
     data_json = json.loads(data.decode("utf-8"))
+    p_bar.update(1)
+    p_bar.refresh() #Updating progress
 
     action_list = data_json["data"]["reportData"]["report"]["events"]["data"] #Array of all actions done
 
 
     class action_object():
-        def __init__(self, action_id, timestamp, type, targetID, sourceID):
+        def __init__(self, action_id, timestamp, type, targetID, sourceID, extraAbilityGameID):
             self.action_id = action_id #actionID
             self.timestamp = timestamp #relative timestamp
             self.type = type
@@ -292,6 +314,7 @@ def getAbilityList(fightID, fightNumber):
             self.targetEnemy = targetID in enemy_list #if the targetID is one of the enemy ID, then we are targeting an enemy.
             self.targetSelf = targetID == sourceID #if the action targets the player casting it
             self.isHeal = type == "calculatedheal"
+            self.extraAbilityGameID = extraAbilityGameID
             #If we are not, we will have to do some more stuff later on.
 
         def isequal(self, action): #This checks if two consecutive actions are equivalent. 
@@ -309,11 +332,11 @@ def getAbilityList(fightID, fightNumber):
     #print(action_dict.keys())
     for action in action_list:
         #Will parse each action so each player has a list of all done action
-        #input(action["sourceID"] + 1)
         if str(action["sourceID"]) in action_dict.keys(): #Making sure the sourceID is a player
-            #input("hey")
             rel_timestamp = action["timestamp"] - relative_timestamp_zero
-            action_dict[str(action["sourceID"])] += [action_object(action["abilityGameID"], rel_timestamp, action["type"], action["targetID"], action["sourceID"])]#Will be assumed to be damaging spell
+            if "extraAbilityGameID" in action.keys() and action["abilityGameID"] == 1000049: 
+                action_dict[str(action["sourceID"])] += [action_object(action["abilityGameID"], rel_timestamp, action["type"], action["targetID"], action["sourceID"], action["extraAbilityGameID"])] #Special for tincture
+            else : action_dict[str(action["sourceID"])] += [action_object(action["abilityGameID"], rel_timestamp, action["type"], action["targetID"], action["sourceID"], 0)]#Will be assumed to be damaging spell
 
     #Will now go through each player and build their action set
     for player in action_dict:
@@ -326,7 +349,7 @@ def getAbilityList(fightID, fightNumber):
         wait_calculateddamage = False #a flag that is set to true if we are waiting for calculated damage
         is_casted = False #flag that is set to true if the spell is casted (the server has a shorter casting time cuz why not) so have to play around that
         is_heal = False #flag that is set to true if the spell is a healing spell
-        previous_action = action_object(0, 0, "", 0, 0)
+        previous_action = action_object(0, 0, "", 0, 0, 0)
 
         #Edge case flags
         in_barrage = False #Flag that is set to true if we are looking for the barrage pattern (for bard)
@@ -348,7 +371,13 @@ def getAbilityList(fightID, fightNumber):
                     if wait_time >=500: #otherwise animation lock
                         #player_action_list.append(WaitAbility(max(0,(wait_time))/ 1000)) #Dividing by 1000 since time in milisecond
                         wait_flag = False #reset
-                        wait_timestamp = 0 #reset
+                        wait_timestamp = 0 #
+                        
+                
+                if action.action_id == 1000049: #Tincture
+                    print("action_id :" + str(action.action_id))
+                    input("extra : " + str(action.extraAbilityGameID))
+                    action.action_id = action.extraAbilityGameID
 
                 next_action = lookup_abilityID(action.action_id, action.targetID, player, player_list) #returns the action object of the specified spell
                 
@@ -450,6 +479,7 @@ def getAbilityList(fightID, fightNumber):
     #action_dict is a dictionnary with a list of actions done by each player. Accessible by using their IDs
     #player_list is a dictionnary with relevant information to all players. Accessible by using their IDs
 #Function to test timing
+
 def test(client_id,client_secret):
     conn = http.client.HTTPSConnection("www.fflogs.com")
     access_token = getAccessToken(conn, client_id, client_secret)

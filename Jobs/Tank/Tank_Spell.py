@@ -152,6 +152,7 @@ TankAbility = {
 48 : TankStance, #Warrior Tank Stance
 28 : TankStance, #Paladin Tank Stance
 34590541 : Potion,
+34592395 : Potion,
 -2 : Potion,
 44 : BigMit,
 17 : BigMit,

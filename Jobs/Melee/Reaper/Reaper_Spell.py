@@ -15,8 +15,6 @@ def ArcaneCircleRequirement(Player, Spell):
     return Player.ArcaneCircleCD <= 0, Player.ArcaneCircleCD
 
 def GluttonyRequirement(Player, Spell):
-    print(Player.GluttonyCD)
-    print(Player.SoulGauge)
     return Player.GluttonyCD <= 0 and Player.SoulGauge >= 50, Player.GluttonyCD
 
 def BloodStalkRequirement(Player, Spell):
@@ -156,10 +154,10 @@ def ApplyGallows(Player, Enemy):
     Player.SoulReaverStack -= 1 #Removing a stack
 
 def ApplyBloodStalk(Player, Enemy):
-    Player.Addgauge(-50) #Removing 50 Soul Gauge
+    Player.AddGauge(-50) #Removing 50 Soul Gauge
     Player.SoulReaverStack = 1 #Reset to 1
     #Since SoulReaver stack are removed if any other ability is done, we will add an effect that will check for that
-    Player.EffectListappend(SoulReaverEffect)
+    Player.EffectList.append(SoulReaverEffect)
 
 
 def ApplyGluttony(Player, Enemy):

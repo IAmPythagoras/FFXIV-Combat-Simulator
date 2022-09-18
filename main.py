@@ -22,7 +22,6 @@ from Jobs.Healer.Sage.Sage_Player import *
 from Jobs.Healer.Scholar.Scholar_Player import *
 from Jobs.Healer.Whitemage.Whitemage_Player import *
 from Jobs.Healer.Astrologian.Astrologian_Player import *
-from Jobs.Melee.Monk.Monk_Player import Monk
 
 #RANGED
 from Jobs.Ranged.Machinist.Machinist_Spell import *
@@ -47,42 +46,54 @@ from Jobs.Melee.Samurai.Samurai_Spell import *
 from Jobs.Melee.Ninja.Ninja_Spell import *
 from Jobs.Melee.Dragoon.Dragoon_Spell import *
 from Jobs.Melee.Reaper.Reaper_Spell import *
+from Jobs.Melee.Monk.Monk_Spell import *
 from Jobs.Melee.Samurai.Samurai_Player import *
 from Jobs.Melee.Ninja.Ninja_Player import *
 from Jobs.Melee.Dragoon.Dragoon_Player import *
 from Jobs.Melee.Reaper.Reaper_Player import *
+from Jobs.Melee.Monk.Monk_Player import *
 
 
 from FFLogsAPIRequest import getAbilityList
-from UI_backend import SaveFight
+from UI_backend import BLMStat, SaveFight
 
 Dummy = Enemy()
 
 #Stat
-BLMCRITStat = {"MainStat": 2571, "WD":120, "Det" : 1752, "Ten" : 390, "SS": 758, "Crit" : 2287, "DH" : 965} 
-BLMStat = {"MainStat": 2571, "WD":120, "Det" : 1422, "Ten" : 400, "SS": 2171, "Crit" : 715, "DH" : 1454} 
-SCHStat = {"MainStat": 2560, "WD":120, "Det" : 1951, "Ten" : 400, "SS": 944, "Crit" : 2277, "DH" : 616}
-RDMStat = {"MainStat": 2563, "WD":120, "Det" : 1669, "Ten" : 400, "SS": 400, "Crit" : 2348, "DH" : 1340}
-MCHStat = {"MainStat": 2572, "WD":120, "Det" : 1615, "Ten" : 400, "SS": 400, "Crit" : 2121, "DH" : 1626}
-NINStat = {"MainStat": 2555, "WD":120, "Det" : 1749, "Ten" : 400, "SS": 400, "Crit" : 2283, "DH" : 1330}
-DRKStat = {"MainStat": 2521, "WD":120, "Det" : 1680, "Ten" : 539, "SS": 650, "Crit" : 2343, "DH" : 976}
-WARStat = {"MainStat": 2521, "WD":120, "Det" : 2130, "Ten" : 1018, "SS": 400, "Crit" : 2240, "DH" : 400}
-WHMStat = {"MainStat": 2571, "WD":120, "Det" : 1830, "Ten" : 400, "SS": 489, "Crit" : 2301, "DH" : 940}
-SAMStat = {"MainStat": 2563, "WD":120, "Det" : 1654, "Ten" : 400, "SS": 579, "Crit" : 2310, "DH" : 1217}
-PLDStat = {"MainStat": 2502, "WD":120, "Det" : 1680, "Ten" : 527, "SS": 650, "Crit" : 2319, "DH" : 1012}
-GNBStat = {"MainStat": 2517, "WD":120, "Det" : 1612, "Ten" : 527, "SS": 950, "Crit" : 2205, "DH" : 868}
-ASTStat = {"MainStat": 2560, "WD":120, "Det" : 1951, "Ten" : 400, "SS": 716, "Crit" : 2277, "DH" : 844}
-SMNStat = {"MainStat": 2575, "WD":120, "Det" : 1688, "Ten" : 400, "SS": 489, "Crit" : 2296, "DH" : 1289}
-BRDStat = {"MainStat": 2575, "WD":120, "Det" : 1381, "Ten" : 400, "SS": 479, "Crit" : 2229, "DH" : 1662}
-DNCStat = {"MainStat": 2575, "WD":120, "Det" : 1453, "Ten" : 400, "SS": 549, "Crit" : 2283, "DH" : 1477}
-DRGStat = {"MainStat": 2575, "WD":120, "Det" : 1846, "Ten" : 400, "SS": 400, "Crit" : 2281, "DH" : 1235}
-RPRStat ={"MainStat": 2575, "WD":120, "Det" : 1846, "Ten" : 400, "SS": 400, "Crit" : 2281, "DH" : 1235}
-SGEStat ={"MainStat": 2563, "WD":120, "Det" : 1953, "Ten" : 400, "SS": 656, "Crit" : 2244, "DH" : 904}
+# Caster
+BLMStat = {"MainStat": 2945, "WD":126, "Det" : 1451, "Ten" : 400, "SS": 840, "Crit" : 2386, "DH" : 1307} # Stats for BlackMage
+RDMStat = {"MainStat": 2947, "WD":126, "Det" : 1548, "Ten" : 400, "SS": 495, "Crit" : 2397, "DH" : 1544} # Stats for RedMage
+SMNStat = {"MainStat": 2948, "WD":126, "Det" : 1451, "Ten" : 400, "SS": 544, "Crit" : 2436, "DH" : 1544} # Stats for Summoner
+
+# Healer
+SCHStat = {"MainStat": 2931, "WD":126, "Det" : 1750, "Ten" : 400, "SS": 1473, "Crit" : 2351, "DH" : 436} # Stats for Scholar
+WHMStat = {"MainStat": 2945, "WD":126, "Det" : 1792, "Ten" : 400, "SS": 839, "Crit" : 2313, "DH" : 904} # Stats for WhiteMage
+ASTStat = {"MainStat": 2949, "WD":126, "Det" : 1659, "Ten" : 400, "SS": 1473, "Crit" : 2280, "DH" : 436} # Stats for Astrologian
+SGEStat = {"MainStat": 2928, "WD":126, "Det" : 1859, "Ten" : 400, "SS": 827, "Crit" : 2312, "DH" : 1012} # Stats for Sage
+
+# Physical Ranged
+MCHStat = {"MainStat": 2937, "WD":126, "Det" : 1598, "Ten" : 400, "SS": 400, "Crit" : 2389, "DH" : 1592} # Stats for Machinist
+BRDStat = {"MainStat": 2949, "WD":126, "Det" : 1721, "Ten" : 400, "SS": 536, "Crit" : 2387, "DH" : 1340} # Stats for Bard
+DNCStat = {"MainStat": 2949, "WD":126, "Det" : 1721, "Ten" : 400, "SS": 536, "Crit" : 2387, "DH" : 1340} # Stats for Dancer
+
+# Melee
+NINStat = {"MainStat": 2921, "WD":126, "Det" : 1669, "Ten" : 400, "SS": 400, "Crit" : 2399, "DH" : 1511} # Stats for Ninja
+SAMStat = {"MainStat": 2937, "WD":126, "Det" : 1571, "Ten" : 400, "SS": 508, "Crit" : 2446, "DH" : 1459} # Stats for Samurai
+DRGStat = {"MainStat": 2949, "WD":126, "Det" : 1545, "Ten" : 400, "SS": 400, "Crit" : 2462, "DH" : 1577} # Stats for Dragoon
+MNKStat = {"MainStat": 3076, "WD":126, "Det" : 1546, "Ten" : 400, "SS": 769, "Crit" : 2490, "DH" : 1179} # Stats for Monk
+RPRStat = {"MainStat": 2946, "WD":126, "Det" : 1545, "Ten" : 400, "SS": 400, "Crit" : 2462, "DH" : 1577} # Stats for Reaper
+
+# Tank
+DRKStat = {"MainStat": 2910, "WD":126, "Det" : 1844, "Ten" : 751, "SS": 400, "Crit" : 2377, "DH" : 1012} # Stats for DarkKnight
+WARStat = {"MainStat": 2910, "WD":126, "Det" : 1844, "Ten" : 751, "SS": 400, "Crit" : 2377, "DH" : 1012} # Stats for Warrior
+PLDStat = {"MainStat": 2891, "WD":126, "Det" : 1883, "Ten" : 631, "SS": 650, "Crit" : 2352, "DH" : 868} # Stats for Paladin
+GNBStat = {"MainStat": 2891, "WD":126, "Det" : 1883, "Ten" : 631, "SS": 650, "Crit" : 2352, "DH" : 868} # Stats for Gunbreaker
+
 Event = Fight([], Dummy, False)
 
 #DRKPlayer = DarkKnight(2.41, DRKAction, [], [DarksideEffect], Event)
 
-BLMPlayer = BlackMage(2.5, [], [], [EnochianEffect, ElementalEffect], Event, BLMCRITStat)
+BLMPlayer = BlackMage(2.5, [], [], [EnochianEffect, ElementalEffect], Event, BLMStat)
 SCHPlayer = Scholar(2.5, [], [], [], Event, SCHStat)
 RDMPlayer = Redmage(2.5, [], [], [DualCastEffect], Event, RDMStat)
 MCHPlayer = Machinist(2.5, [], [], [], Event, MCHStat)
@@ -99,6 +110,8 @@ BRDPlayer = Bard(2.5, [], [], [SongEffect], Event, BRDStat)
 DNCPlayer = Dancer(2.5, [], [], [EspritEffect], Event, DNCStat)
 DRGPlayer = Dragoon(2.5, [], [], [], Event, DRGStat)
 RPRPlayer = Reaper(2.5, [], [], [], Event, RPRStat)
+MNKPlayer = Monk(2.5, [], [], [ComboEffect,FormlessStackCheck], Event, MNKStat)
+
 
 PLDPlayer2 = Paladin(2.5, [], [], [], Event, PLDStat)
 PLDPlayer3 = Paladin(2.5, [], [], [], Event, PLDStat)
@@ -119,25 +132,14 @@ DRGOpener = [Melee_AA,WaitAbility(20), TrueThrust, Potion, Disembowel, LanceChar
 BRDOpener = [WaitAbility(19.5), Potion, Stormbite, WandererMinuet, RagingStrike, Causticbite, EmpyrealArrow, BloodLetter, BurstShot, RadiantFinale, BattleVoice, BurstShot, Sidewinder,RefulgentArrow, Barrage, RefulgentArrow, BurstShot, RefulgentArrow, EmpyrealArrow, IronJaws]
 DNCOpener = [ClosedPosition(NINPlayer, False),WaitAbility(4.5), StandardStep, Emboite, Entrechat, WaitAbility(11.74),Potion, StandardFinish, TechnicalStep, Emboite, Entrechat, Jete, Pirouette, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Emboite, Entrechat, StandardFinish]
 MCHOpener = [Ranged_AA,WaitAbility(15), Reassemble, WaitAbility(2.25), Potion, WaitAbility(1.5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, Reassemble, WaitAbility(1), Wildfire, ChainSaw, Automaton,WaitAbility(1), Hypercharge, HeatBlast, Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet,HeatBlast,GaussRound,HeatBlast,Ricochet, Drill]
-"""
-RDMFight = [WaitAbility(15), Verareo, Verthunder, Acceleration, Swiftcast, Verareo, Potion, Verareo, Embolden, Manafication, EnchantedRiposte, Fleche, EnchantedZwerchhau, Contre, EnchantedRedoublement, Corps, 
-Engagement, Verflare, Engagement, Corps, Scorch, LucidDreaming, Resolution, Verfire, Verthunder, Verstone, Verareo, Verstone, Verthunder, Fleche,Jolt, Verthunder, Verfire, Verareo, Contre, EnchantedRiposte, EnchantedZwerchhau,Engagement, EnchantedRedoublement,
- Corps, Verholy, Scorch, Acceleration, Resolution, Verthunder, Fleche, Verfire, Verthunder, Verstone, Verareo, Verfire, Verareo, Jolt, Verthunder, Contre, Verfire, Verareo,
-Fleche, Acceleration, Verareo, Engagement, Verstone, Verthunder , Verfire, Verareo, Corps, Swiftcast, Verthunder, LucidDreaming, Verfire, Verareo, MagickBarrier, Verstone, Verthunder, Fleche,
-Verfire, Verareo, Contre, Verstone, Verthunder,  EnchantedRiposte, EnchantedZwerchhau, EnchantedRedoublement, Manafication, Verholy, Embolden, Engagement, Scorch, Corps, Resolution,
-EnchantedRiposte, EnchantedZwerchhau,Fleche, EnchantedRedoublement, Verflare, Scorch, Resolution]
-"""
-
-NINOpener = [Melee_AA,WaitAbility(9.5), Jin, Chi, Ten, Huton, Hide,WaitAbility(1.47), Ten, Chi, Jin, Suiton, Kassatsu, SpinningEdge,Potion,  GustSlash, Mug, Bunshin, PhantomKamaitachi, 
-WaitAbility(0.6), TrickAttack, AeolianEdge, DreamWithinADream, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, TenChiJin, Ten2, Chi2, Jin2, Meisui, FleetingRaiju, Bhavacakra, 
-FleetingRaiju, Bhavacakra, Ten, Chi, Raiton, FleetingRaiju ]
-
+#MNKOpener = [WaitAbility(18), FormShift, Give_Monk_Auto,DragonKick, Potion, TwinSnakes, WaitAbility(1), RiddleOfFire, Demolish, TheForbiddenChakra, Bootshine, Brotherhood, WaitAbility(1), PerfectBalance, DragonKick, RiddleOfWind, Bootshine, DragonKick, ElixirField, Bootshine, PerfectBalance, TwinSnakes, DragonKick, Demolish, RisingPhoenix]
+#MNKOpener2 = [WaitAbility(15), FormShift, WaitAbility(3), Potion, Give_Monk_Auto, TwinSnakes, WaitAbility(1), RiddleOfFire, Demolish, TheForbiddenChakra, DragonKick, Brotherhood, PerfectBalance, Bootshine, RiddleOfWind, TrueStrike, SnapPunch, RisingPhoenix, DragonKick, PerfectBalance, TwinSnakes, Bootshine, Demolish, RisingPhoenix]
 #BLMPlayer.ActionSet = getAbilityList(client_id, client_secret)
 BLMPlayer.ActionSet = BLMOpener
 SCHPlayer.ActionSet = SCHOpener
 RDMPlayer.ActionSet = RDMOpener
 MCHPlayer.ActionSet = MCHOpener
-NINPlayer.ActionSet = NINOpener
+#NINPlayer.ActionSet = NINOpener
 DRKPlayer.ActionSet = DRKOpener
 WARPlayer.ActionSet = WAROpener
 WHMPlayer.ActionSet = WHMOpener
@@ -150,13 +152,13 @@ BRDPlayer.ActionSet = BRDOpener
 DNCPlayer.ActionSet = DNCOpener
 DRGPlayer.ActionSet = DRGOpener
 RPRPlayer.ActionSet = RPROpener
-Event.PlayerList = [BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
+#MNKPlayer.ActionSet = MNKOpener2
+Event.PlayerList = [] #BLMPlayer, SCHPlayer, RPRPlayer, BRDPlayer ,DRKPlayer,WARPlayer,ASTPlayer,DRGPlayer
 Event.ShowGraph = True
-Event.SimulateFight(0.01, 1000, 20)
-exit()
+#Event.SimulateFight(0.01, 1000, 20)
 
-fightID = 'kDgwP8LQ4W3KHVMc'
-fightNumber = '7'
+fightID = 'KVgxmW9fC26qhNGt'
+fightNumber = '16'
 action_dict, player_dict = getAbilityList(fightID, fightNumber)
 
 for playerID in player_dict:
@@ -222,6 +224,7 @@ for playerID in player_dict:
     Event.PlayerList.append(player_dict[playerID]["job_object"])
 
 Event.ShowGraph = True
+Event.RequirementOn = False
 print("Starting simulator")
 Event.SimulateFight(0.01, 1000, 0)
 

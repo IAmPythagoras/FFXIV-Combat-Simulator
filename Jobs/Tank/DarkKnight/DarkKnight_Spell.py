@@ -14,7 +14,6 @@ Lock = 0
 #Requirements for each Skill and Ability.
 
 def BloodRequirement(Player, Spell):
-    #print("Delirium stacks: "+ str(Player.DeliriumStacks))
     if Player.DeliriumStacks > 0 and (Spell.id == Bloodspiller.id or Spell.id == Quietus.id):
         Spell.BloodCost = 0
         Player.DeliriumStacks -= 1
@@ -82,34 +81,28 @@ def OblationRequirement(Player, Spell):
 #Effect functions that persist after action use
 
 def BloodWeaponEffect(Player, Spell):
-    #print("Blood Weapon active")
     if Spell.GCD:
         Player.Mana = min(Player.Mana + 600, 10000)
         Player.Blood = min(100, Player.Blood + 10)
 
 def DeliriumEffect(Player, Spell):
-    #print("Delirium active")
     if Spell.id == Bloodspiller.id:
         Player.Mana = min(Player.Mana + 200, 10000)
     elif Spell.id == Quietus.id:
         Player.Mana = min(Player.Mana + 500, 10000)
 
 def HardSlashEffect(Player, Spell):
-    if Spell.id == 2:
-        Multiplier = Spell.Potency/120
-        BonusDmg = 140 * Multiplier
-        Spell.Potency += BonusDmg
+    if Spell.id == SyphonStrike.id:
+        Spell.Potency += 140
         Player.Mana = min(Player.Mana + 600, 10000)
-    if (Spell.id == SyphonStrike.id) or (Spell.id == Souleater.id) or (Spell.id == HardSlash.id):
+        
         Player.EffectToRemove.append(HardSlashEffect)
+        if not SyphonStrikeEffect in Player.EffectList : Player.EffectList.append(SyphonStrikeEffect)
 
 def SyphonStrikeEffect(Player, Spell):
     if Spell.id == Souleater.id:
-        Multiplier = Spell.Potency/120
-        BonusDmg = 220 * Multiplier
-        Spell.Potency += BonusDmg
+        Spell.Potency += 220
         Player.Blood = min(100, Player.Blood + 20)
-    if (Spell.id == SyphonStrike.id) or (Spell.id == Souleater.id) or (Spell.id == HardSlash.id):
         Player.EffectToRemove.append(SyphonStrikeEffect)
 
 #Cooldown checks to remove effect and restore charges
@@ -170,10 +163,10 @@ def ApplyUnleash(Player, Spell):
     if not (UnleashCombo in Player.EffectList) : Player.EffectList.append(UnleashCombo)
 
 def ApplyHardSlashEffect(Player, Spell):
-    Player.EffectList.append(HardSlashEffect)
+    if not (HardSlashEffect in Player.EffectList) : Player.EffectList.append(HardSlashEffect)
 
 def ApplySyphonEffect(Player, Spell):
-    Player.EffectList.append(SyphonStrikeEffect)
+    pass
 
 def ApplyBloodWeaponEffect(Player, Spell):
     Player.BloodWeaponCD = 60                     
@@ -226,11 +219,16 @@ def SpendShadowbringer(Player, Spell):
     Player.EffectCDList.append(CheckShadowbringerCharge)
 
 def SummonLivingShadow(Player, Spell):
-    Actions = [PDelay, PAbyssalDrain, PPlunge, PQuietus, PShadowbringer, PEdgeShadow, PBloodspiller, PCarveSpit]
-    Pet = Esteem(2.5,Actions,[],[],Player.CurrentFight,Player)
-    Player.CurrentFight.PlayerList.append(Pet)
-    Player.EsteemPointer = Pet
-    #print("Esteem enters the battlefield.")
+
+    if Player.EsteemPointer == None : 
+        Pet = Esteem(2.5,[],[],[],Player.CurrentFight,Player)
+        Player.EsteemPointer = Pet #Create a living shadow player object
+        Player.CurrentFight.PlayerList.append(Pet)
+
+    Actions = [PDelay, PAbyssalDrain, PPlunge, PShadowbringer, PEdgeShadow, PBloodspiller, PCarveSpit] #This should take 20 seconds
+    Player.EsteemPointer.ActionSet = Actions
+    Player.EsteemPointer.TrueLock = False #Delocking
+    Player.EsteemPointer.NextSpell = 0 #Reseting
 
 def SpendPlunge(Player,Spell):
     if Player.PlungeCharges == 2 :
@@ -258,7 +256,7 @@ DRKGCD = 2.5         #GCD speed
 Lock = 0            #Fixed value for animation lock.
 
 HardSlash = DRKSkill(3617, True, Lock, DRKGCD, 170, 0, 0, ApplyHardSlashEffect, [])
-SyphonStrike = DRKSkill(3623, True, Lock, DRKGCD, 120, 0, 0, ApplySyphonEffect, [])
+SyphonStrike = DRKSkill(3623, True, Lock, DRKGCD, 120, 0, 0, empty, [])
 Souleater = DRKSkill(3632, True, Lock, DRKGCD, 120, 0, 0, empty, [])
 Bloodspiller = DRKSkill(7392, True, Lock, DRKGCD, 500, 0, 50, empty, [BloodRequirement])
 Quietus = DRKSkill(5, True, Lock, DRKGCD, 200, 0, 50, empty, [BloodRequirement])
@@ -275,8 +273,8 @@ EdgeShadow = DRKSkill(16470, False, Lock, 0, 460, 3000, 0, ApplyEdgeShadowEffect
 FloodShadow = DRKSkill(10, False, Lock, 0, 160, 3000, 0, ApplyEdgeShadowEffect, [EdgeShadowRequirement])
 CarveSpit = DRKSkill(3643, False, Lock, 0, 510, 0, 0, ApplyCarveSpitEffect, [CarveSpitRequirement])
 AbyssalDrain = DRKSkill(12, False, Lock, 0, 150, 0, 0, ApplyAbyssalDrainEffect, [AbyssalDrainRequirement])
-SaltedEarth = DRKSkill(3639, False, Lock, 0, 50, 0, 0, ApplySaltedEarth, [SaltedEarthRequirement]) #Ground target DOT, ticks once upon placement.
-SaltedEarthDOT = DOTSpell(14, 50, True)
+SaltedEarth = DRKSkill(3639, False, Lock, 0, 0, 0, 0, ApplySaltedEarth, [SaltedEarthRequirement]) #Ground target DOT, ticks once upon placement.
+SaltedEarthDOT = DOTSpell(-14, 50, True)
 SaltDarkness = DRKSkill(25755, False, Lock, 0, 500, 0, 0, empty, [SaltDarknessRequirement])
 Shadowbringer = DRKSkill(25757, False, Lock, 0, 600, 0, 0, SpendShadowbringer, [ShadowbringerRequirement])
 LivingShadow = DRKSkill(16472, False, Lock, 0, 0, 0, 50, SummonLivingShadow, [BloodRequirement])
@@ -289,14 +287,15 @@ Unleash = DRKSkill(20, True, 0, 2.5, 120, 0, 0, ApplyUnleash, [])
 StalwartSoul = DRKSkill(21, True, 0, 2.5, 100, 0, 0, empty, [])
 #List of Abilities performed by Living Shadow.
 
-PAbyssalDrain = DRKSkill(22, True, 0.5, 2.5, 300, 0, 0, empty, [])
-PPlunge = DRKSkill(23, True, 0.5, 2.5, 300, 0, 0, empty, [])
-PQuietus = DRKSkill(24, True, 0.5, 2.5, 300, 0, 0, empty, [])
-PShadowbringer = DRKSkill(25, True, 0.5, 2.5, 450, 0, 0, empty, [])
-PEdgeShadow = DRKSkill(26, True, 0.5, 2.5, 300, 0, 0, empty, [])
-PBloodspiller = DRKSkill(27, True, 0.5, 2.5, 300, 0, 0, empty, [])
-PCarveSpit = DRKSkill(28, True, 0.5, 2.5, 300, 0, 0, empty, [])
-PDelay = DRKSkill(29, True, 0, 4.50, 0, 0, 0, empty, [])    #6s animation before it starts attacking.
+PAbyssalDrain = DRKSkill(22, True, 0.5, 2.33, 350, 0, 0, empty, [])
+PPlunge = DRKSkill(23, True, 0.5, 2.33, 350, 0, 0, empty, [])
+PShadowbringer = DRKSkill(25, True, 0.5, 2.33, 500, 0, 0, empty, [])
+PEdgeShadow = DRKSkill(26, True, 0.5, 2.33, 350, 0, 0, empty, [])
+PBloodspiller = DRKSkill(27, True, 0.5, 2.33, 350, 0, 0, empty, [])
+PCarveSpit = DRKSkill(28, True, 0.5, 2.33, 350, 0, 0, empty, [])
+PDelay = DRKSkill(29, True, 0, 6, 0, 0, 0, empty, [])    #6s animation before it starts attacking.
+
+#Living Shadow 
 
 #Mit
 LivingDead = DRKSkill(3638, False, 0, 0, 0, 0, 0, ApplyLivingDead, [LivingDeadRequirement])
@@ -326,13 +325,6 @@ DarkKnightAbility = {
     16470: EdgeShadow,
     16471: DarkMissionary,
     16472: LivingShadow,
-    #17904: PAbyssalDrain,
-    #17905: PPlunge,
-    #17906: PQuietus,
-    #17908: PEdgeShadow,
-    #17909: PBloodspiller,
-    #17915: PCarveSpit,
-    #25881: PShadowbringer,
     25754: Oblation,
     25755: SaltDarkness,
     25757: Shadowbringer,

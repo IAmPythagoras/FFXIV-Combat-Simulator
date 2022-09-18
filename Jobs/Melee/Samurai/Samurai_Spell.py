@@ -186,6 +186,7 @@ def ApplyHiganbana(Player, Enemy):
         Player.DOTList.append(Player.Higanbana)
     Player.HiganbanaTimer = 45
     Player.MeditationGauge = min(3, Player.MeditationGauge + 1)
+    Player.EffectCDList.append(HiganbanaCheck)
     Player.Setsu, Player.Ka, Player.Getsu = False, False, False #Reseting
 
 def ApplyOgiNamikiri(Player, Enemy):
@@ -413,14 +414,14 @@ HakazeBuff = buff(1.13)
 def Meditate(time):
     #This function will return a Samurai Spell object that will correspond to a Meditate of the specified amount of time
     def MeditateRequirement(Player, Spell):
-        return Player.MeditateCD <= 0 and time < 15 and time > 0, Player.MedidateCD
+        return Player.MeditateCD <= 0 and time < 15 and time > 0, Player.MeditateCD
 
-    def ApplyMedidate(Player, Spell):
-        #Medidate generates 10 kenki each 3 sec, so we will divide time by 3, and add that much kenki
+    def ApplyMeditate(Player, Spell):
+        #Meditate generates 10 kenki each 3 sec, so we will divide time by 3, and add that much kenki
         AddKenki(Player, 10 * math.floor(time/3))
-        Player.MedidateCD = 60
+        Player.MeditateCD = 60
 
-    return SamuraiSpell(7497, False, time, time, 0, ApplyMedidate, [MeditateRequirement], 0)
+    return SamuraiSpell(7497, False, time, time, 0, ApplyMeditate, [MeditateRequirement], 0)
 
 SamuraiAbility = {
 7477 : Hakaze,

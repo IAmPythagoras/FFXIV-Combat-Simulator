@@ -86,9 +86,7 @@ def ApplyFangAndClaw(Player, Enemy):
     else:
         Player.LanceMastery = False
 def ApplyLanceCharge(Player, Enemy):
-    #print("BUFFING LANCE CHARGE")
     Player.buffList.append(LanceChargeBuff)
-    #input(Player.MultDPSBonus)
     Player.LanceChargeCD = 60
     Player.LanceChargeTimer = 20
     Player.EffectCDList.append(LanceChargeCheck)
@@ -158,12 +156,9 @@ def DoomSpikeCombo(Player, Spell):
             #Gain PowerSurge, 10% damage
 
         if Player.PowerSurgeTimer <= 0: #Not already applied
-            #print("Buffing")
             Player.buffList.append(PowerSurgeBuff)
-            #input(Player.MultDPSBonus)
             Player.EffectCDList.append(PowerSurgeCheck)
         Player.PowerSurgeTimer = 30
-        #input(Player.PowerSurgeTimer)
         Player.EffectList.append(SonicThrustCombo)
         Player.EffectToRemove.append(DoomSpikeCombo)
 
@@ -182,12 +177,9 @@ def TrueThrustCombo(Player, Spell):
         #Gain PowerSurge, 10% damage
 
         if Player.PowerSurgeTimer <= 0: #Not already applied
-            #print("Buffing")
             Player.buffList.append(PowerSurgeBuff)
-            #input(Player.MultDPSBonus)
             Player.EffectCDList.append(PowerSurgeCheck)
         Player.PowerSurgeTimer = 30
-        #input(Player.PowerSurgeTimer)
 
         Player.EffectList.append(DisembowelCombo)
         Player.EffectToRemove.append(TrueThrustCombo)
@@ -210,6 +202,7 @@ def DisembowelCombo(Player, Spell):
             Player.ChaoticSpringDOT = copy.deepcopy(ChaoticSpringDOT)
             Player.DOTList.append(Player.ChaoticSpringDOT)
         Player.ChaoticSpringDOTTimer = 24
+        Player.EffectCDList.append(ChaoticSpringDOTCheck)
 
         Player.WheelInMotion = True 
         Player.EffectToRemove.append(DisembowelCombo)
@@ -227,6 +220,13 @@ def LanceMasteryCombo(Player, Spell):
 
 
 #Check
+
+def ChaoticSpringDOTCheck(Player, Enemy):
+    if Player.ChaoticSpringDOTTimer <= 0:
+        Player.DOTList.remove(Player.ChaoticSpringDOT)
+        Player.ChaoticSpringDOT = None
+        Player.EffectToRemove.append(ChaoticSpringDOTCheck)
+
 
 def LifeOfTheDragonCheck(Player, Enemy):
     if Player.LifeOfTheDragonTimer <= 0:

@@ -1,5 +1,5 @@
 from Jobs.Base_Spell import Potion, Spell
-Lock = 0.75
+Lock = 0
 class MeleeSpell(Spell):
 
     def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
@@ -135,6 +135,8 @@ MeleeAbility = {
 7546 : TrueNorth,
 7548 : ArmLength,
 34590541 : Potion,  #STR
-34590542 : Potion,   #DEX
+34590542 : Potion,   #DEX,
+34592395 : Potion, # STR 7
+34592396 : Potion, # DEX 7
 -2 : Potion
 }

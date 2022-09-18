@@ -152,7 +152,7 @@ def FightOrFlightEffect(Player, Spell):
 
 def RequestACatEffect(Player, Spell):
     if Spell.id == HolySpirit.id:
-        Spell.Potency += 270
+        Spell.Potency += 300
         Spell.CastTime = 0
         Player.RequestACatStack -= 1
     elif Spell.id == HolyCircle.id:
@@ -180,11 +180,11 @@ def RiotBladeCombo(Player, Spell):
         Player.EffectToRemove.append(RiotBladeCombo)
     elif Spell.id == GoringBlade.id:
         #Apply dot
-        if Player.GoringDOT == None:
-            Player.GoringDOT = copy.deepcopy(GoringDOT)
-            Player.EffectCDList.append(GoringDOTCheck)
-            Player.DOTList.append(Player.GoringDOT)
-            Player.ValorDOTTimer = 0 #Remove other dot if it exists
+
+        Player.GoringDOT = copy.deepcopy(GoringDOT)
+        Player.EffectCDList.append(GoringDOTCheck)
+        Player.DOTList.append(Player.GoringDOT)
+        Player.ValorDOTTimer = 0 #Remove other dot if it exists
         Player.GoringDOTTimer = 21
         Spell.Potency += 150
         Player.EffectToRemove.append(RiotBladeCombo)
@@ -241,14 +241,14 @@ GoringDOT = DOTSpell(-5, 65, True)
 
 #Confiteor Combo Action
 
-Confetti = PaladinSpell(16459, True, Lock, 2.5, 900, 1000, ApplyConfetti, [ManaRequirement, ConfettiRequirement], False) # >.>
-BladeFaith = PaladinSpell(25748, True, Lock, 2.5, 420, 0, ApplyBladeFaith, [BladeFaithRequirement], False)
-BladeTruth = PaladinSpell(25749, True, Lock, 2.5, 500, 0, ApplyBladeTruth, [BladeTruthRequirement], False)
-BladeValor = PaladinSpell(25750, True, Lock, 2.5, 580, 0, ApplyBladeValor, [BladeValorRequirement], False)
+Confetti = PaladinSpell(16459, True, Lock, 2.5, 1000, 1000, ApplyConfetti, [ManaRequirement, ConfettiRequirement], False) # >.>
+BladeFaith = PaladinSpell(25748, True, Lock, 2.5, 480, 0, ApplyBladeFaith, [BladeFaithRequirement], False)
+BladeTruth = PaladinSpell(25749, True, Lock, 2.5, 560, 0, ApplyBladeTruth, [BladeTruthRequirement], False)
+BladeValor = PaladinSpell(25750, True, Lock, 2.5, 620, 0, ApplyBladeValor, [BladeValorRequirement], False)
 BladeValorDOT = DOTSpell(-11, 80, True)
 
 #GCD
-HolySpirit = PaladinSpell(7384, True, 1.5, 2.5, 270, 1000, empty, [ManaRequirement], False)
+HolySpirit = PaladinSpell(7384, True, 1.5, 2.5, 300, 1000, empty, [ManaRequirement], False)
 Atonement = PaladinSpell(16460, True, Lock, 2.5, 420, 0, ApplyAtonement, [AtonementRequirement], True)
 Clemency = PaladinSpell(3541, True, 1.5, 2.5, 0, 1000, empty, [ManaRequirement], False)
 ShieldLob = PaladinSpell(24, True, 0, 2.5, 100, 0, empty, [], True )
@@ -262,7 +262,7 @@ RequestACat = PaladinSpell(7383, False, 0, Lock, 400, 0, ApplyRequestACat, [Requ
 CircleScorn = PaladinSpell(23, False, 0, Lock, 100, 0, ApplyCircleScorn, [CircleScornRequirement], True)
 CircleScornDOT = DOTSpell(-6, 30, True)
 Intervene = PaladinSpell(16461, False, 0, Lock, 150, 0, ApplyIntervene, [InterveneRequirement], True)
-Expiacion = PaladinSpell(25747, False, 0, Lock, 340, 0, ApplyExpiacion, [ExpiacionRequirement], True)
+Expiacion = PaladinSpell(25747, False, 0, Lock, 420, 0, ApplyExpiacion, [ExpiacionRequirement], True)
 FightOrFlight = PaladinSpell(20, False, 0, Lock, 0, 0, ApplyFightOrFlight, [FightOrFlightRequirement], True)
 
 #Mitigation Actions

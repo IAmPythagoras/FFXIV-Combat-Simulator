@@ -86,15 +86,13 @@ def ApplyHeavySwing(Player, Enemy):
     if not (HeavySwingEffect in Player.EffectList) : Player.EffectList.append(HeavySwingEffect)
 
 def ApplyMaim(Player, Enemy):
-    if not (MaimEffect in Player.EffectList) : Player.EffectList.append(MaimEffect)
-    AddBeast(Player, 10)
+    pass
 
 def ApplyStormEye(Player, Enemy):
-    Player.SurgingTempestTimer = min(60, Player.SurgingTempestTimer + 30)
-    AddBeast(Player, 10)
+    pass
 
 def ApplyStormPath(Player, Enemy):
-    AddBeast(Player, 20)
+    pass
 
 def ApplyUpheaval(Player, Enemy):
     Player.UpheavalCD = 30
@@ -156,15 +154,23 @@ def OverpowerCombo(Player, Spell):
         Player.EffectToRemove.append(OverpowerCombo)
 
 def HeavySwingEffect(Player, Spell):
-    if Spell.id == 2:
+    if Spell.id == Maim.id:
         Spell.Potency += 150
         Player.EffectToRemove.append(HeavySwingEffect)
+        if not (MaimEffect in Player.EffectList) : Player.EffectList.append(MaimEffect)
+        AddBeast(Player, 10)
+
 
 def MaimEffect(Player, Spell):
-    if Spell.id == 3 or Spell.id == 11:
+    if Spell.id == StormEye.id:
         Spell.Potency += 280
+        Player.SurgingTempestTimer = min(60, Player.SurgingTempestTimer + 30)
+        AddBeast(Player, 10)
         Player.EffectToRemove.append(MaimEffect)
-
+    elif Spell.id == StormPath.id:
+        Spell.Potency += 280
+        AddBeast(Player, 20)
+        Player.EffectToRemove.append(MaimEffect)
 
 #Check
 
@@ -193,13 +199,13 @@ def InfuriateStackCheck(Player, Enemy):
 
 #Combo Action
 HeavySwing = WarriorSpell(31, True, Lock, 2.5, 200, 0, ApplyHeavySwing, [],0)
-Maim = WarriorSpell(37, True, Lock, 2.5, 130, 0, ApplyMaim, [],0)
-StormEye = WarriorSpell(45, True, Lock, 2.5, 120, 0, ApplyStormEye, [],0)
-StormPath = WarriorSpell(42, True, Lock, 2.5, 120, 0, ApplyStormPath, [], 0)
+Maim = WarriorSpell(37, True, Lock, 2.5, 150, 0, ApplyMaim, [],0)
+StormEye = WarriorSpell(45, True, Lock, 2.5, 150, 0, ApplyStormEye, [],0)
+StormPath = WarriorSpell(42, True, Lock, 2.5, 150, 0, ApplyStormPath, [], 0)
 #Missing Storm's path
 
 #oGCD
-Upheaval = WarriorSpell(7387, False, Lock, 0, 350, 0, ApplyUpheaval, [UpheavalRequirement],0)
+Upheaval = WarriorSpell(7387, False, Lock, 0, 360, 0, ApplyUpheaval, [UpheavalRequirement],0)
 Onslaught = WarriorSpell(7386, False, Lock, 0, 150, 0, ApplyOnslaught, [OnslaughtRequirement],0)
 Infuriate = WarriorSpell(52, False, Lock, 0, 0, 0, ApplyInfuriate, [InfuriateRequirement],0)
 InnerRelease = WarriorSpell(7389, False, Lock, 0, 0, 0, ApplyInnerRelease, [InnerReleaseRequirement],0)
@@ -207,7 +213,7 @@ InnerRelease = WarriorSpell(7389, False, Lock, 0, 0, 0, ApplyInnerRelease, [Inne
 
 #GCD
 PrimalRend = WarriorSpell(25753, True, Lock, 2.5, 700, 0, ApplyPrimalRend, [PrimalRendRequirement],0)
-FellCleave = WarriorSpell(3549, True, Lock, 2.5, 460, 0, empty, [],50)
+FellCleave = WarriorSpell(3549, True, Lock, 2.5, 470, 0, empty, [],50)
 InnerChaos = WarriorSpell(16465, True, Lock, 2.5, 650,0, ApplyInnerChaos, [InnerChaosRequirement], 50)
 Tomahawk = WarriorSpell(46, True, Lock, 2.5, 150, 0, empty, [], 0)
 

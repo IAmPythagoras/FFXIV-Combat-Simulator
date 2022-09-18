@@ -16,7 +16,6 @@ def EukrasianDosisRequirement(Player, Spell):
     return Player.Eukrasia, -1
 
 def PneumaRequirement(Player, Spell):
-    print(Player.PneumaCD)
     return Player.PneumaCD <= 0, Player.PneumaCD
 
 def PhlegmaRequirement(Player, Spell):

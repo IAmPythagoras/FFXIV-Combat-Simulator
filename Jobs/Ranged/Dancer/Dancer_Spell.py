@@ -19,8 +19,6 @@ def StandardFinishRequirement(Player, Spell):
     #Will check how many step we have
     #Not done in apply since we want to acces the spell easily
 
-    if Player.StandardFinishBuff != None : Player.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
-    if Player.DancePartner != None and Player.StandardFinishBuff != None : Player.DancePartner.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
     Player.StandardFinishBuff = copy.deepcopy(StandardFinishBuff)
     step = 0
     if Player.Emboite : step +=1
@@ -41,7 +39,6 @@ def TechnicalFinishRequirement(Player, Spell):
     #Will check how many step we have
     #Not done in apply since we want to acces the spell easily
 
-    if Player.TechnicalFinishBuff != None : Player.CurrentFight.Enemy.buffList.remove(Player.TechnicalFinishBuff)#Reset DPSBonus
     Player.TechnicalFinishBuff = copy.deepcopy(TechnicalFinishBuff)
     step = 0
     if Player.Emboite : step +=1
@@ -65,6 +62,7 @@ def TechnicalFinishRequirement(Player, Spell):
     return Player.TechnicalFinish, -1
 
 def TechnicalStepRequirement(Player, Spell):
+    print(Player.TechnicalStepCD)
     return Player.TechnicalStepCD <= 0, Player.TechnicalStepCD
 
 def DevilmentRequirement(Player, Spell):
@@ -101,7 +99,7 @@ def ClosedPositionRequirement(Player, Spell):
     return Player.ClosedPositionCD <= 0, Player.ClosedPositionCD
 
 def ImprovisedFinishRequirement(Player, Spell):
-    return Player.Improvising
+    return Player.Improvising, -1
 
 #Apply
 
@@ -201,9 +199,10 @@ def ApplyDevilment(Player, Enemy):
 def ApplyTillana(Player, Enemy):
     Player.FlourishingFinish = False 
     #We have to apply or reapply StandardFinish with a bonus of 5%, so reset, set bonus to 5% and apply
-    print(Player.StandardFinishBuff)
     if Player.StandardFinishBuff != None : Player.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
     if Player.DancePartner != None : Player.DancePartner.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
+    
+    if Player.StandardFinishBuff == None : Player.StandardFinishBuff = copy.deepcopy(StandardFinishBuff)
     Player.StandardFinishBuff.MultDPS = 1.05
     ApplyStandardFinish(Player, Enemy) #Will give StandardFinish with a bonus of 5%
 
@@ -291,8 +290,9 @@ def DevilmentCheck(Player, Enemy):
     if Player.DevilmentTimer <= 0:
         Player.CritRateBonus -= 0.2
         Player.DHRateBonus -= 0.2
-        Player.DancePartner.CritRateBonus -= 0.2
-        Player.DancePartner.DHRateBonus -= 0.2
+        if Player.DancePartner != None : 
+            Player.DancePartner.CritRateBonus -= 0.2
+            Player.DancePartner.DHRateBonus -= 0.2
         Player.EffectToRemove.append(DevilmentCheck)
 
 def StandardFinishCheck(Player, Enemy):
@@ -300,11 +300,13 @@ def StandardFinishCheck(Player, Enemy):
         Player.buffList.remove(Player.StandardFinishBuff)
         if Player.DancePartner != None : Player.DancePartner.buffList.remove(Player.StandardFinishBuff)
         Player.EffectToRemove.append(StandardFinishCheck)
+        Player.StandardFinishBuff = None
 
 def TechnicalFinishCheck(Player, Enemy):
     if Player.TechnicalFinishTimer <= 0:
         Enemy.buffList.remove(Player.TechnicalFinishBuff)
         Player.EffectToRemove.append(TechnicalFinishCheck)
+        Player.TechnicalFinishBuff = None
 
 
 #GCD

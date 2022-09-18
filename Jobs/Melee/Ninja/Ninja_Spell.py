@@ -45,11 +45,9 @@ def FleetingRaijuRequirement(Player, Spell):
     return Player.RaijuStack > 0, -1
 
 def MeisuiRequirement(Player, Spell):
-    #print(Player.MeisuiCD)
     return Player.Suiton and Player.MeisuiCD <= 0, -1
 
 def BhavacakraRequirement(Player, Spell):
-    #print(Player.NinkiGauge)
     return Player.NinkiGauge >= 50, -1
 
 def TrickAttackRequirement(Player, Spell):
@@ -290,18 +288,14 @@ def TenChiJinEffect(Player, Spell):
 
 
     elif not (isinstance(Spell, DOTSpell)): #If not a DOTSpell
-        #Remove it
-        #print(Spell.id)
-        #input("in here lol")
         Player.TenChiJinTimer = 0
 
-    ##input(Player.EffectList)
 
 def HutonEffect(Player, Spell):
     if isinstance(Spell, NinjaSpell) and Spell.Weaponskill and Spell.GCD : Spell.RecastTime *= 0.85
 
 def BunshinEffect(Player, Spell):
-    if isinstance(Spell, NinjaSpell) and Spell.Weaponskill and Spell.id != 8: #We don't want Kamataichi to have bunshin effect
+    if isinstance(Spell, NinjaSpell) and Spell.Weaponskill and Spell.id != PhantomKamaitachi.id: #We don't want Kamataichi to have bunshin effect
         #Will give Action to the Shadow
         Shadow = Player.Shadow
         Shadow.TrueLock = False #Delocking the shadow
@@ -317,7 +311,7 @@ def KassatsuEffect(Player, Spell):
         Player.KassatsuTimer = 0
 
 def RaitonEffect(Player, Spell):
-    if Spell.id < 2000 and (Spell.Weaponskill or Player.RaijuStack == 0) and (Spell.id != FleetingRaiju.id and Spell.id != PhantomKamaitachi.id):
+    if Spell.GCD and (Spell.Weaponskill or Player.RaijuStack == 0) and (Spell.id != FleetingRaiju.id and Spell.id != PhantomKamaitachi.id):
         Player.RaijuStack = 0
         Player.EffectToRemove.append(RaitonEffect)
 
@@ -370,7 +364,6 @@ def SuitonCheck(Player, Enemy):
 
 def KassatsuCheck(Player, Enemy):
     if Player.KassatsuTimer <= 0:
-        ##print("removed kassatsu")
         Player.EffectList.remove(KassatsuEffect)
         Player.EffectToRemove.append(KassatsuCheck)
         Player.Kassatsu = False
@@ -400,8 +393,6 @@ def MugCheck(Player, Enemy):
 
 def TenChiJinCheck(Player, Enemy):
     if Player.TenChiJinTimer <= 0:
-        #input("removing it lol")
-        #print(Player.CurrentFight.TimeStamp)
         Player.EffectList.remove(TenChiJinEffect)
         Player.EffectToRemove.append(TenChiJinCheck)
 
@@ -421,21 +412,21 @@ DeathBlossom = NinjaSpell(2254, True, Lock, 2.5, 100, ApplyDeathBlossom, [],True
 HakkeMujinsatsu = NinjaSpell(16488, True, Lock, 2.5, 100, empty, [], True, False)
 
 #Ninjutsu
-FumaShuriken = NinjaSpell(2265, True, Lock,0.5, 450, ApplyHyoshoRanryu, [FumaShurikenRequirement], False, True) #Same effect as HyoshoRanruy, since only reset Player.CurrentRitual list
-Raiton = NinjaSpell(2267, True, Lock,0.5, 650, ApplyRaiton, [RaitonRequirement], False, True )
-Huton = NinjaSpell(2269, True, Lock,0.5, 0, ApplyHuton, [HutonRequirement], False, True)
-Suiton = NinjaSpell(2271, True, Lock,0.5, 500, ApplySuiton, [SuitonRequirement], False, True)
-Hyoton = NinjaSpell(2268, True, Lock, 0.5, 350, ApplyHyoshoRanryu, [HyotonRequirement], False, True)
-HyoshoRanryu = NinjaSpell(16492, True, Lock,0.5, 1300, ApplyHyoshoRanryu, [HyotonRequirement, KassatsuOnRequirement], False, True)
-Katon = NinjaSpell(2266, True, Lock, 0.5, 350, ApplyHyoshoRanryu, [KatonRequirement], False, True)
-GokaMekkyaku = NinjaSpell(16491, True, Lock, 0.5, 600, ApplyHyoshoRanryu, [KatonRequirement, KassatsuOnRequirement], False, True)
-Doton = NinjaSpell(2270, True, Lock, 0.5, 0, ApplyDoton, [DotonRequirement], False, True)
+FumaShuriken = NinjaSpell(2265, True, Lock,1.5, 450, ApplyHyoshoRanryu, [FumaShurikenRequirement], False, True) #Same effect as HyoshoRanruy, since only reset Player.CurrentRitual list
+Raiton = NinjaSpell(2267, True, Lock,1.5, 650, ApplyRaiton, [RaitonRequirement], False, True )
+Huton = NinjaSpell(2269, True, Lock,1.5, 0, ApplyHuton, [HutonRequirement], False, True)
+Suiton = NinjaSpell(2271, True, Lock,1.5, 500, ApplySuiton, [SuitonRequirement], False, True)
+Hyoton = NinjaSpell(2268, True, Lock, 1.5, 350, ApplyHyoshoRanryu, [HyotonRequirement], False, True)
+HyoshoRanryu = NinjaSpell(16492, True, Lock,1.5, 1300, ApplyHyoshoRanryu, [HyotonRequirement, KassatsuOnRequirement], False, True)
+Katon = NinjaSpell(2266, True, Lock, 1.5, 350, ApplyHyoshoRanryu, [KatonRequirement], False, True)
+GokaMekkyaku = NinjaSpell(16491, True, Lock, 1.5, 600, ApplyHyoshoRanryu, [KatonRequirement, KassatsuOnRequirement], False, True)
+Doton = NinjaSpell(2270, True, Lock, 1.5, 0, ApplyDoton, [DotonRequirement], False, True)
 DotonDOT = DOTSpell(-33, 80, True)
 
 #Ritual
-Ten = NinjaSpell(2259, True, 1, 1, 0, ApplyTen, [NinjutsuRequirement], False, False)
-Chi = NinjaSpell(2261, True, 1, 1, 0, ApplyChi, [NinjutsuRequirement], False, False)
-Jin = NinjaSpell(2263, True, 1, 1, 0, ApplyJin, [NinjutsuRequirement], False, False)
+Ten = NinjaSpell(2259, True, 0, 0.5, 0, ApplyTen, [NinjutsuRequirement], False, False)
+Chi = NinjaSpell(2261, True, 0, 0.5, 0, ApplyChi, [NinjutsuRequirement], False, False)
+Jin = NinjaSpell(2263, True, 0, 0.5, 0, ApplyJin, [NinjutsuRequirement], False, False)
 
 #TenChiJin
 TenChiJin = NinjaSpell(7403, False, Lock, 0, 0, ApplyTenChiJin, [TenChiJinRequirement], False, False)

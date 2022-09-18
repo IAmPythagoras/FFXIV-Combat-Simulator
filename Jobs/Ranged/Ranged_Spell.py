@@ -88,5 +88,7 @@ RangedAbility = {
 7557 : Peloton,
 7541 : SecondWind,
 7548 : ArmLength,
-34590542 : Potion
+34590542 : Potion,
+34592396 : Potion,
+-2 : Potion
 }

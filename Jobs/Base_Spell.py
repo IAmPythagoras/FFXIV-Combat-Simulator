@@ -3,11 +3,18 @@ import copy
 from Fight import ComputeDamage
 import math
 from Jobs.Caster.Summoner.Summoner_Player import BigSummon
+from Jobs.Melee.Dragoon.Dragoon_Player import Dragoon
+from Jobs.Melee.Melee_Player import Melee
+from Jobs.Melee.Monk.Monk_Player import Monk
+#from Jobs.Melee.Monk.Monk_Spell import Monk_Auto
 from Jobs.Melee.Ninja.Ninja_Player import Shadow
-from Jobs.Ranged.Bard.Bard_Player import Bard
+from Jobs.Melee.Reaper.Reaper_Player import Reaper
+from Jobs.Melee.Samurai.Samurai_Player import Samurai
+from Jobs.Ranged.Dancer.Dancer_Player import Dancer
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
-from Jobs.Tank.DarkKnight.DarkKnight_Player import DarkKnight, Esteem
-from Jobs.Tank.Warrior.Warrior_Player import Warrior
+from Jobs.Ranged.Ranged_Player import Ranged
+from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
+from Jobs.Tank.Tank_Player import Tank
 Lock = 0.75
 
 class FailedToCast(Exception):#Exception called if a spell fails to cast
@@ -68,7 +75,7 @@ class Spell:
             #input("tenchijind : " + str(player.TenChiJinTimer))
             #print(Requirement.__name__)
             ableToCast, timeLeft = Requirement(player, tempSpell)
-            if(not ableToCast) : #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
+            if(not ableToCast) and (player.CurrentFight.RequirementOn): #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
                 #input("timeleft : " + str(timeLeft))
                 #Will check if timeLeft is within a margin, so we will just wait for it to come
                 #timeLeft is the remaining time before the spell is available
@@ -91,12 +98,6 @@ class Spell:
 
 
     def CastFinal(self, player, Enemy):
-        #print("#################")
-        #print("Potency of spell: " + str(self.Potency))
-        #if self.GCD: 
-        #    input("Recast is  "+ str(self.RecastTime))
-        #if isinstance(player, Bard) : input("Using : " + str(self.id))
-
         
         for Effect in self.Effect:
             Effect(player, Enemy)#Put effects on Player and/or Enemy
@@ -114,7 +115,7 @@ class Spell:
         if self.Potency != 0 : minDamage,Damage= ComputeDamage(player, self.Potency, Enemy, self.DPSBonus, type, self)    #Damage computation
         else: minDamage, Damage = 0,0
 
-        #input("Adding " + str(self.Potency) + " to player : " + str(player))
+        
 
         if isinstance(player, Queen) or isinstance(player, Esteem) or isinstance(player, Shadow) or isinstance(player, BigSummon):
             player.Master.TotalPotency+= self.Potency
@@ -128,11 +129,20 @@ class Spell:
         Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage
 
-        if self.id > 0:# and Damage > 0: 
-            print("The action with id : " + str(self.id) + " did " + str(Damage) + " damage and was casted by : " + str(player.CurrentFight.TimeStamp))
-            #print("Huton Timer " + str(player.HutonTimer))
-            #if self.GCD: print("GCD TIMER IS : " + str(self.RecastTime))
-        #    if isinstance(player, DarkKnight) : input("blood " + str(player.Blood))
+        #if self.Potency > 0 and isinstance(player, Monk):
+        #    print("Action with id " + str(self.id) + " has done " + str(self.Potency) + " potency.")
+
+        if not (player.CurrentFight.FightStart) and Damage > 0 : 
+            player.CurrentFight.FightStart = True
+
+            #Giving all players AA
+
+            for gamer in player.CurrentFight.PlayerList:
+                if isinstance(gamer, Monk): gamer.DOTList.append(copy.deepcopy(Monk_Auto))
+                if isinstance(gamer, Melee) or isinstance(gamer, Dancer) or isinstance(gamer, Tank):
+                    gamer.DOTList.append(copy.deepcopy(Melee_AADOT))
+                elif isinstance(gamer, Ranged):
+                    gamer.DOTList.append(copy.deepcopy(Ranged_AADOT))
 
 
         #Will update the NextSpell of the player
@@ -157,8 +167,6 @@ Ranged_AA = Spell(-30, False, 0, 0, 0, 0, ApplyRanged_AA, [])
 Queen_AA = Spell(-30, False, 0, 0, 0, 0, ApplyQueen_AA, [])
 
 def ManaRequirement(player, Spell):
-    #print("Total mana : " + str(player.Mana))
-    #input("Spell mana cost " + str(Spell.ManaCost))
     if player.Mana >= Spell.ManaCost :
         player.Mana -= Spell.ManaCost   #ManaRequirement is the only Requirement that actually removes Ressources
         return True, -1
@@ -176,14 +184,14 @@ def WaitAbility(time):
     return WaitAction
 
 def ApplyPotion(Player, Enemy):
-    Player.Stat["MainStat"] = min(math.floor(Player.Stat["MainStat"] * 1.1), Player.Stat["MainStat"] + 189)
+    Player.Stat["MainStat"] = min(math.floor(Player.Stat["MainStat"] * 1.1), Player.Stat["MainStat"] + 223) #Grade 7 HQ tincture
     Player.PotionTimer = 30
 
     Player.EffectCDList.append(PotionCheck)
 
 def PrepullPotion(Player, Enemy): #If potion is prepull
     ApplyPotion(Player, Enemy)
-    Player.PotionTimer = 25 #Assume we loose a bit on it
+    Player.PotionTimer = 27 #Assume we loose a bit on it
     Player.EffectToRemove.append(PrepullPotion)
 
 def PotionCheck(Player, Enemy):
@@ -227,10 +235,10 @@ class DOTSpell(Spell):
 class Auto_Attack(DOTSpell):
     #DOT specifically used for auto attack
     def __init__(self, id, Ranged):
-        if Ranged : super().__init__(id, 100, True)
-        else: super().__init__(id, 110, True)
+        if Ranged : super().__init__(id, 0, True) #100, 110
+        else: super().__init__(id, 0, True)
 
-        self.DOTTimer = 3 #The timer is intentionally set at a longer time, so it won't go off before the countdown is over
+        self.DOTTimer = 0 #The timer is intentionally set at a longer time, so it won't go off before the countdown is over
 
 class Queen_Auto(Auto_Attack):
 
@@ -251,6 +259,22 @@ class Ranged_Auto(Auto_Attack):
         super().__init__(id, Ranged)
         self.Weaponskill = False
 
+class Monk_AA(Melee_Auto):
+    def __init__(self):
+        super().__init__(-1, False)
+        self.DOTTimer = 0
+
+    def CheckDOT(self, Player, Enemy, TimeUnit):
+        if(self.DOTTimer <= 0):
+            #Apply AA
+            tempSpell  = self.Cast(Player, Enemy)#Cast the DOT
+            tempSpell.CastFinal(Player, Enemy)
+            if Player.RiddleOfWindTimer > 0 : self.DOTTimer = 1.2
+            else: self.DOTTimer = 2.4
+
+def ApplyMonk_Auto(Player, Enemy):
+    Player.DOTList.append(copy.deepcopy(Monk_Auto))
+Monk_Auto = Monk_AA()
 
 Melee_AADOT = Melee_Auto(-22, False)
 Ranged_AADOT = Ranged_Auto(-23, True)
