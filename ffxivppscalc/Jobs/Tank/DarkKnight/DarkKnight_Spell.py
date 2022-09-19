@@ -21,7 +21,7 @@ def BloodRequirement(Player, Spell):
     elif Player.Blood >= 50:
         Player.Blood -= 50
         return True, -1
-    return True, -1
+    return False, -1
 
 def EdgeShadowRequirement(Player, Spell):
     if Player.EdgeShadowCD <= 0 :
