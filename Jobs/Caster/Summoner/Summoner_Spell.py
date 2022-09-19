@@ -3,7 +3,6 @@ from Jobs.Caster.Caster_Spell import SummonerSpell
 import copy
 
 from Jobs.Caster.Summoner.Summoner_Player import BigSummon
-from Jobs.Healer.Healer_Spell import Raise
 Lock = 0.75
 
 #Requirement

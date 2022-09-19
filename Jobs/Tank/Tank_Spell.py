@@ -1,4 +1,4 @@
-from Jobs.Base_Spell import Potion, Spell, Auto_Attack
+from Jobs.Base_Spell import Potion, Spell
 from Jobs.Melee.Melee_Spell import ArmLength
 Lock = 0.75
 

@@ -2,7 +2,6 @@
 ########## SCHOLAR PLAYER ###############
 #########################################
 
-from ast import Add
 from Jobs.Healer.Healer_Spell import ScholarSpell
 
 from Jobs.Base_Spell import DOTSpell, empty, ManaRequirement

@@ -1,4 +1,3 @@
-from doctest import FAIL_FAST
 from Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
 from Jobs.Caster.Caster_Spell import BLMSpell, SwiftcastEffect
 import copy

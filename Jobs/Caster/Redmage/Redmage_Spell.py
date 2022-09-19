@@ -3,7 +3,6 @@
 #########################################
 from Jobs.Base_Spell import ManaRequirement, buff, empty
 from Jobs.Caster.Caster_Spell import RedmageSpell, SwiftcastEffect
-from Jobs.Caster.Redmage.Redmage_Player import Redmage
 Lock = 0.75
 #Special
 

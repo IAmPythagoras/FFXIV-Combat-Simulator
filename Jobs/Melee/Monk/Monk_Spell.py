@@ -1,4 +1,3 @@
-from ast import AnnAssign
 from copy import deepcopy
 from Jobs.Base_Spell import DOTSpell, buff, empty
 from Jobs.Melee.Melee_Spell import MonkSpell

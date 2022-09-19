@@ -1,5 +1,4 @@
 from Jobs.Base_Spell import buff, empty, DOTSpell
-from Jobs.Tank.Paladin.Paladin_Spell import RoyalAuthority
 from Jobs.Tank.Tank_Spell import BigMit, GunbreakerSpell
 import copy
 Lock = 0.75

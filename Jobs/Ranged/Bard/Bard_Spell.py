@@ -1,4 +1,4 @@
-from Jobs.Base_Spell import DOTSpell, WaitAbility, buff, empty
+from Jobs.Base_Spell import DOTSpell, buff, empty
 from Jobs.Ranged.Ranged_Spell import BardSpell
 import copy
 Lock = 0.5

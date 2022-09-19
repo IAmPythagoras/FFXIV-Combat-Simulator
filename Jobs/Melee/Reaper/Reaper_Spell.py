@@ -1,4 +1,3 @@
-from ast import Global
 from Jobs.Base_Spell import buff, empty
 from Jobs.Melee.Melee_Spell import ReaperSpell
 Lock = 0

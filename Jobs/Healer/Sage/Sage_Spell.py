@@ -3,7 +3,6 @@ from Jobs.Healer.Healer_Spell import SageSpell
 from Jobs.Healer.Sage.Sage_Spell import SageSpell
 import copy
 
-from Jobs.Healer.Scholar.Scholar_Spell import Physick
 Lock = 0.75
 
 
