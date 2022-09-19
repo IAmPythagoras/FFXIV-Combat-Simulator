@@ -3,13 +3,10 @@ import copy
 from Fight import ComputeDamage
 import math
 from Jobs.Caster.Summoner.Summoner_Player import BigSummon
-from Jobs.Melee.Dragoon.Dragoon_Player import Dragoon
 from Jobs.Melee.Melee_Player import Melee
 from Jobs.Melee.Monk.Monk_Player import Monk
 #from Jobs.Melee.Monk.Monk_Spell import Monk_Auto
 from Jobs.Melee.Ninja.Ninja_Player import Shadow
-from Jobs.Melee.Reaper.Reaper_Player import Reaper
-from Jobs.Melee.Samurai.Samurai_Player import Samurai
 from Jobs.Ranged.Dancer.Dancer_Player import Dancer
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
 from Jobs.Ranged.Ranged_Player import Ranged
@@ -196,9 +193,8 @@ def PrepullPotion(Player, Enemy): #If potion is prepull
 
 def PotionCheck(Player, Enemy):
     if Player.PotionTimer <= 0:
-        Player.Stat["MainStat"] -= 189 #Assuming we are capped
+        Player.Stat["MainStat"] -= 223 #Assuming we are capped
         Player.EffectCDList.remove(PotionCheck)
-        #input("REMOVING MainStat of " + str(Player) + " is now : " + str(Player.Stat["MainStat"]))
 
 
 class DOTSpell(Spell):
@@ -235,8 +231,8 @@ class DOTSpell(Spell):
 class Auto_Attack(DOTSpell):
     #DOT specifically used for auto attack
     def __init__(self, id, Ranged):
-        if Ranged : super().__init__(id, 0, True) #100, 110
-        else: super().__init__(id, 0, True)
+        if Ranged : super().__init__(id, 100, True) # Ranged AA
+        else: super().__init__(id, 110, True) # Melee AA
 
         self.DOTTimer = 0 #The timer is intentionally set at a longer time, so it won't go off before the countdown is over
 

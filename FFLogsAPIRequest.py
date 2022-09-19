@@ -364,8 +364,6 @@ def getAbilityList(fightID, fightNumber):
                         
                 
                 if action.action_id == 1000049: #Tincture
-                    print("action_id :" + str(action.action_id))
-                    input("extra : " + str(action.extraAbilityGameID))
                     action.action_id = action.extraAbilityGameID
 
                 next_action = lookup_abilityID(action.action_id, action.targetID, player, player_list) #returns the action object of the specified spell

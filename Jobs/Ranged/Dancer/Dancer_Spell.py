@@ -62,7 +62,6 @@ def TechnicalFinishRequirement(Player, Spell):
     return Player.TechnicalFinish, -1
 
 def TechnicalStepRequirement(Player, Spell):
-    print(Player.TechnicalStepCD)
     return Player.TechnicalStepCD <= 0, Player.TechnicalStepCD
 
 def DevilmentRequirement(Player, Spell):

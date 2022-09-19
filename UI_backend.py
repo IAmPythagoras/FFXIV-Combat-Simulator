@@ -44,6 +44,9 @@ from Jobs.Melee.Dragoon.Dragoon_Player import *
 from Jobs.Melee.Reaper.Reaper_Player import *
 from Jobs.Melee.Monk.Monk_Player import *
 
+
+letters = "abcdefghijklmnopqrstuvwyxz"
+
 #This file will take care of request by TUI.py and return whatever needs to be returned
 
 # ============================================================================================
@@ -143,8 +146,6 @@ def ImportFightBackend(fightID,fightNumber):
 
     Event.RequirementOn = False #By default making false
 
-    Event.SimulateFight(0.01, 1000, 0)
-
     return Event
 
 
@@ -154,7 +155,16 @@ def AskInput(range):
     user_input = input("Enter a number to select that option : ")
 
     while True:
-        if int(user_input) >= 1 and int(user_input) <= range: #if input is valid
+
+        has_letter = False
+
+        for letter in user_input:
+            if letter.lower() in letters: has_letter = True
+
+        if user_input == "" or has_letter: 
+            has_letter = False
+            user_input = input("This is not a valid input. Please enter a valid number : ")
+        elif int(user_input) >= 1 and int(user_input) <= range: #if input is valid
             return user_input
         else : #Non-valid input
             user_input = input("This is not a valid input. Please enter a valid number : ")
