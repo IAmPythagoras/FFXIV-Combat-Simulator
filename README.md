@@ -1,6 +1,7 @@
 # How to use
 
-Download this PDF that explains how to use the simulator in its current state : [FFXIV_Combat_Simulator.pdf](https://github.com/IAmPythagoras/FFXIVPPSCalculator/files/9596044/FFXIV_Combat_Simulator.1.pdf)
+Download this PDF that explains how to use the simulator in its current state : [FFXIV_Combat_Simulator](https://github.com/IAmPythagoras/FFXIVPPSCalculator/files/9596221/FFXIV_Combat_Simulator.2.pdf)
+
 
 
 If you encounter any bug or error in the simulation, DM me on discord Pythagoras#6312 so I can fix it as soon as possible. Since this program is still in testing phase, this will help me out a lot:).
