@@ -1,9 +1,15 @@
+# How to use
+
+Download this PDF that explains how to use the simulator in its current state : [FFXIV_Combat_Simulator.pdf](https://github.com/IAmPythagoras/FFXIVPPSCalculator/files/9596044/FFXIV_Combat_Simulator.1.pdf)
+
+
+If you encounter any bug or error in the simulation, DM me on discord Pythagoras#6312 so I can fix it as soon as possible. Since this program is still in testing phase, this will help me out a lot:).
+
 # FFXIVPPSCalculator
 Environment in which the simulation of FF14 combat (with multiple people) will be possible. 
 The goal is to create the environment first and then work on an AI that could optimize rotation (or even entire fights).
 Note that this project is still in active development, and some things shown here might be subject to some kind of errors which we will
 fix with time. This is simply to show what we have achieved so far, and what we want to do with this program.
-
 
 So far, we have been able to simulate 8 players (we could do more) at the same time (this limit is in theory infinite and we could add as much as we want).
 This simply shows that 8 man raids can now be simulated (only accounts for damage done).
@@ -107,12 +113,6 @@ Each job in the game is implemented in a relatively similar way. We first create
 
 And that's about it, the code will take these two new classes (and object of the JobSpell class) and if everything is done correctly the simulator will be able to run without any issues.
 
-# HOW TO USE
-
-For now the program does not have any UI, so you will have to go change the code itself to make it run what you want. Here is a PDF explaining how to do just that : 
-[How_to_use (5).pdf](https://github.com/IAmPythagoras/FFXIVPPSCalculator/files/8882436/How_to_use.5.pdf)
-
-If you encounter any bug or error in the simulation, DM me on discord Pythagoras#6312 so I can fix it as soon as possible. Since this program is still in testing phase, this will help me out a lot:).
 
 # IF YOU WANT TO HELP:)
 
