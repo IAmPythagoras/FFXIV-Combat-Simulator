@@ -1,6 +1,7 @@
 import copy
 import json
 import os
+from pathlib import Path
 from Jobs.Melee.Monk.Monk_Spell import ComboEffect
 
 from Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton
@@ -253,8 +254,8 @@ def SaveFight(Event, countdown, fightDuration, saveName):
                 },
                 "PlayerList" : PlayerListDict
     }}
-    save_dir = os.getcwd() + "\\saved"
-    with open(save_dir + "\\" + saveName + ".json", "w") as write_files:
+    save_dir: Path = Path.cwd() / 'saved'
+    with open(save_dir / f'{saveName}.json', "w") as write_files:
         json.dump(data,write_files, indent=4) #saving file
 
 
@@ -472,6 +473,6 @@ def MergeFightBackEnd(child_fight, parent_fight, parent_name):
 
     data_parent["data"]["PlayerList"] += data_child["data"]["PlayerList"]
 
-    save_dir = os.getcwd() + "\\saved"
-    with open(save_dir + "\\" + parent_name, "w") as write_files:
+    save_dir: Path = Path.cwd() / "saved"
+    with open(save_dir / parent_name, "w") as write_files:
         json.dump(data_parent,write_files, indent=4) #saving file
