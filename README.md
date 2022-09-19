@@ -5,7 +5,7 @@ Download this PDF that explains how to use the simulator in its current state : 
 
 If you encounter any bug or error in the simulation, DM me on discord Pythagoras#6312 so I can fix it as soon as possible. Since this program is still in testing phase, this will help me out a lot:).
 
-# FFXIVPPSCalculator
+# FFXIVDPSCalculator
 Environment in which the simulation of FF14 combat (with multiple people) will be possible. 
 The goal is to create the environment first and then work on an AI that could optimize rotation (or even entire fights).
 Note that this project is still in active development, and some things shown here might be subject to some kind of errors which we will
