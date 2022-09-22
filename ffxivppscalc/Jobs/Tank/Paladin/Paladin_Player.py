@@ -1,5 +1,5 @@
-from Jobs.Tank.Tank_Player import Tank
-from Jobs.Base_Player import ManaRegenCheck
+from ffxivppscalc.Jobs.Tank.Tank_Player import Tank
+from ffxivppscalc.Jobs.Base_Player import ManaRegenCheck
 class Paladin(Tank):
 
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):

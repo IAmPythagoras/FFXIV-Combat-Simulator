@@ -2,48 +2,48 @@ import copy
 import json
 import os
 from pathlib import Path
-from Jobs.Melee.Monk.Monk_Spell import ComboEffect
+from ffxivppscalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
 
-from Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton
-from Jobs.Melee.Samurai.Samurai_Spell import MeikyoCheck, MeikyoEffect, MeikyoStackCheck
+from ffxivppscalc.Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton
+from ffxivppscalc.Jobs.Melee.Samurai.Samurai_Spell import MeikyoCheck, MeikyoEffect, MeikyoStackCheck
 
 
-from Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
-from Jobs.Ranged.Bard.Bard_Spell import SongEffect
-from Jobs.Tank.DarkKnight.DarkKnight_Spell import BloodWeaponCheck, BloodWeaponEffect
-from Jobs.Tank.Warrior.Warrior_Spell import SurgingTempestEffect
-from Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
-from Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, EnochianEffect
+from ffxivppscalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
+from ffxivppscalc.Jobs.Ranged.Bard.Bard_Spell import SongEffect
+from ffxivppscalc.Jobs.Tank.DarkKnight.DarkKnight_Spell import BloodWeaponCheck, BloodWeaponEffect
+from ffxivppscalc.Jobs.Tank.Warrior.Warrior_Spell import SurgingTempestEffect
+from ffxivppscalc.Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
+from ffxivppscalc.Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, EnochianEffect
 
-from Fight import Fight
-from Enemy import Enemy
-from FFLogsAPIRequest import getAbilityList, lookup_abilityID
-from Jobs.Base_Spell import PrepullPotion, WaitAbility
+from ffxivppscalc.Fight import Fight
+from ffxivppscalc.Enemy import Enemy
+from ffxivppscalc.FFLogsAPIRequest import getAbilityList, lookup_abilityID
+from ffxivppscalc.Jobs.Base_Spell import PrepullPotion, WaitAbility
 
 #CASTER
-from Jobs.Caster.Summoner.Summoner_Player import *
-from Jobs.Caster.Blackmage.BlackMage_Player import * 
-from Jobs.Caster.Redmage.Redmage_Player import *
+from ffxivppscalc.Jobs.Caster.Summoner.Summoner_Player import *
+from ffxivppscalc.Jobs.Caster.Blackmage.BlackMage_Player import * 
+from ffxivppscalc.Jobs.Caster.Redmage.Redmage_Player import *
 #HEALER
-from Jobs.Healer.Sage.Sage_Player import *
-from Jobs.Healer.Scholar.Scholar_Player import *
-from Jobs.Healer.Whitemage.Whitemage_Player import *
-from Jobs.Healer.Astrologian.Astrologian_Player import *
+from ffxivppscalc.Jobs.Healer.Sage.Sage_Player import *
+from ffxivppscalc.Jobs.Healer.Scholar.Scholar_Player import *
+from ffxivppscalc.Jobs.Healer.Whitemage.Whitemage_Player import *
+from ffxivppscalc.Jobs.Healer.Astrologian.Astrologian_Player import *
 #RANGED
-from Jobs.Ranged.Machinist.Machinist_Player import *
-from Jobs.Ranged.Bard.Bard_Player import *
-from Jobs.Ranged.Dancer.Dancer_Player import *
+from ffxivppscalc.Jobs.Ranged.Machinist.Machinist_Player import *
+from ffxivppscalc.Jobs.Ranged.Bard.Bard_Player import *
+from ffxivppscalc.Jobs.Ranged.Dancer.Dancer_Player import *
 #TANK
-from Jobs.Tank.Gunbreaker.Gunbreaker_Player import *
-from Jobs.Tank.DarkKnight.DarkKnight_Player import *
-from Jobs.Tank.Warrior.Warrior_Player import *
-from Jobs.Tank.Paladin.Paladin_Player import *
+from ffxivppscalc.Jobs.Tank.Gunbreaker.Gunbreaker_Player import *
+from ffxivppscalc.Jobs.Tank.DarkKnight.DarkKnight_Player import *
+from ffxivppscalc.Jobs.Tank.Warrior.Warrior_Player import *
+from ffxivppscalc.Jobs.Tank.Paladin.Paladin_Player import *
 #MELEE
-from Jobs.Melee.Samurai.Samurai_Player import *
-from Jobs.Melee.Ninja.Ninja_Player import *
-from Jobs.Melee.Dragoon.Dragoon_Player import *
-from Jobs.Melee.Reaper.Reaper_Player import *
-from Jobs.Melee.Monk.Monk_Player import *
+from ffxivppscalc.Jobs.Melee.Samurai.Samurai_Player import *
+from ffxivppscalc.Jobs.Melee.Ninja.Ninja_Player import *
+from ffxivppscalc.Jobs.Melee.Dragoon.Dragoon_Player import *
+from ffxivppscalc.Jobs.Melee.Reaper.Reaper_Player import *
+from ffxivppscalc.Jobs.Melee.Monk.Monk_Player import *
 
 
 letters = "abcdefghijklmnopqrstuvwyxz"

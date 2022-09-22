@@ -1,8 +1,8 @@
 #########################################
 ########## DARK KNIGHT PLAYER ###########
 #########################################
-from Jobs.Tank.Tank_Player import Tank
-from Jobs.Base_Player import ManaRegenCheck
+from ffxivppscalc.Jobs.Tank.Tank_Player import Tank
+from ffxivppscalc.Jobs.Base_Player import ManaRegenCheck
 class DarkKnight(Tank):
     #A class for Dark Knight Players containing all effects and cooldowns relevant to the job.
 

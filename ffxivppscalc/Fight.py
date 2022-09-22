@@ -4,36 +4,36 @@ import numpy as np
 
 
 # Class
-from Jobs.Caster.Caster_Player import Caster
-from Jobs.Healer.Sage.Sage_Player import Sage
-from Jobs.Melee.Melee_Player import Melee
-from Jobs.Ranged.Ranged_Player import Ranged
-from Jobs.Tank.Tank_Player import Tank
-from Jobs.Healer.Healer_Player import Healer
+from ffxivppscalc.Jobs.Caster.Caster_Player import Caster
+from ffxivppscalc.Jobs.Healer.Sage.Sage_Player import Sage
+from ffxivppscalc.Jobs.Melee.Melee_Player import Melee
+from ffxivppscalc.Jobs.Ranged.Ranged_Player import Ranged
+from ffxivppscalc.Jobs.Tank.Tank_Player import Tank
+from ffxivppscalc.Jobs.Healer.Healer_Player import Healer
 
 # Jobs
-from Jobs.Caster.Blackmage.BlackMage_Player import BlackMage
-from Jobs.Caster.Redmage.Redmage_Player import Redmage
-from Jobs.Caster.Summoner.Summoner_Player import BigSummon, Summoner
-from Jobs.Ranged.Bard.Bard_Player import Bard
-from Jobs.Ranged.Dancer.Dancer_Player import Dancer
+from ffxivppscalc.Jobs.Caster.Blackmage.BlackMage_Player import BlackMage
+from ffxivppscalc.Jobs.Caster.Redmage.Redmage_Player import Redmage
+from ffxivppscalc.Jobs.Caster.Summoner.Summoner_Player import BigSummon, Summoner
+from ffxivppscalc.Jobs.Ranged.Bard.Bard_Player import Bard
+from ffxivppscalc.Jobs.Ranged.Dancer.Dancer_Player import Dancer
 
-from Jobs.Tank.Paladin.Paladin_Player import Paladin
-from Jobs.Tank.Gunbreaker.Gunbreaker_Player import Gunbreaker
-from Jobs.Tank.Warrior.Warrior_Player import Warrior
-from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem, DarkKnight
+from ffxivppscalc.Jobs.Tank.Paladin.Paladin_Player import Paladin
+from ffxivppscalc.Jobs.Tank.Gunbreaker.Gunbreaker_Player import Gunbreaker
+from ffxivppscalc.Jobs.Tank.Warrior.Warrior_Player import Warrior
+from ffxivppscalc.Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem, DarkKnight
 
-from Jobs.Ranged.Machinist.Machinist_Player import Queen, Machinist
+from ffxivppscalc.Jobs.Ranged.Machinist.Machinist_Player import Queen, Machinist
 
-from Jobs.Melee.Samurai.Samurai_Player import Samurai
-from Jobs.Melee.Ninja.Ninja_Player import Ninja, Shadow
-from Jobs.Melee.Dragoon.Dragoon_Player import Dragoon
-from Jobs.Melee.Reaper.Reaper_Player import Reaper
-from Jobs.Melee.Monk.Monk_Player import Monk
+from ffxivppscalc.Jobs.Melee.Samurai.Samurai_Player import Samurai
+from ffxivppscalc.Jobs.Melee.Ninja.Ninja_Player import Ninja, Shadow
+from ffxivppscalc.Jobs.Melee.Dragoon.Dragoon_Player import Dragoon
+from ffxivppscalc.Jobs.Melee.Reaper.Reaper_Player import Reaper
+from ffxivppscalc.Jobs.Melee.Monk.Monk_Player import Monk
 
-from Jobs.Healer.Whitemage.Whitemage_Player import Whitemage
-from Jobs.Healer.Scholar.Scholar_Player import Scholar
-from Jobs.Healer.Astrologian.Astrologian_Player import Astrologian
+from ffxivppscalc.Jobs.Healer.Whitemage.Whitemage_Player import Whitemage
+from ffxivppscalc.Jobs.Healer.Scholar.Scholar_Player import Scholar
+from ffxivppscalc.Jobs.Healer.Astrologian.Astrologian_Player import Astrologian
 
 class NoMoreAction(Exception):# Exception called if a spell fails to cast
     pass

@@ -1,7 +1,7 @@
 #########################################
 ########## NINJA PLAYER #################
 #########################################
-from Jobs.Melee.Melee_Player import Melee
+from ffxivppscalc.Jobs.Melee.Melee_Player import Melee
 
 class Ninja(Melee):
 

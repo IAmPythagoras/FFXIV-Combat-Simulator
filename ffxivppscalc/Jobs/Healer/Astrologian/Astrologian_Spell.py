@@ -1,7 +1,7 @@
 import copy
 
-from Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
-from Jobs.Healer.Healer_Spell import AstrologianSpell
+from ffxivppscalc.Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
+from ffxivppscalc.Jobs.Healer.Healer_Spell import AstrologianSpell
 Lock = 0
 
 #Requirement

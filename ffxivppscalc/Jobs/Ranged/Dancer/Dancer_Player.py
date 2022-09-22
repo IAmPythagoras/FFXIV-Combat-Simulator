@@ -1,4 +1,4 @@
-from Jobs.Ranged.Ranged_Player import Ranged
+from ffxivppscalc.Jobs.Ranged.Ranged_Player import Ranged
 
 class Dancer(Ranged):
 

@@ -2,7 +2,7 @@
 ########## SCHOLAR PLAYER ###############
 #########################################
 
-from Jobs.Healer.Healer_Player import Healer
+from ffxivppscalc.Jobs.Healer.Healer_Player import Healer
 
 class Scholar(Healer):
 

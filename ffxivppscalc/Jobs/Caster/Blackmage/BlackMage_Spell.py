@@ -1,9 +1,9 @@
-from Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
-from Jobs.Caster.Caster_Spell import BLMSpell, SwiftcastEffect
+from ffxivppscalc.Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
+from ffxivppscalc.Jobs.Caster.Caster_Spell import BLMSpell, SwiftcastEffect
 import copy
 import math
 
-from Jobs.Tank.Paladin.Paladin_Spell import ApplyFastBlade
+from ffxivppscalc.Jobs.Tank.Paladin.Paladin_Spell import ApplyFastBlade
 Lock = 0
 #Requirement
 

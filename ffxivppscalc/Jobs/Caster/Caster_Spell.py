@@ -1,5 +1,5 @@
-from Jobs.Base_Spell import ManaRequirement, Potion, Spell, empty
-from Jobs.Caster.Blackmage.BlackMage_Player import BlackMage
+from ffxivppscalc.Jobs.Base_Spell import ManaRequirement, Potion, Spell, empty
+from ffxivppscalc.Jobs.Caster.Blackmage.BlackMage_Player import BlackMage
 Lock = 0
 class CasterSpell(Spell):
 

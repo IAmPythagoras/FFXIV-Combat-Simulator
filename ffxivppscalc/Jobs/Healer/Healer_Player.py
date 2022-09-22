@@ -1,5 +1,5 @@
-from Jobs.Base_Player import Player
-from Jobs.Base_Player import ManaRegenCheck
+from ffxivppscalc.Jobs.Base_Player import Player
+from ffxivppscalc.Jobs.Base_Player import ManaRegenCheck
 
 class Healer(Player):
 
