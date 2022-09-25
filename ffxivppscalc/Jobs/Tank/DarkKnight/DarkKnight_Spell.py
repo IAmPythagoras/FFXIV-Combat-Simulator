@@ -7,12 +7,6 @@ from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
 from Jobs.Tank.Tank_Spell import BigMit, DRKSkill
 Lock = 0
 
-#def DarksideEffect(Player, Spell):
- #   if Player.DarksideTimer > 0:
-  #      Spell.Potency *= 1.10
-
-#Requirements for each Skill and Ability.
-
 def BloodRequirement(Player, Spell):
     if Player.DeliriumStacks > 0 and (Spell.id == Bloodspiller.id or Spell.id == Quietus.id):
         Spell.BloodCost = 0
