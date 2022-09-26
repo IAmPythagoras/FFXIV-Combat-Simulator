@@ -28,7 +28,6 @@ class CasterActions(IntEnum):
 # BlackMage
 
 class BlackMageActions(IntEnum):
-    # Blackmage Actions
     Paradox = 25797
     FireI = 141
     FireII = 147
@@ -76,7 +75,6 @@ class BlackMageActions(IntEnum):
 # RedMage
 
 class RedMageActions(IntEnum):
-    # RedMage actions
     Riposte = 7504
     Corps = 7506
     Verfire = 7510
@@ -125,7 +123,6 @@ class RedMageActions(IntEnum):
 # Summoner
 
 class SummonerActions(IntEnum):
-    # Summoner Actions
     RuinIII = 3579
     RuinIV = 7426
     TryDisaster = 25826
@@ -247,7 +244,6 @@ class AstrologianActions(IntEnum):
 # Sage
 
 class SageActions(IntEnum):
-    # Sage
     Egeiro = 24287
     Dosis = 24312
     EukrasianDosis = 24314
@@ -293,7 +289,6 @@ class SageActions(IntEnum):
 # Scholar
 
 class ScholarActions(IntEnum):
-    # Scholar Actions
     Aetherflow = 166
     EnergyDrain = 167
     Adloquium = 185
@@ -375,7 +370,6 @@ class WhiteMageActions(IntEnum):
         if name in cls.__members__.keys():
             return cls[name].value
         return -1 # Evaluated as Unknown
-
 
 # Tank
 
@@ -574,6 +568,269 @@ class WarriorActions(IntEnum):
             return cls[name].value
         return -1 # Evaluated as Unknown
     
+# Melee
 
+class MeleeActions(IntEnum):
+    SecondWind = 7541
+    LegSweep = 7863
+    Bloodbath = 7542
+    Feint = 7549
+    TrueNorth = 7546
+    ArmLength = 7548
+    Potion = -2
+
+    @classmethod
+    def id_for_name(cls, id) -> str:
+        # maps from id -> name
+        if id in cls.__members__.values():
+            return cls(id).name
+        return 'Unknown'
+
+    @classmethod
+    def name_for_id(cls, name) -> int:
+        # maps from name -> id
+        if name in cls.__members__.keys():
+            return cls[name].value
+        return -1 # Evaluated as Unknown
+
+# Samurai
+
+class SamuraiActions(IntEnum):
+    Hakaze = 7477
+    Shifu = 7479
+    Kasha = 7482
+    Jinpu = 7478
+    Gekko = 7481
+    Yukikaze = 7480
+    Fuko = 25780
+    Oka = 7485
+    Mangetsu = 7484
+    Meikyo = 7499
+    Higanbana = 7489
+    TenkaGoken = 7488
+    Midare = 7487
+    OgiNamikiri = 25781
+    KaeshiHiganbana = 16484
+    KaeshiGoken = 16485
+    KaeshiSetsugekka = 16486
+    KaeshiNamikiri = 25782
+    Shinten = 7490
+    Kyuten = 7491
+    Senei = 16481
+    Guren = 7496
+    Shoha = 16487
+    ShohaII = 25779
+    Ikishoten = 16482
+    Meditate = 7497
+    Hagakure = 7495
+    Gyoten = 7492
+    Yaten = 7493
+    Enpi = 7486
+    ThirdEye = 7498
+
+    @classmethod
+    def id_for_name(cls, id) -> str:
+        # maps from id -> name
+        if id in cls.__members__.values():
+            return cls(id).name
+        return 'Unknown'
+
+    @classmethod
+    def name_for_id(cls, name) -> int:
+        # maps from name -> id
+        if name in cls.__members__.keys():
+            return cls[name].value
+        return -1 # Evaluated as Unknown
+    
+# Reaper
+
+class ReaperActions(IntEnum):
+    Slice = 24373
+    WaxingSlice = 24374
+    InfernalSlice = 24375
+    ShadowOfDeath = 24378
+    SoulSlice = 24380
+    Gibbet = 24382
+    Gallows = 24383
+    SpinningScythe = 24376
+    NightmareScythe = 24377
+    WhorlOfDeath = 24379
+    SoulScyte = 24381
+    Guillotine = 24384
+    BloodStalk = 24389
+    UnveiledGibbet = 24390
+    UnveiledGallows = 24391
+    GrimSwath = 24392
+    Gluttony = 24393
+    Soulsow = 24387
+    HarvestMoon = 24388
+    PlentifulHarvest = 24385
+    Enshroud = 24394
+    VoidReaping = 24395
+    CrossReaping = 24396
+    GrimReaping = 24397
+    LemureSlice = 24399
+    LemureScythe = 24400
+    Communio = 24398
+    ArcanaCrest = 24404
+    ArcaneCircle = 24405
+    HellIngress = 24402
+    Regress = 24401
+    Harpe = 24386
+
+    @classmethod
+    def id_for_name(cls, id) -> str:
+        # maps from id -> name
+        if id in cls.__members__.values():
+            return cls(id).name
+        return 'Unknown'
+
+    @classmethod
+    def name_for_id(cls, name) -> int:
+        # maps from name -> id
+        if name in cls.__members__.keys():
+            return cls[name].value
+        return -1 # Evaluated as Unknown
+    
+# Ninja
+
+class NinjaActions(IntEnum):
+    SpinningEdge = 2240
+    GustSlash = 2242
+    AeolianEdge = 2255
+    ArmorCrush = 3563
+    ThrowingDagger = 2247
+    ShadeShift = 2241
+    DeathBlossom = 2254
+    HakkeMujinsatsu = 16488
+    Hide = 2245
+    Mug = 2248
+    TrickAttack = 2258
+    Ten = 2259 # 18805 id from Kassatsu
+    Chi = 2261 # 18806 id from Kassatsu
+    Jin = 2263 # 18807 id from Kassatsu
+    Ten2 = 18873 # Ten from TenChiJin
+    Chi2 = 18877 # Chi from TenChiJin
+    Jin2 = 18881 # Jin from TenChiJin
+    FumaShuriken = 2265
+    Katon = 2266
+    Raiton = 2267
+    Hyoton = 2268
+    Huton = 2269
+    Doton = 2270
+    Suiton = 2271
+    GokaMekkyaku = 16491
+    HyoshoRanryu = 16492
+    PhantomKamaitachi = 25774
+    DreamWithinADream = 3566
+    Huraijin = 25876
+    Shukuchi = 2262
+    HellfrogMedium = 7401
+    Bhavacakra = 7402
+    TenChiJin = 7403
+    Bunshin = 16493
+    FleetingRaiju = 25777
+    ForkingRaiju = 25778
+
+    @classmethod
+    def id_for_name(cls, id) -> str:
+        # maps from id -> name
+        if id in cls.__members__.values():
+            return cls(id).name
+        return 'Unknown'
+
+    @classmethod
+    def name_for_id(cls, name) -> int:
+        # maps from name -> id
+        if name in cls.__members__.keys():
+            return cls[name].value
+        return -1 # Evaluated as Unknown
+
+# Monk
+
+class MonkActions(IntEnum):
+    BootShine = 53
+    TrueStrike = 54
+    Demolish = 66
+    DragonKick = 74
+    TwinSnakes = 61
+    SnapPunch = 56
+    ShadowOfTheDestroyer = 25767
+    FourpointFurry = 16473
+    Rockbreaker = 70
+    Meditation = 3546
+    TheForbiddenChakra = 3547
+    Enlightenment = 16474
+    PerfectBalance = 69
+    ElixirField = 3545
+    CelestialRevolution = 25765
+    RisingPhoenix = 25768
+    PhantomRush = 25769
+    SixSidedStar = 16476
+    FormShift = 4262
+    Thunderclap = 25762
+    RiddleOfEarth = 7394
+    RiddleOfFire = 7395
+    Brotherhood = 7396
+    Anatman = 16475
+    Mantra = 65
+
+    @classmethod
+    def id_for_name(cls, id) -> str:
+        # maps from id -> name
+        if id in cls.__members__.values():
+            return cls(id).name
+        return 'Unknown'
+
+    @classmethod
+    def name_for_id(cls, name) -> int:
+        # maps from name -> id
+        if name in cls.__members__.keys():
+            return cls[name].value
+        return -1 # Evaluated as Unknown
+
+# Dragoon
+
+class DragoonActions(IntEnum):
+    TrueThrust = 75
+    VorpalThrust = 78
+    HeavenThrust = 25771
+    Disembowel = 87
+    ChaoticSpring = 25772
+    RaidenThrust = 16479
+    FangAndClaw = 3554
+    WheelingThrust = 3556
+    DoomSpike = 86
+    SonicThrust = 7397
+    CoerthanTorment = 16477
+    DraconianFury = 25770
+    PiercingTalon = 90
+    HighJump = 16478
+    MirageDive = 7399
+    SpineshafterDive = 95
+    DragonFireDive = 96
+    BattleLitany = 3557
+    DragonSight = 7398
+    LifeSurge = 83
+    LanceCharge = 85
+    ElusiveJump = 94
+    Geirskogul = 3555
+    Nastrond = 7400
+    Stardiver = 16480
+    WyrmwindThrust = 25773
+    
+    @classmethod
+    def id_for_name(cls, id) -> str:
+        # maps from id -> name
+        if id in cls.__members__.values():
+            return cls(id).name
+        return 'Unknown'
+
+    @classmethod
+    def name_for_id(cls, name) -> int:
+        # maps from name -> id
+        if name in cls.__members__.keys():
+            return cls[name].value
+        return -1 # Evaluated as Unknown
 
 
