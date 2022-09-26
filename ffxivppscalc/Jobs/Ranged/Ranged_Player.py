@@ -1,4 +1,4 @@
-from Jobs.Base_Player import Player
+from ffxivppscalc.Jobs.Base_Player import Player
 
 class Ranged(Player):
 

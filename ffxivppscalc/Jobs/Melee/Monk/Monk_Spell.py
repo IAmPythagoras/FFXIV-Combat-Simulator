@@ -1,6 +1,6 @@
 from copy import deepcopy
-from Jobs.Base_Spell import DOTSpell, buff, empty
-from Jobs.Melee.Melee_Spell import MonkSpell
+from ffxivppscalc.Jobs.Base_Spell import DOTSpell, buff, empty
+from ffxivppscalc.Jobs.Melee.Melee_Spell import MonkSpell
 Lock = 0.75 #skill animation lock - simulating 75ms ping
 
 #Requirements

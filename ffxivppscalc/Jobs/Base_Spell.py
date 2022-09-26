@@ -1,17 +1,17 @@
 import copy
 
-from Fight import ComputeDamage
+from ffxivppscalc.Fight import ComputeDamage
 import math
-from Jobs.Caster.Summoner.Summoner_Player import BigSummon
-from Jobs.Melee.Melee_Player import Melee
-from Jobs.Melee.Monk.Monk_Player import Monk
+from ffxivppscalc.Jobs.Caster.Summoner.Summoner_Player import BigSummon
+from ffxivppscalc.Jobs.Melee.Melee_Player import Melee
+from ffxivppscalc.Jobs.Melee.Monk.Monk_Player import Monk
 #from Jobs.Melee.Monk.Monk_Spell import Monk_Auto
-from Jobs.Melee.Ninja.Ninja_Player import Shadow
-from Jobs.Ranged.Dancer.Dancer_Player import Dancer
-from Jobs.Ranged.Machinist.Machinist_Player import Queen
-from Jobs.Ranged.Ranged_Player import Ranged
-from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
-from Jobs.Tank.Tank_Player import Tank
+from ffxivppscalc.Jobs.Melee.Ninja.Ninja_Player import Shadow
+from ffxivppscalc.Jobs.Ranged.Dancer.Dancer_Player import Dancer
+from ffxivppscalc.Jobs.Ranged.Machinist.Machinist_Player import Queen
+from ffxivppscalc.Jobs.Ranged.Ranged_Player import Ranged
+from ffxivppscalc.Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
+from ffxivppscalc.Jobs.Tank.Tank_Player import Tank
 Lock = 0.75
 
 class FailedToCast(Exception):#Exception called if a spell fails to cast

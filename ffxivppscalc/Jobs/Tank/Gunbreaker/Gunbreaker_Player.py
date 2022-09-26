@@ -1,4 +1,4 @@
-from Jobs.Tank.Tank_Player import Tank
+from ffxivppscalc.Jobs.Tank.Tank_Player import Tank
 
 class Gunbreaker(Tank):
 

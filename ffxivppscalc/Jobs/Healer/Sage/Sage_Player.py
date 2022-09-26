@@ -1,4 +1,4 @@
-from Jobs.Healer.Healer_Player import Healer
+from ffxivppscalc.Jobs.Healer.Healer_Player import Healer
 class Sage(Healer):
 
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):

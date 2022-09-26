@@ -1,8 +1,8 @@
 #########################################
 ########## REDMAGE PLAYER ###############
 #########################################
-from Jobs.Caster.Caster_Player import Caster
-from Jobs.Base_Player import ManaRegenCheck
+from ffxivppscalc.Jobs.Caster.Caster_Player import Caster
+from ffxivppscalc.Jobs.Base_Player import ManaRegenCheck
 
 class Redmage(Caster):
 

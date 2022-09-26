@@ -1,7 +1,7 @@
 #########################################
 ########## MACHINIST PLAYER #############
 #########################################
-from Jobs.Ranged.Ranged_Player import Ranged
+from ffxivppscalc.Jobs.Ranged.Ranged_Player import Ranged
 
 class Machinist(Ranged):
     

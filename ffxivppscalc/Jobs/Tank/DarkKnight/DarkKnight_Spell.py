@@ -1,10 +1,10 @@
 #########################################
 ########## DARK KNIGHT SKILLS ###########
 #########################################
-from Jobs.Base_Spell import DOTSpell, Potion, buff, empty
+from ffxivppscalc.Jobs.Base_Spell import DOTSpell, Potion, buff, empty
 import copy
-from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
-from Jobs.Tank.Tank_Spell import BigMit, DRKSkill
+from ffxivppscalc.Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
+from ffxivppscalc.Jobs.Tank.Tank_Spell import BigMit, DRKSkill
 Lock = 0
 
 #def DarksideEffect(Player, Spell):

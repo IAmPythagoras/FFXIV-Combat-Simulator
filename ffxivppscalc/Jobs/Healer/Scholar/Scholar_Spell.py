@@ -2,9 +2,9 @@
 ########## SCHOLAR PLAYER ###############
 #########################################
 
-from Jobs.Healer.Healer_Spell import ScholarSpell
+from ffxivppscalc.Jobs.Healer.Healer_Spell import ScholarSpell
 
-from Jobs.Base_Spell import DOTSpell, empty, ManaRequirement
+from ffxivppscalc.Jobs.Base_Spell import DOTSpell, empty, ManaRequirement
 import copy
 Lock = 0.75
 

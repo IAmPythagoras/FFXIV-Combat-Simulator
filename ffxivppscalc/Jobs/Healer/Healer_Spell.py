@@ -1,5 +1,5 @@
-from Jobs.Base_Spell import ManaRequirement, Potion, Spell, empty
-from Jobs.Caster.Caster_Spell import LucidDreaming, Surecast, Swiftcast
+from ffxivppscalc.Jobs.Base_Spell import ManaRequirement, Potion, Spell, empty
+from ffxivppscalc.Jobs.Caster.Caster_Spell import LucidDreaming, Surecast, Swiftcast
 Lock = 0.75
 class HealerSpell(Spell):
 
