@@ -12,14 +12,14 @@ class CasterActions(IntEnum):
     Potion = -2
 
     @classmethod
-    def id_for_name(cls, id) -> str:
+    def name_for_id(cls, id) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def name_for_id(cls, name) -> int:
+    def id_for_name(cls, name) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
@@ -59,14 +59,14 @@ class BlackMageActions(IntEnum):
     Amplifier = 25796
 
     @classmethod
-    def id_for_name(cls, id) -> str:
+    def name_for_id(cls, id) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def name_for_id(cls, name) -> int:
+    def id_for_name(cls, name) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
@@ -107,14 +107,14 @@ class RedMageActions(IntEnum):
     Scorch = 16530
 
     @classmethod
-    def id_for_name(cls, id) -> str:
+    def name_for_id(cls, id) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def name_for_id(cls, name) -> int:
+    def id_for_name(cls, name) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
@@ -157,14 +157,14 @@ class SummonerActions(IntEnum):
     Resurrection = 173
 
     @classmethod
-    def id_for_name(cls, id) -> str:
+    def name_for_id(cls, id) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def name_for_id(cls, name) -> int:
+    def id_for_name(cls, name) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
@@ -182,14 +182,14 @@ class HealerActions(IntEnum):
     Potion = -2
 
     @classmethod
-    def id_for_name(cls, id) -> str:
+    def name_for_id(cls, id) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def name_for_id(cls, name) -> int:
+    def id_for_name(cls, name) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
@@ -228,14 +228,14 @@ class AstrologianActions(IntEnum):
 
 
     @classmethod
-    def id_for_name(cls, id) -> str:
+    def name_for_id(cls, id) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def name_for_id(cls, name) -> int:
+    def id_for_name(cls, name) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
@@ -273,14 +273,14 @@ class SageActions(IntEnum):
     Pneuma = 24318
 
     @classmethod
-    def id_for_name(cls, id) -> str:
+    def name_for_id(cls, id) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def name_for_id(cls, name) -> int:
+    def id_for_name(cls, name) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
@@ -317,14 +317,14 @@ class ScholarActions(IntEnum):
     Biolysis = 16540
 
     @classmethod
-    def id_for_name(cls, id) -> str:
+    def name_for_id(cls, id) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def name_for_id(cls, name) -> int:
+    def id_for_name(cls, name) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
@@ -358,14 +358,14 @@ class WhiteMageActions(IntEnum):
     Bell = 25862
 
     @classmethod
-    def id_for_name(cls, id) -> str:
+    def name_for_id(cls, id) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def name_for_id(cls, name) -> int:
+    def id_for_name(cls, name) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
@@ -384,14 +384,14 @@ class TankActions(IntEnum):
     Potion = -2
 
     @classmethod
-    def id_for_name(cls, id) -> str:
+    def name_for_id(cls, id) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def name_for_id(cls, name) -> int:
+    def id_for_name(cls, name) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
@@ -422,14 +422,14 @@ class DarkKnightActions(IntEnum):
     Shadowbringer = 25757
 
     @classmethod
-    def id_for_name(cls, id) -> str:
+    def name_for_id(cls, id) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def name_for_id(cls, name) -> int:
+    def id_for_name(cls, name) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
@@ -468,14 +468,14 @@ class GunbreakerActions(IntEnum):
     BowShock = 16159
 
     @classmethod
-    def id_for_name(cls, id) -> str:
+    def name_for_id(cls, id) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def name_for_id(cls, name) -> int:
+    def id_for_name(cls, name) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
@@ -513,14 +513,14 @@ class PaladinActions(IntEnum):
     PassageOfArms = 7385
 
     @classmethod
-    def id_for_name(cls, id) -> str:
+    def name_for_id(cls, id) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def name_for_id(cls, name) -> int:
+    def id_for_name(cls, name) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
@@ -555,14 +555,14 @@ class WarriorActions(IntEnum):
     Tomahawk = 46
 
     @classmethod
-    def id_for_name(cls, id) -> str:
+    def name_for_id(cls, id) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def name_for_id(cls, name) -> int:
+    def id_for_name(cls, name) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
@@ -580,14 +580,14 @@ class MeleeActions(IntEnum):
     Potion = -2
 
     @classmethod
-    def id_for_name(cls, id) -> str:
+    def name_for_id(cls, id) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def name_for_id(cls, name) -> int:
+    def id_for_name(cls, name) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
@@ -629,14 +629,14 @@ class SamuraiActions(IntEnum):
     ThirdEye = 7498
 
     @classmethod
-    def id_for_name(cls, id) -> str:
+    def name_for_id(cls, id) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def name_for_id(cls, name) -> int:
+    def id_for_name(cls, name) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
@@ -679,14 +679,14 @@ class ReaperActions(IntEnum):
     Harpe = 24386
 
     @classmethod
-    def id_for_name(cls, id) -> str:
+    def name_for_id(cls, id) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def name_for_id(cls, name) -> int:
+    def id_for_name(cls, name) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
@@ -733,14 +733,14 @@ class NinjaActions(IntEnum):
     ForkingRaiju = 25778
 
     @classmethod
-    def id_for_name(cls, id) -> str:
+    def name_for_id(cls, id) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def name_for_id(cls, name) -> int:
+    def id_for_name(cls, name) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
@@ -776,14 +776,14 @@ class MonkActions(IntEnum):
     Mantra = 65
 
     @classmethod
-    def id_for_name(cls, id) -> str:
+    def name_for_id(cls, id) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def name_for_id(cls, name) -> int:
+    def id_for_name(cls, name) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
@@ -820,17 +820,33 @@ class DragoonActions(IntEnum):
     WyrmwindThrust = 25773
     
     @classmethod
-    def id_for_name(cls, id) -> str:
+    def name_for_id(cls, id) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def name_for_id(cls, name) -> int:
+    def id_for_name(cls, name) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
         return -1 # Evaluated as Unknown
 
+
+def name_for_id(id, cls, job_cls):
+    name = cls.name_for_id(id)
+    if name == "Unknown": 
+        return job_cls.name_for_id(id)
+    return name
+
+def id_for_name(name, cls, job_cls):
+    id = cls.id_for_name(name)
+    if id == -1: 
+        id = job_cls.id_for_name(name)
+    return id
+
+    
+
+print(id_for_name("FireI", CasterActions, BlackMageActions))
 
