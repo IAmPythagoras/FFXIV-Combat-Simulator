@@ -1,4 +1,5 @@
 from Jobs.Base_Player import Player
+from ffxivppscalc.Jobs.ActionEnum import TankActions
 
 class Tank(Player):
 
@@ -20,6 +21,9 @@ class Tank(Player):
         self.ShirkCD = 0
         self.BigMitCD = 0
         self.TankStanceCD = 0
+
+        #ActionEnum
+        self.ClassAction = TankActions
     
     def updateCD(self,time):
         if (self.RampartCD > 0) : self.RampartCD = max(0,self.RampartCD - time)

@@ -1,33 +1,38 @@
 # This will contain all action with their IDs in the game. It will map from ids -> name or name -> ids
 from enum import IntEnum # Importing enums
 
-# Caster
-
-class CasterActions(IntEnum):
-    Swiftcast = 7561
-    LucidDreaming = 7562
-    Surecast = 7559
-    Addle = 7560
-    Sleep = 25880
-    Potion = -2
+class ActionEnum(IntEnum):
+    # Parent enum class for all other enums. Will have
+    # the two functions.
 
     @classmethod
-    def name_for_id(cls, id) -> str:
+    def name_for_id(cls, id : int) -> str:
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
         return 'Unknown'
 
     @classmethod
-    def id_for_name(cls, name) -> int:
+    def id_for_name(cls, name : str) -> int:
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
         return -1 # Evaluated as Unknown
 
+# Caster
+
+class CasterActions(ActionEnum):
+    Swiftcast = 7561
+    LucidDreaming = 7562
+    Surecast = 7559
+    Addle = 7560
+    Sleep = 25880
+    Potion = -2
+    WaitAbility = 212
+
 # BlackMage
 
-class BlackMageActions(IntEnum):
+class BlackMageActions(ActionEnum):
     Paradox = 25797
     FireI = 141
     FireII = 147
@@ -55,26 +60,13 @@ class BlackMageActions(IntEnum):
     BetweenTheLines = 7419
     Triplecast = 7421
     Foul = 7422
-    Xeoglossy = 16507
+    Xenoglossy = 16507
     Amplifier = 25796
 
-    @classmethod
-    def name_for_id(cls, id) -> str:
-        # maps from id -> name
-        if id in cls.__members__.values():
-            return cls(id).name
-        return 'Unknown'
-
-    @classmethod
-    def id_for_name(cls, name) -> int:
-        # maps from name -> id
-        if name in cls.__members__.keys():
-            return cls[name].value
-        return -1 # Evaluated as Unknown
 
 # RedMage
 
-class RedMageActions(IntEnum):
+class RedMageActions(ActionEnum):
     Riposte = 7504
     Corps = 7506
     Verfire = 7510
@@ -106,23 +98,10 @@ class RedMageActions(IntEnum):
     Verflare = 7525
     Scorch = 16530
 
-    @classmethod
-    def name_for_id(cls, id) -> str:
-        # maps from id -> name
-        if id in cls.__members__.values():
-            return cls(id).name
-        return 'Unknown'
-
-    @classmethod
-    def id_for_name(cls, name) -> int:
-        # maps from name -> id
-        if name in cls.__members__.keys():
-            return cls[name].value
-        return -1 # Evaluated as Unknown
 
 # Summoner
 
-class SummonerActions(IntEnum):
+class SummonerActions(ActionEnum):
     RuinIII = 3579
     RuinIV = 7426
     TryDisaster = 25826
@@ -156,23 +135,9 @@ class SummonerActions(IntEnum):
     Physick = 16230
     Resurrection = 173
 
-    @classmethod
-    def name_for_id(cls, id) -> str:
-        # maps from id -> name
-        if id in cls.__members__.values():
-            return cls(id).name
-        return 'Unknown'
-
-    @classmethod
-    def id_for_name(cls, name) -> int:
-        # maps from name -> id
-        if name in cls.__members__.keys():
-            return cls[name].value
-        return -1 # Evaluated as Unknown
-
 # Healer
 
-class HealerActions(IntEnum):
+class HealerActions(ActionEnum):
     Repose = 16560
     Esuna = 7568
     Rescue = 7571
@@ -180,24 +145,12 @@ class HealerActions(IntEnum):
     LucidDreaming = 7562
     Surecast = 7559
     Potion = -2
+    WaitAbility = 212
 
-    @classmethod
-    def name_for_id(cls, id) -> str:
-        # maps from id -> name
-        if id in cls.__members__.values():
-            return cls(id).name
-        return 'Unknown'
-
-    @classmethod
-    def id_for_name(cls, name) -> int:
-        # maps from name -> id
-        if name in cls.__members__.keys():
-            return cls[name].value
-        return -1 # Evaluated as Unknown
 
 # Astrologian
 
-class AstrologianActions(IntEnum):
+class AstrologianActions(ActionEnum):
     Malefic = 25871
     Combust = 16554
     Gravity = 25872
@@ -227,23 +180,9 @@ class AstrologianActions(IntEnum):
     Macrocosmos = 25874
 
 
-    @classmethod
-    def name_for_id(cls, id) -> str:
-        # maps from id -> name
-        if id in cls.__members__.values():
-            return cls(id).name
-        return 'Unknown'
-
-    @classmethod
-    def id_for_name(cls, name) -> int:
-        # maps from name -> id
-        if name in cls.__members__.keys():
-            return cls[name].value
-        return -1 # Evaluated as Unknown
-
 # Sage
 
-class SageActions(IntEnum):
+class SageActions(ActionEnum):
     Egeiro = 24287
     Dosis = 24312
     EukrasianDosis = 24314
@@ -271,24 +210,9 @@ class SageActions(IntEnum):
     Panhaima = 24311
     Krasis = 24317
     Pneuma = 24318
-
-    @classmethod
-    def name_for_id(cls, id) -> str:
-        # maps from id -> name
-        if id in cls.__members__.values():
-            return cls(id).name
-        return 'Unknown'
-
-    @classmethod
-    def id_for_name(cls, name) -> int:
-        # maps from name -> id
-        if name in cls.__members__.keys():
-            return cls[name].value
-        return -1 # Evaluated as Unknown
-
 # Scholar
 
-class ScholarActions(IntEnum):
+class ScholarActions(ActionEnum):
     Aetherflow = 166
     EnergyDrain = 167
     Adloquium = 185
@@ -316,24 +240,11 @@ class ScholarActions(IntEnum):
     RuinII = 17870
     Biolysis = 16540
 
-    @classmethod
-    def name_for_id(cls, id) -> str:
-        # maps from id -> name
-        if id in cls.__members__.values():
-            return cls(id).name
-        return 'Unknown'
-
-    @classmethod
-    def id_for_name(cls, name) -> int:
-        # maps from name -> id
-        if name in cls.__members__.keys():
-            return cls[name].value
-        return -1 # Evaluated as Unknown
 
 
 # Whitemage
 
-class WhiteMageActions(IntEnum):
+class WhiteMageActions(ActionEnum):
     Glare = 25859
     Dia = 16532
     Holy = 25860
@@ -357,23 +268,9 @@ class WhiteMageActions(IntEnum):
     Aquaveil = 25861
     Bell = 25862
 
-    @classmethod
-    def name_for_id(cls, id) -> str:
-        # maps from id -> name
-        if id in cls.__members__.values():
-            return cls(id).name
-        return 'Unknown'
-
-    @classmethod
-    def id_for_name(cls, name) -> int:
-        # maps from name -> id
-        if name in cls.__members__.keys():
-            return cls[name].value
-        return -1 # Evaluated as Unknown
-
 # Tank
 
-class TankActions(IntEnum):
+class TankActions(ActionEnum):
     Rampart = 7531
     Reprisal = 7535
     ArmLength = 7548
@@ -382,20 +279,8 @@ class TankActions(IntEnum):
     Shirk = 7537
     TankStance = 16142
     Potion = -2
+    WaitAbility = 212
 
-    @classmethod
-    def name_for_id(cls, id) -> str:
-        # maps from id -> name
-        if id in cls.__members__.values():
-            return cls(id).name
-        return 'Unknown'
-
-    @classmethod
-    def id_for_name(cls, name) -> int:
-        # maps from name -> id
-        if name in cls.__members__.keys():
-            return cls[name].value
-        return -1 # Evaluated as Unknown
 
 # DarkKnight
 
@@ -421,23 +306,10 @@ class DarkKnightActions(IntEnum):
     SaltAndDarkness = 25755
     Shadowbringer = 25757
 
-    @classmethod
-    def name_for_id(cls, id) -> str:
-        # maps from id -> name
-        if id in cls.__members__.values():
-            return cls(id).name
-        return 'Unknown'
-
-    @classmethod
-    def id_for_name(cls, name) -> int:
-        # maps from name -> id
-        if name in cls.__members__.keys():
-            return cls[name].value
-        return -1 # Evaluated as Unknown
 
 # Gunbreaker
 
-class GunbreakerActions(IntEnum):
+class GunbreakerActions(ActionEnum):
     Superbolide = 16152
     LightningShot = 16143
     RoughDivide = 16154
@@ -467,23 +339,9 @@ class GunbreakerActions(IntEnum):
     HeartOfLight = 16160
     BowShock = 16159
 
-    @classmethod
-    def name_for_id(cls, id) -> str:
-        # maps from id -> name
-        if id in cls.__members__.values():
-            return cls(id).name
-        return 'Unknown'
-
-    @classmethod
-    def id_for_name(cls, name) -> int:
-        # maps from name -> id
-        if name in cls.__members__.keys():
-            return cls[name].value
-        return -1 # Evaluated as Unknown
-
 # Paladin
 
-class PaladinActions(IntEnum):
+class PaladinActions(ActionEnum):
     HallowedGround = 30
     ShieldLob = 24
     Intervene = 16461
@@ -512,23 +370,10 @@ class PaladinActions(IntEnum):
     DivineVeil = 3540
     PassageOfArms = 7385
 
-    @classmethod
-    def name_for_id(cls, id) -> str:
-        # maps from id -> name
-        if id in cls.__members__.values():
-            return cls(id).name
-        return 'Unknown'
-
-    @classmethod
-    def id_for_name(cls, name) -> int:
-        # maps from name -> id
-        if name in cls.__members__.keys():
-            return cls[name].value
-        return -1 # Evaluated as Unknown'
 
 # Warrior
 
-class WarriorActions(IntEnum):
+class WarriorActions(ActionEnum):
     Holmgang = 43
     Onslaught = 7386
     Infuriate = 52
@@ -553,24 +398,10 @@ class WarriorActions(IntEnum):
     NascentFlash = 16464
     ShakeItOff = 7388
     Tomahawk = 46
-
-    @classmethod
-    def name_for_id(cls, id) -> str:
-        # maps from id -> name
-        if id in cls.__members__.values():
-            return cls(id).name
-        return 'Unknown'
-
-    @classmethod
-    def id_for_name(cls, name) -> int:
-        # maps from name -> id
-        if name in cls.__members__.keys():
-            return cls[name].value
-        return -1 # Evaluated as Unknown
     
 # Melee
 
-class MeleeActions(IntEnum):
+class MeleeActions(ActionEnum):
     SecondWind = 7541
     LegSweep = 7863
     Bloodbath = 7542
@@ -578,24 +409,11 @@ class MeleeActions(IntEnum):
     TrueNorth = 7546
     ArmLength = 7548
     Potion = -2
-
-    @classmethod
-    def name_for_id(cls, id) -> str:
-        # maps from id -> name
-        if id in cls.__members__.values():
-            return cls(id).name
-        return 'Unknown'
-
-    @classmethod
-    def id_for_name(cls, name) -> int:
-        # maps from name -> id
-        if name in cls.__members__.keys():
-            return cls[name].value
-        return -1 # Evaluated as Unknown
+    WaitAbility = 212
 
 # Samurai
 
-class SamuraiActions(IntEnum):
+class SamuraiActions(ActionEnum):
     Hakaze = 7477
     Shifu = 7479
     Kasha = 7482
@@ -628,23 +446,10 @@ class SamuraiActions(IntEnum):
     Enpi = 7486
     ThirdEye = 7498
 
-    @classmethod
-    def name_for_id(cls, id) -> str:
-        # maps from id -> name
-        if id in cls.__members__.values():
-            return cls(id).name
-        return 'Unknown'
-
-    @classmethod
-    def id_for_name(cls, name) -> int:
-        # maps from name -> id
-        if name in cls.__members__.keys():
-            return cls[name].value
-        return -1 # Evaluated as Unknown
     
 # Reaper
 
-class ReaperActions(IntEnum):
+class ReaperActions(ActionEnum):
     Slice = 24373
     WaxingSlice = 24374
     InfernalSlice = 24375
@@ -678,23 +483,10 @@ class ReaperActions(IntEnum):
     Regress = 24401
     Harpe = 24386
 
-    @classmethod
-    def name_for_id(cls, id) -> str:
-        # maps from id -> name
-        if id in cls.__members__.values():
-            return cls(id).name
-        return 'Unknown'
-
-    @classmethod
-    def id_for_name(cls, name) -> int:
-        # maps from name -> id
-        if name in cls.__members__.keys():
-            return cls[name].value
-        return -1 # Evaluated as Unknown
     
 # Ninja
 
-class NinjaActions(IntEnum):
+class NinjaActions(ActionEnum):
     SpinningEdge = 2240
     GustSlash = 2242
     AeolianEdge = 2255
@@ -732,23 +524,10 @@ class NinjaActions(IntEnum):
     FleetingRaiju = 25777
     ForkingRaiju = 25778
 
-    @classmethod
-    def name_for_id(cls, id) -> str:
-        # maps from id -> name
-        if id in cls.__members__.values():
-            return cls(id).name
-        return 'Unknown'
-
-    @classmethod
-    def id_for_name(cls, name) -> int:
-        # maps from name -> id
-        if name in cls.__members__.keys():
-            return cls[name].value
-        return -1 # Evaluated as Unknown
 
 # Monk
 
-class MonkActions(IntEnum):
+class MonkActions(ActionEnum):
     BootShine = 53
     TrueStrike = 54
     Demolish = 66
@@ -775,23 +554,10 @@ class MonkActions(IntEnum):
     Anatman = 16475
     Mantra = 65
 
-    @classmethod
-    def name_for_id(cls, id) -> str:
-        # maps from id -> name
-        if id in cls.__members__.values():
-            return cls(id).name
-        return 'Unknown'
-
-    @classmethod
-    def id_for_name(cls, name) -> int:
-        # maps from name -> id
-        if name in cls.__members__.keys():
-            return cls[name].value
-        return -1 # Evaluated as Unknown
 
 # Dragoon
 
-class DragoonActions(IntEnum):
+class DragoonActions(ActionEnum):
     TrueThrust = 75
     VorpalThrust = 78
     HeavenThrust = 25771
@@ -819,21 +585,111 @@ class DragoonActions(IntEnum):
     Stardiver = 16480
     WyrmwindThrust = 25773
     
-    @classmethod
-    def name_for_id(cls, id) -> str:
-        # maps from id -> name
-        if id in cls.__members__.values():
-            return cls(id).name
-        return 'Unknown'
 
-    @classmethod
-    def id_for_name(cls, name) -> int:
-        # maps from name -> id
-        if name in cls.__members__.keys():
-            return cls[name].value
-        return -1 # Evaluated as Unknown
+# Physical Ranged
+
+class RangedActions(ActionEnum):
+    LegGraze = 7554
+    FootGraze = 7553
+    HeadGraze = 7551
+    Peloton = 7557
+    SecondWind = 7541
+    ArmLength = 7548
+    Potion = -2
+    WaitAbility = 212
 
 
+# Bard
+
+class BardActions(ActionEnum):
+    RagingStrike = 101
+    Barrage = 107
+    MageBallad = 114
+    ArmyPaeon = 116
+    RainOfDeath = 117
+    BattleVoice = 118
+    EmpyrealArrow = 3558
+    WandererMinuet = 3559
+    IronJaws = 3560
+    WardenPaean = 3561
+    Sidewinder = 3562
+    PitchPerfect = 7404 # Assumed to be 3 stack
+    Troubadour = 7405
+    Causticbite = 7406
+    Stormbite = 7407
+    NatureMinne = 7408
+    RefulgentArrow = 7409
+    Shadowbite = 16494
+    BurstShot = 16495
+    ApexArrow = 16496 # Assumed to be 80 gauge
+    Ladonsbite = 25783
+    RadiantFinale = 25785
+    RepellingShot = 112
+    BloodLetter = 110
+    BlastArrow = 25784
+
+# Machinist
+
+class MachinistActions(ActionEnum):
+    SplitShot = 7411
+    SlughShot = 7412
+    ChainSaw = 25788
+    Scattergun = 25768
+    Hypercharge = 17209
+    Tactician = 16889
+    Overdrive = 16502
+    Automaton = 16501
+    AirAnchor = 16500
+    Bioblaster = 16499
+    Drill = 16498
+    AutoCrossbow = 16497
+    Flamethrower = 7418 # Assumed to be for 2.5s
+    BarrelStabilizer = 7414
+    CleanShot = 7413
+    HeatBlast = 7410
+    Wildfire = 2878
+    GaussRound = 2874
+    Ricochet = 2890
+    Reassemble = 2876
+
+# Dancer
+
+class DancerActions(ActionEnum):
+    StarfallDance = 25792
+    FanDanceIV = 25791
+    CuringWaltz = 16015
+    Improvisation = 16014
+    Flourish = 16013
+    Samba = 16012
+    Devilment = 16011
+    EnAvant = 16010
+    FanDanceIII = 16009
+    FanDanceII = 16008
+    FanDanceI = 16007
+    ClosedPosition = 16006
+    SaberDance = 16005
+    StandardStep = 15997
+    TechnicalStep = 15998
+    Bloodshower = 15996
+    RisingWindmill = 15995
+    Bladeshower = 15994
+    Windmill = 15993
+    FountainFall = 15992
+    ReverseCascade = 15991
+    Fountain = 15990
+    Cascade = 15989
+    TechnicalFinish = 16004
+    StandardFinish = 16003
+    ImprovisedFinish = 25789
+    Ending = 18073
+    Tillana = 25790
+    Emboite = 15999
+    Entrechat = 16000
+    Jete = 16001
+    Pirouette = 16002
+
+
+# These are the functions we will call since they check for both cls and job_class
 def name_for_id(id, cls, job_cls):
     name = cls.name_for_id(id)
     if name == "Unknown": 

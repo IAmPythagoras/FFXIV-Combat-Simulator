@@ -1,5 +1,6 @@
 from Jobs.Tank.Tank_Player import Tank
 from Jobs.Base_Player import ManaRegenCheck
+from ffxivppscalc.Jobs.ActionEnum import PaladinActions
 class Paladin(Tank):
 
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
@@ -50,6 +51,9 @@ class Paladin(Tank):
 
         #JobMod
         self.JobMod = 100
+
+        #ActionEnum
+        self.JobAction = PaladinActions
 
     def updateCD(self, time):
         super().updateCD(time)

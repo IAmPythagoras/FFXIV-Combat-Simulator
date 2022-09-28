@@ -2,6 +2,7 @@
 ########## NINJA PLAYER #################
 #########################################
 from Jobs.Melee.Melee_Player import Melee
+from ffxivppscalc.Jobs.ActionEnum import NinjaActions
 
 class Ninja(Melee):
 
@@ -62,6 +63,10 @@ class Ninja(Melee):
 
         #Shadow 
         self.Shadow = None #Pointer to Shadow object
+
+        #ActionEnum
+        self.JobAction = NinjaActions
+        
     def ResetRitual(self):
         self.CurrentRitual = []
 

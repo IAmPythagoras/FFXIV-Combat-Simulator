@@ -3,6 +3,7 @@
 #########################################
 from Jobs.Tank.Tank_Player import Tank
 from Jobs.Base_Player import ManaRegenCheck
+from ffxivppscalc.Jobs.ActionEnum import DarkKnightActions
 class DarkKnight(Tank):
     #A class for Dark Knight Players containing all effects and cooldowns relevant to the job.
 
@@ -44,6 +45,9 @@ class DarkKnight(Tank):
         self.SaltedEarthDOT = None
         #JobMod
         self.JobMod = 105
+
+        #ActionEnum
+        self.JobAction = DarkKnightActions
 
     def updateCD(self, time):
         super().updateCD(time)
