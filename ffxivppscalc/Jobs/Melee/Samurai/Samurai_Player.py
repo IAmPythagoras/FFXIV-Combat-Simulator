@@ -3,7 +3,7 @@
 #########################################
 
 from Jobs.Melee.Melee_Player import Melee
-from ffxivppscalc.Jobs.ActionEnum import SamuraiActions
+from Jobs.ActionEnum import SamuraiActions
 
 class Samurai(Melee):
 

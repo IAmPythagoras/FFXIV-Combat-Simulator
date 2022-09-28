@@ -1,5 +1,5 @@
 from Jobs.Base_Player import Player
-from ffxivppscalc.Jobs.ActionEnum import MeleeActions
+from Jobs.ActionEnum import MeleeActions
 
 class Melee(Player):
 

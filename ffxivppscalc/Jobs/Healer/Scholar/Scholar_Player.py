@@ -3,7 +3,7 @@
 #########################################
 
 from Jobs.Healer.Healer_Player import Healer
-from ffxivppscalc.Jobs.ActionEnum import ScholarActions
+from Jobs.ActionEnum import ScholarActions
 
 class Scholar(Healer):
 

@@ -2,7 +2,7 @@
 ########## NINJA PLAYER #################
 #########################################
 from Jobs.Melee.Melee_Player import Melee
-from ffxivppscalc.Jobs.ActionEnum import NinjaActions
+from Jobs.ActionEnum import NinjaActions
 
 class Ninja(Melee):
 

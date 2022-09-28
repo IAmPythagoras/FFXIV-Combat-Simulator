@@ -1,5 +1,5 @@
 from Jobs.Base_Player import Player
-from ffxivppscalc.Jobs.ActionEnum import CasterActions
+from Jobs.ActionEnum import CasterActions
 
 
 class Caster(Player):

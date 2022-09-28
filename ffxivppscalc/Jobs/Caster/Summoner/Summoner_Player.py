@@ -1,6 +1,6 @@
 from Jobs.Caster.Caster_Player import Caster
 from Jobs.Base_Player import ManaRegenCheck
-from ffxivppscalc.Jobs.ActionEnum import SummonerActions
+from Jobs.ActionEnum import SummonerActions
 
 
 class Summoner(Caster):

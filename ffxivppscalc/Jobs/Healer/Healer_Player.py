@@ -1,6 +1,6 @@
 from Jobs.Base_Player import Player
 from Jobs.Base_Player import ManaRegenCheck
-from ffxivppscalc.Jobs.ActionEnum import HealerActions
+from Jobs.ActionEnum import HealerActions
 
 class Healer(Player):
 

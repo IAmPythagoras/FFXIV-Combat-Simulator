@@ -3,7 +3,7 @@
 #########################################
 
 from Jobs.Melee.Melee_Player import Melee
-from ffxivppscalc.Jobs.ActionEnum import MonkActions
+from Jobs.ActionEnum import MonkActions
 
 class Monk(Melee):
 

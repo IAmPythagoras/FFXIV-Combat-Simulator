@@ -45,7 +45,7 @@ from Jobs.Melee.Reaper.Reaper_Player import *
 from Jobs.Melee.Monk.Monk_Player import *
 
 
-letters = "abcdefghijklmnopqrstuvwyxz"
+letters = "abcdefghijklmnopqrstuvwyxz" # Used to make sure the input is only numbers
 
 #This file will take care of request by TUI.py and return whatever needs to be returned
 
@@ -243,7 +243,6 @@ def SaveFight(Event, countdown, fightDuration, saveName):
             if action.id == 212 : #WaitAbility
                 if action.waitTime != 0:
                     actionDict["actionName"] = name_for_id(action.id,Player.ClassAction, Player.JobAction)
-                    actionDict["actionID"] = 212
                     actionDict["sourceID"] = Player.playerID
                     actionDict["targetID"] = 0 #id 0 is by default the main enemy
                     actionDict["isGCD"] = False
@@ -252,7 +251,6 @@ def SaveFight(Event, countdown, fightDuration, saveName):
                     actionList.append(copy.deepcopy(actionDict))#adding to dict
             else: #Normal ability
                 actionDict["actionName"] = name_for_id(action.id,Player.ClassAction, Player.JobAction)
-                actionDict["actionID"] = action.id 
                 actionDict["sourceID"] = Player.playerID
                 actionDict["targetID"] = action.TargetID #id 0 is by default the main enemy
                 actionDict["isGCD"] = action.GCD
@@ -459,7 +457,7 @@ def SimulateFightBackend(file_name):
             if int(actionID) == 212 : 
                 #WaitAbility. WaitAbility has a special field where the waited time is specified
                 actionObject = WaitAbility(action["waitTime"])
-            else: actionObject = lookup_abilityID(action["actionID"],action["targetID"], action["sourceID"],PlayerActionList) #Getting action object
+            else: actionObject = lookup_abilityID(actionID,action["targetID"], action["sourceID"],PlayerActionList) #Getting action object
 
             PlayerActionList[playerID]["actionObject"] += [actionObject]
 

@@ -1,5 +1,5 @@
 from Jobs.Base_Player import Player
-from ffxivppscalc.Jobs.ActionEnum import TankActions
+from Jobs.ActionEnum import TankActions
 
 class Tank(Player):
 

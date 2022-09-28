@@ -3,7 +3,7 @@
 #########################################
 
 from Jobs.Melee.Melee_Player import Melee
-from ffxivppscalc.Jobs.ActionEnum import DragoonActions
+from Jobs.ActionEnum import DragoonActions
 
 class Dragoon(Melee):
 

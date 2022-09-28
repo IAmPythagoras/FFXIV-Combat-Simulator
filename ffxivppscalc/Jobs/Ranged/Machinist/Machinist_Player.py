@@ -2,6 +2,7 @@
 ########## MACHINIST PLAYER #############
 #########################################
 from Jobs.Ranged.Ranged_Player import Ranged
+from Jobs.ActionEnum import MachinistActions
 
 class Machinist(Ranged):
     
@@ -54,6 +55,9 @@ class Machinist(Ranged):
         self.Queen = None
         self.Overdrive = False  #Used to know if we can cast overdrive. Its set to true once the Queen is summoned and set to false when Overdrive is used
         self.QueenOnField = False
+
+        #ActionEnum
+        self.JobAction = MachinistActions
 
         
 

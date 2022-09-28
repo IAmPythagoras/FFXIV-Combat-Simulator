@@ -1,5 +1,5 @@
 from Jobs.Melee.Melee_Player import Melee
-from ffxivppscalc.Jobs.ActionEnum import ReaperActions
+from Jobs.ActionEnum import ReaperActions
 
 class Reaper(Melee):
 

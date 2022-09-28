@@ -1,4 +1,5 @@
 from Jobs.Ranged.Ranged_Player import Ranged
+from Jobs.ActionEnum import DancerActions
 
 class Dancer(Ranged):
 
@@ -69,6 +70,8 @@ class Dancer(Ranged):
         self.TechnicalFinishTimer = 0
         self.DevilmentTimer = 0
 
+        #ActionEnum
+        self.JobAction = DancerActions
 
 
 

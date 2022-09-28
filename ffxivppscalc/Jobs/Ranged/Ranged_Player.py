@@ -1,4 +1,5 @@
 from Jobs.Base_Player import Player
+from Jobs.ActionEnum import RangedActions
 
 class Ranged(Player):
 
@@ -19,6 +20,9 @@ class Ranged(Player):
 
         #trait
         self.Trait = 1.2 #Common to all phys ranged
+
+        #ActionEnum
+        self.ClassAction = RangedActions
     
     def updateCD(self,time):
         if (self.LegGrazeCD > 0) : self.LegGrazeCD = max(0,self.LegGrazeCD - time)

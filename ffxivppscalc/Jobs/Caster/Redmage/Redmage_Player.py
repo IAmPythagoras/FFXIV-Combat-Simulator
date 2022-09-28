@@ -3,7 +3,7 @@
 #########################################
 from Jobs.Caster.Caster_Player import Caster
 from Jobs.Base_Player import ManaRegenCheck
-from ffxivppscalc.Jobs.ActionEnum import RedMageActions
+from Jobs.ActionEnum import RedMageActions
 
 class Redmage(Caster):
 

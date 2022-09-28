@@ -3,7 +3,7 @@
 #########################################
 
 from Jobs.Tank.Tank_Player import Tank
-from ffxivppscalc.Jobs.ActionEnum import WarriorActions
+from Jobs.ActionEnum import WarriorActions
 
 class Warrior(Tank):
 

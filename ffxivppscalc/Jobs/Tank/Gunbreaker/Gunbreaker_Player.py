@@ -1,5 +1,5 @@
 from Jobs.Tank.Tank_Player import Tank
-from ffxivppscalc.Jobs.ActionEnum import GunbreakerActions
+from Jobs.ActionEnum import GunbreakerActions
 
 class Gunbreaker(Tank):
 

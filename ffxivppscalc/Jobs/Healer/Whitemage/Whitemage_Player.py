@@ -3,7 +3,7 @@
 #########################################
 
 from Jobs.Healer.Healer_Player import Healer
-from ffxivppscalc.Jobs.ActionEnum import WhiteMageActions
+from Jobs.ActionEnum import WhiteMageActions
 class Whitemage(Healer):
 
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):

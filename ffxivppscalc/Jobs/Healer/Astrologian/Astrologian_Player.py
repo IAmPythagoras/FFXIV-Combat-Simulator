@@ -1,5 +1,5 @@
 from Jobs.Healer.Healer_Player import Healer
-from ffxivppscalc.Jobs.ActionEnum import AstrologianActions
+from Jobs.ActionEnum import AstrologianActions
 
 class Astrologian(Healer):
 

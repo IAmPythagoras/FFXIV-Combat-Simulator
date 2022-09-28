@@ -2,7 +2,7 @@
 ########## BLACK MAGE PLAYER ############
 #########################################
 from Jobs.Caster.Caster_Player import Caster
-from ffxivppscalc.Jobs.ActionEnum import BlackMageActions
+from Jobs.ActionEnum import BlackMageActions
 
 class BlackMage(Caster):
     #This class will be blackmage object and will be the one used to simulate a black mage
