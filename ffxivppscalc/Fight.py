@@ -483,8 +483,8 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
 
     # type = 0 (Direct Damage), type = 1 (magical DOT), type = 2(physical DOT), type = 3 (Auto-attacks)
 
-    # All relevant formulas were taken from https://finalfantasy.fandom.com/wiki/Final_Fantasy_XIV_attributes# Damage_and_healing_formulae ,
-    # were given to me by javaJake# 0001 on discord or were taken from the Allagan Studies discord server.
+    # All relevant formulas were taken from https://finalfantasy.fandom.com/wiki/Final_Fantasy_XIV_attributes#Damage_and_healing_formulae ,
+    # were given to me by javaJake#0001 on discord or were taken from the Allagan Studies discord server.
     # The formulas on the website assume a random function that will randomise the ouput. We instead compute the expected outcome.
     # Also thanks to whoever did the DPS computation code on the black mage gear comparison sheet : https://docs.google.com/spreadsheets/d/1t3EYSOPuMceqCFrU4WAbzSd4gbYi-J7YeMB36dNmaWM/edit# gid=654212594
     # It helped me a lot to understand better the DPS computation of this game

@@ -10,7 +10,7 @@ class Player:
         self.EffectCDList = []       #List of Effect for which we have to check if the have ended
         self.DOTList = []
         self.NextSpell = 0
-        self.CastingSpell = []
+        #self.CastingSpell = []
         self.CurrentFight = CurrentFight
         self.ManaTick = 1.5 #Starts Mana tick at this value
         self.playerID = 0 #Might not be necessary so by default 0

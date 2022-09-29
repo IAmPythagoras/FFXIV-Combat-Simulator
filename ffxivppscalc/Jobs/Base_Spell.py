@@ -5,7 +5,6 @@ import math
 from Jobs.Caster.Summoner.Summoner_Player import BigSummon
 from Jobs.Melee.Melee_Player import Melee
 from Jobs.Melee.Monk.Monk_Player import Monk
-#from Jobs.Melee.Monk.Monk_Spell import Monk_Auto
 from Jobs.Melee.Ninja.Ninja_Player import Shadow
 from Jobs.Ranged.Dancer.Dancer_Player import Dancer
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
