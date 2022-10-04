@@ -208,7 +208,6 @@ class Fight:
             print("The Total Potency done by player " + str(type(player)) + " was : " + str(player.TotalPotency))
             print("This same player had a Potency Per Second of: " + str(round(PPS,2)))
             print("This same Player had an average of " + str(round(player.TotalPotency/player.NextSpell,2)) + " Potency/Spell")
-            print("This same Player had an average of " + str(round(PPS/player.GCDTimer,2)) + " Potency/GCD")
             print("The DPS is : " + str(round(DPS,2)))
             print("=======================================================")
 

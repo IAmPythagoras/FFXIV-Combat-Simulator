@@ -2,7 +2,8 @@ import os
 
 from Enemy import Enemy
 from Fight import Fight
-
+from Jobs.Player import Player
+from Jobs.PlayerEnum import *
 
 from Jobs.Base_Spell import WaitAbility, Potion
 from Jobs.Caster.Caster_Spell import *
@@ -111,6 +112,7 @@ def ExecuteMemoryCode(SaveFight_check):
 
     # Caster player object
     BLMPlayer = BlackMage(2.5, [], [], [EnochianEffect, ElementalEffect], Event, BLMStat)
+    BLMPlayer = Player([], [EnochianEffect, ElementalEffect], Event, BLMStat, JobEnum.BlackMage)
     RDMPlayer = Redmage(2.5, [], [], [DualCastEffect], Event, RDMStat)
     SMNPlayer = Summoner(2.5, [], [], [], Event, SMNStat)
 
