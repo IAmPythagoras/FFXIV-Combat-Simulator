@@ -15,7 +15,7 @@ R = TypeVar('R', bound=JobEnum.Reaper) # Reaper
 
 class Player:
 
-    def __init__(self, ActionSet, EffectList, CurrentFight, Stat,Job):
+    def __init__(self, ActionSet, EffectList, CurrentFight, Stat,Job : JobEnum):
         """Create the player object"""
         self.ActionSet = ActionSet # Known Action List
         self.EffectList = EffectList # Normally Empty, can has some effects initially
@@ -23,6 +23,7 @@ class Player:
         self.JobEnum = Job # JobEnum
         self.EffectCDList = [] # List of Effect for which we have to check if the have ended
         self.DOTList = [] # List of DOTs
+        self.CastingSpell = []
         self.NextSpell = 0 # Index of next action in ActionSet
         self.CurrentFight = CurrentFight # Reference to the fight the player is in
         self.ManaTick = 1.5 # Starts Mana tick at this value
@@ -79,6 +80,13 @@ class Player:
         self.CritRate = 0
         self.CritMult = 0
         self.DHRate = 0
+
+        def ManaRegenCheck(Player, Enemy):  #This function is there by default
+            if Player.ManaTick <= 0:
+                Player.ManaTick = 3
+                Player.Mana = min(10000, Player.Mana + 200)
+
+        if Job != JobEnum.BlackMage : self.EffectCDList.append(ManaRegenCheck) # If not blackmage since they have different mana regen
 
 
         # Will now find the class and job so we can initialize the other specific fields
@@ -161,6 +169,42 @@ class Player:
 
     # The functions under here will be called to initialize the Role and/or Job
 
+    # update functions
+
+    def updateTimer(self, time):
+        if (self.GCDLockTimer > 0) : self.GCDLockTimer = max(0, self.GCDLockTimer-time)
+        if (self.oGCDLockTimer > 0) : self.oGCDLockTimer = max(0, self.oGCDLockTimer-time)
+        if (self.CastingLockTimer > 0) : self.CastingLockTimer = max(0, self.CastingLockTimer-time)
+        if (self.ManaTick > 0) : self.ManaTick = max(0, self.ManaTick-time)
+        if (self.ArcanumTimer > 0) : self.ArcanumTimer = max(0, self.ArcanumTimer-time)
+        if (self.PotionTimer > 0) : self.PotionTimer = max(0, self.PotionTimer-time)
+        if (self.MeditativeBrotherhoodTimer > 0) : self.MeditativeBrotherhoodTimer = max(0, self.MeditativeBrotherhoodTimer-time)
+
+        # Will now call the Role and Job update functions
+        self.updateRoleCD(self, time)
+        self.updateRoleTimer(self, time)
+        self.updateJobCD(self, time)
+        self.updateJobTimer(self, time)
+
+
+    def updateLock(self):
+        if (self.GCDLockTimer <= 0):
+            self.GCDLockTimer = 0
+            self.GCDLock = False
+        
+        if (self.oGCDLockTimer <= 0):
+            self.oGCDLockTimer = 0
+            self.oGCDLock = False
+        
+        if(self.Casting and self.CastingLockTimer <=0):
+            self.CastingSpell.CastFinal(self, self.CastingTarget)
+
+        if (self.CastingLockTimer <= 0):
+            self.CastingLockTimer = 0
+            self.Casting = False
+
+    # Roles
+
     def init_caster(self):
         #Shared ressources across casters
         
@@ -189,7 +233,6 @@ class Player:
             if (self.AddleCD > 0) : self.AddleCD = max(0,self.AddleCD - time)
 
         def updateTimer(self, time):
-            super().updateTimer(time)
             if (self.LucidDreamingTimer > 0) : self.LucidDreamingTimer = max(0,self.LucidDreamingTimer - time)
 
         self.updateRoleCD = updateCD
@@ -224,7 +267,7 @@ class Player:
             if (self.SurecastCD > 0) : self.SurecastCD = max(0,self.SurecastCD - time)
 
         def updateTimer(self, time):
-            super().updateTimer(time)
+            
             if (self.LucidDreamingTimer > 0) : self.LucidDreamingTimer = max(0,self.LucidDreamingTimer - time)
 
         self.updateRoleCD = updateCD
@@ -336,6 +379,7 @@ class Player:
         self.updateRoleCD = updateCD
         self.updateRoleTimer = updateTimer
 
+    # Jobs
 
     def init_blackmage(self):
         #Gauge
@@ -379,7 +423,6 @@ class Player:
 
 
         def updateCD(self : B, time):
-            super().updateCD(time)
             if (self.TransposeCD > 0) : self.TransposeCD = max(0,self.TransposeCD - time)
             if (self.AmplifierCD > 0) : self.AmplifierCD = max(0,self.AmplifierCD - time)
             if (self.LeyLinesCD > 0) : self.LeyLinesCD = max(0,self.LeyLinesCD - time)
@@ -389,7 +432,6 @@ class Player:
             if (self.ManawardCD > 0) : self.ManawardCD = max(0,self.ManawardCD - time)
 
         def updateTimer(self : B, time):
-            super().updateTimer(time)
             if (self.PolyglotTimer > 0) : self.PolyglotTimer = max(0,self.PolyglotTimer - time)
             if (self.EnochianTimer > 0) : self.EnochianTimer = max(0,self.EnochianTimer - time)
             if (self.LeyLinesTimer > 0) : self.LeyLinesTimer = max(0,self.LeyLinesTimer - time)
@@ -458,7 +500,7 @@ class Player:
 
 
         def updateCD(self, time):
-            super().updateCD(time)
+            
             if (self.EmboldenCD > 0) : self.EmboldenCD = max(0,self.EmboldenCD - time)
             if (self.ManaficationCD > 0) : self.ManaficationCD = max(0,self.ManaficationCD - time)
             if (self.LucidDreamingCD > 0) : self.LucidDreamingCD = max(0,self.LucidDreamingCD - time)
@@ -471,7 +513,7 @@ class Player:
 
 
         def updateTimer(self, time):
-            super().updateTimer(time)
+            
             if (self.EmboldenTimer > 0) : self.EmboldenTimer = max(0,self.EmboldenTimer - time)
             if (self.ManaficationTimer > 0) : self.ManaficationTimer = max(0,self.ManaficationTimer - time)
             if (self.LucidDreamingTimer > 0) : self.LucidDreamingTimer = max(0,self.LucidDreamingTimer - time)
@@ -533,7 +575,7 @@ class Player:
         self.JobAction = SummonerActions
 
         def updateCD(self, time):
-            super().updateCD(time)
+            
             if (self.TranceCD > 0) : self.TranceCD = max(0,self.TranceCD - time)
             if (self.SearingLightCD > 0) : self.SearingLightCD = max(0,self.SearingLightCD - time)
             if (self.EnergyDrainCD > 0) : self.EnergyDrainCD = max(0,self.EnergyDrainCD - time)
@@ -541,7 +583,7 @@ class Player:
 
 
         def updateTimer(self, time):
-            super().updateTimer(time)
+            
             if (self.TranceTimer > 0) : self.TranceTimer = max(0,self.TranceTimer - time)
             if (self.SearingLightTimer > 0) : self.SearingLightTimer = max(0,self.SearingLightTimer - time)
             if (self.SlipstreamDOTTimer > 0) : self.SlipstreamDOTTimer = max(0,self.SlipstreamDOTTimer - time)
@@ -588,7 +630,7 @@ class Player:
 
 
         def updateCD(self, time):
-            super().updateCD(time)
+            
             if (self.LucidDreamingCD > 0) : self.LucidDreamingCD = max(0,self.LucidDreamingCD - time)
             if (self.AssizeCD > 0) : self.AssizeCD = max(0,self.AssizeCD - time)
             if (self.ThinAirCD > 0) : self.ThinAirCD = max(0,self.ThinAirCD - time)
@@ -603,7 +645,7 @@ class Player:
             if (self.BenedictionCD > 0) : self.BenedictionCD = max(0,self.BenedictionCD - time)
 
         def updateTimer(self, time):
-            super().updateTimer(time)
+            
             if (self.DiaTimer > 0) : self.DiaTimer = max(0,self.DiaTimer - time)
             if (self.LucidDreamingTimer > 0) : self.LucidDreamingTimer = max(0,self.LucidDreamingTimer - time)
             if (self.PresenceOfMindTimer > 0) : self.PresenceOfMindTimer = max(0,self.PresenceOfMindTimer - time)
@@ -656,7 +698,7 @@ class Player:
         self.JobAction = ScholarActions
 
         def updateCD(self, time):
-            super().updateCD(time)
+            
             if (self.AetherFlowCD > 0) : self.AetherFlowCD = max(0,self.AetherFlowCD - time)
             if (self.ChainStratagemCD > 0) : self.ChainStratagemCD = max(0,self.ChainStratagemCD - time)
             if (self.EnergyDrainCD > 0) : self.EnergyDrainCD = max(0,self.EnergyDrainCD - time)
@@ -677,7 +719,7 @@ class Player:
             if (self.WhisperingDawnCD > 0) : self.WhisperingDawnCD = max(0,self.WhisperingDawnCD - time)
 
         def updateTimer(self, time):
-            super().updateTimer(time)
+            
             if (self.BiolysisTimer > 0) : self.BiolysisTimer = max(0,self.BiolysisTimer - time)
             if (self.LucidDreamingTimer > 0) : self.LucidDreamingTimer = max(0,self.LucidDreamingTimer - time)
             if (self.ChainStratagemTimer > 0) : self.ChainStratagemTimer = max(0,self.ChainStratagemTimer - time)
@@ -733,7 +775,7 @@ class Player:
 
 
         def updateCD(self, time):
-            super().updateCD(time)
+            
             if (self.LightspeedCD > 0) : self.LightspeedCD = max(0,self.LightspeedCD - time)
             if (self.DivinationCD > 0) : self.DivinationCD = max(0,self.DivinationCD - time)
             if (self.MinorArcanaCD > 0) : self.MinorArcanaCD = max(0,self.MinorArcanaCD - time)
@@ -749,7 +791,7 @@ class Player:
             if (self.SynastryCD > 0) : self.SynastryCD = max(0,self.SynastryCD - time)
 
         def updateTimer(self, time):
-            super().updateTimer(time)
+            
             if (self.CumbustDOTTimer > 0) : self.CumbustDOTTimer = max(0,self.CumbustDOTTimer - time)
             if (self.LightspeedTimer > 0) : self.LightspeedTimer = max(0,self.LightspeedTimer - time)
             if (self.DivinationTimer > 0) : self.DivinationTimer = max(0,self.DivinationTimer - time)
@@ -801,7 +843,7 @@ class Player:
 
 
         def updateCD(self, time):
-            super().updateCD(time)
+            
             if (self.PneumaCD > 0) : self.PneumaCD = max(0,self.PneumaCD - time)
             if (self.PhlegmaCD > 0) : self.PhlegmaCD = max(0,self.PhlegmaCD - time)
             if (self.KrasisCD > 0) : self.KrasisCD = max(0,self.KrasisCD - time)
@@ -819,7 +861,7 @@ class Player:
             if (self.PhysisCD > 0) : self.PhysisCD = max(0,self.PhysisCD - time)
 
         def updateTimer(self, time):
-            super().updateTimer(time)
+            
             if (self.EukrasianTimer > 0) : self.EukrasianTimer = max(0,self.EukrasianTimer - time)
             if (self.AddersgallTimer > 0) : self.AddersgallTimer = max(0,self.AddersgallTimer - time)
             if (self.PhlegmaTimer > 0) : self.PhlegmaTimer = max(0,self.PhlegmaTimer - time)
@@ -887,7 +929,7 @@ class Player:
         
 
         def updateCD(self, time):
-            super().updateCD(time)
+            
             if (self.ChainSawCD > 0) : self.ChainSawCD = max(0,self.ChainSawCD - time)
             if (self.AirAnchorCD > 0) : self.AirAnchorCD = max(0,self.AirAnchorCD - time)
             if (self.BarrelStabilizerCD > 0) : self.BarrelStabilizerCD = max(0,self.BarrelStabilizerCD - time)
@@ -902,7 +944,7 @@ class Player:
             if (self.TacticianCD > 0) : self.TacticianCD = max(0,self.TacticianCD - time)
 
         def updateTimer(self, time):
-            super().updateTimer(time)
+            
             if (self.WildFireTimer > 0) : self.WildFireTimer = max(0,self.WildFireTimer - time)
             if (self.HyperchargeTimer > 0) : self.HyperchargeTimer = max(0,self.HyperchargeTimer - time)
             if (self.BioblasterDOTTimer > 0) : self.BioblasterDOTTimer = max(0,self.BioblasterDOTTimer - time)
@@ -984,7 +1026,7 @@ class Player:
 
 
         def updateCD(self, time):
-            super().updateCD(time)
+            
             if (self.StandardStepCD > 0) : self.StandardStepCD = max(0,self.StandardStepCD - time)
             if (self.TechnicalStepCD > 0) : self.TechnicalStepCD = max(0,self.TechnicalStepCD - time)
             if (self.DevilmentCD > 0) : self.DevilmentCD = max(0,self.DevilmentCD - time)
@@ -996,7 +1038,7 @@ class Player:
 
 
         def updateTimer(self, time):
-            super().updateTimer(time)
+            
             if (self.StandardFinishTimer > 0) : self.StandardFinishTimer = max(0,self.StandardFinishTimer - time)
             if (self.TechnicalFinishTimer > 0) : self.TechnicalFinishTimer = max(0,self.TechnicalFinishTimer - time)
             if (self.DevilmentTimer > 0) : self.DevilmentTimer = max(0,self.DevilmentTimer - time)
@@ -1086,7 +1128,7 @@ class Player:
         self.JobAction = BardActions
     
         def updateCD(self, time):
-            super().updateCD(time)
+            
             if (self.SidewinderCD > 0) : self.SidewinderCD = max(0,self.SidewinderCD - time)
             if (self.EmpyrealArrowCD > 0) : self.EmpyrealArrowCD = max(0,self.EmpyrealArrowCD - time)
             if (self.WandererMinuetCD > 0) : self.WandererMinuetCD = max(0,self.WandererMinuetCD - time)
@@ -1101,7 +1143,7 @@ class Player:
             if (self.NatureMinneCD > 0) : self.NatureMinneCD = max(0,self.NatureMinneCD - time)
 
         def updateTimer(self, time):
-            super().updateTimer(time)
+            
             if (self.SongTimer > 0) : self.SongTimer = max(0,self.SongTimer - time)
             if (self.StormbiteDOTTimer > 0) : self.StormbiteDOTTimer = max(0,self.StormbiteDOTTimer - time)
             if (self.CausticbiteDOTTimer > 0) : self.CausticbiteDOTTimer = max(0,self.CausticbiteDOTTimer - time)
@@ -1166,7 +1208,7 @@ class Player:
         self.JobAction = MonkActions
 
         def updateCD(self, time):
-            super().updateCD(time)
+            
             if (self.ThunderclapCD > 0) : self.ThunderclapCD = max(0,self.ThunderclapCD - time)
             if (self.MantraCD > 0) : self.MantraCD = max(0,self.MantraCD - time)
             if (self.PerfectBalanceCD > 0) : self.PerfectBalanceCD = max(0,self.PerfectBalanceCD - time)
@@ -1177,7 +1219,7 @@ class Player:
 
 
         def updateTimer(self, time):
-            super().updateTimer(time)
+            
             if (self.LeadenFistTimer  > 0) : self.LeadenFistTimer  = max(0,self.LeadenFistTimer - time)
             if (self.DisciplinedFistTimer  > 0) : self.DisciplinedFistTimer  = max(0,self.DisciplinedFistTimer - time)
             if (self.DemolishDOTTimer  > 0) : self.DemolishDOTTimer  = max(0,self.DemolishDOTTimer - time)
@@ -1237,7 +1279,7 @@ class Player:
         self.JobAction = ReaperActions
 
         def updateCD(self, time):
-            super().updateCD(time)
+            
             if (self.SoulSliceCD > 0) : self.SoulSliceCD = max(0,self.SoulSliceCD - time)
             if (self.ArcaneCircleCD > 0) : self.ArcaneCircleCD = max(0,self.ArcaneCircleCD - time)
             if (self.GluttonyCD > 0) : self.GluttonyCD = max(0,self.GluttonyCD - time)
@@ -1247,7 +1289,7 @@ class Player:
 
 
         def updateTimer(self, time):
-            super().updateTimer(time)
+            
             if (self.DeathDesignTimer > 0) : self.DeathDesignTimer = max(0,self.DeathDesignTimer - time)
             if (self.ArcaneCircleTimer > 0) : self.ArcaneCircleTimer = max(0,self.ArcaneCircleTimer - time)
             if (self.CircleOfSacrificeTimer > 0) : self.CircleOfSacrificeTimer = max(0,self.CircleOfSacrificeTimer - time)
@@ -1321,7 +1363,7 @@ class Player:
         self.JobAction = SamuraiActions
 
         def updateCD(self, time):
-            super().updateCD(time)
+            
             if (self.MeikyoCD > 0) : self.MeikyoCD = max(0,self.MeikyoCD - time)
             if (self.IkishotenCD > 0) : self.IkishotenCD = max(0,self.IkishotenCD - time)
             if (self.KaeshiCD > 0) : self.KaeshiCD = max(0,self.KaeshiCD - time)
@@ -1336,7 +1378,7 @@ class Player:
     
 
         def updateTimer(self, time):
-            super().updateTimer(time)
+            
             if (self.FugetsuTimer > 0) : self.FugetsuTimer = max(0,self.FugetsuTimer - time)
             if (self.FukaTimer > 0) : self.FukaTimer = max(0,self.FukaTimer - time)
             if (self.HiganbanaTimer > 0) : self.HiganbanaTimer = max(0,self.HiganbanaTimer - time)
@@ -1396,7 +1438,7 @@ class Player:
         self.JobAction = DragoonActions
 
         def updateCD(self, time):
-            super().updateCD(time)
+            
             if (self.LanceChargeCD > 0) : self.LanceChargeCD = max(0,self.LanceChargeCD - time)
             if (self.BattleLitanyCD > 0) : self.BattleLitanyCD = max(0,self.BattleLitanyCD - time)
             if (self.DragonSightCD > 0) : self.DragonSightCD = max(0,self.DragonSightCD - time)
@@ -1411,7 +1453,7 @@ class Player:
     
 
         def updateTimer(self, time):
-            super().updateTimer(time)
+            
             if (self.PowerSurgeTimer > 0) : self.PowerSurgeTimer = max(0,self.PowerSurgeTimer - time)
             if (self.ChaoticSpringDOTTimer > 0) : self.ChaoticSpringDOTTimer = max(0,self.ChaoticSpringDOTTimer - time)
             if (self.LanceChargeTimer > 0) : self.LanceChargeTimer = max(0,self.LanceChargeTimer - time)
@@ -1484,7 +1526,7 @@ class Player:
 
 
         def updateCD(self, time):
-            super().updateCD(time)
+            
             if (self.DreamWithinADreamCD > 0) : self.DreamWithinADreamCD = max(0,self.DreamWithinADreamCD - time)
             if (self.MugCD > 0) : self.MugCD = max(0,self.MugCD - time)
             if (self.TrickAttackCD > 0) : self.TrickAttackCD = max(0,self.TrickAttackCD - time)
@@ -1497,7 +1539,7 @@ class Player:
     
 
         def updateTimer(self, time):
-            super().updateTimer(time)
+            
             if (self.HutonTimer > 0) : self.HutonTimer = max(0,self.HutonTimer - time)
             if (self.MugTimer > 0) : self.MugTimer = max(0,self.MugTimer - time)
             if (self.TrickAttackTimer > 0) : self.TrickAttackTimer = max(0,self.TrickAttackTimer - time)
@@ -1555,7 +1597,7 @@ class Player:
         self.JobAction = GunbreakerActions
 
         def updateCD(self, time):
-            super().updateCD(time)
+            
             if (self.GnashingFangCD > 0) : self.GnashingFangCD = max(0,self.GnashingFangCD - time)
             if (self.BlastingZoneCD > 0) : self.BlastingZoneCD = max(0,self.BlastingZoneCD - time)
             if (self.BloodfestCD > 0) : self.BloodfestCD = max(0,self.BloodfestCD - time)
@@ -1572,7 +1614,7 @@ class Player:
 
 
         def updateTimer(self, time):
-            super().updateTimer(time)
+            
             if (self.BowShockTimer > 0) : self.BowShockTimer = max(0,self.BowShockTimer - time)
             if (self.SonicBreakTimer > 0) : self.SonicBreakTimer = max(0,self.SonicBreakTimer - time)
             if (self.NoMercyTimer > 0) : self.NoMercyTimer = max(0,self.NoMercyTimer - time)
@@ -1622,7 +1664,7 @@ class Player:
         self.JobAction = DarkKnightActions
 
         def updateCD(self, time):
-            super().updateCD(time)
+            
             if (self.BloodWeaponCD > 0) : self.BloodWeaponCD = max(0,self.BloodWeaponCD - time)
             if (self.DeliriumCD > 0) :self.DeliriumCD = max(0,self.DeliriumCD - time)
             if (self.EdgeShadowCD > 0) :self.EdgeShadowCD = max(0,self.EdgeShadowCD - time)
@@ -1639,7 +1681,7 @@ class Player:
             if (self.OblationCD > 0) :self.OblationCD = max(0,self.OblationCD - time)
 
         def updateTimer(self, time):
-            super().updateTimer(time)
+            
 
             if (self.DarksideTimer > 0) : self.DarksideTimer = max(0,self.DarksideTimer - time)
             if (self.BloodWeaponTimer > 0) : self.BloodWeaponTimer = max(0,self.BloodWeaponTimer - time)
@@ -1700,7 +1742,7 @@ class Player:
         self.JobAction = PaladinActions
 
         def updateCD(self, time):
-            super().updateCD(time)
+            
             if (self.RequestACatCD > 0) : self.RequestACatCD = max(0,self.RequestACatCD - time)
             if (self.CircleScornCD > 0) : self.CircleScornCD = max(0,self.CircleScornCD - time)
             if (self.InterveneCD > 0) : self.InterveneCD = max(0,self.InterveneCD - time)
@@ -1713,7 +1755,7 @@ class Player:
             if (self.HallowedGroundCD > 0) : self.HallowedGroundCD = max(0,self.HallowedGroundCD - time)
 
         def updateTimer(self, time):
-            super().updateTimer(time)
+            
             if (self.GoringDOTTimer > 0) : self.GoringDOTTimer = max(0,self.GoringDOTTimer - time)
             if (self.CircleScornTimer > 0) : self.CircleScornTimer = max(0,self.CircleScornTimer - time)
             if (self.FightOrFlighTimer > 0) : self.FightOrFlighTimer = max(0,self.FightOrFlighTimer - time)
@@ -1766,7 +1808,7 @@ class Player:
         self.JobAction = WarriorActions
 
         def updateCD(self, time):
-            super().updateCD(time)
+            
             if (self.InfuriateCD > 0) : self.InfuriateCD = max(0,self.InfuriateCD - time)
             if (self.UpheavalCD > 0) : self.UpheavalCD = max(0,self.UpheavalCD - time)
             if (self.InnerReleaseCD > 0) : self.InnerReleaseCD = max(0,self.InnerReleaseCD - time)
@@ -1780,7 +1822,7 @@ class Player:
     
 
         def updateTimer(self, time):
-            super().updateTimer(time)
+            
             if (self.SurgingTempestTimer > 0) : self.SurgingTempestTimer = max(0,self.SurgingTempestTimer - time)
             if (self.PrimalRendTimer > 0) : self.PrimalRendTimer = max(0,self.PrimalRendTimer - time)
             if (self.NascentChaosTimer > 0) : self.NascentChaosTimer = max(0,self.NascentChaosTimer - time)
