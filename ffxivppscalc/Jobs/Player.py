@@ -153,6 +153,8 @@ class Player:
             case JobEnum.Paladin:
                 self.RoleEnum = RoleEnum.Tank
                 self.init_paladin()
+            case JobEnum.Pet:
+                return # Exit the init function
 
 
                 # Finding Role
@@ -626,8 +628,6 @@ class Player:
         #DOT
         self.Dia = None
 
-        self.EffectCDList.append(LilyCheck) #Starting with this check
-
         #ActionEnum
         self.JobAction = WhiteMageActions
 
@@ -662,6 +662,8 @@ class Player:
             if Player.LilyTimer <= 0:
                 Player.LilyStack = min(3, Player.LilyStack + 1)
                 Player.LilyTimer = 20 #Reset Timer
+                
+        self.EffectCDList.append(LilyCheck) #Starting with this check
 
     def init_scholar(self):
         #Stack
@@ -839,8 +841,6 @@ class Player:
         self.PhlegmaStack = 2
         self.AdderstingStack = 0
 
-        self.EffectCDList.append(AddersgallCheck)
-
         #ActionEnum
         self.JobAction = SageActions
 
@@ -873,6 +873,8 @@ class Player:
             if Player.AddersgallTimer <= 0:
                 Player.AddersgallStack = min(3, Player.AddersgallStack + 1)
                 Player.AddersgallTimer = 0
+
+        self.EffectCDList.append(AddersgallCheck)
 
         # update functions
         self.updateJobTimer = updateTimer
@@ -1698,7 +1700,6 @@ class Player:
     def init_paladin(self):
         #Gauge
         self.OathGauge = 100
-        self.EffectList.append(OathGauge)
 
         #Stack
         self.SwordOathStack = 0
@@ -1773,6 +1774,8 @@ class Player:
         def OathGauge(Player, Spell):
             if Spell.id == -22: #AA's DOT have id -1
                 Player.OathGauge = min(100, Player.OathGauge + 5) #adding 5 Gauge each AA
+
+        self.EffectList.append(OathGauge)
 
     def init_warrior(self):
         #Buffs
@@ -1932,8 +1935,22 @@ class Pet(Player):
         self.CritMult = Master.CritMult
         self.DHRate = Master.DHRate
         self.GCDReduction = Master.GCDReduction
+        self.CritRateBonus = self.Master.CritRateBonus  # CritRateBonus
+        self.DHRateBonus = self.Master.DHRateBonus # DHRate Bonus Very usefull for dancer personnal and dance partner crit/DH rate bonus
+        self.Stat = deepcopy(self.Master.Stat)
+        self.ArcanumTimer = self.Master.ArcanumTimer # ArcanumTimer
+        self.MeditativeBrotherhoodTimer = self.Master.MeditativeBrotherhoodTimer # Meditative Brotherhood Timer
 
         super().__init__([], [], Master.CurrentFight, deepcopy(Master.Stat), JobEnum.Pet)
+
+        def updateRoleTimer(self, time):
+            pass
+
+        def updateJobTimer(self, time):
+            pass
+
+        self.updateRoleTimer = updateRoleTimer
+        self.updateJobTimer = updateJobTimer
 
     def updateCD(self, time: float):
         pass # Since there is no reason to update the CD on the pet, we will simply pass this computation

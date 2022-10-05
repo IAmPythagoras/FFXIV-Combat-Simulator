@@ -138,6 +138,8 @@ def ApplyBunshin(Player, Enemy):
     if Player.Pet == None: #If no Shadow, we will create a new one
         Player.Pet = Pet(Player) # Creating an object
         Player.Pet.ActionSet.append(WaitAbility(0.01)) #Adding an action so program does not crash
+    else:
+        Player.Pet.ResetStat() # Reseting stat on the summon
 
     Player.EffectList.append(BunshinEffect)
     Player.PhantomKamaitachiReady = True

@@ -4,6 +4,7 @@ from Enemy import Enemy
 from Fight import Fight
 from Jobs.Player import Player
 from Jobs.PlayerEnum import *
+from copy import deepcopy
 
 from Jobs.Base_Spell import WaitAbility, Potion
 from Jobs.Caster.Caster_Spell import *
@@ -111,34 +112,33 @@ def ExecuteMemoryCode(SaveFight_check):
     # You can simply copy the objet's __init__ and change the name. 
 
     # Caster player object
-    BLMPlayer = BlackMage(2.5, [], [], [EnochianEffect, ElementalEffect], Event, BLMStat)
-    BLMPlayer = Player([], [EnochianEffect, ElementalEffect], Event, BLMStat, JobEnum.BlackMage)
-    RDMPlayer = Redmage(2.5, [], [], [DualCastEffect], Event, RDMStat)
-    SMNPlayer = Summoner(2.5, [], [], [], Event, SMNStat)
+    BLMPlayer = Player([], [EnochianEffect, ElementalEffect], Event, deepcopy(BLMStat), JobEnum.BlackMage)
+    RDMPlayer = Player([], [DualCastEffect], Event, deepcopy(RDMStat), JobEnum.RedMage)
+    SMNPlayer = Player([], [], Event, deepcopy(SMNStat), JobEnum.Summoner)
 
     # Healer player object
-    SCHPlayer = Scholar(2.5, [], [], [], Event, SCHStat)
-    WHMPlayer = Whitemage(2.5, [], [], [], Event, WHMStat)
-    SGEPlayer = Sage(2.5, [], [], [], Event, SGEStat)
-    ASTPlayer = Astrologian(2.5, [], [], [], Event, ASTStat)
+    SCHPlayer = Player([], [], Event, deepcopy(SCHStat), JobEnum.Scholar)
+    WHMPlayer = Player([], [], Event, deepcopy(WHMStat), JobEnum.WhiteMage)
+    SGEPlayer = Player([], [], Event, deepcopy(SGEStat), JobEnum.Sage)
+    ASTPlayer = Player([], [], Event, deepcopy(ASTStat), JobEnum.Astrologian)
 
     # Physical Ranged
-    MCHPlayer = Machinist(2.5, [], [], [], Event, MCHStat)
-    BRDPlayer = Bard(2.5, [], [], [SongEffect], Event, BRDStat)
-    DNCPlayer = Dancer(2.5, [], [], [EspritEffect], Event, DNCStat)
+    MCHPlayer = Player([], [], Event, deepcopy(MCHStat), JobEnum.Machinist)
+    BRDPlayer = Player([], [SongEffect], Event, deepcopy(BRDStat), JobEnum.Bard)
+    DNCPlayer = Player([], [EspritEffect], Event, deepcopy(DNCStat), JobEnum.Dancer)
     
     # Melee
-    NINPlayer = Ninja(2.5, [], [], [], Event, NINStat)
-    SAMPlayer = Samurai(2.5, [], [], [], Event, SAMStat)
-    DRGPlayer = Dragoon(2.5, [], [], [], Event, DRGStat)
-    RPRPlayer = Reaper(2.5, [], [], [], Event, RPRStat)
-    MNKPlayer = Monk(2.5, [], [], [ComboEffect], Event, MNKStat)
+    NINPlayer = Player([], [], Event, deepcopy(NINStat), JobEnum.Ninja)
+    SAMPlayer = Player([], [], Event, deepcopy(SAMStat), JobEnum.Samurai)
+    DRGPlayer = Player([], [], Event, deepcopy(DRGStat), JobEnum.Dragoon)
+    RPRPlayer = Player([], [], Event, deepcopy(RPRStat), JobEnum.Reaper)
+    MNKPlayer = Player([], [ComboEffect], Event, deepcopy(MNKStat), JobEnum.Monk)
 
     # Tank
-    DRKPlayer = DarkKnight(2.5, [], [], [], Event, DRKStat)
-    WARPlayer = Warrior(2.5, [], [], [SurgingTempestEffect], Event, WARStat)
-    PLDPlayer = Paladin(2.5, [], [], [], Event, PLDStat)
-    GNBPlayer = Gunbreaker(2.5, [], [], [], Event, GNBStat)
+    DRKPlayer = Player([], [], Event, deepcopy(DRKStat), JobEnum.DarkKnight)
+    WARPlayer = Player([], [SurgingTempestEffect], Event, deepcopy(WARStat), JobEnum.Warrior)
+    PLDPlayer = Player([], [], Event, deepcopy(PLDStat), JobEnum.Paladin)
+    GNBPlayer = Player([], [], Event, deepcopy(GNBStat), JobEnum.Gunbreaker)
 
 
     # ===============================================================================================
@@ -150,7 +150,7 @@ def ExecuteMemoryCode(SaveFight_check):
 
     # Caster
     BLMOpener = [Fire3, Fire4, Fire4, Xenoglossy]
-    SMNOpener = []
+    SMNOpener = [Summon, Ruin3, Ruin3, Ruin3, Ruin3, Ruin3, Ruin3, Ruin3, Ruin3, Ruin3]
     RDMOpener = []
     
     # Healer
@@ -168,11 +168,11 @@ def ExecuteMemoryCode(SaveFight_check):
     SAMOpener = []
     DRGOpener = []
     MNKOpener = []
-    NINOpener = []
+    NINOpener = [Bunshin, SpinningEdge, SpinningEdge, SpinningEdge, SpinningEdge, SpinningEdge, SpinningEdge]
     RPROpener = []
 
     # Tank 
-    DRKOpener = []
+    DRKOpener = [LivingShadow, HardSlash, HardSlash, HardSlash, HardSlash, HardSlash, HardSlash, HardSlash, HardSlash]
     WAROpener = []
     PLDOpener = []
     GNBOpener = []
@@ -220,7 +220,7 @@ def ExecuteMemoryCode(SaveFight_check):
     # So if you want to simulate the BlackMage and a RedMage, you would do: 
     # PlayerList = [BLMPlayer, RDMPlayer]
 
-    PlayerList = [BLMPlayer]
+    PlayerList = [SMNPlayer, DRKPlayer, NINPlayer]
  
     Event.PlayerList = PlayerList
 

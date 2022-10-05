@@ -90,6 +90,7 @@ def Credits():
         "Saint Germain#0280 -> Bit of Monk code" + "\n" +
         "apollo#3810 -> Put me in contact with javajake and also provided some background code for working with FFLogsAPI" + "\n" +
         "Ikuni#2735 -> Helped by verifying and correcting some scalar values in the damage formulas" + "\n" +
+        "redshadowhero#8631 -> Helped restructure the code in a better way and gave other advices" + "\n" +
         "\n" +
         "I also give my thanks to The Balance, which provided me with a lot of knowleadge about the different" + "\n" +
         "jobs so I could implement them and also gave me access to resources like the Blackmage gear comparison" + "\n" +

@@ -11,6 +11,7 @@ from Jobs.Ranged.Machinist.Machinist_Player import Queen
 from Jobs.Ranged.Ranged_Player import Ranged
 from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
 from Jobs.Tank.Tank_Player import Tank
+from Jobs.PlayerEnum import JobEnum
 Lock = 0.75
 
 class FailedToCast(Exception):#Exception called if a spell fails to cast
@@ -113,7 +114,7 @@ class Spell:
 
         
 
-        if isinstance(player, Queen) or isinstance(player, Esteem) or isinstance(player, Shadow) or isinstance(player, BigSummon):
+        if player.JobEnum == JobEnum.Pet:
             player.Master.TotalPotency+= self.Potency
             player.Master.TotalDamage += Damage
             player.Master.TotalMinDamage += minDamage

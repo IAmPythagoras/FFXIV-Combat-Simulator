@@ -2,7 +2,8 @@ from Jobs.Base_Spell import DOTSpell, ManaRequirement, WaitAbility, buff, empty
 from Jobs.Caster.Caster_Spell import SummonerSpell
 import copy
 
-from Jobs.Caster.Summoner.Summoner_Player import BigSummon
+from Jobs.Player import Pet
+
 Lock = 0.75
 
 #Requirement
@@ -117,30 +118,33 @@ def ApplySummon(Player, Enemy):
     Player.Enkindle = True
 
     #Will check if we already have a summon object
-    if Player.Summon == None:
-        Player.Summon = BigSummon(Player)
-        Player.Summon.ActionSet.append(WaitAbility(0.01)) #So program doesn't crash >.>
+    if Player.Pet == None:
+        Pet(Player) # Summoning a pet for this player
+        Player.Pet.ActionSet.append(WaitAbility(0.01)) #So program doesn't crash >.>
+    else: Player.Pet.ResetStat() # Reseting stat on the summon
+
+    # Can summon primals
     Player.TitanGem = True
     Player.GarudaGem = True
     Player.IfritGem = True
 
 
-    Player.Summon.TrueLock = False #Delocking bahamut
+
+    Player.Pet.TrueLock = False #Delocking bahamut
     if not Player.LastTranceBahamut:
         #Then we summon bahamut
         Player.Deathflare = True
         Player.LastTranceBahamut = True
         Player.BahamutTrance = True
-        Player.Summon.TrueLock = False
-        Player.Summon.ActionSet.insert(Player.Summon.NextSpell + 1, BahamutAA) #Applying AA
-
+        Player.Pet.TrueLock = False
+        Player.Pet.ActionSet.insert(Player.Pet.NextSpell + 1, BahamutAA) #Applying AA
     else:
         #Then we summon birdy
         Player.LastTranceBahamut = False
         Player.SummonDOT = copy.deepcopy(PhoenixDOT)
         Player.FirebirdTrance = True
-        Player.Summon.TrueLock = False
-        Player.Summon.ActionSet.insert(Player.Summon.NextSpell + 1, PhoenixAA)#Applying AA
+        Player.Pet.TrueLock = False
+        Player.Pet.ActionSet.insert(Player.Pet.NextSpell + 1, PhoenixAA)#Applying AA
     Player.EffectCDList.append(SummonDOTCheck)
     Player.SummonDOTTimer = 15
 
@@ -194,7 +198,7 @@ def SlipstreamDOTCheck(Player, Enemy):
 def SummonDOTCheck(Player, Enemy):
     if Player.SummonDOTTimer <= 0:
 
-        Player.Summon.DOTList = [] #Reseting DOTList
+        Player.Pet.DOTList = [] #Reseting DOTList
 
         Player.EffectToRemove.append(SummonDOTCheck)
         Player.FirebirdTrance = False

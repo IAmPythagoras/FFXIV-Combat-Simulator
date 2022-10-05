@@ -411,10 +411,6 @@ class Fight:
                             Player.DPSGraph += [round(Player.TotalDamage/self.TimeStamp, 2)] # Rounding the value to 2 digits
                             Player.PotencyGraph += [round(Player.TotalPotency/self.TimeStamp, 2)]
 
-                    # Update progress bar
-                    #p_bar.update(1)
-                    #p_bar.refresh()
-
 
                 # update self.TimeStamp
                 self.TimeStamp += TimeUnit
@@ -434,13 +430,7 @@ class Fight:
 
             for i in range(len(self.PlayerList)):  
                 player = self.PlayerList[i] # Removing all instance of clones/summons from the fight
-                if isinstance(player, Queen):
-                    remove += [i]
-                if isinstance(player, Esteem):
-                    remove += [i]
-                if isinstance(player, Shadow):
-                    remove += [i]
-                if isinstance(player, BigSummon):
+                if player.JobEnum == JobEnum.Pet:
                     remove += [i]
 
             k = 0
