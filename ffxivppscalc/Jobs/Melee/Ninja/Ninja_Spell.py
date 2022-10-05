@@ -2,7 +2,8 @@ from Jobs.Base_Spell import DOTSpell, WaitAbility, buff, empty
 from Jobs.Melee.Melee_Spell import NinjaSpell
 import copy
 
-from Jobs.Melee.Ninja.Ninja_Player import Shadow
+from Jobs.Player import Pet
+
 Lock = 0.5
 
 
@@ -123,7 +124,7 @@ def ApplyHide(Player, Enemy):
 def ApplyPhantomKamaitachi(Player, Enemy):
     Player.PhantomKamaitachiReady = False
     #Will give Action to the Shadow
-    Shadow = Player.Shadow
+    Shadow = Player.Pet
     Shadow.TrueLock = False #Delocking the shadow
     Shadow.ActionSet.insert(Shadow.NextSpell + 1, PhantomKamaitachiShadow) #Adding the spell
     Player.AddHuton(10)
@@ -134,9 +135,9 @@ def ApplyBunshin(Player, Enemy):
     Player.BunshinCD = 90
     Player.BunshinStack = 5
 
-    if Player.Shadow == None: #If no Shadow, we will create a new one
-        Player.Shadow = Shadow(Player)
-        Player.Shadow.ActionSet.append(WaitAbility(0.1)) #Adding an action so program does not crash
+    if Player.Pet == None: #If no Shadow, we will create a new one
+        Player.Pet = Pet(Player) # Creating an object
+        Player.Pet.ActionSet.append(WaitAbility(0.01)) #Adding an action so program does not crash
 
     Player.EffectList.append(BunshinEffect)
     Player.PhantomKamaitachiReady = True
@@ -297,11 +298,11 @@ def HutonEffect(Player, Spell):
 def BunshinEffect(Player, Spell):
     if isinstance(Spell, NinjaSpell) and Spell.Weaponskill and Spell.id != PhantomKamaitachi.id: #We don't want Kamataichi to have bunshin effect
         #Will give Action to the Shadow
-        Shadow = Player.Shadow
+        Shadow = Player.Pet
         Shadow.TrueLock = False #Delocking the shadow
-        Shadow.ActionSet.insert(Shadow.NextSpell + 1, NinjaSpell(35, False, 0, Shadow.GCDTimer, 160, empty, [], True, False)) #Adding the spell
+        Shadow.ActionSet.insert(Shadow.NextSpell + 1, NinjaSpell(35, False, 0, 1, 160, empty, [], True, False)) #Adding the spell
         Player.BunshinStack -= 1
-        Player.AddNinki(5)
+        Player.AddHuton(5)
         if Player.BunshinStack == 0:
             Player.EffectToRemove.append(BunshinEffect)
 

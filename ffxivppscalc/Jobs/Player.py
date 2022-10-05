@@ -1,5 +1,5 @@
 # This file contains the Player class and its implementation
-
+from copy import deepcopy
 from Jobs.PlayerEnum import JobEnum, RoleEnum
 from Jobs.ActionEnum import *
 from typing import TypeVar
@@ -28,6 +28,7 @@ class Player:
         self.CurrentFight = CurrentFight # Reference to the fight the player is in
         self.ManaTick = 1.5 # Starts Mana tick at this value
         self.playerID = 0 # Might not be necessary so by default 0
+        self.Pet = None # Summoned Pet
 
         self.TrueLock = False   # Used to know when a player has finished all of its ActionSet
         self.Casting = False    # Flag set to true if the player is casting
@@ -52,16 +53,13 @@ class Player:
 
         self.Trait = 1  # DPS mult from trait
         self.buffList = []
-        self.GCDReduction = 1 # Mult GCD reduction based on Spell Speed or Skill Speed (computed before fight)
-        self.CritRateBonus = 0  # CritRateBonus
-        self.DHRateBonus = 0 # DHRate Bonus Very usefull for dancer personnal and dance partner crit/DH rate bonus
         self.EffectToRemove = [] # List filled with effect to remove.
         self.EffectToAdd = [] # List that will add effect to the effectlist or effectcdlist once it has been gone through once
 
         self.ArcanumTimer = 0 # ArcanumTimer
         self.MeditativeBrotherhoodTimer = 0 # Meditative Brotherhood Timer
 
-        # Used for DPS graph and Potency/S graph
+        # Used for DPS graph and Potency/s graph
 
         self.DPSGraph = []
         self.PotencyGraph = []
@@ -73,13 +71,17 @@ class Player:
         # functions for computing damage. Since the stats do not change (except MainStat), we can compute in advance
         # all functions that will not have their values changed
         # They will be computed at the begining of the simulation, they are now set at 0
-        self.f_WD = 0
-        self.f_DET = 0
-        self.f_TEN = 0
-        self.f_SPD = 0
-        self.CritRate = 0
-        self.CritMult = 0
-        self.DHRate = 0
+        if Job != JobEnum.Pet: # Pet have these values given by the Master. So no need to set as 0
+            self.f_WD = 0
+            self.f_DET = 0
+            self.f_TEN = 0
+            self.f_SPD = 0
+            self.CritRate = 0
+            self.CritMult = 0
+            self.DHRate = 0
+            self.GCDReduction = 1 # Mult GCD reduction based on Spell Speed or Skill Speed (computed before fight)
+            self.CritRateBonus = 0  # CritRateBonus
+            self.DHRateBonus = 0 # DHRate Bonus Very usefull for dancer personnal and dance partner crit/DH rate bonus
 
         def ManaRegenCheck(Player, Enemy):  #This function is there by default
             if Player.ManaTick <= 0:
@@ -1906,7 +1908,49 @@ class Player:
     def ResetMasterGauge(self):
         self.MasterGauge[1:4] = [0,0,0] #Reset Chakra
 
+class Pet(Player):
+    # This class is any pet summoned by a player.
 
+    def __init__(self, Master):
+        # Master is the player object summoning the pet.
+        # This is only called once and the object is reused for future need
+        self.Master = Master
+        Master.Pet = self
 
-BLMPlayer = Player([], [], None, {}, JobEnum.BlackMage)
+        # Adding itself to the fight object
+        Master.CurrentFight.PlayerList.append(self)
 
+        # Jobmod
+        self.JobMod = 100
+
+        #Giving already computed values for stats
+        self.f_WD = Master.f_WD
+        self.f_DET = Master.f_DET
+        self.f_TEN = Master.f_TEN
+        self.f_SPD = Master.f_SPD
+        self.CritRate = Master.CritRate
+        self.CritMult = Master.CritMult
+        self.DHRate = Master.DHRate
+        self.GCDReduction = Master.GCDReduction
+
+        super().__init__([], [], Master.CurrentFight, deepcopy(Master.Stat), JobEnum.Pet)
+
+    def updateCD(self, time: float):
+        pass # Since there is no reason to update the CD on the pet, we will simply pass this computation
+
+    def ResetStat(self):
+        # This function is called upon reusing the object to reset the stats and other attributes that could interfere
+
+        self.f_WD = self.Master.f_WD
+        self.f_DET = self.Master.f_DET
+        self.f_TEN = self.Master.f_TEN
+        self.f_SPD = self.Master.f_SPD
+        self.CritRate = self.Master.CritRate
+        self.CritMult = self.Master.CritMult
+        self.DHRate = self.Master.DHRate
+        self.GCDReduction = self.Master.GCDReduction
+        self.CritRateBonus = self.Master.CritRateBonus  # CritRateBonus
+        self.DHRateBonus = self.Master.DHRateBonus # DHRate Bonus Very usefull for dancer personnal and dance partner crit/DH rate bonus
+        self.Stat = deepcopy(self.Master.Stat)
+        self.ArcanumTimer = self.Master.ArcanumTimer # ArcanumTimer
+        self.MeditativeBrotherhoodTimer = self.Master.MeditativeBrotherhoodTimer # Meditative Brotherhood Timer

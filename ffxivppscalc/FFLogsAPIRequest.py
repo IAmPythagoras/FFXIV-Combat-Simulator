@@ -8,7 +8,8 @@ how to get the data. You can DM him on discord if you have questions : Bri-kun#6
 
 """
 from Jobs.Base_Spell import PrepullPotion, WaitAbility
-
+from Jobs.Player import Player
+from Jobs.PlayerEnum import *
 #CASTER
 from Jobs.Caster.Summoner.Summoner_Player import *
 from Jobs.Caster.Blackmage.BlackMage_Player import * 
@@ -181,32 +182,30 @@ def getAbilityList(fightID, fightNumber):
             job_name = player["type"]
             job_object = None
 
-            if player_class == "healers":
-                if job_name == "Sage" : job_object = Sage(2.5, [], [], [], None, {})
-                elif job_name == "Scholar" : job_object = Scholar(2.5, [], [], [], None, {})
-                elif job_name == "WhiteMage" : job_object = Whitemage(2.5, [], [], [], None, {})
-                elif job_name == "Astrologian" : job_object = Astrologian(2.5, [], [], [], None, {})
-            elif player_class == "tanks":
-                if job_name == "Warrior" : job_object = Warrior(2.5, [], [], [], None, {})
-                elif job_name == "DarkKnight" : job_object = DarkKnight(2.5, [], [], [], None, {})
-                elif job_name == "Paladin" : job_object = Paladin(2.5, [], [], [], None, {})
-                elif job_name == "Gunbreaker" : job_object = Gunbreaker(2.5, [], [], [], None, {})
-            else: #Is a DPS
-                #Caster
-                if job_name == "BlackMage" : job_object = BlackMage(2.5, [], [], [], None, {})
-                elif job_name == "RedMage" : job_object = Redmage(2.5, [], [], [], None, {})
-                elif job_name == "Summoner" : job_object = Summoner(2.5, [], [], [], None, {})
-                #Ranged
-                elif job_name == "Dancer" : job_object = Dancer(2.5, [], [], [], None, {})
-                elif job_name == "Machinist" : job_object = Machinist(2.5, [], [], [], None, {})
-                elif job_name == "Bard" : job_object = Bard(2.5, [], [], [], None, {})
-                #melee
-                elif job_name == "Reaper" : job_object = Reaper(2.5, [], [], [], None, {})
-                elif job_name == "Monk" : job_object = Monk(2.5, [], [], [], None, {})
-                elif job_name == "Dragoon" : job_object = Dragoon(2.5, [], [], [], None, {})
-                elif job_name == "Ninja" : job_object = Ninja(2.5, [], [], [], None, {})
-                elif job_name == "Samurai" : job_object = Samurai(2.5, [], [], [], None, {})
-                
+            if job_name == "Sage" : job_object = Player([], [], None, {}, JobEnum.Sage)
+            elif job_name == "Scholar" : job_object = Player([], [], None, {}, JobEnum.Scholar)
+            elif job_name == "WhiteMage" : job_object = Player([], [], None, {}, JobEnum.WhiteMage)
+            elif job_name == "Astrologian" : job_object = Player([], [], None, {}, JobEnum.Astrologian)
+            #Tank
+            elif job_name == "Warrior" : job_object = Player([], [SurgingTempestEffect], None, {}, JobEnum.Astrologian)
+            elif job_name == "DarkKnight" : job_object = Player([], [], None, {}, JobEnum.DarkKnight)
+            elif job_name == "Paladin" : job_object = Player([], [OathGauge], None, {}, JobEnum.Paladin)
+            elif job_name == "Gunbreaker" : job_object = Player([], [], None, {}, JobEnum.Gunbreaker)
+            #Caster
+            elif job_name == "BlackMage" : job_object = Player([], [EnochianEffect, ElementalEffect], None, {}, JobEnum.BlackMage)
+            elif job_name == "RedMage" : job_object = Player([], [DualCastEffect], None, {}, JobEnum.RedMage)
+            elif job_name == "Summoner" : job_object = Player([], [], None, {}, JobEnum.Summoner)
+            #Ranged
+            elif job_name == "Dancer" : job_object = Player([], [EspritEffect], None, {}, JobEnum.Dancer)
+            elif job_name == "Machinist" : job_object = Player([], [], None, {}, JobEnum.Machinist)
+            elif job_name == "Bard" : job_object = Player([], [SongEffect], None, {}, JobEnum.Bard)
+            #melee
+            elif job_name == "Reaper" : job_object = Player([], [], None, {}, JobEnum.Reaper)
+            elif job_name == "Monk" : job_object = Player([], [ComboEffect], None, {}, JobEnum.Monk)
+            elif job_name == "Dragoon" : job_object = Player([], [], None, {}, JobEnum.Dragoon)
+            elif job_name == "Ninja" : job_object = Player([], [], None, {}, JobEnum.Ninja)
+            elif job_name == "Samurai" : job_object = Player([], [], None, {}, JobEnum.Samurai)
+                    
                 
             job_object.playerID = str(player["id"])
             player_list[str(player["id"])] = {"name" : player["name"], "job" : job_name, "job_object" : job_object} #Adding new Key

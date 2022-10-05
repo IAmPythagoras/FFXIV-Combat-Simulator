@@ -21,7 +21,7 @@ class PlayerEnum(IntEnum):
 
 
 class RoleEnum(PlayerEnum):
-    # Enum for all class
+    # Enum for all roles
 
     Caster = 1
     Healer = 2
@@ -61,3 +61,6 @@ class JobEnum(PlayerEnum):
     Machinist = 17
     Bard = 18
     Dancer = 19
+
+    # Pet
+    Pet = 20

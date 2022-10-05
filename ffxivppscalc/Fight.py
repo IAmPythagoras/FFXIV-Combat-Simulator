@@ -2,6 +2,7 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 
+from Jobs.PlayerEnum import *
 
 # Class
 from Jobs.Caster.Caster_Player import Caster
@@ -75,6 +76,8 @@ class Fight:
 
 
     def ComputeDPSDistribution(self, Player, fig, axs, job):
+        # THIS WHOLE PART HAS BEEN SHOWN TO NOT BE ACCURATE AND IS NOT FIXED AS OF NOW
+        # USE AT YOUR OWN RISK
 
         # Graph data
         axs.set_ylabel("Percentage (%)")
@@ -215,24 +218,24 @@ class Fight:
 
             job = ""
 
-            if isinstance(player, BlackMage) : job = "Blackmage"
-            elif isinstance(player, Redmage) : job = "Redmage"
-            elif isinstance(player, DarkKnight) : job = "DarkKnight"
-            elif isinstance(player, Warrior) : job = "Warrior"
-            elif isinstance(player, Paladin) : job = "Paladin"
-            elif isinstance(player, Gunbreaker) : job = "Gunbreaker"
-            elif isinstance(player, Machinist) : job = "Machinist"
-            elif isinstance(player, Samurai) : job = "Samurai"
-            elif isinstance(player, Ninja) : job = "Ninja"
-            elif isinstance(player, Scholar) : job = "Scholar"
-            elif isinstance(player, Whitemage) : job = "Whitemage"
-            elif isinstance(player, Astrologian) : job = "Astrologian"
-            elif isinstance(player, Summoner) : job = "Summoner"
-            elif isinstance(player, Dragoon) : job = "Dragoon"
-            elif isinstance(player, Reaper) : job = "Reaper"
-            elif isinstance(player, Monk) : job = "Monk"
-            elif isinstance(player, Sage) : job = "Sage"
-            elif isinstance(player, Bard) : 
+            if player.RoleEnum == JobEnum.BlackMage : job = "Blackmage"
+            elif player.RoleEnum == JobEnum.RedMage : job = "Redmage"
+            elif player.RoleEnum == JobEnum.DarkKnight : job = "DarkKnight"
+            elif player.RoleEnum == JobEnum.Warrior : job = "Warrior"
+            elif player.RoleEnum == JobEnum.Paladin : job = "Paladin"
+            elif player.RoleEnum == JobEnum.Gunbreaker : job = "Gunbreaker"
+            elif player.RoleEnum == JobEnum.Machinist : job = "Machinist"
+            elif player.RoleEnum == JobEnum.Samurai : job = "Samurai"
+            elif player.RoleEnum == JobEnum.Ninja : job = "Ninja"
+            elif player.RoleEnum == JobEnum.Scholar : job = "Scholar"
+            elif player.RoleEnum == JobEnum.WhiteMage : job = "Whitemage"
+            elif player.RoleEnum == JobEnum.Astrologian : job = "Astrologian"
+            elif player.RoleEnum == JobEnum.Summoner : job = "Summoner"
+            elif player.RoleEnum == JobEnum.Dragoon : job = "Dragoon"
+            elif player.RoleEnum == JobEnum.Reaper : job = "Reaper"
+            elif player.RoleEnum == JobEnum.Monk : job = "Monk"
+            elif player.RoleEnum == JobEnum.Sage : job = "Sage"
+            elif player.RoleEnum == JobEnum.Bard : 
                 job = "Bard"
                 print("==================")
                 print("Expected Vs Used values for bard")
@@ -242,7 +245,7 @@ class Fight:
                 print("Expected Soul Voice Gauge : " + str(player.ExpectedSoulVoiceGauge) + " Used SoulVoiceGauge : " + str(player.UsedSoulVoiceGauge))
                 print("Expected BloodLetterReduction : " + str(player.ExpectedBloodLetterReduction) + " Used BloodLetterReduction : " + str(player.UsedBloodLetterReduction))
                 print("==================")
-            elif isinstance(player, Dancer):
+            elif player.RoleEnum == JobEnum.Dancer:
                 job = "Dancer"
                 print("==================")
                 print("Expected Vs Used Proc for Dancer")
@@ -251,6 +254,9 @@ class Fight:
                 print("Expected FourfoldFeather : " + str(player.ExpectedFourfoldFeather) + " Used FourfoldFeather : " + str(player.UsedFourfoldFeather) )
                 print("Expected ThreefoldFan : " + str(player.ExpectedThreefoldFan) + " Used ThreefoldFan : " + str(player.UsedThreefoldFan) )
                 print("==================")
+
+
+
             axs[0].plot(TimeStamp,player.DPSGraph, label=job)
             axs[1].plot(TimeStamp,player.PotencyGraph, label=job)
 
