@@ -207,8 +207,8 @@ class Fight:
             else:
                 PPS = player.TotalPotency / time
                 DPS = player.TotalDamage / time
-
-            print("The Total Potency done by player " + str(type(player)) + " was : " + str(player.TotalPotency))
+            print(player.RoleEnum)
+            print("The Total Potency done by player " + str(JobEnum.name_for_id(player.JobEnum)) + " was : " + str(player.TotalPotency))
             print("This same player had a Potency Per Second of: " + str(round(PPS,2)))
             print("This same Player had an average of " + str(round(player.TotalPotency/player.NextSpell,2)) + " Potency/Spell")
             print("The DPS is : " + str(round(DPS,2)))
@@ -218,24 +218,24 @@ class Fight:
 
             job = ""
 
-            if player.RoleEnum == JobEnum.BlackMage : job = "Blackmage"
-            elif player.RoleEnum == JobEnum.RedMage : job = "Redmage"
-            elif player.RoleEnum == JobEnum.DarkKnight : job = "DarkKnight"
-            elif player.RoleEnum == JobEnum.Warrior : job = "Warrior"
-            elif player.RoleEnum == JobEnum.Paladin : job = "Paladin"
-            elif player.RoleEnum == JobEnum.Gunbreaker : job = "Gunbreaker"
-            elif player.RoleEnum == JobEnum.Machinist : job = "Machinist"
-            elif player.RoleEnum == JobEnum.Samurai : job = "Samurai"
-            elif player.RoleEnum == JobEnum.Ninja : job = "Ninja"
-            elif player.RoleEnum == JobEnum.Scholar : job = "Scholar"
-            elif player.RoleEnum == JobEnum.WhiteMage : job = "Whitemage"
-            elif player.RoleEnum == JobEnum.Astrologian : job = "Astrologian"
-            elif player.RoleEnum == JobEnum.Summoner : job = "Summoner"
-            elif player.RoleEnum == JobEnum.Dragoon : job = "Dragoon"
-            elif player.RoleEnum == JobEnum.Reaper : job = "Reaper"
-            elif player.RoleEnum == JobEnum.Monk : job = "Monk"
-            elif player.RoleEnum == JobEnum.Sage : job = "Sage"
-            elif player.RoleEnum == JobEnum.Bard : 
+            if player.JobEnum == JobEnum.BlackMage : job = "Blackmage"
+            elif player.JobEnum == JobEnum.RedMage : job = "Redmage"
+            elif player.JobEnum == JobEnum.DarkKnight : job = "DarkKnight"
+            elif player.JobEnum == JobEnum.Warrior : job = "Warrior"
+            elif player.JobEnum == JobEnum.Paladin : job = "Paladin"
+            elif player.JobEnum == JobEnum.Gunbreaker : job = "Gunbreaker"
+            elif player.JobEnum == JobEnum.Machinist : job = "Machinist"
+            elif player.JobEnum == JobEnum.Samurai : job = "Samurai"
+            elif player.JobEnum == JobEnum.Ninja : job = "Ninja"
+            elif player.JobEnum == JobEnum.Scholar : job = "Scholar"
+            elif player.JobEnum == JobEnum.WhiteMage : job = "Whitemage"
+            elif player.JobEnum == JobEnum.Astrologian : job = "Astrologian"
+            elif player.JobEnum == JobEnum.Summoner : job = "Summoner"
+            elif player.JobEnum == JobEnum.Dragoon : job = "Dragoon"
+            elif player.JobEnum == JobEnum.Reaper : job = "Reaper"
+            elif player.JobEnum == JobEnum.Monk : job = "Monk"
+            elif player.JobEnum == JobEnum.Sage : job = "Sage"
+            elif player.JobEnum == JobEnum.Bard : 
                 job = "Bard"
                 print("==================")
                 print("Expected Vs Used values for bard")
@@ -245,7 +245,7 @@ class Fight:
                 print("Expected Soul Voice Gauge : " + str(player.ExpectedSoulVoiceGauge) + " Used SoulVoiceGauge : " + str(player.UsedSoulVoiceGauge))
                 print("Expected BloodLetterReduction : " + str(player.ExpectedBloodLetterReduction) + " Used BloodLetterReduction : " + str(player.UsedBloodLetterReduction))
                 print("==================")
-            elif player.RoleEnum == JobEnum.Dancer:
+            elif player.JobEnum == JobEnum.Dancer:
                 job = "Dancer"
                 print("==================")
                 print("Expected Vs Used Proc for Dancer")
