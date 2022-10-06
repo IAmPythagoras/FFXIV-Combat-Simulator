@@ -1,3 +1,6 @@
+
+# This file is outdated
+
 class Player:
 
     #This class will contain any relevant information to the player. It will be the mother of all other Player

@@ -11,19 +11,13 @@ from Jobs.Base_Spell import PrepullPotion, WaitAbility
 from Jobs.Player import Player
 from Jobs.PlayerEnum import *
 #CASTER
-from Jobs.Caster.Summoner.Summoner_Player import *
-from Jobs.Caster.Blackmage.BlackMage_Player import * 
-from Jobs.Caster.Redmage.Redmage_Player import *
+
 from Jobs.Caster.Caster_Spell import CasterAbility
 from Jobs.Caster.Blackmage.BlackMage_Spell import BlackMageAbility
 from Jobs.Caster.Redmage.Redmage_Spell import RedMageAbility
 from Jobs.Caster.Summoner.Summoner_Spell import SummonerAbility
 
 #HEALER
-from Jobs.Healer.Sage.Sage_Player import *
-from Jobs.Healer.Scholar.Scholar_Player import *
-from Jobs.Healer.Whitemage.Whitemage_Player import *
-from Jobs.Healer.Astrologian.Astrologian_Player import *
 from Jobs.Healer.Healer_Spell import HealerAbility
 from Jobs.Healer.Sage.Sage_Spell import SageAbility
 from Jobs.Healer.Astrologian.Astrologian_Spell import AstrologianAbility
@@ -32,19 +26,12 @@ from Jobs.Healer.Whitemage.Whitemage_Spell import WhiteMageAbility
 from Jobs.Melee.Monk.Monk_Spell import MonkAbility
 
 #RANGED
-from Jobs.Ranged.Machinist.Machinist_Player import *
-from Jobs.Ranged.Bard.Bard_Player import *
-from Jobs.Ranged.Dancer.Dancer_Player import *
 from Jobs.Ranged.Ranged_Spell import BardSpell, RangedAbility
 from Jobs.Ranged.Bard.Bard_Spell import BardAbility
 from Jobs.Ranged.Machinist.Machinist_Spell import MachinistAbility
 from Jobs.Ranged.Dancer.Dancer_Spell import DancerAbility
 
 #TANK
-from Jobs.Tank.Gunbreaker.Gunbreaker_Player import *
-from Jobs.Tank.DarkKnight.DarkKnight_Player import *
-from Jobs.Tank.Warrior.Warrior_Player import *
-from Jobs.Tank.Paladin.Paladin_Player import *
 from Jobs.Tank.Tank_Spell import TankAbility
 from Jobs.Tank.Gunbreaker.Gunbreaker_Spell import GunbreakerAbility
 from Jobs.Tank.DarkKnight.DarkKnight_Spell import DarkKnightAbility
@@ -52,11 +39,6 @@ from Jobs.Tank.Warrior.Warrior_Spell import WarriorAbility
 from Jobs.Tank.Paladin.Paladin_Spell import PaladinAbility
 
 #MELEE
-from Jobs.Melee.Samurai.Samurai_Player import *
-from Jobs.Melee.Ninja.Ninja_Player import *
-from Jobs.Melee.Dragoon.Dragoon_Player import *
-from Jobs.Melee.Reaper.Reaper_Player import *
-from Jobs.Melee.Monk.Monk_Player import *
 from Jobs.Melee.Melee_Spell import MeleeAbility
 from Jobs.Melee.Samurai.Samurai_Spell import MeikyoCheck, MeikyoEffect, MeikyoStackCheck, SamuraiAbility
 from Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton, NinjaAbility
@@ -64,7 +46,14 @@ from Jobs.Melee.Dragoon.Dragoon_Spell import DragoonAbility
 from Jobs.Melee.Reaper.Reaper_Spell import ReaperAbility
 
 
-import http.client, json 
+import http.client, json
+from Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, EnochianEffect
+from Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
+from Jobs.Melee.Monk.Monk_Spell import ComboEffect
+from Jobs.Ranged.Bard.Bard_Spell import SongEffect
+from Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
+
+from Jobs.Tank.Warrior.Warrior_Spell import SurgingTempestEffect 
 
 class ActionNotFound(Exception):#Exception called if an action isn't found in the dictionnary
     pass
@@ -189,7 +178,7 @@ def getAbilityList(fightID, fightNumber):
             #Tank
             elif job_name == "Warrior" : job_object = Player([], [SurgingTempestEffect], None, {}, JobEnum.Astrologian)
             elif job_name == "DarkKnight" : job_object = Player([], [], None, {}, JobEnum.DarkKnight)
-            elif job_name == "Paladin" : job_object = Player([], [OathGauge], None, {}, JobEnum.Paladin)
+            elif job_name == "Paladin" : job_object = Player([], [], None, {}, JobEnum.Paladin)
             elif job_name == "Gunbreaker" : job_object = Player([], [], None, {}, JobEnum.Gunbreaker)
             #Caster
             elif job_name == "BlackMage" : job_object = Player([], [EnochianEffect, ElementalEffect], None, {}, JobEnum.BlackMage)

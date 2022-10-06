@@ -2,15 +2,7 @@
 from copy import deepcopy
 from Jobs.PlayerEnum import JobEnum, RoleEnum
 from Jobs.ActionEnum import *
-from typing import TypeVar
 
-
-# Defining types for helper functions
-
-#B = TypeVar('B', bound=JobEnum) # Blackmage
-#M = TypeVar('M', bound=JobEnum) # Monk
-#N = TypeVar('N', bound=JobEnum) # Ninja
-#R = TypeVar('R', bound=JobEnum) # Reaper
 
 
 class Player:
@@ -154,6 +146,7 @@ class Player:
                 self.RoleEnum = RoleEnum.Tank
                 self.init_paladin()
             case JobEnum.Pet:
+                self.RoleEnum = RoleEnum.Pet
                 return # Exit the init function
 
 

@@ -1,5 +1,5 @@
 from Jobs.Base_Spell import ManaRequirement, Potion, Spell, empty
-from Jobs.Caster.Blackmage.BlackMage_Player import BlackMage
+from Jobs.PlayerEnum import JobEnum
 Lock = 0
 class CasterSpell(Spell):
 
@@ -95,7 +95,7 @@ def LucidDreamingCheck(Player, Enemy):
         #if on a tic and not equal to 21
         #input("got in")
 
-        if isinstance(Player, BlackMage):
+        if Player.JobEnum == JobEnum.BlackMage:
             #We have to check if in firephase, in which case no mana regen
             if Player.ElementalGauge <= 0: #If in ice phase
                 #input("Adding mana")

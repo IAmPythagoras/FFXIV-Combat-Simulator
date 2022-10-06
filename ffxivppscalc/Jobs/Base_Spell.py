@@ -2,16 +2,8 @@ import copy
 
 from Fight import ComputeDamage
 import math
-from Jobs.Caster.Summoner.Summoner_Player import BigSummon
-from Jobs.Melee.Melee_Player import Melee
-from Jobs.Melee.Monk.Monk_Player import Monk
-from Jobs.Melee.Ninja.Ninja_Player import Shadow
-from Jobs.Ranged.Dancer.Dancer_Player import Dancer
-from Jobs.Ranged.Machinist.Machinist_Player import Queen
-from Jobs.Ranged.Ranged_Player import Ranged
-from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
-from Jobs.Tank.Tank_Player import Tank
 from Jobs.PlayerEnum import JobEnum
+from Jobs.PlayerEnum import RoleEnum
 Lock = 0.75
 
 class FailedToCast(Exception):#Exception called if a spell fails to cast
@@ -126,8 +118,6 @@ class Spell:
         Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage
 
-        #if self.Potency > 0 and isinstance(player, Monk):
-        #    print("Action with id " + str(self.id) + " has done " + str(self.Potency) + " potency.")
 
         if not (player.CurrentFight.FightStart) and Damage > 0 : 
             player.CurrentFight.FightStart = True
@@ -135,10 +125,10 @@ class Spell:
             #Giving all players AA
 
             for gamer in player.CurrentFight.PlayerList:
-                if isinstance(gamer, Monk): gamer.DOTList.append(copy.deepcopy(Monk_Auto))
-                if isinstance(gamer, Melee) or isinstance(gamer, Dancer) or isinstance(gamer, Tank):
+                if gamer.JobEnum == JobEnum.Monk: gamer.DOTList.append(copy.deepcopy(Monk_Auto))
+                elif gamer.RoleEnum == RoleEnum.Melee or gamer.JobEnum == JobEnum.Dancer or gamer.RoleEnum == RoleEnum.Tank:
                     gamer.DOTList.append(copy.deepcopy(Melee_AADOT))
-                elif isinstance(gamer, Ranged):
+                elif gamer.RoleEnum == RoleEnum.PhysicalRanged:
                     gamer.DOTList.append(copy.deepcopy(Ranged_AADOT))
 
 

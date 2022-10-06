@@ -17,37 +17,23 @@ from Jobs.Tank.Tank_Spell import *
 from Jobs.Caster.Summoner.Summoner_Spell import *
 from Jobs.Caster.Blackmage.BlackMage_Spell import * 
 from Jobs.Caster.Redmage.Redmage_Spell import *
-from Jobs.Caster.Summoner.Summoner_Player import *
-from Jobs.Caster.Blackmage.BlackMage_Player import * 
-from Jobs.Caster.Redmage.Redmage_Player import *
 
 #HEALER
 from Jobs.Healer.Sage.Sage_Spell import *
 from Jobs.Healer.Scholar.Scholar_Spell import *
 from Jobs.Healer.Whitemage.Whitemage_Spell import *
 from Jobs.Healer.Astrologian.Astrologian_Spell import *
-from Jobs.Healer.Sage.Sage_Player import *
-from Jobs.Healer.Scholar.Scholar_Player import *
-from Jobs.Healer.Whitemage.Whitemage_Player import *
-from Jobs.Healer.Astrologian.Astrologian_Player import *
 
 #RANGED
 from Jobs.Ranged.Machinist.Machinist_Spell import *
 from Jobs.Ranged.Bard.Bard_Spell import *
 from Jobs.Ranged.Dancer.Dancer_Spell import *
-from Jobs.Ranged.Machinist.Machinist_Player import *
-from Jobs.Ranged.Bard.Bard_Player import *
-from Jobs.Ranged.Dancer.Dancer_Player import *
 
 #TANK
 from Jobs.Tank.Gunbreaker.Gunbreaker_Spell import *
 from Jobs.Tank.DarkKnight.DarkKnight_Spell import *
 from Jobs.Tank.Warrior.Warrior_Spell import *
 from Jobs.Tank.Paladin.Paladin_Spell import *
-from Jobs.Tank.Gunbreaker.Gunbreaker_Player import *
-from Jobs.Tank.DarkKnight.DarkKnight_Player import *
-from Jobs.Tank.Warrior.Warrior_Player import *
-from Jobs.Tank.Paladin.Paladin_Player import *
 
 #MELEE
 from Jobs.Melee.Samurai.Samurai_Spell import *
@@ -55,11 +41,7 @@ from Jobs.Melee.Ninja.Ninja_Spell import *
 from Jobs.Melee.Dragoon.Dragoon_Spell import *
 from Jobs.Melee.Reaper.Reaper_Spell import *
 from Jobs.Melee.Monk.Monk_Spell import *
-from Jobs.Melee.Samurai.Samurai_Player import *
-from Jobs.Melee.Ninja.Ninja_Player import *
-from Jobs.Melee.Dragoon.Dragoon_Player import *
-from Jobs.Melee.Reaper.Reaper_Player import *
-from Jobs.Melee.Monk.Monk_Player import *
+
 from UI_backend import SaveFight
 
 def ExecuteMemoryCode(SaveFight_check):
@@ -149,8 +131,8 @@ def ExecuteMemoryCode(SaveFight_check):
     # Note that if you are simulating with more than 1 per job you will need to create a new list of actions.
 
     # Caster
-    BLMOpener = [Fire3, Fire4, Fire4, Xenoglossy]
-    SMNOpener = [Summon, Ruin3, Ruin3, Ruin3, Ruin3, Ruin3, Ruin3, Ruin3, Ruin3, Ruin3]
+    BLMOpener = [Fire3, Fire4, Fire4,Fire4,Fire4]
+    SMNOpener = []
     RDMOpener = []
     
     # Healer
@@ -168,11 +150,11 @@ def ExecuteMemoryCode(SaveFight_check):
     SAMOpener = []
     DRGOpener = []
     MNKOpener = []
-    NINOpener = [Bunshin, SpinningEdge, SpinningEdge, SpinningEdge, SpinningEdge, SpinningEdge, SpinningEdge]
+    NINOpener = []
     RPROpener = []
 
     # Tank 
-    DRKOpener = [LivingShadow, HardSlash, HardSlash, HardSlash, HardSlash, HardSlash, HardSlash, HardSlash, HardSlash]
+    DRKOpener = []
     WAROpener = []
     PLDOpener = []
     GNBOpener = []
@@ -220,7 +202,7 @@ def ExecuteMemoryCode(SaveFight_check):
     # So if you want to simulate the BlackMage and a RedMage, you would do: 
     # PlayerList = [BLMPlayer, RDMPlayer]
 
-    PlayerList = [SMNPlayer, DRKPlayer, NINPlayer]
+    PlayerList = [BLMPlayer]
  
     Event.PlayerList = PlayerList
 

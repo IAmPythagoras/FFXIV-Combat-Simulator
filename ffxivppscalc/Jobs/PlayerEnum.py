@@ -28,6 +28,7 @@ class RoleEnum(PlayerEnum):
     Melee = 3
     Tank = 4
     PhysicalRanged = 5
+    Pet = 6
 
 
 class JobEnum(PlayerEnum):

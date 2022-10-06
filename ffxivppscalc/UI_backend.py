@@ -21,30 +21,6 @@ from Jobs.PlayerEnum import *
 
 from Jobs.ActionEnum import name_for_id, id_for_name # importing helper functions
 
-#CASTER
-from Jobs.Caster.Summoner.Summoner_Player import *
-from Jobs.Caster.Blackmage.BlackMage_Player import * 
-from Jobs.Caster.Redmage.Redmage_Player import *
-#HEALER
-from Jobs.Healer.Sage.Sage_Player import *
-from Jobs.Healer.Scholar.Scholar_Player import *
-from Jobs.Healer.Whitemage.Whitemage_Player import *
-from Jobs.Healer.Astrologian.Astrologian_Player import *
-#RANGED
-from Jobs.Ranged.Machinist.Machinist_Player import *
-from Jobs.Ranged.Bard.Bard_Player import *
-from Jobs.Ranged.Dancer.Dancer_Player import *
-#TANK
-from Jobs.Tank.Gunbreaker.Gunbreaker_Player import *
-from Jobs.Tank.DarkKnight.DarkKnight_Player import *
-from Jobs.Tank.Warrior.Warrior_Player import *
-from Jobs.Tank.Paladin.Paladin_Player import *
-#MELEE
-from Jobs.Melee.Samurai.Samurai_Player import *
-from Jobs.Melee.Ninja.Ninja_Player import *
-from Jobs.Melee.Dragoon.Dragoon_Player import *
-from Jobs.Melee.Reaper.Reaper_Player import *
-from Jobs.Melee.Monk.Monk_Player import *
 
 
 letters = "abcdefghijklmnopqrstuvwyxz" # Used to make sure the input is only numbers
@@ -110,7 +86,6 @@ def ImportFightBackend(fightID,fightNumber):
             player_dict[playerID]["job_object"].EffectCDList = [BloodWeaponCheck]
         elif job_name == "Paladin" : 
             player_dict[playerID]["job_object"].Stat = copy.deepcopy(PLDStat)
-            player_dict[playerID]["job_object"].EffectList = [OathGauge]
         elif job_name == "Gunbreaker" : 
             player_dict[playerID]["job_object"].Stat = copy.deepcopy(GNBStat)
         #Caster
@@ -187,43 +162,43 @@ def SaveFight(Event, countdown, fightDuration, saveName):
 
 
 
-        if isinstance(Player, BlackMage) : 
+        if Player.JobEnum == JobEnum.BlackMage: 
             PlayerDict["JobName"] = "BlackMage"
-        elif isinstance(Player, Redmage) : 
+        elif Player.JobEnum == JobEnum.RedMage : 
             PlayerDict["JobName"] = "RedMage"
-        elif isinstance(Player, DarkKnight) : 
+        elif Player.JobEnum == JobEnum.DarkKnight : 
             PlayerDict["JobName"] = "DarkKnight"
-        elif isinstance(Player, Warrior) : 
+        elif Player.JobEnum == JobEnum.Warrior : 
             PlayerDict["JobName"] = "Warrior"
-        elif isinstance(Player, Paladin) : 
+        elif Player.JobEnum == JobEnum.Paladin : 
             PlayerDict["JobName"] = "Paladin"
-        elif isinstance(Player, Gunbreaker) : 
+        elif Player.JobEnum == JobEnum.Gunbreaker : 
             PlayerDict["JobName"] = "Gunbreaker"
-        elif isinstance(Player, Machinist) : 
+        elif Player.JobEnum == JobEnum.Machinist : 
             PlayerDict["JobName"] = "Machinist"
-        elif isinstance(Player, Samurai) : 
+        elif Player.JobEnum == JobEnum.Samurai : 
             PlayerDict["JobName"] = "Samurai"
-        elif isinstance(Player, Ninja) : 
+        elif Player.JobEnum == JobEnum.Ninja : 
             PlayerDict["JobName"] = "Ninja"
-        elif isinstance(Player, Scholar) : 
+        elif Player.JobEnum == JobEnum.Scholar : 
             PlayerDict["JobName"] = "Scholar"
-        elif isinstance(Player, Whitemage) : 
+        elif Player.JobEnum == JobEnum.WhiteMage : 
             PlayerDict["JobName"] = "WhiteMage"
-        elif isinstance(Player, Astrologian) : 
+        elif Player.JobEnum == JobEnum.Astrologian : 
             PlayerDict["JobName"] = "Astrologian"
-        elif isinstance(Player, Sage) : 
+        elif Player.JobEnum == JobEnum.Sage : 
             PlayerDict["JobName"] = "Sage"
-        elif isinstance(Player, Summoner) : 
+        elif Player.JobEnum == JobEnum.Summoner: 
             PlayerDict["JobName"] = "Summoner"
-        elif isinstance(Player, Dragoon) : 
+        elif Player.JobEnum == JobEnum.Dragoon: 
             PlayerDict["JobName"] = "Dragoon"
-        elif isinstance(Player, Reaper) : 
+        elif Player.JobEnum == JobEnum.Reaper : 
             PlayerDict["JobName"] = "Reaper"
-        elif isinstance(Player, Bard) : 
+        elif Player.JobEnum == JobEnum.Bard : 
             PlayerDict["JobName"] = "Bard"
-        elif isinstance(Player, Dancer): 
+        elif Player.JobEnum == JobEnum.Dancer: 
             PlayerDict["JobName"] = "Dancer"
-        elif isinstance(Player, Monk): 
+        elif Player.JobEnum == JobEnum.Monk: 
             PlayerDict["JobName"] = "Monk"
 
 
