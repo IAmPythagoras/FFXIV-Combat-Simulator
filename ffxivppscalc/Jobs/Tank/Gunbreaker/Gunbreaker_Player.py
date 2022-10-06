@@ -1,4 +1,5 @@
-from ffxivppscalc.Jobs.Tank.Tank_Player import Tank
+from Jobs.Tank.Tank_Player import Tank
+from Jobs.ActionEnum import GunbreakerActions
 
 class Gunbreaker(Tank):
 
@@ -43,6 +44,9 @@ class Gunbreaker(Tank):
 
         #JobMod
         self.JobMod = 100
+
+        #ActionEnum
+        self.JobAction = GunbreakerActions
 
     def updateCD(self, time):
         super().updateCD(time)

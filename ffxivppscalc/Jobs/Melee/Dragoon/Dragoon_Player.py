@@ -2,7 +2,8 @@
 ########## DRAGOON PLAYER ###############
 #########################################
 
-from ffxivppscalc.Jobs.Melee.Melee_Player import Melee
+from Jobs.Melee.Melee_Player import Melee
+from Jobs.ActionEnum import DragoonActions
 
 class Dragoon(Melee):
 
@@ -53,6 +54,9 @@ class Dragoon(Melee):
 
         #JobMod
         self.JobMod = 115
+
+        #ActionEnum
+        self.JobAction = DragoonActions
 
     def updateCD(self, time):
         super().updateCD(time)

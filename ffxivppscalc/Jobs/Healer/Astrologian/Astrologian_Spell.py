@@ -298,17 +298,17 @@ def Arcanum(Target, Type):
     ArcanumSpell.TargetID = Target.playerID 
     return ArcanumSpell
 
-def LunarAranum(target):
+def LunarArcanum(target):
     returnSpell = Arcanum(target,"Lunar")
     returnSpell.id = 4402
     return returnSpell
 
-def SolarAranum(target):
+def SolarArcanum(target):
     returnSpell = Arcanum(target,"Solar")
     returnSpell.id = 4401
     return returnSpell
 
-def CelestialAranum(target):
+def CelestialArcanum(target):
     returnSpell = Arcanum(target,"Celestial")
     returnSpell.id = 4403
     return returnSpell
@@ -320,12 +320,12 @@ AstrologianAbility = {
 3590 : Draw,
 3593 : Redraw, 
 7443 : MinorArcana,
-4401 : SolarAranum,
-4404 : SolarAranum,
-4402 : LunarAranum,
-4405 : LunarAranum,
-4403 : CelestialAranum,
-4406 : CelestialAranum,
+4401 : SolarArcanum,
+4404 : SolarArcanum,
+4402 : LunarArcanum,
+4405 : LunarArcanum,
+4403 : CelestialArcanum,
+4406 : CelestialArcanum,
 7444 : LordOfCrown,
 7445 : LadyOfCrown,
 25870 : Astrodyne,

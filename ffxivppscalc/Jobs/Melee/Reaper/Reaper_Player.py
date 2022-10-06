@@ -1,4 +1,5 @@
-from ffxivppscalc.Jobs.Melee.Melee_Player import Melee
+from Jobs.Melee.Melee_Player import Melee
+from Jobs.ActionEnum import ReaperActions
 
 class Reaper(Melee):
 
@@ -49,6 +50,9 @@ class Reaper(Melee):
 
 
         self.JobMod = 115
+
+        #ActionEnum
+        self.JobAction = ReaperActions
 
     def AddGauge(self, Amount):
         self.SoulGauge = min(100, self.SoulGauge + Amount)

@@ -2,7 +2,8 @@
 ########## WHITEMAGE PLAYER #############
 #########################################
 
-from ffxivppscalc.Jobs.Healer.Healer_Player import Healer
+from Jobs.Healer.Healer_Player import Healer
+from Jobs.ActionEnum import WhiteMageActions
 class Whitemage(Healer):
 
     def __init__(self, GCDTimer, ActionSet, PrePullSet, EffectList, CurrentFight, Stat):
@@ -38,6 +39,9 @@ class Whitemage(Healer):
         self.Dia = None
 
         self.EffectCDList.append(LilyCheck) #Starting with this check
+
+        #ActionEnum
+        self.JobAction = WhiteMageActions
 
     def updateCD(self, time):
         super().updateCD(time)

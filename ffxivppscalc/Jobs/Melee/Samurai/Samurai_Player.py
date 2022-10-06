@@ -2,7 +2,8 @@
 ########## SAMURAI PLAYER ###############
 #########################################
 
-from ffxivppscalc.Jobs.Melee.Melee_Player import Melee
+from Jobs.Melee.Melee_Player import Melee
+from Jobs.ActionEnum import SamuraiActions
 
 class Samurai(Melee):
 
@@ -61,6 +62,9 @@ class Samurai(Melee):
 
         #JobMod
         self.JobMod = 112
+
+        #ActionEnum
+        self.JobAction = SamuraiActions
 
     def updateCD(self, time):
         super().updateCD(time)

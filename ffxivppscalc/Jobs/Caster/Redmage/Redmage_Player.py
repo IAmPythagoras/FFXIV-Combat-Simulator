@@ -1,8 +1,9 @@
 #########################################
 ########## REDMAGE PLAYER ###############
 #########################################
-from ffxivppscalc.Jobs.Caster.Caster_Player import Caster
-from ffxivppscalc.Jobs.Base_Player import ManaRegenCheck
+from Jobs.Caster.Caster_Player import Caster
+from Jobs.Base_Player import ManaRegenCheck
+from Jobs.ActionEnum import RedMageActions
 
 class Redmage(Caster):
 
@@ -46,6 +47,9 @@ class Redmage(Caster):
         self.Verholy = False
         self.Scorch = False
         self.Resolution = False
+
+        #ActionEnum
+        self.JobAction = RedMageActions
 
 
     def updateCD(self, time):

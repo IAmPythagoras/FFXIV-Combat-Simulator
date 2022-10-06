@@ -1,5 +1,6 @@
-from ffxivppscalc.Jobs.Base_Player import Player
-from ffxivppscalc.Jobs.Base_Player import ManaRegenCheck
+from Jobs.Base_Player import Player
+from Jobs.Base_Player import ManaRegenCheck
+from Jobs.ActionEnum import HealerActions
 
 class Healer(Player):
 
@@ -24,6 +25,9 @@ class Healer(Player):
 
         #Trait
         self.Trait = 1.3 #Magik and mend
+
+        #ActionEnum
+        self.ClassAction = HealerActions
     
     def updateCD(self,time):
         if (self.SwiftcastCD > 0) : self.SwiftcastCD = max(0,self.SwiftcastCD - time)

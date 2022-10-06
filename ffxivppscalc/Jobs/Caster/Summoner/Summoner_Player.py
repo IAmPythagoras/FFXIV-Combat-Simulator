@@ -1,5 +1,6 @@
-from ffxivppscalc.Jobs.Caster.Caster_Player import Caster
-from ffxivppscalc.Jobs.Base_Player import ManaRegenCheck
+from Jobs.Caster.Caster_Player import Caster
+from Jobs.Base_Player import ManaRegenCheck
+from Jobs.ActionEnum import SummonerActions
 
 
 class Summoner(Caster):
@@ -54,6 +55,9 @@ class Summoner(Caster):
 
         #Summon
         self.Summon = None
+
+        #ActionEnum
+        self.JobAction = SummonerActions
 
     def updateCD(self, time):
         super().updateCD(time)

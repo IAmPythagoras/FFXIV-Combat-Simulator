@@ -2,7 +2,9 @@ import os
 
 from Enemy import Enemy
 from Fight import Fight
-
+from Jobs.Player import Player
+from Jobs.PlayerEnum import *
+from copy import deepcopy
 
 from Jobs.Base_Spell import WaitAbility, Potion
 from Jobs.Caster.Caster_Spell import *
@@ -15,37 +17,23 @@ from Jobs.Tank.Tank_Spell import *
 from Jobs.Caster.Summoner.Summoner_Spell import *
 from Jobs.Caster.Blackmage.BlackMage_Spell import * 
 from Jobs.Caster.Redmage.Redmage_Spell import *
-from Jobs.Caster.Summoner.Summoner_Player import *
-from Jobs.Caster.Blackmage.BlackMage_Player import * 
-from Jobs.Caster.Redmage.Redmage_Player import *
 
 #HEALER
 from Jobs.Healer.Sage.Sage_Spell import *
 from Jobs.Healer.Scholar.Scholar_Spell import *
 from Jobs.Healer.Whitemage.Whitemage_Spell import *
 from Jobs.Healer.Astrologian.Astrologian_Spell import *
-from Jobs.Healer.Sage.Sage_Player import *
-from Jobs.Healer.Scholar.Scholar_Player import *
-from Jobs.Healer.Whitemage.Whitemage_Player import *
-from Jobs.Healer.Astrologian.Astrologian_Player import *
 
 #RANGED
 from Jobs.Ranged.Machinist.Machinist_Spell import *
 from Jobs.Ranged.Bard.Bard_Spell import *
 from Jobs.Ranged.Dancer.Dancer_Spell import *
-from Jobs.Ranged.Machinist.Machinist_Player import *
-from Jobs.Ranged.Bard.Bard_Player import *
-from Jobs.Ranged.Dancer.Dancer_Player import *
 
 #TANK
 from Jobs.Tank.Gunbreaker.Gunbreaker_Spell import *
 from Jobs.Tank.DarkKnight.DarkKnight_Spell import *
 from Jobs.Tank.Warrior.Warrior_Spell import *
 from Jobs.Tank.Paladin.Paladin_Spell import *
-from Jobs.Tank.Gunbreaker.Gunbreaker_Player import *
-from Jobs.Tank.DarkKnight.DarkKnight_Player import *
-from Jobs.Tank.Warrior.Warrior_Player import *
-from Jobs.Tank.Paladin.Paladin_Player import *
 
 #MELEE
 from Jobs.Melee.Samurai.Samurai_Spell import *
@@ -53,11 +41,7 @@ from Jobs.Melee.Ninja.Ninja_Spell import *
 from Jobs.Melee.Dragoon.Dragoon_Spell import *
 from Jobs.Melee.Reaper.Reaper_Spell import *
 from Jobs.Melee.Monk.Monk_Spell import *
-from Jobs.Melee.Samurai.Samurai_Player import *
-from Jobs.Melee.Ninja.Ninja_Player import *
-from Jobs.Melee.Dragoon.Dragoon_Player import *
-from Jobs.Melee.Reaper.Reaper_Player import *
-from Jobs.Melee.Monk.Monk_Player import *
+
 from UI_backend import SaveFight
 
 def ExecuteMemoryCode(SaveFight_check):
@@ -110,33 +94,33 @@ def ExecuteMemoryCode(SaveFight_check):
     # You can simply copy the objet's __init__ and change the name. 
 
     # Caster player object
-    BLMPlayer = BlackMage(2.5, [], [], [EnochianEffect, ElementalEffect], Event, BLMStat)
-    RDMPlayer = Redmage(2.5, [], [], [DualCastEffect], Event, RDMStat)
-    SMNPlayer = Summoner(2.5, [], [], [], Event, SMNStat)
+    BLMPlayer = Player([], [EnochianEffect, ElementalEffect], Event, deepcopy(BLMStat), JobEnum.BlackMage)
+    RDMPlayer = Player([], [DualCastEffect], Event, deepcopy(RDMStat), JobEnum.RedMage)
+    SMNPlayer = Player([], [], Event, deepcopy(SMNStat), JobEnum.Summoner)
 
     # Healer player object
-    SCHPlayer = Scholar(2.5, [], [], [], Event, SCHStat)
-    WHMPlayer = Whitemage(2.5, [], [], [], Event, WHMStat)
-    SGEPlayer = Sage(2.5, [], [], [], Event, SGEStat)
-    ASTPlayer = Astrologian(2.5, [], [], [], Event, ASTStat)
+    SCHPlayer = Player([], [], Event, deepcopy(SCHStat), JobEnum.Scholar)
+    WHMPlayer = Player([], [], Event, deepcopy(WHMStat), JobEnum.WhiteMage)
+    SGEPlayer = Player([], [], Event, deepcopy(SGEStat), JobEnum.Sage)
+    ASTPlayer = Player([], [], Event, deepcopy(ASTStat), JobEnum.Astrologian)
 
     # Physical Ranged
-    MCHPlayer = Machinist(2.5, [], [], [], Event, MCHStat)
-    BRDPlayer = Bard(2.5, [], [], [SongEffect], Event, BRDStat)
-    DNCPlayer = Dancer(2.5, [], [], [EspritEffect], Event, DNCStat)
+    MCHPlayer = Player([], [], Event, deepcopy(MCHStat), JobEnum.Machinist)
+    BRDPlayer = Player([], [SongEffect], Event, deepcopy(BRDStat), JobEnum.Bard)
+    DNCPlayer = Player([], [EspritEffect], Event, deepcopy(DNCStat), JobEnum.Dancer)
     
     # Melee
-    NINPlayer = Ninja(2.5, [], [], [], Event, NINStat)
-    SAMPlayer = Samurai(2.5, [], [], [], Event, SAMStat)
-    DRGPlayer = Dragoon(2.5, [], [], [], Event, DRGStat)
-    RPRPlayer = Reaper(2.5, [], [], [], Event, RPRStat)
-    MNKPlayer = Monk(2.5, [], [], [ComboEffect], Event, MNKStat)
+    NINPlayer = Player([], [], Event, deepcopy(NINStat), JobEnum.Ninja)
+    SAMPlayer = Player([], [], Event, deepcopy(SAMStat), JobEnum.Samurai)
+    DRGPlayer = Player([], [], Event, deepcopy(DRGStat), JobEnum.Dragoon)
+    RPRPlayer = Player([], [], Event, deepcopy(RPRStat), JobEnum.Reaper)
+    MNKPlayer = Player([], [ComboEffect], Event, deepcopy(MNKStat), JobEnum.Monk)
 
     # Tank
-    DRKPlayer = DarkKnight(2.5, [], [], [], Event, DRKStat)
-    WARPlayer = Warrior(2.5, [], [], [SurgingTempestEffect], Event, WARStat)
-    PLDPlayer = Paladin(2.5, [], [], [], Event, PLDStat)
-    GNBPlayer = Gunbreaker(2.5, [], [], [], Event, GNBStat)
+    DRKPlayer = Player([], [], Event, deepcopy(DRKStat), JobEnum.DarkKnight)
+    WARPlayer = Player([], [SurgingTempestEffect], Event, deepcopy(WARStat), JobEnum.Warrior)
+    PLDPlayer = Player([], [], Event, deepcopy(PLDStat), JobEnum.Paladin)
+    GNBPlayer = Player([], [], Event, deepcopy(GNBStat), JobEnum.Gunbreaker)
 
 
     # ===============================================================================================
@@ -147,7 +131,7 @@ def ExecuteMemoryCode(SaveFight_check):
     # Note that if you are simulating with more than 1 per job you will need to create a new list of actions.
 
     # Caster
-    BLMOpener = []
+    BLMOpener = [Fire3, Fire4, Fire4,Fire4,Fire4]
     SMNOpener = []
     RDMOpener = []
     
@@ -218,7 +202,7 @@ def ExecuteMemoryCode(SaveFight_check):
     # So if you want to simulate the BlackMage and a RedMage, you would do: 
     # PlayerList = [BLMPlayer, RDMPlayer]
 
-    PlayerList = []
+    PlayerList = [BLMPlayer]
  
     Event.PlayerList = PlayerList
 
@@ -229,7 +213,7 @@ def ExecuteMemoryCode(SaveFight_check):
     TimeLimit = 500 # Time limit for the simulation in seconds. It will stop once this time has been reached (in simulation time)
     time_unit = 0.01 # Time unit or frame of the simulation. Smallest step the simulator will take between each iterations. It is advised to not change this value
     ShowGraph = True # Parameter to show (or not) the graph generated by the simulator.
-    RequirementOn = True # Parameter that will enable or disable the requirement check for all actions. If False the simulator
+    RequirementOn = False # Parameter that will enable or disable the requirement check for all actions. If False the simulator
                          # will not check if an action can be done
 
     # ===============================================================================================

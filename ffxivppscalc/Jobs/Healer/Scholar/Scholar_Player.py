@@ -2,7 +2,8 @@
 ########## SCHOLAR PLAYER ###############
 #########################################
 
-from ffxivppscalc.Jobs.Healer.Healer_Player import Healer
+from Jobs.Healer.Healer_Player import Healer
+from Jobs.ActionEnum import ScholarActions
 
 class Scholar(Healer):
 
@@ -40,6 +41,9 @@ class Scholar(Healer):
         self.Biolysis = None
         #Buff
         self.Recitation = True #True if we have it
+
+        #ActionEnum
+        self.JobAction = ScholarActions
 
 
     def updateCD(self, time):

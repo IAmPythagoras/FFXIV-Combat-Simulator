@@ -1,4 +1,5 @@
-from ffxivppscalc.Jobs.Healer.Healer_Player import Healer
+from Jobs.Healer.Healer_Player import Healer
+from Jobs.ActionEnum import AstrologianActions
 
 class Astrologian(Healer):
 
@@ -43,6 +44,9 @@ class Astrologian(Healer):
 
         #DOT
         self.CumbustDOT = None
+
+        #ActionEnum
+        self.JobAction = AstrologianActions
 
 
 

@@ -2,7 +2,8 @@
 ##########  MONK PLAYER   ###############
 #########################################
 
-from ffxivppscalc.Jobs.Melee.Melee_Player import Melee
+from Jobs.Melee.Melee_Player import Melee
+from Jobs.ActionEnum import MonkActions
 
 class Monk(Melee):
 
@@ -56,6 +57,9 @@ class Monk(Melee):
         self.UsedFormlessStack = False #Will remove effect at the end if set to true
         #JobMod
         self.JobMod = 110
+
+        #ActionEnum
+        self.JobAction = MonkActions
 
     def updateCD(self, time):
         super().updateCD(time)

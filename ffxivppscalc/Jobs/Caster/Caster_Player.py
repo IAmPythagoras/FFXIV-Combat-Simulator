@@ -1,4 +1,5 @@
-from ffxivppscalc.Jobs.Base_Player import Player
+from Jobs.Base_Player import Player
+from Jobs.ActionEnum import CasterActions
 
 
 class Caster(Player):
@@ -22,6 +23,9 @@ class Caster(Player):
 
         #trait
         self.Trait = 1.3 #magik and mend
+
+        #ActionEnum
+        self.ClassAction = CasterActions
     
     def updateCD(self,time):
         if (self.SwiftcastCD > 0) : self.SwiftcastCD = max(0,self.SwiftcastCD - time)

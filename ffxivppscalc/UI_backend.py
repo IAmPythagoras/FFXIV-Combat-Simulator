@@ -1,52 +1,29 @@
 import copy
 import json
-import os
 from pathlib import Path
-from ffxivppscalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
 
-from ffxivppscalc.Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton
-from ffxivppscalc.Jobs.Melee.Samurai.Samurai_Spell import MeikyoCheck, MeikyoEffect, MeikyoStackCheck
+from Jobs.Melee.Monk.Monk_Spell import ComboEffect
+from Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton
+from Jobs.Melee.Samurai.Samurai_Spell import MeikyoCheck, MeikyoEffect, MeikyoStackCheck
+from Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
+from Jobs.Ranged.Bard.Bard_Spell import SongEffect
+from Jobs.Tank.DarkKnight.DarkKnight_Spell import BloodWeaponCheck, BloodWeaponEffect
+from Jobs.Tank.Warrior.Warrior_Spell import SurgingTempestEffect
+from Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
+from Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, EnochianEffect
 
+from Fight import Fight
+from Enemy import Enemy
+from FFLogsAPIRequest import getAbilityList, lookup_abilityID
+from Jobs.Base_Spell import PrepullPotion, WaitAbility
+from Jobs.Player import Player
+from Jobs.PlayerEnum import *
 
-from ffxivppscalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
-from ffxivppscalc.Jobs.Ranged.Bard.Bard_Spell import SongEffect
-from ffxivppscalc.Jobs.Tank.DarkKnight.DarkKnight_Spell import BloodWeaponCheck, BloodWeaponEffect
-from ffxivppscalc.Jobs.Tank.Warrior.Warrior_Spell import SurgingTempestEffect
-from ffxivppscalc.Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
-from ffxivppscalc.Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, EnochianEffect
-
-from ffxivppscalc.Fight import Fight
-from ffxivppscalc.Enemy import Enemy
-from ffxivppscalc.FFLogsAPIRequest import getAbilityList, lookup_abilityID
-from ffxivppscalc.Jobs.Base_Spell import PrepullPotion, WaitAbility
-
-#CASTER
-from ffxivppscalc.Jobs.Caster.Summoner.Summoner_Player import *
-from ffxivppscalc.Jobs.Caster.Blackmage.BlackMage_Player import * 
-from ffxivppscalc.Jobs.Caster.Redmage.Redmage_Player import *
-#HEALER
-from ffxivppscalc.Jobs.Healer.Sage.Sage_Player import *
-from ffxivppscalc.Jobs.Healer.Scholar.Scholar_Player import *
-from ffxivppscalc.Jobs.Healer.Whitemage.Whitemage_Player import *
-from ffxivppscalc.Jobs.Healer.Astrologian.Astrologian_Player import *
-#RANGED
-from ffxivppscalc.Jobs.Ranged.Machinist.Machinist_Player import *
-from ffxivppscalc.Jobs.Ranged.Bard.Bard_Player import *
-from ffxivppscalc.Jobs.Ranged.Dancer.Dancer_Player import *
-#TANK
-from ffxivppscalc.Jobs.Tank.Gunbreaker.Gunbreaker_Player import *
-from ffxivppscalc.Jobs.Tank.DarkKnight.DarkKnight_Player import *
-from ffxivppscalc.Jobs.Tank.Warrior.Warrior_Player import *
-from ffxivppscalc.Jobs.Tank.Paladin.Paladin_Player import *
-#MELEE
-from ffxivppscalc.Jobs.Melee.Samurai.Samurai_Player import *
-from ffxivppscalc.Jobs.Melee.Ninja.Ninja_Player import *
-from ffxivppscalc.Jobs.Melee.Dragoon.Dragoon_Player import *
-from ffxivppscalc.Jobs.Melee.Reaper.Reaper_Player import *
-from ffxivppscalc.Jobs.Melee.Monk.Monk_Player import *
+from Jobs.ActionEnum import name_for_id, id_for_name # importing helper functions
 
 
-letters = "abcdefghijklmnopqrstuvwyxz"
+
+letters = "abcdefghijklmnopqrstuvwyxz" # Used to make sure the input is only numbers
 
 #This file will take care of request by TUI.py and return whatever needs to be returned
 
@@ -109,7 +86,6 @@ def ImportFightBackend(fightID,fightNumber):
             player_dict[playerID]["job_object"].EffectCDList = [BloodWeaponCheck]
         elif job_name == "Paladin" : 
             player_dict[playerID]["job_object"].Stat = copy.deepcopy(PLDStat)
-            player_dict[playerID]["job_object"].EffectList = [OathGauge]
         elif job_name == "Gunbreaker" : 
             player_dict[playerID]["job_object"].Stat = copy.deepcopy(GNBStat)
         #Caster
@@ -184,25 +160,46 @@ def SaveFight(Event, countdown, fightDuration, saveName):
         #Going through all players in the Event
         PlayerDict = {} #Empty dictionnary
 
-        if isinstance(Player, BlackMage) : PlayerDict["JobName"] = "BlackMage"
-        elif isinstance(Player, Redmage) : PlayerDict["JobName"] = "RedMage"
-        elif isinstance(Player, DarkKnight) : PlayerDict["JobName"] = "DarkKnight"
-        elif isinstance(Player, Warrior) : PlayerDict["JobName"] = "Warrior"
-        elif isinstance(Player, Paladin) : PlayerDict["JobName"] = "Paladin"
-        elif isinstance(Player, Gunbreaker) : PlayerDict["JobName"] = "Gunbreaker"
-        elif isinstance(Player, Machinist) : PlayerDict["JobName"] = "Machinist"
-        elif isinstance(Player, Samurai) : PlayerDict["JobName"] = "Samurai"
-        elif isinstance(Player, Ninja) : PlayerDict["JobName"] = "Ninja"
-        elif isinstance(Player, Scholar) : PlayerDict["JobName"] = "Scholar"
-        elif isinstance(Player, Whitemage) : PlayerDict["JobName"] = "WhiteMage"
-        elif isinstance(Player, Astrologian) : PlayerDict["JobName"] = "Astrologian"
-        elif isinstance(Player, Sage) : PlayerDict["JobName"] = "Sage"
-        elif isinstance(Player, Summoner) : PlayerDict["JobName"] = "Summoner"
-        elif isinstance(Player, Dragoon) : PlayerDict["JobName"] = "Dragoon"
-        elif isinstance(Player, Reaper) : PlayerDict["JobName"] = "Reaper"
-        elif isinstance(Player, Bard) : PlayerDict["JobName"] = "Bard"
-        elif isinstance(Player, Dancer): PlayerDict["JobName"] = "Dancer"
-        elif isinstance(Player, Monk): PlayerDict["JobName"] = "Monk"
+
+
+        if Player.JobEnum == JobEnum.BlackMage: 
+            PlayerDict["JobName"] = "BlackMage"
+        elif Player.JobEnum == JobEnum.RedMage : 
+            PlayerDict["JobName"] = "RedMage"
+        elif Player.JobEnum == JobEnum.DarkKnight : 
+            PlayerDict["JobName"] = "DarkKnight"
+        elif Player.JobEnum == JobEnum.Warrior : 
+            PlayerDict["JobName"] = "Warrior"
+        elif Player.JobEnum == JobEnum.Paladin : 
+            PlayerDict["JobName"] = "Paladin"
+        elif Player.JobEnum == JobEnum.Gunbreaker : 
+            PlayerDict["JobName"] = "Gunbreaker"
+        elif Player.JobEnum == JobEnum.Machinist : 
+            PlayerDict["JobName"] = "Machinist"
+        elif Player.JobEnum == JobEnum.Samurai : 
+            PlayerDict["JobName"] = "Samurai"
+        elif Player.JobEnum == JobEnum.Ninja : 
+            PlayerDict["JobName"] = "Ninja"
+        elif Player.JobEnum == JobEnum.Scholar : 
+            PlayerDict["JobName"] = "Scholar"
+        elif Player.JobEnum == JobEnum.WhiteMage : 
+            PlayerDict["JobName"] = "WhiteMage"
+        elif Player.JobEnum == JobEnum.Astrologian : 
+            PlayerDict["JobName"] = "Astrologian"
+        elif Player.JobEnum == JobEnum.Sage : 
+            PlayerDict["JobName"] = "Sage"
+        elif Player.JobEnum == JobEnum.Summoner: 
+            PlayerDict["JobName"] = "Summoner"
+        elif Player.JobEnum == JobEnum.Dragoon: 
+            PlayerDict["JobName"] = "Dragoon"
+        elif Player.JobEnum == JobEnum.Reaper : 
+            PlayerDict["JobName"] = "Reaper"
+        elif Player.JobEnum == JobEnum.Bard : 
+            PlayerDict["JobName"] = "Bard"
+        elif Player.JobEnum == JobEnum.Dancer: 
+            PlayerDict["JobName"] = "Dancer"
+        elif Player.JobEnum == JobEnum.Monk: 
+            PlayerDict["JobName"] = "Monk"
 
 
         while Player.playerID in PlayerIDList:
@@ -222,7 +219,7 @@ def SaveFight(Event, countdown, fightDuration, saveName):
             #Special case for WaitAbility
             if action.id == 212 : #WaitAbility
                 if action.waitTime != 0:
-                    actionDict["actionID"] = 212
+                    actionDict["actionName"] = name_for_id(action.id,Player.ClassAction, Player.JobAction)
                     actionDict["sourceID"] = Player.playerID
                     actionDict["targetID"] = 0 #id 0 is by default the main enemy
                     actionDict["isGCD"] = False
@@ -230,7 +227,7 @@ def SaveFight(Event, countdown, fightDuration, saveName):
 
                     actionList.append(copy.deepcopy(actionDict))#adding to dict
             else: #Normal ability
-                actionDict["actionID"] = action.id 
+                actionDict["actionName"] = name_for_id(action.id,Player.ClassAction, Player.JobAction)
                 actionDict["sourceID"] = Player.playerID
                 actionDict["targetID"] = action.TargetID #id 0 is by default the main enemy
                 actionDict["isGCD"] = action.GCD
@@ -270,29 +267,6 @@ def SimulateFightBackend(file_name):
     f = open(file_name) #Opening save
 
     data = json.load(f) #Loading json file
-
-    #The file is formated like so 
-    #   {
-    #	"data" : {
-    #		"PlayerList": [
-    #		{
-    #			"JobName" : "Blackmage",
-    #           "playerID" : "1",
-    #			"actionList" : [
-    #			{
-    #				"actionID" : "12",
-    #				"actionName" : "Fire4",
-    #               "sourceID" : "1",
-    #               "targetID" : "63"
-    #			},
-    #           ...
-    #			]
-    #		},
-    #       ...
-    #		]
-    #	}
-
-    #So we will go through the PlayerList and then through all the actionList
 
     PlayerList = data["data"]["PlayerList"] #Player List
     fightInfo = data["data"]["fightInfo"] #fight information
@@ -338,29 +312,29 @@ def SimulateFightBackend(file_name):
         job_name = player["JobName"]
         job_object = None
         #Healer
-        if job_name == "Sage" : job_object = Sage(2.5, [], [], [], None, {})
-        elif job_name == "Scholar" : job_object = Scholar(2.5, [], [], [], None, {})
-        elif job_name == "WhiteMage" : job_object = Whitemage(2.5, [], [], [], None, {})
-        elif job_name == "Astrologian" : job_object = Astrologian(2.5, [], [], [], None, {})
+        if job_name == "Sage" : job_object = Player([], [], None, {}, JobEnum.Sage)
+        elif job_name == "Scholar" : job_object = Player([], [], None, {}, JobEnum.Scholar)
+        elif job_name == "WhiteMage" : job_object = Player([], [], None, {}, JobEnum.WhiteMage)
+        elif job_name == "Astrologian" : job_object = Player([], [], None, {}, JobEnum.Astrologian)
         #Tank
-        elif job_name == "Warrior" : job_object = Warrior(2.5, [], [], [SurgingTempestEffect], None, {})
-        elif job_name == "DarkKnight" : job_object = DarkKnight(2.5, [], [], [], None, {})
-        elif job_name == "Paladin" : job_object = Paladin(2.5, [], [], [OathGauge], None, {})
-        elif job_name == "Gunbreaker" : job_object = Gunbreaker(2.5, [], [], [], None, {})
+        elif job_name == "Warrior" : job_object = Player([], [SurgingTempestEffect], None, {}, JobEnum.Astrologian)
+        elif job_name == "DarkKnight" : job_object = Player([], [], None, {}, JobEnum.DarkKnight)
+        elif job_name == "Paladin" : job_object = Player([], [OathGauge], None, {}, JobEnum.Paladin)
+        elif job_name == "Gunbreaker" : job_object = Player([], [], None, {}, JobEnum.Gunbreaker)
         #Caster
-        elif job_name == "BlackMage" : job_object = BlackMage(2.5, [], [], [EnochianEffect, ElementalEffect], None, {})
-        elif job_name == "RedMage" : job_object = Redmage(2.5, [], [], [DualCastEffect], None, {})
-        elif job_name == "Summoner" : job_object = Summoner(2.5, [], [], [], None, {})
+        elif job_name == "BlackMage" : job_object = Player([], [EnochianEffect, ElementalEffect], None, {}, JobEnum.BlackMage)
+        elif job_name == "RedMage" : job_object = Player([], [DualCastEffect], None, {}, JobEnum.RedMage)
+        elif job_name == "Summoner" : job_object = Player([], [], None, {}, JobEnum.Summoner)
         #Ranged
-        elif job_name == "Dancer" : job_object = Dancer(2.5, [], [], [EspritEffect], None, {})
-        elif job_name == "Machinist" : job_object = Machinist(2.5, [], [], [], None, {})
-        elif job_name == "Bard" : job_object = Bard(2.5, [], [], [SongEffect], None, {})
+        elif job_name == "Dancer" : job_object = Player([], [EspritEffect], None, {}, JobEnum.Dancer)
+        elif job_name == "Machinist" : job_object = Player([], [], None, {}, JobEnum.Machinist)
+        elif job_name == "Bard" : job_object = Player([], [SongEffect], None, {}, JobEnum.Bard)
         #melee
-        elif job_name == "Reaper" : job_object = Reaper(2.5, [], [], [], None, {})
-        elif job_name == "Monk" : job_object = Monk(2.5, [], [], [ComboEffect], None, {})
-        elif job_name == "Dragoon" : job_object = Dragoon(2.5, [], [], [], None, {})
-        elif job_name == "Ninja" : job_object = Ninja(2.5, [], [], [], None, {})
-        elif job_name == "Samurai" : job_object = Samurai(2.5, [], [], [], None, {})
+        elif job_name == "Reaper" : job_object = Player([], [], None, {}, JobEnum.Reaper)
+        elif job_name == "Monk" : job_object = Player([], [ComboEffect], None, {}, JobEnum.Monk)
+        elif job_name == "Dragoon" : job_object = Player([], [], None, {}, JobEnum.Dragoon)
+        elif job_name == "Ninja" : job_object = Player([], [], None, {}, JobEnum.Ninja)
+        elif job_name == "Samurai" : job_object = Player([], [], None, {}, JobEnum.Samurai)
         
 
         job_object.playerID = player["playerID"] #Giving the playerID
@@ -429,12 +403,15 @@ def SimulateFightBackend(file_name):
 
     for playerID in PlayerActionList:
 
-        for action in PlayerActionList[playerID]["actionList"]:
+        player_obj = PlayerActionList[playerID]["job_object"] # Getting job object so we can have access to the ActionEnum of the class
 
-            if int(action["actionID"]) == 212 : 
+        for action in PlayerActionList[playerID]["actionList"]:
+            actionID = id_for_name(action["actionName"], player_obj.ClassAction, player_obj.JobAction) # Getting id from name
+
+            if int(actionID) == 212 : 
                 #WaitAbility. WaitAbility has a special field where the waited time is specified
                 actionObject = WaitAbility(action["waitTime"])
-            else: actionObject = lookup_abilityID(action["actionID"],action["targetID"], action["sourceID"],PlayerActionList) #Getting action object
+            else: actionObject = lookup_abilityID(actionID,action["targetID"], action["sourceID"],PlayerActionList) #Getting action object
 
             PlayerActionList[playerID]["actionObject"] += [actionObject]
 

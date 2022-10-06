@@ -2,38 +2,8 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 
+from Jobs.PlayerEnum import *
 
-# Class
-from ffxivppscalc.Jobs.Caster.Caster_Player import Caster
-from ffxivppscalc.Jobs.Healer.Sage.Sage_Player import Sage
-from ffxivppscalc.Jobs.Melee.Melee_Player import Melee
-from ffxivppscalc.Jobs.Ranged.Ranged_Player import Ranged
-from ffxivppscalc.Jobs.Tank.Tank_Player import Tank
-from ffxivppscalc.Jobs.Healer.Healer_Player import Healer
-
-# Jobs
-from ffxivppscalc.Jobs.Caster.Blackmage.BlackMage_Player import BlackMage
-from ffxivppscalc.Jobs.Caster.Redmage.Redmage_Player import Redmage
-from ffxivppscalc.Jobs.Caster.Summoner.Summoner_Player import BigSummon, Summoner
-from ffxivppscalc.Jobs.Ranged.Bard.Bard_Player import Bard
-from ffxivppscalc.Jobs.Ranged.Dancer.Dancer_Player import Dancer
-
-from ffxivppscalc.Jobs.Tank.Paladin.Paladin_Player import Paladin
-from ffxivppscalc.Jobs.Tank.Gunbreaker.Gunbreaker_Player import Gunbreaker
-from ffxivppscalc.Jobs.Tank.Warrior.Warrior_Player import Warrior
-from ffxivppscalc.Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem, DarkKnight
-
-from ffxivppscalc.Jobs.Ranged.Machinist.Machinist_Player import Queen, Machinist
-
-from ffxivppscalc.Jobs.Melee.Samurai.Samurai_Player import Samurai
-from ffxivppscalc.Jobs.Melee.Ninja.Ninja_Player import Ninja, Shadow
-from ffxivppscalc.Jobs.Melee.Dragoon.Dragoon_Player import Dragoon
-from ffxivppscalc.Jobs.Melee.Reaper.Reaper_Player import Reaper
-from ffxivppscalc.Jobs.Melee.Monk.Monk_Player import Monk
-
-from ffxivppscalc.Jobs.Healer.Whitemage.Whitemage_Player import Whitemage
-from ffxivppscalc.Jobs.Healer.Scholar.Scholar_Player import Scholar
-from ffxivppscalc.Jobs.Healer.Astrologian.Astrologian_Player import Astrologian
 
 class NoMoreAction(Exception):# Exception called if a spell fails to cast
     pass
@@ -75,6 +45,8 @@ class Fight:
 
 
     def ComputeDPSDistribution(self, Player, fig, axs, job):
+        # THIS WHOLE PART HAS BEEN SHOWN TO NOT BE ACCURATE AND IS NOT FIXED AS OF NOW
+        # USE AT YOUR OWN RISK
 
         # Graph data
         axs.set_ylabel("Percentage (%)")
@@ -123,14 +95,6 @@ class Fight:
             average_crit_mult = AverageCritMult(Player, i)
             expected_dps_list += [average_crit_mult * Player.DPS]
             i+= h
-
-
-
-
-        # for i in range(max(0, mean - radius), mean + radius+1): # Here i is the number of success
-         # y_list += [math.floor(Normal(decimal_mean, std, i) * 1000) /10] # Sampling from the distribution
-          # average_crit_mult = AverageCritMult(Player, i)
-           # expected_dps_list += [average_crit_mult * Player.DPS]
 
 
         high_crit_mult_list = []
@@ -204,11 +168,10 @@ class Fight:
             else:
                 PPS = player.TotalPotency / time
                 DPS = player.TotalDamage / time
-
-            print("The Total Potency done by player " + str(type(player)) + " was : " + str(player.TotalPotency))
+            print(player.RoleEnum)
+            print("The Total Potency done by player " + str(JobEnum.name_for_id(player.JobEnum)) + " was : " + str(player.TotalPotency))
             print("This same player had a Potency Per Second of: " + str(round(PPS,2)))
             print("This same Player had an average of " + str(round(player.TotalPotency/player.NextSpell,2)) + " Potency/Spell")
-            print("This same Player had an average of " + str(round(PPS/player.GCDTimer,2)) + " Potency/GCD")
             print("The DPS is : " + str(round(DPS,2)))
             print("=======================================================")
 
@@ -216,24 +179,24 @@ class Fight:
 
             job = ""
 
-            if isinstance(player, BlackMage) : job = "Blackmage"
-            elif isinstance(player, Redmage) : job = "Redmage"
-            elif isinstance(player, DarkKnight) : job = "DarkKnight"
-            elif isinstance(player, Warrior) : job = "Warrior"
-            elif isinstance(player, Paladin) : job = "Paladin"
-            elif isinstance(player, Gunbreaker) : job = "Gunbreaker"
-            elif isinstance(player, Machinist) : job = "Machinist"
-            elif isinstance(player, Samurai) : job = "Samurai"
-            elif isinstance(player, Ninja) : job = "Ninja"
-            elif isinstance(player, Scholar) : job = "Scholar"
-            elif isinstance(player, Whitemage) : job = "Whitemage"
-            elif isinstance(player, Astrologian) : job = "Astrologian"
-            elif isinstance(player, Summoner) : job = "Summoner"
-            elif isinstance(player, Dragoon) : job = "Dragoon"
-            elif isinstance(player, Reaper) : job = "Reaper"
-            elif isinstance(player, Monk) : job = "Monk"
-            elif isinstance(player, Sage) : job = "Sage"
-            elif isinstance(player, Bard) : 
+            if player.JobEnum == JobEnum.BlackMage : job = "Blackmage"
+            elif player.JobEnum == JobEnum.RedMage : job = "Redmage"
+            elif player.JobEnum == JobEnum.DarkKnight : job = "DarkKnight"
+            elif player.JobEnum == JobEnum.Warrior : job = "Warrior"
+            elif player.JobEnum == JobEnum.Paladin : job = "Paladin"
+            elif player.JobEnum == JobEnum.Gunbreaker : job = "Gunbreaker"
+            elif player.JobEnum == JobEnum.Machinist : job = "Machinist"
+            elif player.JobEnum == JobEnum.Samurai : job = "Samurai"
+            elif player.JobEnum == JobEnum.Ninja : job = "Ninja"
+            elif player.JobEnum == JobEnum.Scholar : job = "Scholar"
+            elif player.JobEnum == JobEnum.WhiteMage : job = "Whitemage"
+            elif player.JobEnum == JobEnum.Astrologian : job = "Astrologian"
+            elif player.JobEnum == JobEnum.Summoner : job = "Summoner"
+            elif player.JobEnum == JobEnum.Dragoon : job = "Dragoon"
+            elif player.JobEnum == JobEnum.Reaper : job = "Reaper"
+            elif player.JobEnum == JobEnum.Monk : job = "Monk"
+            elif player.JobEnum == JobEnum.Sage : job = "Sage"
+            elif player.JobEnum == JobEnum.Bard : 
                 job = "Bard"
                 print("==================")
                 print("Expected Vs Used values for bard")
@@ -243,7 +206,7 @@ class Fight:
                 print("Expected Soul Voice Gauge : " + str(player.ExpectedSoulVoiceGauge) + " Used SoulVoiceGauge : " + str(player.UsedSoulVoiceGauge))
                 print("Expected BloodLetterReduction : " + str(player.ExpectedBloodLetterReduction) + " Used BloodLetterReduction : " + str(player.UsedBloodLetterReduction))
                 print("==================")
-            elif isinstance(player, Dancer):
+            elif player.JobEnum == JobEnum.Dancer:
                 job = "Dancer"
                 print("==================")
                 print("Expected Vs Used Proc for Dancer")
@@ -252,6 +215,9 @@ class Fight:
                 print("Expected FourfoldFeather : " + str(player.ExpectedFourfoldFeather) + " Used FourfoldFeather : " + str(player.UsedFourfoldFeather) )
                 print("Expected ThreefoldFan : " + str(player.ExpectedThreefoldFan) + " Used ThreefoldFan : " + str(player.UsedThreefoldFan) )
                 print("==================")
+
+
+
             axs[0].plot(TimeStamp,player.DPSGraph, label=job)
             axs[1].plot(TimeStamp,player.PotencyGraph, label=job)
 
@@ -297,11 +263,11 @@ class Fight:
             hasTank = False
             hasHealer = False
             for player in self.PlayerList:
-                if isinstance(player, Melee) : hasMelee = True
-                elif isinstance(player, Caster) : hasCaster = True
-                elif isinstance(player, Ranged) : hasRanged = True
-                elif isinstance(player, Tank) : hasTank = True
-                elif isinstance(player, Healer) : hasHealer = True
+                if player.RoleEnum == RoleEnum.Melee : hasMelee = True
+                elif player.RoleEnum == RoleEnum.PhysicalRanged : hasCaster = True
+                elif player.RoleEnum == RoleEnum.Caster : hasRanged = True
+                elif player.RoleEnum == RoleEnum.Healer : hasTank = True
+                elif player.RoleEnum == RoleEnum.Tank : hasHealer = True
 
             if len(self.PlayerList) == 1 : self.TeamCompositionBonus = 1 # If only one player, there is not bonus
             else:
@@ -328,7 +294,6 @@ class Fight:
                             # Have to check if the player can cast the spell
                             # So check if Animation Lock, if Casting or if GCDLock
                             if(not (player.oGCDLock or player.GCDLock or player.Casting)):
-                                # if isinstance(player, Bard): input("Bard casts : " + str(player.ActionSet[player.NextSpell].id))
 
                                 player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)# Cast the spell
                                 # Locking the player
@@ -406,10 +371,6 @@ class Fight:
                             Player.DPSGraph += [round(Player.TotalDamage/self.TimeStamp, 2)] # Rounding the value to 2 digits
                             Player.PotencyGraph += [round(Player.TotalPotency/self.TimeStamp, 2)]
 
-                    # Update progress bar
-                    #p_bar.update(1)
-                    #p_bar.refresh()
-
 
                 # update self.TimeStamp
                 self.TimeStamp += TimeUnit
@@ -429,13 +390,7 @@ class Fight:
 
             for i in range(len(self.PlayerList)):  
                 player = self.PlayerList[i] # Removing all instance of clones/summons from the fight
-                if isinstance(player, Queen):
-                    remove += [i]
-                if isinstance(player, Esteem):
-                    remove += [i]
-                if isinstance(player, Shadow):
-                    remove += [i]
-                if isinstance(player, BigSummon):
+                if player.JobEnum == JobEnum.Pet:
                     remove += [i]
 
             k = 0
@@ -458,7 +413,7 @@ class Fight:
 
             Player.f_WD = (Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))/100
             Player.f_DET = math.floor(1000+math.floor(140*(Player.Stat["Det"]-baseMain)/levelMod))/1000# Determination damage
-            if isinstance(Player, Tank) : Player.f_TEN = (1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000 # Tenacity damage, 1 for non-tank player
+            if Player.RoleEnum == RoleEnum.Tank : Player.f_TEN = (1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000 # Tenacity damage, 1 for non-tank player
             else : Player.f_TEN = 1 # if non-tank
             Player.f_SPD = (1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000 # Used only for dots
             Player.CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000 # Crit rate in decimal
@@ -483,8 +438,8 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
 
     # type = 0 (Direct Damage), type = 1 (magical DOT), type = 2(physical DOT), type = 3 (Auto-attacks)
 
-    # All relevant formulas were taken from https://finalfantasy.fandom.com/wiki/Final_Fantasy_XIV_attributes# Damage_and_healing_formulae ,
-    # were given to me by javaJake# 0001 on discord or were taken from the Allagan Studies discord server.
+    # All relevant formulas were taken from https://finalfantasy.fandom.com/wiki/Final_Fantasy_XIV_attributes#Damage_and_healing_formulae ,
+    # were given to me by javaJake#0001 on discord or were taken from the Allagan Studies discord server.
     # The formulas on the website assume a random function that will randomise the ouput. We instead compute the expected outcome.
     # Also thanks to whoever did the DPS computation code on the black mage gear comparison sheet : https://docs.google.com/spreadsheets/d/1t3EYSOPuMceqCFrU4WAbzSd4gbYi-J7YeMB36dNmaWM/edit# gid=654212594
     # It helped me a lot to understand better the DPS computation of this game
@@ -498,10 +453,10 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
     Enemy = Player.CurrentFight.Enemy # Enemy targetted
 
 
-    if isinstance(Player, Queen) or isinstance(Player, Esteem) or isinstance(Player, Shadow) or isinstance(Player, BigSummon): MainStat = Player.Stat["MainStat"] # Summons do not receive bonus
+    if Player.JobEnum == JobEnum.Pet: MainStat = Player.Stat["MainStat"] # Summons do not receive bonus
     else: MainStat = math.floor(Player.Stat["MainStat"] * Player.CurrentFight.TeamCompositionBonus) # Scaling %bonus on mainstat
     # Computing values used throughout all computations
-    if isinstance(Player, Tank) : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
+    if Player.RoleEnum == RoleEnum.Tank : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
     else: f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100
     # These values are all already computed since they do not change
     f_WD = Player.f_WD
@@ -542,7 +497,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
     DHRateBonus = DHRate # Saving value for later use if necessary
 
     if type == 0: # Making sure its not an AA or DOT
-        if isinstance(Player, Machinist): 
+        if Player.JobEnum == JobEnum.Machinist: 
             # Then if machinist, has to check if direct crit guarantee
             if Player.ActionSet[Player.NextSpell].id != -1 and Player.ActionSet[Player.NextSpell].id != -2 and Player.Reassemble and Player.ActionSet[Player.NextSpell].Weaponskill:    # Checks if reassemble is on and if its a weapon skill
                 CritRate = 1
@@ -550,33 +505,33 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
                 Player.Reassemble = False # Uses Reassemble    
                 auto_crit = True
                 auto_DH = True   
-        elif isinstance(Player, Warrior):
+        elif Player.JobEnum == JobEnum.Warrior:
             if Player.InnerReleaseStack >= 1 and (Player.NextSpell < len(Player.ActionSet)) and (Player.ActionSet[Player.NextSpell].id == 9 or Player.ActionSet[Player.NextSpell].id == 8 or Player.ActionSet[Player.NextSpell].id == 10):
                 CritRate = 1# If inner release weaponskill
                 DHRate = 1
                 Player.InnerReleaseStack -= 1
                 auto_crit = True
                 auto_DH = True
-        elif isinstance(Player, Samurai):
+        elif Player.JobEnum == JobEnum.Samurai:
             if Player.DirectCrit:
                 CritRate = 1
                 DHRate = 1
                 Player.DirectCrit = False
                 auto_crit = True
                 auto_DH = True
-        elif isinstance(Player, Dancer):
+        elif Player.JobEnum == JobEnum.Dancer:
             if Player.NextDirectCrit:
                 CritRate = 1
                 DHRate = 1
                 Player.NextDirectCrit = False
                 auto_crit = True
                 auto_DH = True
-        elif isinstance(Player, Dragoon):
+        elif Player.JobEnum == JobEnum.Dragoon:
             if Player.NextCrit and Player.ActionSet[Player.NextSpell].Weaponskill: # If next crit and weaponskill
                 CritRate = 1
                 Player.NextCrit = False
                 auto_crit = True
-        elif isinstance(Player, Monk):
+        elif Player.JobEnum == JobEnum.Monk:
             if Player.GuaranteedCrit and Player.ActionSet[Player.NextSpell].Weaponskill:
                 CritRate = 1
                 Player.GuaranteedCrit = False
@@ -642,34 +597,6 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
     else: # if type is 1 or 2, then its a DOT, so we have to use the snapshotted buffs
         for buffs in spellObj.MultBonus:
             Damage = math.floor(Damage * buffs.MultDPS)
-    """
-    if math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) > 100000 : 
-        print("WOWOWOW HIGH DAMAGE : " + str(math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2)))))
-        print(spellObj)
-        print(DHRate)
-        print(Player.DHRate)
-        print(Player.CritRate)
-        print(CritRate)
-        print("Damage : " + str(Damage))
-        print("DH Damage : " + str(math.floor(Damage * ( 1 + roundDown((DHRate * 0.25), 2)))))
-        print("Crit damage : " + str(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) )))
-        x = 1
-        for buffs in Player.buffList: 
-            input("buff : " + str(buffs.MultDPS))
-            x *= buffs.MultDPS
-            input("x " + str(x))
-        print("ONTO BOSS")
-        for buffs in Enemy.buffList:
-            input("buff : " + str(buffs.MultDPS))
-            x *= buffs.MultDPS
-            input("x " + str(x))
-        input(spellObj.id)
-        """
-# crit = (1 + status_effect_rate * cdmg bonus)
-# dh = ( 1 + status_effect_rate * 0.25)
-
-    # Here I am returning both the damage assuming no crit and expected dh_rate and the damage with expected dh_rate and crit_rate.
-    # I am also adding all buffs before sending it
 
     if spellObj.id == -2878: #If wildfire it cannot crit or DH, so we remove it
         non_crit_dh_expected, dh_crit_expected = Damage, Damage # Non crit expected damage, expected damage with crit
@@ -692,91 +619,3 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
 def roundDown(x, precision):
     return math.floor(x * 10**precision)/10**precision
     # Imagine not having a built in function to rounddown floats :x
-
-"""
-# Original ComputeDamage function
-
-def ComputeDamageV2(Player, DPS, EnemyBonus, SpellBonus):
-    # This function will compute the DPS given the stats of a player
-
-    levelMod = 1900
-    baseMain = 390  
-    baseSub = 400
-    JobMod = Player.JobMod
-
-    MainStat = Player.Stat["MainStat"] * Player.CurrentFight.TeamCompositionBonus # Scaling %bonus
-
-    Damage=math.floor(DPS*(Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))*(100+math.floor((MainStat-baseMain)*195/baseMain))/100)
-
-    Damage=math.floor(Damage*(1000+math.floor(140*(Player.Stat["Det"]-baseMain)/levelMod))/1000)# Determination damage
-
-    Damage=math.floor(Damage*(1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000)# Tenacity damage
-
-    Damage=math.floor(Damage*(1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000)# Spell/Skill speed damage bonus, only on DOT
-
-    Damage = math.floor(Damage * EnemyBonus * SpellBonus)
-    # input("Damage inside v1.0 : " + str(Damage))
-
-    CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000
-
-    CritMult = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000
-
-    DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000
-
-    if Player.CurrentFight.Enemy.ChainStratagem: CritRate += 0.1    # If ChainStratagem is active, increase crit
-
-    if Player.CurrentFight.Enemy.WanderingMinuet: CritRate += 0.02 # If WanderingMinuet is active, increase crit
-
-    if Player.CurrentFight.Enemy.BattleVoice: DHRate += 0.2 # If WanderingMinuet is active, increase crit
-
-
-    
-
-    DHRate += Player.DHRateBonus # Adding Bonus
-    CritRate += Player.CritRateBonus # Adding bonus
-
-    if isinstance(Player, Machinist): 
-        # print(Player.ActionSet[Player.NextSpell])  # Then if machinist, has to check if direct crit guarantee
-        if Player.ActionSet[Player.NextSpell].id != -1 and Player.ActionSet[Player.NextSpell].id != -2 and Player.Reassemble and Player.ActionSet[Player.NextSpell].Weaponskill:    # Checks if reassemble is on and if its a weapon skill
-            CritRate = 1
-            DHRate = 1
-            Player.Reassemble = False # Uses Reassemble       
-    elif isinstance(Player, Warrior):
-        if Player.InnerReleaseStack >= 1 and (Player.ActionSet[Player.NextSpell].id == 9 or Player.ActionSet[Player.NextSpell].id == 8):
-            CritRate = 1# If inner release weaponskill
-            DHRate = 1
-            Player.InnerReleaseStack -= 1
-    elif isinstance(Player, Samurai):
-        if Player.DirectCrit:
-            CritRate = 1
-            DHRate = 1
-            Player.DirectCrit = False
-    elif isinstance(Player, Dancer):
-        if Player.NextDirectCrit:
-            CritRate = 1
-            DHRate = 1
-            Player.NextDirectCrit = False
-    elif isinstance(Player, Dragoon):
-        if Player.NextCrit and Player.ActionSet[Player.NextSpell].Weaponskill: # If next crit and weaponskill
-            CritRate = 1
-            Player.NextCrit = False
-
-    return round(Damage * ((1+(DHRate/4))*(1+(CritRate*CritMult)))/100, 2)
-
-    // Pulled from Orinx's Gear Comparison Sheet with slight modifications
-function Damage(Potency, WD, JobMod, MainStat,Det, Crit, DH,SS,TEN, hasBrd, hasDrg, hasSch, hasDnc, classNum) {
-  
-  MainStat=Math.floor(MainStat*(1+0.01*classNum));
-  var Damage=Math.floor(Potency*(WD+Math.floor(baseMain*JobMod/1000))*(100+Math.floor((MainStat-baseMain)*195/baseMain))/100);
-  Damage=Math.floor(Damage*(1000+Math.floor(140*(Det-baseMain)/levelMod))/1000);
-  Damage=Math.floor(Damage*(1000+Math.floor(100*(TEN-baseSub)/levelMod))/1000);
-  Damage=Math.floor(Damage*(1000+Math.floor(130*(SS-baseSub)/levelMod))/1000/100);
-  Damage=Math.floor(Damage*magicAndMend)
-  Damage=Math.floor(Damage*enochian)
-  var CritMult=CalcCritMult(Crit)
-  var CritRate=CalcCritRate(Crit) + (hasDrg ? battleLitanyAvg : 0) + (hasSch ? chainStratAvg : 0) + (hasDnc ? devilmentAvg : 0) + (hasBrd ? brdCritAvg : 0);
-  var DHRate=CalcDHRate(DH) + (hasBrd ? battleVoiceAvg + brdDhAvg : 0) + (hasDnc ? devilmentAvg : 0);
-  return Damage * ((1+(DHRate/4))*(1+(CritRate*CritMult)))                                                                                                                               
-}
-
-"""

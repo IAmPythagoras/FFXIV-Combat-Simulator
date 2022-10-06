@@ -1,4 +1,5 @@
-from ffxivppscalc.Jobs.Base_Player import Player
+from Jobs.Base_Player import Player
+from Jobs.ActionEnum import MeleeActions
 
 class Melee(Player):
 
@@ -22,6 +23,9 @@ class Melee(Player):
         
         #Trait
         self.Trait = 1
+
+        #ActionEnum
+        self.ClassAction = MeleeActions
     
     def updateCD(self,time):
         if (self.SecondWindCD > 0) : self.SecondWindCD = max(0,self.SecondWindCD - time)

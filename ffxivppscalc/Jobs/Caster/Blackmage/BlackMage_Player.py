@@ -1,7 +1,8 @@
 #########################################
 ########## BLACK MAGE PLAYER ############
 #########################################
-from ffxivppscalc.Jobs.Caster.Caster_Player import Caster
+from Jobs.Caster.Caster_Player import Caster
+from Jobs.ActionEnum import BlackMageActions
 
 class BlackMage(Caster):
     #This class will be blackmage object and will be the one used to simulate a black mage
@@ -45,6 +46,9 @@ class BlackMage(Caster):
         #DOT
         self.Thunder3DOT = None
         self.Thunder4DOT = None
+
+        #ActionEnum
+        self.JobAction = BlackMageActions
 
 
 

@@ -24,28 +24,24 @@
                 "actionList": [
                     {
                         "actionName": "FireIII",
-                        "actionID": 152,
                         "sourceID": 0,
                         "targetID": 0,
                         "isGCD": true
                     },
                     {
                         "actionName": "FireIV",
-                        "actionID": 3577,
                         "sourceID": 0,
                         "targetID": 0,
                         "isGCD": true
                     },
                     {
                         "actionName": "FireIV",
-                        "actionID": 3577,
                         "sourceID": 0,
                         "targetID": 0,
                         "isGCD": true
                     },
                     {
-                        "actionName": "Xeoglossy",
-                        "actionID": 16507,
+                        "actionName": "Xenoglossy",
                         "sourceID": 0,
                         "targetID": 0,
                         "isGCD": true

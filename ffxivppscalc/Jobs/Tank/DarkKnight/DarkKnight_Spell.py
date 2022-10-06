@@ -3,15 +3,10 @@
 #########################################
 from ffxivppscalc.Jobs.Base_Spell import DOTSpell, Potion, buff, empty
 import copy
-from ffxivppscalc.Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
-from ffxivppscalc.Jobs.Tank.Tank_Spell import BigMit, DRKSkill
+from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
+from Jobs.Player import Pet
+from Jobs.Tank.Tank_Spell import BigMit, DRKSkill
 Lock = 0
-
-#def DarksideEffect(Player, Spell):
- #   if Player.DarksideTimer > 0:
-  #      Spell.Potency *= 1.10
-
-#Requirements for each Skill and Ability.
 
 def BloodRequirement(Player, Spell):
     if Player.DeliriumStacks > 0 and (Spell.id == Bloodspiller.id or Spell.id == Quietus.id):
@@ -220,15 +215,15 @@ def SpendShadowbringer(Player, Spell):
 
 def SummonLivingShadow(Player, Spell):
 
-    if Player.EsteemPointer == None : 
-        Pet = Esteem(2.5,[],[],[],Player.CurrentFight,Player)
-        Player.EsteemPointer = Pet #Create a living shadow player object
-        Player.CurrentFight.PlayerList.append(Pet)
+    if Player.Pet == None : 
+        Pet(Player) # Creating a pet
+    else:
+        Player.Pet.ResetStat()
 
     Actions = [PDelay, PAbyssalDrain, PPlunge, PShadowbringer, PEdgeShadow, PBloodspiller, PCarveSpit] #This should take 20 seconds
-    Player.EsteemPointer.ActionSet = Actions
-    Player.EsteemPointer.TrueLock = False #Delocking
-    Player.EsteemPointer.NextSpell = 0 #Reseting
+    Player.Pet.ActionSet = Actions
+    Player.Pet.TrueLock = False #Delocking
+    Player.Pet.NextSpell = 0 #Reseting
 
 def SpendPlunge(Player,Spell):
     if Player.PlungeCharges == 2 :

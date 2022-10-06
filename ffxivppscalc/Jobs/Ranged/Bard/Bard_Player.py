@@ -1,4 +1,5 @@
-from ffxivppscalc.Jobs.Ranged.Ranged_Player import Ranged
+from Jobs.Ranged.Ranged_Player import Ranged
+from Jobs.ActionEnum import BardActions
 
 class Bard(Ranged):
 
@@ -79,6 +80,9 @@ class Bard(Ranged):
 
         #DPSBonus
         self.RadiantFinalBuff = None
+
+        #ActionEnum
+        self.JobAction = BardActions
     
     def updateCD(self, time):
         super().updateCD(time)

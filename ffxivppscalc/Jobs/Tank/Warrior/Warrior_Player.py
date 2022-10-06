@@ -2,7 +2,8 @@
 ########## WARRIOR PLAYER ###############
 #########################################
 
-from ffxivppscalc.Jobs.Tank.Tank_Player import Tank
+from Jobs.Tank.Tank_Player import Tank
+from Jobs.ActionEnum import WarriorActions
 
 class Warrior(Tank):
 
@@ -40,6 +41,9 @@ class Warrior(Tank):
 
         #JobMod
         self.JobMod = 105
+
+        #ActionEnum
+        self.JobAction = WarriorActions
 
     def updateCD(self, time):
         super().updateCD(time)

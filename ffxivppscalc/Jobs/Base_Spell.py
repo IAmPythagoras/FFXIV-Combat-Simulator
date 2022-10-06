@@ -2,16 +2,8 @@ import copy
 
 from ffxivppscalc.Fight import ComputeDamage
 import math
-from ffxivppscalc.Jobs.Caster.Summoner.Summoner_Player import BigSummon
-from ffxivppscalc.Jobs.Melee.Melee_Player import Melee
-from ffxivppscalc.Jobs.Melee.Monk.Monk_Player import Monk
-#from Jobs.Melee.Monk.Monk_Spell import Monk_Auto
-from ffxivppscalc.Jobs.Melee.Ninja.Ninja_Player import Shadow
-from ffxivppscalc.Jobs.Ranged.Dancer.Dancer_Player import Dancer
-from ffxivppscalc.Jobs.Ranged.Machinist.Machinist_Player import Queen
-from ffxivppscalc.Jobs.Ranged.Ranged_Player import Ranged
-from ffxivppscalc.Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
-from ffxivppscalc.Jobs.Tank.Tank_Player import Tank
+from Jobs.PlayerEnum import JobEnum
+from Jobs.PlayerEnum import RoleEnum
 Lock = 0.75
 
 class FailedToCast(Exception):#Exception called if a spell fails to cast
@@ -114,7 +106,7 @@ class Spell:
 
         
 
-        if isinstance(player, Queen) or isinstance(player, Esteem) or isinstance(player, Shadow) or isinstance(player, BigSummon):
+        if player.JobEnum == JobEnum.Pet:
             player.Master.TotalPotency+= self.Potency
             player.Master.TotalDamage += Damage
             player.Master.TotalMinDamage += minDamage
@@ -126,8 +118,6 @@ class Spell:
         Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage
 
-        #if self.Potency > 0 and isinstance(player, Monk):
-        #    print("Action with id " + str(self.id) + " has done " + str(self.Potency) + " potency.")
 
         if not (player.CurrentFight.FightStart) and Damage > 0 : 
             player.CurrentFight.FightStart = True
@@ -135,10 +125,10 @@ class Spell:
             #Giving all players AA
 
             for gamer in player.CurrentFight.PlayerList:
-                if isinstance(gamer, Monk): gamer.DOTList.append(copy.deepcopy(Monk_Auto))
-                if isinstance(gamer, Melee) or isinstance(gamer, Dancer) or isinstance(gamer, Tank):
+                if gamer.JobEnum == JobEnum.Monk: gamer.DOTList.append(copy.deepcopy(Monk_Auto))
+                elif gamer.RoleEnum == RoleEnum.Melee or gamer.JobEnum == JobEnum.Dancer or gamer.RoleEnum == RoleEnum.Tank:
                     gamer.DOTList.append(copy.deepcopy(Melee_AADOT))
-                elif isinstance(gamer, Ranged):
+                elif gamer.RoleEnum == RoleEnum.PhysicalRanged:
                     gamer.DOTList.append(copy.deepcopy(Ranged_AADOT))
 
 
