@@ -1,5 +1,5 @@
-from ffxivppscalc.Jobs.Base_Spell import DOTSpell, ManaRequirement, WaitAbility, buff, empty
-from ffxivppscalc.Jobs.Caster.Caster_Spell import SummonerSpell
+from Jobs.Base_Spell import DOTSpell, ManaRequirement, WaitAbility, buff, empty
+from Jobs.Caster.Caster_Spell import SummonerSpell
 import copy
 
 from Jobs.Player import Pet

@@ -1,5 +1,5 @@
-from ffxivppscalc.Jobs.Base_Spell import DOTSpell, WaitAbility, buff, empty
-from ffxivppscalc.Jobs.Melee.Melee_Spell import NinjaSpell
+from Jobs.Base_Spell import DOTSpell, WaitAbility, buff, empty
+from Jobs.Melee.Melee_Spell import NinjaSpell
 import copy
 
 from Jobs.Player import Pet

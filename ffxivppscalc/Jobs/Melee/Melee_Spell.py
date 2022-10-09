@@ -1,4 +1,4 @@
-from ffxivppscalc.Jobs.Base_Spell import Potion, Spell
+from Jobs.Base_Spell import Potion, Spell
 Lock = 0
 class MeleeSpell(Spell):
 

@@ -1,5 +1,5 @@
-from ffxivppscalc.Jobs.Base_Spell import Potion, Spell
-from ffxivppscalc.Jobs.Melee.Melee_Spell import ArmLength
+from Jobs.Base_Spell import Potion, Spell
+from Jobs.Melee.Melee_Spell import ArmLength
 Lock = 0.75
 
 

@@ -1,5 +1,5 @@
-from ffxivppscalc.Jobs.Base_Spell import buff, empty
-from ffxivppscalc.Jobs.Ranged.Ranged_Spell import DancerSpell
+from Jobs.Base_Spell import buff, empty
+from Jobs.Ranged.Ranged_Spell import DancerSpell
 import copy
 #Requirement
 

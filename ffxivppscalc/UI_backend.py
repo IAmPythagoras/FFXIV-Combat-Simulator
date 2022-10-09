@@ -220,17 +220,13 @@ def SaveFight(Event, countdown, fightDuration, saveName):
             if action.id == 212 : #WaitAbility
                 if action.waitTime != 0:
                     actionDict["actionName"] = name_for_id(action.id,Player.ClassAction, Player.JobAction)
-                    actionDict["sourceID"] = Player.playerID
                     actionDict["targetID"] = 0 #id 0 is by default the main enemy
-                    actionDict["isGCD"] = False
                     actionDict["waitTime"] = action.waitTime
 
                     actionList.append(copy.deepcopy(actionDict))#adding to dict
             else: #Normal ability
                 actionDict["actionName"] = name_for_id(action.id,Player.ClassAction, Player.JobAction)
-                actionDict["sourceID"] = Player.playerID
                 actionDict["targetID"] = action.TargetID #id 0 is by default the main enemy
-                actionDict["isGCD"] = action.GCD
 
                 actionList.append(copy.deepcopy(actionDict))#adding to dict
 
@@ -319,7 +315,7 @@ def SimulateFightBackend(file_name):
         #Tank
         elif job_name == "Warrior" : job_object = Player([], [SurgingTempestEffect], None, {}, JobEnum.Astrologian)
         elif job_name == "DarkKnight" : job_object = Player([], [], None, {}, JobEnum.DarkKnight)
-        elif job_name == "Paladin" : job_object = Player([], [OathGauge], None, {}, JobEnum.Paladin)
+        elif job_name == "Paladin" : job_object = Player([], [], None, {}, JobEnum.Paladin)
         elif job_name == "Gunbreaker" : job_object = Player([], [], None, {}, JobEnum.Gunbreaker)
         #Caster
         elif job_name == "BlackMage" : job_object = Player([], [EnochianEffect, ElementalEffect], None, {}, JobEnum.BlackMage)
@@ -411,7 +407,7 @@ def SimulateFightBackend(file_name):
             if int(actionID) == 212 : 
                 #WaitAbility. WaitAbility has a special field where the waited time is specified
                 actionObject = WaitAbility(action["waitTime"])
-            else: actionObject = lookup_abilityID(actionID,action["targetID"], action["sourceID"],PlayerActionList) #Getting action object
+            else: actionObject = lookup_abilityID(actionID,action["targetID"], playerID,PlayerActionList) #Getting action object
 
             PlayerActionList[playerID]["actionObject"] += [actionObject]
 

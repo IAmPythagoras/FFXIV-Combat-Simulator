@@ -1,6 +1,6 @@
 import copy
 
-from ffxivppscalc.Fight import ComputeDamage
+from Fight import ComputeDamage
 import math
 from Jobs.PlayerEnum import JobEnum
 from Jobs.PlayerEnum import RoleEnum

@@ -1,6 +1,6 @@
-from ffxivppscalc.Jobs.Base_Spell import DOTSpell, ManaRequirement, empty
-from ffxivppscalc.Jobs.Healer.Healer_Spell import SageSpell
-from ffxivppscalc.Jobs.Healer.Sage.Sage_Spell import SageSpell
+from Jobs.Base_Spell import DOTSpell, ManaRequirement, empty
+from Jobs.Healer.Healer_Spell import SageSpell
+from Jobs.Healer.Sage.Sage_Spell import SageSpell
 import copy
 
 Lock = 0.75

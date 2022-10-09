@@ -420,14 +420,6 @@ class Fight:
             Player.CritMult = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000 # Crit Damage multiplier
             Player.DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000 # DH rate in decimal
 
-            # print("f_WD : " + str(Player.f_WD))
-            # print("f_DET : " + str(Player.f_DET))
-            # print("f_SPD : " + str(Player.f_SPD))
-            # print("CritRate : " + str(Player.CritRate))
-            # print("CritMult : " + str(Player.CritMult))
-            # print("DHRate : " + str(Player.DHRate))
-            # input("")
-
 
 def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
 
@@ -446,7 +438,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
     # Also, note that this function is still in development, and so some of these formulas might be a bit off. Use at your own risk.
     # This function will compute the DPS given the stats of a player
 
-    # THESE COMPUTATIONS ARE NOT COMPLETELY UP TO DATE FOR ENDWALKER AND SOME PARTS OF IT STILL WON'T COMPLETELY WORK.
+    # These computations should be up to date with Endwalker.
 
     baseMain = 390  
 
@@ -476,17 +468,6 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
 
     DHRate += Player.DHRateBonus # Adding Bonus
     CritRate += Player.CritRateBonus # Adding bonus
-    # if CritRate - save  > 0.22 : input("HEY " + str(CritRate) + " : " + str(Player))
-    """
-    print("Current Buffs are " + str(Player.DHRateBonus) + " : " + str(Player.CritRateBonus))
-    totalbuff = 1
-    for buffs in Player.buffList: 
-        totalbuff *= buffs.MultDPS
-    for buffs in Enemy.buffList:
-        totalbuff *= buffs.MultDPS
-    print("DPS BUFF : " + str(totalbuff))
-    """
-
 
     # We will check if the ability is an assured crit and/ord DH, in which case we will have to buff the damage
     # Depending on the buffs the player is currently receiving

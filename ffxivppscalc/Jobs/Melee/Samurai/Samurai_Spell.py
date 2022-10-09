@@ -2,8 +2,8 @@
 ########## SAMURAI PLAYER ###############
 #########################################
 
-from ffxivppscalc.Jobs.Melee.Melee_Spell import SamuraiSpell
-from ffxivppscalc.Jobs.Base_Spell import DOTSpell, buff, empty
+from Jobs.Melee.Melee_Spell import SamuraiSpell
+from Jobs.Base_Spell import DOTSpell, buff, empty
 import math
 import copy
 Lock = 0

@@ -2,8 +2,8 @@
 ########## WARRIOR Spell  ###############
 #########################################
 
-from ffxivppscalc.Jobs.Base_Spell import buff, empty
-from ffxivppscalc.Jobs.Tank.Tank_Spell import BigMit, WarriorSpell
+from Jobs.Base_Spell import buff, empty
+from Jobs.Tank.Tank_Spell import BigMit, WarriorSpell
 Lock = 0.75
 
 def BeastGaugeRequirement(Player, Spell):

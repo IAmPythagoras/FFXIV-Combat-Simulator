@@ -1,5 +1,5 @@
-from ffxivppscalc.Jobs.Base_Spell import buff, empty, DOTSpell
-from ffxivppscalc.Jobs.Tank.Tank_Spell import BigMit, GunbreakerSpell
+from Jobs.Base_Spell import buff, empty, DOTSpell
+from Jobs.Tank.Tank_Spell import BigMit, GunbreakerSpell
 import copy
 Lock = 0.75
 

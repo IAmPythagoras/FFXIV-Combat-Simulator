@@ -1,7 +1,7 @@
 #########################################
 ########## DARK KNIGHT SKILLS ###########
 #########################################
-from ffxivppscalc.Jobs.Base_Spell import DOTSpell, Potion, buff, empty
+from Jobs.Base_Spell import DOTSpell, Potion, buff, empty
 import copy
 from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
 from Jobs.Player import Pet

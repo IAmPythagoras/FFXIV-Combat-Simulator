@@ -1,5 +1,5 @@
-from ffxivppscalc.Jobs.Base_Spell import Potion, Spell
-from ffxivppscalc.Jobs.Melee.Melee_Spell import ArmLength, SecondWind
+from Jobs.Base_Spell import Potion, Spell
+from Jobs.Melee.Melee_Spell import ArmLength, SecondWind
 Lock = 0.75
 class RangedSpell(Spell):
 
