@@ -161,46 +161,7 @@ def SaveFight(Event, countdown, fightDuration, saveName):
         PlayerDict = {} #Empty dictionnary
 
 
-
-        if Player.JobEnum == JobEnum.BlackMage: 
-            PlayerDict["JobName"] = "BlackMage"
-        elif Player.JobEnum == JobEnum.RedMage : 
-            PlayerDict["JobName"] = "RedMage"
-        elif Player.JobEnum == JobEnum.DarkKnight : 
-            PlayerDict["JobName"] = "DarkKnight"
-        elif Player.JobEnum == JobEnum.Warrior : 
-            PlayerDict["JobName"] = "Warrior"
-        elif Player.JobEnum == JobEnum.Paladin : 
-            PlayerDict["JobName"] = "Paladin"
-        elif Player.JobEnum == JobEnum.Gunbreaker : 
-            PlayerDict["JobName"] = "Gunbreaker"
-        elif Player.JobEnum == JobEnum.Machinist : 
-            PlayerDict["JobName"] = "Machinist"
-        elif Player.JobEnum == JobEnum.Samurai : 
-            PlayerDict["JobName"] = "Samurai"
-        elif Player.JobEnum == JobEnum.Ninja : 
-            PlayerDict["JobName"] = "Ninja"
-        elif Player.JobEnum == JobEnum.Scholar : 
-            PlayerDict["JobName"] = "Scholar"
-        elif Player.JobEnum == JobEnum.WhiteMage : 
-            PlayerDict["JobName"] = "WhiteMage"
-        elif Player.JobEnum == JobEnum.Astrologian : 
-            PlayerDict["JobName"] = "Astrologian"
-        elif Player.JobEnum == JobEnum.Sage : 
-            PlayerDict["JobName"] = "Sage"
-        elif Player.JobEnum == JobEnum.Summoner: 
-            PlayerDict["JobName"] = "Summoner"
-        elif Player.JobEnum == JobEnum.Dragoon: 
-            PlayerDict["JobName"] = "Dragoon"
-        elif Player.JobEnum == JobEnum.Reaper : 
-            PlayerDict["JobName"] = "Reaper"
-        elif Player.JobEnum == JobEnum.Bard : 
-            PlayerDict["JobName"] = "Bard"
-        elif Player.JobEnum == JobEnum.Dancer: 
-            PlayerDict["JobName"] = "Dancer"
-        elif Player.JobEnum == JobEnum.Monk: 
-            PlayerDict["JobName"] = "Monk"
-
+        PlayerDict["JobName"] = JobEnum.name_for_id(Player.JobEnum)
 
         while Player.playerID in PlayerIDList:
             Player.playerID += 1
@@ -220,13 +181,12 @@ def SaveFight(Event, countdown, fightDuration, saveName):
             if action.id == 212 : #WaitAbility
                 if action.waitTime != 0:
                     actionDict["actionName"] = name_for_id(action.id,Player.ClassAction, Player.JobAction)
-                    actionDict["targetID"] = 0 #id 0 is by default the main enemy
                     actionDict["waitTime"] = action.waitTime
 
                     actionList.append(copy.deepcopy(actionDict))#adding to dict
             else: #Normal ability
                 actionDict["actionName"] = name_for_id(action.id,Player.ClassAction, Player.JobAction)
-                actionDict["targetID"] = action.TargetID #id 0 is by default the main enemy
+                if action.TargetID != 0 : actionDict["targetID"] = action.TargetID # id 0 is by default the main enemy. So no need to write if not needed
 
                 actionList.append(copy.deepcopy(actionDict))#adding to dict
 
@@ -407,7 +367,11 @@ def SimulateFightBackend(file_name):
             if int(actionID) == 212 : 
                 #WaitAbility. WaitAbility has a special field where the waited time is specified
                 actionObject = WaitAbility(action["waitTime"])
-            else: actionObject = lookup_abilityID(actionID,action["targetID"], playerID,PlayerActionList) #Getting action object
+            else: 
+                if "targetID" in action.keys(): # Action has atarget
+                    actionObject = lookup_abilityID(actionID,action["targetID"], playerID,PlayerActionList) #Getting action object
+                else:
+                    actionObject = lookup_abilityID(actionID,0, playerID,PlayerActionList) # Target is Enemy which defaults to id 0
 
             PlayerActionList[playerID]["actionObject"] += [actionObject]
 
@@ -449,3 +413,58 @@ def MergeFightBackEnd(child_fight, parent_fight, parent_name):
     save_dir: Path = Path.cwd() / "saved"
     with open(save_dir / parent_name, "w") as write_files:
         json.dump(data_parent,write_files, indent=4) #saving file
+
+def GenerateLayout(player_list):
+    # This function will generate a JSON file with nothng written inside which can be edited by the user
+    # directly. It requires as input a player_list which is a list of PlayerEnum to know which player
+    # the user wants in the fight
+
+    data = {
+        "data":
+        { 
+            "fightInfo"  : {
+                "fightDuration" : 500,
+                "time_unit" : 0.01,
+                "ShowGraph" : True,
+                "RequirementOn" : True
+            },
+            "PlayerList" : []
+            }
+    }
+
+    stat_dict = {
+            "MainStat" : 0,
+            "WD" : 0,
+            "Det" : 0,
+            "Ten" : 0,
+            "SS" : 0,
+            "Crit" : 0,
+            "DH" : 0
+        }
+
+    # Will not fill the PlayerList
+    id = 1
+
+    for player in player_list:
+        # player is a JobEnum
+
+        player_dict = {
+            "JobName" : JobEnum.name_for_id(player),
+            "playerID" : id,
+            "stat" : stat_dict,
+            "Auras" : [],
+            "actionList" : [
+                {"actionName": "putNameHere"}
+            ]
+        }
+
+        data["data"]["PlayerList"].append(copy.deepcopy(player_dict))
+
+        id+=1
+
+    
+    save_dir: Path = Path.cwd() / 'saved'
+    with open(save_dir / f'{"generated_layout"}.json', "w") as write_files:
+        json.dump(data,write_files, indent=4) # saving file
+
+    

@@ -10,7 +10,7 @@
         "PlayerList": [
             {
                 "JobName": "BlackMage",
-                "playerID": 0,
+                "playerID": 1,
                 "stat": {
                     "MainStat": 2945,
                     "WD": 126,
@@ -38,11 +38,45 @@
                         "actionName": "FireIV"
                     },
                     {
-                        "actionName": "name_for_id(action.id,Player.ClassAction, Player.JobAction)",
+                        "actionName": "WaitAbility",
                         "waitTime": 10
                     },
                     {
                         "actionName": "Scathe"
+                    }
+                ]
+            },
+            {
+                "JobName": "Dragoon",
+                "playerID": 2,
+                "stat": {
+                    "MainStat": 2949,
+                    "WD": 126,
+                    "Det": 1545,
+                    "Ten": 400,
+                    "SS": 400,
+                    "Crit": 2462,
+                    "DH": 1577
+                },
+                "Auras": [],
+                "actionList": [
+                    {
+                        "actionName": "WaitAbility",
+                        "waitTime": 4
+                    },
+                    {
+                        "actionName": "Disembowel"
+                    },
+                    {
+                        "actionName": "DragonSight",
+                        "targetID": 1
+                    },
+                    {
+                        "actionName": "WaitAbility",
+                        "waitTime": 1
+                    },
+                    {
+                        "actionName": "Disembowel"
                     }
                 ]
             }

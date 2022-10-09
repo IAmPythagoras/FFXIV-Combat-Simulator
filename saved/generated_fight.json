@@ -1,0 +1,27 @@
+{
+    "data": {
+        "fightInfo": {
+            "fightDuration": 500,
+            "time_unit": 0.01,
+            "ShowGraph": true,
+            "RequirementOn": true
+        },
+        "PlayerList": [
+            {
+                "JobName": "BlackMage",
+                "playerID": 0,
+                "stat": {
+                    "MainStat": 0,
+                    "WD": 0,
+                    "Det": 0,
+                    "Ten": 0,
+                    "SS": 0,
+                    "Crit": 0,
+                    "DH": 0
+                },
+                "Auras": [],
+                "actionList": []
+            }
+        ]
+    }
+}

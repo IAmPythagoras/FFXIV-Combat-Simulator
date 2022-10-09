@@ -23,24 +23,26 @@
                 "Auras": [],
                 "actionList": [
                     {
-                        "actionName": "FireIII",
-                        "targetID": 0
+                        "actionName": "FireIII"
                     },
                     {
-                        "actionName": "FireIV",
-                        "targetID": 0
+                        "actionName": "FireIV"
                     },
                     {
-                        "actionName": "FireIV",
-                        "targetID": 0
+                        "actionName": "FireIV"
                     },
                     {
-                        "actionName": "FireIV",
-                        "targetID": 0
+                        "actionName": "FireIV"
                     },
                     {
-                        "actionName": "FireIV",
-                        "targetID": 0
+                        "actionName": "FireIV"
+                    },
+                    {
+                        "actionName": "WaitAbility",
+                        "waitTime": 10
+                    },
+                    {
+                        "actionName": "Scathe"
                     }
                 ]
             }
