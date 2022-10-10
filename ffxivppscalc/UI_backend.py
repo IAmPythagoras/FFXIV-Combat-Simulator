@@ -388,7 +388,7 @@ def SimulateFightBackend(file_name):
 
     Event.ShowGraph = fightInfo["ShowGraph"] #Default
     Event.RequirementOn = fightInfo["RequirementOn"]
-    Event.SimulateFight(0.01,fightInfo["fightDuration"], fightInfo["countdownValue"]) #Simulates the fight
+    Event.SimulateFight(0.01,fightInfo["fightDuration"], 0) #Simulates the fight
 
 
     print(
@@ -414,7 +414,7 @@ def MergeFightBackEnd(child_fight, parent_fight, parent_name):
     with open(save_dir / parent_name, "w") as write_files:
         json.dump(data_parent,write_files, indent=4) #saving file
 
-def GenerateLayout(player_list):
+def GenerateLayoutBackend(player_list,namefile):
     # This function will generate a JSON file with nothng written inside which can be edited by the user
     # directly. It requires as input a player_list which is a list of PlayerEnum to know which player
     # the user wants in the fight
@@ -464,7 +464,7 @@ def GenerateLayout(player_list):
 
     
     save_dir: Path = Path.cwd() / 'saved'
-    with open(save_dir / f'{"generated_layout"}.json', "w") as write_files:
+    with open(save_dir / f'{namefile}.json', "w") as write_files:
         json.dump(data,write_files, indent=4) # saving file
 
     

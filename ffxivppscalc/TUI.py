@@ -1,7 +1,8 @@
 import os
+from unicodedata import name
 from SimulationInput import ExecuteMemoryCode
-from UI_backend import AskInput, ImportFightBackend, MergeFightBackEnd, SaveFight, SimulateFightBackend
-
+from UI_backend import AskInput, ImportFightBackend, MergeFightBackEnd, SaveFight, SimulateFightBackend,GenerateLayoutBackend
+from Jobs.PlayerEnum import JobEnum
 
 def SimulateFightMemory():
     os.system('CLS') #clearing HUD
@@ -101,6 +102,71 @@ def Credits():
     input("Press Enter to go back to the Main Menu : ")
 
 
+def GenerateLayout():
+    os.system('CLS') #clearing HUD
+    print(
+        "===================== GENERATING LAYOUT =====================" + "\n" 
+    )
+
+    namefile = input("What name do you wish to save this fight as : ")
+
+    player_list = []
+
+    while True:
+        print(
+        "===================================================================" + "\n" + 
+        "Select the job you want to add or enter 20" + "\n" + 
+        "===================================================================" + "\n" + 
+        "1- BlackMage" + "\n" + 
+        "2- RedMage"  + "\n" + 
+        "3- Summoner" + "\n" + 
+        "4- Ninja" + "\n" + 
+        "5- Samurai" + "\n" + 
+        "6- Monk" + "\n" + 
+        "7- Reaper" + "\n" + 
+        "8- Dragoon" + "\n" + 
+        "9- Machinist" + "\n" +
+        "10- Bard" + "\n" +  
+        "11- Dancer" + "\n" + 
+        "12- WhiteMage" + "\n" + 
+        "13- Scholar" + "\n" + 
+        "14- Astrologian" + "\n" + 
+        "15- Sage" + "\n" + 
+        "16- DarkKnight" + "\n" + 
+        "17- Gunbreaker" + "\n" + 
+        "18- Warrior" + "\n" + 
+        "19- Paladin" + "\n" + 
+        "20- Done" + "\n" + 
+        "==================================================================="
+        )
+        user_int = int(AskInput(20))
+
+
+        match user_int:
+            case 1: player_list += [JobEnum.BlackMage]
+            case 2: player_list += [JobEnum.RedMage]
+            case 3: player_list += [JobEnum.Summoner]
+            case 4: player_list += [JobEnum.Ninja]
+            case 5: player_list += [JobEnum.Samurai]
+            case 6: player_list += [JobEnum.Monk]
+            case 7: player_list += [JobEnum.Reaper]
+            case 8: player_list += [JobEnum.Dragoon]
+            case 9: player_list += [JobEnum.Machinist]
+            case 10: player_list += [JobEnum.Bard]
+            case 11: player_list += [JobEnum.Dancer]
+            case 12: player_list += [JobEnum.WhiteMage]
+            case 13: player_list += [JobEnum.Scholar]
+            case 14: player_list += [JobEnum.Astrologian]
+            case 15: player_list += [JobEnum.Sage]
+            case 16: player_list += [JobEnum.DarkKnight]
+            case 17: player_list += [JobEnum.Gunbreaker]
+            case 18: player_list += [JobEnum.Warrior]
+            case 19: player_list += [JobEnum.Paladin]
+            case 20: break
+
+    GenerateLayoutBackend(player_list, namefile)
+
+
 def MergeFight():
     os.system('CLS') #clearing HUD
     print(
@@ -167,19 +233,21 @@ def MainMenu():
     "3- Simulate a saved fight" + "\n" + 
     "4- Merge two saved fights" + "\n" + 
     "5- Import fight from FFLogs (Experimental)" + "\n" + 
-    "6- Credits" + "\n" + 
-    "7- Exit" + "\n" + 
+    "6- Create JSON template file" + "\n" + 
+    "7- Credits" + "\n" + 
+    "8- Exit" + "\n" + 
     "==================================================================="
     )
-    user_input = AskInput(7)
+    user_input = AskInput(8)
 
     if user_input == "1" : ExecuteMemoryCode(False) #Simulating
     elif user_input == "2": ExecuteMemoryCode(True) #Saving
     elif user_input == "3" : SimulateFightMemory()
     elif user_input == "4" : MergeFight() 
     elif user_input == "5" : ImportFight()
-    elif user_input == "6" : Credits() #Closes program
-    elif user_input == "7" : exit() #Closes program
+    elif user_input == "6" : GenerateLayout()
+    elif user_input == "7" : Credits() #Closes program
+    elif user_input == "8" : exit() #Closes program
     
 
 #This python file will serve as a GUI for the time I do not have an actual GUI

@@ -138,6 +138,8 @@ class Spell:
         if (player.NextSpell == len(player.ActionSet)):#Checks if no more spell to do
             player.TrueLock = True
 
+        if self.GCD: player.GCDCounter += 1
+
         return self
 
 def ApplyMelee_AA(Player, Enemy):
