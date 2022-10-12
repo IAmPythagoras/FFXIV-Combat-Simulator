@@ -438,13 +438,13 @@ def GenerateLayoutBackend(player_list,namefile):
     }
 
     stat_dict = {
-            "MainStat" : 0,
+            "MainStat" : 390,
             "WD" : 0,
-            "Det" : 0,
-            "Ten" : 0,
-            "SS" : 0,
-            "Crit" : 0,
-            "DH" : 0
+            "Det" : 390,
+            "Ten" : 400,
+            "SS" : 400,
+            "Crit" : 400,
+            "DH" : 400
         }
 
     # Will not fill the PlayerList
