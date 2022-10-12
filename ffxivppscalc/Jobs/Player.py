@@ -19,8 +19,9 @@ class Player:
         self.NextSpell = 0 # Index of next action in ActionSet
         self.CurrentFight = CurrentFight # Reference to the fight the player is in
         self.ManaTick = 1.5 # Starts Mana tick at this value
-        self.playerID = 0 # Might not be necessary so by default 0
+        self.playerID = 1 # Might not be necessary so by default 1
         self.Pet = None # Summoned Pet
+        self.GCDCounter = 0 # Number of GCD done
 
         self.TrueLock = False   # Used to know when a player has finished all of its ActionSet
         self.Casting = False    # Flag set to true if the player is casting

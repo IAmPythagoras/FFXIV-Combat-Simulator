@@ -172,6 +172,7 @@ class Fight:
             print("The Total Potency done by player " + str(JobEnum.name_for_id(player.JobEnum)) + " was : " + str(player.TotalPotency))
             print("This same player had a Potency Per Second of: " + str(round(PPS,2)))
             print("This same Player had an average of " + str(round(player.TotalPotency/player.NextSpell,2)) + " Potency/Spell")
+            print("This same player did " + str(player.GCDCounter) + " GCD.")
             print("The DPS is : " + str(round(DPS,2)))
             print("=======================================================")
 
@@ -227,7 +228,6 @@ class Fight:
                 if i == 4:
                     i = 0
                     j+=1
-        
         print("The Enemy has received a total potency of: " + str(round(self.Enemy.TotalPotency,2)))
         print("The Potency Per Second on the Enemy is: " + str(round(self.Enemy.TotalPotency/time,2)))
         print("The Enemy's total DPS is " + str(round(self.Enemy.TotalDamage / time, 2)))
@@ -380,9 +380,6 @@ class Fight:
                     self.TimeStamp = 0
                     start = True
 
-
-
-            
 
             # Post fight computations
 

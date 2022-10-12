@@ -1,0 +1,41 @@
+{
+    "data": {
+        "fightInfo": {
+            "fightDuration": 500,
+            "time_unit": 0.01,
+            "ShowGraph": true,
+            "RequirementOn": true
+        },
+        "PlayerList": [
+            {
+                "JobName": "BlackMage",
+                "playerID": 1,
+                "stat": {
+                    "MainStat": 0,
+                    "WD": 0,
+                    "Det": 0,
+                    "Ten": 0,
+                    "SS": 0,
+                    "Crit": 0,
+                    "DH": 0
+                },
+                "etro_gearset_url": "https://etro.gg/gearset/a198bf63-1371-488a-bdb7-b7a380666bdf",
+                "Auras": [],
+                "actionList": [
+                    {
+                        "actionName": "FireIII"
+                    },
+                    {
+                        "actionName": "FireIV"
+                    },
+                    {
+                        "actionName": "FireIV"
+                    },
+                    {
+                        "actionName": "FireIV"
+                    }
+                ]
+            }
+        ]
+    }
+}
