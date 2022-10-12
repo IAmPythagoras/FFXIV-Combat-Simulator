@@ -37,17 +37,10 @@ def get_gearset_data(set_id: str):
 
     return {
         "MainStat" : data["totalParams"][0]["value"] , # Always first value
-        "WD" : stats["Weapon Damage"] ,
+        "WD" : stats["Weapon Damage"] if "Weapon Damage" in stats.keys() else 0,
         "Det" : stats["DET"],
         "Ten" : stats["TEN"] if "TEN" in stats.keys() else 400,
         "SS" : stats["SPS"] if "SPS" in stats.keys() else stats["SKS"],
         "Crit" : stats["CRT"],
         "DH" : stats["DH"]
     }
-
-
-
-
-x = get_gearset_data("https://etro.gg/gearset/9467c373-ba77-4f20-aa76-06c8e6f926b8")
-
-print(x)
