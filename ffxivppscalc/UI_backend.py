@@ -20,7 +20,7 @@ from Jobs.Player import Player
 from Jobs.PlayerEnum import *
 
 from Jobs.ActionEnum import name_for_id, id_for_name # importing helper functions
-
+from etro_request import get_gearset_data
 
 
 letters = "abcdefghijklmnopqrstuvwyxz" # Used to make sure the input is only numbers
@@ -191,6 +191,7 @@ def SaveFight(Event, countdown, fightDuration, saveName):
                 actionList.append(copy.deepcopy(actionDict))#adding to dict
 
         PlayerDict["actionList"] = copy.deepcopy(actionList)
+        PlayerDict["etro_gearset_url"] = "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."
 
         PlayerListDict.append(copy.deepcopy(PlayerDict))
 
@@ -298,9 +299,13 @@ def SimulateFightBackend(file_name):
         PlayerActionList[str(job_object.playerID)] = {"job" : job_name, "job_object" : job_object, "actionList" : player["actionList"], "actionObject" : []} #Adding new Key accessible by IDs
 
         #Giving player object the stat dictionnary
+        
+        # Will check if the player is given an etro url.
 
-        PlayerActionList[str(job_object.playerID)]["job_object"].Stat = player["stat"] #Copies dictionnary
+        etro_url = player["etro_gearset_url"]
 
+        PlayerActionList[str(job_object.playerID)]["job_object"].Stat = get_gearset_data(etro_url) if "etro.gg/gearset/" in etro_url else player["stat"]
+        # If detects an etro url copies the stats. Otherwise takes the stats from the file
         #We can access the information using the player's id
 
         #We will then check for Auras and do the appropriate effect
@@ -452,6 +457,7 @@ def GenerateLayoutBackend(player_list,namefile):
             "JobName" : JobEnum.name_for_id(player),
             "playerID" : id,
             "stat" : stat_dict,
+            "etro_gearset_url":  "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url.",
             "Auras" : [],
             "actionList" : [
                 {"actionName": "putNameHere"}
