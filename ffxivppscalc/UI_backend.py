@@ -424,6 +424,18 @@ def GenerateLayoutBackend(player_list,namefile):
     # directly. It requires as input a player_list which is a list of PlayerEnum to know which player
     # the user wants in the fight
 
+    data = GenerateLayoutDict(player_list)
+    
+    save_dir: Path = Path.cwd() / 'saved'
+    with open(save_dir / f'{namefile}.json', "w") as write_files:
+        json.dump(data,write_files, indent=4) # saving file
+
+    
+def GenerateLayoutDict(player_list):
+    """
+    This function generates a dictionnary that the simulator can use to simulate the fight
+    """
+
     data = {
         "data":
         { 
@@ -468,9 +480,4 @@ def GenerateLayoutBackend(player_list,namefile):
 
         id+=1
 
-    
-    save_dir: Path = Path.cwd() / 'saved'
-    with open(save_dir / f'{namefile}.json', "w") as write_files:
-        json.dump(data,write_files, indent=4) # saving file
-
-    
+    return data

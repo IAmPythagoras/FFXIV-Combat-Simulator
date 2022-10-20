@@ -49,6 +49,7 @@ class Fight:
         self.FirstHit = False # False until the first damaging action is done
         self.RequirementOn = True # By default True
         self.FightStart = False # If Fight is started
+        self.IgnoreMana = True # If true we ignore mana in the simulation
 
 
 

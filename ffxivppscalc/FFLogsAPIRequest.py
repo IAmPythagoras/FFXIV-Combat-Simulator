@@ -61,68 +61,83 @@ class JobNotFound(Exception):#Exception called if a Job isn't found
     pass
 
 def lookup_abilityID(actionID, targetID, sourceID, player_list):
-        #Will first get the job of the sourceID so we know in what dictionnary to search for
+    """
+    This function will translate an actionID into a Spell object of the relevant action that the simulator can use.
+    actionID : int -> ID of the action in the game
+    targetID : int -> ID of the target. Can be player or Enemy.
+    sourceID : int -> ID of the player casting the action.
+    player_list : dict -> dict of all players with some information.
+    """
+    #Will first get the job of the sourceID so we know in what dictionnary to search for
 
-        def lookup(JobDict, ClassDict):
-            if not (int(actionID) in JobDict.keys()): #if not in, then the action is in the ClassDict
-                if not (int(actionID) in ClassDict.keys()):
-                    #if job_name == "Paladin" : input("Missing action : " + str(actionID))
-                    return WaitAbility(0) #Currently at none so we can debug
-                    raise ActionNotFound #Did not find action
-                return ClassDict[int(actionID)] #Class actions do not have the possibility to target other allies, so we assume itll target an enemy
+    def lookup(JobDict, ClassDict):
+        """
+        This function actually looks up the relevant dictionnary of the Job to find the Spell object.
+        JobDict : dict -> dictionnary with keys being IDs and mapping to the Spell object (only for Job actions)
+        ClassDict : dict -> same as JobDict, but for Class actions
+        """
+        if not (int(actionID) in JobDict.keys()): #if not in, then the action is in the ClassDict
+            if not (int(actionID) in ClassDict.keys()):
+                #if job_name == "Paladin" : input("Missing action : " + str(actionID))
+                return WaitAbility(0) #Currently at none so we can debug
+                raise ActionNotFound #Did not find action
+            return ClassDict[int(actionID)] #Class actions do not have the possibility to target other allies, so we assume itll target an enemy
 
 
-            if callable(JobDict[int(actionID)]): #If the action is a function
-                return JobDict[int(actionID)](player_list[str(targetID)]["job_object"])
-            return JobDict[int(actionID)] #Else return object
+        if callable(JobDict[int(actionID)]): #If the action is a function
+            return JobDict[int(actionID)](player_list[str(targetID)]["job_object"])
+        return JobDict[int(actionID)] #Else return object
 
-        job_name = player_list[str(sourceID)]["job"] #getting job name
+    job_name = player_list[str(sourceID)]["job"] #getting job name
 
-        #Will now go through all possible job and find what action is being used based on the ID. If the ID is not right, it will
-        #raise an ActionNotFoundError. And if the job's name does not exist it will raise a JobNotFoundError
-        if job_name == "BlackMage" :#Caster
-            return lookup(BlackMageAbility, CasterAbility)
-        elif job_name == "RedMage":
-            return lookup(RedMageAbility, CasterAbility)
-        elif job_name == "Summoner":
-            return lookup(SummonerAbility, CasterAbility)
-        elif job_name == "Dancer":#Ranged
-            return lookup(DancerAbility, RangedAbility)
-        elif job_name == "Machinist":
-            return lookup(MachinistAbility, RangedAbility)
-        elif job_name == "Bard":
-            return lookup(BardAbility, RangedAbility)
-        elif job_name == "Warrior":#Tank
-            return lookup(WarriorAbility, TankAbility)
-        elif job_name == "Gunbreaker":
-            return lookup(GunbreakerAbility, TankAbility)
-        elif job_name == "DarkKnight":
-            return lookup(DarkKnightAbility, TankAbility)
-        elif job_name == "Paladin":
-            return lookup(PaladinAbility, TankAbility)
-        elif job_name == "WhiteMage":#Healer
-            return lookup(WhiteMageAbility, HealerAbility)
-        elif job_name == "Scholar":
-            return lookup(ScholarAbility, HealerAbility)
-        elif job_name == "Sage":
-            return lookup(SageAbility, HealerAbility)
-        elif job_name == "Astrologian":
-            return lookup(AstrologianAbility, HealerAbility)
-        elif job_name == "Samurai":#Melee
-            return lookup(SamuraiAbility, MeleeAbility)
-        elif job_name == "Reaper":
-            return lookup(ReaperAbility, MeleeAbility)
-        elif job_name == "Ninja":
-            return lookup(NinjaAbility, MeleeAbility)
-        elif job_name == "Monk":
-            return lookup(MonkAbility, MeleeAbility)
-        elif job_name == "Dragoon":
-            return lookup(DragoonAbility, MeleeAbility)
+    #Will now go through all possible job and find what action is being used based on the ID. If the ID is not right, it will
+    #raise an ActionNotFoundError. And if the job's name does not exist it will raise a JobNotFoundError
+    if job_name == "BlackMage" :#Caster
+        return lookup(BlackMageAbility, CasterAbility)
+    elif job_name == "RedMage":
+        return lookup(RedMageAbility, CasterAbility)
+    elif job_name == "Summoner":
+        return lookup(SummonerAbility, CasterAbility)
+    elif job_name == "Dancer":#Ranged
+        return lookup(DancerAbility, RangedAbility)
+    elif job_name == "Machinist":
+        return lookup(MachinistAbility, RangedAbility)
+    elif job_name == "Bard":
+        return lookup(BardAbility, RangedAbility)
+    elif job_name == "Warrior":#Tank
+        return lookup(WarriorAbility, TankAbility)
+    elif job_name == "Gunbreaker":
+        return lookup(GunbreakerAbility, TankAbility)
+    elif job_name == "DarkKnight":
+        return lookup(DarkKnightAbility, TankAbility)
+    elif job_name == "Paladin":
+        return lookup(PaladinAbility, TankAbility)
+    elif job_name == "WhiteMage":#Healer
+        return lookup(WhiteMageAbility, HealerAbility)
+    elif job_name == "Scholar":
+        return lookup(ScholarAbility, HealerAbility)
+    elif job_name == "Sage":
+        return lookup(SageAbility, HealerAbility)
+    elif job_name == "Astrologian":
+        return lookup(AstrologianAbility, HealerAbility)
+    elif job_name == "Samurai":#Melee
+        return lookup(SamuraiAbility, MeleeAbility)
+    elif job_name == "Reaper":
+        return lookup(ReaperAbility, MeleeAbility)
+    elif job_name == "Ninja":
+        return lookup(NinjaAbility, MeleeAbility)
+    elif job_name == "Monk":
+        return lookup(MonkAbility, MeleeAbility)
+    elif job_name == "Dragoon":
+        return lookup(DragoonAbility, MeleeAbility)
 
-        raise JobNotFound #If we get here, then we have not found the job in question
-        #This should not happen, and if it does it means we either have a serious problem or the names aren't correct
+    raise JobNotFound #If we get here, then we have not found the job in question
+    #This should not happen, and if it does it means we either have a serious problem or the names aren't correct
 
 def getAccessToken(conn, client_id, client_secret):
+    """
+    This is called upon the execution and returns an acces_token to request data from FFLogs
+    """
     payload = "grant_type=client_credentials&client_id=%s&client_secret=%s" % (client_id, client_secret)
     headers = {'content-type':"application/x-www-form-urlencoded"}
     conn.request("POST","/oauth/token", payload, headers)
@@ -132,6 +147,12 @@ def getAccessToken(conn, client_id, client_secret):
     return res_json["access_token"]
 
 def getAbilityList(fightID, fightNumber):
+
+    """
+    This function  takes information of a FFLog report and transform it into a list of spell object the simulator can read
+    fightID : int -> ID of the report
+    fightNmber : int -> ID of the fight in the report
+    """
 
     client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
     client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE" #Supposed to be secret >.>
@@ -491,7 +512,3 @@ def test(client_id,client_secret):
         elif wait_calculated and event["type"] == "calculateddamage":
              wait_calculated = False
 
-#client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
-#client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE"
-#test(client_id, client_secret)
-#getAbilityList(client_id, client_secret)
