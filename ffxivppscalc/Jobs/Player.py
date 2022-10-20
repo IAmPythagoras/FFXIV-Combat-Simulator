@@ -8,7 +8,14 @@ from Jobs.ActionEnum import *
 class Player:
 
     def __init__(self, ActionSet, EffectList, CurrentFight, Stat,Job : JobEnum):
-        """Create the player object"""
+        """
+        Create the player object
+        ActionSet : List[Spell] -> List of spell the player will do in the simulation
+        EffectList : List[Function] -> List of all effects the player has. Can be empty.
+        CurrentFight : Fight -> Reference to the fight object in which the player is.
+        Stat : Dict -> Stats of the player as a dictionnary
+        Job : JobEnum -> Specific job of the player
+        """
         self.ActionSet = ActionSet # Known Action List
         self.EffectList = EffectList # Normally Empty, can has some effects initially
         self.ClassEnum = 0 # RoleEnum Value is set later on
@@ -169,7 +176,11 @@ class Player:
 
     # update functions
 
-    def updateTimer(self, time : float):
+    def updateTimer(self, time : float) -> None:
+        """
+        Updates the base timer of the player and calls the specific to the role and job update timer function
+        time : float -> unit by which we update the timers
+        """
         if (self.GCDLockTimer > 0) : self.GCDLockTimer = max(0, self.GCDLockTimer-time)
         if (self.oGCDLockTimer > 0) : self.oGCDLockTimer = max(0, self.oGCDLockTimer-time)
         if (self.CastingLockTimer > 0) : self.CastingLockTimer = max(0, self.CastingLockTimer-time)
@@ -183,6 +194,10 @@ class Player:
         self.updateJobTimer(self, time)
     
     def updateCD(self, time : float):
+        """
+        Updates the base timer of the player and calls the specific to the role and job update CD function
+        time : float -> unit by which we update the timers
+        """
         self.updateJobCD(self, time)
         self.updateRoleCD(self, time)
 
@@ -1906,11 +1921,15 @@ class Player:
         self.MasterGauge[1:4] = [0,0,0] #Reset Chakra
 
 class Pet(Player):
-    # This class is any pet summoned by a player.
+    """
+    This class is any pet summoned by a player.
+    """
 
     def __init__(self, Master):
-        # Master is the player object summoning the pet.
-        # This is only called once and the object is reused for future need
+        """
+        Master is the player object summoning the pet.
+        This is only called once and the object is reused for future need
+        """
         self.Master = Master
         Master.Pet = self
 
@@ -1950,8 +1969,9 @@ class Pet(Player):
         pass # Since there is no reason to update the CD on the pet, we will simply pass this computation
 
     def ResetStat(self):
-        # This function is called upon reusing the object to reset the stats and other attributes that could interfere
-
+        """
+        This function is called upon reusing the object to reset the stats and other attributes that could interfere. 
+        """
         self.f_WD = self.Master.f_WD
         self.f_DET = self.Master.f_DET
         self.f_TEN = self.Master.f_TEN

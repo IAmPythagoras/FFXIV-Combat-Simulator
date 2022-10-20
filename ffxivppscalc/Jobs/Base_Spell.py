@@ -11,14 +11,30 @@ class FailedToCast(Exception):#Exception called if a spell fails to cast
 
 
 class buff:
+    """
+    This class is any buff given to a player. It contains the buff's value
+    """
     def __init__(self, MultDPS):
         self.MultDPS = MultDPS #DPS multiplier of the buff
 
 
 class Spell:
-    #This class is any Spell, it will have some subclasses to take Job similar spell, etc.
+    """
+    This class is any Spell, it will have some subclasses to take Job similar spell, etc.
+    """
+    def __init__(self, id : int, GCD : bool, CastTime : float, RecastTime : float, Potency : int, ManaCost : int, Effect, Requirement):
+        """
+        Initialization of a Spell
+        id : int -> id to identify the action
+        GCD : bool -> True if the action is a GCD
+        CastTime : float -> Cast time of the action
+        RecastTime : float -> Recast time of the action
+        Potency : int -> base potency of the action
+        Manacost : int -> base manacost of the action
+        Effect : function -> A function called upon the execution of the action which affects the player and the enemy.
+        Requirement : function -> Bool -> function called upon the execution to verify if the action can be executed.
 
-    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
+        """
         self.id = id
         self.GCD = GCD #True if GCD
         self.Potency = Potency
@@ -31,12 +47,13 @@ class Spell:
         self.TargetID = 0 #By default 0
 
     def Cast(self, player, Enemy):
-        #This function will cast the spell given by the Fight, it will apply whatever effects it has and do its potency
-
-        #if self.GCD: 
-        #    print("Spell is casted: " + str(self.id))
-        #    input("timestamp : " + str(player.CurrentFight.TimeStamp) )
-
+        """
+        This function is called by the simulator when an action is ready to begin its casting. It checks for the requirement and apply all effect
+        currently in the fight that can affect the action. It will lock the player into casting mode if necessary. The action is not executed here
+        and is in a way being preapred to be executed. It will be checked if the action can be done.
+        player : player -> player object casting
+        Enemey : Enemy -> Enemy object on which the action is done.
+        """
         tempSpell = copy.deepcopy(self)
         #Creating a tempSpell which will have its values changed according that what effect
         #the player and the enemy have
@@ -47,7 +64,6 @@ class Spell:
             for Effect in Enemy.EffectList:
                 Effect(player, tempSpell)#Changes tempSpell
         #Checks if we meet the spell requirement
-        #input("out of effect")
 
         #Remove all effects that have to be removed
 
@@ -58,14 +74,13 @@ class Spell:
         
         player.EffectToRemove = [] #Empty the remove list
         player.EffectToAdd = []
-        #input("id : " + str(self.id))
+
         for Requirement in tempSpell.Requirement:
             #input("in requirement")
             #input("tenchijind : " + str(player.TenChiJinTimer))
             #print(Requirement.__name__)
             ableToCast, timeLeft = Requirement(player, tempSpell)
             if(not ableToCast) and (player.CurrentFight.RequirementOn): #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
-                #input("timeleft : " + str(timeLeft))
                 #Will check if timeLeft is within a margin, so we will just wait for it to come
                 #timeLeft is the remaining time before the spell is available
                 if timeLeft <= 5 and timeLeft > 0: #Limit of waiting for 1 sec
@@ -73,8 +88,6 @@ class Spell:
                     player.ActionSet.insert(player.NextSpell, tempSpell)
                     return tempSpell #Makes the character wait
                     #Might remove some stuff tho, might have to check into that (for when effects are applied)
-                
-
                 print("Player : " + str(player))
                 print("Failed to cast the spell : " + str(self.id))
                 print("The Requirement that failed was : " + str(Requirement.__name__))
@@ -87,6 +100,12 @@ class Spell:
 
 
     def CastFinal(self, player, Enemy):
+
+        """
+        This function is called when an action is ready to be casted and apply its damage and effect.
+        player : player -> player object casting
+        Enemey : Enemy -> Enemy object on which the action is done.
+        """
         
         for Effect in self.Effect:
             Effect(player, Enemy)#Put effects on Player and/or Enemy
