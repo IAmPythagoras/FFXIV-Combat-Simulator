@@ -50,6 +50,7 @@ class Fight:
         self.RequirementOn = True # By default True
         self.FightStart = False # If Fight is started
         self.IgnoreMana = True # If true we ignore mana in the simulation
+        self.timeValue = [] # Array holding all sampling time for the DPS and PPS
 
 
 
@@ -194,26 +195,10 @@ class Fight:
 
             # Plot part
 
-            job = ""
+            job = JobEnum.name_for_id(player.JobEnum)
 
-            if player.JobEnum == JobEnum.BlackMage : job = "Blackmage"
-            elif player.JobEnum == JobEnum.RedMage : job = "Redmage"
-            elif player.JobEnum == JobEnum.DarkKnight : job = "DarkKnight"
-            elif player.JobEnum == JobEnum.Warrior : job = "Warrior"
-            elif player.JobEnum == JobEnum.Paladin : job = "Paladin"
-            elif player.JobEnum == JobEnum.Gunbreaker : job = "Gunbreaker"
-            elif player.JobEnum == JobEnum.Machinist : job = "Machinist"
-            elif player.JobEnum == JobEnum.Samurai : job = "Samurai"
-            elif player.JobEnum == JobEnum.Ninja : job = "Ninja"
-            elif player.JobEnum == JobEnum.Scholar : job = "Scholar"
-            elif player.JobEnum == JobEnum.WhiteMage : job = "Whitemage"
-            elif player.JobEnum == JobEnum.Astrologian : job = "Astrologian"
-            elif player.JobEnum == JobEnum.Summoner : job = "Summoner"
-            elif player.JobEnum == JobEnum.Dragoon : job = "Dragoon"
-            elif player.JobEnum == JobEnum.Reaper : job = "Reaper"
-            elif player.JobEnum == JobEnum.Monk : job = "Monk"
-            elif player.JobEnum == JobEnum.Sage : job = "Sage"
-            elif player.JobEnum == JobEnum.Bard : 
+            
+            if player.JobEnum == JobEnum.Bard : 
                 job = "Bard"
                 print("==================")
                 print("Expected Vs Used values for bard")
@@ -257,7 +242,7 @@ class Fight:
 
 
 
-    def SimulateFight(self, TimeUnit, TimeLimit, FightCD) -> None:
+    def SimulateFight(self, TimeUnit, TimeLimit, vocal) -> None:
 
         """
         This function will Simulate the fight given the enemy and player list of this Fight
@@ -267,13 +252,13 @@ class Fight:
 
         TimeUnit : float -> unit at which the simulator will advance through time in the simulation
         TimeLimit : float -> time limit at which the simulator will stop
-
+        vocal : bool -> True if we want to print out the results
         """
 
         self.TimeStamp = 0   # Keep track of the time
         start = False
 
-        timeValue = []  # Used for graph
+        self.timeValue = []  # Used for graph
 
         self.ComputeFunctions() # Compute all damage functions for the players
 
@@ -390,7 +375,7 @@ class Fight:
                 # If the fight has started, will sample DPS values at certain time
                 if (self.TimeStamp%1 == 0.3 or self.TimeStamp%1 == 0.0 or self.TimeStamp%1 == 0.6 or self.TimeStamp%1 == 0.9) and self.TimeStamp >= 3:# last thing is to ensure no division by zero and also to have no spike at the begining
                     # Only sample each 1/2 second
-                    timeValue+= [self.TimeStamp]
+                    self.timeValue+= [self.TimeStamp]
                     for Player in self.PlayerList:
                         Player.DPSGraph += [round(Player.TotalDamage/self.TimeStamp, 2)] # Rounding the value to 2 digits
                         Player.PotencyGraph += [round(Player.TotalPotency/self.TimeStamp, 2)]
@@ -420,7 +405,7 @@ class Fight:
             k+=1
             
 
-        self.PrintResult(self.TimeStamp, timeValue)
+        if vocal : self.PrintResult(self.TimeStamp, self.timeValue)
             
 
 

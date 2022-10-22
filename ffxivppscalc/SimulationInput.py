@@ -231,7 +231,7 @@ def ExecuteMemoryCode(SaveFight_check):
     else:
         Event.RequirementOn = RequirementOn
         Event.ShowGraph = ShowGraph
-        Event.SimulateFight(time_unit, TimeLimit, 0)
+        Event.SimulateFight(time_unit, TimeLimit, vocal=True)
         print("=========================================================")
         input("Press any key to go back to the main")
 

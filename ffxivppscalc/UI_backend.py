@@ -213,20 +213,11 @@ def SaveFight(Event, countdown, fightDuration, saveName):
         json.dump(data,write_files, indent=4) #saving file
 
 
-
-def SimulateFightBackend(file_name):
-    #Will read the fight in memory and transform it into an Event we can simulate
-    #The memory will contain a file with a Job name and a list of actionID that we will transform into
-    #an event.
-
-    #the name of the save file will always be "save.json"
-
-    f = open(file_name) #Opening save
-
-    data = json.load(f) #Loading json file
-
-    PlayerList = data["data"]["PlayerList"] #Player List
-    fightInfo = data["data"]["fightInfo"] #fight information
+def RestoreFightObject(data : dict):
+    """
+    This takes a FightDict dictionnary and converts it back into an Event object.
+    data : dict -> dictionnary with the fight's data
+    """
 
     if len(PlayerList) > 1 : #If there is more than 1 player we will ask if we wish to simulate all or only 1
         print(
@@ -391,9 +382,25 @@ def SimulateFightBackend(file_name):
         PlayerActionList[playerID]["job_object"].CurrentFight = Event
 
 
+    return Event
+
+def SimulateFightBackend(file_name : str):
+    """
+    This function takes a file_name and opens the given file name assuming it is located in the saved folder.
+    file_name : str -> name of the saved file.
+    """
+
+    f = open(file_name) #Opening save
+
+    data = json.load(f) #Loading json file
+
+    Event = RestoreFightObject(data)
+
+    fightInfo = data["data"]["fightInfo"] #fight information
     Event.ShowGraph = fightInfo["ShowGraph"] #Default
     Event.RequirementOn = fightInfo["RequirementOn"]
-    Event.SimulateFight(0.01,fightInfo["fightDuration"], 0) #Simulates the fight
+    
+    Event.SimulateFight(0.01,fightInfo["fightDuration"], vocal=True) #Simulates the fight
 
 
     print(

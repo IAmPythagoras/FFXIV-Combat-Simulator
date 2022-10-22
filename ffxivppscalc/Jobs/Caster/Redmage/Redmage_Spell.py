@@ -78,15 +78,18 @@ def ApplyJolt(Player, Enemy):
     Addmana(Player, 2, 2)
 
 def ApplyVerfire(Player, Enemy):
+    Player.UsedVerfireProc += 1
     Addmana(Player, 0, 5)
 
 def ApplyVerstone(Player,Enemy):
+    Player.UsedVerstoneProc += 1
     Addmana(Player, 5, 0)
 
 def ApplyVerareao(Player, Enemy):
     Addmana(Player, 6, 0)
 
 def ApplyVerthunder(Player, Enemy):
+    Player.ExpectedVerfireProc += 0.5
     Addmana(Player, 0, 6)
 
 def ApplyManafication(Player, Enemy):
@@ -157,11 +160,17 @@ def ApplyVerholy(Player, Enemy):
     Addmana(Player, 11, 0)
     Player.Scorch = True
     Player.ManaStack -= 1 #Removing one mana stack
+    if Player.WhiteMana < Player.BlackMana:
+        Player.ExpectedVerstoneProc += 1
+    else : Player.ExpectedVerstoneProc += 0.2
 
 def ApplyVerflare(Player, Enemy):
     Addmana(Player, 0, 11)
     Player.Scorch = True
     Player.ManaStack -= 1 #Removing one mana stack
+    if Player.WhiteMana > Player.BlackMana:
+        Player.ExpectedVerfireProc += 1
+    else : Player.ExpectedVerfireProc += 0.2
 
 def ApplyScorch(Player, Enemy):
     Addmana(Player, 4, 4)
@@ -217,10 +226,18 @@ def ManaficationEffect(Player, Spell):
         Spell.DPSBonus *= 1.05 #5% boost on magic damage
 
 def AccelerationEffect(Player, Spell):
-    if (Spell.id == Verthunder.id or Spell.id ==Verareo.id or Spell.id == Impact.id) and not (SwiftcastEffect in Player.EffectList): #id 3 is both 
-        Spell.CastTime = 0    #Will have to cast how this interacts with Dual cast
+    if (Spell.id == Verthunder.id or Spell.id == Verareo.id or Spell.id == Impact.id) and not (SwiftcastEffect in Player.EffectList):
+        Spell.CastTime = 0 
         Player.EffectToRemove.append(AccelerationEffect)
         if Spell.id == Impact.id : Spell.Potency += 50 #Impact has high potency when used with Acceleration
+
+        # Adding to Expected proc value
+
+        match Spell.id:
+            case Verthunder.id:
+                Player.ExpectedVerfireProc += 1
+            case Verareo.id:
+                Player.ExpectedVerstoneProc += 1
 
 #Check
 

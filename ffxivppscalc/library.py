@@ -1,9 +1,13 @@
 """
-This file will contain basic function we will let the user call when importing the library
+This file will contain basic function we will let the user call when importing the library or
+functions callable by the API.
 """
 
+from copy import deepcopy
 from Jobs.PlayerEnum import JobEnum
-from ffxivppscalc.UI_backend import GenerateLayoutBackend, GenerateLayoutDict
+from UI_backend import GenerateLayoutBackend, GenerateLayoutDict, RestoreFightObject
+
+# library
 
 def CreateFightDict(PlayerList : list[JobEnum]) -> dict:
     """
@@ -21,15 +25,17 @@ def CreateFightJSON(PlayerList : list[JobEnum], filename : str) -> None:
     """
     GenerateLayoutBackend(PlayerList, filename)
 
-def AddPlayer(FightDict : dict, newPlayer : JobEnum):
+def AddPlayer(FightDict : dict, newPlayer : JobEnum) -> None:
     """
     This function will add a new player to the given Fight dictionnary. The new player will have no actions and have base stats.
     FightDict : dict -> Dictionnary with information of the fight
     newPlayer : JobEnum -> Job of the new player
     """
     jobName = JobEnum.name_for_id(newPlayer)
-
-    new_id = FightDict["data"]["PlayerList"][-1]["playerID"] + 1
+    if len(FightDict["data"]["PlayerList"]) == 0:
+        new_id = 1
+    else:
+        new_id = FightDict["data"]["PlayerList"][-1]["playerID"] + 1
     # finding id of last player and adding 1 assuming they are in id order.
 
 
@@ -55,8 +61,159 @@ def AddPlayer(FightDict : dict, newPlayer : JobEnum):
 
     }
 
-    FightDict["Data"]["PlayerList"].append(newPlayerDict)
+    FightDict["data"]["PlayerList"].append(newPlayerDict)
 
+# function called by API
+
+# GET
+
+def SimulateFightAPI(FightDict : dict) -> dict:
+    """
+    This function can be called to simulate a fight. It requires as input the JSON file of the fight
+    and it will return all the data relating to the simulation. This function will simply return the dictionnary and another function
+    will return a JSON file. 
+    FightDict : dict -> dictionnary holding the fight's info
+    """
+
+    Event = RestoreFightObject(FightDict) # Restoring the fight object
+
+    fightInfo = FightDict["data"]["fightInfo"] #fight information
+    Event.ShowGraph = fightInfo["ShowGraph"] #Default
+    Event.RequirementOn = fightInfo["RequirementOn"]
+
+    Event.SimulateFight(0.01,fightInfo["fightDuration"], vocal=False) # Simulating the fight
+
+    # Now every player object has the info we need. We will simply parse is and put into a dictionnary. 
+    # To return as a JSON file.
+
+    # Skeleton of the returnData
+    returnData = {
+        "Success" : True,
+        "data" : {
+            "fightInfo" : {
+                "fightDuration" : Event.TimeStamp,
+                "maxfightDuration" : fightInfo["fightDuration"],
+                "fightname" : "ayo",
+                "TeamCompositionBonus" : Event.TeamCompositionBonus
+
+            },
+            "PlayerList" : []
+        }
+    }
+
+    for player in Event.PlayerList:
+        # Going through every player will create the appriopriate dictionnary to return the info and put it in
+        # returnData["data"]["PlayerList"].
+
+        playerDict = {
+            "JobName" : JobEnum.name_for_id(player.JobEnum),
+            "ExpectedDPS" : 0 if Event.TimeStamp == 0 else player.TotalDamage/Event.TimeStamp,
+            "PotencyPerSecond" :  0 if Event.TimeStamp == 0 else player.TotalPotency/Event.TimeStamp,
+            "TotalDamage" : player.TotalDamage,
+            "TotalPotency" : player.TotalPotency,
+            "numberOfGCD" : player.GCDCounter,
+            "ProcInfo" : {},
+            "GraphInfoDPS" : [],
+            "GraphInfoPPS" : []
+        } # Creating new dictionnary
+
+        # Going through its registered DPS and PPS points
+
+        for x,y in player.DPSGraph, Event.timeValue:
+            # DPS
+
+            point = {
+                "value" : y,
+                "name" : x
+            }
+
+            playerDict["GraphInfoDPS"].append(deepcopy(point))
+        
+        for x,y in player.PotencyGraph, Event.timeValue:
+            # PPS
+
+            point = {
+                "value" : y,
+                "name" : x
+            }
+
+            playerDict["GraphInfoPPS"].append(deepcopy(point))
+
+        # If any job has luck will return the info regarding this luck for the rotation
+
+        match player.JobEnum:
+            case JobEnum.Bard:
+                procInfo = {
+                    "RefulgentArrow" : {
+                        "Expected" : player.ExpectedRefulgent,
+                        "Used" : player.UsedRefulgent
+                    },
+                    "WandererRepertoire" : {
+                        "Expected" : player.ExpectedTotalWandererRepertoire,
+                        "Used" : player.UsedTotalWandererRepertoire
+                    },
+                    "SoulVoiceGauge" : {
+                        "Expected" : player.ExpectedSoulVoiceGauge,
+                        "Used" : player.UsedSoulVoiceGauge
+                    },
+                    "BloodLetterReduction" : {
+                        "Expected" : player.ExpectedBloodLetterReduction,
+                        "Used" : player.UsedBloodLetterReduction
+                    }
+                }
+                playerDict["ProcInfo"] = deepcopy(procInfo)
+            case JobEnum.Dancer:
+                procInfo = {
+                    "SilkenSymettry" : {
+                        "Expected" : player.ExpectedSilkenSymettry,
+                        "Used" : player.UsedSilkenSymettry
+                    },
+                    "SilkenFlow" : {
+                        "Expected" : player.ExpectedSilkenFlow,
+                        "Used" : player.UsedSilkenFlow
+                    },
+                    "FourfoldFeather" : {
+                        "Expected" : player.ExpectedFourfoldFeather,
+                        "Used" : player.UsedFourfoldFeather
+                    },
+                    "ThreefoldFan" : {
+                        "Expected" : player.ExpectedThreefoldFan,
+                        "Used" : player.UsedThreefoldFan
+                    }
+                }
+                playerDict["ProcInfo"] = deepcopy(procInfo)
+            case JobEnum.RedMage:
+                procInfo = {
+                    "Verstone" : {
+                        "Expected" : player.ExpectedVerstoneProc,
+                        "Used" : player.UsedVerstoneProc
+                    },
+                    "Verfire" : {
+                        "Expected" : player.ExpectedVerfireProc,
+                        "Used" : player.UsedVerfireProc
+                    }
+                }
+                playerDict["ProcInfo"] = deepcopy(procInfo)
+
+
+
+        returnData["data"]["PlayerList"].append(deepcopy(playerDict))
+
+
+
+    return returnData
+
+
+
+
+
+
+
+
+
+
+
+# POST
 
     
 
