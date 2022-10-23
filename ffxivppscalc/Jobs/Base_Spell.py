@@ -4,6 +4,7 @@ from Fight import ComputeDamage
 import math
 from Jobs.PlayerEnum import JobEnum
 from Jobs.PlayerEnum import RoleEnum
+from requirementHandler import failedRequirementEvent
 Lock = 0.75
 
 class FailedToCast(Exception):#Exception called if a spell fails to cast
@@ -77,19 +78,27 @@ class Spell:
 
         for Requirement in tempSpell.Requirement:
             ableToCast, timeLeft = Requirement(player, tempSpell)
-            if(not ableToCast) and (player.CurrentFight.RequirementOn): #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
+            if(not ableToCast): #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
                 #Will check if timeLeft is within a margin, so we will just wait for it to come
                 #timeLeft is the remaining time before the spell is available
-                if timeLeft <= 5 and timeLeft > 0: #Limit of waiting for 1 sec
+
+                addInfo = "" if timeLeft <= 0 else "player had to wait for " + str(timeLeft) + " seconds."
+
+                fatal = not (timeLeft <= player.CurrentFight.waitingThreshold and timeLeft > 0 or (player.CurrentFight.RequirementOn) ) # true if stops the simulation
+
+                newFailedRequirementEvent = failedRequirementEvent(player.CurrentFight.TimeStamp, player.playerID, Requirement.__name__, addInfo, fatal) # Recording the event
+                player.CurrentFight.failedRequirementList.append(newFailedRequirementEvent) # storing the event in memory
+                
+                if not (player.CurrentFight.RequirementOn) : return tempSpell # If we do not care about requirement simply go on.
+                elif timeLeft <= player.CurrentFight.waitingThreshold and timeLeft > 0: # If we care about requirement, we check if we can wait the allocated threshold. if we can we wait for it to come off cooldown.
+                    # Limit of waiting for 1 sec
                     tempSpell = WaitAbility(timeLeft + 0.01)
                     player.ActionSet.insert(player.NextSpell, tempSpell)
                     return tempSpell #Makes the character wait
                     #Might remove some stuff tho, might have to check into that (for when effects are applied)
-                print("Player : " + str(player))
-                print("Failed to cast the spell : " + str(self.id))
-                print("The Requirement that failed was : " + str(Requirement.__name__))
-                print("The timestamp is : " + str(player.CurrentFight.TimeStamp))
-                raise FailedToCast("Failed to cast the spell")
+
+                player.CurrentFight.wipe = True # otherwise we stop the simulation 
+                return tempSpell
         #Will make sure CastTime is at least Lock
         if tempSpell.id > 0 and tempSpell.CastTime < Lock : tempSpell.CastTime = 0.5 #id < 0 are special abilities like DOT, so we do not want them to be affected by that
         return tempSpell
@@ -101,7 +110,7 @@ class Spell:
         """
         This function is called when an action is ready to be casted and apply its damage and effect.
         player : player -> player object casting
-        Enemey : Enemy -> Enemy object on which the action is done.
+        Enemy : Enemy -> Enemy object on which the action is done.
         """
         
         for Effect in self.Effect:

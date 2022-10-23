@@ -1,0 +1,58 @@
+{
+    "data": {
+        "fightInfo": {
+            "fightDuration": 500,
+            "time_unit": 0.01,
+            "ShowGraph": false,
+            "RequirementOn": true,
+            "IgnoreMana": false
+        },
+        "PlayerList": [
+            {
+                "JobName": "BlackMage",
+                "playerID": 1,
+                "stat": {
+                    "MainStat": 390,
+                    "WD": 0,
+                    "Det": 390,
+                    "Ten": 400,
+                    "SS": 400,
+                    "Crit": 400,
+                    "DH": 400
+                },
+                "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url.",
+                "Auras": [],
+                "actionList": [
+                    {
+                        "actionName": "FireIII"
+                    },
+                    {
+                        "actionName": "FireI"
+                    },                    {
+                        "actionName": "FireI"
+                    },                    {
+                        "actionName": "FireI"
+                    },                    {
+                        "actionName": "FireI"
+                    },                    {
+                        "actionName": "FireI"
+                    },                    {
+                        "actionName": "FireI"
+                    },                    {
+                        "actionName": "FireI"
+                    },                    {
+                        "actionName": "FireI"
+                    },                    {
+                        "actionName": "FireI"
+                    },                    {
+                        "actionName": "FireI"
+                    },                    {
+                        "actionName": "FireI"
+                    },                    {
+                        "actionName": "FireI"
+                    }
+                ]
+            }
+        ]
+    }
+}

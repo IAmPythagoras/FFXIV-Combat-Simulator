@@ -4,8 +4,16 @@ functions callable by the API.
 """
 
 from copy import deepcopy
+import json
+import math
+import os
 from Jobs.PlayerEnum import JobEnum
 from UI_backend import GenerateLayoutBackend, GenerateLayoutDict, RestoreFightObject
+
+#Helper function
+
+def roundDown(x, precision):
+    return math.floor(x * 10**precision)/10**precision
 
 # library
 
@@ -88,18 +96,37 @@ def SimulateFightAPI(FightDict : dict) -> dict:
 
     # Skeleton of the returnData
     returnData = {
-        "Success" : True,
         "data" : {
             "fightInfo" : {
                 "fightDuration" : Event.TimeStamp,
                 "maxfightDuration" : fightInfo["fightDuration"],
                 "fightname" : "ayo",
-                "TeamCompositionBonus" : Event.TeamCompositionBonus
-
+                "TeamCompositionBonus" : Event.TeamCompositionBonus,
+                "failedRequirementEventList" : [],
+                "Success" : True,
             },
             "PlayerList" : []
         }
     }
+
+    # Will go through every failedRequirementEvent and record them
+    success = True
+    for event in Event.failedRequirementList:
+        
+        success = success and not event.fatal # if one event was fatal success is false
+
+        eventDict = {
+            "timeStamp" : event.timeStamp,
+            "playerID" : event.playerID,
+            "requirementName" : event.requirementName,
+            "additionalInfo" : event.additionalInfo,
+            "fatal" : event.fatal
+        }
+
+        returnData["data"]["fightInfo"]["failedRequirementEventList"].append(deepcopy(eventDict))
+
+    returnData["data"]["fightInfo"]["Success"] = success
+
 
     for player in Event.PlayerList:
         # Going through every player will create the appriopriate dictionnary to return the info and put it in
@@ -107,8 +134,8 @@ def SimulateFightAPI(FightDict : dict) -> dict:
 
         playerDict = {
             "JobName" : JobEnum.name_for_id(player.JobEnum),
-            "ExpectedDPS" : 0 if Event.TimeStamp == 0 else player.TotalDamage/Event.TimeStamp,
-            "PotencyPerSecond" :  0 if Event.TimeStamp == 0 else player.TotalPotency/Event.TimeStamp,
+            "ExpectedDPS" : 0 if Event.TimeStamp == 0 else roundDown(player.TotalDamage/Event.TimeStamp,2),
+            "PotencyPerSecond" :  0 if Event.TimeStamp == 0 else roundDown(player.TotalPotency/Event.TimeStamp,2),
             "TotalDamage" : player.TotalDamage,
             "TotalPotency" : player.TotalPotency,
             "numberOfGCD" : player.GCDCounter,
@@ -119,7 +146,7 @@ def SimulateFightAPI(FightDict : dict) -> dict:
 
         # Going through its registered DPS and PPS points
 
-        for x,y in player.DPSGraph, Event.timeValue:
+        for (x,y) in zip(player.DPSGraph, Event.timeValue):
             # DPS
 
             point = {
@@ -129,7 +156,7 @@ def SimulateFightAPI(FightDict : dict) -> dict:
 
             playerDict["GraphInfoDPS"].append(deepcopy(point))
         
-        for x,y in player.PotencyGraph, Event.timeValue:
+        for (x,y) in zip(player.PotencyGraph, Event.timeValue):
             # PPS
 
             point = {
@@ -204,13 +231,20 @@ def SimulateFightAPI(FightDict : dict) -> dict:
     return returnData
 
 
+cur_dir = os.getcwd()
+
+#the saved directory should be in that same folder
+
+saved_dir = cur_dir + "\\saved"
+
+saved_fight = os.listdir(saved_dir)
 
 
+f = open(saved_dir + "\\" + "blackmage.json") #Opening save
 
+data = json.load(f) #Loading json file
 
-
-
-
+print(SimulateFightAPI(data))
 
 
 # POST

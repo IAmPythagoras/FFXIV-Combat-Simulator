@@ -51,6 +51,9 @@ class Fight:
         self.FightStart = False # If Fight is started
         self.IgnoreMana = True # If true we ignore mana in the simulation
         self.timeValue = [] # Array holding all sampling time for the DPS and PPS
+        self.failedRequirementList = [] # List holding all failedRequirementEvent object for the fight.
+        self.waitingThreshold = 1 # number of seconds we are willing to wait for. By default 1
+        self.wipe = False # Will be set to True in case we are stopping the simulation.
 
 
 
@@ -331,7 +334,8 @@ class Fight:
 
 
                 
-
+            if self.wipe: # If we detect that wipe has been set to true we stop the simulation
+                break
 
             # Will then let the enemy add the Dots damage
 
