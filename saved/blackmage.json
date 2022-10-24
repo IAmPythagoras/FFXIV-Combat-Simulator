@@ -4,7 +4,7 @@
             "fightDuration": 500,
             "time_unit": 0.01,
             "ShowGraph": false,
-            "RequirementOn": true,
+            "RequirementOn": false,
             "IgnoreMana": false
         },
         "PlayerList": [
@@ -27,15 +27,15 @@
                         "actionName": "FireIII"
                     },
                     {
-                        "actionName": "FireI"
+                        "actionName": "Xenoglossy"
                     },                    {
-                        "actionName": "FireI"
+                        "actionName": "Xenoglossy"
                     },                    {
-                        "actionName": "FireI"
+                        "actionName": "Xenoglossy"
                     },                    {
-                        "actionName": "FireI"
+                        "actionName": "Xenoglossy"
                     },                    {
-                        "actionName": "FireI"
+                        "actionName": "Xenoglossy"
                     },                    {
                         "actionName": "FireI"
                     },                    {

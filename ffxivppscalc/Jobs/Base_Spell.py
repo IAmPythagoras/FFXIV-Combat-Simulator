@@ -82,9 +82,9 @@ class Spell:
                 #Will check if timeLeft is within a margin, so we will just wait for it to come
                 #timeLeft is the remaining time before the spell is available
 
-                addInfo = "" if timeLeft <= 0 else "player had to wait for " + str(timeLeft) + " seconds."
+                addInfo = "" if timeLeft <= 0 else "player had to wait for or would have to wait for " + str(timeLeft) + " seconds."
 
-                fatal = not (timeLeft <= player.CurrentFight.waitingThreshold and timeLeft > 0 or (player.CurrentFight.RequirementOn) ) # true if stops the simulation
+                fatal =  not(timeLeft <= player.CurrentFight.waitingThreshold and timeLeft > 0) and  (player.CurrentFight.RequirementOn)  # true if stops the simulation
 
                 newFailedRequirementEvent = failedRequirementEvent(player.CurrentFight.TimeStamp, player.playerID, Requirement.__name__, addInfo, fatal) # Recording the event
                 player.CurrentFight.failedRequirementList.append(newFailedRequirementEvent) # storing the event in memory

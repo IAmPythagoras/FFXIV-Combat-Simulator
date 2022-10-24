@@ -88,6 +88,7 @@ def SimulateFightAPI(FightDict : dict) -> dict:
     fightInfo = FightDict["data"]["fightInfo"] #fight information
     Event.ShowGraph = fightInfo["ShowGraph"] #Default
     Event.RequirementOn = fightInfo["RequirementOn"]
+    Event.IgnoreMana = fightInfo["IgnoreMana"]
 
     Event.SimulateFight(0.01,fightInfo["fightDuration"], vocal=False) # Simulating the fight
 
@@ -244,7 +245,7 @@ f = open(saved_dir + "\\" + "blackmage.json") #Opening save
 
 data = json.load(f) #Loading json file
 
-print(SimulateFightAPI(data))
+print(SimulateFightAPI(data)["data"]["fightInfo"]["failedRequirementEventList"])
 
 
 # POST
