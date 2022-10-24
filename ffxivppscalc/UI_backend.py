@@ -414,7 +414,6 @@ def SimulateFightBackend(file_name : str):
         )
     input("Press any key to return to the Main menu : ")
 
-
 def MergeFightBackEnd(child_fight, parent_fight, parent_name):
     #This will merge the two fights.
 

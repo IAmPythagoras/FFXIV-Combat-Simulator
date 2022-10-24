@@ -75,7 +75,19 @@ def AddPlayer(FightDict : dict, newPlayer : JobEnum) -> None:
 
 # GET
 
-def SimulateFightAPI(FightDict : dict) -> dict:
+def GetSimulateFight(JSONFile):
+    """
+    This function will take the JSON file given with the API request and use other helper functions to Simulate the fight.
+    JSONFile : json -> JSON file with the simulation's parameter
+    """
+
+    data = json.load(JSONFile) # Loading the file in a dictionnary
+
+    returnData = SimulateFightAPIHelper(data)
+
+    return json.dump(returnData,write_files, indent=4) # Returning the JSON file
+
+def SimulateFightAPIHelper(FightDict : dict) -> dict:
     """
     This function can be called to simulate a fight. It requires as input the JSON file of the fight
     and it will return all the data relating to the simulation. This function will simply return the dictionnary and another function
@@ -245,7 +257,10 @@ f = open(saved_dir + "\\" + "blackmage.json") #Opening save
 
 data = json.load(f) #Loading json file
 
-print(SimulateFightAPI(data)["data"]["fightInfo"]["failedRequirementEventList"])
+APIAnswer = SimulateFightAPIHelper(data)
+
+with open(f'{"APIRequestTest"}.json', "w") as write_files:
+    json.dump(APIAnswer,write_files, indent=4) #saving file
 
 
 # POST
