@@ -131,7 +131,7 @@ def ExecuteMemoryCode(SaveFight_check):
     # Note that if you are simulating with more than 1 per job you will need to create a new list of actions.
 
     # Caster
-    BLMOpener = [Fire3, Fire4, Fire4,Fire4,Fire4, WaitAbility(10), Scathe]
+    BLMOpener = [SharpCast,Fire3, Thunder3, Fire4, Triplecast, Fire4, Fire4, Amplifier, LeyLines, Fire4, Swiftcast, Despair, Triplecast, Manafront, Fire4, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose, Fire3, Fire4, Fire4, Fire4, Despair]
     SMNOpener = []
     RDMOpener = []
     
@@ -148,7 +148,7 @@ def ExecuteMemoryCode(SaveFight_check):
 
     # Melee
     SAMOpener = []
-    DRGOpener = [WaitAbility(4),Disembowel, DragonSight(BLMPlayer), WaitAbility(1), Disembowel]
+    DRGOpener = []
     MNKOpener = []
     NINOpener = []
     RPROpener = []
@@ -202,7 +202,7 @@ def ExecuteMemoryCode(SaveFight_check):
     # So if you want to simulate the BlackMage and a RedMage, you would do: 
     # PlayerList = [BLMPlayer, RDMPlayer]
 
-    PlayerList = [BLMPlayer, DRGPlayer]
+    PlayerList = [BLMPlayer]
  
     Event.PlayerList = PlayerList
 

@@ -327,7 +327,10 @@ class Fight:
                         if(not (player.oGCDLock or player.Casting)):
                             # Then we can cast the oGCD
                             player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)
-                            player.CastingSpell.CastFinal(player, self.Enemy)
+                            player.Casting = True
+                            player.CastingLockTimer = player.CastingSpell.CastTime
+                            player.CastingTarget = self.Enemy
+                            #player.CastingSpell.CastFinal(player, self.Enemy)
                             player.oGCDLock = True
                             player.oGCDLockTimer = player.CastingSpell.CastTime
                             # print("oGCD with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(self.TimeStamp) )
@@ -371,7 +374,7 @@ class Fight:
                 CheckFinalLock = player.TrueLock and CheckFinalLock # If all player's TrueLock is true, then CheckFinalLock will be True
 
             if CheckFinalLock: 
-                print("The Fight finishes at: " + str(self.TimeStamp))
+                if vocal : print("The Fight finishes at: " + str(self.TimeStamp))
                 break
 
             

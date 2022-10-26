@@ -1,0 +1,46 @@
+{
+    "data": {
+        "FightList": [
+            {
+                "TestName": "BlackMage Test",
+                "Fight": "blackmage_test.json",
+                "ExpectedResult": {
+                    "EndTime": "86.48",
+                    "1": {
+                        "ExpectedTotalPotency": "9229"
+                    }
+                }
+            },
+            {
+                "TestName": "RedMage Test",
+                "Fight": "blackmage_test.json",
+                "ExpectedResult": {
+                    "EndTime": "86.48",
+                    "1": {
+                        "ExpectedTotalPotency": "9229"
+                    }
+                }
+            },
+            {
+                "TestName": "BlackMage Test",
+                "Fight": "blackmage_test.json",
+                "ExpectedResult": {
+                    "EndTime": "86.48",
+                    "1": {
+                        "ExpectedTotalPotency": "9229"
+                    }
+                }
+            },
+            {
+                "TestName": "BlackMage Test",
+                "Fight": "blackmage_test.json",
+                "ExpectedResult": {
+                    "EndTime": "86.48",
+                    "1": {
+                        "ExpectedTotalPotency": "9229"
+                    }
+                }
+            }
+        ]
+    }
+}
