@@ -7,6 +7,7 @@ import copy
 from Jobs.Base_Spell import DOTSpell, Queen_AA, empty, WaitAbility
 from Jobs.Ranged.Machinist.Machinist_Player import Queen
 from Jobs.Ranged.Ranged_Spell import MachinistSpell
+from Jobs.Player import Pet
 
 Lock = 0
 
@@ -144,7 +145,7 @@ def SummonQueen(Player, Enemy):
     QueenTimer = (Player.BatteryGauge - 50)/5 + 5 #Queen timer by linearly extrapolating 10 sec base + extra battery Gauge
     #Queen Timer = (ExtraBatteryGauge) / BatteryPerSec - StartUpTimer + BaseTimer = Battery/5 - 5 + 10
     Player.BatteryGauge = 0
-    if Player.Queen == None : Queen(Player, 10)#Creating new queen
+    if Player.Queen == None : Pet(Player)#Creating new queen
     Player.Queen.Timer = 15 #Setting Queen Timer
     #Will have to depend on battery Gauge
     #Timer is set at 10 so we can have 2 GCD to do finisher move if reaches before

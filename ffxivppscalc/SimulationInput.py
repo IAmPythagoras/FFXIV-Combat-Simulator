@@ -132,8 +132,8 @@ def ExecuteMemoryCode(SaveFight_check):
 
     # Caster
     BLMOpener = []
-    SMNOpener = []
-    RDMOpener = []
+    SMNOpener = [Ruin3, Summon, SearingLight, AstralImpulse, AstralImpulse, AstralImpulse, EnergyDrainSMN, Enkindle, AstralImpulse, Deathflare, Fester, AstralImpulse, Fester, AstralImpulse, Garuda, Swiftcast, Slipstream, Emerald, Emerald, Emerald, Emerald, Titan]
+    RDMOpener = [Verthunder, Verareo, Swiftcast,Acceleration, Verthunder, Verthunder, Embolden, Manafication, EnchantedRiposte, Fleche, EnchantedZwerchhau, Contre, EnchantedRedoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verfire, Verthunder, Verareo, Jolt, Verthunder, Fleche]
     
     # Healer
     SCHOpener = []
@@ -143,7 +143,7 @@ def ExecuteMemoryCode(SaveFight_check):
 
     # Physical Ranged 
     BRDOpener = []
-    MCHOpener = []
+    MCHOpener = [Reassemble, WaitAbility(5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, Reassemble, Wildfire, ChainSaw, Automaton, Hypercharge, HeatBlast, Ricochet, HeatBlast, GaussRound, HeatBlast, Ricochet, HeatBlast, GaussRound, HeatBlast, Ricochet, Drill]
     DNCOpener = []
 
     # Melee
@@ -202,7 +202,7 @@ def ExecuteMemoryCode(SaveFight_check):
     # So if you want to simulate the BlackMage and a RedMage, you would do: 
     # PlayerList = [BLMPlayer, RDMPlayer]
 
-    PlayerList = [BLMPlayer]
+    PlayerList = [MCHPlayer]
  
     Event.PlayerList = PlayerList
 

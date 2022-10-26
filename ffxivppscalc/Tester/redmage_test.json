@@ -10,84 +10,96 @@
         },
         "PlayerList": [
             {
-                "JobName": "Summoner",
+                "JobName": "RedMage",
                 "playerID": 1,
                 "stat": {
-                    "MainStat": 2948,
+                    "MainStat": 2947,
                     "WD": 126,
-                    "Det": 1451,
+                    "Det": 1548,
                     "Ten": 400,
-                    "SS": 544,
-                    "Crit": 2436,
+                    "SS": 495,
+                    "Crit": 2397,
                     "DH": 1544
                 },
                 "Auras": [],
                 "actionList": [
                     {
-                        "actionName": "RuinIII"
+                        "actionName": "Verthunder"
                     },
                     {
-                        "actionName": "SummonBahamut"
-                    },
-                    {
-                        "actionName": "SearingLight"
-                    },
-                    {
-                        "actionName": "AstralImpulse"
-                    },
-                    {
-                        "actionName": "AstralImpulse"
-                    },
-                    {
-                        "actionName": "AstralImpulse"
-                    },
-                    {
-                        "actionName": "EnergyDrain"
-                    },
-                    {
-                        "actionName": "EnkindleBahamut"
-                    },
-                    {
-                        "actionName": "AstralImpulse"
-                    },
-                    {
-                        "actionName": "Deathflare"
-                    },
-                    {
-                        "actionName": "Fester"
-                    },
-                    {
-                        "actionName": "AstralImpulse"
-                    },
-                    {
-                        "actionName": "Fester"
-                    },
-                    {
-                        "actionName": "AstralImpulse"
-                    },
-                    {
-                        "actionName": "Garuda"
+                        "actionName": "Verareo"
                     },
                     {
                         "actionName": "Swiftcast"
                     },
                     {
-                        "actionName": "Slipstream"
+                        "actionName": "Acceleration"
                     },
                     {
-                        "actionName": "Emerald"
+                        "actionName": "Verthunder"
                     },
                     {
-                        "actionName": "Emerald"
+                        "actionName": "Verthunder"
                     },
                     {
-                        "actionName": "Emerald"
+                        "actionName": "Embolden"
                     },
                     {
-                        "actionName": "Emerald"
+                        "actionName": "Manafication"
                     },
                     {
-                        "actionName": "Titan"
+                        "actionName": "EnchantedRiposte"
+                    },
+                    {
+                        "actionName": "Fleche"
+                    },
+                    {
+                        "actionName": "EnchantedZwerchhau"
+                    },
+                    {
+                        "actionName": "Contre"
+                    },
+                    {
+                        "actionName": "EnchantedRedoublement"
+                    },
+                    {
+                        "actionName": "Corps"
+                    },
+                    {
+                        "actionName": "Engagement"
+                    },
+                    {
+                        "actionName": "Verholy"
+                    },
+                    {
+                        "actionName": "Corps"
+                    },
+                    {
+                        "actionName": "Engagement"
+                    },
+                    {
+                        "actionName": "Scorch"
+                    },
+                    {
+                        "actionName": "Resolution"
+                    },
+                    {
+                        "actionName": "Verfire"
+                    },
+                    {
+                        "actionName": "Verthunder"
+                    },
+                    {
+                        "actionName": "Verareo"
+                    },
+                    {
+                        "actionName": "Jolt"
+                    },
+                    {
+                        "actionName": "Verthunder"
+                    },
+                    {
+                        "actionName": "Fleche"
                     }
                 ],
                 "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."
