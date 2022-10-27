@@ -64,6 +64,10 @@
                         "actionName": "Reassemble"
                     },
                     {
+                        "actionName": "WaitAbility",
+                        "waitTime": 2.2
+                    },
+                    {
                         "actionName": "Wildfire"
                     },
                     {
@@ -71,6 +75,10 @@
                     },
                     {
                         "actionName": "Automaton"
+                    },
+                    {
+                        "actionName": "WaitAbility",
+                        "waitTime": 2
                     },
                     {
                         "actionName": "Hypercharge"
@@ -107,6 +115,10 @@
                     },
                     {
                         "actionName": "Drill"
+                    },
+                    {
+                        "actionName": "WaitAbility",
+                        "waitTime": 60
                     }
                 ],
                 "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."

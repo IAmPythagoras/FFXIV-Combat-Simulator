@@ -176,7 +176,8 @@ def WildFireEffect(Player, Spell):
     if isinstance(Spell, MachinistSpell) and Spell.Weaponskill : Player.WildFireStack +=1
 
 def HyperchargeEffect(Player, Spell):
-    if Spell.Weaponskill : Spell.Potency += 20
+    if isinstance(Spell, MachinistSpell) and Spell.Weaponskill : 
+        Spell.Potency += 20
 
 #Combo Actions effect
 

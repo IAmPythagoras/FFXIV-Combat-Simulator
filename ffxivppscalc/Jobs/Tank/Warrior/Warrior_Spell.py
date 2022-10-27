@@ -140,7 +140,6 @@ def InnerReleaseEffect(Player, Spell):
             Player.EffectToRemove.append(InnerReleaseEffect)
 
 def SurgingTempestEffect(Player, Spell):
-    print(Player.JobEnum)
     if Player.SurgingTempestTimer > 0 : 
         Player.buffList.append(SurgingTempestBuff)
         Player.EffectCDList.append(SurgingTempestCheck)

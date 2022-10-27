@@ -101,6 +101,10 @@
                     },
                     {
                         "actionName": "WheelingThrust"
+                    },
+                    {
+                        "actionName": "WaitAbility",
+                        "waitTime": 50
                     }
                 ],
                 "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."

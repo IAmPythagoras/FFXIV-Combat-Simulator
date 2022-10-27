@@ -65,20 +65,33 @@ class Tester:
             f_test = open(file) # Opening saved file for the test
             data_test = json.load(f_test) # loading data
 
-            Event = RestoreFightObject(data_test) # Restoring into Event object
-
-            fightInfo = data_test["data"]["fightInfo"] #fight information
-            Event.ShowGraph = fightInfo["ShowGraph"] #Default
-            Event.RequirementOn = fightInfo["RequirementOn"]
-            Event.IgnoreMana = fightInfo["IgnoreMana"]
             
-            Event.SimulateFight(0.01,fightInfo["fightDuration"], vocal=False) #Simulates the fight
+            # Restoring into Event object
+            Event_Req = RestoreFightObject(data_test) # Requirement on
+            Event = RestoreFightObject(data_test) # No requirements
+            
+            Event.ShowGraph = False
+            Event.RequirementOn = False
+            Event.IgnoreMana = True
+            
+            Event.SimulateFight(0.01,500, vocal=False) # Simulate the fight with no requirements
+
+            Event_Req.ShowGraph = False
+            Event_Req.RequirementOn = True
+            Event_Req.IgnoreMana = True
+
+            Event_Req.SimulateFight(0.01,500, vocal=False) # Simulates the fight with requirements
+
+            failedReq = 0
+            for event in Event_Req.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+                if event.fatal : failedReq += 1
 
             result = {
                 "TestName" : test["TestName"],
                 "EndTime" : Event.TimeStamp,
                 "ExpectedEndTime" : test["ExpectedResult"]["EndTime"],
                 "EqualTime" : isclose(Event.TimeStamp,float(test["ExpectedResult"]["EndTime"])),
+                "FailedRequirement" : failedReq == 0,
                 "PlayerList" : []
             }
 
@@ -95,10 +108,10 @@ class Tester:
             self.fightResults.append(deepcopy(result))
 
         # Will now print out the results:
-
+        total_passed = 0
         for test in self.fightResults:
             passed = True
-            print("Result for test : " + str(test["TestName"]))
+            print("Result(s) for test : " + str(test["TestName"]))
             for player_result in test["PlayerList"]:
                 
                 if not player_result["EqualPotency"]: # Checking for equal potency
@@ -114,18 +127,24 @@ class Tester:
                         "This fight did not pass the end time test." + 
                         "\nEnd time : " + str(test["EndTime"]) + " | Expected : " + str(test["ExpectedEndTime"])
                          )
+
+            if not test["FailedRequirement"]:
+                passed = False
+                print("This fight did not pass requirement.")
+
             
-            if passed : print("Passed!")
+            if passed : 
+                total_passed += 1
+                print("Passed!")
 
-            print("\n+++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n") # Making space for next test
+            print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++") # Making space for next test
 
-
+        print("Passed " + str(total_passed) + "/" + str(len(self.fightResults)) + " test(s)." )
 
 
 if __name__ == "__main__":
     x = Tester("test_layout.json")
     x.Test()
-    #GenerateTestLayout(19)
 
 
 

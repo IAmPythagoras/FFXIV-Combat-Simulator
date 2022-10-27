@@ -411,7 +411,10 @@ class Fight:
             self.PlayerList.pop(i-k)
             k+=1
             
-
+       
+        if vocal : 
+            for t in self.failedRequirementList: 
+                if t.fatal : print(t.requirementName)
         if vocal : self.PrintResult(self.TimeStamp, self.timeValue)
             
 

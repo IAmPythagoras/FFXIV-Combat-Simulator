@@ -136,7 +136,8 @@ def ApplyConfetti(Player, Enemy):
 #Combo Action
 
 def ApplyFastBlade(Player, Enemy):
-    if not (FastBladeCombo in Player.EffectList) : Player.EffectList.append(FastBladeCombo)
+    if not (FastBladeCombo in Player.EffectList) : 
+        Player.EffectList.append(FastBladeCombo)
 
 
 #Effect

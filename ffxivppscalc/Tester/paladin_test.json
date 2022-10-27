@@ -5,7 +5,7 @@
             "fightDuration": 500,
             "time_unit": 0.01,
             "ShowGraph": false,
-            "RequirementOn": true,
+            "RequirementOn": false,
             "IgnoreMana": true
         },
         "PlayerList": [
@@ -42,7 +42,7 @@
                         "actionName": "FastBlade"
                     },
                     {
-                        "actionName": "GoringBlade"
+                        "actionName": "RiotBlade"
                     },
                     {
                         "actionName": "CircleOfScorn"

@@ -97,7 +97,7 @@ class Spell:
                     player.ActionSet.insert(player.NextSpell, tempSpell)
                     return tempSpell #Makes the character wait
                     #Might remove some stuff tho, might have to check into that (for when effects are applied)
-
+                
                 player.CurrentFight.wipe = True # otherwise we stop the simulation 
                 return tempSpell
         #Will make sure CastTime is at least Lock
@@ -130,8 +130,9 @@ class Spell:
         if self.Potency != 0 : minDamage,Damage= ComputeDamage(player, self.Potency, Enemy, self.DPSBonus, type, self)    #Damage computation
         else: minDamage, Damage = 0,0
 
-        #if Damage > 0 : 
-        #    print("action " + name_for_id(self.id,player.ClassAction, player.JobAction))
+        #if self.id > 0 or self.id == -2878: 
+        #    name = name_for_id(self.id,player.ClassAction, player.JobAction)
+        #    print("action " + name if name != "Unknown" else str(self.id) )
         #    print("Did : " + str(self.Potency))
         #    print("at : " + str(player.CurrentFight.TimeStamp))
         

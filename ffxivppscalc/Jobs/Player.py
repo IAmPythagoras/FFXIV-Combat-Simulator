@@ -922,6 +922,7 @@ class Player:
         self.BioblasterDOTTimer = 0
         self.FlamethrowerDOTTimer = 0
         self.QueenStartUpTimer = 0
+        self.QueenTimer = 0
 
         #Stacks
         self.GaussRoundStack = 3
@@ -970,6 +971,7 @@ class Player:
             if (self.BioblasterDOTTimer > 0) : self.BioblasterDOTTimer = max(0,self.BioblasterDOTTimer - time)
             if (self.FlamethrowerDOTTimer > 0) : self.FlamethrowerDOTTimer = max(0,self.FlamethrowerDOTTimer - time)
             if (self.QueenStartUpTimer > 0) : self.QueenStartUpTimer = max(0,self.QueenStartUpTimer - time)
+            if (self.QueenTimer > 0) : self.QueenTimer = max(0,self.QueenTimer - time)
 
         # update functions
         self.updateJobTimer = updateTimer
@@ -1938,6 +1940,8 @@ class Pet(Player):
         """
         self.Master = Master
         Master.Pet = self
+        self.ClassAction = CasterActions # Just a default
+        self.JobAction = SummonerActions # Won't be used
 
         # Adding itself to the fight object
         Master.CurrentFight.PlayerList.append(self)

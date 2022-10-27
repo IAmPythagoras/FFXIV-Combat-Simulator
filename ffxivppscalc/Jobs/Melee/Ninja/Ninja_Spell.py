@@ -304,7 +304,7 @@ def BunshinEffect(Player, Spell):
         Shadow.TrueLock = False #Delocking the shadow
         Shadow.ActionSet.insert(Shadow.NextSpell + 1, NinjaSpell(35, False, 0, 1, 160, empty, [], True, False)) #Adding the spell
         Player.BunshinStack -= 1
-        Player.AddHuton(5)
+        Player.AddNinki(5)
         if Player.BunshinStack == 0:
             Player.EffectToRemove.append(BunshinEffect)
 

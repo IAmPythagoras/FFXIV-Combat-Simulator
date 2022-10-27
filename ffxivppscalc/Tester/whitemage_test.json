@@ -76,6 +76,12 @@
                     },
                     {
                         "actionName": "Glare"
+                    },
+                    {
+                        "actionName": "Glare"
+                    },
+                    {
+                        "actionName": "Glare"
                     }
                 ],
                 "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."

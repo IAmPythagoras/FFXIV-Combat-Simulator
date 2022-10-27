@@ -5,7 +5,7 @@
                 "TestName": "blackmage",
                 "Fight": "blackmage_test.json",
                 "ExpectedResult": {
-                    "EndTime": "86.48",
+                    "EndTime": "85.99",
                     "1": {
                         "ExpectedTotalPotency": "9229"
                     }
@@ -15,9 +15,9 @@
                 "TestName": "redmage",
                 "Fight": "redmage_test.json",
                 "ExpectedResult": {
-                    "EndTime": "30",
+                    "EndTime": "32.59",
                     "1": {
-                        "ExpectedTotalPotency": "9960"
+                        "ExpectedTotalPotency": "8520"
                     }
                 }
             },
@@ -25,9 +25,9 @@
                 "TestName": "summoner",
                 "Fight": "summoner_test.json",
                 "ExpectedResult": {
-                    "EndTime": "30",
+                    "EndTime": "80.27",
                     "1": {
-                        "ExpectedTotalPotency": "9300"
+                        "ExpectedTotalPotency": "9350"
                     }
                 }
             },
@@ -35,7 +35,7 @@
                 "TestName": "scholar",
                 "Fight": "scholar_test.json",
                 "ExpectedResult": {
-                    "EndTime": "30",
+                    "EndTime": "37.11",
                     "1": {
                         "ExpectedTotalPotency": "6020"
                     }
@@ -45,7 +45,7 @@
                 "TestName": "sage",
                 "Fight": "sage_test.json",
                 "ExpectedResult": {
-                    "EndTime": "30",
+                    "EndTime": "48.6",
                     "1": {
                         "ExpectedTotalPotency": "7660"
                     }
@@ -55,7 +55,7 @@
                 "TestName": "astrologian",
                 "Fight": "astrologian_test.json",
                 "ExpectedResult": {
-                    "EndTime": "30",
+                    "EndTime": "45.0",
                     "1": {
                         "ExpectedTotalPotency": "5550"
                     }
@@ -65,7 +65,7 @@
                 "TestName": "whitemage",
                 "Fight": "whitemage_test.json",
                 "ExpectedResult": {
-                    "EndTime": "30",
+                    "EndTime": "37.38",
                     "1": {
                         "ExpectedTotalPotency": "6330"
                     }
@@ -75,9 +75,9 @@
                 "TestName": "darkknight",
                 "Fight": "darkknight_test.json",
                 "ExpectedResult": {
-                    "EndTime": "30",
+                    "EndTime": "22.74",
                     "1": {
-                        "ExpectedTotalPotency": "10010"
+                        "ExpectedTotalPotency": "10890"
                     }
                 }
             },
@@ -85,9 +85,9 @@
                 "TestName": "gunbreaker",
                 "Fight": "gunbreaker_test.json",
                 "ExpectedResult": {
-                    "EndTime": "30",
+                    "EndTime": "74.6",
                     "1": {
-                        "ExpectedTotalPotency": "7200"
+                        "ExpectedTotalPotency": "10100"
                     }
                 }
             },
@@ -95,9 +95,9 @@
                 "TestName": "paladin",
                 "Fight": "paladin_test.json",
                 "ExpectedResult": {
-                    "EndTime": "30",
+                    "EndTime": "97.73",
                     "1": {
-                        "ExpectedTotalPotency": "8495"
+                        "ExpectedTotalPotency": "15510"
                     }
                 }
             },
@@ -105,9 +105,9 @@
                 "TestName": "warrior",
                 "Fight": "warrior_test.json",
                 "ExpectedResult": {
-                    "EndTime": "30",
+                    "EndTime": "35.13",
                     "1": {
-                        "ExpectedTotalPotency": "7350"
+                        "ExpectedTotalPotency": "8670"
                     }
                 }
             },
@@ -115,9 +115,9 @@
                 "TestName": "samurai",
                 "Fight": "samurai_test.json",
                 "ExpectedResult": {
-                    "EndTime": "30",
+                    "EndTime": "83.67",
                     "1": {
-                        "ExpectedTotalPotency": "9480"
+                        "ExpectedTotalPotency": "13460"
                     }
                 }
             },
@@ -125,9 +125,9 @@
                 "TestName": "reaper",
                 "Fight": "reaper_test.json",
                 "ExpectedResult": {
-                    "EndTime": "30",
+                    "EndTime": "24.78",
                     "1": {
-                        "ExpectedTotalPotency": "7860"
+                        "ExpectedTotalPotency": "8850"
                     }
                 }
             },
@@ -135,9 +135,9 @@
                 "TestName": "ninja",
                 "Fight": "ninja_test.json",
                 "ExpectedResult": {
-                    "EndTime": "30",
+                    "EndTime": "25.27",
                     "1": {
-                        "ExpectedTotalPotency": "10600"
+                        "ExpectedTotalPotency": "11590"
                     }
                 }
             },
@@ -145,9 +145,9 @@
                 "TestName": "dragoon",
                 "Fight": "dragoon_test.json",
                 "ExpectedResult": {
-                    "EndTime": "30",
+                    "EndTime": "82.63",
                     "1": {
-                        "ExpectedTotalPotency": "6190"
+                        "ExpectedTotalPotency": "10230"
                     }
                 }
             },
@@ -155,9 +155,9 @@
                 "TestName": "monk",
                 "Fight": "monk_test.json",
                 "ExpectedResult": {
-                    "EndTime": "30",
+                    "EndTime": "53.39",
                     "1": {
-                        "ExpectedTotalPotency": "5510"
+                        "ExpectedTotalPotency": "5620"
                     }
                 }
             },
@@ -165,9 +165,9 @@
                 "TestName": "machinist",
                 "Fight": "machinist_test.json",
                 "ExpectedResult": {
-                    "EndTime": "30",
+                    "EndTime": "82.57",
                     "1": {
-                        "ExpectedTotalPotency": "6560"
+                        "ExpectedTotalPotency": "11280"
                     }
                 }
             },
@@ -175,9 +175,9 @@
                 "TestName": "dancer",
                 "Fight": "dancer_test.json",
                 "ExpectedResult": {
-                    "EndTime": "30",
+                    "EndTime": "18.4",
                     "1": {
-                        "ExpectedTotalPotency": "4790"
+                        "ExpectedTotalPotency": "5560"
                     }
                 }
             },
@@ -185,9 +185,9 @@
                 "TestName": "bard",
                 "Fight": "bard_test.json",
                 "ExpectedResult": {
-                    "EndTime": "30",
+                    "EndTime": "70.59",
                     "1": {
-                        "ExpectedTotalPotency": "3995"
+                        "ExpectedTotalPotency": "7050"
                     }
                 }
             }
