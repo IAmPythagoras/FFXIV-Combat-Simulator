@@ -1,0 +1,196 @@
+{
+    "data": {
+        "FightList": [
+            {
+                "TestName": "blackmage",
+                "Fight": "blackmage_test.json",
+                "ExpectedResult": {
+                    "EndTime": "85.99",
+                    "1": {
+                        "ExpectedTotalPotency": "9229"
+                    }
+                }
+            },
+            {
+                "TestName": "redmage",
+                "Fight": "redmage_test.json",
+                "ExpectedResult": {
+                    "EndTime": "32.59",
+                    "1": {
+                        "ExpectedTotalPotency": "8520"
+                    }
+                }
+            },
+            {
+                "TestName": "summoner",
+                "Fight": "summoner_test.json",
+                "ExpectedResult": {
+                    "EndTime": "80.27",
+                    "1": {
+                        "ExpectedTotalPotency": "9350"
+                    }
+                }
+            },
+            {
+                "TestName": "scholar",
+                "Fight": "scholar_test.json",
+                "ExpectedResult": {
+                    "EndTime": "37.11",
+                    "1": {
+                        "ExpectedTotalPotency": "6020"
+                    }
+                }
+            },
+            {
+                "TestName": "sage",
+                "Fight": "sage_test.json",
+                "ExpectedResult": {
+                    "EndTime": "48.6",
+                    "1": {
+                        "ExpectedTotalPotency": "7660"
+                    }
+                }
+            },
+            {
+                "TestName": "astrologian",
+                "Fight": "astrologian_test.json",
+                "ExpectedResult": {
+                    "EndTime": "45.0",
+                    "1": {
+                        "ExpectedTotalPotency": "5550"
+                    }
+                }
+            },
+            {
+                "TestName": "whitemage",
+                "Fight": "whitemage_test.json",
+                "ExpectedResult": {
+                    "EndTime": "37.38",
+                    "1": {
+                        "ExpectedTotalPotency": "6330"
+                    }
+                }
+            },
+            {
+                "TestName": "darkknight",
+                "Fight": "darkknight_test.json",
+                "ExpectedResult": {
+                    "EndTime": "22.74",
+                    "1": {
+                        "ExpectedTotalPotency": "10890"
+                    }
+                }
+            },
+            {
+                "TestName": "gunbreaker",
+                "Fight": "gunbreaker_test.json",
+                "ExpectedResult": {
+                    "EndTime": "74.6",
+                    "1": {
+                        "ExpectedTotalPotency": "10100"
+                    }
+                }
+            },
+            {
+                "TestName": "paladin",
+                "Fight": "paladin_test.json",
+                "ExpectedResult": {
+                    "EndTime": "97.73",
+                    "1": {
+                        "ExpectedTotalPotency": "15510"
+                    }
+                }
+            },
+            {
+                "TestName": "warrior",
+                "Fight": "warrior_test.json",
+                "ExpectedResult": {
+                    "EndTime": "35.13",
+                    "1": {
+                        "ExpectedTotalPotency": "8670"
+                    }
+                }
+            },
+            {
+                "TestName": "samurai",
+                "Fight": "samurai_test.json",
+                "ExpectedResult": {
+                    "EndTime": "83.67",
+                    "1": {
+                        "ExpectedTotalPotency": "13460"
+                    }
+                }
+            },
+            {
+                "TestName": "reaper",
+                "Fight": "reaper_test.json",
+                "ExpectedResult": {
+                    "EndTime": "24.78",
+                    "1": {
+                        "ExpectedTotalPotency": "8850"
+                    }
+                }
+            },
+            {
+                "TestName": "ninja",
+                "Fight": "ninja_test.json",
+                "ExpectedResult": {
+                    "EndTime": "25.27",
+                    "1": {
+                        "ExpectedTotalPotency": "11590"
+                    }
+                }
+            },
+            {
+                "TestName": "dragoon",
+                "Fight": "dragoon_test.json",
+                "ExpectedResult": {
+                    "EndTime": "82.63",
+                    "1": {
+                        "ExpectedTotalPotency": "10230"
+                    }
+                }
+            },
+            {
+                "TestName": "monk",
+                "Fight": "monk_test.json",
+                "ExpectedResult": {
+                    "EndTime": "53.39",
+                    "1": {
+                        "ExpectedTotalPotency": "5620"
+                    }
+                }
+            },
+            {
+                "TestName": "machinist",
+                "Fight": "machinist_test.json",
+                "ExpectedResult": {
+                    "EndTime": "82.57",
+                    "1": {
+                        "ExpectedTotalPotency": "11280"
+                    }
+                }
+            },
+            {
+                "TestName": "dancer",
+                "Fight": "dancer_test.json",
+                "ExpectedResult": {
+                    "EndTime": "18.4",
+                    "1": {
+                        "ExpectedTotalPotency": "5560"
+                    }
+                }
+            },
+            {
+                "TestName": "bard",
+                "Fight": "bard_test.json",
+                "ExpectedResult": {
+                    "EndTime": "70.59",
+                    "1": {
+                        "ExpectedTotalPotency": "7050"
+                    }
+                }
+            }
+        ]
+    }
+}

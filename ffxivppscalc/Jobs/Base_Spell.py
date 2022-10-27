@@ -4,6 +4,8 @@ from Fight import ComputeDamage
 import math
 from Jobs.PlayerEnum import JobEnum
 from Jobs.PlayerEnum import RoleEnum
+from Jobs.ActionEnum import name_for_id
+from requirementHandler import failedRequirementEvent
 Lock = 0.75
 
 class FailedToCast(Exception):#Exception called if a spell fails to cast
@@ -11,14 +13,30 @@ class FailedToCast(Exception):#Exception called if a spell fails to cast
 
 
 class buff:
+    """
+    This class is any buff given to a player. It contains the buff's value
+    """
     def __init__(self, MultDPS):
         self.MultDPS = MultDPS #DPS multiplier of the buff
 
 
 class Spell:
-    #This class is any Spell, it will have some subclasses to take Job similar spell, etc.
+    """
+    This class is any Spell, it will have some subclasses to take Job similar spell, etc.
+    """
+    def __init__(self, id : int, GCD : bool, CastTime : float, RecastTime : float, Potency : int, ManaCost : int, Effect, Requirement):
+        """
+        Initialization of a Spell
+        id : int -> id to identify the action
+        GCD : bool -> True if the action is a GCD
+        CastTime : float -> Cast time of the action
+        RecastTime : float -> Recast time of the action
+        Potency : int -> base potency of the action
+        Manacost : int -> base manacost of the action
+        Effect : function -> A function called upon the execution of the action which affects the player and the enemy.
+        Requirement : function -> Bool -> function called upon the execution to verify if the action can be executed.
 
-    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
+        """
         self.id = id
         self.GCD = GCD #True if GCD
         self.Potency = Potency
@@ -31,12 +49,13 @@ class Spell:
         self.TargetID = 0 #By default 0
 
     def Cast(self, player, Enemy):
-        #This function will cast the spell given by the Fight, it will apply whatever effects it has and do its potency
-
-        #if self.GCD: 
-        #    print("Spell is casted: " + str(self.id))
-        #    input("timestamp : " + str(player.CurrentFight.TimeStamp) )
-
+        """
+        This function is called by the simulator when an action is ready to begin its casting. It checks for the requirement and apply all effect
+        currently in the fight that can affect the action. It will lock the player into casting mode if necessary. The action is not executed here
+        and is in a way being preapred to be executed. It will be checked if the action can be done.
+        player : player -> player object casting
+        Enemey : Enemy -> Enemy object on which the action is done.
+        """
         tempSpell = copy.deepcopy(self)
         #Creating a tempSpell which will have its values changed according that what effect
         #the player and the enemy have
@@ -47,7 +66,6 @@ class Spell:
             for Effect in Enemy.EffectList:
                 Effect(player, tempSpell)#Changes tempSpell
         #Checks if we meet the spell requirement
-        #input("out of effect")
 
         #Remove all effects that have to be removed
 
@@ -58,35 +76,43 @@ class Spell:
         
         player.EffectToRemove = [] #Empty the remove list
         player.EffectToAdd = []
-        #input("id : " + str(self.id))
+
         for Requirement in tempSpell.Requirement:
-            #input("in requirement")
-            #input("tenchijind : " + str(player.TenChiJinTimer))
-            #print(Requirement.__name__)
             ableToCast, timeLeft = Requirement(player, tempSpell)
-            if(not ableToCast) and (player.CurrentFight.RequirementOn): #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
-                #input("timeleft : " + str(timeLeft))
+            if(not ableToCast): #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
                 #Will check if timeLeft is within a margin, so we will just wait for it to come
                 #timeLeft is the remaining time before the spell is available
-                if timeLeft <= 5 and timeLeft > 0: #Limit of waiting for 1 sec
+
+                addInfo = "" if timeLeft <= 0 else "player had to wait for or would have to wait for " + str(timeLeft) + " seconds."
+
+                fatal =  not(timeLeft <= player.CurrentFight.waitingThreshold and timeLeft > 0) and  (player.CurrentFight.RequirementOn)  # true if stops the simulation
+
+                newFailedRequirementEvent = failedRequirementEvent(player.CurrentFight.TimeStamp, player.playerID, Requirement.__name__, addInfo, fatal) # Recording the event
+                player.CurrentFight.failedRequirementList.append(newFailedRequirementEvent) # storing the event in memory
+                
+                if not (player.CurrentFight.RequirementOn) : return tempSpell # If we do not care about requirement simply go on.
+                elif timeLeft <= player.CurrentFight.waitingThreshold and timeLeft > 0: # If we care about requirement, we check if we can wait the allocated threshold. if we can we wait for it to come off cooldown.
+                    # Limit of waiting for 1 sec
                     tempSpell = WaitAbility(timeLeft + 0.01)
                     player.ActionSet.insert(player.NextSpell, tempSpell)
                     return tempSpell #Makes the character wait
                     #Might remove some stuff tho, might have to check into that (for when effects are applied)
                 
-
-                print("Player : " + str(player))
-                print("Failed to cast the spell : " + str(self.id))
-                print("The Requirement that failed was : " + str(Requirement.__name__))
-                print("The timestamp is : " + str(player.CurrentFight.TimeStamp))
-                raise FailedToCast("Failed to cast the spell")
+                player.CurrentFight.wipe = True # otherwise we stop the simulation 
+                return tempSpell
         #Will make sure CastTime is at least Lock
-        if tempSpell.id > 0 and tempSpell.CastTime < Lock : tempSpell.CastTime = 0.5 #id < 0 are special abilities like DOT, so we do not want them to be affected by that
+        if tempSpell.id > 0 and tempSpell.CastTime < Lock : tempSpell.CastTime = 0 #id < 0 are special abilities like DOT, so we do not want them to be affected by that
         return tempSpell
         #Will put casting spell in player, and do damage/effect once the casting time is over
 
 
     def CastFinal(self, player, Enemy):
+
+        """
+        This function is called when an action is ready to be casted and apply its damage and effect.
+        player : player -> player object casting
+        Enemy : Enemy -> Enemy object on which the action is done.
+        """
         
         for Effect in self.Effect:
             Effect(player, Enemy)#Put effects on Player and/or Enemy
@@ -104,6 +130,11 @@ class Spell:
         if self.Potency != 0 : minDamage,Damage= ComputeDamage(player, self.Potency, Enemy, self.DPSBonus, type, self)    #Damage computation
         else: minDamage, Damage = 0,0
 
+        #if self.id > 0 or self.id == -2878: 
+        #    name = name_for_id(self.id,player.ClassAction, player.JobAction)
+        #    print("action " + name if name != "Unknown" else str(self.id) )
+        #    print("Did : " + str(self.Potency))
+        #    print("at : " + str(player.CurrentFight.TimeStamp))
         
 
         if player.JobEnum == JobEnum.Pet:
@@ -142,56 +173,66 @@ class Spell:
 
         return self
 
-def ApplyMelee_AA(Player, Enemy):
-    Player.DOTList.append(copy.deepcopy(Melee_AADOT))
-
-def ApplyRanged_AA(Player, Enemy):
-    Player.DOTList.append(copy.deepcopy(Ranged_AADOT))
-
-def ApplyQueen_AA(Player, Enemy):
-    Player.DOTList.append(copy.deepcopy(Queen_AADOT))
-
-Melee_AA = Spell(-30, False, 0, 0, 0, 0, ApplyMelee_AA, [])
-Ranged_AA = Spell(-30, False, 0, 0, 0, 0, ApplyRanged_AA, [])
-Queen_AA = Spell(-30, False, 0, 0, 0, 0, ApplyQueen_AA, [])
-
 def ManaRequirement(player, Spell):
+    """
+    Requirement function for mana
+    """
     if player.Mana >= Spell.ManaCost :
         player.Mana -= Spell.ManaCost   #ManaRequirement is the only Requirement that actually removes Ressources
         return True, -1
-    return True, -1
+    return player.CurrentFight.IgnoreMana, -1 # Ignore mana is a field of the fight set to true if we ignore the mana
 
 def empty(Player, Enemy):
     pass
 
-def WaitAbility(time):
+def WaitAbility(time : float):
+    """
+    This returns an action where the player waits for a certain amount of time given
+    time : float
+    """
     def ApplyWaitAbility(Player, Enemy):
         pass
-        #if time > 2.5 : input("wait for more than necessary")
     WaitAction = Spell(212, False, time, time, 0, 0, ApplyWaitAbility, [])
     WaitAction.waitTime = time #Special field just for wait ability
     return WaitAction
 
 def ApplyPotion(Player, Enemy):
+    """
+    Functions applies a potion and boosts the main stat of the player
+    """
     Player.Stat["MainStat"] = min(math.floor(Player.Stat["MainStat"] * 1.1), Player.Stat["MainStat"] + 223) #Grade 7 HQ tincture
     Player.PotionTimer = 30
 
     Player.EffectCDList.append(PotionCheck)
 
 def PrepullPotion(Player, Enemy): #If potion is prepull
+    """
+    If the potion is prepull
+    """
     ApplyPotion(Player, Enemy)
     Player.PotionTimer = 27 #Assume we loose a bit on it
     Player.EffectToRemove.append(PrepullPotion)
 
 def PotionCheck(Player, Enemy):
+    """
+    Check of potion effect
+    """
     if Player.PotionTimer <= 0:
         Player.Stat["MainStat"] -= 223 #Assuming we are capped
         Player.EffectCDList.remove(PotionCheck)
 
 
 class DOTSpell(Spell):
+    """
+    This class is any DOT. The action applying a dot will append a DOT object from this class (or any subclass of DOTSpell) which will do damage over time.
+    """
     #Represents DOT
     def __init__(self, id, Potency, isPhysical):
+        """
+        id : int -> id of the dot. Dot have negative ids
+        Potency : int -> base potency of the DOT
+        isPhysical : bool -> True if the dot is physical
+        """
         super().__init__(id, False, 0, 0, Potency,  0, empty, [])
         #Note that here Potency is the potency of the dot, not of the ability
         self.DOTTimer = 0   #This represents the timer of the dot, and it will apply at each 3 seconds
@@ -205,51 +246,65 @@ class DOTSpell(Spell):
         #so we can snapshot the buffs only once
         #Note that AAs do not snapshot buffs, but in the code they will still have these fields
 
-    def CheckDOT(self, Player, Enemy, TimeUnit):
-        #print("The dot Timer is :  " + str(self.DOTTimer))
+    def CheckDOT(self, Player, Enemy, TimeUnit : float):
+        """
+        This function is called every time unit of the simulation and will check if a dot will be applied. A dot is applied every 3 seconds.
+        If a dot has to be applied it will Cast and Castfinal itself and reset its DOTTimer to 3 seconds.
+        """
         if(self.DOTTimer <= 0):
             #Apply DOT
             tempSpell  = self.Cast(Player, Enemy)#Cast the DOT
-            #print(self.id)
-            #print("Timestamp is : " + str(Player.CurrentFight.TimeStamp))
-            #input("applying dot with potency : " + str(tempSpell.Potency))
             tempSpell.CastFinal(Player, Enemy)
             self.DOTTimer = 3
         else:
-            #input("updating : " + str(self.id))
             self.DOTTimer = max(0, self.DOTTimer-TimeUnit)
 
 
 class Auto_Attack(DOTSpell):
-    #DOT specifically used for auto attack
-    def __init__(self, id, Ranged):
+    """
+    DOTSpell subclass only for Autos since they have different potency depending on if ranged or melee.
+    """
+    def __init__(self, id, Ranged : bool):
+        """
+        Ranged : bool -> True if the auto is ranged.
+        """
         if Ranged : super().__init__(id, 100, True) # Ranged AA
         else: super().__init__(id, 110, True) # Melee AA
 
-        self.DOTTimer = 0 #The timer is intentionally set at a longer time, so it won't go off before the countdown is over
+        self.DOTTimer = 0 
 
 class Queen_Auto(Auto_Attack):
+    """
+    Subclass of DOTSpell only for Machinist's queen autos
+    """
 
     def __init__(self, id, Ranged):
         super().__init__(id, Ranged)
         self.Weaponskill = False
-        self.DOTTimer = 0 #Since we need to attack as it spawns
 
 class Melee_Auto(Auto_Attack):
-
+    """
+    Subclass of DOTSpell only for melee autos
+    """
     def __init__(self, id, Ranged):
         super().__init__(id, Ranged)
         self.Weaponskill = False
 
 class Ranged_Auto(Auto_Attack):
-
+    """
+    Subclass of DOTSpell only for ranged autos
+    """
     def __init__(self, id, Ranged):
         super().__init__(id, Ranged)
         self.Weaponskill = False
 
 class Monk_AA(Melee_Auto):
+    """
+    Subclass of DOTSpell only for monk autos. The reason is that it can be on a faster rate if RiddleOfWind is activated. So the DOT
+    update function is overwritten and checks for that and will update the timer accordingly.
+    """
     def __init__(self):
-        super().__init__(-1, False)
+        super().__init__(-5, False)
         self.DOTTimer = 0
 
     def CheckDOT(self, Player, Enemy, TimeUnit):
@@ -262,12 +317,24 @@ class Monk_AA(Melee_Auto):
 
 def ApplyMonk_Auto(Player, Enemy):
     Player.DOTList.append(copy.deepcopy(Monk_Auto))
-Monk_Auto = Monk_AA()
 
+def ApplyMelee_AA(Player, Enemy):
+    Player.DOTList.append(copy.deepcopy(Melee_AADOT))
+
+def ApplyRanged_AA(Player, Enemy):
+    Player.DOTList.append(copy.deepcopy(Ranged_AADOT))
+
+def ApplyQueen_AA(Player, Enemy):
+    Player.DOTList.append(copy.deepcopy(Queen_AADOT))
+
+Melee_AA = Spell(-30, False, 0, 0, 0, 0, ApplyMelee_AA, [])
+Ranged_AA = Spell(-30, False, 0, 0, 0, 0, ApplyRanged_AA, [])
+Queen_AA = Spell(-30, False, 0, 0, 0, 0, ApplyQueen_AA, [])
+
+Monk_Auto = Monk_AA()
 Melee_AADOT = Melee_Auto(-22, False)
 Ranged_AADOT = Ranged_Auto(-23, True)
 Queen_AADOT = Queen_Auto(-24, False)
-
 Potion = Spell(-2, False, 1, 1, 0, 0, ApplyPotion, [])
 
 

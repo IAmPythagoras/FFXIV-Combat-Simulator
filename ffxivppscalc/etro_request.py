@@ -10,8 +10,11 @@ and modified to fit the use I have of it.
 # coreapi-cli==1.0.9
 import coreapi
 
-def get_gearset_data(set_id: str):
-    """Gets the gearset data (stats) via an id. Allows url too (handles it for free)"""
+def get_gearset_data(set_id: str) -> dict:
+    """
+    Gets the gearset data (stats) via an id. Allows url too (handles it for free)
+    set_id : str -> URL of the set from etro
+    """
     # Handles urls by checking for webpage name and splitting
     cleaned_set_id = set_id.split("/")[-1] if "etro.gg/gearset" in set_id else set_id # Cleans the URL
     client = coreapi.Client()

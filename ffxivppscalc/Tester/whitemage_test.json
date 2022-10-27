@@ -1,0 +1,91 @@
+{
+    "data": {
+        "fightInfo": {
+            "countdownValue": 0,
+            "fightDuration": 500,
+            "time_unit": 0.01,
+            "ShowGraph": false,
+            "RequirementOn": true,
+            "IgnoreMana": true
+        },
+        "PlayerList": [
+            {
+                "JobName": "WhiteMage",
+                "playerID": 1,
+                "stat": {
+                    "MainStat": 2945,
+                    "WD": 126,
+                    "Det": 1792,
+                    "Ten": 400,
+                    "SS": 839,
+                    "Crit": 2313,
+                    "DH": 904
+                },
+                "Auras": [],
+                "actionList": [
+                    {
+                        "actionName": "Glare"
+                    },
+                    {
+                        "actionName": "Dia"
+                    },
+                    {
+                        "actionName": "Glare"
+                    },
+                    {
+                        "actionName": "Glare"
+                    },
+                    {
+                        "actionName": "PresenceOfMind"
+                    },
+                    {
+                        "actionName": "Glare"
+                    },
+                    {
+                        "actionName": "Assize"
+                    },
+                    {
+                        "actionName": "Glare"
+                    },
+                    {
+                        "actionName": "Glare"
+                    },
+                    {
+                        "actionName": "Glare"
+                    },
+                    {
+                        "actionName": "Glare"
+                    },
+                    {
+                        "actionName": "Glare"
+                    },
+                    {
+                        "actionName": "Glare"
+                    },
+                    {
+                        "actionName": "Glare"
+                    },
+                    {
+                        "actionName": "Glare"
+                    },
+                    {
+                        "actionName": "Glare"
+                    },
+                    {
+                        "actionName": "Glare"
+                    },
+                    {
+                        "actionName": "Glare"
+                    },
+                    {
+                        "actionName": "Glare"
+                    },
+                    {
+                        "actionName": "Glare"
+                    }
+                ],
+                "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."
+            }
+        ]
+    }
+}

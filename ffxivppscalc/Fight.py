@@ -11,7 +11,12 @@ class NoMoreAction(Exception):# Exception called if a spell fails to cast
 
 # GCDReduction Effect
 
-def GCDReductionEffect(Player, Spell):
+def GCDReductionEffect(Player, Spell) -> None:
+    """
+    Computes the GCD reduction according to the SkillSpeed or the SpellSpeed of the player
+    Player : player -> Player object
+    Spell : Spell -> Spell object affected by the effect
+    """
     if Spell.GCD:
         Spell.CastTime *= Player.GCDReduction
         Spell.RecastTime *= Player.GCDReduction
@@ -28,9 +33,12 @@ def AverageCritMult(Player, k):
     return ((k) * (1 + Player.CritMult)  + (n-k))/n # Average crit multiplier over the run, this can be seen as a fix bonus on the whole fight
 
 class Fight:
+    """
+    
+    This class will be the environment in which the fight happens. It will hold a list of players, an enemy, etc.
+    It will be called upon for when we want to start the simulation
 
-    # This class will be the environment in which the fight happens. It will hold a list of players, an enemy, etc.
-    # It will be called upon for when we want to start the simulation
+    """
 
     def __init__(self, PlayerList, Enemy, ShowGraph):
         self.PlayerList = PlayerList
@@ -41,6 +49,11 @@ class Fight:
         self.FirstHit = False # False until the first damaging action is done
         self.RequirementOn = True # By default True
         self.FightStart = False # If Fight is started
+        self.IgnoreMana = True # If true we ignore mana in the simulation
+        self.timeValue = [] # Array holding all sampling time for the DPS and PPS
+        self.failedRequirementList = [] # List holding all failedRequirementEvent object for the fight.
+        self.waitingThreshold = 1 # number of seconds we are willing to wait for. By default 1
+        self.wipe = False # Will be set to True in case we are stopping the simulation.
 
 
 
@@ -138,7 +151,14 @@ class Fight:
 
 
 
-    def PrintResult(self, time, TimeStamp):
+    def PrintResult(self, time, TimeStamp) -> None:
+
+        """
+        This function prints out every relevant value onto the console.
+        self : Fight -> Fight we want the result of to be printed
+        time : float -> final timestamp of the simulation
+        TimeStamp : List[float] -> list of all timestamp where the DPS was saved in memory. Used to generate the graphs
+        """
 
         fig, axs = plt.subplots(1, 2, constrained_layout=True) # DPS and PPS graph
         fig2, axs2 = plt.subplots(2, 4, constrained_layout=True) # DPS Crit distribution
@@ -178,26 +198,10 @@ class Fight:
 
             # Plot part
 
-            job = ""
+            job = JobEnum.name_for_id(player.JobEnum)
 
-            if player.JobEnum == JobEnum.BlackMage : job = "Blackmage"
-            elif player.JobEnum == JobEnum.RedMage : job = "Redmage"
-            elif player.JobEnum == JobEnum.DarkKnight : job = "DarkKnight"
-            elif player.JobEnum == JobEnum.Warrior : job = "Warrior"
-            elif player.JobEnum == JobEnum.Paladin : job = "Paladin"
-            elif player.JobEnum == JobEnum.Gunbreaker : job = "Gunbreaker"
-            elif player.JobEnum == JobEnum.Machinist : job = "Machinist"
-            elif player.JobEnum == JobEnum.Samurai : job = "Samurai"
-            elif player.JobEnum == JobEnum.Ninja : job = "Ninja"
-            elif player.JobEnum == JobEnum.Scholar : job = "Scholar"
-            elif player.JobEnum == JobEnum.WhiteMage : job = "Whitemage"
-            elif player.JobEnum == JobEnum.Astrologian : job = "Astrologian"
-            elif player.JobEnum == JobEnum.Summoner : job = "Summoner"
-            elif player.JobEnum == JobEnum.Dragoon : job = "Dragoon"
-            elif player.JobEnum == JobEnum.Reaper : job = "Reaper"
-            elif player.JobEnum == JobEnum.Monk : job = "Monk"
-            elif player.JobEnum == JobEnum.Sage : job = "Sage"
-            elif player.JobEnum == JobEnum.Bard : 
+            
+            if player.JobEnum == JobEnum.Bard : 
                 job = "Bard"
                 print("==================")
                 print("Expected Vs Used values for bard")
@@ -241,166 +245,186 @@ class Fight:
 
 
 
-    def SimulateFight(self, TimeUnit, TimeLimit, FightCD):
-            # This function will Simulate the fight given the enemy and player list of this Fight
-            # It will increment in TimeUnit up to a maximum of TimeLimit (there can be other reasons the Fight ends)
-            # It will check weither a player can cast its NextSpell, and if it can it will call the relevant functions
-            # However, no direct computation is done in this function, it simply orchestrates the whole thing
-            self.TimeStamp = 0   # Keep track of the time
-            start = False
+    def SimulateFight(self, TimeUnit, TimeLimit, vocal) -> None:
 
-            timeValue = []  # Used for graph
+        """
+        This function will Simulate the fight given the enemy and player list of this Fight
+        It will increment in TimeUnit up to a maximum of TimeLimit (there can be other reasons the Fight ends)
+        It will check weither a player can cast its NextSpell, and if it can it will call the relevant functions
+        However, no direct computation is done in this function, it simply orchestrates the whole thing
 
-            self.ComputeFunctions() # Compute all damage functions for the players
+        TimeUnit : float -> unit at which the simulator will advance through time in the simulation
+        TimeLimit : float -> time limit at which the simulator will stop
+        vocal : bool -> True if we want to print out the results
+        """
+
+        self.TimeStamp = 0   # Keep track of the time
+        start = False
+
+        self.timeValue = []  # Used for graph
+
+        self.ComputeFunctions() # Compute all damage functions for the players
 
 
-            # The first thing we will do is compute the TEAM composition DPS bonus
-            # each class will give 1%
-            # Tank, Healer, Caster, Ranged, Melee
-            hasMelee = False
-            hasCaster = False
-            hasRanged = False
-            hasTank = False
-            hasHealer = False
+        # The first thing we will do is compute the TEAM composition DPS bonus
+        # each class will give 1%
+        # Tank, Healer, Caster, Ranged, Melee
+        hasMelee = False
+        hasCaster = False
+        hasRanged = False
+        hasTank = False
+        hasHealer = False
+        for player in self.PlayerList:
+            if player.RoleEnum == RoleEnum.Melee : hasMelee = True
+            elif player.RoleEnum == RoleEnum.PhysicalRanged : hasCaster = True
+            elif player.RoleEnum == RoleEnum.Caster : hasRanged = True
+            elif player.RoleEnum == RoleEnum.Healer : hasTank = True
+            elif player.RoleEnum == RoleEnum.Tank : hasHealer = True
+
+        if len(self.PlayerList) == 1 : self.TeamCompositionBonus = 1 # If only one player, there is not bonus
+        else:
+            if hasMelee: self.TeamCompositionBonus += 0.01
+            if hasCaster: self.TeamCompositionBonus += 0.01
+            if hasRanged: self.TeamCompositionBonus += 0.01
+            if hasTank: self.TeamCompositionBonus += 0.01
+            if hasHealer: self.TeamCompositionBonus += 0.01
+
+        # Will first compute each player's GCD reduction value based on their Spell Speed or Skill Speed Value
+
+        for Player in self.PlayerList:
+            Player.GCDReduction = (1000 - (130 * (Player.Stat["SS"]-400) / 1900))/1000
+            Player.EffectList.append(GCDReductionEffect)
+
+        while(self.TimeStamp <= TimeLimit):
+
             for player in self.PlayerList:
-                if player.RoleEnum == RoleEnum.Melee : hasMelee = True
-                elif player.RoleEnum == RoleEnum.PhysicalRanged : hasCaster = True
-                elif player.RoleEnum == RoleEnum.Caster : hasRanged = True
-                elif player.RoleEnum == RoleEnum.Healer : hasTank = True
-                elif player.RoleEnum == RoleEnum.Tank : hasHealer = True
+                # if player.ActionSet[player.NextSpell] == None : player.TrueLock = True # Locking the player if None
+                # Will first Check if the NextSpell is a GCD or not
+                if(not player.TrueLock):# If it is we do nothing
+                    if (player.ActionSet[player.NextSpell].GCD):
+                        # Is a GCD
+                        # Have to check if the player can cast the spell
+                        # So check if Animation Lock, if Casting or if GCDLock
+                        if(not (player.oGCDLock or player.GCDLock or player.Casting)):
 
-            if len(self.PlayerList) == 1 : self.TeamCompositionBonus = 1 # If only one player, there is not bonus
-            else:
-                if hasMelee: self.TeamCompositionBonus += 0.01
-                if hasCaster: self.TeamCompositionBonus += 0.01
-                if hasRanged: self.TeamCompositionBonus += 0.01
-                if hasTank: self.TeamCompositionBonus += 0.01
-                if hasHealer: self.TeamCompositionBonus += 0.01
-
-            # Will first compute each player's GCD reduction value based on their Spell Speed or Skill Speed Value
-
-            for Player in self.PlayerList:
-                Player.GCDReduction = (1000 - (130 * (Player.Stat["SS"]-400) / 1900))/1000
-                Player.EffectList.append(GCDReductionEffect)
-
-            while(self.TimeStamp <= TimeLimit):
-
-                for player in self.PlayerList:
-                   # if player.ActionSet[player.NextSpell] == None : player.TrueLock = True # Locking the player if None
-                    # Will first Check if the NextSpell is a GCD or not
-                    if(not player.TrueLock):# If it is we do nothing
-                        if (player.ActionSet[player.NextSpell].GCD):
-                            # Is a GCD
-                            # Have to check if the player can cast the spell
-                            # So check if Animation Lock, if Casting or if GCDLock
-                            if(not (player.oGCDLock or player.GCDLock or player.Casting)):
-
-                                player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)# Cast the spell
-                                # Locking the player
-                                # print(Player.CastingSpell.CastTime)
-                                # input(Player.CastingSpell.RecastTime)
-                                player.Casting = True
-                                player.CastingLockTimer = player.CastingSpell.CastTime
-                                player.GCDLock = True
-                                player.GCDLockTimer = player.CastingSpell.RecastTime
-                                player.CastingTarget = self.Enemy
-                            # Else we do nothing since doing the nextspell is not currently possible
+                            player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)# Cast the spell
+                            # Locking the player
+                            # print(Player.CastingSpell.CastTime)
+                            # input(Player.CastingSpell.RecastTime)
+                            player.Casting = True
+                            player.CastingLockTimer = player.CastingSpell.CastTime
+                            player.GCDLock = True
+                            player.GCDLockTimer = player.CastingSpell.RecastTime
+                            player.CastingTarget = self.Enemy
+                        # Else we do nothing since doing the nextspell is not currently possible
 
 
-                        else:
-                            # Is an oGCD
-                            # print("Spell with id : " + str(player.ActionSet[player.NextSpell].id))
-                            # input("is being casted at : " + str(self.TimeStamp))
-                            
-                            if(not (player.oGCDLock or player.Casting)):
-                                # Then we can cast the oGCD
-                                player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)
-                                player.CastingSpell.CastFinal(player, self.Enemy)
-                                player.oGCDLock = True
-                                player.oGCDLockTimer = player.CastingSpell.CastTime
-                                # print("oGCD with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(self.TimeStamp) )
+                    else:
+                        # Is an oGCD
+                        # print("Spell with id : " + str(player.ActionSet[player.NextSpell].id))
+                        # input("is being casted at : " + str(self.TimeStamp))
+                        
+                        if(not (player.oGCDLock or player.Casting)):
+                            # Then we can cast the oGCD
+                            player.CastingSpell = player.ActionSet[player.NextSpell].Cast(player, self.Enemy)
+                            player.Casting = True
+                            player.CastingLockTimer = player.CastingSpell.CastTime
+                            player.CastingTarget = self.Enemy
+                            #player.CastingSpell.CastFinal(player, self.Enemy)
+                            player.oGCDLock = True
+                            player.oGCDLockTimer = player.CastingSpell.CastTime
+                            # print("oGCD with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(self.TimeStamp) )
 
-
-                    
-
-
-                # Will then let the enemy add the Dots damage
-
-                for player in self.PlayerList:
-                    # print(player)
-                    # print("============")
-                    for DOT in player.DOTList:
-                        # print(DOT)
-                        DOT.CheckDOT(player,self.Enemy, TimeUnit)
-                for player in self.PlayerList:
-                    # print(player.EffectCDList)
-                    for CDCheck in player.EffectCDList:
-                        CDCheck(player, self.Enemy)
-                    for remove in player.EffectToRemove:
-                        player.EffectCDList.remove(remove) # Removing relevant spell
-                    for add in player.EffectToAdd:
-                        player.EffectCDList.append(add)
-                    player.EffectToRemove = []
-                    player.EffectToAdd = []
-                
-
-
-                # We will now update any timer each player and the enemy has
-
-                for player in self.PlayerList:
-                    player.updateTimer(TimeUnit)
-                    player.updateCD(TimeUnit)
-                    player.updateLock() # Update the lock on the player to see if it's state changes
-
-
-                CheckFinalLock = True
-                for player in self.PlayerList:
-                    CheckFinalLock = player.TrueLock and CheckFinalLock # If all player's TrueLock is true, then CheckFinalLock will be True
-
-                if CheckFinalLock: 
-                    print("The Fight finishes at: " + str(self.TimeStamp))
-                    break
 
                 
-                if start:
-                    # If the fight has started, will sample DPS values at certain time
-                    if (self.TimeStamp%1 == 0.3 or self.TimeStamp%1 == 0.0 or self.TimeStamp%1 == 0.6 or self.TimeStamp%1 == 0.9) and self.TimeStamp >= 3:# last thing is to ensure no division by zero and also to have no spike at the begining
-                        # Only sample each 1/2 second
-                        timeValue+= [self.TimeStamp]
-                        for Player in self.PlayerList:
-                            Player.DPSGraph += [round(Player.TotalDamage/self.TimeStamp, 2)] # Rounding the value to 2 digits
-                            Player.PotencyGraph += [round(Player.TotalPotency/self.TimeStamp, 2)]
+            if self.wipe: # If we detect that wipe has been set to true we stop the simulation
+                break
 
+            # Will then let the enemy add the Dots damage
 
-                # update self.TimeStamp
-                self.TimeStamp += TimeUnit
-                self.TimeStamp = round(self.TimeStamp, 2)
-
-                if self.FightStart and not start:
-                    self.TimeStamp = 0
-                    start = True
-
-
-            # Post fight computations
-
-            remove = []
-
-            for i in range(len(self.PlayerList)):  
-                player = self.PlayerList[i] # Removing all instance of clones/summons from the fight
-                if player.JobEnum == JobEnum.Pet:
-                    remove += [i]
-
-            k = 0
-            for i in remove:
-                self.PlayerList.pop(i-k)
-                k+=1
-                
-
-            self.PrintResult(self.TimeStamp, timeValue)
+            for player in self.PlayerList:
+                # print(player)
+                # print("============")
+                for DOT in player.DOTList:
+                    # print(DOT)
+                    DOT.CheckDOT(player,self.Enemy, TimeUnit)
+            for player in self.PlayerList:
+                # print(player.EffectCDList)
+                for CDCheck in player.EffectCDList:
+                    CDCheck(player, self.Enemy)
+                for remove in player.EffectToRemove:
+                    player.EffectCDList.remove(remove) # Removing relevant spell
+                for add in player.EffectToAdd:
+                    player.EffectCDList.append(add)
+                player.EffectToRemove = []
+                player.EffectToAdd = []
             
 
 
-    def ComputeFunctions(self):
+            # We will now update any timer each player and the enemy has
+
+            for player in self.PlayerList:
+                player.updateTimer(TimeUnit)
+                player.updateCD(TimeUnit)
+                player.updateLock() # Update the lock on the player to see if it's state changes
+
+
+            CheckFinalLock = True
+            for player in self.PlayerList:
+                CheckFinalLock = player.TrueLock and CheckFinalLock # If all player's TrueLock is true, then CheckFinalLock will be True
+
+            if CheckFinalLock: 
+                if vocal : print("The Fight finishes at: " + str(self.TimeStamp))
+                break
+
+            
+            if start:
+                # If the fight has started, will sample DPS values at certain time
+                if (self.TimeStamp%1 == 0.3 or self.TimeStamp%1 == 0.0 or self.TimeStamp%1 == 0.6 or self.TimeStamp%1 == 0.9) and self.TimeStamp >= 3:# last thing is to ensure no division by zero and also to have no spike at the begining
+                    # Only sample each 1/2 second
+                    self.timeValue+= [self.TimeStamp]
+                    for Player in self.PlayerList:
+                        Player.DPSGraph += [round(Player.TotalDamage/self.TimeStamp, 2)] # Rounding the value to 2 digits
+                        Player.PotencyGraph += [round(Player.TotalPotency/self.TimeStamp, 2)]
+
+
+            # update self.TimeStamp
+            self.TimeStamp += TimeUnit
+            self.TimeStamp = round(self.TimeStamp, 2)
+
+            if self.FightStart and not start:
+                self.TimeStamp = 0
+                start = True
+
+
+        # Post fight computations
+
+        remove = []
+
+        for i in range(len(self.PlayerList)):  
+            player = self.PlayerList[i] # Removing all instance of clones/summons from the fight
+            if player.JobEnum == JobEnum.Pet:
+                remove += [i]
+
+        k = 0
+        for i in remove:
+            self.PlayerList.pop(i-k)
+            k+=1
+            
+       
+        if vocal : 
+            for t in self.failedRequirementList: 
+                if t.fatal : print(t.requirementName)
+        if vocal : self.PrintResult(self.TimeStamp, self.timeValue)
+            
+
+
+    def ComputeFunctions(self) -> None:
+        """
+        This function computes all relevant values needed to compute damage from potency using the stats of each player
+        self : Fight -> Fight for which we want to compute the values (for all its players)
+        """
+
         for Player in self.PlayerList:
             levelMod = 1900
             baseMain = 390  
@@ -420,7 +444,16 @@ class Fight:
 
 def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
 
-    # Still remains to change the f_MAIN_DAMAGE function for pets
+    """
+    This function computes the damage from a given potency.
+    Player : player -> player object doing the damage
+    Potency : int -> potency value
+    Enemy : Enemy -> Enemy object taking the damage
+    SpellBonus : float -> Multiplying value to the final damage coming from the action itself
+    type : int -> type of the action. 0 is Direct Damage, 1 is magical DOT, 2 is physical DOT and 3 is autos
+    spellObj : Spell -> Object of the spell being casted
+
+    """
 
     # The type input signifies what type of damage we are dealing with, since the computation will chance according to what
     # type of damage it is

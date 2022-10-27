@@ -1,0 +1,128 @@
+{
+    "data": {
+        "fightInfo": {
+            "countdownValue": 0,
+            "fightDuration": 500,
+            "time_unit": 0.01,
+            "ShowGraph": false,
+            "RequirementOn": true,
+            "IgnoreMana": true
+        },
+        "PlayerList": [
+            {
+                "JobName": "Machinist",
+                "playerID": 1,
+                "stat": {
+                    "MainStat": 2937,
+                    "WD": 126,
+                    "Det": 1598,
+                    "Ten": 400,
+                    "SS": 400,
+                    "Crit": 2389,
+                    "DH": 1592
+                },
+                "Auras": [],
+                "actionList": [
+                    {
+                        "actionName": "Reassemble"
+                    },
+                    {
+                        "actionName": "WaitAbility",
+                        "waitTime": 5
+                    },
+                    {
+                        "actionName": "AirAnchor"
+                    },
+                    {
+                        "actionName": "GaussRound"
+                    },
+                    {
+                        "actionName": "Ricochet"
+                    },
+                    {
+                        "actionName": "Drill"
+                    },
+                    {
+                        "actionName": "BarrelStabilizer"
+                    },
+                    {
+                        "actionName": "SplitShot"
+                    },
+                    {
+                        "actionName": "SlughShot"
+                    },
+                    {
+                        "actionName": "GaussRound"
+                    },
+                    {
+                        "actionName": "Ricochet"
+                    },
+                    {
+                        "actionName": "CleanShot"
+                    },
+                    {
+                        "actionName": "Reassemble"
+                    },
+                    {
+                        "actionName": "WaitAbility",
+                        "waitTime": 2.2
+                    },
+                    {
+                        "actionName": "Wildfire"
+                    },
+                    {
+                        "actionName": "ChainSaw"
+                    },
+                    {
+                        "actionName": "Automaton"
+                    },
+                    {
+                        "actionName": "WaitAbility",
+                        "waitTime": 2
+                    },
+                    {
+                        "actionName": "Hypercharge"
+                    },
+                    {
+                        "actionName": "HeatBlast"
+                    },
+                    {
+                        "actionName": "Ricochet"
+                    },
+                    {
+                        "actionName": "HeatBlast"
+                    },
+                    {
+                        "actionName": "GaussRound"
+                    },
+                    {
+                        "actionName": "HeatBlast"
+                    },
+                    {
+                        "actionName": "Ricochet"
+                    },
+                    {
+                        "actionName": "HeatBlast"
+                    },
+                    {
+                        "actionName": "GaussRound"
+                    },
+                    {
+                        "actionName": "HeatBlast"
+                    },
+                    {
+                        "actionName": "Ricochet"
+                    },
+                    {
+                        "actionName": "Drill"
+                    },
+                    {
+                        "actionName": "WaitAbility",
+                        "waitTime": 60
+                    }
+                ],
+                "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."
+            }
+        ]
+    }
+}

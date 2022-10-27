@@ -1,0 +1,116 @@
+{
+    "data": {
+        "fightInfo": {
+            "countdownValue": 0,
+            "fightDuration": 500,
+            "time_unit": 0.01,
+            "ShowGraph": false,
+            "RequirementOn": false,
+            "IgnoreMana": true
+        },
+        "PlayerList": [
+            {
+                "JobName": "Paladin",
+                "playerID": 1,
+                "stat": {
+                    "MainStat": 2891,
+                    "WD": 126,
+                    "Det": 1883,
+                    "Ten": 631,
+                    "SS": 650,
+                    "Crit": 2352,
+                    "DH": 868
+                },
+                "Auras": [],
+                "actionList": [
+                    {
+                        "actionName": "HolySpirit"
+                    },
+                    {
+                        "actionName": "FastBlade"
+                    },
+                    {
+                        "actionName": "FightOrFlight"
+                    },
+                    {
+                        "actionName": "RiotBlade"
+                    },
+                    {
+                        "actionName": "GoringBlade"
+                    },
+                    {
+                        "actionName": "FastBlade"
+                    },
+                    {
+                        "actionName": "RiotBlade"
+                    },
+                    {
+                        "actionName": "CircleOfScorn"
+                    },
+                    {
+                        "actionName": "Expiacion"
+                    },
+                    {
+                        "actionName": "RoyalAuthority"
+                    },
+                    {
+                        "actionName": "Intervene"
+                    },
+                    {
+                        "actionName": "Requiescat"
+                    },
+                    {
+                        "actionName": "Atonement"
+                    },
+                    {
+                        "actionName": "Intervene"
+                    },
+                    {
+                        "actionName": "Atonement"
+                    },
+                    {
+                        "actionName": "Atonement"
+                    },
+                    {
+                        "actionName": "FastBlade"
+                    },
+                    {
+                        "actionName": "RiotBlade"
+                    },
+                    {
+                        "actionName": "GoringBlade"
+                    },
+                    {
+                        "actionName": "HolySpirit"
+                    },
+                    {
+                        "actionName": "HolySpirit"
+                    },
+                    {
+                        "actionName": "HolySpirit"
+                    },
+                    {
+                        "actionName": "HolySpirit"
+                    },
+                    {
+                        "actionName": "Confiteor"
+                    },
+                    {
+                        "actionName": "BladeOfFaith"
+                    },
+                    {
+                        "actionName": "BladeOfTruth"
+                    },
+                    {
+                        "actionName": "BladeOfValor"
+                    },
+                    {
+                        "actionName": "WaitAbility",
+                        "waitTime": 50
+                    }
+                ],
+                "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."
+            }
+        ]
+    }
+}

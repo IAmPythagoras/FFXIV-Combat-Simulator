@@ -48,6 +48,7 @@ class Redmage(Caster):
         self.Scorch = False
         self.Resolution = False
 
+
         #ActionEnum
         self.JobAction = RedMageActions
 

@@ -1,0 +1,608 @@
+{
+    "data": {
+        "fightInfo": {
+            "fightDuration": 32.87,
+            "maxfightDuration": 500,
+            "fightname": "ayo",
+            "TeamCompositionBonus": 1.02,
+            "failedRequirementEventList": [
+                {
+                    "timeStamp": 0,
+                    "playerID": 2,
+                    "requirementName": "RefulgentArrowRequirement",
+                    "additionalInfo": "",
+                    "fatal": false
+                },
+                {
+                    "timeStamp": 2.76,
+                    "playerID": 1,
+                    "requirementName": "PolyglotRequirement",
+                    "additionalInfo": "",
+                    "fatal": false
+                },
+                {
+                    "timeStamp": 5.27,
+                    "playerID": 1,
+                    "requirementName": "PolyglotRequirement",
+                    "additionalInfo": "player had to wait for or would have to wait for 27.489999999999608 seconds.",
+                    "fatal": false
+                },
+                {
+                    "timeStamp": 6.78,
+                    "playerID": 2,
+                    "requirementName": "RefulgentArrowRequirement",
+                    "additionalInfo": "",
+                    "fatal": false
+                },
+                {
+                    "timeStamp": 7.78,
+                    "playerID": 1,
+                    "requirementName": "PolyglotRequirement",
+                    "additionalInfo": "player had to wait for or would have to wait for 24.979999999999215 seconds.",
+                    "fatal": false
+                },
+                {
+                    "timeStamp": 9.29,
+                    "playerID": 2,
+                    "requirementName": "RefulgentArrowRequirement",
+                    "additionalInfo": "",
+                    "fatal": false
+                },
+                {
+                    "timeStamp": 10.29,
+                    "playerID": 1,
+                    "requirementName": "PolyglotRequirement",
+                    "additionalInfo": "player had to wait for or would have to wait for 22.469999999998823 seconds.",
+                    "fatal": false
+                },
+                {
+                    "timeStamp": 12.8,
+                    "playerID": 1,
+                    "requirementName": "PolyglotRequirement",
+                    "additionalInfo": "player had to wait for or would have to wait for 19.95999999999843 seconds.",
+                    "fatal": false
+                },
+                {
+                    "timeStamp": 27.86,
+                    "playerID": 1,
+                    "requirementName": "ManaRequirement",
+                    "additionalInfo": "",
+                    "fatal": false
+                },
+                {
+                    "timeStamp": 30.37,
+                    "playerID": 1,
+                    "requirementName": "ManaRequirement",
+                    "additionalInfo": "",
+                    "fatal": false
+                }
+            ],
+            "Success": true
+        },
+        "PlayerList": [
+            {
+                "JobName": "BlackMage",
+                "ExpectedDPS": 136.75,
+                "PotencyPerSecond": 192.51,
+                "TotalDamage": 4495,
+                "TotalPotency": 6328.0,
+                "numberOfGCD": 13,
+                "ProcInfo": {},
+                "GraphInfoDPS": [
+                    {
+                        "value": 3.0,
+                        "name": 233.67
+                    },
+                    {
+                        "value": 4.0,
+                        "name": 175.25
+                    },
+                    {
+                        "value": 5.0,
+                        "name": 140.2
+                    },
+                    {
+                        "value": 6.0,
+                        "name": 207.83
+                    },
+                    {
+                        "value": 7.0,
+                        "name": 178.14
+                    },
+                    {
+                        "value": 8.0,
+                        "name": 224.12
+                    },
+                    {
+                        "value": 9.0,
+                        "name": 199.22
+                    },
+                    {
+                        "value": 10.0,
+                        "name": 179.3
+                    },
+                    {
+                        "value": 11.0,
+                        "name": 212.64
+                    },
+                    {
+                        "value": 12.0,
+                        "name": 194.92
+                    },
+                    {
+                        "value": 13.0,
+                        "name": 221.92
+                    },
+                    {
+                        "value": 14.0,
+                        "name": 206.07
+                    },
+                    {
+                        "value": 15.0,
+                        "name": 192.33
+                    },
+                    {
+                        "value": 16.0,
+                        "name": 180.31
+                    },
+                    {
+                        "value": 17.0,
+                        "name": 169.71
+                    },
+                    {
+                        "value": 18.0,
+                        "name": 173.06
+                    },
+                    {
+                        "value": 19.0,
+                        "name": 163.95
+                    },
+                    {
+                        "value": 20.0,
+                        "name": 155.75
+                    },
+                    {
+                        "value": 21.0,
+                        "name": 159.29
+                    },
+                    {
+                        "value": 22.0,
+                        "name": 152.05
+                    },
+                    {
+                        "value": 23.0,
+                        "name": 155.43
+                    },
+                    {
+                        "value": 24.0,
+                        "name": 148.96
+                    },
+                    {
+                        "value": 25.0,
+                        "name": 143.0
+                    },
+                    {
+                        "value": 26.0,
+                        "name": 146.35
+                    },
+                    {
+                        "value": 27.0,
+                        "name": 140.93
+                    },
+                    {
+                        "value": 28.0,
+                        "name": 144.11
+                    },
+                    {
+                        "value": 29.0,
+                        "name": 139.14
+                    },
+                    {
+                        "value": 30.0,
+                        "name": 134.5
+                    },
+                    {
+                        "value": 31.0,
+                        "name": 137.58
+                    },
+                    {
+                        "value": 32.0,
+                        "name": 133.28
+                    }
+                ],
+                "GraphInfoPPS": [
+                    {
+                        "value": 3.0,
+                        "name": 340.0
+                    },
+                    {
+                        "value": 4.0,
+                        "name": 255.0
+                    },
+                    {
+                        "value": 5.0,
+                        "name": 204.0
+                    },
+                    {
+                        "value": 6.0,
+                        "name": 296.67
+                    },
+                    {
+                        "value": 7.0,
+                        "name": 254.29
+                    },
+                    {
+                        "value": 8.0,
+                        "name": 317.5
+                    },
+                    {
+                        "value": 9.0,
+                        "name": 282.22
+                    },
+                    {
+                        "value": 10.0,
+                        "name": 254.0
+                    },
+                    {
+                        "value": 11.0,
+                        "name": 300.0
+                    },
+                    {
+                        "value": 12.0,
+                        "name": 275.0
+                    },
+                    {
+                        "value": 13.0,
+                        "name": 312.31
+                    },
+                    {
+                        "value": 14.0,
+                        "name": 290.0
+                    },
+                    {
+                        "value": 15.0,
+                        "name": 270.67
+                    },
+                    {
+                        "value": 16.0,
+                        "name": 253.75
+                    },
+                    {
+                        "value": 17.0,
+                        "name": 238.82
+                    },
+                    {
+                        "value": 18.0,
+                        "name": 243.56
+                    },
+                    {
+                        "value": 19.0,
+                        "name": 230.74
+                    },
+                    {
+                        "value": 20.0,
+                        "name": 219.2
+                    },
+                    {
+                        "value": 21.0,
+                        "name": 224.19
+                    },
+                    {
+                        "value": 22.0,
+                        "name": 214.0
+                    },
+                    {
+                        "value": 23.0,
+                        "name": 218.78
+                    },
+                    {
+                        "value": 24.0,
+                        "name": 209.67
+                    },
+                    {
+                        "value": 25.0,
+                        "name": 201.28
+                    },
+                    {
+                        "value": 26.0,
+                        "name": 206.0
+                    },
+                    {
+                        "value": 27.0,
+                        "name": 198.37
+                    },
+                    {
+                        "value": 28.0,
+                        "name": 202.86
+                    },
+                    {
+                        "value": 29.0,
+                        "name": 195.86
+                    },
+                    {
+                        "value": 30.0,
+                        "name": 189.33
+                    },
+                    {
+                        "value": 31.0,
+                        "name": 193.68
+                    },
+                    {
+                        "value": 32.0,
+                        "name": 187.62
+                    }
+                ]
+            },
+            {
+                "JobName": "Bard",
+                "ExpectedDPS": 40.79,
+                "PotencyPerSecond": 74.23,
+                "TotalDamage": 1341,
+                "TotalPotency": 2440,
+                "numberOfGCD": 5,
+                "ProcInfo": {
+                    "RefulgentArrow": {
+                        "Expected": 0.35,
+                        "Used": 4
+                    },
+                    "WandererRepertoire": {
+                        "Expected": 0,
+                        "Used": 0
+                    },
+                    "SoulVoiceGauge": {
+                        "Expected": 0,
+                        "Used": 0
+                    },
+                    "BloodLetterReduction": {
+                        "Expected": 0,
+                        "Used": 0
+                    }
+                },
+                "GraphInfoDPS": [
+                    {
+                        "value": 3.0,
+                        "name": 109.67
+                    },
+                    {
+                        "value": 4.0,
+                        "name": 96.0
+                    },
+                    {
+                        "value": 5.0,
+                        "name": 76.8
+                    },
+                    {
+                        "value": 6.0,
+                        "name": 89.67
+                    },
+                    {
+                        "value": 7.0,
+                        "name": 84.71
+                    },
+                    {
+                        "value": 8.0,
+                        "name": 93.38
+                    },
+                    {
+                        "value": 9.0,
+                        "name": 83.0
+                    },
+                    {
+                        "value": 10.0,
+                        "name": 80.2
+                    },
+                    {
+                        "value": 11.0,
+                        "name": 86.91
+                    },
+                    {
+                        "value": 12.0,
+                        "name": 79.67
+                    },
+                    {
+                        "value": 13.0,
+                        "name": 77.77
+                    },
+                    {
+                        "value": 14.0,
+                        "name": 72.21
+                    },
+                    {
+                        "value": 15.0,
+                        "name": 67.4
+                    },
+                    {
+                        "value": 16.0,
+                        "name": 66.62
+                    },
+                    {
+                        "value": 17.0,
+                        "name": 62.71
+                    },
+                    {
+                        "value": 18.0,
+                        "name": 59.22
+                    },
+                    {
+                        "value": 19.0,
+                        "name": 59.0
+                    },
+                    {
+                        "value": 20.0,
+                        "name": 56.05
+                    },
+                    {
+                        "value": 21.0,
+                        "name": 53.38
+                    },
+                    {
+                        "value": 22.0,
+                        "name": 53.45
+                    },
+                    {
+                        "value": 23.0,
+                        "name": 51.13
+                    },
+                    {
+                        "value": 24.0,
+                        "name": 49.0
+                    },
+                    {
+                        "value": 25.0,
+                        "name": 49.24
+                    },
+                    {
+                        "value": 26.0,
+                        "name": 47.35
+                    },
+                    {
+                        "value": 27.0,
+                        "name": 45.59
+                    },
+                    {
+                        "value": 28.0,
+                        "name": 45.93
+                    },
+                    {
+                        "value": 29.0,
+                        "name": 44.34
+                    },
+                    {
+                        "value": 30.0,
+                        "name": 42.87
+                    },
+                    {
+                        "value": 31.0,
+                        "name": 43.26
+                    },
+                    {
+                        "value": 32.0,
+                        "name": 41.91
+                    }
+                ],
+                "GraphInfoPPS": [
+                    {
+                        "value": 3.0,
+                        "name": 200.0
+                    },
+                    {
+                        "value": 4.0,
+                        "name": 175.0
+                    },
+                    {
+                        "value": 5.0,
+                        "name": 140.0
+                    },
+                    {
+                        "value": 6.0,
+                        "name": 163.33
+                    },
+                    {
+                        "value": 7.0,
+                        "name": 154.29
+                    },
+                    {
+                        "value": 8.0,
+                        "name": 170.0
+                    },
+                    {
+                        "value": 9.0,
+                        "name": 151.11
+                    },
+                    {
+                        "value": 10.0,
+                        "name": 146.0
+                    },
+                    {
+                        "value": 11.0,
+                        "name": 158.18
+                    },
+                    {
+                        "value": 12.0,
+                        "name": 145.0
+                    },
+                    {
+                        "value": 13.0,
+                        "name": 141.54
+                    },
+                    {
+                        "value": 14.0,
+                        "name": 131.43
+                    },
+                    {
+                        "value": 15.0,
+                        "name": 122.67
+                    },
+                    {
+                        "value": 16.0,
+                        "name": 121.25
+                    },
+                    {
+                        "value": 17.0,
+                        "name": 114.12
+                    },
+                    {
+                        "value": 18.0,
+                        "name": 107.78
+                    },
+                    {
+                        "value": 19.0,
+                        "name": 107.37
+                    },
+                    {
+                        "value": 20.0,
+                        "name": 102.0
+                    },
+                    {
+                        "value": 21.0,
+                        "name": 97.14
+                    },
+                    {
+                        "value": 22.0,
+                        "name": 97.27
+                    },
+                    {
+                        "value": 23.0,
+                        "name": 93.04
+                    },
+                    {
+                        "value": 24.0,
+                        "name": 89.17
+                    },
+                    {
+                        "value": 25.0,
+                        "name": 89.6
+                    },
+                    {
+                        "value": 26.0,
+                        "name": 86.15
+                    },
+                    {
+                        "value": 27.0,
+                        "name": 82.96
+                    },
+                    {
+                        "value": 28.0,
+                        "name": 83.57
+                    },
+                    {
+                        "value": 29.0,
+                        "name": 80.69
+                    },
+                    {
+                        "value": 30.0,
+                        "name": 78.0
+                    },
+                    {
+                        "value": 31.0,
+                        "name": 78.71
+                    },
+                    {
+                        "value": 32.0,
+                        "name": 76.25
+                    }
+                ]
+            }
+        ]
+    }
+}

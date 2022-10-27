@@ -1,0 +1,98 @@
+{
+    "data": {
+        "fightInfo": {
+            "countdownValue": 0,
+            "fightDuration": 500,
+            "time_unit": 0.01,
+            "ShowGraph": false,
+            "RequirementOn": true,
+            "IgnoreMana": true
+        },
+        "PlayerList": [
+            {
+                "JobName": "Gunbreaker",
+                "playerID": 1,
+                "stat": {
+                    "MainStat": 2891,
+                    "WD": 126,
+                    "Det": 1883,
+                    "Ten": 631,
+                    "SS": 650,
+                    "Crit": 2352,
+                    "DH": 868
+                },
+                "Auras": [],
+                "actionList": [
+                    {
+                        "actionName": "LightningShot"
+                    },
+                    {
+                        "actionName": "KeenEdge"
+                    },
+                    {
+                        "actionName": "BrutalShell"
+                    },
+                    {
+                        "actionName": "NoMercy"
+                    },
+                    {
+                        "actionName": "Bloodfest"
+                    },
+                    {
+                        "actionName": "GnashingFang"
+                    },
+                    {
+                        "actionName": "JugularRip"
+                    },
+                    {
+                        "actionName": "SonicBreak"
+                    },
+                    {
+                        "actionName": "BlastingZone"
+                    },
+                    {
+                        "actionName": "BowShock"
+                    },
+                    {
+                        "actionName": "DoubleDown"
+                    },
+                    {
+                        "actionName": "RoughDivide"
+                    },
+                    {
+                        "actionName": "SavageClaw"
+                    },
+                    {
+                        "actionName": "AbdomenTear"
+                    },
+                    {
+                        "actionName": "RoughDivide"
+                    },
+                    {
+                        "actionName": "WickedTalon"
+                    },
+                    {
+                        "actionName": "EyeGouge"
+                    },
+                    {
+                        "actionName": "SolidBarrel"
+                    },
+                    {
+                        "actionName": "BurstStrike"
+                    },
+                    {
+                        "actionName": "Hypervelocity"
+                    },
+                    {
+                        "actionName": "KeenEdge"
+                    },
+                    {
+                        "actionName": "WaitAbility",
+                        "waitTime": 50
+                    }
+                ],
+                "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."
+            }
+        ]
+    }
+}

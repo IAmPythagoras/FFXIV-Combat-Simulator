@@ -131,33 +131,33 @@ def ExecuteMemoryCode(SaveFight_check):
     # Note that if you are simulating with more than 1 per job you will need to create a new list of actions.
 
     # Caster
-    BLMOpener = [Fire3, Fire4, Fire4,Fire4,Fire4, WaitAbility(10), Scathe]
-    SMNOpener = []
-    RDMOpener = []
+    BLMOpener = []
+    SMNOpener = [Ruin3, Summon, SearingLight, AstralImpulse, AstralImpulse, AstralImpulse, EnergyDrainSMN, Enkindle, AstralImpulse, Deathflare, Fester, AstralImpulse, Fester, AstralImpulse, Garuda, Swiftcast, Slipstream, Emerald, Emerald, Emerald, Emerald, Titan]
+    RDMOpener = [Verthunder, Verareo, Swiftcast,Acceleration, Verthunder, Verthunder, Embolden, Manafication, EnchantedRiposte, Fleche, EnchantedZwerchhau, Contre, EnchantedRedoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verfire, Verthunder, Verstone, Verareo, Jolt, Verthunder, Fleche]
     
     # Healer
-    SCHOpener = []
-    WHMOpener = []
-    ASTOpener = []
-    SGEOpener = []
+    SCHOpener = [Broil, Biolysis, Aetherflow, Broil, Swiftcast, Broil, ChainStratagem, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain]
+    WHMOpener = [Glare, Dia, Glare, Glare, PresenceOfMind, Glare, Assize, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare]
+    ASTOpener = [Malefic, Lightspeed, Combust, Malefic, Malefic, Divination, Malefic, MinorArcana, Astrodyne, Malefic, LordOfCrown, Malefic ]
+    SGEOpener = [Dosis, Eukrasia, EukrasianDosis, Dosis, Dosis, Phlegma, Phlegma, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis]
 
     # Physical Ranged 
-    BRDOpener = []
-    MCHOpener = []
-    DNCOpener = []
+    BRDOpener = [Stormbite, WandererMinuet, RagingStrike, Causticbite, EmpyrealArrow, BloodLetter, RefulgentArrow, RadiantFinale, BattleVoice, BurstShot, Barrage, RefulgentArrow, Sidewinder, BurstShot, RefulgentArrow, BurstShot, EmpyrealArrow, IronJaws, PitchPerfect3, WaitAbility(50)]
+    MCHOpener = [Reassemble, WaitAbility(5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, Reassemble, WaitAbility(2.2), Wildfire, ChainSaw, Automaton, WaitAbility(2),Hypercharge, HeatBlast, Ricochet, HeatBlast, GaussRound, HeatBlast, Ricochet, HeatBlast, GaussRound, HeatBlast, Ricochet, Drill, WaitAbility(60)]
+    DNCOpener = [StandardStep, Pirouette, Jete, WaitAbility(15), StandardFinish, TechnicalStep, Pirouette, Jete, Entrechat, Emboite, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Jete, Pirouette, StandardFinish]
 
     # Melee
-    SAMOpener = []
-    DRGOpener = [WaitAbility(4),Disembowel, DragonSight(BLMPlayer), WaitAbility(1), Disembowel]
-    MNKOpener = []
-    NINOpener = []
-    RPROpener = []
+    SAMOpener = [Meikyo, WaitAbility(9), Gekko, Kasha, Ikishoten, Yukikaze, Midare, Senei, KaeshiSetsugekka, Meikyo, Gekko, Shinten, Higanbana,Shinten, OgiNamikiri, Shoha, KaeshiNamikiri, Kasha, Shinten, Gekko, Gyoten, Hakaze, Yukikaze, Shinten, Midare, KaeshiSetsugekka ]
+    DRGOpener = [TrueThrust, Disembowel, LanceCharge, DragonSight(NINPlayer), ChaoticSpring, BattleLitany, WheelingThrust, Geirskogul, LifeSurge, FangAndClaw, HighJump, RaidenThrust, DragonFireDive, VorpalThrust, LifeSurge, MirageDive, HeavenThrust, SpineshafterDive, FangAndClaw, SpineshafterDive, WheelingThrust, RaidenThrust, WyrmwindThrust, Disembowel, ChaoticSpring, WheelingThrust, WaitAbility(50)]
+    MNKOpener = [FormShift, DragonKick, TwinSnakes, RiddleOfFire, Demolish, TheForbiddenChakra, Bootshine, Brotherhood, PerfectBalance, DragonKick, RiddleOfWind, Bootshine, DragonKick, ElixirField, Bootshine, PerfectBalance, TwinSnakes, DragonKick, Demolish, RisingPhoenix]
+    NINOpener = [Jin, Chi, Ten, Huton, Hide, Ten, Chi, Jin, WaitAbility(5), Suiton, Kassatsu, SpinningEdge, GustSlash, Mug, Bunshin, PhantomKamaitachi, TrickAttack, AeolianEdge, DreamWithinADream, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, TenChiJin, Ten2, Chi2, Jin2, Meisui, FleetingRaiju, Bhavacakra, FleetingRaiju, Bhavacakra, Ten, Chi, Raiton, FleetingRaiju ]
+    RPROpener = [Harpe, ShadowOfDeath, ArcaneCircle, SoulSlice, SoulSlice, PlentifulHarvest, Enshroud, VoidReaping, CrossReaping, LemureSlice, VoidReaping, CrossReaping, LemureSlice, Communio, Gluttony, Gibbet, Gallows, UnveiledGibbet, Gibbet]
 
     # Tank 
-    DRKOpener = []
-    WAROpener = []
-    PLDOpener = []
-    GNBOpener = []
+    DRKOpener = [BloodWeapon, WaitAbility(4), HardSlash, EdgeShadow, Delirium, SyphonStrike, Souleater, LivingShadow, SaltedEarth, HardSlash, Shadowbringer, EdgeShadow, Bloodspiller, CarveSpit, Plunge, Bloodspiller, Shadowbringer, EdgeShadow, Bloodspiller, SaltDarkness, EdgeShadow, SyphonStrike, Plunge, EdgeShadow]
+    WAROpener = [Tomahawk, Infuriate, HeavySwing, Maim, StormEye, InnerRelease, InnerChaos, Upheaval, Onslaught, PrimalRend, Infuriate, InnerChaos, Onslaught, FellCleave, Onslaught, FellCleave, FellCleave, HeavySwing, Maim, StormPath, FellCleave, Infuriate, InnerChaos]
+    PLDOpener = [HolySpirit, FastBlade, FightOrFlight, RiotBlade, GoringBlade, FastBlade, RiotBlade, CircleScorn, Expiacion, RoyalAuthority, Intervene, RequestACat, Atonement, Intervene, Atonement, Atonement, FastBlade, RiotBlade, GoringBlade, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti,BladeFaith, BladeTruth, BladeValor, WaitAbility(50) ]
+    GNBOpener = [LightningShot, KeenEdge, BrutalShell, NoMercy, Bloodfest, GnashingFang, JugularRip, SonicBreak, BlastingZone, BowShock, DoubleDown, RoughDivide, SavageClaw, AbdomenTear, RoughDivide, WickedTalon, EyeGouge, SolidBarrel, BurstStrike, Hypervelocity, KeenEdge, WaitAbility(50)]
 
 
     # ===============================================================================================
@@ -202,7 +202,7 @@ def ExecuteMemoryCode(SaveFight_check):
     # So if you want to simulate the BlackMage and a RedMage, you would do: 
     # PlayerList = [BLMPlayer, RDMPlayer]
 
-    PlayerList = [BLMPlayer, DRGPlayer]
+    PlayerList = [BRDPlayer]
  
     Event.PlayerList = PlayerList
 
@@ -212,8 +212,8 @@ def ExecuteMemoryCode(SaveFight_check):
 
     TimeLimit = 500 # Time limit for the simulation in seconds. It will stop once this time has been reached (in simulation time)
     time_unit = 0.01 # Time unit or frame of the simulation. Smallest step the simulator will take between each iterations. It is advised to not change this value
-    ShowGraph = True # Parameter to show (or not) the graph generated by the simulator.
-    RequirementOn = False # Parameter that will enable or disable the requirement check for all actions. If False the simulator
+    ShowGraph = False # Parameter to show (or not) the graph generated by the simulator.
+    RequirementOn = True # Parameter that will enable or disable the requirement check for all actions. If False the simulator
                          # will not check if an action can be done
 
     # ===============================================================================================
@@ -231,7 +231,7 @@ def ExecuteMemoryCode(SaveFight_check):
     else:
         Event.RequirementOn = RequirementOn
         Event.ShowGraph = ShowGraph
-        Event.SimulateFight(time_unit, TimeLimit, 0)
+        Event.SimulateFight(time_unit, TimeLimit, vocal=True)
         print("=========================================================")
         input("Press any key to go back to the main")
 

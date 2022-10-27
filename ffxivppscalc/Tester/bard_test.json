@@ -1,0 +1,92 @@
+{
+    "data": {
+        "fightInfo": {
+            "countdownValue": 0,
+            "fightDuration": 500,
+            "time_unit": 0.01,
+            "ShowGraph": false,
+            "RequirementOn": true,
+            "IgnoreMana": true
+        },
+        "PlayerList": [
+            {
+                "JobName": "Bard",
+                "playerID": 1,
+                "stat": {
+                    "MainStat": 2949,
+                    "WD": 126,
+                    "Det": 1721,
+                    "Ten": 400,
+                    "SS": 536,
+                    "Crit": 2387,
+                    "DH": 1340
+                },
+                "Auras": [],
+                "actionList": [
+                    {
+                        "actionName": "Stormbite"
+                    },
+                    {
+                        "actionName": "WandererMinuet"
+                    },
+                    {
+                        "actionName": "RagingStrike"
+                    },
+                    {
+                        "actionName": "Causticbite"
+                    },
+                    {
+                        "actionName": "EmpyrealArrow"
+                    },
+                    {
+                        "actionName": "BloodLetter"
+                    },
+                    {
+                        "actionName": "RefulgentArrow"
+                    },
+                    {
+                        "actionName": "RadiantFinale"
+                    },
+                    {
+                        "actionName": "BattleVoice"
+                    },
+                    {
+                        "actionName": "BurstShot"
+                    },
+                    {
+                        "actionName": "Barrage"
+                    },
+                    {
+                        "actionName": "RefulgentArrow"
+                    },
+                    {
+                        "actionName": "Sidewinder"
+                    },
+                    {
+                        "actionName": "BurstShot"
+                    },
+                    {
+                        "actionName": "RefulgentArrow"
+                    },
+                    {
+                        "actionName": "BurstShot"
+                    },
+                    {
+                        "actionName": "EmpyrealArrow"
+                    },
+                    {
+                        "actionName": "IronJaws"
+                    },
+                    {
+                        "actionName": "PitchPerfect"
+                    },
+                    {
+                        "actionName": "WaitAbility",
+                        "waitTime": 50
+                    }
+                ],
+                "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."
+            }
+        ]
+    }
+}

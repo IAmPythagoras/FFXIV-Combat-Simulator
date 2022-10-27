@@ -1,0 +1,146 @@
+{
+    "data": {
+        "fightInfo": {
+            "countdownValue": 0,
+            "fightDuration": 500,
+            "time_unit": 0.01,
+            "ShowGraph": false,
+            "RequirementOn": true,
+            "IgnoreMana": true
+        },
+        "PlayerList": [
+            {
+                "JobName": "Ninja",
+                "playerID": 1,
+                "stat": {
+                    "MainStat": 2921,
+                    "WD": 126,
+                    "Det": 1669,
+                    "Ten": 400,
+                    "SS": 400,
+                    "Crit": 2399,
+                    "DH": 1511
+                },
+                "Auras": [],
+                "actionList": [
+                    {
+                        "actionName": "Jin"
+                    },
+                    {
+                        "actionName": "Chi"
+                    },
+                    {
+                        "actionName": "Ten"
+                    },
+                    {
+                        "actionName": "Huton"
+                    },
+                    {
+                        "actionName": "Hide"
+                    },
+                    {
+                        "actionName": "Ten"
+                    },
+                    {
+                        "actionName": "Chi"
+                    },
+                    {
+                        "actionName": "Jin"
+                    },
+                    {
+                        "actionName": "WaitAbility",
+                        "waitTime": 5
+                    },
+                    {
+                        "actionName": "Suiton"
+                    },
+                    {
+                        "actionName": "Kassatsu"
+                    },
+                    {
+                        "actionName": "SpinningEdge"
+                    },
+                    {
+                        "actionName": "GustSlash"
+                    },
+                    {
+                        "actionName": "Mug"
+                    },
+                    {
+                        "actionName": "Bunshin"
+                    },
+                    {
+                        "actionName": "PhantomKamaitachi"
+                    },
+                    {
+                        "actionName": "TrickAttack"
+                    },
+                    {
+                        "actionName": "AeolianEdge"
+                    },
+                    {
+                        "actionName": "DreamWithinADream"
+                    },
+                    {
+                        "actionName": "Ten"
+                    },
+                    {
+                        "actionName": "Jin"
+                    },
+                    {
+                        "actionName": "HyoshoRanryu"
+                    },
+                    {
+                        "actionName": "Ten"
+                    },
+                    {
+                        "actionName": "Chi"
+                    },
+                    {
+                        "actionName": "Raiton"
+                    },
+                    {
+                        "actionName": "TenChiJin"
+                    },
+                    {
+                        "actionName": "Ten2"
+                    },
+                    {
+                        "actionName": "Chi2"
+                    },
+                    {
+                        "actionName": "Jin2"
+                    },
+                    {
+                        "actionName": "Meisui"
+                    },
+                    {
+                        "actionName": "FleetingRaiju"
+                    },
+                    {
+                        "actionName": "Bhavacakra"
+                    },
+                    {
+                        "actionName": "FleetingRaiju"
+                    },
+                    {
+                        "actionName": "Bhavacakra"
+                    },
+                    {
+                        "actionName": "Ten"
+                    },
+                    {
+                        "actionName": "Chi"
+                    },
+                    {
+                        "actionName": "Raiton"
+                    },
+                    {
+                        "actionName": "FleetingRaiju"
+                    }
+                ],
+                "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."
+            }
+        ]
+    }
+}

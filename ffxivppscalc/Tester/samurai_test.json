@@ -1,0 +1,114 @@
+{
+    "data": {
+        "fightInfo": {
+            "countdownValue": 0,
+            "fightDuration": 500,
+            "time_unit": 0.01,
+            "ShowGraph": false,
+            "RequirementOn": true,
+            "IgnoreMana": true
+        },
+        "PlayerList": [
+            {
+                "JobName": "Samurai",
+                "playerID": 1,
+                "stat": {
+                    "MainStat": 2937,
+                    "WD": 126,
+                    "Det": 1571,
+                    "Ten": 400,
+                    "SS": 508,
+                    "Crit": 2446,
+                    "DH": 1459
+                },
+                "Auras": [],
+                "actionList": [
+                    {
+                        "actionName": "Meikyo"
+                    },
+                    {
+                        "actionName": "WaitAbility",
+                        "waitTime": 9
+                    },
+                    {
+                        "actionName": "Gekko"
+                    },
+                    {
+                        "actionName": "Kasha"
+                    },
+                    {
+                        "actionName": "Ikishoten"
+                    },
+                    {
+                        "actionName": "Yukikaze"
+                    },
+                    {
+                        "actionName": "Midare"
+                    },
+                    {
+                        "actionName": "Senei"
+                    },
+                    {
+                        "actionName": "KaeshiSetsugekka"
+                    },
+                    {
+                        "actionName": "Meikyo"
+                    },
+                    {
+                        "actionName": "Gekko"
+                    },
+                    {
+                        "actionName": "Shinten"
+                    },
+                    {
+                        "actionName": "Higanbana"
+                    },
+                    {
+                        "actionName": "Shinten"
+                    },
+                    {
+                        "actionName": "OgiNamikiri"
+                    },
+                    {
+                        "actionName": "Shoha"
+                    },
+                    {
+                        "actionName": "KaeshiNamikiri"
+                    },
+                    {
+                        "actionName": "Kasha"
+                    },
+                    {
+                        "actionName": "Shinten"
+                    },
+                    {
+                        "actionName": "Gekko"
+                    },
+                    {
+                        "actionName": "Gyoten"
+                    },
+                    {
+                        "actionName": "Hakaze"
+                    },
+                    {
+                        "actionName": "Yukikaze"
+                    },
+                    {
+                        "actionName": "Shinten"
+                    },
+                    {
+                        "actionName": "Midare"
+                    },
+                    {
+                        "actionName": "KaeshiSetsugekka"
+                    },
+                    {
+                        "actionName" : "WaitAbility",
+                        "waitTime" : 50
+                    }
+                ],
+                "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."
+            }
+        ]
+    }
+}

@@ -204,7 +204,9 @@ def SaveFight(Event, countdown, fightDuration, saveName):
                     "fightDuration" : fightDuration,
                     "time_unit" : 0.01,
                     "ShowGraph" : Event.ShowGraph,
-                    "RequirementOn" : Event.RequirementOn
+                    "RequirementOn" : Event.RequirementOn,
+                    "IgnoreMana" : Event.IgnoreMana
+
                 },
                 "PlayerList" : PlayerListDict
     }}
@@ -213,49 +215,13 @@ def SaveFight(Event, countdown, fightDuration, saveName):
         json.dump(data,write_files, indent=4) #saving file
 
 
+def RestoreFightObject(data : dict):
+    """
+    This takes a FightDict dictionnary and converts it back into an Event object.
+    data : dict -> dictionnary with the fight's data
+    """
 
-def SimulateFightBackend(file_name):
-    #Will read the fight in memory and transform it into an Event we can simulate
-    #The memory will contain a file with a Job name and a list of actionID that we will transform into
-    #an event.
-
-    #the name of the save file will always be "save.json"
-
-    f = open(file_name) #Opening save
-
-    data = json.load(f) #Loading json file
-
-    PlayerList = data["data"]["PlayerList"] #Player List
-    fightInfo = data["data"]["fightInfo"] #fight information
-
-    if len(PlayerList) > 1 : #If there is more than 1 player we will ask if we wish to simulate all or only 1
-        print(
-            "This save file has more than one player character : " + "\n" + 
-            "1- Simulate only one player character" + "\n" + 
-            "2- Simulate all the player characters at the same time" + "\n" + 
-            "====================================================="
-            )
-
-        user_input = AskInput(2)
-
-        if user_input == "1" : #want to only simulate one player
-            print(
-                "=====================================================" + "\n" + 
-                "List of players in this save file : "
-            )
-            n_player = len(PlayerList)
-            for i in range(n_player):
-                print(str(i + 1) + " -> " + PlayerList[i]["JobName"])
-            
-            print("Select which player character you wish to simulate.")
-
-            user_input = AskInput(n_player)
-
-            PlayerList = [PlayerList[int(user_input) - 1]] #Only taking what we are interested in
-
-    #We will now go through all actionID and transform into an abilityList
-
-    print("Restoring save file into Event object...")
+    
     PlayerActionList = {} #Dictionnary containing all player with their action
 
     closed_position = False
@@ -263,7 +229,7 @@ def SimulateFightBackend(file_name):
     dance_partner = None
     dancer = None
 
-    for player in PlayerList: #Going through all player in PlayerList and creating JobObject
+    for player in data["data"]["PlayerList"]: #Going through all player in PlayerList and creating JobObject
         #Will check what job the player is so we can create a player object of the relevant job
 
         job_name = player["JobName"]
@@ -274,7 +240,7 @@ def SimulateFightBackend(file_name):
         elif job_name == "WhiteMage" : job_object = Player([], [], None, {}, JobEnum.WhiteMage)
         elif job_name == "Astrologian" : job_object = Player([], [], None, {}, JobEnum.Astrologian)
         #Tank
-        elif job_name == "Warrior" : job_object = Player([], [SurgingTempestEffect], None, {}, JobEnum.Astrologian)
+        elif job_name == "Warrior" : job_object = Player([], [SurgingTempestEffect], None, {}, JobEnum.Warrior)
         elif job_name == "DarkKnight" : job_object = Player([], [], None, {}, JobEnum.DarkKnight)
         elif job_name == "Paladin" : job_object = Player([], [], None, {}, JobEnum.Paladin)
         elif job_name == "Gunbreaker" : job_object = Player([], [], None, {}, JobEnum.Gunbreaker)
@@ -391,16 +357,62 @@ def SimulateFightBackend(file_name):
         PlayerActionList[playerID]["job_object"].CurrentFight = Event
 
 
+    return Event
+
+def SimulateFightBackend(file_name : str):
+    """
+    This function takes a file_name and opens the given file name assuming it is located in the saved folder.
+    file_name : str -> name of the saved file.
+    """
+
+    f = open(file_name) #Opening save
+
+    data = json.load(f) #Loading json file
+    PlayerList = data["data"]["PlayerList"]
+
+    if len(PlayerList) > 1 : #If there is more than 1 player we will ask if we wish to simulate all or only 1
+        print(
+            "This save file has more than one player character : " + "\n" + 
+            "1- Simulate only one player character" + "\n" + 
+            "2- Simulate all the player characters at the same time" + "\n" + 
+            "====================================================="
+            )
+
+        user_input = AskInput(2)
+
+        if user_input == "1" : #want to only simulate one player
+            print(
+                "=====================================================" + "\n" + 
+                "List of players in this save file : "
+            )
+            n_player = len(PlayerList)
+            for i in range(n_player):
+                print(str(i + 1) + " -> " + PlayerList[i]["JobName"])
+            
+            print("Select which player character you wish to simulate.")
+
+            user_input = AskInput(n_player)
+
+            PlayerList = [PlayerList[int(user_input) - 1]] #Only taking what we are interested in
+
+    #We will now go through all actionID and transform into an abilityList
+
+    print("Restoring save file into Event object...")
+
+    Event = RestoreFightObject(data)
+
+    fightInfo = data["data"]["fightInfo"] #fight information
     Event.ShowGraph = fightInfo["ShowGraph"] #Default
     Event.RequirementOn = fightInfo["RequirementOn"]
-    Event.SimulateFight(0.01,fightInfo["fightDuration"], 0) #Simulates the fight
+    Event.IgnoreMana = fightInfo["IgnoreMana"]
+    
+    Event.SimulateFight(0.01,fightInfo["fightDuration"], vocal=True) #Simulates the fight
 
 
     print(
         "========================================="
         )
     input("Press any key to return to the Main menu : ")
-
 
 def MergeFightBackEnd(child_fight, parent_fight, parent_name):
     #This will merge the two fights.
@@ -424,6 +436,18 @@ def GenerateLayoutBackend(player_list,namefile):
     # directly. It requires as input a player_list which is a list of PlayerEnum to know which player
     # the user wants in the fight
 
+    data = GenerateLayoutDict(player_list)
+    
+    save_dir: Path = Path.cwd() / 'saved'
+    with open(save_dir / f'{namefile}.json', "w") as write_files:
+        json.dump(data,write_files, indent=4) # saving file
+
+    
+def GenerateLayoutDict(player_list):
+    """
+    This function generates a dictionnary that the simulator can use to simulate the fight
+    """
+
     data = {
         "data":
         { 
@@ -431,7 +455,8 @@ def GenerateLayoutBackend(player_list,namefile):
                 "fightDuration" : 500,
                 "time_unit" : 0.01,
                 "ShowGraph" : True,
-                "RequirementOn" : True
+                "RequirementOn" : True,
+                "IgnoreMana" : False
             },
             "PlayerList" : []
             }
@@ -468,9 +493,4 @@ def GenerateLayoutBackend(player_list,namefile):
 
         id+=1
 
-    
-    save_dir: Path = Path.cwd() / 'saved'
-    with open(save_dir / f'{namefile}.json', "w") as write_files:
-        json.dump(data,write_files, indent=4) # saving file
-
-    
+    return data

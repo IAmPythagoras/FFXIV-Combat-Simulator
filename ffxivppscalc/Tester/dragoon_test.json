@@ -1,0 +1,114 @@
+{
+    "data": {
+        "fightInfo": {
+            "countdownValue": 0,
+            "fightDuration": 500,
+            "time_unit": 0.01,
+            "ShowGraph": false,
+            "RequirementOn": true,
+            "IgnoreMana": true
+        },
+        "PlayerList": [
+            {
+                "JobName": "Dragoon",
+                "playerID": 1,
+                "stat": {
+                    "MainStat": 2949,
+                    "WD": 126,
+                    "Det": 1545,
+                    "Ten": 400,
+                    "SS": 400,
+                    "Crit": 2462,
+                    "DH": 1577
+                },
+                "Auras": [],
+                "actionList": [
+                    {
+                        "actionName": "TrueThrust"
+                    },
+                    {
+                        "actionName": "Disembowel"
+                    },
+                    {
+                        "actionName": "LanceCharge"
+                    },
+                    {
+                        "actionName": "DragonSight",
+                        "targetID": 1
+                    },
+                    {
+                        "actionName": "ChaoticSpring"
+                    },
+                    {
+                        "actionName": "BattleLitany"
+                    },
+                    {
+                        "actionName": "WheelingThrust"
+                    },
+                    {
+                        "actionName": "Geirskogul"
+                    },
+                    {
+                        "actionName": "LifeSurge"
+                    },
+                    {
+                        "actionName": "FangAndClaw"
+                    },
+                    {
+                        "actionName": "HighJump"
+                    },
+                    {
+                        "actionName": "RaidenThrust"
+                    },
+                    {
+                        "actionName": "DragonFireDive"
+                    },
+                    {
+                        "actionName": "VorpalThrust"
+                    },
+                    {
+                        "actionName": "LifeSurge"
+                    },
+                    {
+                        "actionName": "MirageDive"
+                    },
+                    {
+                        "actionName": "HeavenThrust"
+                    },
+                    {
+                        "actionName": "SpineshafterDive"
+                    },
+                    {
+                        "actionName": "FangAndClaw"
+                    },
+                    {
+                        "actionName": "SpineshafterDive"
+                    },
+                    {
+                        "actionName": "WheelingThrust"
+                    },
+                    {
+                        "actionName": "RaidenThrust"
+                    },
+                    {
+                        "actionName": "WyrmwindThrust"
+                    },
+                    {
+                        "actionName": "Disembowel"
+                    },
+                    {
+                        "actionName": "ChaoticSpring"
+                    },
+                    {
+                        "actionName": "WheelingThrust"
+                    },
+                    {
+                        "actionName": "WaitAbility",
+                        "waitTime": 50
+                    }
+                ],
+                "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."
+            }
+        ]
+    }
+}
