@@ -5,7 +5,6 @@
 
 import copy
 from Jobs.Base_Spell import DOTSpell, Queen_AA, empty, WaitAbility
-from Jobs.Ranged.Machinist.Machinist_Player import Queen
 from Jobs.Ranged.Ranged_Spell import MachinistSpell
 from Jobs.Player import Pet
 

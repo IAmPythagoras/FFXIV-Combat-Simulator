@@ -3,7 +3,6 @@
 #########################################
 from Jobs.Base_Spell import DOTSpell, Potion, buff, empty
 import copy
-from Jobs.Tank.DarkKnight.DarkKnight_Player import Esteem
 from Jobs.Player import Pet
 from Jobs.Tank.Tank_Spell import BigMit, DRKSkill
 Lock = 0
