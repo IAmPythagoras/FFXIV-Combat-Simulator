@@ -48,12 +48,6 @@ class Redmage(Caster):
         self.Scorch = False
         self.Resolution = False
 
-        # Procs
-        self.ExpectedVerfireProc = 0
-        self.UsedVerfireProc = 0
-        self.ExpectedVerstoneProc = 0
-        self.UsedVerstoneProc = 0
-
 
         #ActionEnum
         self.JobAction = RedMageActions

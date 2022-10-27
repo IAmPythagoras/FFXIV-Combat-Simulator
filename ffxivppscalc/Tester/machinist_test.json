@@ -10,99 +10,103 @@
         },
         "PlayerList": [
             {
-                "JobName": "RedMage",
+                "JobName": "Machinist",
                 "playerID": 1,
                 "stat": {
-                    "MainStat": 2947,
+                    "MainStat": 2937,
                     "WD": 126,
-                    "Det": 1548,
+                    "Det": 1598,
                     "Ten": 400,
-                    "SS": 495,
-                    "Crit": 2397,
-                    "DH": 1544
+                    "SS": 400,
+                    "Crit": 2389,
+                    "DH": 1592
                 },
                 "Auras": [],
                 "actionList": [
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "Reassemble"
                     },
                     {
-                        "actionName": "Verareo"
+                        "actionName": "WaitAbility",
+                        "waitTime": 5
                     },
                     {
-                        "actionName": "Swiftcast"
+                        "actionName": "AirAnchor"
                     },
                     {
-                        "actionName": "Acceleration"
+                        "actionName": "GaussRound"
                     },
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "Ricochet"
                     },
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "Drill"
                     },
                     {
-                        "actionName": "Embolden"
+                        "actionName": "BarrelStabilizer"
                     },
                     {
-                        "actionName": "Manafication"
+                        "actionName": "SplitShot"
                     },
                     {
-                        "actionName": "EnchantedRiposte"
+                        "actionName": "SlughShot"
                     },
                     {
-                        "actionName": "Fleche"
+                        "actionName": "GaussRound"
                     },
                     {
-                        "actionName": "EnchantedZwerchhau"
+                        "actionName": "Ricochet"
                     },
                     {
-                        "actionName": "Contre"
+                        "actionName": "CleanShot"
                     },
                     {
-                        "actionName": "EnchantedRedoublement"
+                        "actionName": "Reassemble"
                     },
                     {
-                        "actionName": "Corps"
+                        "actionName": "Wildfire"
                     },
                     {
-                        "actionName": "Engagement"
+                        "actionName": "ChainSaw"
                     },
                     {
-                        "actionName": "Verholy"
+                        "actionName": "Automaton"
                     },
                     {
-                        "actionName": "Corps"
+                        "actionName": "Hypercharge"
                     },
                     {
-                        "actionName": "Engagement"
+                        "actionName": "HeatBlast"
                     },
                     {
-                        "actionName": "Scorch"
+                        "actionName": "Ricochet"
                     },
                     {
-                        "actionName": "Resolution"
+                        "actionName": "HeatBlast"
                     },
                     {
-                        "actionName": "Verfire"
+                        "actionName": "GaussRound"
                     },
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "HeatBlast"
                     },
                     {
-                        "actionName": "Verstone"
+                        "actionName": "Ricochet"
                     },
                     {
-                        "actionName": "Verareo"
+                        "actionName": "HeatBlast"
                     },
                     {
-                        "actionName": "Jolt"
+                        "actionName": "GaussRound"
                     },
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "HeatBlast"
                     },
                     {
-                        "actionName": "Fleche"
+                        "actionName": "Ricochet"
+                    },
+                    {
+                        "actionName": "Drill"
                     }
                 ],
                 "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."

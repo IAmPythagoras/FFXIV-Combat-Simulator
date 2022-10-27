@@ -1,5 +1,7 @@
 # This will contain all action with their IDs in the game. It will map from ids -> name or name -> ids
-from enum import IntEnum # Importing enums
+from enum import IntEnum
+
+from Jobs.PlayerEnum import JobEnum, RoleEnum
 
 class ActionEnum(IntEnum):
     # Parent enum class for all other enums. Will have
@@ -284,7 +286,7 @@ class TankActions(ActionEnum):
 
 # DarkKnight
 
-class DarkKnightActions(IntEnum):
+class DarkKnightActions(ActionEnum):
     HardSlah = 3617
     SyphoneStrike = 3623
     Unmend = 3624
@@ -690,7 +692,7 @@ class DancerActions(ActionEnum):
 
 
 # These are the functions we will call since they check for both cls and job_class
-def name_for_id(id, cls, job_cls):
+def name_for_id(id : int, cls : RoleEnum, job_cls : JobEnum):
     name = cls.name_for_id(id)
     if name == "Unknown": 
         return job_cls.name_for_id(id)
@@ -703,6 +705,3 @@ def id_for_name(name, cls, job_cls):
     return id
 
     
-
-print(id_for_name("FireI", CasterActions, BlackMageActions))
-

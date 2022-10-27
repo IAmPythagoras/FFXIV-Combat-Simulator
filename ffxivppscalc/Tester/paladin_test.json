@@ -10,99 +10,103 @@
         },
         "PlayerList": [
             {
-                "JobName": "RedMage",
+                "JobName": "Paladin",
                 "playerID": 1,
                 "stat": {
-                    "MainStat": 2947,
+                    "MainStat": 2891,
                     "WD": 126,
-                    "Det": 1548,
-                    "Ten": 400,
-                    "SS": 495,
-                    "Crit": 2397,
-                    "DH": 1544
+                    "Det": 1883,
+                    "Ten": 631,
+                    "SS": 650,
+                    "Crit": 2352,
+                    "DH": 868
                 },
                 "Auras": [],
                 "actionList": [
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "HolySpirit"
                     },
                     {
-                        "actionName": "Verareo"
+                        "actionName": "FastBlade"
                     },
                     {
-                        "actionName": "Swiftcast"
+                        "actionName": "FightOrFlight"
                     },
                     {
-                        "actionName": "Acceleration"
+                        "actionName": "RiotBlade"
                     },
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "GoringBlade"
                     },
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "FastBlade"
                     },
                     {
-                        "actionName": "Embolden"
+                        "actionName": "GoringBlade"
                     },
                     {
-                        "actionName": "Manafication"
+                        "actionName": "CircleOfScorn"
                     },
                     {
-                        "actionName": "EnchantedRiposte"
+                        "actionName": "Expiacion"
                     },
                     {
-                        "actionName": "Fleche"
+                        "actionName": "RoyalAuthority"
                     },
                     {
-                        "actionName": "EnchantedZwerchhau"
+                        "actionName": "Intervene"
                     },
                     {
-                        "actionName": "Contre"
+                        "actionName": "Requiescat"
                     },
                     {
-                        "actionName": "EnchantedRedoublement"
+                        "actionName": "Atonement"
                     },
                     {
-                        "actionName": "Corps"
+                        "actionName": "Intervene"
                     },
                     {
-                        "actionName": "Engagement"
+                        "actionName": "Atonement"
                     },
                     {
-                        "actionName": "Verholy"
+                        "actionName": "Atonement"
                     },
                     {
-                        "actionName": "Corps"
+                        "actionName": "FastBlade"
                     },
                     {
-                        "actionName": "Engagement"
+                        "actionName": "RiotBlade"
                     },
                     {
-                        "actionName": "Scorch"
+                        "actionName": "GoringBlade"
                     },
                     {
-                        "actionName": "Resolution"
+                        "actionName": "HolySpirit"
                     },
                     {
-                        "actionName": "Verfire"
+                        "actionName": "HolySpirit"
                     },
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "HolySpirit"
                     },
                     {
-                        "actionName": "Verstone"
+                        "actionName": "HolySpirit"
                     },
                     {
-                        "actionName": "Verareo"
+                        "actionName": "Confiteor"
                     },
                     {
-                        "actionName": "Jolt"
+                        "actionName": "BladeOfFaith"
                     },
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "BladeOfTruth"
                     },
                     {
-                        "actionName": "Fleche"
+                        "actionName": "BladeOfValor"
+                    },
+                    {
+                        "actionName": "WaitAbility",
+                        "waitTime": 50
                     }
                 ],
                 "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."

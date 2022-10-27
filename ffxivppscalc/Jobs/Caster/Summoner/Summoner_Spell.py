@@ -150,8 +150,8 @@ def ApplySummon(Player, Enemy):
 
 def ApplyEnkindle(Player, Enemy):
     Player.Enkindle = False
-    Player.Summon.TrueLock = False
-    Player.Summon.ActionSet.insert(Player.Summon.NextSpell + 1, EnkindleSummon)
+    Player.Pet.TrueLock = False
+    Player.Pet.ActionSet.insert(Player.Pet.NextSpell + 1, EnkindleSummon)
 
 def ApplyDeathflare(Player, Enemy):
     Player.Deathflare = False

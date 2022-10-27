@@ -10,99 +10,91 @@
         },
         "PlayerList": [
             {
-                "JobName": "RedMage",
+                "JobName": "DarkKnight",
                 "playerID": 1,
                 "stat": {
-                    "MainStat": 2947,
+                    "MainStat": 2910,
                     "WD": 126,
-                    "Det": 1548,
-                    "Ten": 400,
-                    "SS": 495,
-                    "Crit": 2397,
-                    "DH": 1544
+                    "Det": 1844,
+                    "Ten": 751,
+                    "SS": 400,
+                    "Crit": 2377,
+                    "DH": 1012
                 },
                 "Auras": [],
                 "actionList": [
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "BloodWeapon"
                     },
                     {
-                        "actionName": "Verareo"
+                        "actionName": "WaitAbility",
+                        "waitTime": 4
                     },
                     {
-                        "actionName": "Swiftcast"
+                        "actionName": "HardSlah"
                     },
                     {
-                        "actionName": "Acceleration"
+                        "actionName": "EdgeOfShadow"
                     },
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "Delirium"
                     },
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "SyphoneStrike"
                     },
                     {
-                        "actionName": "Embolden"
+                        "actionName": "Souleater"
                     },
                     {
-                        "actionName": "Manafication"
+                        "actionName": "LivingShadow"
                     },
                     {
-                        "actionName": "EnchantedRiposte"
+                        "actionName": "SaltedEarth"
                     },
                     {
-                        "actionName": "Fleche"
+                        "actionName": "HardSlah"
                     },
                     {
-                        "actionName": "EnchantedZwerchhau"
+                        "actionName": "Shadowbringer"
                     },
                     {
-                        "actionName": "Contre"
+                        "actionName": "EdgeOfShadow"
                     },
                     {
-                        "actionName": "EnchantedRedoublement"
+                        "actionName": "Bloodspiller"
                     },
                     {
-                        "actionName": "Corps"
+                        "actionName": "CarveSpit"
                     },
                     {
-                        "actionName": "Engagement"
+                        "actionName": "Plunge"
                     },
                     {
-                        "actionName": "Verholy"
+                        "actionName": "Bloodspiller"
                     },
                     {
-                        "actionName": "Corps"
+                        "actionName": "Shadowbringer"
                     },
                     {
-                        "actionName": "Engagement"
+                        "actionName": "EdgeOfShadow"
                     },
                     {
-                        "actionName": "Scorch"
+                        "actionName": "Bloodspiller"
                     },
                     {
-                        "actionName": "Resolution"
+                        "actionName": "SaltAndDarkness"
                     },
                     {
-                        "actionName": "Verfire"
+                        "actionName": "EdgeOfShadow"
                     },
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "SyphoneStrike"
                     },
                     {
-                        "actionName": "Verstone"
+                        "actionName": "Plunge"
                     },
                     {
-                        "actionName": "Verareo"
-                    },
-                    {
-                        "actionName": "Jolt"
-                    },
-                    {
-                        "actionName": "Verthunder"
-                    },
-                    {
-                        "actionName": "Fleche"
+                        "actionName": "EdgeOfShadow"
                     }
                 ],
                 "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."

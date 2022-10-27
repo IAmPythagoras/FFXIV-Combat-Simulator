@@ -10,99 +10,91 @@
         },
         "PlayerList": [
             {
-                "JobName": "RedMage",
+                "JobName": "Dancer",
                 "playerID": 1,
                 "stat": {
-                    "MainStat": 2947,
+                    "MainStat": 2949,
                     "WD": 126,
-                    "Det": 1548,
+                    "Det": 1721,
                     "Ten": 400,
-                    "SS": 495,
-                    "Crit": 2397,
-                    "DH": 1544
+                    "SS": 536,
+                    "Crit": 2387,
+                    "DH": 1340
                 },
                 "Auras": [],
                 "actionList": [
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "StandardStep"
                     },
                     {
-                        "actionName": "Verareo"
+                        "actionName": "Pirouette"
                     },
                     {
-                        "actionName": "Swiftcast"
+                        "actionName": "Jete"
                     },
                     {
-                        "actionName": "Acceleration"
+                        "actionName": "WaitAbility",
+                        "waitTime": 15
                     },
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "StandardFinish"
                     },
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "TechnicalStep"
                     },
                     {
-                        "actionName": "Embolden"
+                        "actionName": "Pirouette"
                     },
                     {
-                        "actionName": "Manafication"
+                        "actionName": "Jete"
                     },
                     {
-                        "actionName": "EnchantedRiposte"
+                        "actionName": "Entrechat"
                     },
                     {
-                        "actionName": "Fleche"
+                        "actionName": "Emboite"
                     },
                     {
-                        "actionName": "EnchantedZwerchhau"
+                        "actionName": "TechnicalFinish"
                     },
                     {
-                        "actionName": "Contre"
+                        "actionName": "Devilment"
                     },
                     {
-                        "actionName": "EnchantedRedoublement"
+                        "actionName": "StarfallDance"
                     },
                     {
-                        "actionName": "Corps"
+                        "actionName": "Flourish"
                     },
                     {
-                        "actionName": "Engagement"
+                        "actionName": "FanDanceIII"
                     },
                     {
-                        "actionName": "Verholy"
+                        "actionName": "Tillana"
                     },
                     {
-                        "actionName": "Corps"
+                        "actionName": "FanDanceIV"
                     },
                     {
-                        "actionName": "Engagement"
+                        "actionName": "SaberDance"
                     },
                     {
-                        "actionName": "Scorch"
+                        "actionName": "FanDanceI"
                     },
                     {
-                        "actionName": "Resolution"
+                        "actionName": "FanDanceIII"
                     },
                     {
-                        "actionName": "Verfire"
+                        "actionName": "StandardStep"
                     },
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "Jete"
                     },
                     {
-                        "actionName": "Verstone"
+                        "actionName": "Pirouette"
                     },
                     {
-                        "actionName": "Verareo"
-                    },
-                    {
-                        "actionName": "Jolt"
-                    },
-                    {
-                        "actionName": "Verthunder"
-                    },
-                    {
-                        "actionName": "Fleche"
+                        "actionName": "StandardFinish"
                     }
                 ],
                 "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."

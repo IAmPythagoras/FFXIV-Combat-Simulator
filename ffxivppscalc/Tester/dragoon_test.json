@@ -10,99 +10,97 @@
         },
         "PlayerList": [
             {
-                "JobName": "RedMage",
+                "JobName": "Dragoon",
                 "playerID": 1,
                 "stat": {
-                    "MainStat": 2947,
+                    "MainStat": 2949,
                     "WD": 126,
-                    "Det": 1548,
+                    "Det": 1545,
                     "Ten": 400,
-                    "SS": 495,
-                    "Crit": 2397,
-                    "DH": 1544
+                    "SS": 400,
+                    "Crit": 2462,
+                    "DH": 1577
                 },
                 "Auras": [],
                 "actionList": [
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "TrueThrust"
                     },
                     {
-                        "actionName": "Verareo"
+                        "actionName": "Disembowel"
                     },
                     {
-                        "actionName": "Swiftcast"
+                        "actionName": "LanceCharge"
                     },
                     {
-                        "actionName": "Acceleration"
+                        "actionName": "DragonSight",
+                        "targetID": 1
                     },
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "ChaoticSpring"
                     },
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "BattleLitany"
                     },
                     {
-                        "actionName": "Embolden"
+                        "actionName": "WheelingThrust"
                     },
                     {
-                        "actionName": "Manafication"
+                        "actionName": "Geirskogul"
                     },
                     {
-                        "actionName": "EnchantedRiposte"
+                        "actionName": "LifeSurge"
                     },
                     {
-                        "actionName": "Fleche"
+                        "actionName": "FangAndClaw"
                     },
                     {
-                        "actionName": "EnchantedZwerchhau"
+                        "actionName": "HighJump"
                     },
                     {
-                        "actionName": "Contre"
+                        "actionName": "RaidenThrust"
                     },
                     {
-                        "actionName": "EnchantedRedoublement"
+                        "actionName": "DragonFireDive"
                     },
                     {
-                        "actionName": "Corps"
+                        "actionName": "VorpalThrust"
                     },
                     {
-                        "actionName": "Engagement"
+                        "actionName": "LifeSurge"
                     },
                     {
-                        "actionName": "Verholy"
+                        "actionName": "MirageDive"
                     },
                     {
-                        "actionName": "Corps"
+                        "actionName": "HeavenThrust"
                     },
                     {
-                        "actionName": "Engagement"
+                        "actionName": "SpineshafterDive"
                     },
                     {
-                        "actionName": "Scorch"
+                        "actionName": "FangAndClaw"
                     },
                     {
-                        "actionName": "Resolution"
+                        "actionName": "SpineshafterDive"
                     },
                     {
-                        "actionName": "Verfire"
+                        "actionName": "WheelingThrust"
                     },
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "RaidenThrust"
                     },
                     {
-                        "actionName": "Verstone"
+                        "actionName": "WyrmwindThrust"
                     },
                     {
-                        "actionName": "Verareo"
+                        "actionName": "Disembowel"
                     },
                     {
-                        "actionName": "Jolt"
+                        "actionName": "ChaoticSpring"
                     },
                     {
-                        "actionName": "Verthunder"
-                    },
-                    {
-                        "actionName": "Fleche"
+                        "actionName": "WheelingThrust"
                     }
                 ],
                 "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."

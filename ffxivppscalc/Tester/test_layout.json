@@ -2,7 +2,7 @@
     "data": {
         "FightList": [
             {
-                "TestName": "BlackMage Test",
+                "TestName": "blackmage",
                 "Fight": "blackmage_test.json",
                 "ExpectedResult": {
                     "EndTime": "86.48",
@@ -12,32 +12,182 @@
                 }
             },
             {
-                "TestName": "RedMage Test",
-                "Fight": "blackmage_test.json",
+                "TestName": "redmage",
+                "Fight": "redmage_test.json",
                 "ExpectedResult": {
-                    "EndTime": "86.48",
+                    "EndTime": "30",
                     "1": {
-                        "ExpectedTotalPotency": "9229"
+                        "ExpectedTotalPotency": "9960"
                     }
                 }
             },
             {
-                "TestName": "BlackMage Test",
-                "Fight": "blackmage_test.json",
+                "TestName": "summoner",
+                "Fight": "summoner_test.json",
                 "ExpectedResult": {
-                    "EndTime": "86.48",
+                    "EndTime": "30",
                     "1": {
-                        "ExpectedTotalPotency": "9229"
+                        "ExpectedTotalPotency": "9300"
                     }
                 }
             },
             {
-                "TestName": "BlackMage Test",
-                "Fight": "blackmage_test.json",
+                "TestName": "scholar",
+                "Fight": "scholar_test.json",
                 "ExpectedResult": {
-                    "EndTime": "86.48",
+                    "EndTime": "30",
                     "1": {
-                        "ExpectedTotalPotency": "9229"
+                        "ExpectedTotalPotency": "6020"
+                    }
+                }
+            },
+            {
+                "TestName": "sage",
+                "Fight": "sage_test.json",
+                "ExpectedResult": {
+                    "EndTime": "30",
+                    "1": {
+                        "ExpectedTotalPotency": "7660"
+                    }
+                }
+            },
+            {
+                "TestName": "astrologian",
+                "Fight": "astrologian_test.json",
+                "ExpectedResult": {
+                    "EndTime": "30",
+                    "1": {
+                        "ExpectedTotalPotency": "5550"
+                    }
+                }
+            },
+            {
+                "TestName": "whitemage",
+                "Fight": "whitemage_test.json",
+                "ExpectedResult": {
+                    "EndTime": "30",
+                    "1": {
+                        "ExpectedTotalPotency": "6330"
+                    }
+                }
+            },
+            {
+                "TestName": "darkknight",
+                "Fight": "darkknight_test.json",
+                "ExpectedResult": {
+                    "EndTime": "30",
+                    "1": {
+                        "ExpectedTotalPotency": "10010"
+                    }
+                }
+            },
+            {
+                "TestName": "gunbreaker",
+                "Fight": "gunbreaker_test.json",
+                "ExpectedResult": {
+                    "EndTime": "30",
+                    "1": {
+                        "ExpectedTotalPotency": "7200"
+                    }
+                }
+            },
+            {
+                "TestName": "paladin",
+                "Fight": "paladin_test.json",
+                "ExpectedResult": {
+                    "EndTime": "30",
+                    "1": {
+                        "ExpectedTotalPotency": "8495"
+                    }
+                }
+            },
+            {
+                "TestName": "warrior",
+                "Fight": "warrior_test.json",
+                "ExpectedResult": {
+                    "EndTime": "30",
+                    "1": {
+                        "ExpectedTotalPotency": "7350"
+                    }
+                }
+            },
+            {
+                "TestName": "samurai",
+                "Fight": "samurai_test.json",
+                "ExpectedResult": {
+                    "EndTime": "30",
+                    "1": {
+                        "ExpectedTotalPotency": "9480"
+                    }
+                }
+            },
+            {
+                "TestName": "reaper",
+                "Fight": "reaper_test.json",
+                "ExpectedResult": {
+                    "EndTime": "30",
+                    "1": {
+                        "ExpectedTotalPotency": "7860"
+                    }
+                }
+            },
+            {
+                "TestName": "ninja",
+                "Fight": "ninja_test.json",
+                "ExpectedResult": {
+                    "EndTime": "30",
+                    "1": {
+                        "ExpectedTotalPotency": "10600"
+                    }
+                }
+            },
+            {
+                "TestName": "dragoon",
+                "Fight": "dragoon_test.json",
+                "ExpectedResult": {
+                    "EndTime": "30",
+                    "1": {
+                        "ExpectedTotalPotency": "6190"
+                    }
+                }
+            },
+            {
+                "TestName": "monk",
+                "Fight": "monk_test.json",
+                "ExpectedResult": {
+                    "EndTime": "30",
+                    "1": {
+                        "ExpectedTotalPotency": "5510"
+                    }
+                }
+            },
+            {
+                "TestName": "machinist",
+                "Fight": "machinist_test.json",
+                "ExpectedResult": {
+                    "EndTime": "30",
+                    "1": {
+                        "ExpectedTotalPotency": "6560"
+                    }
+                }
+            },
+            {
+                "TestName": "dancer",
+                "Fight": "dancer_test.json",
+                "ExpectedResult": {
+                    "EndTime": "30",
+                    "1": {
+                        "ExpectedTotalPotency": "4790"
+                    }
+                }
+            },
+            {
+                "TestName": "bard",
+                "Fight": "bard_test.json",
+                "ExpectedResult": {
+                    "EndTime": "30",
+                    "1": {
+                        "ExpectedTotalPotency": "3995"
                     }
                 }
             }

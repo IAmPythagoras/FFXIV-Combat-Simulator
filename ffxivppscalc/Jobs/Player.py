@@ -18,7 +18,7 @@ class Player:
         """
         self.ActionSet = ActionSet # Known Action List
         self.EffectList = EffectList # Normally Empty, can has some effects initially
-        self.ClassEnum = 0 # RoleEnum Value is set later on
+        self.RoleEnum = 0 # RoleEnum Value is set later on
         self.JobEnum = Job # JobEnum
         self.EffectCDList = [] # List of Effect for which we have to check if the have ended
         self.DOTList = [] # List of DOTs
@@ -508,6 +508,12 @@ class Player:
         self.Verholy = False
         self.Scorch = False
         self.Resolution = False
+
+        # Procs
+        self.ExpectedVerfireProc = 0
+        self.UsedVerfireProc = 0
+        self.ExpectedVerstoneProc = 0
+        self.UsedVerstoneProc = 0
 
         #ActionEnum
         self.JobAction = RedMageActions

@@ -142,14 +142,15 @@ def SummonQueen(Player, Enemy):
     #input("SummoningQueen at : " + str(Player.CurrentFight.TimeStamp))
     Player.AutomatonQueenCD = 6
 
-    QueenTimer = (Player.BatteryGauge - 50)/5 + 5 #Queen timer by linearly extrapolating 10 sec base + extra battery Gauge
+    QueenTimer = (Player.BatteryGauge - 50)/5 + 10 #Queen timer by linearly extrapolating 10 sec base + extra battery Gauge
     #Queen Timer = (ExtraBatteryGauge) / BatteryPerSec - StartUpTimer + BaseTimer = Battery/5 - 5 + 10
     Player.BatteryGauge = 0
-    if Player.Queen == None : Pet(Player)#Creating new queen
-    Player.Queen.Timer = 15 #Setting Queen Timer
+    if Player.Queen == None : Player.Queen = Pet(Player)#Creating new queen
+    else: Player.Queen.ResetStat() # Reseting stat on the summon
+    Player.QueenTimer = QueenTimer - 3 # Setting Queen Timer, gives last 3 seconds to perform finisher moves
     #Will have to depend on battery Gauge
     #Timer is set at 10 so we can have 2 GCD to do finisher move if reaches before
-    Player.Queen.EffectCDList.append(QueenCheck)
+    Player.EffectCDList.append(QueenCheck)
     Player.Queen.ActionSet.append(Queen_AA)
     Player.Queen.ActionSet.append(WaitAbility(QueenTimer - 3)) #Gives 3 last sec to do finishing move
     Player.Queen.TrueLock = False #Delocking the queen if she was in a locked state, would happen is resummoned
@@ -253,15 +254,14 @@ def RicochetStackCheck(Player, Enemy):
             Player.RicochetCD = 30
         Player.RicochetStack +=1
 
-def QueenCheck(Player, Enemy):#This will be called on the queen
-    if Player.Timer <= 0: 
-        #input("Begining at : " + str(Player.CurrentFight.TimeStamp))
-        Player.Master.Overdrive = False
-        Player.TrueLock = False #Delocking the Queen so she can perform these two abilities
-        Player.ActionSet.insert(Player.NextSpell+1,Bunker)
-        Player.ActionSet.insert(Player.NextSpell+2,Collider)
+def QueenCheck(Player, Enemy): # This will turn the queen off and make her perform the finisher moves
+    if Player.QueenTimer <= 0: 
+        Player.Overdrive = False
+        Player.Queen.TrueLock = False #Delocking the Queen so she can perform these two abilities
+        Player.Queen.ActionSet.insert(Player.NextSpell+1,Bunker)
+        Player.Queen.ActionSet.insert(Player.NextSpell+2,Collider)
         Player.EffectToRemove.append(QueenCheck)
-        Player.EffectCDList.append(QueenAACheck)
+        Player.Queen.EffectCDList.append(QueenAACheck)
 
 
 def QueenAACheck(Player, Enemy):

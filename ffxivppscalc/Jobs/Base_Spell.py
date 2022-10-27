@@ -4,6 +4,7 @@ from Fight import ComputeDamage
 import math
 from Jobs.PlayerEnum import JobEnum
 from Jobs.PlayerEnum import RoleEnum
+from Jobs.ActionEnum import name_for_id
 from requirementHandler import failedRequirementEvent
 Lock = 0.75
 
@@ -100,7 +101,7 @@ class Spell:
                 player.CurrentFight.wipe = True # otherwise we stop the simulation 
                 return tempSpell
         #Will make sure CastTime is at least Lock
-        if tempSpell.id > 0 and tempSpell.CastTime < Lock : tempSpell.CastTime = 0.5 #id < 0 are special abilities like DOT, so we do not want them to be affected by that
+        if tempSpell.id > 0 and tempSpell.CastTime < Lock : tempSpell.CastTime = 0 #id < 0 are special abilities like DOT, so we do not want them to be affected by that
         return tempSpell
         #Will put casting spell in player, and do damage/effect once the casting time is over
 
@@ -129,6 +130,10 @@ class Spell:
         if self.Potency != 0 : minDamage,Damage= ComputeDamage(player, self.Potency, Enemy, self.DPSBonus, type, self)    #Damage computation
         else: minDamage, Damage = 0,0
 
+        #if Damage > 0 : 
+        #    print("action " + name_for_id(self.id,player.ClassAction, player.JobAction))
+        #    print("Did : " + str(self.Potency))
+        #    print("at : " + str(player.CurrentFight.TimeStamp))
         
 
         if player.JobEnum == JobEnum.Pet:

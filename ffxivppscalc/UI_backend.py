@@ -240,7 +240,7 @@ def RestoreFightObject(data : dict):
         elif job_name == "WhiteMage" : job_object = Player([], [], None, {}, JobEnum.WhiteMage)
         elif job_name == "Astrologian" : job_object = Player([], [], None, {}, JobEnum.Astrologian)
         #Tank
-        elif job_name == "Warrior" : job_object = Player([], [SurgingTempestEffect], None, {}, JobEnum.Astrologian)
+        elif job_name == "Warrior" : job_object = Player([], [SurgingTempestEffect], None, {}, JobEnum.Warrior)
         elif job_name == "DarkKnight" : job_object = Player([], [], None, {}, JobEnum.DarkKnight)
         elif job_name == "Paladin" : job_object = Player([], [], None, {}, JobEnum.Paladin)
         elif job_name == "Gunbreaker" : job_object = Player([], [], None, {}, JobEnum.Gunbreaker)

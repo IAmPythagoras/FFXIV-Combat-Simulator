@@ -10,99 +10,94 @@
         },
         "PlayerList": [
             {
-                "JobName": "RedMage",
+                "JobName": "Samurai",
                 "playerID": 1,
                 "stat": {
-                    "MainStat": 2947,
+                    "MainStat": 2937,
                     "WD": 126,
-                    "Det": 1548,
+                    "Det": 1571,
                     "Ten": 400,
-                    "SS": 495,
-                    "Crit": 2397,
-                    "DH": 1544
+                    "SS": 508,
+                    "Crit": 2446,
+                    "DH": 1459
                 },
                 "Auras": [],
                 "actionList": [
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "Meikyo"
                     },
                     {
-                        "actionName": "Verareo"
+                        "actionName": "WaitAbility",
+                        "waitTime": 9
                     },
                     {
-                        "actionName": "Swiftcast"
+                        "actionName": "Gekko"
                     },
                     {
-                        "actionName": "Acceleration"
+                        "actionName": "Kasha"
                     },
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "Yukikaze"
                     },
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "Midare"
                     },
                     {
-                        "actionName": "Embolden"
+                        "actionName": "Senei"
                     },
                     {
-                        "actionName": "Manafication"
+                        "actionName": "KaeshiSetsugekka"
                     },
                     {
-                        "actionName": "EnchantedRiposte"
+                        "actionName": "Meikyo"
                     },
                     {
-                        "actionName": "Fleche"
+                        "actionName": "Gekko"
                     },
                     {
-                        "actionName": "EnchantedZwerchhau"
+                        "actionName": "Shinten"
                     },
                     {
-                        "actionName": "Contre"
+                        "actionName": "Higanbana"
                     },
                     {
-                        "actionName": "EnchantedRedoublement"
+                        "actionName": "Shinten"
                     },
                     {
-                        "actionName": "Corps"
+                        "actionName": "OgiNamikiri"
                     },
                     {
-                        "actionName": "Engagement"
+                        "actionName": "Shoha"
                     },
                     {
-                        "actionName": "Verholy"
+                        "actionName": "KaeshiNamikiri"
                     },
                     {
-                        "actionName": "Corps"
+                        "actionName": "Kasha"
                     },
                     {
-                        "actionName": "Engagement"
+                        "actionName": "Shinten"
                     },
                     {
-                        "actionName": "Scorch"
+                        "actionName": "Gekko"
                     },
                     {
-                        "actionName": "Resolution"
+                        "actionName": "Gyoten"
                     },
                     {
-                        "actionName": "Verfire"
+                        "actionName": "Hakaze"
                     },
                     {
-                        "actionName": "Verthunder"
+                        "actionName": "Yukikaze"
                     },
                     {
-                        "actionName": "Verstone"
+                        "actionName": "Shinten"
                     },
                     {
-                        "actionName": "Verareo"
+                        "actionName": "Midare"
                     },
                     {
-                        "actionName": "Jolt"
-                    },
-                    {
-                        "actionName": "Verthunder"
-                    },
-                    {
-                        "actionName": "Fleche"
+                        "actionName": "KaeshiSetsugekka"
                     }
                 ],
                 "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."
