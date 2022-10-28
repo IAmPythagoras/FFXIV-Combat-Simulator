@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# See https://coverage.readthedocs.io/en/6.5.0/config.html for configuration options
+[tool.coverage.run]
+branch = true
+source = ["ffxivppscalc"]
+
+[tool.black]
+line-length = 120
+skip-string-normalization = true
