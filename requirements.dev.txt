@@ -1,0 +1,4 @@
+coverage[toml]==6.5.0
+mypy==0.982
+mypy-extensions==0.4.3
+pylint==2.15.5
