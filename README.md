@@ -9,7 +9,7 @@ Note that you must have git installed : https://git-scm.com/download/win .
 # How to use
 
 The documentation isn't completely up to date and a more complete version of it will be available in the forseeable future.
-
+You can join this discord if you have any question regarding how to use it : https://discord.gg/mZXKUNy2sw .
 Download this PDF that explains how to use the simulator in its current state : [FFXIV_Combat_Simulator](https://github.com/IAmPythagoras/FFXIVPPSCalculator/files/9596221/FFXIV_Combat_Simulator.2.pdf)
 
 If you encounter any bug or error in the simulation, DM me on discord Pythagoras#6312 so I can fix it as soon as possible. Since this program is still in testing phase, this will help me out a lot:).
