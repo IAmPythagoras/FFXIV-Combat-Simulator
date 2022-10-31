@@ -28,7 +28,7 @@ def main() -> int:
     args = parser.parse_args()
     print(args)
 
-    fight_main(time_unit=args.step_size, TimeLimit=args.time_limit)
+    fight_main(False, time_unit=args.step_size, TimeLimit=args.time_limit)
     return 0
 
 
