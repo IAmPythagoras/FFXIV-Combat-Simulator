@@ -3,7 +3,7 @@ from argparse import ArgumentParser
 from sys import exit
 
 from ffxivppscalc import __name__ as prog
-from SimulationInput import ExecuteMemoryCode as fight_main
+from ffxivppscalc.SimulationInput import ExecuteMemoryCode as fight_main
 
 
 def get_parser() -> ArgumentParser:
