@@ -17,6 +17,4 @@ app = FastAPI() # Creating api instance
 
 @app.post("/SimulateFight")#, response_model=SimulateFightOut
 def GetSimulateFight(info : SimulateFightIn):
-    data = info.dict()
-    return SimulateFightAPIHelper(data)
-    return JSONResponse(content=SimulateFightAPIHelper(data))
+    return SimulateFightAPIHelper(info.dict())

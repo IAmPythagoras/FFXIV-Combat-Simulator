@@ -94,8 +94,8 @@ def SimulateFightAPIHelper(FightDict : dict) -> dict:
     will return a JSON file. 
     FightDict : dict -> dictionnary holding the fight's info
     """
-    with open('hey.json', "w") as write_files:
-        json.dump(FightDict,write_files, indent=4) #saving file
+    #with open('hey.json', "w") as write_files:
+    #    json.dump(FightDict,write_files, indent=4) #saving file
 
     Event = RestoreFightObject(FightDict) # Restoring the fight object
     fightInfo = FightDict["data"]["fightInfo"] #fight information

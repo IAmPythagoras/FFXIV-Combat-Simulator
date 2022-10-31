@@ -37,7 +37,7 @@ class PlayerInfoIn(BaseModel):
 
 class dataIn(BaseModel):
     fightInfo : fightInfoIn
-    PlayerList : PlayerInfoIn
+    PlayerList : List[PlayerInfoIn]
 
 class SimulateFightIn(BaseModel):
     data : dataIn
