@@ -1,6 +1,6 @@
 import os
 
-from Enemy import Enemy
+from ffxivppscalc.Enemy import Enemy
 from Fight import Fight
 from Jobs.Player import Player
 from Jobs.PlayerEnum import *
