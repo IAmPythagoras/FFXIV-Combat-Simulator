@@ -3,7 +3,6 @@
 This code was taken from a comment in : https://github.com/IAmPythagoras/FFXIV-Combat-Simulator/issues/17
 and was written by https://github.com/Alex-Ueki @apollo#3810
 and modified to fit the use I have of it.
-
 """
 # Installed versions I use
 # coreapi==2.3.3

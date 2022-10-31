@@ -1,10 +1,8 @@
 import copy
 
-from Fight import ComputeDamage
 import math
 from Jobs.PlayerEnum import JobEnum
 from Jobs.PlayerEnum import RoleEnum
-from Jobs.ActionEnum import name_for_id
 from requirementHandler import failedRequirementEvent
 Lock = 0.75
 
@@ -127,7 +125,7 @@ class Spell:
             else: type = 1   
 
         
-        if self.Potency != 0 : minDamage,Damage= ComputeDamage(player, self.Potency, Enemy, self.DPSBonus, type, self)    #Damage computation
+        if self.Potency != 0 : minDamage,Damage= player.CurrentFight.ComputeDamageFunction(player, self.Potency, Enemy, self.DPSBonus, type, self)    #Damage computation
         else: minDamage, Damage = 0,0
 
         #if self.id > 0 or self.id == -2878: 
@@ -165,13 +163,18 @@ class Spell:
 
         #Will update the NextSpell of the player
 
-        if (not (isinstance(self, DOTSpell))) : player.NextSpell+=1
-        if (player.NextSpell == len(player.ActionSet)):#Checks if no more spell to do
-            player.TrueLock = True
+        if (not (isinstance(self, DOTSpell))) : player.NextSpell+=1 # Only increase counter if action was not a DOT
+        if (player.NextSpell == len(player.ActionSet)):
+            if player.RoleEnum == RoleEnum.Pet: # If the player is a pet simply lock it
+                player.TrueLock = True
+            else: # Else we will call NextAction on this player before locking it
+                player.NoMoreAction = True
+            
 
-        if self.GCD: player.GCDCounter += 1
 
-        return self
+        if self.GCD: player.GCDCounter += 1 # If action was a GCD, increase the counter
+
+        return self # Return the spell object. Might not be needed.
 
 def ManaRequirement(player, Spell):
     """

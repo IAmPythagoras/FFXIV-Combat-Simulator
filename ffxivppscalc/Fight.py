@@ -1,36 +1,11 @@
 import math
-import matplotlib.pyplot as plt
-import numpy as np
+from Vocal import PrintResult
 
 from Jobs.PlayerEnum import *
 
 
 class NoMoreAction(Exception):# Exception called if a spell fails to cast
     pass
-
-
-# GCDReduction Effect
-
-def GCDReductionEffect(Player, Spell) -> None:
-    """
-    Computes the GCD reduction according to the SkillSpeed or the SpellSpeed of the player
-    Player : player -> Player object
-    Spell : Spell -> Spell object affected by the effect
-    """
-    if Spell.GCD:
-        Spell.CastTime *= Player.GCDReduction
-        Spell.RecastTime *= Player.GCDReduction
-
-def Normal(mean, std, x):# returns value from NormalDistribution
-    if std == 0 : return 0
-    return 1/(std * np.sqrt(2 * np.pi)) * np.exp(-1/2 * ((x-mean)/std)**2)
-
-
-def AverageCritMult(Player, k):
-    n = Player.NumberDamageSpell # Total number of damage Spell
-    if n == 0 : return 0
-    # k is the number of success, so the number of crit
-    return ((k) * (1 + Player.CritMult)  + (n-k))/n # Average crit multiplier over the run, this can be seen as a fix bonus on the whole fight
 
 class Fight:
     """
@@ -55,195 +30,25 @@ class Fight:
         self.waitingThreshold = 1 # number of seconds we are willing to wait for. By default 1
         self.wipe = False # Will be set to True in case we are stopping the simulation.
 
+        # functions
 
+        def DefaultNextActionFunction(Fight, Player) -> bool:
+            """
+            The default function does not add any other actions and hence just returns True to lock the player.
+            """
+            return True
 
-    def ComputeDPSDistribution(self, Player, fig, axs, job):
-        # THIS WHOLE PART HAS BEEN SHOWN TO NOT BE ACCURATE AND IS NOT FIXED AS OF NOW
-        # USE AT YOUR OWN RISK
+        def DefaultExtractInfo(Fight) -> None:
+            """
+            This function is called every frame of the simulation and can be used to extract whatever information from it we want.
+            By default it does nothing.
+            Note that the function cannot return any value, and so it must save all wanted data in some other variable or file.
+            """
+            pass
 
-        # Graph data
-        axs.set_ylabel("Percentage (%)")
-        axs.set_xlabel("Expected DPS")
-        axs.set_title(job + " DPS Distribution")
-        axs.spines["top"].set_alpha(0.0)
-        axs.spines["right"].set_alpha(0.0)
-        axs.set_facecolor("lightgrey")
-        # axs.yaxis.set_ticks(np.arange(0,15,1))
-
-
-
-
-        # This function will return a distribution of DPS and chance of having certain DPS
-        Player.DPS = Player.TotalMinDamage / self.TimeStamp # Computing DPS with no crit, expected DH
-        Player.ExpectedDPS = Player.TotalDamage / self.TimeStamp # Expected DPS with crit
-
-        n = Player.NumberDamageSpell # Number of spell that deals damage done by this player
-        p = round((Player.ExpectedDPS/Player.DPS - 1)/Player.CritMult,3)
-
-        # The value of p is found by using the fact that Player.DPS = DPS * ExpectedDHDamage, Player.ExpectedDPS = DPS * ExpectedDHDamage * ExpectedCritDamage
-        # And ExpectedCritDamage = ( 1 + (CritMult * CritRate)), so we simply isolate CritRate. This will give an average Crit rate over the whole fight which will
-        # take into account crit rate buffs throughout the fight
-        decimal_mean = n*p # Number of expected crit (not an integer)
-        mean = math.floor(decimal_mean) # Number of expected crit rounded down
-        radius = math.ceil(n/2) # Radius we for which we will graph the distribution
-        std = n*p * (1-p) # Standard deviation
-        # The binomial distribution of enough trials can be approximated to N(np, np(1-p)) for big enough n, so we will simply approximate the distribution by this
-        # Note that here n stands for the number of damage spell, and p is the averagecritrate of the player AverageCritRate = (CritRate + CritRateBonus)/time
-        # We will salvage values from the normal distribution, then find the average crit multiplier by number of crits gotten. We will then multiply the computed DPS
-        # by these multipliers to get DPS values for each chance
-        # We will sample n/2 points on each side
-
-        y_list = []
-        expected_dps_list = [] # List of expected DPS
-        resolution = 500 # Hardcoded value, represents how many points on the curve we take
-        i = max(0, mean-radius) # Starting point
-        j = mean + radius+1 # Upper limit
-        h = (j - i)/resolution # Step to take
-        x_list = np.linspace(i,j,resolution) # Evenly spaced out from i -> j with resolution number of points
-        # It will be computed by computing an average crit multiplier, and then multiplying the DPS by that
-        while i < j:
-            next_point = Normal(decimal_mean, std, i) * 100000 / 10
-            # input(next_point)
-            y_list += [math.floor(next_point)/100]
-            average_crit_mult = AverageCritMult(Player, i)
-            expected_dps_list += [average_crit_mult * Player.DPS]
-            i+= h
-
-
-        high_crit_mult_list = []
-        low_crit_mult_list = []
-        for i in range(1,4): # This loop will create boundary for the empirical rules, it will do 1 to 3 std away from the mean
-            high = decimal_mean + i*std
-            low = decimal_mean - i*std
-            high_crit_mult = AverageCritMult(Player, high)
-            low_crit_mult = AverageCritMult(Player, low)
-            high_crit_mult_list += [high_crit_mult * Player.DPS]
-            low_crit_mult_list += [low_crit_mult * Player.DPS]
-        # Even though low and high are not integers, the AverageCritMult is a continuous stricly increasing function, so we can use it on
-        # non integer value to get an "in-between" value
-
-        top_graph = max(y_list) * 1.3 # top of graph
-        lab = "\u03BC = " + str(round(Player.ExpectedDPS,1)) + " \u03C3 = " + str(round(std,2))
-        axs.plot(expected_dps_list, y_list,label=lab) # Distribution
-        axs.plot([Player.ExpectedDPS,Player.ExpectedDPS], [0,top_graph], label="Expected DPS", linestyle="dashed") # Expected DPS
-        # Plotting Empirical rule region
-        axs.axvspan(max(expected_dps_list[0],low_crit_mult_list[2]), min(expected_dps_list[-1],high_crit_mult_list[2]), color="green") # 99.7% empirical rule region, will most likely not appear in the graph
-        axs.axvspan(max(expected_dps_list[0],low_crit_mult_list[1]), high_crit_mult_list[1], color="blue") # 95% empirical rule region
-        axs.axvspan(low_crit_mult_list[0], high_crit_mult_list[0], color="red") # 68% empirical rule region
-
-
-        axs.fill_between(expected_dps_list, y_list,top_graph, fc="lightgrey") # Used to cover the vertical regions from axvspan so they stop under the line of the distribution
-        axs.margins(-0.0001) # margin arrangement
-        axs.legend()
-
-
-        
-
-
-
-
-
-        # We now have values from the sample, so we will now change x_list into DPS value
-
-
-
-
-
-
-
-    def PrintResult(self, time, TimeStamp) -> None:
-
-        """
-        This function prints out every relevant value onto the console.
-        self : Fight -> Fight we want the result of to be printed
-        time : float -> final timestamp of the simulation
-        TimeStamp : List[float] -> list of all timestamp where the DPS was saved in memory. Used to generate the graphs
-        """
-
-        fig, axs = plt.subplots(1, 2, constrained_layout=True) # DPS and PPS graph
-        fig2, axs2 = plt.subplots(2, 4, constrained_layout=True) # DPS Crit distribution
-        axs[0].set_ylabel("DPS")
-        axs[0].set_xlabel("Time (s)")
-        axs[0].set_title("DPS over time")
-        axs[0].spines["top"].set_alpha(0.0)
-        axs[0].spines["right"].set_alpha(0.0)
-        axs[0].set_facecolor("lightgrey")
-        axs[1].set_ylabel("PPS")
-        axs[1].set_xlabel("Time (s)")
-        axs[1].set_title("PPS over time")
-        axs[1].spines["top"].set_alpha(0.0)
-        axs[1].spines["right"].set_alpha(0.0)
-        axs[1].set_facecolor("lightgrey")
-
-        fig.suptitle("DPS and PPS values over time.")
-
-        i = 0 # Used as coordinate for DPS distribution graph
-        j = 0
-
-        for player in self.PlayerList:
-
-            if player.TotalPotency == 0:
-                PPS = 0
-                DPS = 0
-            else:
-                PPS = player.TotalPotency / time
-                DPS = player.TotalDamage / time
-            print(player.RoleEnum)
-            print("The Total Potency done by player " + str(JobEnum.name_for_id(player.JobEnum)) + " was : " + str(player.TotalPotency))
-            print("This same player had a Potency Per Second of: " + str(round(PPS,2)))
-            print("This same Player had an average of " + str(round(player.TotalPotency/player.NextSpell,2)) + " Potency/Spell")
-            print("This same player did " + str(player.GCDCounter) + " GCD.")
-            print("The DPS is : " + str(round(DPS,2)))
-            print("=======================================================")
-
-            # Plot part
-
-            job = JobEnum.name_for_id(player.JobEnum)
-
-            
-            if player.JobEnum == JobEnum.Bard : 
-                job = "Bard"
-                print("==================")
-                print("Expected Vs Used values for bard")
-                print("Expected Refulgent Proc : " + str(player.ExpectedRefulgent) + " Used Refulgent Proc : " + str(player.UsedRefulgent))
-                print("Expected Wanderer Repertoire Proc : " + str(player.ExpectedTotalWandererRepertoire) + " Used Repertoire Proc : " + str(player.UsedTotalWandererRepertoire))
-                print("RepertoireAdd : " + str(player.UsedRepertoireAdd))
-                print("Expected Soul Voice Gauge : " + str(player.ExpectedSoulVoiceGauge) + " Used SoulVoiceGauge : " + str(player.UsedSoulVoiceGauge))
-                print("Expected BloodLetterReduction : " + str(player.ExpectedBloodLetterReduction) + " Used BloodLetterReduction : " + str(player.UsedBloodLetterReduction))
-                print("==================")
-            elif player.JobEnum == JobEnum.Dancer:
-                job = "Dancer"
-                print("==================")
-                print("Expected Vs Used Proc for Dancer")
-                print("Expected SilkenSymettry : " + str(player.ExpectedSilkenSymettry) + " Used SilkenSymettry : " + str(player.UsedSilkenSymettry) )
-                print("Expected SilkenFlow : " + str(player.ExpectedSilkenFlow) + " Used SilkenFlow : " + str(player.UsedSilkenFlow) )
-                print("Expected FourfoldFeather : " + str(player.ExpectedFourfoldFeather) + " Used FourfoldFeather : " + str(player.UsedFourfoldFeather) )
-                print("Expected ThreefoldFan : " + str(player.ExpectedThreefoldFan) + " Used ThreefoldFan : " + str(player.UsedThreefoldFan) )
-                print("==================")
-
-
-
-            axs[0].plot(TimeStamp,player.DPSGraph, label=job)
-            axs[1].plot(TimeStamp,player.PotencyGraph, label=job)
-
-            if len(self.PlayerList) <= 8:
-                if DPS != 0 : self.ComputeDPSDistribution(player, fig2, axs2[j][i], job)
-                i+=1
-                if i == 4:
-                    i = 0
-                    j+=1
-        print("The Enemy has received a total potency of: " + str(round(self.Enemy.TotalPotency,2)))
-        print("The Potency Per Second on the Enemy is: " + str(round(self.Enemy.TotalPotency/time,2)))
-        print("The Enemy's total DPS is " + str(round(self.Enemy.TotalDamage / time, 2)))
-        axs[0].xaxis.grid(True)
-        axs[1].xaxis.grid(True)
-        axs[0].xaxis.set_ticks(np.arange(0, max(TimeStamp)+1, 25))
-        axs[1].xaxis.set_ticks(np.arange(0, max(TimeStamp)+1, 25))
-        axs[0].legend()
-        axs[1].legend()
-        if self.ShowGraph: plt.show()
-
-
+        self.ComputeDamageFunction = ComputeDamage # This would let someone overwrite this function.
+        self.NextActionFunction = DefaultNextActionFunction
+        self.ExtractInfo = DefaultExtractInfo
 
     def SimulateFight(self, TimeUnit, TimeLimit, vocal) -> None:
 
@@ -336,61 +141,87 @@ class Fight:
                             # print("oGCD with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(self.TimeStamp) )
 
 
-                
-            if self.wipe: # If we detect that wipe has been set to true we stop the simulation
-                break
-
-            # Will then let the enemy add the Dots damage
-
+            # Updating and casting DOT if needed
             for player in self.PlayerList:
-                # print(player)
-                # print("============")
                 for DOT in player.DOTList:
                     # print(DOT)
                     DOT.CheckDOT(player,self.Enemy, TimeUnit)
+
+            if self.wipe: # If we detect that wipe has been set to true we stop the simulation
+                break
+
+
+                    
             for player in self.PlayerList:
-                # print(player.EffectCDList)
+                # Loops through the playerList
+                # And calls every function in the player.EffectCDList
+                # These functions will check if an effect should be terminated
                 for CDCheck in player.EffectCDList:
                     CDCheck(player, self.Enemy)
+
                 for remove in player.EffectToRemove:
+                    # Loops through all effect that have been classified as terminated and removes them from the EffectCDList
                     player.EffectCDList.remove(remove) # Removing relevant spell
                 for add in player.EffectToAdd:
+                    # Adds any function to EffectCDList that should be added
                     player.EffectCDList.append(add)
+
+                # Resets the list containing functions to be removed and added
                 player.EffectToRemove = []
                 player.EffectToAdd = []
             
 
 
             # We will now update any timer each player and the enemy has
-
             for player in self.PlayerList:
                 player.updateTimer(TimeUnit)
                 player.updateCD(TimeUnit)
-                player.updateLock() # Update the lock on the player to see if it's state changes
+                player.updateLock() # Update the lock on the player to see if the player's state changes
+
+            if self.wipe: # If we detect that wipe has been set to true we stop the simulation. This for now only happens if a failedRequirement is fatal
+                break
+
+
+            for player in self.PlayerList:
+                # Will go through all player and check if they have no more actions set to true. 
+                # If so we will call the NextAction function
+                if player.NoMoreAction:
+                    # NextActionFunction is by default nothing and only returns True.
+                    # But this function can be customized by the user to fit any use of it they might need
+                    player.TrueLock = self.NextActionFunction(self, player)
+                    if not player.TrueLock : player.NoMoreAction = False
 
 
             CheckFinalLock = True
             for player in self.PlayerList:
+                # Goes through every player and checks if they are done. If everyone has nothing to do the fight finishes
                 CheckFinalLock = player.TrueLock and CheckFinalLock # If all player's TrueLock is true, then CheckFinalLock will be True
 
             if CheckFinalLock: 
                 if vocal : print("The Fight finishes at: " + str(self.TimeStamp))
                 break
-
+            
             
             if start:
-                # If the fight has started, will sample DPS values at certain time
-                if (self.TimeStamp%1 == 0.3 or self.TimeStamp%1 == 0.0 or self.TimeStamp%1 == 0.6 or self.TimeStamp%1 == 0.9) and self.TimeStamp >= 3:# last thing is to ensure no division by zero and also to have no spike at the begining
-                    # Only sample each 1/2 second
+                # If the fight has started, will sample DPS values at certain time.
+                # The fight starts as soon as one player does damage.
+                # The finished time is based on when the fight starts and not when the simulation starts.
+                # If the simulation finishes before the fight starts there will be no damage done.
+                if self.TimeStamp >= 3:# last thing is to ensure no division by zero and also to have no spike at the begining
+                    # Samples DPS every frame of the simulation.
+                    # If it becomes a problem if fights are too long, could limit rate of sampling.
                     self.timeValue+= [self.TimeStamp]
                     for Player in self.PlayerList:
                         Player.DPSGraph += [round(Player.TotalDamage/self.TimeStamp, 2)] # Rounding the value to 2 digits
                         Player.PotencyGraph += [round(Player.TotalPotency/self.TimeStamp, 2)]
 
 
+            # Calling information extracting method
+            self.ExtractInfo(self)
+
             # update self.TimeStamp
             self.TimeStamp += TimeUnit
-            self.TimeStamp = round(self.TimeStamp, 2)
+            self.TimeStamp = round(self.TimeStamp, 2) # Round it for cleaner value
 
             if self.FightStart and not start:
                 self.TimeStamp = 0
@@ -402,7 +233,8 @@ class Fight:
         remove = []
 
         for i in range(len(self.PlayerList)):  
-            player = self.PlayerList[i] # Removing all instance of clones/summons from the fight
+            # Removing all instance of clones/summons from the fight. The DPS done has already been given to their master.
+            player = self.PlayerList[i] 
             if player.JobEnum == JobEnum.Pet:
                 remove += [i]
 
@@ -411,11 +243,11 @@ class Fight:
             self.PlayerList.pop(i-k)
             k+=1
             
-       
+       # Printing the results if vocal is true.
         if vocal : 
             for t in self.failedRequirementList: 
                 if t.fatal : print(t.requirementName)
-        if vocal : self.PrintResult(self.TimeStamp, self.timeValue)
+        if vocal : PrintResult(self, self.TimeStamp, self.timeValue)
             
 
 
@@ -441,6 +273,18 @@ class Fight:
             Player.CritMult = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000 # Crit Damage multiplier
             Player.DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000 # DH rate in decimal
 
+# HELPER FUNCTIONS UNDER
+
+# GCDReduction Effect
+def GCDReductionEffect(Player, Spell) -> None:
+    """
+    Computes the GCD reduction according to the SkillSpeed or the SpellSpeed of the player
+    Player : player -> Player object
+    Spell : Spell -> Spell object affected by the effect
+    """
+    if Spell.GCD:
+        Spell.CastTime *= Player.GCDReduction
+        Spell.RecastTime *= Player.GCDReduction
 
 def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
 
@@ -626,6 +470,11 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
     else:# No auto_crit or auto_DH
         non_crit_dh_expected, dh_crit_expected = math.floor(Damage * ( 1 + roundDown((DHRate * 0.25), 2))), math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) # Non crit expected damage, expected damage with crit
         return non_crit_dh_expected , dh_crit_expected
+
+
+
+def isclose(a, b, rel_tol=1e-09, abs_tol=0.0): # Helper function to compare float
+    return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
 
 def roundDown(x, precision):
     return math.floor(x * 10**precision)/10**precision

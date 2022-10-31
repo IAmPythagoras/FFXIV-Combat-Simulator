@@ -3,7 +3,7 @@ from argparse import ArgumentParser
 from sys import exit
 
 from ffxivppscalc import __name__ as prog
-from ffxivppscalc.main import main as fight_main
+from SimulationInput import ExecuteMemoryCode as fight_main
 
 
 def get_parser() -> ArgumentParser:
@@ -28,7 +28,7 @@ def main() -> int:
     args = parser.parse_args()
     print(args)
 
-    fight_main(time_unit=args.step_size, time_limit=args.time_limit)
+    fight_main(time_unit=args.step_size, TimeLimit=args.time_limit)
     return 0
 
 
