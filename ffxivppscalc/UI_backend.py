@@ -231,7 +231,7 @@ def RestoreFightObject(data : dict):
 
     for player in data["data"]["PlayerList"]: #Going through all player in PlayerList and creating JobObject
         #Will check what job the player is so we can create a player object of the relevant job
-
+        
         job_name = player["JobName"]
         job_object = None
         #Healer
