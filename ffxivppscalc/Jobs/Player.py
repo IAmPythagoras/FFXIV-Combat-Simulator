@@ -7,6 +7,16 @@ from Jobs.ActionEnum import *
 
 class Player:
 
+    def AddAction(self, actionObject):
+        """
+        This function will append the spell object actionObject to the player's action list.
+
+        action_id : Spell
+
+        """
+        
+        self.ActionSet.append(actionObject)
+
     def __init__(self, ActionSet, EffectList, CurrentFight, Stat,Job : JobEnum):
         """
         Create the player object
@@ -31,6 +41,7 @@ class Player:
         self.GCDCounter = 0 # Number of GCD done
 
         self.TrueLock = False   # Used to know when a player has finished all of its ActionSet
+        self.NoMoreAction = False # Used to know when a player has no more actions to do. The user will have a choice to set TrueLock = True or to give anther action
         self.Casting = False    # Flag set to true if the player is casting
         self.oGCDLock = False   # If animation locked by oGCD
         self.GCDLock = False    # If have to wait for another GCD
@@ -1887,10 +1898,10 @@ class Player:
 
     def AddGauge(self, Amount : int):
         self.SoulGauge = min(100, self.SoulGauge + Amount)
-        #input("Soul is now at : " + str(self.SoulGauge))
+
     def AddShroud(self, Amount : int):
         self.ShroudGauge = min(100, self.ShroudGauge + Amount)
-        #input("Shroud is now at : " + str(self.ShroudGauge))
+
 
     # Monk helper functions
 
