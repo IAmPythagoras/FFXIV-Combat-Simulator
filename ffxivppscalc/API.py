@@ -7,14 +7,26 @@ from fastapi import FastAPI
 from ObjectInModel import SimulateFightIn
 from ObjectOutModel import SimulateFightOut
 from library import SimulateFightAPIHelper
-from fastapi.responses import JSONResponse
 
 # Make sure you have uvicorn installed and run the command
 # python -m uvicorn API:app
-# in the folder where API.py is located to run the API
+# in the folder where API.py is located to run the API. Add --reload if you want the API to restart
+# for every detected changes in the code.
+# Then go to HOSTING_ADRESS/docs and you can tryout the different functionallities
 
 app = FastAPI() # Creating api instance
 
 @app.post("/SimulateFight", response_model=SimulateFightOut)
 def GetSimulateFight(info : SimulateFightIn):
+    """
+    This API functionality lets someone ask for a simulation of a given fight.
+    The API will request a JSON file with the correct format and will return the fight's
+    results using as a schema SimulateFightOut.
+
+    Args:\n
+        info (SimulateFightIn): JSON file containing the fight's parameters.
+
+    Returns:\n
+        JSON : JSON file with the SimulateFightOut schema.
+    """
     return SimulateFightAPIHelper(info.dict())
