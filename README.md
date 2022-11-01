@@ -2,7 +2,7 @@
 
 Either download the code above or install it using pip with the following command : 
 
-pip install ffxiv-combat-simulator@git+https://github.com/IAmPythagoras/FFXIV-Combat-Simulator.git@main
+pip install ffxiv-combat-simulator@git+https://github.com/IAmPythagoras/FFXIV-Combat-Simulator.git@fixingLibraryimportbugs
 
 Note that you must have git installed : https://git-scm.com/download/win .
 
