@@ -2,8 +2,8 @@
 from argparse import ArgumentParser
 from sys import exit
 
-from ffxivppscalc import __name__ as prog
-from ffxivppscalc.SimulationInput import ExecuteMemoryCode as fight_main
+from ffxivcalc import __name__ as prog
+from ffxivcalc.SimulationInput import ExecuteMemoryCode as fight_main
 
 
 def get_parser() -> ArgumentParser:
@@ -20,7 +20,7 @@ def get_parser() -> ArgumentParser:
 
 
 def main() -> int:
-    """Entrypoint into the cli. Can be called with ``python -mffxivppscalc``
+    """Entrypoint into the cli. Can be called with ``python -mffxivcalc``
 
     :return: Return code, for use with cli programs to indicate success/failure
     """

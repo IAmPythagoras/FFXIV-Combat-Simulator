@@ -32,7 +32,7 @@ def GenerateTestLayout(num_test : int):
             }] * num_test
         }
     }
-    save_dir: Path = Path.cwd() / 'ffxivppscalc' /'Tester'
+    save_dir: Path = Path.cwd() / 'ffxivcalc' /'Tester'
     saveName = "test_layout"
     with open(save_dir / f'{saveName}.json', "w") as write_files:
         json.dump(layout,write_files, indent=4) #saving file
@@ -46,7 +46,7 @@ class Tester:
         """
         filename : str -> name of the file containing the tester's information
         """
-        self.filename = Path.cwd() / 'ffxivppscalc' / 'Tester' / filename 
+        self.filename = Path.cwd() / 'ffxivcalc' / 'Tester' / filename 
         self.fightResults = [] # Empty list that will be filled with all the fight results
 
 
@@ -61,7 +61,7 @@ class Tester:
 
         for test in data["data"]["FightList"]:
             # Will iterate through every fight in the saved file and test them.
-            file = Path.cwd() / 'ffxivppscalc' / 'Tester' / test["Fight"]
+            file = Path.cwd() / 'ffxivcalc' / 'Tester' / test["Fight"]
             f_test = open(file) # Opening saved file for the test
             data_test = json.load(f_test) # loading data
 

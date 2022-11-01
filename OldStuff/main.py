@@ -1,61 +1,61 @@
-from ffxivppscalc.Enemy import *
-from ffxivppscalc.Fight import *
+from ffxivcalc.Enemy import *
+from ffxivcalc.Fight import *
 import copy
 
-from ffxivppscalc.Jobs.Base_Spell import Melee_AA, Ranged_AA, WaitAbility, Potion
-from ffxivppscalc.Jobs.Caster.Caster_Spell import Swiftcast, LucidDreaming
+from ffxivcalc.Jobs.Base_Spell import Melee_AA, Ranged_AA, WaitAbility, Potion
+from ffxivcalc.Jobs.Caster.Caster_Spell import Swiftcast, LucidDreaming
 
 #CASTER
-from ffxivppscalc.Jobs.Caster.Summoner.Summoner_Spell import *
-from ffxivppscalc.Jobs.Caster.Blackmage.BlackMage_Spell import * 
-from ffxivppscalc.Jobs.Caster.Redmage.Redmage_Spell import *
-from ffxivppscalc.Jobs.Caster.Summoner.Summoner_Player import *
-from ffxivppscalc.Jobs.Caster.Blackmage.BlackMage_Player import * 
-from ffxivppscalc.Jobs.Caster.Redmage.Redmage_Player import *
+from ffxivcalc.Jobs.Caster.Summoner.Summoner_Spell import *
+from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import * 
+from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import *
+from ffxivcalc.Jobs.Caster.Summoner.Summoner_Player import *
+from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Player import * 
+from ffxivcalc.Jobs.Caster.Redmage.Redmage_Player import *
 
 #HEALER
-from ffxivppscalc.Jobs.Healer.Sage.Sage_Spell import *
-from ffxivppscalc.Jobs.Healer.Scholar.Scholar_Spell import *
-from ffxivppscalc.Jobs.Healer.Whitemage.Whitemage_Spell import *
-from ffxivppscalc.Jobs.Healer.Astrologian.Astrologian_Spell import *
-from ffxivppscalc.Jobs.Healer.Sage.Sage_Player import *
-from ffxivppscalc.Jobs.Healer.Scholar.Scholar_Player import *
-from ffxivppscalc.Jobs.Healer.Whitemage.Whitemage_Player import *
-from ffxivppscalc.Jobs.Healer.Astrologian.Astrologian_Player import *
+from ffxivcalc.Jobs.Healer.Sage.Sage_Spell import *
+from ffxivcalc.Jobs.Healer.Scholar.Scholar_Spell import *
+from ffxivcalc.Jobs.Healer.Whitemage.Whitemage_Spell import *
+from ffxivcalc.Jobs.Healer.Astrologian.Astrologian_Spell import *
+from ffxivcalc.Jobs.Healer.Sage.Sage_Player import *
+from ffxivcalc.Jobs.Healer.Scholar.Scholar_Player import *
+from ffxivcalc.Jobs.Healer.Whitemage.Whitemage_Player import *
+from ffxivcalc.Jobs.Healer.Astrologian.Astrologian_Player import *
 
 #RANGED
-from ffxivppscalc.Jobs.Ranged.Machinist.Machinist_Spell import *
-from ffxivppscalc.Jobs.Ranged.Bard.Bard_Spell import *
-from ffxivppscalc.Jobs.Ranged.Dancer.Dancer_Spell import *
-from ffxivppscalc.Jobs.Ranged.Machinist.Machinist_Player import *
-from ffxivppscalc.Jobs.Ranged.Bard.Bard_Player import *
-from ffxivppscalc.Jobs.Ranged.Dancer.Dancer_Player import *
+from ffxivcalc.Jobs.Ranged.Machinist.Machinist_Spell import *
+from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import *
+from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import *
+from ffxivcalc.Jobs.Ranged.Machinist.Machinist_Player import *
+from ffxivcalc.Jobs.Ranged.Bard.Bard_Player import *
+from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Player import *
 
 #TANK
-from ffxivppscalc.Jobs.Tank.Gunbreaker.Gunbreaker_Spell import *
-from ffxivppscalc.Jobs.Tank.DarkKnight.DarkKnight_Spell import *
-from ffxivppscalc.Jobs.Tank.Warrior.Warrior_Spell import *
-from ffxivppscalc.Jobs.Tank.Paladin.Paladin_Spell import *
-from ffxivppscalc.Jobs.Tank.Gunbreaker.Gunbreaker_Player import *
-from ffxivppscalc.Jobs.Tank.DarkKnight.DarkKnight_Player import *
-from ffxivppscalc.Jobs.Tank.Warrior.Warrior_Player import *
-from ffxivppscalc.Jobs.Tank.Paladin.Paladin_Player import *
+from ffxivcalc.Jobs.Tank.Gunbreaker.Gunbreaker_Spell import *
+from ffxivcalc.Jobs.Tank.DarkKnight.DarkKnight_Spell import *
+from ffxivcalc.Jobs.Tank.Warrior.Warrior_Spell import *
+from ffxivcalc.Jobs.Tank.Paladin.Paladin_Spell import *
+from ffxivcalc.Jobs.Tank.Gunbreaker.Gunbreaker_Player import *
+from ffxivcalc.Jobs.Tank.DarkKnight.DarkKnight_Player import *
+from ffxivcalc.Jobs.Tank.Warrior.Warrior_Player import *
+from ffxivcalc.Jobs.Tank.Paladin.Paladin_Player import *
 
 #MELEE
-from ffxivppscalc.Jobs.Melee.Samurai.Samurai_Spell import *
-from ffxivppscalc.Jobs.Melee.Ninja.Ninja_Spell import *
-from ffxivppscalc.Jobs.Melee.Dragoon.Dragoon_Spell import *
-from ffxivppscalc.Jobs.Melee.Reaper.Reaper_Spell import *
-from ffxivppscalc.Jobs.Melee.Monk.Monk_Spell import *
-from ffxivppscalc.Jobs.Melee.Samurai.Samurai_Player import *
-from ffxivppscalc.Jobs.Melee.Ninja.Ninja_Player import *
-from ffxivppscalc.Jobs.Melee.Dragoon.Dragoon_Player import *
-from ffxivppscalc.Jobs.Melee.Reaper.Reaper_Player import *
-from ffxivppscalc.Jobs.Melee.Monk.Monk_Player import *
+from ffxivcalc.Jobs.Melee.Samurai.Samurai_Spell import *
+from ffxivcalc.Jobs.Melee.Ninja.Ninja_Spell import *
+from ffxivcalc.Jobs.Melee.Dragoon.Dragoon_Spell import *
+from ffxivcalc.Jobs.Melee.Reaper.Reaper_Spell import *
+from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import *
+from ffxivcalc.Jobs.Melee.Samurai.Samurai_Player import *
+from ffxivcalc.Jobs.Melee.Ninja.Ninja_Player import *
+from ffxivcalc.Jobs.Melee.Dragoon.Dragoon_Player import *
+from ffxivcalc.Jobs.Melee.Reaper.Reaper_Player import *
+from ffxivcalc.Jobs.Melee.Monk.Monk_Player import *
 
 
-from ffxivppscalc.FFLogsAPIRequest import getAbilityList
-from ffxivppscalc.UI_backend import BLMStat, SaveFight
+from ffxivcalc.FFLogsAPIRequest import getAbilityList
+from ffxivcalc.UI_backend import BLMStat, SaveFight
 
 
 def main(time_unit: float = 0.01, time_limit: int = 1000):
