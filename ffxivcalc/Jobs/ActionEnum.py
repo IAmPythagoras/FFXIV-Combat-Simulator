@@ -1,7 +1,7 @@
 # This will contain all action with their IDs in the game. It will map from ids -> name or name -> ids
 from enum import IntEnum
 
-from Jobs.PlayerEnum import JobEnum, RoleEnum
+from ffxivcalc.Jobs.PlayerEnum import JobEnum, RoleEnum
 
 class ActionEnum(IntEnum):
     # Parent enum class for all other enums. Will have

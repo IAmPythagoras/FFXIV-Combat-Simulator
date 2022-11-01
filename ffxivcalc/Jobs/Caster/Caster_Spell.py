@@ -1,5 +1,5 @@
-from Jobs.Base_Spell import ManaRequirement, Potion, Spell, empty
-from Jobs.PlayerEnum import JobEnum
+from ffxivcalc.Jobs.Base_Spell import ManaRequirement, Potion, Spell, empty
+from ffxivcalc.Jobs.PlayerEnum import JobEnum
 Lock = 0
 class CasterSpell(Spell):
 

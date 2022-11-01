@@ -1,9 +1,9 @@
 import copy
 
 import math
-from Jobs.PlayerEnum import JobEnum
-from Jobs.PlayerEnum import RoleEnum
-from requirementHandler import failedRequirementEvent
+from ffxivcalc.Jobs.PlayerEnum import JobEnum
+from ffxivcalc.Jobs.PlayerEnum import RoleEnum
+from ffxivcalc.requirementHandler import failedRequirementEvent
 Lock = 0.75
 
 class FailedToCast(Exception):#Exception called if a spell fails to cast

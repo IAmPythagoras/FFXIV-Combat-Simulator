@@ -1,7 +1,7 @@
 # This file contains the Player class and its implementation
 from copy import deepcopy
-from Jobs.PlayerEnum import JobEnum, RoleEnum
-from Jobs.ActionEnum import *
+from ffxivcalc.Jobs.PlayerEnum import JobEnum, RoleEnum
+from ffxivcalc.Jobs.ActionEnum import *
 
 
 

@@ -1,10 +1,10 @@
 #########################################
 ########## DARK KNIGHT SKILLS ###########
 #########################################
-from Jobs.Base_Spell import DOTSpell, Potion, buff, empty
+from ffxivcalc.Jobs.Base_Spell import DOTSpell, Potion, buff, empty
 import copy
-from Jobs.Player import Pet
-from Jobs.Tank.Tank_Spell import BigMit, DRKSkill
+from ffxivcalc.Jobs.Player import Pet
+from ffxivcalc.Jobs.Tank.Tank_Spell import BigMit, DRKSkill
 Lock = 0
 
 def BloodRequirement(Player, Spell):

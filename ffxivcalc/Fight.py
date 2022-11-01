@@ -1,7 +1,7 @@
 import math
-from Vocal import PrintResult
+from ffxivcalc.Vocal import PrintResult
 
-from Jobs.PlayerEnum import *
+from ffxivcalc.Jobs.PlayerEnum import *
 
 
 class NoMoreAction(Exception):# Exception called if a spell fails to cast

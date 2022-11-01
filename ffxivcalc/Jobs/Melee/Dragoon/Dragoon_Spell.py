@@ -1,5 +1,5 @@
-from Jobs.Base_Spell import DOTSpell, buff, empty
-from Jobs.Melee.Melee_Spell import DragoonSpell
+from ffxivcalc.Jobs.Base_Spell import DOTSpell, buff, empty
+from ffxivcalc.Jobs.Melee.Melee_Spell import DragoonSpell
 import copy
 
 #Requirement

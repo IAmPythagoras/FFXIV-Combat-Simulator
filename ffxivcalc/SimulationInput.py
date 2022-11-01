@@ -1,48 +1,48 @@
 import os
 
-from Enemy import Enemy
-from Fight import Fight
-from Jobs.Player import Player
-from Jobs.PlayerEnum import *
+from ffxivcalc.Enemy import Enemy
+from ffxivcalc.Fight import Fight
+from ffxivcalc.Jobs.Player import Player
+from ffxivcalc.Jobs.PlayerEnum import *
 from copy import deepcopy
 
-from Jobs.Base_Spell import WaitAbility, Potion
-from Jobs.Caster.Caster_Spell import *
-from Jobs.Melee.Melee_Spell import *
-from Jobs.Ranged.Ranged_Spell import *
-from Jobs.Healer.Healer_Spell import *
-from Jobs.Tank.Tank_Spell import *
+from ffxivcalc.Jobs.Base_Spell import WaitAbility, Potion
+from ffxivcalc.Jobs.Caster.Caster_Spell import *
+from ffxivcalc.Jobs.Melee.Melee_Spell import *
+from ffxivcalc.Jobs.Ranged.Ranged_Spell import *
+from ffxivcalc.Jobs.Healer.Healer_Spell import *
+from ffxivcalc.Jobs.Tank.Tank_Spell import *
 
 #CASTER
-from Jobs.Caster.Summoner.Summoner_Spell import *
-from Jobs.Caster.Blackmage.BlackMage_Spell import * 
-from Jobs.Caster.Redmage.Redmage_Spell import *
+from ffxivcalc.Jobs.Caster.Summoner.Summoner_Spell import *
+from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import * 
+from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import *
 
 #HEALER
-from Jobs.Healer.Sage.Sage_Spell import *
-from Jobs.Healer.Scholar.Scholar_Spell import *
-from Jobs.Healer.Whitemage.Whitemage_Spell import *
-from Jobs.Healer.Astrologian.Astrologian_Spell import *
+from ffxivcalc.Jobs.Healer.Sage.Sage_Spell import *
+from ffxivcalc.Jobs.Healer.Scholar.Scholar_Spell import *
+from ffxivcalc.Jobs.Healer.Whitemage.Whitemage_Spell import *
+from ffxivcalc.Jobs.Healer.Astrologian.Astrologian_Spell import *
 
 #RANGED
-from Jobs.Ranged.Machinist.Machinist_Spell import *
-from Jobs.Ranged.Bard.Bard_Spell import *
-from Jobs.Ranged.Dancer.Dancer_Spell import *
+from ffxivcalc.Jobs.Ranged.Machinist.Machinist_Spell import *
+from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import *
+from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import *
 
 #TANK
-from Jobs.Tank.Gunbreaker.Gunbreaker_Spell import *
-from Jobs.Tank.DarkKnight.DarkKnight_Spell import *
-from Jobs.Tank.Warrior.Warrior_Spell import *
-from Jobs.Tank.Paladin.Paladin_Spell import *
+from ffxivcalc.Jobs.Tank.Gunbreaker.Gunbreaker_Spell import *
+from ffxivcalc.Jobs.Tank.DarkKnight.DarkKnight_Spell import *
+from ffxivcalc.Jobs.Tank.Warrior.Warrior_Spell import *
+from ffxivcalc.Jobs.Tank.Paladin.Paladin_Spell import *
 
 #MELEE
-from Jobs.Melee.Samurai.Samurai_Spell import *
-from Jobs.Melee.Ninja.Ninja_Spell import *
-from Jobs.Melee.Dragoon.Dragoon_Spell import *
-from Jobs.Melee.Reaper.Reaper_Spell import *
-from Jobs.Melee.Monk.Monk_Spell import *
+from ffxivcalc.Jobs.Melee.Samurai.Samurai_Spell import *
+from ffxivcalc.Jobs.Melee.Ninja.Ninja_Spell import *
+from ffxivcalc.Jobs.Melee.Dragoon.Dragoon_Spell import *
+from ffxivcalc.Jobs.Melee.Reaper.Reaper_Spell import *
+from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import *
 
-from UI_backend import SaveFight
+from ffxivcalc.UI_backend import SaveFight
 
 def ExecuteMemoryCode(SaveFight_check, time_unit=0.01, TimeLimit=500):
     # This part of the code will execute whatever rotation is written here. It will be called from TUI.

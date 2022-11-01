@@ -6,7 +6,7 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
-from Jobs.PlayerEnum import JobEnum
+from ffxivcalc.Jobs.PlayerEnum import JobEnum
 
 # Functions related to computing and plotting graph of DPS distribution
 

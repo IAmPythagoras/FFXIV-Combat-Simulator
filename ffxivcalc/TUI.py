@@ -1,8 +1,7 @@
 import os
-from unicodedata import name
 from SimulationInput import ExecuteMemoryCode
 from UI_backend import AskInput, ImportFightBackend, MergeFightBackEnd, SaveFight, SimulateFightBackend,GenerateLayoutBackend
-from Jobs.PlayerEnum import JobEnum
+from ffxivcalc.Jobs.PlayerEnum import JobEnum
 
 def SimulateFightMemory():
     os.system('CLS') #clearing HUD

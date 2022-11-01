@@ -7,53 +7,53 @@ I only did the code relevant to how we used the data, he did everything regardin
 how to get the data. You can DM him on discord if you have questions : Bri-kun#6539
 
 """
-from Jobs.Base_Spell import PrepullPotion, WaitAbility
-from Jobs.Player import Player
-from Jobs.PlayerEnum import *
+from ffxivcalc.Jobs.Base_Spell import PrepullPotion, WaitAbility
+from ffxivcalc.Jobs.Player import Player
+from ffxivcalc.Jobs.PlayerEnum import *
 #CASTER
 
-from Jobs.Caster.Caster_Spell import CasterAbility
-from Jobs.Caster.Blackmage.BlackMage_Spell import BlackMageAbility
-from Jobs.Caster.Redmage.Redmage_Spell import RedMageAbility
-from Jobs.Caster.Summoner.Summoner_Spell import SummonerAbility
+from ffxivcalc.Jobs.Caster.Caster_Spell import CasterAbility
+from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import BlackMageAbility
+from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import RedMageAbility
+from ffxivcalc.Jobs.Caster.Summoner.Summoner_Spell import SummonerAbility
 
 #HEALER
-from Jobs.Healer.Healer_Spell import HealerAbility
-from Jobs.Healer.Sage.Sage_Spell import SageAbility
-from Jobs.Healer.Astrologian.Astrologian_Spell import AstrologianAbility
-from Jobs.Healer.Scholar.Scholar_Spell import ScholarAbility
-from Jobs.Healer.Whitemage.Whitemage_Spell import WhiteMageAbility
-from Jobs.Melee.Monk.Monk_Spell import MonkAbility
+from ffxivcalc.Jobs.Healer.Healer_Spell import HealerAbility
+from ffxivcalc.Jobs.Healer.Sage.Sage_Spell import SageAbility
+from ffxivcalc.Jobs.Healer.Astrologian.Astrologian_Spell import AstrologianAbility
+from ffxivcalc.Jobs.Healer.Scholar.Scholar_Spell import ScholarAbility
+from ffxivcalc.Jobs.Healer.Whitemage.Whitemage_Spell import WhiteMageAbility
+from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import MonkAbility
 
 #RANGED
-from Jobs.Ranged.Ranged_Spell import BardSpell, RangedAbility
-from Jobs.Ranged.Bard.Bard_Spell import BardAbility
-from Jobs.Ranged.Machinist.Machinist_Spell import MachinistAbility
-from Jobs.Ranged.Dancer.Dancer_Spell import DancerAbility
+from ffxivcalc.Jobs.Ranged.Ranged_Spell import BardSpell, RangedAbility
+from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import BardAbility
+from ffxivcalc.Jobs.Ranged.Machinist.Machinist_Spell import MachinistAbility
+from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import DancerAbility
 
 #TANK
-from Jobs.Tank.Tank_Spell import TankAbility
-from Jobs.Tank.Gunbreaker.Gunbreaker_Spell import GunbreakerAbility
-from Jobs.Tank.DarkKnight.DarkKnight_Spell import DarkKnightAbility
-from Jobs.Tank.Warrior.Warrior_Spell import WarriorAbility
-from Jobs.Tank.Paladin.Paladin_Spell import PaladinAbility
+from ffxivcalc.Jobs.Tank.Tank_Spell import TankAbility
+from ffxivcalc.Jobs.Tank.Gunbreaker.Gunbreaker_Spell import GunbreakerAbility
+from ffxivcalc.Jobs.Tank.DarkKnight.DarkKnight_Spell import DarkKnightAbility
+from ffxivcalc.Jobs.Tank.Warrior.Warrior_Spell import WarriorAbility
+from ffxivcalc.Jobs.Tank.Paladin.Paladin_Spell import PaladinAbility
 
 #MELEE
-from Jobs.Melee.Melee_Spell import MeleeAbility
-from Jobs.Melee.Samurai.Samurai_Spell import MeikyoCheck, MeikyoEffect, MeikyoStackCheck, SamuraiAbility
-from Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton, NinjaAbility
-from Jobs.Melee.Dragoon.Dragoon_Spell import DragoonAbility
-from Jobs.Melee.Reaper.Reaper_Spell import ReaperAbility
+from ffxivcalc.Jobs.Melee.Melee_Spell import MeleeAbility
+from ffxivcalc.Jobs.Melee.Samurai.Samurai_Spell import MeikyoCheck, MeikyoEffect, MeikyoStackCheck, SamuraiAbility
+from ffxivcalc.Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton, NinjaAbility
+from ffxivcalc.Jobs.Melee.Dragoon.Dragoon_Spell import DragoonAbility
+from ffxivcalc.Jobs.Melee.Reaper.Reaper_Spell import ReaperAbility
 
 
 import http.client, json
-from Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, EnochianEffect
-from Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
-from Jobs.Melee.Monk.Monk_Spell import ComboEffect
-from Jobs.Ranged.Bard.Bard_Spell import SongEffect
-from Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
+from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, EnochianEffect
+from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
+from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
+from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import SongEffect
+from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
 
-from Jobs.Tank.Warrior.Warrior_Spell import SurgingTempestEffect 
+from ffxivcalc.Jobs.Tank.Warrior.Warrior_Spell import SurgingTempestEffect 
 
 class ActionNotFound(Exception):#Exception called if an action isn't found in the dictionnary
     pass

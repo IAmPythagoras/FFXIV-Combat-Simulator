@@ -2,25 +2,25 @@ import copy
 import json
 from pathlib import Path
 
-from Jobs.Melee.Monk.Monk_Spell import ComboEffect
-from Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton
-from Jobs.Melee.Samurai.Samurai_Spell import MeikyoCheck, MeikyoEffect, MeikyoStackCheck
-from Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
-from Jobs.Ranged.Bard.Bard_Spell import SongEffect
-from Jobs.Tank.DarkKnight.DarkKnight_Spell import BloodWeaponCheck, BloodWeaponEffect
-from Jobs.Tank.Warrior.Warrior_Spell import SurgingTempestEffect
-from Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
-from Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, EnochianEffect
+from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
+from ffxivcalc.Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton
+from ffxivcalc.Jobs.Melee.Samurai.Samurai_Spell import MeikyoCheck, MeikyoEffect, MeikyoStackCheck
+from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
+from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import SongEffect
+from ffxivcalc.Jobs.Tank.DarkKnight.DarkKnight_Spell import BloodWeaponCheck, BloodWeaponEffect
+from ffxivcalc.Jobs.Tank.Warrior.Warrior_Spell import SurgingTempestEffect
+from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
+from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, EnochianEffect
 
-from Fight import Fight
-from Enemy import Enemy
-from FFLogsAPIRequest import getAbilityList, lookup_abilityID
-from Jobs.Base_Spell import PrepullPotion, WaitAbility
-from Jobs.Player import Player
-from Jobs.PlayerEnum import *
+from ffxivcalc.Fight import Fight
+from ffxivcalc.Enemy import Enemy
+from ffxivcalc.FFLogsAPIRequest import getAbilityList, lookup_abilityID
+from ffxivcalc.Jobs.Base_Spell import PrepullPotion, WaitAbility
+from ffxivcalc.Jobs.Player import Player
+from ffxivcalc.Jobs.PlayerEnum import *
 
-from Jobs.ActionEnum import name_for_id, id_for_name # importing helper functions
-from etro_request import get_gearset_data
+from ffxivcalc.Jobs.ActionEnum import name_for_id, id_for_name # importing helper functions
+from ffxivcalc.etro_request import get_gearset_data
 
 
 letters = "abcdefghijklmnopqrstuvwyxz" # Used to make sure the input is only numbers
