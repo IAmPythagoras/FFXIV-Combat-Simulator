@@ -170,7 +170,7 @@ def EukrasianDOTCheck(Player, Enemy):
 Dosis = SageSpell(24312, True, 1.5, 2.5, 330, 400, empty, [ManaRequirement])
 EukrasianDosis = SageSpell(24314, True, 0, 1.5, 0, 400, ApplyEukrasian, [ManaRequirement, EukrasianDosisRequirement])
 EukrasianDOT = DOTSpell(-12, 70, False)
-Phlegma = SageSpell(24313, True, Lock, 2.5, 510, 400, ApplyPhlegma, [PhlegmaRequirement])
+Phlegma = SageSpell(24313, True, Lock, 2.5, 510, 610, ApplyPhlegma, [PhlegmaRequirement])
 Pneuma = SageSpell(24318, True, 1.5, 2.5, 330, 700, ApplyPneuma, [ManaRequirement, PneumaRequirement])
 Toxikon = SageSpell(24316, True, 0, 2.5, 330, 0, ApplyToxikon, [ToxikonRequirement])
 Dyskrasia = SageSpell(24315, True, 0, 2.5, 170, 400, empty, [ManaRequirement])

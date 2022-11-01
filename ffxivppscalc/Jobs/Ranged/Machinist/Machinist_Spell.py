@@ -218,7 +218,7 @@ def BioblasterDOTCheck(Player, Enemy):
 def WildFireCheck(Player, Enemy):
     if Player.WildFireTimer <= 0:
 
-        WildFireOff = MachinistSpell(-2878, False, 0, 0, 220 * Player.WildFireStack, 0, empty, [], False)
+        WildFireOff = MachinistSpell(-2878, False, 0, 0, 240 * Player.WildFireStack, 0, empty, [], False)
         #Temporary Spell that will be put in front of the Queue
         Player.ActionSet.insert(Player.NextSpell+1, WildFireOff) #Insert in queue, will be instantly executed
         Player.EffectList.remove(WildFireEffect)
@@ -273,15 +273,15 @@ def QueenAACheck(Player, Enemy):
 
 
 Wildfire = MachinistSpell(2878, False, 0, Lock, 0, 0, ApplyWildFire, [WildFireRequirement], False)
-AirAnchor = MachinistSpell(16500, True, 0, 2.5, 580, 0, ApplyAirAnchor, [AirAnchorRequirement], True)
+AirAnchor = MachinistSpell(16500, True, 0, 2.5, 600, 0, ApplyAirAnchor, [AirAnchorRequirement], True)
 BarrelStabilizer = MachinistSpell(7414, False, 0, Lock, 0, 0, ApplyBarrelStabilizer, [BarrelStabilizerRequirement], False)
-HeatBlast = MachinistSpell(7410, True, Lock, 1.5, 180, 0, ApplyHeatBlast, [OverheatedRequirement], True)
+HeatBlast = MachinistSpell(7410, True, Lock, 1.5, 200, 0, ApplyHeatBlast, [OverheatedRequirement], True)
 Hypercharge = MachinistSpell(17209, False, 0, Lock, 0, 0, ApplyHypercharge, [HyperchargeRequirement], False)
 Reassemble = MachinistSpell(2876, False, 0, Lock, 0, 0, ApplyReassemble, [ReassembleRequirement], False)
 GaussRound = MachinistSpell(2874, False, 0, Lock, 120, 0, ApplyGaussRound, [GaussRoundRequirement], False)
 Ricochet = MachinistSpell(2890, False, 0, Lock, 120, 0, ApplyRicochet, [RicochetRequirement], False)
-Drill = MachinistSpell(16498, True, 0, 2.5, 580, 0, ApplyDrill, [DrillRequirement], True)
-ChainSaw = MachinistSpell(25788, True, 0, 2.5, 580, 0, ApplyChainSaw, [ChainSawRequirement], True)
+Drill = MachinistSpell(16498, True, 0, 2.5, 600, 0, ApplyDrill, [DrillRequirement], True)
+ChainSaw = MachinistSpell(25788, True, 0, 2.5, 600, 0, ApplyChainSaw, [ChainSawRequirement], True)
 Tactician = MachinistSpell(16889, False, 0, 0, 0, 0, ApplyTactician, [TacticianRequirement], False)
 #Combo Action
 

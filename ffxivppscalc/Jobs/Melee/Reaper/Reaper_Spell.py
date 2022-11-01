@@ -331,16 +331,16 @@ ShadowOfDeath = ReaperSpell(24378, True, Lock, 2.5, 300, ApplyShadowOfDeath, [],
 SoulSlice = ReaperSpell(24380, True, Lock, 2.5, 460, ApplySoulSlice, [SoulSliceRequirement], True)
 Gibbet = ReaperSpell(24382, True, Lock, 2.5, 460, ApplyGibbet, [GibbetRequirement], True)
 Gallows = ReaperSpell(24383, True, Lock, 2.5, 460, ApplyGallows, [GibbetRequirement], True) #shares same requirement as Gibbet
-PlentifulHarvest = ReaperSpell(24385, True, Lock, 2.5, 520, ApplyPlentifulHarvest, [PlentifulHarvestRequirement], True)
+PlentifulHarvest = ReaperSpell(24385, True, Lock, 2.5, 720, ApplyPlentifulHarvest, [PlentifulHarvestRequirement], True)
 VoidReaping = ReaperSpell(24395, True, Lock, 1.5, 460, ApplyVoidReaping, [VoidReapingRequirement], True)
 CrossReaping = ReaperSpell(24396, True, Lock, 1.5, 460, ApplyCrossReaping, [VoidReapingRequirement], True) #Same Requriement as VoidReaping
-Communio = ReaperSpell(24398, True, 1.3, 2.5, 1000, ApplyCommunio, [CommunioRequirement], False)
+Communio = ReaperSpell(24398, True, 1.3, 2.5, 1100, ApplyCommunio, [CommunioRequirement], False)
 
 #oGCD
 ArcaneCircle = ReaperSpell(24405, False, Lock, 0, 0, ApplyArcaneCircle, [ArcaneCircleRequirement], False)
 Gluttony = ReaperSpell(24393, False, Lock, 0, 500, ApplyGluttony, [GluttonyRequirement], False)
 Enshroud = ReaperSpell(24394, False, Lock, 0, 0, ApplyEnshroud, [EnshroudRequirement], False)
-LemureSlice = ReaperSpell(24399, False, Lock, 0, 200, ApplyLemureSlice, [LemureSliceRequirement], False)
+LemureSlice = ReaperSpell(24399, False, Lock, 0, 220, ApplyLemureSlice, [LemureSliceRequirement], False)
 BloodStalk = ReaperSpell(24389, False, Lock, 0, 340, ApplyBloodStalk, [BloodStalkRequirement], False)
 UnveiledGibbet = ReaperSpell(24390, False, Lock, 0, 400, ApplyUnveiledGibbet, [UnveiledGibbetRequirement], False)
 UnveiledGallows = ReaperSpell(24391, False, Lock, 0, 400, ApplyUnveiledGibbet, [UnveiledGallowsRequirement], False) #Shares effect with Gibbet

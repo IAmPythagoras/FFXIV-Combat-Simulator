@@ -415,7 +415,7 @@ ArmyPaeon = BardSpell(116, False, 0, 100, ApplyArmyPaeon, [ArmyPaeonRequirement]
 MageBallad = BardSpell(114, False, 0, 100, ApplyMageBallad, [MageBalladRequirement],False)
 #oGCD
 Sidewinder = BardSpell(3562, False, 0, 300, ApplySidewinder, [SidewinderRequirement],False)
-EmpyrealArrow = BardSpell(3558, False, 0, 200, ApplyEmpyrealArrow, [EmpyrealArrowRequirement],False)
+EmpyrealArrow = BardSpell(3558, False, 0, 230, ApplyEmpyrealArrow, [EmpyrealArrowRequirement],False)
 BattleVoice = BardSpell(118, False, 0, 0, ApplyBattleVoice, [BattleVoiceRequirement],False)
 BloodLetter = BardSpell(110, False, 0, 110, ApplyBloodLetter, [BloodLetterRequirement],False)
 RainOfDeath = BardSpell(117, False, 0, 110, ApplyBloodLetter, [BloodLetterRequirement],False) #AOE Version of BloodLetter

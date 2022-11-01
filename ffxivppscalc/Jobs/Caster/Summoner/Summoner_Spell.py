@@ -218,9 +218,9 @@ FoF = SummonerSpell(16514, True, Lock, 2.5, 540, 300, empty, [FoFRequirement, Ma
 AstralImpulse = SummonerSpell(25820, True, Lock, 2.5, 440, 300, empty, [AstralImpulseRequirement, ManaRequirement])
 TryDisaster = SummonerSpell(25826, True, 1.5, 2.5, 120, 300, empty, [ManaRequirement])
 #Primal
-Titan = SummonerSpell(25839, True, Lock, 2.5, 700, 0, ApplyTitan, [TitanRequirement])
-Garuda = SummonerSpell(25840, True, Lock, 2.5, 700, 0, ApplyGaruda, [GarudaRequirement])
-Ifrit = SummonerSpell(25838, True, Lock, 2.5, 700, 0, ApplyIfrit, [IfritRequirement])
+Titan = SummonerSpell(25839, True, Lock, 2.5, 750, 0, ApplyTitan, [TitanRequirement])
+Garuda = SummonerSpell(25840, True, Lock, 2.5, 750, 0, ApplyGaruda, [GarudaRequirement])
+Ifrit = SummonerSpell(25838, True, Lock, 2.5, 750, 0, ApplyIfrit, [IfritRequirement])
 
 #Titan Ability
 Topaz = SummonerSpell(25824, True, Lock, 2.5, 330, 0, ApplyTopaz, [ManaRequirement, TopazRequirement])
@@ -252,7 +252,7 @@ EnkindleSummon = SummonerSpell(17, False, 0, 0, 1300, 0, empty, []) #Enkindle do
 Enkindle = SummonerSpell(7429, False, 0, 0, 0, 0, ApplyEnkindle, [EnkindleRequirement]) #Smaller lock since executed by pet, might have to reconsider... >.>
 Deathflare = SummonerSpell(3582, False, Lock, 0, 500, 0, ApplyDeathflare, [DeathflareRequirement])
 EnergyDrainSMN = SummonerSpell(16508, False, Lock, 0, 200, 0, ApplyEnergyDrain, [EnergyDrainRequirement])
-Fester = SummonerSpell(181, False, Lock, 0, 300, 0, ApplyFester, [FesterRequirement])
+Fester = SummonerSpell(181, False, Lock, 0, 340, 0, ApplyFester, [FesterRequirement])
 PainFlare = SummonerSpell(3578, False, 0, 0, 150, 0, ApplyFester, [FesterRequirement]) #AOE version of Fester
 SearingLight = SummonerSpell(25801, False, Lock, 0, 0, 0, ApplySearingLight, [SearingLightRequirement])
 PhysickSMN = SummonerSpell(16230, True, 1.5, 2.5, 0, 0, empty, [ManaRequirement])

@@ -293,9 +293,9 @@ Zwerchhau = RedmageSpell(7512, True, 0, 2.5, 100, 0, empty, [], 0, 0)
 Redoublement = RedmageSpell(7516, True, 0, 2.5, 100, 0, empty, [], 0, 0)
 Reprise = RedmageSpell(16529, True, 0, 2.5, 100, 0, empty, [], 0, 0)
 #Enchanted
-EnchantedRiposte = RedmageSpell(7527, True, 0, 1.5, 220, 0, ApplyEnchantedRiposte, [RDMManaRequirement], 20,20)
-EnchantedZwerchhau = RedmageSpell(7528, True, 0, 1.5, 100, 0, ApplyZwerchhau, [RDMManaRequirement], 15, 15)
-EnchantedRedoublement = RedmageSpell(7529, True, 0, 2.2, 100, 0, ApplyRedoublement, [RDMManaRequirement], 15, 15)
+EnchantedRiposte = RedmageSpell(7527, True, 0, 1.5, 280, 0, ApplyEnchantedRiposte, [RDMManaRequirement], 20,20)
+EnchantedZwerchhau = RedmageSpell(7528, True, 0, 1.5, 150, 0, ApplyZwerchhau, [RDMManaRequirement], 15, 15)
+EnchantedRedoublement = RedmageSpell(7529, True, 0, 2.2, 130, 0, ApplyRedoublement, [RDMManaRequirement], 15, 15)
 EnchantedReprise = RedmageSpell(16528, True, 0, 2.5, 330, 0, empty, [RDMManaRequirement], 5, 5)
 Verholy = RedmageSpell(7526, True, 0, 2.5, 580, 400, ApplyVerholy, [ManaRequirement, VerholyRequirement], 0, 0)
 Verflare = RedmageSpell(7525, True, 0, 2.5, 580, 400, ApplyVerflare, [ManaRequirement, VerholyRequirement], 0, 0) #Same Requirement as Verholy, just need 3 Mana stacks
