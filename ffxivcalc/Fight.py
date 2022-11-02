@@ -15,8 +15,7 @@ class Fight:
 
     """
 
-    def __init__(self, PlayerList, Enemy, ShowGraph):
-        self.PlayerList = PlayerList
+    def __init__(self, Enemy, ShowGraph):
         self.Enemy = Enemy
         self.ShowGraph = ShowGraph
         self.TimeStamp = 0
@@ -49,6 +48,12 @@ class Fight:
         self.ComputeDamageFunction = ComputeDamage # This would let someone overwrite this function.
         self.NextActionFunction = DefaultNextActionFunction
         self.ExtractInfo = DefaultExtractInfo
+
+    def AddPlayer(self, Players):
+
+        for player in Players:
+            player.CurrentFight = self
+            self.PlayerList.append(player)
 
     def SimulateFight(self, TimeUnit, TimeLimit, vocal) -> None:
 

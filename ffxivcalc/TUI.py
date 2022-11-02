@@ -1,6 +1,6 @@
 import os
-from SimulationInput import ExecuteMemoryCode
-from UI_backend import AskInput, ImportFightBackend, MergeFightBackEnd, SaveFight, SimulateFightBackend,GenerateLayoutBackend
+from ffxivcalc.SimulationInput import ExecuteMemoryCode
+from ffxivcalc.UI_backend import AskInput, ImportFightBackend, MergeFightBackEnd, SaveFight, SimulateFightBackend,GenerateLayoutBackend
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
 
 def SimulateFightMemory():
@@ -248,6 +248,9 @@ def MainMenu():
     elif user_input == "7" : Credits() #Closes program
     elif user_input == "8" : exit() #Closes program
     
+
+def TUI_draw():
+    while True : MainMenu() #Draws Main Menu
 
 #This python file will serve as a GUI for the time I do not have an actual GUI
 if __name__ == "__main__" : 

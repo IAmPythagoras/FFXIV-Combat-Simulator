@@ -94,33 +94,33 @@ def ExecuteMemoryCode(SaveFight_check, time_unit=0.01, TimeLimit=500):
     # You can simply copy the objet's __init__ and change the name. 
 
     # Caster player object
-    BLMPlayer = Player([], [EnochianEffect, ElementalEffect], Event, deepcopy(BLMStat), JobEnum.BlackMage)
-    RDMPlayer = Player([], [DualCastEffect], Event, deepcopy(RDMStat), JobEnum.RedMage)
-    SMNPlayer = Player([], [], Event, deepcopy(SMNStat), JobEnum.Summoner)
+    BLMPlayer = Player([], [], deepcopy(BLMStat), JobEnum.BlackMage)
+    RDMPlayer = Player([], [], deepcopy(RDMStat), JobEnum.RedMage)
+    SMNPlayer = Player([], [], deepcopy(SMNStat), JobEnum.Summoner)
 
     # Healer player object
-    SCHPlayer = Player([], [], Event, deepcopy(SCHStat), JobEnum.Scholar)
-    WHMPlayer = Player([], [], Event, deepcopy(WHMStat), JobEnum.WhiteMage)
-    SGEPlayer = Player([], [], Event, deepcopy(SGEStat), JobEnum.Sage)
-    ASTPlayer = Player([], [], Event, deepcopy(ASTStat), JobEnum.Astrologian)
+    SCHPlayer = Player([], [], deepcopy(SCHStat), JobEnum.Scholar)
+    WHMPlayer = Player([], [], deepcopy(WHMStat), JobEnum.WhiteMage)
+    SGEPlayer = Player([], [], deepcopy(SGEStat), JobEnum.Sage)
+    ASTPlayer = Player([], [], deepcopy(ASTStat), JobEnum.Astrologian)
 
     # Physical Ranged
-    MCHPlayer = Player([], [], Event, deepcopy(MCHStat), JobEnum.Machinist)
-    BRDPlayer = Player([], [SongEffect], Event, deepcopy(BRDStat), JobEnum.Bard)
-    DNCPlayer = Player([], [EspritEffect], Event, deepcopy(DNCStat), JobEnum.Dancer)
+    MCHPlayer = Player([], [], deepcopy(MCHStat), JobEnum.Machinist)
+    BRDPlayer = Player([], [], deepcopy(BRDStat), JobEnum.Bard)
+    DNCPlayer = Player([], [], deepcopy(DNCStat), JobEnum.Dancer)
     
     # Melee
-    NINPlayer = Player([], [], Event, deepcopy(NINStat), JobEnum.Ninja)
-    SAMPlayer = Player([], [], Event, deepcopy(SAMStat), JobEnum.Samurai)
-    DRGPlayer = Player([], [], Event, deepcopy(DRGStat), JobEnum.Dragoon)
-    RPRPlayer = Player([], [], Event, deepcopy(RPRStat), JobEnum.Reaper)
-    MNKPlayer = Player([], [ComboEffect], Event, deepcopy(MNKStat), JobEnum.Monk)
+    NINPlayer = Player([], [], deepcopy(NINStat), JobEnum.Ninja)
+    SAMPlayer = Player([], [], deepcopy(SAMStat), JobEnum.Samurai)
+    DRGPlayer = Player([], [], deepcopy(DRGStat), JobEnum.Dragoon)
+    RPRPlayer = Player([], [], deepcopy(RPRStat), JobEnum.Reaper)
+    MNKPlayer = Player([], [], deepcopy(MNKStat), JobEnum.Monk)
 
     # Tank
-    DRKPlayer = Player([], [], Event, deepcopy(DRKStat), JobEnum.DarkKnight)
-    WARPlayer = Player([], [SurgingTempestEffect], Event, deepcopy(WARStat), JobEnum.Warrior)
-    PLDPlayer = Player([], [], Event, deepcopy(PLDStat), JobEnum.Paladin)
-    GNBPlayer = Player([], [], Event, deepcopy(GNBStat), JobEnum.Gunbreaker)
+    DRKPlayer = Player([], [], deepcopy(DRKStat), JobEnum.DarkKnight)
+    WARPlayer = Player([], [], deepcopy(WARStat), JobEnum.Warrior)
+    PLDPlayer = Player([], [], deepcopy(PLDStat), JobEnum.Paladin)
+    GNBPlayer = Player([], [], deepcopy(GNBStat), JobEnum.Gunbreaker)
 
 
     # ===============================================================================================
@@ -131,7 +131,7 @@ def ExecuteMemoryCode(SaveFight_check, time_unit=0.01, TimeLimit=500):
     # Note that if you are simulating with more than 1 per job you will need to create a new list of actions.
 
     # Caster
-    BLMOpener = [Fire1, Fire1]
+    BLMOpener = [Fire3, Thunder3, Fire4, Triplecast, Potion, Fire4, Amplifier, LeyLines, Fire4, SharpCast, Swiftcast, Despair, Triplecast, Manafront, Fire4, Despair]
     SMNOpener = [Ruin3, Summon, SearingLight, AstralImpulse, AstralImpulse, AstralImpulse, EnergyDrainSMN, Enkindle, AstralImpulse, Deathflare, Fester, AstralImpulse, Fester, AstralImpulse, Garuda, Swiftcast, Slipstream, Emerald, Emerald, Emerald, Emerald, Titan]
     RDMOpener = [Verthunder, Verareo, Swiftcast,Acceleration, Verthunder, Verthunder, Embolden, Manafication, EnchantedRiposte, Fleche, EnchantedZwerchhau, Contre, EnchantedRedoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verfire, Verthunder, Verstone, Verareo, Jolt, Verthunder, Fleche]
     
@@ -204,7 +204,7 @@ def ExecuteMemoryCode(SaveFight_check, time_unit=0.01, TimeLimit=500):
 
     PlayerList = [BLMPlayer]
  
-    Event.PlayerList = PlayerList
+    Event.AddPlayer(PlayerList)
 
     # ===============================================================================================
 

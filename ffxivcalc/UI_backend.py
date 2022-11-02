@@ -235,29 +235,29 @@ def RestoreFightObject(data : dict):
         job_name = player["JobName"]
         job_object = None
         #Healer
-        if job_name == "Sage" : job_object = Player([], [], None, {}, JobEnum.Sage)
-        elif job_name == "Scholar" : job_object = Player([], [], None, {}, JobEnum.Scholar)
-        elif job_name == "WhiteMage" : job_object = Player([], [], None, {}, JobEnum.WhiteMage)
-        elif job_name == "Astrologian" : job_object = Player([], [], None, {}, JobEnum.Astrologian)
+        if job_name == "Sage" : job_object = Player([], [],{}, JobEnum.Sage)
+        elif job_name == "Scholar" : job_object = Player([], [], {}, JobEnum.Scholar)
+        elif job_name == "WhiteMage" : job_object = Player([], [], {}, JobEnum.WhiteMage)
+        elif job_name == "Astrologian" : job_object = Player([], [], {}, JobEnum.Astrologian)
         #Tank
-        elif job_name == "Warrior" : job_object = Player([], [SurgingTempestEffect], None, {}, JobEnum.Warrior)
-        elif job_name == "DarkKnight" : job_object = Player([], [], None, {}, JobEnum.DarkKnight)
-        elif job_name == "Paladin" : job_object = Player([], [], None, {}, JobEnum.Paladin)
-        elif job_name == "Gunbreaker" : job_object = Player([], [], None, {}, JobEnum.Gunbreaker)
+        elif job_name == "Warrior" : job_object = Player([], [SurgingTempestEffect],  {}, JobEnum.Warrior)
+        elif job_name == "DarkKnight" : job_object = Player([], [],  {}, JobEnum.DarkKnight)
+        elif job_name == "Paladin" : job_object = Player([], [], {}, JobEnum.Paladin)
+        elif job_name == "Gunbreaker" : job_object = Player([], [],  {}, JobEnum.Gunbreaker)
         #Caster
-        elif job_name == "BlackMage" : job_object = Player([], [EnochianEffect, ElementalEffect], None, {}, JobEnum.BlackMage)
-        elif job_name == "RedMage" : job_object = Player([], [DualCastEffect], None, {}, JobEnum.RedMage)
-        elif job_name == "Summoner" : job_object = Player([], [], None, {}, JobEnum.Summoner)
+        elif job_name == "BlackMage" : job_object = Player([], [EnochianEffect, ElementalEffect],  {}, JobEnum.BlackMage)
+        elif job_name == "RedMage" : job_object = Player([], [DualCastEffect],  {}, JobEnum.RedMage)
+        elif job_name == "Summoner" : job_object = Player([], [],  {}, JobEnum.Summoner)
         #Ranged
-        elif job_name == "Dancer" : job_object = Player([], [EspritEffect], None, {}, JobEnum.Dancer)
-        elif job_name == "Machinist" : job_object = Player([], [], None, {}, JobEnum.Machinist)
-        elif job_name == "Bard" : job_object = Player([], [SongEffect], None, {}, JobEnum.Bard)
+        elif job_name == "Dancer" : job_object = Player([], [EspritEffect],  {}, JobEnum.Dancer)
+        elif job_name == "Machinist" : job_object = Player([], [],  {}, JobEnum.Machinist)
+        elif job_name == "Bard" : job_object = Player([], [SongEffect],  {}, JobEnum.Bard)
         #melee
-        elif job_name == "Reaper" : job_object = Player([], [], None, {}, JobEnum.Reaper)
-        elif job_name == "Monk" : job_object = Player([], [ComboEffect], None, {}, JobEnum.Monk)
-        elif job_name == "Dragoon" : job_object = Player([], [], None, {}, JobEnum.Dragoon)
-        elif job_name == "Ninja" : job_object = Player([], [], None, {}, JobEnum.Ninja)
-        elif job_name == "Samurai" : job_object = Player([], [], None, {}, JobEnum.Samurai)
+        elif job_name == "Reaper" : job_object = Player([], [],  {}, JobEnum.Reaper)
+        elif job_name == "Monk" : job_object = Player([], [ComboEffect],  {}, JobEnum.Monk)
+        elif job_name == "Dragoon" : job_object = Player([], [],  {}, JobEnum.Dragoon)
+        elif job_name == "Ninja" : job_object = Player([], [],  {}, JobEnum.Ninja)
+        elif job_name == "Samurai" : job_object = Player([], [],  {}, JobEnum.Samurai)
         
 
         job_object.playerID = player["playerID"] #Giving the playerID
@@ -353,8 +353,7 @@ def RestoreFightObject(data : dict):
 
     for playerID in PlayerActionList:
         PlayerActionList[playerID]["job_object"].ActionSet = PlayerActionList[playerID]["actionObject"] #Linking player object and action list
-        Event.PlayerList.append(PlayerActionList[playerID]["job_object"]) #Adding job_object to Event
-        PlayerActionList[playerID]["job_object"].CurrentFight = Event
+        Event.AddPlayer([PlayerActionList[playerID]["job_object"]]) #Adding job_object to Event
 
 
     return Event

@@ -147,7 +147,6 @@ class Spell:
         Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage
 
-
         if not (player.CurrentFight.FightStart) and Damage > 0 : 
             player.CurrentFight.FightStart = True
 
