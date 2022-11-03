@@ -28,7 +28,7 @@ class Fight:
         self.failedRequirementList = [] # List holding all failedRequirementEvent object for the fight.
         self.waitingThreshold = 1 # number of seconds we are willing to wait for. By default 1
         self.wipe = False # Will be set to True in case we are stopping the simulation.
-
+        self.PlayerList = [] # Empty player list
         # functions
 
         def DefaultNextActionFunction(Fight, Player) -> bool:

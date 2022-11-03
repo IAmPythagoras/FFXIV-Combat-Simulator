@@ -349,7 +349,7 @@ def RestoreFightObject(data : dict):
         #We will now create the event
 
     Dummy = Enemy()
-    Event = Fight([], Dummy, False)
+    Event = Fight(Dummy, False)
 
     for playerID in PlayerActionList:
         PlayerActionList[playerID]["job_object"].ActionSet = PlayerActionList[playerID]["actionObject"] #Linking player object and action list
