@@ -63,7 +63,7 @@ class Player:
         self.TotalDamage = 0 # Keeps track of total damage done
         self.TotalMinDamage = 0 # Minimum expected damage (no crit or diret hit) 
 
-        self.Stat = Stat # Stats of the player
+        self.Stat = deepcopy(Stat) # Stats of the player
 
         self.auras = [] # List containing all Auras at the start of the fight
 
