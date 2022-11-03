@@ -178,12 +178,12 @@ def PrintResult(self, time, TimeStamp) -> None:
         axs[0].plot(TimeStamp,player.DPSGraph, label=job)
         axs[1].plot(TimeStamp,player.PotencyGraph, label=job)
 
-        if len(self.PlayerList) <= 8:
-            if DPS != 0 : ComputeDPSDistribution(self, player, fig2, axs2[j][i], job)
-            i+=1
-            if i == 4:
-                i = 0
-                j+=1
+        #if len(self.PlayerList) <= 8:
+        #    if DPS != 0 : ComputeDPSDistribution(self, player, fig2, axs2[j][i], job)
+        #    i+=1
+        #    if i == 4:
+        #        i = 0
+        #        j+=1
     print("The Enemy has received a total potency of: " + str(round(self.Enemy.TotalPotency,2)))
     print("The Potency Per Second on the Enemy is: " + str(round(self.Enemy.TotalPotency/time,2)))
     print("The Enemy's total DPS is " + str(round(self.Enemy.TotalDamage / time, 2)))
