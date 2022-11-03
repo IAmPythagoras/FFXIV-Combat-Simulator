@@ -134,6 +134,7 @@ def PrintResult(self, time, TimeStamp) -> None:
         if player.TotalPotency == 0 or time == 0:
             PPS = 0
             DPS = 0
+            time = 1 # This is only so we get no division by 0 error
         else:
             PPS = player.TotalPotency / time
             DPS = player.TotalDamage / time

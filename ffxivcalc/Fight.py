@@ -247,11 +247,11 @@ class Fight:
         for i in remove:
             self.PlayerList.pop(i-k)
             k+=1
-            
-       # Printing the results if vocal is true.
-        if vocal : 
-            for t in self.failedRequirementList: 
-                if t.fatal : print(t.requirementName)
+
+        for t in self.failedRequirementList: # Printing the failed requirement if it was fatal
+            if t.fatal : print("The first failed fatal requirement was : " + t.requirementName)
+
+        # Printing the results if vocal is true.
         if vocal : PrintResult(self, self.TimeStamp, self.timeValue)
             
 
