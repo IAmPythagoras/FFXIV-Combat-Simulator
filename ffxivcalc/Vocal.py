@@ -131,7 +131,7 @@ def PrintResult(self, time, TimeStamp) -> None:
 
     for player in self.PlayerList:
 
-        if player.TotalPotency == 0:
+        if player.TotalPotency == 0 or time == 0:
             PPS = 0
             DPS = 0
         else:
