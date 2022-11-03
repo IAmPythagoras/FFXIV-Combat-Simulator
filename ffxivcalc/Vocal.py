@@ -131,6 +131,8 @@ def PrintResult(self, time, TimeStamp) -> None:
 
     for player in self.PlayerList:
 
+        if time == 0: time = 1 # This is only so we don't have division by 0 error
+
         if player.TotalPotency == 0:
             PPS = 0
             DPS = 0
@@ -138,7 +140,6 @@ def PrintResult(self, time, TimeStamp) -> None:
             PPS = player.TotalPotency / time
             DPS = player.TotalDamage / time
 
-        if time == 0: time = 1 # This is only so we don't have division by 0 error
         print(player.RoleEnum)
         print("The Total Potency done by player " + str(JobEnum.name_for_id(player.JobEnum)) + " was : " + str(player.TotalPotency))
         print("This same player had a Potency Per Second of: " + str(round(PPS,2)))
