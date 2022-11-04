@@ -83,9 +83,9 @@ DRKPlayer.ActionSet = [WaitAbility(16), BloodWeapon, WaitAbility(4), HardSlash, 
 GNBPlayer.ActionSet = [WaitAbility(20),LightningShot, KeenEdge, BrutalShell, NoMercy, Bloodfest, GnashingFang, JugularRip, SonicBreak, BlastingZone, BowShock, DoubleDown, RoughDivide, SavageClaw, AbdomenTear, RoughDivide, WickedTalon, EyeGouge, SolidBarrel, BurstStrike, Hypervelocity, KeenEdge]
 
 
+#NINPlayer.Set_etro_gearset("https://etro.gg/gearset/73f9f3af-2fa1-4871-85a3-a0f6adbb5e28")
 
-
-newFight.AddPlayer([GNBPlayer, DRKPlayer, SCHPlayer, WHMPlayer, RDMPlayer, DNCPlayer, DRGPlayer, NINPlayer]) # Adding players to the fight
+newFight.AddPlayer([NINPlayer]) # Adding players to the fight
 
 TimeUnit = 0.01 # Unit of time per frame
 TimeLimit = 500 # Max running time of the simulation (time IN the simulation)

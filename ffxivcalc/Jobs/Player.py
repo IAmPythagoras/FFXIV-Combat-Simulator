@@ -2,6 +2,7 @@
 from copy import deepcopy
 from ffxivcalc.Jobs.PlayerEnum import JobEnum, RoleEnum
 from ffxivcalc.Jobs.ActionEnum import *
+from ffxivcalc.etro_request import get_gearset_data
 
 from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import EnochianEffect, ElementalEffect
 from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
@@ -21,6 +22,16 @@ class Player:
         """
         
         self.ActionSet.append(actionObject)
+
+    def Set_etro_gearset(self, url : str) -> None:
+        """This function takes an etro url and update/sets the player's stats according to the given URL
+
+        Args:
+            url (str): etro gear set url. Can be the whole thing or just the id at the end of the url.
+        """
+
+        self.Stat = get_gearset_data(url) # Updates the stats
+        
 
     def __init__(self, ActionSet, EffectList, Stat,Job : JobEnum):
         """
