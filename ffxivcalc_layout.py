@@ -131,7 +131,7 @@ GNBPlayer = Player([], [], GNBStat, JobEnum.Gunbreaker)
 # Note that if you are simulating with more than 1 per job you will need to create a new list of actions.
 
 # Caster
-BLMOpener = []
+BLMOpener = [Fire3, Fire4, Fire4, Fire4]
 SMNOpener = []
 RDMOpener = []
 
@@ -202,7 +202,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = []
+PlayerList = [BLMPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -217,6 +217,11 @@ RequirementOn = True # Parameter that will enable or disable the requirement che
 IgnoreMana = True # True if want to ignore mana
 vocal = True # True if want to view results
 
+Event.RequirementOn = RequirementOn
+Event.ShowGraph = ShowGraph
+Event.IgnoreMana = IgnoreMana
+
+
 # ===============================================================================================
 
-Event.SimulateFight(time_unit, TimeLimit, vocal)
+Event.SimulateFight(time_unit, TimeLimit, vocal) # Simulating fight
