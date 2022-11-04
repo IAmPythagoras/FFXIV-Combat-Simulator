@@ -1,5 +1,5 @@
-from Jobs.Base_Spell import buff, empty
-from Jobs.Melee.Melee_Spell import ReaperSpell
+from ffxivcalc.Jobs.Base_Spell import buff, empty
+from ffxivcalc.Jobs.Melee.Melee_Spell import ReaperSpell
 Lock = 0
 
 #Requirement

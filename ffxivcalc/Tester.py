@@ -13,7 +13,7 @@ This list will be expanded
 from copy import deepcopy
 import json
 from pathlib import Path
-from UI_backend import RestoreFightObject
+from ffxivcalc.UI_backend import RestoreFightObject
 
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0):

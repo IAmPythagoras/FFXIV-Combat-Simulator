@@ -4,9 +4,9 @@
 
 
 import copy
-from Jobs.Base_Spell import DOTSpell, Queen_AA, empty, WaitAbility
-from Jobs.Ranged.Ranged_Spell import MachinistSpell
-from Jobs.Player import Pet
+from ffxivcalc.Jobs.Base_Spell import DOTSpell, Queen_AA, empty, WaitAbility
+from ffxivcalc.Jobs.Ranged.Ranged_Spell import MachinistSpell
+from ffxivcalc.Jobs.Player import Pet
 
 Lock = 0
 

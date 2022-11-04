@@ -1,8 +1,8 @@
 #########################################
 ########## WHITEMAGE PLAYER #############
 #########################################
-from Jobs.Base_Spell import DOTSpell, empty, ManaRequirement
-from Jobs.Healer.Healer_Spell import WhitemageSpell
+from ffxivcalc.Jobs.Base_Spell import DOTSpell, empty, ManaRequirement
+from ffxivcalc.Jobs.Healer.Healer_Spell import WhitemageSpell
 import copy
 
 #Requirement

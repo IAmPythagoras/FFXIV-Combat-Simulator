@@ -1,54 +1,54 @@
 import os
 
-from Enemy import Enemy
-from Fight import Fight
-from Jobs.Player import Player
-from Jobs.PlayerEnum import *
+from ffxivcalc.Enemy import Enemy
+from ffxivcalc.Fight import Fight
+from ffxivcalc.Jobs.Player import Player
+from ffxivcalc.Jobs.PlayerEnum import *
 from copy import deepcopy
 
-from Jobs.Base_Spell import WaitAbility, Potion
-from Jobs.Caster.Caster_Spell import *
-from Jobs.Melee.Melee_Spell import *
-from Jobs.Ranged.Ranged_Spell import *
-from Jobs.Healer.Healer_Spell import *
-from Jobs.Tank.Tank_Spell import *
+from ffxivcalc.Jobs.Base_Spell import WaitAbility, Potion
+from ffxivcalc.Jobs.Caster.Caster_Spell import *
+from ffxivcalc.Jobs.Melee.Melee_Spell import *
+from ffxivcalc.Jobs.Ranged.Ranged_Spell import *
+from ffxivcalc.Jobs.Healer.Healer_Spell import *
+from ffxivcalc.Jobs.Tank.Tank_Spell import *
 
 #CASTER
-from Jobs.Caster.Summoner.Summoner_Spell import *
-from Jobs.Caster.Blackmage.BlackMage_Spell import * 
-from Jobs.Caster.Redmage.Redmage_Spell import *
+from ffxivcalc.Jobs.Caster.Summoner.Summoner_Spell import *
+from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import * 
+from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import *
 
 #HEALER
-from Jobs.Healer.Sage.Sage_Spell import *
-from Jobs.Healer.Scholar.Scholar_Spell import *
-from Jobs.Healer.Whitemage.Whitemage_Spell import *
-from Jobs.Healer.Astrologian.Astrologian_Spell import *
+from ffxivcalc.Jobs.Healer.Sage.Sage_Spell import *
+from ffxivcalc.Jobs.Healer.Scholar.Scholar_Spell import *
+from ffxivcalc.Jobs.Healer.Whitemage.Whitemage_Spell import *
+from ffxivcalc.Jobs.Healer.Astrologian.Astrologian_Spell import *
 
 #RANGED
-from Jobs.Ranged.Machinist.Machinist_Spell import *
-from Jobs.Ranged.Bard.Bard_Spell import *
-from Jobs.Ranged.Dancer.Dancer_Spell import *
+from ffxivcalc.Jobs.Ranged.Machinist.Machinist_Spell import *
+from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import *
+from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import *
 
 #TANK
-from Jobs.Tank.Gunbreaker.Gunbreaker_Spell import *
-from Jobs.Tank.DarkKnight.DarkKnight_Spell import *
-from Jobs.Tank.Warrior.Warrior_Spell import *
-from Jobs.Tank.Paladin.Paladin_Spell import *
+from ffxivcalc.Jobs.Tank.Gunbreaker.Gunbreaker_Spell import *
+from ffxivcalc.Jobs.Tank.DarkKnight.DarkKnight_Spell import *
+from ffxivcalc.Jobs.Tank.Warrior.Warrior_Spell import *
+from ffxivcalc.Jobs.Tank.Paladin.Paladin_Spell import *
 
 #MELEE
-from Jobs.Melee.Samurai.Samurai_Spell import *
-from Jobs.Melee.Ninja.Ninja_Spell import *
-from Jobs.Melee.Dragoon.Dragoon_Spell import *
-from Jobs.Melee.Reaper.Reaper_Spell import *
-from Jobs.Melee.Monk.Monk_Spell import *
+from ffxivcalc.Jobs.Melee.Samurai.Samurai_Spell import *
+from ffxivcalc.Jobs.Melee.Ninja.Ninja_Spell import *
+from ffxivcalc.Jobs.Melee.Dragoon.Dragoon_Spell import *
+from ffxivcalc.Jobs.Melee.Reaper.Reaper_Spell import *
+from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import *
 
-from UI_backend import SaveFight
+from ffxivcalc.UI_backend import SaveFight
 
 def ExecuteMemoryCode(SaveFight_check, time_unit=0.01, TimeLimit=500):
     # This part of the code will execute whatever rotation is written here. It will be called from TUI.
 
     Dummy = Enemy()
-    Event = Fight([], Dummy, False)
+    Event = Fight(Dummy, False)
 
 
     # ===============================================================================================
@@ -94,33 +94,33 @@ def ExecuteMemoryCode(SaveFight_check, time_unit=0.01, TimeLimit=500):
     # You can simply copy the objet's __init__ and change the name. 
 
     # Caster player object
-    BLMPlayer = Player([], [EnochianEffect, ElementalEffect], Event, deepcopy(BLMStat), JobEnum.BlackMage)
-    RDMPlayer = Player([], [DualCastEffect], Event, deepcopy(RDMStat), JobEnum.RedMage)
-    SMNPlayer = Player([], [], Event, deepcopy(SMNStat), JobEnum.Summoner)
+    BLMPlayer = Player([], [], deepcopy(BLMStat), JobEnum.BlackMage)
+    RDMPlayer = Player([], [], deepcopy(RDMStat), JobEnum.RedMage)
+    SMNPlayer = Player([], [], deepcopy(SMNStat), JobEnum.Summoner)
 
     # Healer player object
-    SCHPlayer = Player([], [], Event, deepcopy(SCHStat), JobEnum.Scholar)
-    WHMPlayer = Player([], [], Event, deepcopy(WHMStat), JobEnum.WhiteMage)
-    SGEPlayer = Player([], [], Event, deepcopy(SGEStat), JobEnum.Sage)
-    ASTPlayer = Player([], [], Event, deepcopy(ASTStat), JobEnum.Astrologian)
+    SCHPlayer = Player([], [], deepcopy(SCHStat), JobEnum.Scholar)
+    WHMPlayer = Player([], [], deepcopy(WHMStat), JobEnum.WhiteMage)
+    SGEPlayer = Player([], [], deepcopy(SGEStat), JobEnum.Sage)
+    ASTPlayer = Player([], [], deepcopy(ASTStat), JobEnum.Astrologian)
 
     # Physical Ranged
-    MCHPlayer = Player([], [], Event, deepcopy(MCHStat), JobEnum.Machinist)
-    BRDPlayer = Player([], [SongEffect], Event, deepcopy(BRDStat), JobEnum.Bard)
-    DNCPlayer = Player([], [EspritEffect], Event, deepcopy(DNCStat), JobEnum.Dancer)
+    MCHPlayer = Player([], [], deepcopy(MCHStat), JobEnum.Machinist)
+    BRDPlayer = Player([], [], deepcopy(BRDStat), JobEnum.Bard)
+    DNCPlayer = Player([], [], deepcopy(DNCStat), JobEnum.Dancer)
     
     # Melee
-    NINPlayer = Player([], [], Event, deepcopy(NINStat), JobEnum.Ninja)
-    SAMPlayer = Player([], [], Event, deepcopy(SAMStat), JobEnum.Samurai)
-    DRGPlayer = Player([], [], Event, deepcopy(DRGStat), JobEnum.Dragoon)
-    RPRPlayer = Player([], [], Event, deepcopy(RPRStat), JobEnum.Reaper)
-    MNKPlayer = Player([], [ComboEffect], Event, deepcopy(MNKStat), JobEnum.Monk)
+    NINPlayer = Player([], [], deepcopy(NINStat), JobEnum.Ninja)
+    SAMPlayer = Player([], [], deepcopy(SAMStat), JobEnum.Samurai)
+    DRGPlayer = Player([], [], deepcopy(DRGStat), JobEnum.Dragoon)
+    RPRPlayer = Player([], [], deepcopy(RPRStat), JobEnum.Reaper)
+    MNKPlayer = Player([], [], deepcopy(MNKStat), JobEnum.Monk)
 
     # Tank
-    DRKPlayer = Player([], [], Event, deepcopy(DRKStat), JobEnum.DarkKnight)
-    WARPlayer = Player([], [SurgingTempestEffect], Event, deepcopy(WARStat), JobEnum.Warrior)
-    PLDPlayer = Player([], [], Event, deepcopy(PLDStat), JobEnum.Paladin)
-    GNBPlayer = Player([], [], Event, deepcopy(GNBStat), JobEnum.Gunbreaker)
+    DRKPlayer = Player([], [], deepcopy(DRKStat), JobEnum.DarkKnight)
+    WARPlayer = Player([], [], deepcopy(WARStat), JobEnum.Warrior)
+    PLDPlayer = Player([], [], deepcopy(PLDStat), JobEnum.Paladin)
+    GNBPlayer = Player([], [], deepcopy(GNBStat), JobEnum.Gunbreaker)
 
 
     # ===============================================================================================
@@ -131,7 +131,7 @@ def ExecuteMemoryCode(SaveFight_check, time_unit=0.01, TimeLimit=500):
     # Note that if you are simulating with more than 1 per job you will need to create a new list of actions.
 
     # Caster
-    BLMOpener = [Fire1, Fire1]
+    BLMOpener = [Fire3, Thunder3, Fire4, Triplecast, Potion, Fire4, Amplifier, LeyLines, Fire4, SharpCast, Swiftcast, Despair, Triplecast, Manafront, Fire4, Despair]
     SMNOpener = [Ruin3, Summon, SearingLight, AstralImpulse, AstralImpulse, AstralImpulse, EnergyDrainSMN, Enkindle, AstralImpulse, Deathflare, Fester, AstralImpulse, Fester, AstralImpulse, Garuda, Swiftcast, Slipstream, Emerald, Emerald, Emerald, Emerald, Titan]
     RDMOpener = [Verthunder, Verareo, Swiftcast,Acceleration, Verthunder, Verthunder, Embolden, Manafication, EnchantedRiposte, Fleche, EnchantedZwerchhau, Contre, EnchantedRedoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verfire, Verthunder, Verstone, Verareo, Jolt, Verthunder, Fleche]
     
@@ -204,7 +204,7 @@ def ExecuteMemoryCode(SaveFight_check, time_unit=0.01, TimeLimit=500):
 
     PlayerList = [BLMPlayer]
  
-    Event.PlayerList = PlayerList
+    Event.AddPlayer(PlayerList)
 
     # ===============================================================================================
 

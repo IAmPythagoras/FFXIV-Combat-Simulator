@@ -1,8 +1,14 @@
 # This file contains the Player class and its implementation
 from copy import deepcopy
-from Jobs.PlayerEnum import JobEnum, RoleEnum
-from Jobs.ActionEnum import *
+from ffxivcalc.Jobs.PlayerEnum import JobEnum, RoleEnum
+from ffxivcalc.Jobs.ActionEnum import *
+from ffxivcalc.etro_request import get_gearset_data
 
+from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import EnochianEffect, ElementalEffect
+from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
+from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import SongEffect
+from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
+from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
 
 
 class Player:
@@ -17,7 +23,17 @@ class Player:
         
         self.ActionSet.append(actionObject)
 
-    def __init__(self, ActionSet, EffectList, CurrentFight, Stat,Job : JobEnum):
+    def Set_etro_gearset(self, url : str) -> None:
+        """This function takes an etro url and update/sets the player's stats according to the given URL
+
+        Args:
+            url (str): etro gear set url. Can be the whole thing or just the id at the end of the url.
+        """
+
+        self.Stat = get_gearset_data(url) # Updates the stats
+        
+
+    def __init__(self, ActionSet, EffectList, Stat,Job : JobEnum):
         """
         Create the player object
         ActionSet : List[Spell] -> List of spell the player will do in the simulation
@@ -34,7 +50,7 @@ class Player:
         self.DOTList = [] # List of DOTs
         self.CastingSpell = []
         self.NextSpell = 0 # Index of next action in ActionSet
-        self.CurrentFight = CurrentFight # Reference to the fight the player is in
+        self.CurrentFight = None # Reference to the fight the player is in. Set up when the player is added to a fight
         self.ManaTick = 1.5 # Starts Mana tick at this value
         self.playerID = 1 # Might not be necessary so by default 1
         self.Pet = None # Summoned Pet
@@ -58,7 +74,7 @@ class Player:
         self.TotalDamage = 0 # Keeps track of total damage done
         self.TotalMinDamage = 0 # Minimum expected damage (no crit or diret hit) 
 
-        self.Stat = Stat # Stats of the player
+        self.Stat = deepcopy(Stat) # Stats of the player
 
         self.auras = [] # List containing all Auras at the start of the fight
 
@@ -407,6 +423,9 @@ class Player:
     # Jobs
 
     def init_blackmage(self):
+
+        self.EffectList = [EnochianEffect, ElementalEffect] # Adding effects
+
         #Gauge
         self.ElementalGauge = 0 #3 represents 3 astral fire and -3 represents 3 Umbral Ice
         self.PolyglotStack = 0
@@ -484,6 +503,9 @@ class Player:
         self.EffectCDList.append(BLMManaRegenCheck) #Mana regen
 
     def init_redmage(self):
+
+        self.EffectList = [DualCastEffect]
+
         #mana
         self.BlackMana = 0
         self.WhiteMana = 0
@@ -990,6 +1012,8 @@ class Player:
     
     def init_dancer(self):
 
+        self.EffectList = [EspritEffect]
+
         #Gauge
         self.MaxFourfoldFeather = 0
         self.MaxEspritGauge = 0
@@ -1081,6 +1105,8 @@ class Player:
         self.updateJobCD = updateCD
 
     def init_bard(self):
+
+        self.EffectList = [SongEffect]
 
         #Expected Proc number
         self.ExpectedRefulgent = 0
@@ -1189,6 +1215,9 @@ class Player:
         self.updateJobCD = updateCD
 
     def init_monk(self):
+
+        self.EffectList = [ComboEffect]
+
         #Gauge
         self.CurrentForm = 0 #0 -> Nothing, 1 -> Opo-opo, 2 -> Raptor, 3 -> Coeurl, 4 -> Formless
         #After each execution of a relevant GCD, the form will be changed here.
@@ -1954,9 +1983,6 @@ class Pet(Player):
         self.ClassAction = CasterActions # Just a default
         self.JobAction = SummonerActions # Won't be used
 
-        # Adding itself to the fight object
-        Master.CurrentFight.PlayerList.append(self)
-
         # Jobmod
         self.JobMod = 100
 
@@ -1975,7 +2001,10 @@ class Pet(Player):
         self.ArcanumTimer = self.Master.ArcanumTimer # ArcanumTimer
         self.MeditativeBrotherhoodTimer = self.Master.MeditativeBrotherhoodTimer # Meditative Brotherhood Timer
 
-        super().__init__([], [], Master.CurrentFight, deepcopy(Master.Stat), JobEnum.Pet)
+        super().__init__([], [], deepcopy(Master.Stat), JobEnum.Pet)
+
+        # Adding itself to the fight object
+        Master.CurrentFight.AddPlayer([self])
 
         def updateRoleTimer(self, time):
             pass

@@ -1,8 +1,8 @@
 #########################################
 ########## REDMAGE PLAYER ###############
 #########################################
-from Jobs.Base_Spell import ManaRequirement, buff, empty
-from Jobs.Caster.Caster_Spell import RedmageSpell, SwiftcastEffect
+from ffxivcalc.Jobs.Base_Spell import ManaRequirement, buff, empty
+from ffxivcalc.Jobs.Caster.Caster_Spell import RedmageSpell, SwiftcastEffect
 Lock = 0.75
 #Special
 

@@ -1,7 +1,7 @@
 import math
-from Vocal import PrintResult
+from ffxivcalc.Vocal import PrintResult
 
-from Jobs.PlayerEnum import *
+from ffxivcalc.Jobs.PlayerEnum import *
 
 
 class NoMoreAction(Exception):# Exception called if a spell fails to cast
@@ -15,8 +15,7 @@ class Fight:
 
     """
 
-    def __init__(self, PlayerList, Enemy, ShowGraph):
-        self.PlayerList = PlayerList
+    def __init__(self, Enemy, ShowGraph):
         self.Enemy = Enemy
         self.ShowGraph = ShowGraph
         self.TimeStamp = 0
@@ -29,7 +28,7 @@ class Fight:
         self.failedRequirementList = [] # List holding all failedRequirementEvent object for the fight.
         self.waitingThreshold = 1 # number of seconds we are willing to wait for. By default 1
         self.wipe = False # Will be set to True in case we are stopping the simulation.
-
+        self.PlayerList = [] # Empty player list
         # functions
 
         def DefaultNextActionFunction(Fight, Player) -> bool:
@@ -49,6 +48,12 @@ class Fight:
         self.ComputeDamageFunction = ComputeDamage # This would let someone overwrite this function.
         self.NextActionFunction = DefaultNextActionFunction
         self.ExtractInfo = DefaultExtractInfo
+
+    def AddPlayer(self, Players):
+
+        for player in Players:
+            player.CurrentFight = self
+            self.PlayerList.append(player)
 
     def SimulateFight(self, TimeUnit, TimeLimit, vocal) -> None:
 
@@ -242,11 +247,11 @@ class Fight:
         for i in remove:
             self.PlayerList.pop(i-k)
             k+=1
-            
-       # Printing the results if vocal is true.
-        if vocal : 
-            for t in self.failedRequirementList: 
-                if t.fatal : print(t.requirementName)
+
+        for t in self.failedRequirementList: # Printing the failed requirement if it was fatal
+            if t.fatal : print("The first failed fatal requirement was : " + t.requirementName)
+
+        # Printing the results if vocal is true.
         if vocal : PrintResult(self, self.TimeStamp, self.timeValue)
             
 

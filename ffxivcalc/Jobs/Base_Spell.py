@@ -1,9 +1,9 @@
 import copy
 
 import math
-from Jobs.PlayerEnum import JobEnum
-from Jobs.PlayerEnum import RoleEnum
-from requirementHandler import failedRequirementEvent
+from ffxivcalc.Jobs.PlayerEnum import JobEnum
+from ffxivcalc.Jobs.PlayerEnum import RoleEnum
+from ffxivcalc.requirementHandler import failedRequirementEvent
 Lock = 0.75
 
 class FailedToCast(Exception):#Exception called if a spell fails to cast
@@ -146,7 +146,6 @@ class Spell:
         
         Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage
-
 
         if not (player.CurrentFight.FightStart) and Damage > 0 : 
             player.CurrentFight.FightStart = True

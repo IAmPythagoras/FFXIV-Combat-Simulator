@@ -6,7 +6,7 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
-from Jobs.PlayerEnum import JobEnum
+from ffxivcalc.Jobs.PlayerEnum import JobEnum
 
 # Functions related to computing and plotting graph of DPS distribution
 
@@ -110,7 +110,7 @@ def PrintResult(self, time, TimeStamp) -> None:
     """
 
     fig, axs = plt.subplots(1, 2, constrained_layout=True) # DPS and PPS graph
-    fig2, axs2 = plt.subplots(2, 4, constrained_layout=True) # DPS Crit distribution
+    #fig2, axs2 = plt.subplots(2, 4, constrained_layout=True) # DPS Crit distribution
     axs[0].set_ylabel("DPS")
     axs[0].set_xlabel("Time (s)")
     axs[0].set_title("DPS over time")
@@ -131,12 +131,15 @@ def PrintResult(self, time, TimeStamp) -> None:
 
     for player in self.PlayerList:
 
+        if time == 0: time = 1 # This is only so we don't have division by 0 error
+
         if player.TotalPotency == 0:
             PPS = 0
             DPS = 0
         else:
             PPS = player.TotalPotency / time
             DPS = player.TotalDamage / time
+
         print(player.RoleEnum)
         print("The Total Potency done by player " + str(JobEnum.name_for_id(player.JobEnum)) + " was : " + str(player.TotalPotency))
         print("This same player had a Potency Per Second of: " + str(round(PPS,2)))
@@ -175,15 +178,16 @@ def PrintResult(self, time, TimeStamp) -> None:
         axs[0].plot(TimeStamp,player.DPSGraph, label=job)
         axs[1].plot(TimeStamp,player.PotencyGraph, label=job)
 
-        if len(self.PlayerList) <= 8:
-            if DPS != 0 : ComputeDPSDistribution(self, player, fig2, axs2[j][i], job)
-            i+=1
-            if i == 4:
-                i = 0
-                j+=1
-    print("The Enemy has received a total potency of: " + str(round(self.Enemy.TotalPotency,2)))
-    print("The Potency Per Second on the Enemy is: " + str(round(self.Enemy.TotalPotency/time,2)))
-    print("The Enemy's total DPS is " + str(round(self.Enemy.TotalDamage / time, 2)))
+        #if len(self.PlayerList) <= 8:
+        #    if DPS != 0 : ComputeDPSDistribution(self, player, fig2, axs2[j][i], job)
+        #    i+=1
+        #    if i == 4:
+        #        i = 0
+        #        j+=1
+
+    print("The Enemy has received a total potency of: " + str(round(self.Enemy.TotalPotency,2) if time != 0 else "0" ))
+    print("The Potency Per Second on the Enemy is: " + str(round(self.Enemy.TotalPotency/time,2) if time != 0 else "0" ))
+    print("The Enemy's total DPS is " + str(round(self.Enemy.TotalDamage / time, 2) if time != 0 else "0" ))
     axs[0].xaxis.grid(True)
     axs[1].xaxis.grid(True)
     if len(TimeStamp) == 0: # If for some reason Fight ended before 3 second TimeStamp is empty and we need to do an edge case to avoid a crash

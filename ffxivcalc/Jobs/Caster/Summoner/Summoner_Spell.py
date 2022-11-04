@@ -1,8 +1,8 @@
-from Jobs.Base_Spell import DOTSpell, ManaRequirement, WaitAbility, buff, empty
-from Jobs.Caster.Caster_Spell import SummonerSpell
+from ffxivcalc.Jobs.Base_Spell import DOTSpell, ManaRequirement, WaitAbility, buff, empty
+from ffxivcalc.Jobs.Caster.Caster_Spell import SummonerSpell
 import copy
 
-from Jobs.Player import Pet
+from ffxivcalc.Jobs.Player import Pet
 
 Lock = 0.75
 

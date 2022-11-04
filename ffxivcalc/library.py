@@ -6,9 +6,8 @@ functions callable by the API.
 from copy import deepcopy
 import json
 import math
-import os
-from Jobs.PlayerEnum import JobEnum
-from UI_backend import GenerateLayoutBackend, GenerateLayoutDict, RestoreFightObject
+from ffxivcalc.Jobs.PlayerEnum import JobEnum
+from ffxivcalc.UI_backend import GenerateLayoutBackend, GenerateLayoutDict, RestoreFightObject
 
 #Helper function
 

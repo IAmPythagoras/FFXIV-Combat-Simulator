@@ -1,5 +1,5 @@
-from Jobs.Base_Spell import buff, empty, DOTSpell, ManaRequirement
-from Jobs.Tank.Tank_Spell import BigMit, PaladinSpell
+from ffxivcalc.Jobs.Base_Spell import buff, empty, DOTSpell, ManaRequirement
+from ffxivcalc.Jobs.Tank.Tank_Spell import BigMit, PaladinSpell
 import copy
 Lock = 0
 
