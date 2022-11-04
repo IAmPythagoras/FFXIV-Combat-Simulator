@@ -110,7 +110,7 @@ def PrintResult(self, time, TimeStamp) -> None:
     """
 
     fig, axs = plt.subplots(1, 2, constrained_layout=True) # DPS and PPS graph
-    fig2, axs2 = plt.subplots(2, 4, constrained_layout=True) # DPS Crit distribution
+    #fig2, axs2 = plt.subplots(2, 4, constrained_layout=True) # DPS Crit distribution
     axs[0].set_ylabel("DPS")
     axs[0].set_xlabel("Time (s)")
     axs[0].set_title("DPS over time")
@@ -184,9 +184,10 @@ def PrintResult(self, time, TimeStamp) -> None:
         #    if i == 4:
         #        i = 0
         #        j+=1
-    print("The Enemy has received a total potency of: " + str(round(self.Enemy.TotalPotency,2)))
-    print("The Potency Per Second on the Enemy is: " + str(round(self.Enemy.TotalPotency/time,2)))
-    print("The Enemy's total DPS is " + str(round(self.Enemy.TotalDamage / time, 2)))
+
+    print("The Enemy has received a total potency of: " + str(round(self.Enemy.TotalPotency,2) if time != 0 else "0" ))
+    print("The Potency Per Second on the Enemy is: " + str(round(self.Enemy.TotalPotency/time,2) if time != 0 else "0" ))
+    print("The Enemy's total DPS is " + str(round(self.Enemy.TotalDamage / time, 2) if time != 0 else "0" ))
     axs[0].xaxis.grid(True)
     axs[1].xaxis.grid(True)
     if len(TimeStamp) == 0: # If for some reason Fight ended before 3 second TimeStamp is empty and we need to do an edge case to avoid a crash

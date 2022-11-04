@@ -9,7 +9,7 @@ newFight = Fight(newEnemy, ShowGraph) # Creating new Fight instance
 from ffxivcalc.Jobs.Player import Player # Importing player class
 from ffxivcalc.Jobs.PlayerEnum import JobEnum # Importing JobEnum
 # Caster
-RDMStat = {"MainStat": 2947, "WD":126, "Det" : 1548, "Ten" : 400, "SS": 495, "Crit" : 2397, "DH" : 1544} # Stats for RedMage
+Stat = {"MainStat": 2947, "WD":126, "Det" : 1548, "Ten" : 400, "SS": 495, "Crit" : 2397, "DH" : 1544} # Stats for RedMage
 
 # Healer
 SCHStat = {"MainStat": 2931, "WD":126, "Det" : 1750, "Ten" : 400, "SS": 1473, "Crit" : 2351, "DH" : 436} # Stats for Scholar
@@ -27,7 +27,7 @@ DRKStat = {"MainStat": 2910, "WD":126, "Det" : 1844, "Ten" : 751, "SS": 400, "Cr
 GNBStat = {"MainStat": 2891, "WD":126, "Det" : 1883, "Ten" : 631, "SS": 650, "Crit" : 2352, "DH" : 868} # Stats for Gunbreaker
 
 # Caster player object
-RDMPlayer = Player([], [], RDMStat, JobEnum.RedMage)
+RDMPlayer = Player([], [], {}, JobEnum.RedMage)
 
 # Healer player object
 SCHPlayer = Player([], [], SCHStat, JobEnum.Scholar)
@@ -83,7 +83,7 @@ DRKPlayer.ActionSet = [WaitAbility(16), BloodWeapon, WaitAbility(4), HardSlash, 
 GNBPlayer.ActionSet = [WaitAbility(20),LightningShot, KeenEdge, BrutalShell, NoMercy, Bloodfest, GnashingFang, JugularRip, SonicBreak, BlastingZone, BowShock, DoubleDown, RoughDivide, SavageClaw, AbdomenTear, RoughDivide, WickedTalon, EyeGouge, SolidBarrel, BurstStrike, Hypervelocity, KeenEdge]
 
 
-#NINPlayer.Set_etro_gearset("https://etro.gg/gearset/73f9f3af-2fa1-4871-85a3-a0f6adbb5e28")
+NINPlayer.Set_etro_gearset("https://etro.gg/gearset/73f9f3af-2fa1-4871-85a3-a0f6adbb5e28") # Set the Ninja's stat to be the etro gear set
 
 newFight.AddPlayer([NINPlayer]) # Adding players to the fight
 
@@ -95,6 +95,40 @@ newFight.RequirementOn = True # Will check for actions requirement
 newFight.IgnoreMana = False # Will check for mana
 vocal = True # Want to output data in text
 
+#newFight.SimulateFight(TimeUnit, TimeLimit, vocal) # Simulating the fight
+
+
+################################################
+
+
+from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import *
+from copy import deepcopy
+
+newFire1 = deepcopy(Fire1) # Creates a new deepcopy of the fire 1 instance.
+
+newFire1.Potency = 1000 # Changing the potency to 1000
+newFire1.CastTime = 1 # Casting time in second
+newFire1.RecastTime = 2.5 # 2.5 second before any other GCD actions can be done IF newFire1 is a GCD
+newFire1.ManaCost = 10 # Updating mana cost
+newFire1.Requirement = [] # Empty list so No requirement
+
+def ApplynewFire1(Player, Enemy):
+    Player.ElementalGauge = 3 # Setting Astral fire = 3
+    
+newFire1.Effect = [ApplynewFire1] # Giving new effect
+
+newFight = Fight(newEnemy, ShowGraph) # Creating new Fight instance
+
+
+BLMPlayer = Player([], [], Stat, JobEnum.BlackMage) # Creating BLM player
+
+BLMPlayer.ActionSet = [newFire1,newFire1,newFire1,newFire1,newFire1,newFire1,newFire1,newFire1,newFire1,newFire1,newFire1,newFire1] # Wacky action set
+
+newFight.AddPlayer([BLMPlayer]) # Adding player to the fight
+
+
+newFight.RequirementOn = True # Will check for actions requirement
+newFight.IgnoreMana = False # Will check for mana
+vocal = True # Want to output data in text
+
 newFight.SimulateFight(TimeUnit, TimeLimit, vocal) # Simulating the fight
-
-
