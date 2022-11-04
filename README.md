@@ -4,6 +4,8 @@ Either download the code above or install it using pip with the following comman
 
 pip install ffxiv-combat-simulator@git+https://github.com/IAmPythagoras/FFXIV-Combat-Simulator.git@main
 
+It is recommend to use pip to install it as a library.
+
 *Note that you must have git installed : https://git-scm.com/download/win 
 
 You can find the documentation here : https://iampythagoras.github.io/index.html
