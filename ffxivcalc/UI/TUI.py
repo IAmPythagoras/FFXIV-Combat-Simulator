@@ -170,7 +170,7 @@ def GenerateLayout():
 def MergeFight():
     os.system('CLS') #clearing HUD
     print(
-        "===================== MERGING TWO FIGHTS =====================" + "\n" 
+        "===================== MERGING TWO FIGHTS =====================" + "\nWARNING : This function does not make sure every player has a different playerID. So once the merging is done\nmake sure they all have unique playerID." 
     )
 
     cur_dir = os.getcwd()
