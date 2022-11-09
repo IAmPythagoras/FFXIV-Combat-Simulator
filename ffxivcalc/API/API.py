@@ -4,9 +4,9 @@ want to run the API.
 """
 
 from fastapi import FastAPI
-from ObjectInModel import SimulateFightIn
-from ObjectOutModel import SimulateFightOut
-from library import SimulateFightAPIHelper
+from ffxivcalc.API.Model.ObjectInModel import SimulateFightIn
+from ffxivcalc.API.Model.ObjectOutModel import SimulateFightOut
+from ffxivcalc.API.library import SimulateFightAPIHelper
 
 # Make sure you have uvicorn installed and run the command
 # python -m uvicorn API:app
@@ -29,4 +29,8 @@ def GetSimulateFight(info : SimulateFightIn):
     Returns:\n
         JSON : JSON file with the SimulateFightOut schema.
     """
-    return SimulateFightAPIHelper(info.dict())
+    returnData = SimulateFightAPIHelper(info.dict())
+    for data in returnData["data"]["PlayerList"][0]["GraphInfoDPS"]:
+        if not isinstance(data["name"], float) : input(data)
+        if not isinstance(data["value"], float) : input(data)
+    return returnData

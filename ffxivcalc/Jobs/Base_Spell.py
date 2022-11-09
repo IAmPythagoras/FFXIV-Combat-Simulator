@@ -3,7 +3,7 @@ import copy
 import math
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
 from ffxivcalc.Jobs.PlayerEnum import RoleEnum
-from ffxivcalc.requirementHandler import failedRequirementEvent
+from ffxivcalc.helperCode.requirementHandler import failedRequirementEvent
 Lock = 0.75
 
 class FailedToCast(Exception):#Exception called if a spell fails to cast

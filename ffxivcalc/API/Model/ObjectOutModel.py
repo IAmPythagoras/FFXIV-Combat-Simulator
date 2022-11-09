@@ -20,8 +20,8 @@ class fightInfoOut(BaseModel):
     Success : bool
 
 class GraphInfoOut(BaseModel):
-    value : float
-    name : float
+    value : float | int
+    name : float | int
 
 class PlayerInfoOut(BaseModel):
     JobName : str
@@ -31,8 +31,8 @@ class PlayerInfoOut(BaseModel):
     TotalPotency : float
     numberOfGCD : int
     ProcInfo : Dict
-    GraphInfoDPS : GraphInfoOut
-    GraphInfoPPS : GraphInfoOut
+    GraphInfoDPS : List[GraphInfoOut]
+    GraphInfoPPS : List[GraphInfoOut]
 
 class dataOut(BaseModel):
     fightInfo : fightInfoOut
