@@ -12,6 +12,15 @@ You can find the documentation here : https://iampythagoras.github.io/index.html
 
 You can join this discord if you have any question regarding how to use it : https://discord.gg/mZXKUNy2sw 
 
+If you want to locally use the API. Install the ffxiv-combat-simulator library and also install uvicorn:
+
+pip install uvicorn
+
+And then run this command:
+
+python -m uvicorn ffxivcalc.API.API:app
+
+This will locally launch the API.
 
 # FFXIVDPSCalculator
 Environment in which the simulation of FF14 combat (with multiple people) will be possible. 
