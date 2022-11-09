@@ -29,4 +29,6 @@ def GetSimulateFight(info : SimulateFightIn):
     Returns:\n
         JSON : JSON file with the SimulateFightOut schema.
     """
-    return SimulateFightAPIHelper(info.dict())
+    returnData = SimulateFightAPIHelper(info.dict())
+    input(returnData["data"]["PlayerList"][0])
+    return returnData

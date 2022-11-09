@@ -20,8 +20,8 @@ class fightInfoOut(BaseModel):
     Success : bool
 
 class GraphInfoOut(BaseModel):
-    value : float
-    name : float
+    value : float | int
+    name : float | int
 
 class PlayerInfoOut(BaseModel):
     JobName : str

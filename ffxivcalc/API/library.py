@@ -107,7 +107,7 @@ def GetSimulateFight(JSONFile):
 
     returnData = SimulateFightAPIHelper(data)
 
-    return json.dump(returnData,write_files, indent=4) # Returning the JSON file
+    return json.dump(returnData,None, indent=4) # Returning the JSON file
 
 def SimulateFightAPIHelper(FightDict : dict) -> dict:
     """
@@ -116,8 +116,8 @@ def SimulateFightAPIHelper(FightDict : dict) -> dict:
     will return a JSON file. 
     FightDict : dict -> dictionnary holding the fight's info
     """
-    #with open('hey.json', "w") as write_files:
-    #    json.dump(FightDict,write_files, indent=4) #saving file
+    with open('hey.json', "w") as write_files:
+        json.dump(FightDict,write_files, indent=4) #saving file
 
     Event = RestoreFightObject(FightDict) # Restoring the fight object
     fightInfo = FightDict["data"]["fightInfo"] #fight information
@@ -261,7 +261,6 @@ def SimulateFightAPIHelper(FightDict : dict) -> dict:
 
 
         returnData["data"]["PlayerList"].append(deepcopy(playerDict))
-
 
 
     return returnData
