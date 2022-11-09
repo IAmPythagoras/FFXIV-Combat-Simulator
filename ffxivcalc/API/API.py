@@ -30,7 +30,5 @@ def GetSimulateFight(info : SimulateFightIn):
         JSON : JSON file with the SimulateFightOut schema.
     """
     returnData = SimulateFightAPIHelper(info.dict())
-    for data in returnData["data"]["PlayerList"][0]["GraphInfoDPS"]:
-        if not isinstance(data["name"], float) : input(data)
-        if not isinstance(data["value"], float) : input(data)
+
     return returnData
