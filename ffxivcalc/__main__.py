@@ -3,7 +3,7 @@ from argparse import ArgumentParser
 from sys import exit
 
 from ffxivcalc import __name__ as prog
-from ffxivcalc.SimulationInput import ExecuteMemoryCode as fight_main
+from ffxivcalc.UI.Simu import ExecuteMemoryCode as fight_main
 from ffxivcalc.Tester.Tester import Tester
 from ffxivcalc.TUI import TUI_draw
 
