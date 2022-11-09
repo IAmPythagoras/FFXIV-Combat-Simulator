@@ -4,7 +4,7 @@ from sys import exit
 
 from ffxivcalc import __name__ as prog
 from ffxivcalc.SimulationInput import ExecuteMemoryCode as fight_main
-from ffxivcalc.Tester import Tester
+from ffxivcalc.Tester.Tester import Tester
 from ffxivcalc.TUI import TUI_draw
 
 def get_parser() -> ArgumentParser:
