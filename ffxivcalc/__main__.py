@@ -20,7 +20,7 @@ def get_parser() -> ArgumentParser:
     parser.add_argument('-l', '--time-limit', type=int, default=1000)
 
     # Running tester
-    parser.add_argument('-run_tests', '--run_tests', type=None, default=None)
+    parser.add_argument('-run_tests', '--run_tests', type=bool, default=False)
 
     # Running tester
     parser.add_argument('-TUI', '--TUI_open', type=bool, default=False)
