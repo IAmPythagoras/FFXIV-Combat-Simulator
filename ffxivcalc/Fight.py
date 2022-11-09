@@ -1,5 +1,5 @@
 import math
-from ffxivcalc.Vocal import PrintResult
+from ffxivcalc.helperCode.Vocal import PrintResult
 
 from ffxivcalc.Jobs.PlayerEnum import *
 

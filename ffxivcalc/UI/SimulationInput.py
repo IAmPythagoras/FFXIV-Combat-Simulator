@@ -42,7 +42,7 @@ from ffxivcalc.Jobs.Melee.Dragoon.Dragoon_Spell import *
 from ffxivcalc.Jobs.Melee.Reaper.Reaper_Spell import *
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import *
 
-from ffxivcalc.helper_backend import SaveFight
+from ffxivcalc.helperCode.helper_backend import SaveFight
 
 def ExecuteMemoryCode(SaveFight_check, time_unit=0.01, TimeLimit=500):
     # This part of the code will execute whatever rotation is written here. It will be called from TUI.

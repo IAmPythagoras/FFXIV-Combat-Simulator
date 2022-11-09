@@ -4,8 +4,8 @@ want to run the API.
 """
 
 from fastapi import FastAPI
-from ObjectInModel import SimulateFightIn
-from ObjectOutModel import SimulateFightOut
+from ffxivcalc.API.Model.ObjectInModel import SimulateFightIn
+from ffxivcalc.API.Model.ObjectOutModel import SimulateFightOut
 from library import SimulateFightAPIHelper
 
 # Make sure you have uvicorn installed and run the command

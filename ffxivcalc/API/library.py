@@ -7,7 +7,7 @@ from copy import deepcopy
 import json
 import math
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
-from ffxivcalc.helper_backend import GenerateLayoutBackend, GenerateLayoutDict, RestoreFightObject
+from ffxivcalc.helperCode.helper_backend import GenerateLayoutBackend, GenerateLayoutDict, RestoreFightObject
 from ffxivcalc.Fight import ComputeDamage
 from ffxivcalc.Enemy import Enemy
 from ffxivcalc.Jobs.Base_Spell import Spell

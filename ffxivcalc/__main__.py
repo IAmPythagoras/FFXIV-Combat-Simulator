@@ -3,9 +3,9 @@ from argparse import ArgumentParser
 from sys import exit
 
 from ffxivcalc import __name__ as prog
-from ffxivcalc.UI.Simu import ExecuteMemoryCode as fight_main
+from ffxivcalc.UI.SimulationInput import ExecuteMemoryCode as fight_main
 from ffxivcalc.Tester.Tester import Tester
-from ffxivcalc.TUI import TUI_draw
+from ffxivcalc.UI.TUI import TUI_draw
 
 def get_parser() -> ArgumentParser:
     """Defines all the cli arguments to be parsed

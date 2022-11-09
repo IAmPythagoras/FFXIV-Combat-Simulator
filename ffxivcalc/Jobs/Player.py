@@ -2,7 +2,7 @@
 from copy import deepcopy
 from ffxivcalc.Jobs.PlayerEnum import JobEnum, RoleEnum
 from ffxivcalc.Jobs.ActionEnum import *
-from ffxivcalc.etro_request import get_gearset_data
+from ffxivcalc.Request.etro_request import get_gearset_data
 
 from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import EnochianEffect, ElementalEffect
 from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
