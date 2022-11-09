@@ -14,13 +14,13 @@ from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, Eno
 
 from ffxivcalc.Fight import Fight
 from ffxivcalc.Enemy import Enemy
-from ffxivcalc.FFLogsAPIRequest import getAbilityList, lookup_abilityID
+from ffxivcalc.Request.FFLogsAPIRequest import getAbilityList, lookup_abilityID
 from ffxivcalc.Jobs.Base_Spell import PrepullPotion, WaitAbility
 from ffxivcalc.Jobs.Player import Player
 from ffxivcalc.Jobs.PlayerEnum import *
 
 from ffxivcalc.Jobs.ActionEnum import name_for_id, id_for_name # importing helper functions
-from ffxivcalc.etro_request import get_gearset_data
+from ffxivcalc.Request.etro_request import get_gearset_data
 
 
 letters = "abcdefghijklmnopqrstuvwyxz" # Used to make sure the input is only numbers
