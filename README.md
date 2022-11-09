@@ -1,3 +1,5 @@
+[![Discord](https://img.shields.io/discord/970724799464738977?color=7289da&label=Discord&logo=discord)](https://discord.gg/mZXKUNy2sw)
+
 # Install
 
 Either download the code above or install it using pip with the following command : 
@@ -8,9 +10,7 @@ It is recommend to use pip to install it as a library.
 
 *Note that you must have git installed : https://git-scm.com/download/win 
 
-You can find the documentation here : https://iampythagoras.github.io/index.html
-
-You can join this discord if you have any question regarding how to use it : https://discord.gg/mZXKUNy2sw 
+You can find the documentation here : https://iampythagoras.github.io/index.html or join the discord linked above if you have any questions.
 
 If you want to locally use the API. Install the ffxiv-combat-simulator library and also install uvicorn:
 ```
