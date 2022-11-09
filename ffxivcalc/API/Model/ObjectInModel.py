@@ -39,7 +39,14 @@ class dataIn(BaseModel):
     fightInfo : fightInfoIn
     PlayerList : List[PlayerInfoIn]
 
+class RequestParamIn(BaseModel):
+    GraphInfo : bool
+    ProcInfo : bool
+    failedRequirementEvent : bool
+
+
 class SimulateFightIn(BaseModel):
-    data : dataIn
+    data : dataIn # Fight's data
+    RequestParam : RequestParamIn # Parameter of request such as if the user wants graph info, etc.
     class Config:
         orm_mode = True
