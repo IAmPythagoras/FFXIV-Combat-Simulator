@@ -31,8 +31,8 @@ class PlayerInfoOut(BaseModel):
     TotalPotency : float
     numberOfGCD : int
     ProcInfo : Dict
-    GraphInfoDPS : GraphInfoOut
-    GraphInfoPPS : GraphInfoOut
+    GraphInfoDPS : List[GraphInfoOut]
+    GraphInfoPPS : List[GraphInfoOut]
 
 class dataOut(BaseModel):
     fightInfo : fightInfoOut
