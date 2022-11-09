@@ -1,6 +1,6 @@
 import os
-from ffxivcalc.SimulationInput import ExecuteMemoryCode
-from ffxivcalc.helper_backend import AskInput, ImportFightBackend, MergeFightBackEnd, SaveFight, SimulateFightBackend,GenerateLayoutBackend
+from ffxivcalc.UI.SimulationInput import ExecuteMemoryCode
+from ffxivcalc.helperCode.helper_backend import AskInput, ImportFightBackend, MergeFightBackEnd, SaveFight, SimulateFightBackend,GenerateLayoutBackend
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
 
 def SimulateFightMemory():
