@@ -83,5 +83,10 @@
                 ]
             }
         ]
-    }
+    },
+    "RequestParam": {
+        "GraphInfo": true,
+        "ProcInfo": true,
+        "failedRequirementEvent": true
+      }
 }
