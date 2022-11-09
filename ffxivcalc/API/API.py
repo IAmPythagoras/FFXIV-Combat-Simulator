@@ -6,7 +6,7 @@ want to run the API.
 from fastapi import FastAPI
 from ffxivcalc.API.Model.ObjectInModel import SimulateFightIn
 from ffxivcalc.API.Model.ObjectOutModel import SimulateFightOut
-from library import SimulateFightAPIHelper
+from ffxivcalc.API.library import SimulateFightAPIHelper
 
 # Make sure you have uvicorn installed and run the command
 # python -m uvicorn API:app
