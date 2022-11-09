@@ -112,6 +112,7 @@ def GenerateLayout():
     player_list = []
 
     while True:
+        os.system('CLS') #clearing HUD
         print(
         "===================================================================" + "\n" + 
         "Select the job you want to add or enter 20" + "\n" + 
@@ -169,7 +170,7 @@ def GenerateLayout():
 def MergeFight():
     os.system('CLS') #clearing HUD
     print(
-        "===================== MERGING TWO FIGHTS =====================" + "\n" 
+        "===================== MERGING TWO FIGHTS =====================" + "\nWARNING : This function does not make sure every player has a different playerID. So once the merging is done\nmake sure they all have unique playerID." 
     )
 
     cur_dir = os.getcwd()
@@ -227,26 +228,26 @@ def MainMenu():
     "===================== FFXIV Combat Simulator ======================" + "\n" + 
     "MAIN MENU (input what you want and press ENTER)" + "\n" + 
     "===================================================================" + "\n" + 
-    "1- Simulate fight in code memory" + "\n" + 
-    "2- Save fight in code memory"  + "\n" + 
-    "3- Simulate a saved fight" + "\n" + 
-    "4- Merge two saved fights" + "\n" + 
-    "5- Import fight from FFLogs (Experimental)" + "\n" + 
-    "6- Create JSON template file" + "\n" + 
-    "7- Credits" + "\n" + 
-    "8- Exit" + "\n" + 
+    #"1- Simulate fight in code memory" + "\n" + 
+    #"2- Save fight in code memory"  + "\n" + 
+    "1- Simulate a saved fight" + "\n" + 
+    "2- Merge two saved fights" + "\n" + 
+    "3- Import fight from FFLogs (Experimental)" + "\n" + 
+    "4- Create JSON template file" + "\n" + 
+    "5- Credits" + "\n" + 
+    "6- Exit" + "\n" + 
     "==================================================================="
     )
-    user_input = AskInput(8)
+    user_input = AskInput(6)
 
-    if user_input == "1" : ExecuteMemoryCode(False) #Simulating
-    elif user_input == "2": ExecuteMemoryCode(True) #Saving
-    elif user_input == "3" : SimulateFightMemory()
-    elif user_input == "4" : MergeFight() 
-    elif user_input == "5" : ImportFight()
-    elif user_input == "6" : GenerateLayout()
-    elif user_input == "7" : Credits() #Closes program
-    elif user_input == "8" : exit() #Closes program
+    #if user_input == "1" : ExecuteMemoryCode(False) #Simulating
+    #elif user_input == "2": ExecuteMemoryCode(True) #Saving
+    if user_input == "1" : SimulateFightMemory()
+    elif user_input == "2" : MergeFight() 
+    elif user_input == "3" : ImportFight()
+    elif user_input == "4" : GenerateLayout()
+    elif user_input == "5" : Credits() #Closes program
+    elif user_input == "6" : exit() #Closes program
     
 
 def TUI_draw():

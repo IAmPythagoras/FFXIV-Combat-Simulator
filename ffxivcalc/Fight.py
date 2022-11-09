@@ -244,7 +244,9 @@ class Fight:
             k+=1
 
         for t in self.failedRequirementList: # Printing the failed requirement if it was fatal
-            if t.fatal : print("The first failed fatal requirement was : " + t.requirementName)
+            if t.fatal : 
+                print("The first failed fatal requirement was : " + t.requirementName)
+                print("It happened at : " + str(t.timeStamp))
 
         # Printing the results if vocal is true.
         if vocal : PrintResult(self, self.TimeStamp, self.timeValue)

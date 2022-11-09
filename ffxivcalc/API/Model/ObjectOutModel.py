@@ -17,7 +17,7 @@ class fightInfoOut(BaseModel):
     fightname : str | None = "SimulatedFight"
     TeamCompositionBonus : float
     failedRequirementEventList : List[failedRequirementEventOut]
-    Success : bool
+    Success : bool | str = "Unknown"
 
 class GraphInfoOut(BaseModel):
     value : float | int
@@ -31,8 +31,8 @@ class PlayerInfoOut(BaseModel):
     TotalPotency : float
     numberOfGCD : int
     ProcInfo : Dict
-    GraphInfoDPS : List[GraphInfoOut]
-    GraphInfoPPS : List[GraphInfoOut]
+    GraphInfoDPS : List[GraphInfoOut] | List[None]
+    GraphInfoPPS : List[GraphInfoOut] | List[None]
 
 class dataOut(BaseModel):
     fightInfo : fightInfoOut

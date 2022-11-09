@@ -38,7 +38,7 @@ def main() -> int:
     """
     parser = get_parser()
     args = parser.parse_args()
-    input(args)
+    #input(args)
 
     if args.code_simulation:
         fight_main(False, time_unit=args.step_size, TimeLimit=args.time_limit)

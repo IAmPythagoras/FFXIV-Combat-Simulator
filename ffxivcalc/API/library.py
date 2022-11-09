@@ -116,8 +116,6 @@ def SimulateFightAPIHelper(FightDict : dict) -> dict:
     will return a JSON file. 
     FightDict : dict -> dictionnary holding the fight's info
     """
-    with open('hey.json', "w") as write_files:
-        json.dump(FightDict,write_files, indent=4) #saving file
 
     Event = RestoreFightObject(FightDict) # Restoring the fight object
     fightInfo = FightDict["data"]["fightInfo"] #fight information
@@ -147,26 +145,26 @@ def SimulateFightAPIHelper(FightDict : dict) -> dict:
 
     # Will go through every failedRequirementEvent and record them
     success = True
-    for event in Event.failedRequirementList:
-        
-        success = success and not event.fatal # if one event was fatal success is false
+    if FightDict["RequestParam"]["failedRequirementEvent"]: # If user wants failedRequirementList
+        for event in Event.failedRequirementList:
+            
+            success = success and not event.fatal # if one event was fatal success is false
 
-        eventDict = {
-            "timeStamp" : event.timeStamp,
-            "playerID" : event.playerID,
-            "requirementName" : event.requirementName,
-            "additionalInfo" : event.additionalInfo,
-            "fatal" : event.fatal
-        }
+            eventDict = {
+                "timeStamp" : event.timeStamp,
+                "playerID" : event.playerID,
+                "requirementName" : event.requirementName,
+                "additionalInfo" : event.additionalInfo,
+                "fatal" : event.fatal
+            }
 
-        returnData["data"]["fightInfo"]["failedRequirementEventList"].append(deepcopy(eventDict))
+            returnData["data"]["fightInfo"]["failedRequirementEventList"].append(deepcopy(eventDict))
 
-    returnData["data"]["fightInfo"]["Success"] = success
+        returnData["data"]["fightInfo"]["Success"] = success
 
 
     for player in Event.PlayerList:
         # Going through every player will create the appriopriate dictionnary to return the info and put it in
-        # returnData["data"]["PlayerList"].
 
         playerDict = {
             "JobName" : JobEnum.name_for_id(player.JobEnum),
@@ -180,85 +178,85 @@ def SimulateFightAPIHelper(FightDict : dict) -> dict:
             "GraphInfoPPS" : []
         } # Creating new dictionnary
 
-        # Going through its registered DPS and PPS points
+        # Going through its registered DPS and PPS points if user wants.
 
-        for (x,y) in zip(player.DPSGraph, Event.timeValue):
-            # DPS
+        if FightDict["RequestParam"]["GraphInfo"]:
 
-            point = {
-                "value" : y,
-                "name" : x
-            }
+            for (x,y) in zip(player.DPSGraph, Event.timeValue):
+                # DPS
 
-            playerDict["GraphInfoDPS"].append(deepcopy(point))
-        
-        for (x,y) in zip(player.PotencyGraph, Event.timeValue):
-            # PPS
+                point = {
+                    "value" : y,
+                    "name" : x
+                }
 
-            point = {
-                "value" : y,
-                "name" : x
-            }
+                playerDict["GraphInfoDPS"].append(deepcopy(point))
+            
+            for (x,y) in zip(player.PotencyGraph, Event.timeValue):
+                # PPS
 
-            playerDict["GraphInfoPPS"].append(deepcopy(point))
+                point = {
+                    "value" : y,
+                    "name" : x
+                }
+
+                playerDict["GraphInfoPPS"].append(deepcopy(point))
 
         # If any job has luck will return the info regarding this luck for the rotation
-
-        match player.JobEnum:
-            case JobEnum.Bard:
-                procInfo = {
-                    "RefulgentArrow" : {
-                        "Expected" : player.ExpectedRefulgent,
-                        "Used" : player.UsedRefulgent
-                    },
-                    "WandererRepertoire" : {
-                        "Expected" : player.ExpectedTotalWandererRepertoire,
-                        "Used" : player.UsedTotalWandererRepertoire
-                    },
-                    "SoulVoiceGauge" : {
-                        "Expected" : player.ExpectedSoulVoiceGauge,
-                        "Used" : player.UsedSoulVoiceGauge
-                    },
-                    "BloodLetterReduction" : {
-                        "Expected" : player.ExpectedBloodLetterReduction,
-                        "Used" : player.UsedBloodLetterReduction
+        if FightDict["RequestParam"]["ProcInfo"]: # If user wants
+            match player.JobEnum:
+                case JobEnum.Bard:
+                    procInfo = {
+                        "RefulgentArrow" : {
+                            "Expected" : player.ExpectedRefulgent,
+                            "Used" : player.UsedRefulgent
+                        },
+                        "WandererRepertoire" : {
+                            "Expected" : player.ExpectedTotalWandererRepertoire,
+                            "Used" : player.UsedTotalWandererRepertoire
+                        },
+                        "SoulVoiceGauge" : {
+                            "Expected" : player.ExpectedSoulVoiceGauge,
+                            "Used" : player.UsedSoulVoiceGauge
+                        },
+                        "BloodLetterReduction" : {
+                            "Expected" : player.ExpectedBloodLetterReduction,
+                            "Used" : player.UsedBloodLetterReduction
+                        }
                     }
-                }
-                playerDict["ProcInfo"] = deepcopy(procInfo)
-            case JobEnum.Dancer:
-                procInfo = {
-                    "SilkenSymettry" : {
-                        "Expected" : player.ExpectedSilkenSymettry,
-                        "Used" : player.UsedSilkenSymettry
-                    },
-                    "SilkenFlow" : {
-                        "Expected" : player.ExpectedSilkenFlow,
-                        "Used" : player.UsedSilkenFlow
-                    },
-                    "FourfoldFeather" : {
-                        "Expected" : player.ExpectedFourfoldFeather,
-                        "Used" : player.UsedFourfoldFeather
-                    },
-                    "ThreefoldFan" : {
-                        "Expected" : player.ExpectedThreefoldFan,
-                        "Used" : player.UsedThreefoldFan
+                    playerDict["ProcInfo"] = deepcopy(procInfo)
+                case JobEnum.Dancer:
+                    procInfo = {
+                        "SilkenSymettry" : {
+                            "Expected" : player.ExpectedSilkenSymettry,
+                            "Used" : player.UsedSilkenSymettry
+                        },
+                        "SilkenFlow" : {
+                            "Expected" : player.ExpectedSilkenFlow,
+                            "Used" : player.UsedSilkenFlow
+                        },
+                        "FourfoldFeather" : {
+                            "Expected" : player.ExpectedFourfoldFeather,
+                            "Used" : player.UsedFourfoldFeather
+                        },
+                        "ThreefoldFan" : {
+                            "Expected" : player.ExpectedThreefoldFan,
+                            "Used" : player.UsedThreefoldFan
+                        }
                     }
-                }
-                playerDict["ProcInfo"] = deepcopy(procInfo)
-            case JobEnum.RedMage:
-                procInfo = {
-                    "Verstone" : {
-                        "Expected" : player.ExpectedVerstoneProc,
-                        "Used" : player.UsedVerstoneProc
-                    },
-                    "Verfire" : {
-                        "Expected" : player.ExpectedVerfireProc,
-                        "Used" : player.UsedVerfireProc
+                    playerDict["ProcInfo"] = deepcopy(procInfo)
+                case JobEnum.RedMage:
+                    procInfo = {
+                        "Verstone" : {
+                            "Expected" : player.ExpectedVerstoneProc,
+                            "Used" : player.UsedVerstoneProc
+                        },
+                        "Verfire" : {
+                            "Expected" : player.ExpectedVerfireProc,
+                            "Used" : player.UsedVerfireProc
+                        }
                     }
-                }
-                playerDict["ProcInfo"] = deepcopy(procInfo)
-
-
+                    playerDict["ProcInfo"] = deepcopy(procInfo)
 
         returnData["data"]["PlayerList"].append(deepcopy(playerDict))
 
