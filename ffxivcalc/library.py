@@ -8,13 +8,36 @@ import json
 import math
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
 from ffxivcalc.UI_backend import GenerateLayoutBackend, GenerateLayoutDict, RestoreFightObject
-
+from ffxivcalc.Fight import ComputeDamage
+from ffxivcalc.Enemy import Enemy
+from ffxivcalc.Jobs.Base_Spell import Spell
+from ffxivcalc.Jobs.PlayerEnum import RoleEnum
 #Helper function
 
 def roundDown(x, precision):
     return math.floor(x * 10**precision)/10**precision
 
 # library
+
+def AverageDamageAction(Player, Potency, MultBonus, type=0):
+
+    levelMod = 1900
+    baseMain = 390  
+    baseSub = 400# Level 90 LevelMod values
+
+    JobMod = Player.JobMod # Level 90 jobmod value, specific to each job
+
+    Player.f_WD = (Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))/100
+    Player.f_DET = math.floor(1000+math.floor(140*(Player.Stat["Det"]-baseMain)/levelMod))/1000# Determination damage
+    if Player.RoleEnum == RoleEnum.Tank : Player.f_TEN = (1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000 # Tenacity damage, 1 for non-tank player
+    else : Player.f_TEN = 1 # if non-tank
+    Player.f_SPD = (1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000 # Used only for dots
+    Player.CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000 # Crit rate in decimal
+    Player.CritMult = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000 # Crit Damage multiplier
+    Player.DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000 # DH rate in decimal
+
+    return ComputeDamage(Player, Potency, Enemy(), MultBonus, type, Spell(0, False, 0, 0, 0, 0, None, []))
+
 
 def CreateFightDict(PlayerList : list[JobEnum]) -> dict:
     """

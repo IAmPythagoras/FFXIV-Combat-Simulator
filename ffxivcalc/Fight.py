@@ -149,11 +149,7 @@ class Fight:
             # Updating and casting DOT if needed
             for player in self.PlayerList:
                 for DOT in player.DOTList:
-                    # print(DOT)
                     DOT.CheckDOT(player,self.Enemy, TimeUnit)
-
-            if self.wipe: # If we detect that wipe has been set to true we stop the simulation
-                break
 
 
                     
