@@ -1,5 +1,6 @@
 """CLI entrypoint for FFXIV-Combat-Simulator"""
 from argparse import ArgumentParser
+from pathlib import Path
 from sys import exit
 
 from ffxivcalc import __name__ as prog
@@ -13,20 +14,21 @@ def get_parser() -> ArgumentParser:
     :return: An ArgumentParser object
     """
     parser = ArgumentParser(prog=prog)
+    subparsers = parser.add_subparsers(help='action to perform', dest='action')
 
     # Running in code simulation
-    parser.add_argument('-code_simulation', '--code-simulation', type=bool, default=False)
-    parser.add_argument('-s', '--step-size', type=float, default=0.01)
-    parser.add_argument('-l', '--time-limit', type=int, default=1000)
+    simulation_parser = subparsers.add_parser('simulate')
+    simulation_parser.add_argument('-code_simulation', '--code-simulation', type=bool, default=False)
+    simulation_parser.add_argument('-s', '--step-size', type=float, default=0.01)
+    simulation_parser.add_argument('-l', '--time-limit', type=int, default=1000)
 
     # Running tester
-    parser.add_argument('-run_tests', '--run_tests', type=bool, default=False)
+    test_parser = subparsers.add_parser('tests')
+    test_parser.add_argument('json', type=Path, help='path to test json', nargs='?', default='test_layout.json')
 
-    # Running tester
-    parser.add_argument('-TUI', '--TUI_open', type=bool, default=False)
+    # Running tui
+    subparsers.add_parser('tui')
 
-
-    # subparsers should be added here for tui/gui/etc functionality
     return parser
 
 
@@ -40,12 +42,16 @@ def main() -> int:
     args = parser.parse_args()
     #input(args)
 
-    if args.code_simulation:
-        fight_main(False, time_unit=args.step_size, TimeLimit=args.time_limit)
-    elif args.run_tests:
-        Tester("test_layout.json").Test()
-    elif args.TUI_open:
-        TUI_draw()
+    match args.action:
+        case 'simulate':
+            fight_main(False, time_unit=args.step_size, TimeLimit=args.time_limit)
+        case 'tests':
+            Tester(args.json).Test()
+        case 'tui':
+            TUI_draw()
+        case _: # default case
+            parser.print_help()
+
     return 0
 
 
