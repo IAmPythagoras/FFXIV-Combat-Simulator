@@ -13,6 +13,18 @@ from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
 
 class Player:
 
+    def TakeDamage(self, DamageAmount):
+        """
+        This function will update the HP value of the players and will kill the player if its HP goes under 0
+
+        Args:
+            DamageAmount (int): Total damage the player is taking
+        """
+
+        self.HP -= DamageAmount
+
+        if self.HP <= 0: self.TrueLock = True # Killing the player. Not allowed to raise.
+
     def AddAction(self, actionObject):
         """
         This function will append the spell object actionObject to the player's action list.

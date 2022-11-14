@@ -144,7 +144,14 @@ class Fight:
                             player.oGCDLock = True
                             player.oGCDLockTimer = player.CastingSpell.CastTime
                             # print("oGCD with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(self.TimeStamp) )
+            
 
+            if self.Enemy.hasEventList and start :
+                # Only goes through the Enemy's EventList if the fight has started AND if the Enemy has an event list
+                if not self.Enemy.IsCasting:
+                    # If the enemy is not casting
+                    self.Enemy.EventList[self.Enemy.EventNumber].begin_cast(self.Enemy) # Begins the casting of the next event
+                
 
             # Updating and casting DOT if needed
             for player in self.PlayerList:
