@@ -114,9 +114,11 @@ def ApplyTurnOffTankStance(Player, Enemy):
 
 def ApplyBigMit(Player, Enemy):
     Player.BigMitCD = 120
+    Player.MagicMitigation *= 0.7
 
 def ApplyRampart(Player, Enemy):
     Player.RampartCD = 90
+    Player.MagicMitigation *= 0.8
 
 def ApplyLowBlow(Player, Enemy):
     Player.LowBlowCD = 25

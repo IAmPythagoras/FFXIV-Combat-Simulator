@@ -160,7 +160,7 @@ RPROpener = []
 
 # Tank 
 DRKOpener = []
-WAROpener = [TankStance, Provoke, Maim, Maim, Maim, Maim, Maim, Maim, Maim, Maim]
+WAROpener = [TankStance, Provoke, BigMit, Rampart, Maim, Maim, Maim, Maim, Maim, Maim, Maim, Maim]
 PLDOpener = []
 GNBOpener = []
 

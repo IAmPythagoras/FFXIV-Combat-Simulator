@@ -83,6 +83,8 @@ class Player:
         self.HP = 2000  # Starting HP
         self.EnemyDOT = [] # List which contains all DOT applied by the enemy on the player.
         self.TotalEnemity = 0 # Value of Enemity
+        self.MagicMitigation = 0 # Current value of magic mitigation
+        self.PhysicalMitigation = 0 # Current value of physical mitagation
         
         self.TotalPotency = 0 # Keeps track of total potency done
         self.TotalDamage = 0 # Keeps track of total damage done

@@ -6,7 +6,7 @@ class InvalidTankBusterTargetNumber(Exception):
     This exception is raised when an event is defined as a tank buster
     but has an invalid number of targets. Tank buster's number of targets
     must be 1 or 2. This error will be raised only if the Event has its "experimental"
-    flag set to false (false by default).
+    flag set to false (false by default). It must be, in any case, a positive value.
 
     Attributes:
         nTBTarget (int) : number of targets of the TB
@@ -15,7 +15,7 @@ class InvalidTankBusterTargetNumber(Exception):
 
     def __init__(self, nTBTarget : int, id : int):
         self.nTBTarget = nTBTarget
-        self.message = "targets for the tank buster with id" + str(id) + " is not in the valid range of 1 or 2."
+        self.message = "targets for the tank buster with id " + str(id) + " is not in the valid range of 1 or 2."
 
         super().__init__(self.message)
 
@@ -39,7 +39,7 @@ class EnemyEvent:
             Experimental (bool) : False if we do not wish to overrule the automatic checking.
         """
 
-        if not Experimental and not RaidWide and nTBTarget == 0:
+        if not Experimental and not RaidWide and (nTBTarget != 1 and nTBTarget != 2) or nTBTarget < 0 :
             # If a tankbuster but invalid number of targets and not experimental
             raise InvalidTankBusterTargetNumber(nTBTarget, id)
 
@@ -49,8 +49,6 @@ class EnemyEvent:
         self.RaidWide = RaidWide
         self.nTBTarget = nTBTarget
         self.target = [] # Empty list. The targets will be computed in begin_cast()
-
-
 
 
 
@@ -80,9 +78,24 @@ class EnemyEvent:
         # If it is not it targets the players with the most enemity up to the number of targets
         # Will do damage on all target
 
+        # Computes new damage because mitigation on the Enemy
+        # Does not differentiate between magical and physical for now
+        curr_mit = 1
+        if Enemy.Addle : curr_mit *= 0.9
+        if Enemy.Feint : curr_mit *= 0.9
+        if Enemy.Reprisal : curr_mit *= 0.9
+
+        self.Damage *= curr_mit # Updating the new damage based on global mit
+
+
+
         for player in self.target:
             # Going through all players
-            player.TakeDamage(self.Damage) # Applying the damage to the player
+
+            player_damage = self.Damage * player.MagicMitigation # Will update the damage each player takes
+            # According to their own personnal mit
+
+            player.TakeDamage(player_damage) # Applying the damage to the player
 
         Enemy.EventNumber += 1 # Incrementing the pointer to the next event
 
@@ -153,6 +166,11 @@ class Enemy:
         self.BattleVoice = False # +20% direct hit
         self.ArmyPaeon = False # + 3% direct hit
 
+        # Mitigation buff
+        self.Addle = False # 10% magical, 5% physical
+        self.Feint = False # 10% physical, 5% magical
+        self.Reprisal = False # 10% true mitigation
+
         self.EventList = [] # List of all EnemyEvent object this boss will perform through the simulation
         self.EventNumber = 0 # Current index of the EvenList action.
         self.hasEventList = False # By default an enemy has nothing to do
@@ -203,8 +221,8 @@ def WaitEvent(time : float) -> EnemyEvent:
 
     return EnemyEvent(-212,time, 0)
 
-RaidWide = EnemyEvent(1, 2, 500)
-TankBuster = EnemyEvent(2, 2, 1000, RaidWide=False, nTBTarget=1)
+RaidWide = EnemyEvent(1, 2, 0)
+TankBuster = EnemyEvent(2, 2, 0, RaidWide=False, nTBTarget=1)
 
 
 
