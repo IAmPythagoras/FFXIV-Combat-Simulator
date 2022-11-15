@@ -13,7 +13,7 @@ from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
 
 class Player:
 
-    def TakeDamage(self, DamageAmount):
+    def TakeDamage(self, DamageAmount : int) -> None:
         """
         This function will update the HP value of the players and will kill the player if its HP goes under 0
 
@@ -25,11 +25,11 @@ class Player:
 
         if self.HP <= 0: self.TrueLock = True # Killing the player. Not allowed to raise.
 
-    def AddAction(self, actionObject):
+    def AddAction(self, actionObject) -> None:
         """
         This function will append the spell object actionObject to the player's action list.
 
-        action_id : Spell
+        actionObject (Spell) : Action we wish to append
 
         """
         
@@ -80,7 +80,9 @@ class Player:
         self.Delay = 3 # Default time difference between AAs
 
         self.Mana = 10000 # Starting mana
-        self.HP = 1000  # Starting HP
+        self.HP = 2000  # Starting HP
+        self.EnemyDOT = [] # List which contains all DOT applied by the enemy on the player.
+        self.TotalEnemity = 0 # Value of Enemity
         
         self.TotalPotency = 0 # Keeps track of total potency done
         self.TotalDamage = 0 # Keeps track of total damage done

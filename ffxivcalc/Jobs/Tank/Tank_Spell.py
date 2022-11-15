@@ -102,8 +102,12 @@ def TankStanceRequirement(Player, Spell):
 #Apply
 
 def ApplyTankStance(Player, Enemy):
-    Player.TankStanceCD = 3
-    Player.TankStanceOn = True
+    if not Player.TankStanceOn:
+        # Only goes in cooldown if the tank stance was already on
+        Player.TankStanceOn = True
+    else:
+        Player.TankStanceCD = 3
+        Player.TankStanceOn = False
 
 def ApplyTurnOffTankStance(Player, Enemy):
     Player.TankStanceOn = True
@@ -119,6 +123,9 @@ def ApplyLowBlow(Player, Enemy):
 
 def ApplyProvoke(Player, Enemy):
     Player.ProvokeCD = 30
+    Player.TotalEnemity = Player.CurrentFight.GetEnemityList(1)[0].TotalEnemity + 300
+    # Gives enemity to the tank equal to the maximum enemity + 10.
+    # The values here are arbitrary. 10 enemity corresponds to 100'000 tank damage (with tank stance on)
 
 def ApplyInterject(Player, Enemy):
     Player.InterjectCD = 30
@@ -126,8 +133,7 @@ def ApplyInterject(Player, Enemy):
 def ApplyReprisal(Player, Enemy):
     Player.ReprisalCD = 60
 
-def ApplyShirk(Player, Enemy):
-    Player.ShirkCD = 120
+
 
 #ArmLength in Melee_Spell.py
 Rampart = TankSpell(7531, False, Lock, 0, 0, 0, ApplyRampart, [RampartRequirement])
@@ -135,10 +141,29 @@ LowBlow = TankSpell(7540, False, Lock, 0, 0, 0, ApplyLowBlow, [LowBlowRequiremen
 Provoke = TankSpell(7533, False, Lock, 0, 0, 0, ApplyProvoke, [ProvokeRequirement])
 Interject = TankSpell(0, False, Lock, 0, 0, 0, ApplyInterject, [InterjectRequirement])
 Reprisal = TankSpell(7535, False, Lock, 0, 0, 0, ApplyReprisal, [ReprisalRequirement])
-Shirk = TankSpell(7537, False, Lock, 0, 0, 0, ApplyShirk, [ShirkRequirement])
 BigMit = TankSpell(44, False, 0, 0, 0, 0, ApplyBigMit, [BigMitRequirement]) #30% mit
 TankStance = TankSpell(16142, False, 0, 0, 0, 0, ApplyTankStance, [TankStanceRequirement]) #Turn on Tank Stance
 TurnOffTankStance = TankSpell(0, False, 0, 0, 0, 0, ApplyTurnOffTankStance, [])#Turn off Tank Stance
+
+def Shirk(Target):
+    """This function is used to generate the shirk action with a customized target.
+
+    Target (Player) : Target of the shirk.
+    
+    """
+
+    def ApplyShirk(Player, Enemy):
+        Player.ShirkCD = 120
+
+        Target.TotalEnemity += Player.TotalEnemity * 0.25
+        # Giving 25% of the Player's enemity to the target
+
+        Player.TotalEnemity *= 0.75
+        # Loosing 25% of the player's enemity
+
+    custom_shirk = TankSpell(7537, False, Lock, 0, 0, 0, ApplyShirk, [ShirkRequirement])
+    custom_shirk.TargetID = Target.playerID
+    return custom_shirk
 
 TankAbility = {
 7531 : Rampart,

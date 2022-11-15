@@ -1,7 +1,8 @@
 import math
 from ffxivcalc.helperCode.Vocal import PrintResult
-
 from ffxivcalc.Jobs.PlayerEnum import *
+
+from copy import deepcopy
 
 
 class NoMoreAction(Exception):# Exception called if a spell fails to cast
@@ -15,8 +16,24 @@ class Fight:
 
     """
 
+    def GetEnemityList(self, range : int):
+        """Returns a list of players in order of greather enemity to lowest enemity. The length of the
+        returned list is equal to range.
+
+        range (int) : Number of players we want
+        
+        """
+
+
+        sorted_list = sorted(self.PlayerList, key=lambda Player : Player.TotalEnemity, reverse=True)
+        # This returns a sorted list of the PlayerList with respect to their TotalEnemity
+        # This could be optimized. But for now we will reocompute this sorted list every time.
+
+        return sorted_list[0:range] # Returns the number of targets we are interested in
+
     def __init__(self, Enemy, ShowGraph):
         self.Enemy = Enemy
+        Enemy.CurrentFight = self
         self.ShowGraph = ShowGraph
         self.TimeStamp = 0
         self.TeamCompositionBonus = 1
@@ -151,6 +168,8 @@ class Fight:
                 if not self.Enemy.IsCasting:
                     # If the enemy is not casting
                     self.Enemy.EventList[self.Enemy.EventNumber].begin_cast(self.Enemy) # Begins the casting of the next event
+
+                self.Enemy.UpdateTimer(TimeUnit) # Updating the Enemy's timers
                 
 
             # Updating and casting DOT if needed

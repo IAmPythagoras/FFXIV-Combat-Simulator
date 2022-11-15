@@ -1,25 +1,60 @@
 
 from copy import deepcopy
 
+class InvalidTankBusterTargetNumber(Exception):
+    """
+    This exception is raised when an event is defined as a tank buster
+    but has an invalid number of targets. Tank buster's number of targets
+    must be 1 or 2. This error will be raised only if the Event has its "experimental"
+    flag set to false (false by default).
+
+    Attributes:
+        nTBTarget (int) : number of targets of the TB
+
+    """
+
+    def __init__(self, nTBTarget : int, id : int):
+        self.nTBTarget = nTBTarget
+        self.message = "targets for the tank buster with id" + str(id) + " is not in the valid range of 1 or 2."
+
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.nTBTarget} {self.message}'
+
 class EnemyEvent:
     """
     This class represents an action or event the boss can take. Such events can be raidwide, a mechanic, untargetable, an enrage, etc.
     """
 
-    def __init__(self, id, CastTime, Damage):
+    def __init__(self, id, CastTime : float, Damage : int, RaidWide=True, nTBTarget=0, Experimental = False) -> None:
         """Constructor the of the EnemyEvent class
 
         Args:
             id (int): id of the event.
             CastTime (float): casting time of the event.
             Damage (int): Damage the players receive when the action is used.
+            RaidWide (bool) : True if the Event is a raidwide. Default value is true
+            nTBTarget (int) : Number of targets of a tank buster. Only needed if RaidWide is false. Must be 1 or 2 if Experimental is false
+            Experimental (bool) : False if we do not wish to overrule the automatic checking.
         """
+
+        if not Experimental and not RaidWide and nTBTarget == 0:
+            # If a tankbuster but invalid number of targets and not experimental
+            raise InvalidTankBusterTargetNumber(nTBTarget, id)
 
         self.CastTime = CastTime
         self.id = id
         self.Damage = Damage
+        self.RaidWide = RaidWide
+        self.nTBTarget = nTBTarget
+        self.target = [] # Empty list. The targets will be computed in begin_cast()
 
-    def begin_cast(self, Enemy):
+
+
+
+
+    def begin_cast(self, Enemy) -> None:
         """
         This function will begin the casting of an action by the enemy.
 
@@ -29,19 +64,24 @@ class EnemyEvent:
 
         Enemy.CastingTimer = self.CastTime
         Enemy.CastingAction = deepcopy(self)
+        Enemy.IsCasting = True
 
-    def cast(self, Enemy):
+    def cast(self, Enemy, RaidWide=True) -> None:
         """This function will cast and apply damage/effect on all the players
 
         Args:
             Enemy (Enemy): Enemy casting the action
         """
 
-        # Will do damage on all players
+        # Finds targets
 
-        for player in Enemy.CurrentFight.PlayerList:
+        self.target = Enemy.CurrentFight.PlayerList if self.RaidWide else Enemy.CurrentFight.GetEnemityList(self.nTBTarget)
+        # If the event is a raidwide the target is all players.
+        # If it is not it targets the players with the most enemity up to the number of targets
+        # Will do damage on all target
+
+        for player in self.target:
             # Going through all players
-
             player.TakeDamage(self.Damage) # Applying the damage to the player
 
         Enemy.EventNumber += 1 # Incrementing the pointer to the next event
@@ -52,7 +92,43 @@ class EnemyEvent:
 
 
     
+class EnemyDOT(EnemyEvent):
+    """
+    This class is any DOT applied by the enemy on the players. It will do damage over time on the players.
+    """
 
+    def __init__(self, id, DOTDamage : int, DOTDuration):
+        """
+        Creates a DOTDamage object.
+
+        DOTDamage (int) : Damage every application of the DOT
+        DOTDuration (float) : Duration of the DOT.
+        """
+        self.id = id
+        self.DOTDamage = DOTDamage
+        self.DOTDuration = DOTDuration
+
+        self.DOTStateTimer = 3 # The DOT will be applied every 3 seconds
+
+    def updateState(self, time : float, player):
+        """
+        Update the states of the DOT. Applies damag if neeeded.
+
+        time (float) : time by which the DOT is updated.
+        player (Player) : player object on which the DOT is applied.
+
+        """
+        # Updating timers
+        self.DOTStateTimer -= time
+        self.DOTDuration -= time
+
+        if self.DOTStateTimer <= 0: # Apply damage
+            player.TakeDamage(self.DOTDamage)
+            self.DOTStateTimer = 3
+
+        if self.DOTDuration <= 0:
+            # DOT is finished
+            player.EnemyDOT.remove(self)
 
 
 class Enemy:
@@ -90,23 +166,21 @@ class Enemy:
         # Fight the Enemy is in
         self.CurrentFight = None
 
-    def setEventList(self, newEventList, Fight):
+    def setEventList(self, newEventList) -> None:
         """
         This function gives the Enemy an event list. This will result in a crash
         if the list is empty.
 
         Args:
             newEventList (List[EnemyEvent]): List of the Events to perform
-            Fight (Fight) : Fight object in which the Enemy will perform this eventList
         """
 
         self.hasEventList = True # Let the Fight know this Enemy has an EventList
 
         self.EventList = deepcopy(newEventList)
-        self.CurrentFight = Fight
 
 
-    def UpdateTimer(self, time):
+    def UpdateTimer(self, time : float) -> None:
         """This function updates the Timer values of the Enemy object
 
         Args:
@@ -120,6 +194,17 @@ class Enemy:
                 self.IsCasting = False
 
 
+def WaitEvent(time : float) -> EnemyEvent:
+    """
+    This function returns a EnemyEvent object which has no effect or damage and simply makes the Enemy way.
+
+    time (float) : time in seconds we want the enemy to wait
+    """
+
+    return EnemyEvent(-212,time, 0)
+
+RaidWide = EnemyEvent(1, 2, 500)
+TankBuster = EnemyEvent(2, 2, 1000, RaidWide=False, nTBTarget=1)
 
 
 
