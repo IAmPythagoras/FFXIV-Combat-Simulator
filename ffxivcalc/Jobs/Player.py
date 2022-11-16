@@ -109,6 +109,7 @@ class Player:
         self.MeditativeBrotherhoodTimer = 0 # Meditative Brotherhood Timer
         self.OblationTimer = 0 # Oblation timer if its received
         self.TBNTimer = 0 # Timer if TBN is received
+        self.CorundumTimer = 0 # Timer if corundum is given
 
         # Used for DPS graph and Potency/s graph
 
@@ -241,6 +242,7 @@ class Player:
         if (self.MeditativeBrotherhoodTimer > 0) : self.MeditativeBrotherhoodTimer = max(0, self.MeditativeBrotherhoodTimer-time)
         if (self.OblationTimer > 0) : self.OblationTimer = max(0, self.OblationTimer-time)
         if (self.TBNTimer > 0) : self.TBNTimer = max(0, self.TBNTimer-time)
+        if (self.CorundumTimer > 0) : self.CorundumTimer = max(0, self.CorundumTimer-time)
 
         # Will now call the Role and Job update functions
         self.updateRoleTimer(self, time)
@@ -1678,6 +1680,8 @@ class Player:
         self.BowShockTimer = 0
         self.SonicBreakTimer = 0
         self.NoMercyTimer = 0
+        self.HeartOfLightTimer = 0
+        self.CamouflageTimer = 0
 
         #DOT
         self.SonicBreakDOT = None
@@ -1711,6 +1715,8 @@ class Player:
             if (self.BowShockTimer > 0) : self.BowShockTimer = max(0,self.BowShockTimer - time)
             if (self.SonicBreakTimer > 0) : self.SonicBreakTimer = max(0,self.SonicBreakTimer - time)
             if (self.NoMercyTimer > 0) : self.NoMercyTimer = max(0,self.NoMercyTimer - time)
+            if (self.HeartOfLightTimer > 0) : self.HeartOfLightTimer = max(0,self.HeartOfLightTimer - time)
+            if (self.CamouflageTimer > 0) : self.CamouflageTimer = max(0,self.CamouflageTimer - time)
 
         # update functions
         self.updateJobTimer = updateTimer

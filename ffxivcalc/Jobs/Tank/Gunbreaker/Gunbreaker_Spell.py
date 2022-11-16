@@ -59,6 +59,14 @@ def HeartOfCorundumRequirement(Player, Spell):
 def ApplyCamouflage(Player, Enemy):
     Player.CamouflageCD = 90
 
+    # Since its a 50% that additional 20% mit is added. We will simply 
+    # assume a 20% total mit
+    Player.CamouflageTimer = 20
+    Player.MagicMitigation *= 0.8
+    Player.PhysicalMitigation *= 0.8
+
+    Player.EffectCDList.append(CamouflageCheck)
+
 def ApplyDemonSlice(Player, Enemy):
     if not (DemonSliceCombo in Player.EffectList) : Player.EffectList.append(DemonSliceCombo)
 
@@ -67,6 +75,14 @@ def ApplyHeartOfCorundum(Player, Enemy):
 
 def ApplyHeartOfLight(Player, Enemy):
     Player.HeartOfLightCD = 90
+
+    # Will give every player 10% magic mit
+
+    for player in Player.CurrentFight.PlayerList:
+        player.MagicMitigation *= 0.9
+
+    Player.EffectCDList.append(HeartOfLightCheck)
+    Player.HeartOfLightTimer = 15
 
 def ApplySuperbolide(Player, Enemy):
     Player.SuperbolideCD = 360
@@ -160,6 +176,23 @@ def BrutalShellCombo(Player, Spell):
 
 #Check
 
+def CamouflageCheck(Player, Enemy):
+    if Player.CamouflageTimer <= 0:
+
+        Player.MagicMitigation /= 0.8
+        Player.PhysicalMitigation /= 0.8
+
+        Player.EffectToRemove.append(CamouflageCheck)
+
+
+def HeartOfLightCheck(Player, Enemy):
+    if Player.HeartOfLightTimer <= 0:
+
+        for player in Player.CurrentFight.PlayerList:
+            player.MagicMitigation /= 0.9
+        
+        Player.EffectToRemove.append(HeartOfLightCheck)
+
 def NoMercyCheck(Player, Enemy):
     if Player.NoMercyTimer <= 0:
         Player.buffList.remove(NoMercyBuff)
@@ -232,8 +265,50 @@ DemonSlaughter = GunbreakerSpell(16149, True, 2.5, 100, empty, [], 1)
 Aurora = GunbreakerSpell(16151, False, 0, 0, ApplyAurora, [AuroraRequirement], 0)
 Superbolide = GunbreakerSpell(16152, False, 0, 0, ApplySuperbolide, [SuperbolideRequirement], 0)
 HeartOfLight = GunbreakerSpell(16160, False, 0, 0, ApplyHeartOfLight, [HeartOfLightRequirement], 0)
-HeartOfCorundum = GunbreakerSpell(25758, False, 0, 0, ApplyHeartOfCorundum, [HeartOfCorundumRequirement], 0)
 Camouflage = GunbreakerSpell(16140, False, 0, 0, ApplyCamouflage, [CamouflageRequirement], 0)
+
+def HeartOfCorundum(Target):
+    """This function returns a GBNSpell object corresponding to HeartOfCorundum
+
+    Args:
+        Target (Player): Target of the action
+    """
+
+    def ClarityCheck(Player, Enemy):
+        if Player.CorundumTimer <= 4:
+            Player.MagicMitigation *= 0.85
+            Player.PhysicalMitigation *= 0.85
+            Player.EffectToRemove.append(ClarityCheck)
+
+    def CorundumCheck(Player, Enemy):
+        if Player.CorundumTimer <= 0:
+            Player.MagicMitigation *= 0.85
+            Player.PhysicalMitigation *= 0.85
+            Player.EffectToRemove.append(CorundumCheck)
+
+    def SpellApply(Player, Enemy):
+        ApplyHeartOfCorundum(Player, Enemy)
+
+        # Gives 15% mit for 8 seconds and 15% percent for 4 seconds
+        # 8 seconds 15%
+        Target.MagicMitigation *= 0.85
+        Target.PhysicalMitigation *= 0.85
+        # Clarity of corundum 15% for 4s
+        Target.MagicMitigation *= 0.85
+        Target.PhysicalMitigation *= 0.85
+
+        Target.EffectCDList.append(CorundumCheck)
+        Target.EffectCDList.append(ClarityCheck)
+
+    HeartOfCorundum = GunbreakerSpell(25758, False, 0, 0, SpellApply, [HeartOfCorundumRequirement], 0)
+    HeartOfCorundum.TargetID = Target.playerID
+    return HeartOfCorundum
+
+
+
+
+
+
 #buff
 NoMercyBuff = buff(1.2)
 
