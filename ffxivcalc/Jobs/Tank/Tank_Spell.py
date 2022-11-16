@@ -115,10 +115,16 @@ def ApplyTurnOffTankStance(Player, Enemy):
 def ApplyBigMit(Player, Enemy):
     Player.BigMitCD = 120
     Player.MagicMitigation *= 0.7
+    Player.PhysicalMitigation *= 0.7
+
+    Player.BigMitTimer = 15
 
 def ApplyRampart(Player, Enemy):
     Player.RampartCD = 90
     Player.MagicMitigation *= 0.8
+    Player.PhysicalMitigation *= 0.8
+
+    Player.RampartTimer = 20
 
 def ApplyLowBlow(Player, Enemy):
     Player.LowBlowCD = 25
@@ -166,6 +172,18 @@ def Shirk(Target):
     custom_shirk = TankSpell(7537, False, Lock, 0, 0, 0, ApplyShirk, [ShirkRequirement])
     custom_shirk.TargetID = Target.playerID
     return custom_shirk
+
+def BigMitCheck(Player, Enemy):
+    if Player.BigMitTimer <= 0:
+        Player.MagicMitigation /= 0.7
+        Player.PhysicalMitigation /= 0.7
+        Player.EffectToRemove.append(BigMitCheck)
+
+def RampartCheck(Player, Enemy):
+    if Player.RampartTimer <= 0:
+        Player.MagicMitigation /= 0.8
+        Player.PhysicalMitigation /= 0.8
+        Player.EffectToRemove.append(RampartCheck)
 
 TankAbility = {
 7531 : Rampart,

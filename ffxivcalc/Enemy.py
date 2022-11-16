@@ -1,5 +1,6 @@
 
 from copy import deepcopy
+from ffxivcalc.helperCode.helper_math import roundDown
 
 class InvalidTankBusterTargetNumber(Exception):
     """
@@ -27,7 +28,7 @@ class EnemyEvent:
     This class represents an action or event the boss can take. Such events can be raidwide, a mechanic, untargetable, an enrage, etc.
     """
 
-    def __init__(self, id, CastTime : float, Damage : int, RaidWide=True, nTBTarget=0, Experimental = False) -> None:
+    def __init__(self, id, CastTime : float, Damage : int, RaidWide=True, nTBTarget=0, IsPhysical = False, Experimental = False) -> None:
         """Constructor the of the EnemyEvent class
 
         Args:
@@ -36,6 +37,7 @@ class EnemyEvent:
             Damage (int): Damage the players receive when the action is used.
             RaidWide (bool) : True if the Event is a raidwide. Default value is true
             nTBTarget (int) : Number of targets of a tank buster. Only needed if RaidWide is false. Must be 1 or 2 if Experimental is false
+            IsPhysical (bool) : True if the damage of that event is physical. By default false (hence magical by default)
             Experimental (bool) : False if we do not wish to overrule the automatic checking.
         """
 
@@ -48,6 +50,7 @@ class EnemyEvent:
         self.Damage = Damage
         self.RaidWide = RaidWide
         self.nTBTarget = nTBTarget
+        self.IsPhysical = IsPhysical
         self.target = [] # Empty list. The targets will be computed in begin_cast()
 
 
@@ -81,9 +84,13 @@ class EnemyEvent:
         # Computes new damage because mitigation on the Enemy
         # Does not differentiate between magical and physical for now
         curr_mit = 1
-        if Enemy.Addle : curr_mit *= 0.9
-        if Enemy.Feint : curr_mit *= 0.9
-        if Enemy.Reprisal : curr_mit *= 0.9
+        if Enemy.Addle : 
+            if self.IsPhysical : curr_mit = roundDown(0.95 * curr_mit, 2) # 5% physical mit
+            else : curr_mit = roundDown(0.9 * curr_mit, 2) # 10% magic mit
+        if Enemy.Feint : 
+            if self.IsPhysical : curr_mit = roundDown(0.9 * curr_mit, 2) # 10% physical mit
+            else : curr_mit = roundDown(0.95 * curr_mit, 2) # 5% magic mit
+        if Enemy.Reprisal : curr_mit = roundDown(0.9 * curr_mit, 2) # Flat 10% mit
 
         self.Damage *= curr_mit # Updating the new damage based on global mit
 
@@ -91,10 +98,10 @@ class EnemyEvent:
 
         for player in self.target:
             # Going through all players
-
-            player_damage = self.Damage * player.MagicMitigation # Will update the damage each player takes
-            # According to their own personnal mit
-
+            # Mit according to their own personnal mit
+            if self.IsPhysical : player_damage = self.Damage * player.PhysicalMitigation # Only applies physical mit
+            else : player_damage = self.Damage * player.MagicMitigation # Only applies magic mit
+            player_damage = roundDown(player_damage, 0) # Rounding down to lowest integer
             player.TakeDamage(player_damage) # Applying the damage to the player
 
         Enemy.EventNumber += 1 # Incrementing the pointer to the next event
@@ -104,7 +111,7 @@ class EnemyEvent:
             Enemy.hasEventList = False
 
 
-    
+
 class EnemyDOT(EnemyEvent):
     """
     This class is any DOT applied by the enemy on the players. It will do damage over time on the players.
@@ -221,8 +228,9 @@ def WaitEvent(time : float) -> EnemyEvent:
 
     return EnemyEvent(-212,time, 0)
 
-RaidWide = EnemyEvent(1, 2, 0)
-TankBuster = EnemyEvent(2, 2, 0, RaidWide=False, nTBTarget=1)
+MagicRaidWide = EnemyEvent(1, 2, 500)
+PhysicalRaidWide = EnemyEvent(3, 2, 500, IsPhysical=True)
+TankBuster = EnemyEvent(2, 2, 1000, RaidWide=False, nTBTarget=1)
 
 
 

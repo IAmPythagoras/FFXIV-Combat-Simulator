@@ -1,4 +1,4 @@
-from ffxivcalc.Enemy import Enemy, RaidWide, WaitEvent, TankBuster
+from ffxivcalc.Enemy import Enemy, MagicRaidWide, PhysicalRaidWide, WaitEvent, TankBuster
 from ffxivcalc.Fight import Fight
 from ffxivcalc.Jobs.Player import Player
 from ffxivcalc.Jobs.PlayerEnum import *
@@ -48,7 +48,7 @@ Event = Fight(Dummy, False)
 
 # Giving the enemy an event list
 
-newEventList = [RaidWide, WaitEvent(2), RaidWide, TankBuster]
+newEventList = [MagicRaidWide, WaitEvent(2), PhysicalRaidWide, TankBuster]
 
 Dummy.setEventList(newEventList)
 

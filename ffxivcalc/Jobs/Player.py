@@ -20,8 +20,12 @@ class Player:
         Args:
             DamageAmount (int): Total damage the player is taking
         """
+        input(str(self.JobEnum) + " took " + str(DamageAmount))
 
-        self.HP -= DamageAmount
+        residual_damage = self.ShieldValue - DamageAmount
+        # damage that goes through the shield (if any) will then be substracted to the HP
+        # If there is still damage to do, residual_damage < 0. Otherwise it is positive
+        self.HP -= max(0, -1 * residual_damage)
 
         if self.HP <= 0: self.TrueLock = True # Killing the player. Not allowed to raise.
 
@@ -79,12 +83,14 @@ class Player:
         self.PotionTimer = 0 # Timer on the effect of potion
         self.Delay = 3 # Default time difference between AAs
 
-        self.Mana = 10000 # Starting mana
-        self.HP = 2000  # Starting HP
+        self.Mana = 10000 # Current mana. Max is 10'000
+        self.HP = 2000  # Current HP
+        self.MaxHP = 2000 # Starting HP
+        self.ShieldValue = 0 # Value of shielding applied on the player
         self.EnemyDOT = [] # List which contains all DOT applied by the enemy on the player.
         self.TotalEnemity = 0 # Value of Enemity
-        self.MagicMitigation = 0 # Current value of magic mitigation
-        self.PhysicalMitigation = 0 # Current value of physical mitagation
+        self.MagicMitigation = 1 # Current value of magic mitigation
+        self.PhysicalMitigation = 1 # Current value of physical mitagation
         
         self.TotalPotency = 0 # Keeps track of total potency done
         self.TotalDamage = 0 # Keeps track of total damage done
@@ -101,6 +107,8 @@ class Player:
 
         self.ArcanumTimer = 0 # ArcanumTimer
         self.MeditativeBrotherhoodTimer = 0 # Meditative Brotherhood Timer
+        self.OblationTimer = 0 # Oblation timer if its received
+        self.TBNTimer = 0 # Timer if TBN is received
 
         # Used for DPS graph and Potency/s graph
 
@@ -231,6 +239,8 @@ class Player:
         if (self.ArcanumTimer > 0) : self.ArcanumTimer = max(0, self.ArcanumTimer-time)
         if (self.PotionTimer > 0) : self.PotionTimer = max(0, self.PotionTimer-time)
         if (self.MeditativeBrotherhoodTimer > 0) : self.MeditativeBrotherhoodTimer = max(0, self.MeditativeBrotherhoodTimer-time)
+        if (self.OblationTimer > 0) : self.OblationTimer = max(0, self.OblationTimer-time)
+        if (self.TBNTimer > 0) : self.TBNTimer = max(0, self.TBNTimer-time)
 
         # Will now call the Role and Job update functions
         self.updateRoleTimer(self, time)
@@ -383,6 +393,10 @@ class Player:
         self.BigMitCD = 0
         self.TankStanceCD = 0
 
+        #Timer
+        self.BigMitTimer = 0
+        self.RampartTimer = 0
+
         #ActionEnum
         self.ClassAction = TankActions
     
@@ -398,7 +412,8 @@ class Player:
             if (self.TankStanceCD > 0) : self.TankStanceCD = max(0,self.TankStanceCD - time)
 
         def updateTimer(self, time : float):
-            pass
+            if (self.BigMitTimer > 0) : self.BigMitTimer = max(0,self.BigMitTimer - time)
+            if (self.RampartTimer > 0) : self.RampartTimer = max(0,self.RampartTimer - time)
 
         self.updateRoleCD = updateCD
         self.updateRoleTimer = updateTimer
@@ -1717,6 +1732,8 @@ class Player:
         self.PlungeCharges = 2          #Charges of Plunge
         self.DarkArts = False           #Dark Arts Gauge, activates when TBN breaks.
         self.OblationStack = 2
+        self.DarkMindTimer = 0
+        self.DarkMissionaryTimer = 0
         #Cooldowns for all abilities, starting at 0 and adjusted by Apply.
 
         self.BloodWeaponCD = 0          #60s
@@ -1765,7 +1782,8 @@ class Player:
             if (self.BloodWeaponTimer > 0) : self.BloodWeaponTimer = max(0,self.BloodWeaponTimer - time)
             if (self.DeliriumTimer > 0) : self.DeliriumTimer = max(0,self.DeliriumTimer - time)
             if (self.SaltedEarthTimer > 0) : self.SaltedEarthTimer = max(0, self.SaltedEarthTimer-time)
-
+            if (self.DarkMindTimer > 0) : self.DarkMindTimer = max(0, self.DarkMindTimer-time)
+            if (self.DarkMissionaryTimer > 0) : self.DarkMissionaryTimer = max(0, self.DarkMissionaryTimer-time)
         # update functions
         self.updateJobTimer = updateTimer
         self.updateJobCD = updateCD
