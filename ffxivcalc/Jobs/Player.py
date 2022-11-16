@@ -13,6 +13,17 @@ from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
 
 class Player:
 
+    def ApplyHeal(self, HealingAmount : int) -> None:
+        """This function will update the HP according to
+        the healing received.
+
+        Args:
+            HealingAmount (int) : Total amount of healing given to the player.
+        
+        """
+
+        self.HP = min(Player.HP + Player.MaxHP, Player.MaxHP)
+
     def TakeDamage(self, DamageAmount : int) -> None:
         """
         This function will update the HP value of the players and will kill the player if its HP goes under 0
@@ -110,7 +121,7 @@ class Player:
         self.OblationTimer = 0 # Oblation timer if its received
         self.TBNTimer = 0 # Timer if TBN is received
         self.CorundumTimer = 0 # Timer if corundum is given
-
+        self.NascentFlashTimer = 0 # Timer if Nascent flash is given
         # Used for DPS graph and Potency/s graph
 
         self.DPSGraph = []
@@ -243,6 +254,7 @@ class Player:
         if (self.OblationTimer > 0) : self.OblationTimer = max(0, self.OblationTimer-time)
         if (self.TBNTimer > 0) : self.TBNTimer = max(0, self.TBNTimer-time)
         if (self.CorundumTimer > 0) : self.CorundumTimer = max(0, self.CorundumTimer-time)
+        if (self.NascentFlashTimer > 0) : self.NascentFlashTimer = max(0, self.NascentFlashTimer-time)
 
         # Will now call the Role and Job update functions
         self.updateRoleTimer(self, time)
@@ -1891,6 +1903,7 @@ class Player:
         self.SurgingTempestTimer = 0
         self.PrimalRendTimer = 0
         self.NascentChaosTimer = 0
+        self.ThrillOfBattleTimer = 0
 
         #CD
         self.InfuriateCD = 0
@@ -1929,6 +1942,7 @@ class Player:
             if (self.SurgingTempestTimer > 0) : self.SurgingTempestTimer = max(0,self.SurgingTempestTimer - time)
             if (self.PrimalRendTimer > 0) : self.PrimalRendTimer = max(0,self.PrimalRendTimer - time)
             if (self.NascentChaosTimer > 0) : self.NascentChaosTimer = max(0,self.NascentChaosTimer - time)
+            if (self.ThrillOfBattleTimer > 0) : self.ThrillOfBattleTimer = max(0,self.ThrillOfBattleTimer - time)
 
         # update functions
         self.updateJobTimer = updateTimer

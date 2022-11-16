@@ -119,12 +119,16 @@ def ApplyBigMit(Player, Enemy):
 
     Player.BigMitTimer = 15
 
+    Player.EffectCDList.append(BigMitCheck)
+
 def ApplyRampart(Player, Enemy):
     Player.RampartCD = 90
     Player.MagicMitigation *= 0.8
     Player.PhysicalMitigation *= 0.8
 
     Player.RampartTimer = 20
+
+    Player.EffectCDList.append(RampartCheck)
 
 def ApplyLowBlow(Player, Enemy):
     Player.LowBlowCD = 25
