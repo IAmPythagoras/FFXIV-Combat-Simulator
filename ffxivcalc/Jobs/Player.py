@@ -11,7 +11,29 @@ from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
 
 
+class Shield:
+    """This class represents a shield. It will take damage before the main HP of a player
+    is reduced.
+
+    Attributes:
+        ShieldAmount (int) : Amount of the shield
+    """
+
+    def __init__(self, ShieldAmount : int):
+        self.ShieldAmont = ShieldAmount
+
 class Player:
+    """
+    This class represents all players in the simulation. Objects of this class contain vital information relative to what a player
+    is.
+
+    Attribute:
+        ActionSet : List[Spell] -> List of spell the player will do in the simulation
+        EffectList : List[Function] -> List of all effects the player has. Can be empty.
+        CurrentFight : Fight -> Reference to the fight object in which the player is.
+        Stat : Dict -> Stats of the player as a dictionnary
+        Job : JobEnum -> Specific job of the player
+    """
 
     def ApplyHeal(self, HealingAmount : int) -> None:
         """This function will update the HP according to
@@ -33,7 +55,24 @@ class Player:
         """
         input(str(self.JobEnum) + " took " + str(DamageAmount))
 
-        residual_damage = self.ShieldValue - DamageAmount
+        residual_damage = -1 * DamageAmount
+
+        # Will compute the residual damage after shields have been applied
+
+        for shield in self.ShieldList:
+            residual_damage += shield.ShieldAmount
+
+            if residual_damage > 0:
+                # If residal damage is bigger than 0, then the shield has taken the full amount of the damage.
+                # If such is the case the amount of remaining shield is the value of residual_damage
+
+                shield.ShieldAmount = residual_damage
+                return # Exit the function since all the damage has been taken care of
+            elif residual_damage == 0 :
+                # If the shield had exact damage
+                
+
+
         # damage that goes through the shield (if any) will then be substracted to the HP
         # If there is still damage to do, residual_damage < 0. Otherwise it is positive
         self.HP -= max(0, -1 * residual_damage)
@@ -61,14 +100,7 @@ class Player:
         
 
     def __init__(self, ActionSet, EffectList, Stat,Job : JobEnum):
-        """
-        Create the player object
-        ActionSet : List[Spell] -> List of spell the player will do in the simulation
-        EffectList : List[Function] -> List of all effects the player has. Can be empty.
-        CurrentFight : Fight -> Reference to the fight object in which the player is.
-        Stat : Dict -> Stats of the player as a dictionnary
-        Job : JobEnum -> Specific job of the player
-        """
+
         self.ActionSet = ActionSet # Known Action List
         self.EffectList = EffectList # Normally Empty, can has some effects initially
         self.RoleEnum = 0 # RoleEnum Value is set later on
@@ -97,7 +129,7 @@ class Player:
         self.Mana = 10000 # Current mana. Max is 10'000
         self.HP = 2000  # Current HP
         self.MaxHP = 2000 # Starting HP
-        self.ShieldValue = 0 # Value of shielding applied on the player
+        self.ShieldList = [] # List of all shields currently applied on the player. Shield prio is lowest index to highest index
         self.EnemyDOT = [] # List which contains all DOT applied by the enemy on the player.
         self.TotalEnemity = 0 # Value of Enemity
         self.MagicMitigation = 1 # Current value of magic mitigation

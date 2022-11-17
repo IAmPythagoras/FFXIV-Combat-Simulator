@@ -1,5 +1,6 @@
 from ffxivcalc.Jobs.Base_Spell import buff, empty, DOTSpell, ManaRequirement
 from ffxivcalc.Jobs.Tank.Tank_Spell import BigMit, PaladinSpell
+from ffxivcalc.helperCode.exceptions import InvalidTarget
 import copy
 Lock = 0
 
@@ -345,6 +346,11 @@ def Intervention(Target):
 
     def Apply(Player, Spell):
         ApplyIntervention(Player, Spell)
+
+        # Check if the target is valid
+
+        if Target == Player: # Intervention cannot be used on the player itself
+            raise InvalidTarget("Intervention", Player)
 
         # 10% for 8 sec. 10% for 4 secs and 10% (flat bonus)
         # if rampart or sentinel is up

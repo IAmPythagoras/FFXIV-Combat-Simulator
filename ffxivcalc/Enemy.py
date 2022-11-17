@@ -2,26 +2,8 @@
 from copy import deepcopy
 from ffxivcalc.helperCode.helper_math import roundDown
 
-class InvalidTankBusterTargetNumber(Exception):
-    """
-    This exception is raised when an event is defined as a tank buster
-    but has an invalid number of targets. Tank buster's number of targets
-    must be 1 or 2. This error will be raised only if the Event has its "experimental"
-    flag set to false (false by default). It must be, in any case, a positive value.
-
-    Attributes:
-        nTBTarget (int) : number of targets of the TB
-
-    """
-
-    def __init__(self, nTBTarget : int, id : int):
-        self.nTBTarget = nTBTarget
-        self.message = "targets for the tank buster with id " + str(id) + " is not in the valid range of 1 or 2."
-
-        super().__init__(self.message)
-
-    def __str__(self) -> str:
-        return f'{self.nTBTarget} {self.message}'
+# Exceptions
+from ffxivcalc.helperCode.exceptions import InvalidTankBusterTargetNumber
 
 class EnemyEvent:
     """
