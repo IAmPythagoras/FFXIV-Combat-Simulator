@@ -122,6 +122,8 @@ class Player:
         self.TBNTimer = 0 # Timer if TBN is received
         self.CorundumTimer = 0 # Timer if corundum is given
         self.NascentFlashTimer = 0 # Timer if Nascent flash is given
+        self.InterventionTimer = 0 # Timer if Intervention is given
+        self.InterventionBuff = False # True if a given intervention is buffed
         # Used for DPS graph and Potency/s graph
 
         self.DPSGraph = []
@@ -255,6 +257,7 @@ class Player:
         if (self.TBNTimer > 0) : self.TBNTimer = max(0, self.TBNTimer-time)
         if (self.CorundumTimer > 0) : self.CorundumTimer = max(0, self.CorundumTimer-time)
         if (self.NascentFlashTimer > 0) : self.NascentFlashTimer = max(0, self.NascentFlashTimer-time)
+        if (self.InterventionTimer > 0) : self.InterventionTimer = max(0, self.InterventionTimer-time)
 
         # Will now call the Role and Job update functions
         self.updateRoleTimer(self, time)
@@ -1829,6 +1832,9 @@ class Player:
         self.CircleScornTimer = 0
         self.ValorDOTTimer = 0
         self.FightOrFlighTimer = 0
+        self.HolySheltronTimer = 0
+        self.PassageOfArmsTimer = 0
+        self.DivineVeilTimer = 0
 
         #DOT
         self.GoringDOT = None
@@ -1873,6 +1879,9 @@ class Player:
             if (self.CircleScornTimer > 0) : self.CircleScornTimer = max(0,self.CircleScornTimer - time)
             if (self.FightOrFlighTimer > 0) : self.FightOrFlighTimer = max(0,self.FightOrFlighTimer - time)
             if (self.ValorDOTTimer > 0) : self.ValorDOTTimer = max(0,self.ValorDOTTimer - time)
+            if (self.HolySheltronTimer > 0) : self.HolySheltronTimer = max(0,self.HolySheltronTimer - time)
+            if (self.PassageOfArmsTimer > 0) : self.PassageOfArmsTimer = max(0,self.PassageOfArmsTimer - time)
+            if (self.DivineVeilTimer > 0) : self.DivineVeilTimer = max(0,self.DivineVeilTimer - time)
 
 
         # update functions
