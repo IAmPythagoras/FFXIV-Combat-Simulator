@@ -107,7 +107,7 @@ def ApplyShakeItOff(Player, Enemy):
 
 
 def ApplyHolmgang(Player, Enemy):
-    PlayerHolmgangCD = 240
+    Player.HolmgangCD = 240
 
 def ApplyThrillOfBattle(Player, Enemy):
     Player.ThrillOfBattleCD = 90
