@@ -317,7 +317,7 @@ def GCDReductionEffect(Player, Spell) -> None:
         Spell.CastTime *= Player.GCDReduction
         Spell.RecastTime *= Player.GCDReduction
 
-def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
+def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj) -> float:
 
     """
     This function computes the damage from a given potency.
@@ -501,6 +501,45 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
     else:# No auto_crit or auto_DH
         non_crit_dh_expected, dh_crit_expected = math.floor(Damage * ( 1 + roundDown((DHRate * 0.25), 2))), math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) # Non crit expected damage, expected damage with crit
         return non_crit_dh_expected , dh_crit_expected
+
+
+def ComputeHeal(Player, Potency, Target, SpellBonus, type, spellObj) -> float:
+    """This function computes and returns the healing done by an action.
+
+    Args:
+        Player (Player): Player casting the action
+        Potency (int): Potency of the heal
+        Target (Player): Target of the healing
+        SpellBonus (float): Bonus of the spell
+        type (int): Type of the action
+        spellObj (Spell): Object corresponding to the action being casted
+    """
+    baseMain = 390  
+
+
+    if Player.JobEnum == JobEnum.Pet: MainStat = Player.Stat["MainStat"] # Summons do not receive bonus
+    else: MainStat = math.floor(Player.Stat["MainStat"] * Player.CurrentFight.TeamCompositionBonus) # Scaling %bonus on mainstat
+    # Computing values used throughout all computations
+    f_MAIN_heal = (100+math.floor((MainStat-baseMain)*304/baseMain))/100
+    # These values are all already computed since they do not change
+    f_WD = Player.f_WD
+    f_DET = Player.f_DET
+    f_TEN = Player.f_TEN
+    f_SPD = Player.f_SPD
+    CritRate = (Player.CritRate)
+    CritMult = Player.CritMult
+    DHRate = Player.DHRate
+
+    
+    # WARNING
+    # THESE CONSTANTS ARE PROBABLY WRONG. I HAVE NOT VERIFIED AND AM SIMPLY USING THOSE IN ORDER TO TEST THE CODE.
+    
+
+    H_1 = math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_heal * f_DET) * f_DET) * f_TEN) * f_WD ) * Player.Trait)
+
+    H_1_expected_crit = math.floor(H_1 * (1 + roundDown((CritRate * CritMult), 3)))
+
+    return H_1_expected_crit
 
 
 
