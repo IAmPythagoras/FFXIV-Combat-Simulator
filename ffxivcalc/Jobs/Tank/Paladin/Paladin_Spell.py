@@ -1,6 +1,7 @@
 from ffxivcalc.Jobs.Base_Spell import buff, empty, DOTSpell, ManaRequirement
 from ffxivcalc.Jobs.Tank.Tank_Spell import BigMit, PaladinSpell
 from ffxivcalc.helperCode.exceptions import InvalidTarget
+from ffxivcalc.Jobs.Player import Shield
 import copy
 Lock = 0
 
@@ -65,6 +66,7 @@ def ApplyHolySheltron(Player, Enemy):
     Player.HolySheltronCD = 5
     Player.OathGauge -= 50
 
+    
     # Gives 20% from block for 8 sec and
     # 15% mit for 4 seconds
     Player.MagicMitigation *= 0.8 * 0.85
@@ -98,9 +100,11 @@ def ApplyDivineVeil(Player, Enemy):
     shield_value = int(Player.MaxHP * 0.1)
 
     for player in Player.CurrentFight.PlayerList:
-        if player != Player : player.ShieldValue += shield_value
+        # Giving every player that is not the PLD the divine veil shield
+        if player != Player : player.ShieldList.append(Shield(shield_value, 30, player))
+        
 
-    Player.EffectCDList.append(DivineVeilCheck)
+    
 
 
 

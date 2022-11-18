@@ -170,7 +170,10 @@ class Fight:
                     self.Enemy.EventList[self.Enemy.EventNumber].begin_cast(self.Enemy) # Begins the casting of the next event
 
                 self.Enemy.UpdateTimer(TimeUnit) # Updating the Enemy's timers
-                
+
+            # Updating shield timer of all players
+            for player in self.PlayerList:
+                for shield in player.ShieldList: shield.UpdateTimer(TimeUnit)
 
             # Updating and casting DOT if needed
             for player in self.PlayerList:

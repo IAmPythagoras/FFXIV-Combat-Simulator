@@ -13,14 +13,30 @@ from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
 
 class Shield:
     """This class represents a shield. It will take damage before the main HP of a player
-    is reduced.
+    is reduced. A shield will remove itself if its time limit is reached.
 
     Attributes:
         ShieldAmount (int) : Amount of the shield
+        Timer (float) : Timer of the shield
+        Player (Player) : Player on which the shield is applied
     """
 
-    def __init__(self, ShieldAmount : int):
+    def __init__(self, ShieldAmount : int, Timer: float, Player):
         self.ShieldAmont = ShieldAmount
+        self.Timer = Timer
+        self.Player = Player
+
+    def UpdateTimer(self, time : float) -> None:
+        """Update a shield's timer value. If the timer reaches 0 removes the shield from the player.
+
+        Args:
+            time (float): time value by which we update the shield's timer
+        """
+
+        self.Timer -= time
+
+        if self.Timer <= 0:
+            self.Player.ShieldList.remove(self) # Remove itself if time is 0
 
 class Player:
     """
@@ -44,7 +60,7 @@ class Player:
         
         """
 
-        self.HP = min(Player.HP + Player.MaxHP, Player.MaxHP)
+        self.HP = min(Player.HP + HealingAmount, Player.MaxHP)
 
     def TakeDamage(self, DamageAmount : int) -> None:
         """
@@ -70,10 +86,11 @@ class Player:
                 return # Exit the function since all the damage has been taken care of
             elif residual_damage == 0 :
                 # If the shield had exact damage
-                
+                shield.Player.ShieldList.remove(shield) # Remove shield from the player
+                return # Exit the function since all the damage has been taken care of
 
-
-        # damage that goes through the shield (if any) will then be substracted to the HP
+        # If we get here then there is still residual damage that will affect the player's HP.
+        # Damage that goes through the shield (if any) will then be substracted to the HP
         # If there is still damage to do, residual_damage < 0. Otherwise it is positive
         self.HP -= max(0, -1 * residual_damage)
 
@@ -151,7 +168,6 @@ class Player:
         self.ArcanumTimer = 0 # ArcanumTimer
         self.MeditativeBrotherhoodTimer = 0 # Meditative Brotherhood Timer
         self.OblationTimer = 0 # Oblation timer if its received
-        self.TBNTimer = 0 # Timer if TBN is received
         self.CorundumTimer = 0 # Timer if corundum is given
         self.NascentFlashTimer = 0 # Timer if Nascent flash is given
         self.InterventionTimer = 0 # Timer if Intervention is given
@@ -286,7 +302,6 @@ class Player:
         if (self.PotionTimer > 0) : self.PotionTimer = max(0, self.PotionTimer-time)
         if (self.MeditativeBrotherhoodTimer > 0) : self.MeditativeBrotherhoodTimer = max(0, self.MeditativeBrotherhoodTimer-time)
         if (self.OblationTimer > 0) : self.OblationTimer = max(0, self.OblationTimer-time)
-        if (self.TBNTimer > 0) : self.TBNTimer = max(0, self.TBNTimer-time)
         if (self.CorundumTimer > 0) : self.CorundumTimer = max(0, self.CorundumTimer-time)
         if (self.NascentFlashTimer > 0) : self.NascentFlashTimer = max(0, self.NascentFlashTimer-time)
         if (self.InterventionTimer > 0) : self.InterventionTimer = max(0, self.InterventionTimer-time)

@@ -4,6 +4,7 @@
 
 from ffxivcalc.Jobs.Base_Spell import buff, empty
 from ffxivcalc.Jobs.Tank.Tank_Spell import BigMit, WarriorSpell
+from ffxivcalc.Jobs.Player import Shield
 Lock = 0.75
 
 def BeastGaugeRequirement(Player, Spell):
@@ -81,6 +82,29 @@ def ApplyNascentFlash(Player, Enemy):
 
 def ApplyShakeItOff(Player, Enemy):
     Player.ShakeItOffCD = 90
+
+    # Gives a shield equal to 15% of max HP + 2% per Thrill, Vengeance and bloodwhetting
+    shield_percent = 0.15
+
+    if Player.BitMitTimer > 0: 
+        Player.BigMitTimer = 0
+        shield_percent += 0.02
+    if Player.NascentFlashTimer > 0:
+        Player.NascentFlashTimer = 0
+        shield_percent += 0.02
+    if Player.ThrillOfBattleTimer > 0:
+        Player.ThrillOfBattleTimer = 0
+        shield_percent += 0.02
+    
+    # Removing mit if the timer is bigger than 0 and giving an extra 2%
+
+    shield_value = (Player.MaxHP * shield_percent)
+
+    for player in Player.CurrentFight.PlayerList:
+        player.ShieldList.append(Shield(shield_value, 15, player))
+
+    # Also does 300 potency healing
+
 
 def ApplyHolmgang(Player, Enemy):
     PlayerHolmgangCD = 240

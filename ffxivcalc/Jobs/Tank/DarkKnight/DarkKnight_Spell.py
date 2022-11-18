@@ -3,7 +3,7 @@
 #########################################
 from ffxivcalc.Jobs.Base_Spell import DOTSpell, Potion, buff, empty
 import copy
-from ffxivcalc.Jobs.Player import Pet
+from ffxivcalc.Jobs.Player import Pet, Shield
 from ffxivcalc.Jobs.Tank.Tank_Spell import BigMit, DRKSkill
 Lock = 0
 
@@ -328,18 +328,11 @@ def TBN(Target):
         Target (Player): Player targetted by TBN. Can be the DRK itself
     """
 
-    def TBNCheck(Player, Enemy):
-        if Player.TBNTimer <= 0:
-            Target.ShieldValue -= int(Target.MaxHP * 0.25) # Giving shield equal to 25% of max HP of target
-            Player.EffectToRemove.append(TBNCheck)
-
     def ApplyTBN(Player, Enemy):
         ApplyDarkArts(Player, Enemy)
 
-        Target.TBNTimer = 7
-        Target.ShieldValue += int(Target.MaxHP * 0.25) # Giving shield equal to 25% of max HP of target
-
-        Target.EffectCDList.append(TBNCheck)
+        TBNShield = Shield(int(Target.MaxHP * 0.25), 7, Target)
+        Target.ShieldList.insert(0, TBNShield) # Inserting shield at first since TBN has prio
 
     TBNSpell = DRKSkill(7393, False, Lock, 0, 0, 3000, 0, ApplyTBN, [TBNRequirement])     #Simply makes the next EdgeShadow free for now.
     TBNSpell.TargetID == Target.playerID
