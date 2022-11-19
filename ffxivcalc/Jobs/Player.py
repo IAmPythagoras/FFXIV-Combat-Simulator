@@ -9,6 +9,51 @@ from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
 from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import SongEffect
 from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
+from ffxivcalc.helperCode.exceptions import InvalidMitigation
+from ffxivcalc.helperCode.helper_math import roundDown
+
+class MitBuff:
+    """This class represents a mitigation buff given to a player. This object
+    also keeps track of the timer of such a buff.
+
+    Returns:
+        PercentMit (float) : Percent damage taken of the mitigation. So if 30% mit, PercentMit = 0.7
+        Timer (float) : Timer of the mit
+        Player (Player) : Player on which the mit is applied
+        MagicMit (bool) : If the Mit is only for magic damage
+        PhysicalMit (bool) : If the mit is only for physical damage.
+    """
+
+    def __init__(self, PercentMit : float, Timer : float, Player, MagicMit = False, PhysicalMit = False):
+        self.PercentMit = PercentMit
+        self.Timer = Timer
+        self.Player = Player
+
+        self.MagicMit = MagicMit
+        self.PhysicalMit = PhysicalMit
+
+        # Checks for invalid input and raises error in both cases
+        if self.MagicMit and self.PhysicalMit : raise InvalidMitigation()
+        elif self.PercentMit <=0 or self.PercentMit >= 1: raise InvalidMitigation(InvalidRange=True, PercentMit=self.PercentMit)
+
+        # If mitigation for both physical and magical will have TrueMit set to true.
+        if not MagicMit and not PhysicalMit: self.TrueMit = True
+        else :
+            self.TrueMit = False
+
+        
+
+    def UpdateTimer(self, time : float):
+        """Update the timer of the buff and removes itself if timer reaches 0.
+
+        Args:
+            time (float): time unit by which we update the timer
+        """
+
+        self.Timer -= time
+
+        if self.Timer <= 0:
+            self.Player.MitBuffList.remove(self)
 
 
 class HealingBuff:
@@ -92,12 +137,13 @@ class Player:
 
         self.HP = min(Player.HP + HealingAmount, Player.MaxHP)
 
-    def TakeDamage(self, DamageAmount : int) -> None:
+    def TakeDamage(self, DamageAmount : int, MagicDamage : bool) -> None:
         """
         This function will update the HP value of the players and will kill the player if its HP goes under 0
 
         Args:
             DamageAmount (int): Total damage the player is taking
+            MagicDamage (bool) : True if the damage is magical. False if physical.
         """
         input(str(self.JobEnum) + " took " + str(DamageAmount))
 
@@ -128,7 +174,23 @@ class Player:
         # If we get here then there is still residual damage that will affect the player's HP.
         # Damage that goes through the shield (if any) will then be substracted to the HP
         # If there is still damage to do, residual_damage < 0. Otherwise it is positive
-        self.HP -= max(0, -1 * residual_damage)
+
+        damage = -1 * residual_damage
+
+        # Will now apply every mitigation the player has
+
+        for MitBuff in self.MitBuffList:
+            if MitBuff.TrueMit :
+                # If true mit
+                damage = int(damage * MitBuff.PercentMit)
+            elif MitBuff.MagicMit and MagicDamage:
+                # If the damage is magical and the mit is magical
+                damage = int(damage * MitBuff.PercentMit)
+            elif MitBuff.PhysicalMit and not MagicDamage:
+                # If the damage is physical and the mit is physical
+                damage = int(damage * MitBuff.PercentMit)
+
+        self.HP -= max(0, -1 * damage)
         
         if self.HP <= 0:
             if self.RoleEnum == RoleEnum.Tank and self.InvulnTimer > 0 and (self.JobEnum == JobEnum.Warrior or self.JobEnum == JobEnum.DarkKnight):
@@ -202,6 +264,7 @@ class Player:
 
         self.Trait = 1  # DPS mult from trait
         self.buffList = [] # List of all damage buff on the player
+        self.MitBuffList = [] # List of all MitBuff on the player
         self.ReceivedHealBuffList = [] # List of all healing buff on the player. Buffs incoming heals
         self.GivenHealBuffList = [] # List of all healing buff on the player. Buffs given heal.
         self.EffectToRemove = [] # List filled with effect to remove.
@@ -1989,6 +2052,11 @@ class Player:
     def init_warrior(self):
         #Buffs
         self.SurgingTempest = False #If surging tempest is on, set to true
+        
+        # Current mit
+        self.VengeanceBuff = None
+        self.BloodwhettingBuff = None
+        # Need to know which buff is up when casting shake it off
 
         #Gauge
         self.BeastGauge = 0

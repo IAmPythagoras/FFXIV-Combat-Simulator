@@ -37,3 +37,23 @@ class InvalidTarget(Exception):
 
     def __str__(self) -> str:
         return f'{self.message} {self.Target}'
+
+
+class InvalidMitigation(Exception):
+    """This exception is raised when a non valid mitigation object is being constructed.
+    Such examples would be MagicMit and PhysicalMit being both True or a MitPercent value out of the
+    acceptable range of (0,1).
+
+    Args:
+        InvalidRange (bool): Type of the Error. True -> MitPercent OOR, False -> MagicMit and PhysicalMit == True
+        PercentMit (float) : Value of the PercentMit given
+    """
+
+    def __init__(self, InvalidRange = False, PercentMit : float = 0):
+        self.PercentMit = PercentMit
+
+        self.message = "A mitigation that is both only for Physical and for Magic damage was being constructed" if not InvalidRange else "The given PercentMit value " + str(self.PercentMit) + " is not within the valid range of (0,1)."
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'

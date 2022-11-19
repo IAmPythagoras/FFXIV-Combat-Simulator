@@ -1,5 +1,7 @@
 from ffxivcalc.Jobs.Base_Spell import Potion, Spell
 from ffxivcalc.Jobs.Melee.Melee_Spell import ArmLength
+from ffxivcalc.Jobs.Player import MitBuff
+from ffxivcalc.Jobs.PlayerEnum import JobEnum
 Lock = 0.75
 
 
@@ -114,21 +116,17 @@ def ApplyTurnOffTankStance(Player, Enemy):
 
 def ApplyBigMit(Player, Enemy):
     Player.BigMitCD = 120
-    Player.MagicMitigation *= 0.7
-    Player.PhysicalMitigation *= 0.7
+    BigMitBuff = MitBuff(0.7, 15, Player)
+    Player.MitBuffList.append(BigMitBuff) # Appends buff
 
-    Player.BigMitTimer = 15
+    # Keeps pointer to buff if Warrior
+    if Player.JobEnum == JobEnum.Warrior: Player.VengeanceBuff = BigMitBuff
 
-    Player.EffectCDList.append(BigMitCheck)
 
 def ApplyRampart(Player, Enemy):
     Player.RampartCD = 90
-    Player.MagicMitigation *= 0.8
-    Player.PhysicalMitigation *= 0.8
-
-    Player.RampartTimer = 20
-
-    Player.EffectCDList.append(RampartCheck)
+    RampartBuff = MitBuff(0.8, 20, Player)
+    Player.MitBuffList.append(RampartBuff)
 
 def ApplyLowBlow(Player, Enemy):
     Player.LowBlowCD = 25
@@ -177,17 +175,6 @@ def Shirk(Target):
     custom_shirk.TargetID = Target.playerID
     return custom_shirk
 
-def BigMitCheck(Player, Enemy):
-    if Player.BigMitTimer <= 0:
-        Player.MagicMitigation /= 0.7
-        Player.PhysicalMitigation /= 0.7
-        Player.EffectToRemove.append(BigMitCheck)
-
-def RampartCheck(Player, Enemy):
-    if Player.RampartTimer <= 0:
-        Player.MagicMitigation /= 0.8
-        Player.PhysicalMitigation /= 0.8
-        Player.EffectToRemove.append(RampartCheck)
 
 TankAbility = {
 7531 : Rampart,

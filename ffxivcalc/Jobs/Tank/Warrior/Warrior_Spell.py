@@ -4,7 +4,7 @@
 
 from ffxivcalc.Jobs.Base_Spell import buff, empty
 from ffxivcalc.Jobs.Tank.Tank_Spell import BigMit, WarriorSpell
-from ffxivcalc.Jobs.Player import Shield
+from ffxivcalc.Jobs.Player import Shield, MitBuff
 Lock = 0.75
 
 def BeastGaugeRequirement(Player, Spell):
@@ -69,13 +69,13 @@ def ApplyEquilibrium(Player, Enemy):
 
 def ApplyBloodwhetting(Player, Enemy):
     Player.BloodwhettingCD = 25
-    Player.MagicMitigation *= 0.9 * 0.9
-    Player.PhysicalMitigation *= 0.9 * 0.9
+    BloodwhettingBuff = MitBuff(0.9, 8, Player)
+    StemFlowBuff = MitBuff(0.9, 4, Player)
+    Player.BuffMitList.append(BloodwhettingBuff)
+    Player.BuffMitList.append(StemFlowBuff)
 
-    Player.NascentFlashTimer = 8
+    Player.BloodwhettingBuff = BloodwhettingBuff
 
-    Player.EffectCDList.append(StemFlowCheck)
-    Player.EffectCDList.append(BloodwhettingCheck)
 
 def ApplyNascentFlash(Player, Enemy):
     Player.NascentFlashCD = 25
@@ -86,11 +86,13 @@ def ApplyShakeItOff(Player, Enemy):
     # Gives a shield equal to 15% of max HP + 2% per Thrill, Vengeance and bloodwhetting
     shield_percent = 0.15
 
-    if Player.BitMitTimer > 0: 
-        Player.BigMitTimer = 0
+    if Player.VengeanceBuff != None: 
+        Player.VengeanceBuff.Timer = 0
+        Player.VengeanceBuff = None
         shield_percent += 0.02
-    if Player.NascentFlashTimer > 0:
-        Player.NascentFlashTimer = 0
+    if Player.BloodwhettingBuff != None:
+        Player.BloodwhettingBuff.Timer = 0
+        Player.BloodwhettingBuff = None
         shield_percent += 0.02
     if Player.ThrillOfBattleTimer > 0:
         Player.ThrillOfBattleTimer = 0
@@ -217,17 +219,6 @@ def MaimEffect(Player, Spell):
 
 #Check
 
-def StemFlowCheck(Player, Enemy):
-    if Player.NascentFlashTimer <= 4:
-        Player.MagicMitigation /= 0.9
-        Player.PhysicalMitigation  /= 0.9
-        Player.EffectToRemove.append(StemFlowCheck)
-
-def BloodwhettingCheck(Player, Enemy):
-    if Player.NascentFlashTimer <= 0:
-        Player.MagicMitigation /= 0.9
-        Player.PhysicalMitigation  /= 0.9
-        Player.EffectToRemove.append(BloodwhettingCheck)
 
 def ThrillOfBattleCheck(Player, Enemy):
     if Player.ThrillOfBattleTimer <= 0:

@@ -173,9 +173,10 @@ class Fight:
 
             # Updating shield timer and healing buff timer of all players
             for player in self.PlayerList:
-                for shield in player.ShieldList: shield.UpdateTimer(TimeUnit)
-                for buff in player.ReceivedHealBuffList : buff.UpdateTimer(TimeUnit)
-                for buff in player.GivenHealBuffList : buff.UpdateTimer(TimeUnit)
+                for shield in player.ShieldList: shield.UpdateTimer(TimeUnit) # Update shield timer
+                for buff in player.ReceivedHealBuffList : buff.UpdateTimer(TimeUnit) # Update buff on received heal timer
+                for buff in player.GivenHealBuffList : buff.UpdateTimer(TimeUnit) # Update buff on given heal timer
+                for buff in player.MitBuffList : buff.UpdateTimer(TimeUnit) # Update Mit buff timer
 
             # Updating and casting DOT if needed
             for player in self.PlayerList:
