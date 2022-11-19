@@ -87,6 +87,8 @@ def ApplyHeartOfLight(Player, Enemy):
 def ApplySuperbolide(Player, Enemy):
     Player.SuperbolideCD = 360
 
+    Player.InvulnTimer = 10
+
 def ApplyAurora(Player, Enemy):
     if Player.AuroraStack == 2:
         Player.EffectCDList.append(AuroraStackCheck)

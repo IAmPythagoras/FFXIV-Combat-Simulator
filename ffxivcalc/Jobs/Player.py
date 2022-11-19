@@ -11,6 +11,36 @@ from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
 
 
+class HealingBuff:
+    """This class represents a buff for healing. It has a percent bonus and also
+    a timer. Once the timer has reached 0 the buff removes itself.
+
+    Returns:
+        PercentBuff (float): Percent healing buff
+        Timer (float) : Timer of the buff until end of its effect
+        Player (Player) : Player on which the buff is applied
+        GivenHealBuff (bool) : True if this buff buffs given healing instead of received healing.
+    """
+
+    def __init__(self, PercentBuff : float, Timer : float, Player, GivenHealBuff = True):
+        self.PercentBuff = PercentBuff
+        self.Timer = Timer
+        self.Player = Player
+        self.GivenHealBuff = GivenHealBuff
+
+    def UpdateTimer(self, time : float) -> None:
+        """Update a buff's timer value. If the timer reaches 0 removes the shield from the player.
+
+        Args:
+            time (float): time value by which we update the shield's timer
+        """
+
+        self.Timer -= time
+
+        if self.Timer <= 0: # Remove itself if time is 0
+            if self.GivenHealBuff : self.Player.GivenHealBuffList.remove(self) # Removes from GivenHeal list
+            else : self.Player.ReceivedHealBuffList.remove(self) # Remves from received heal list
+
 class Shield:
     """This class represents a shield. It will take damage before the main HP of a player
     is reduced. A shield will remove itself if its time limit is reached.
@@ -71,6 +101,12 @@ class Player:
         """
         input(str(self.JobEnum) + " took " + str(DamageAmount))
 
+        # Will first check if the player is a tank with their invuln on
+
+        if self.RoleEnum == RoleEnum.Tank and self.InvulnTimer > 0 and (self.JobEnum == JobEnum.Gunbreaker or self.JobEnum == JobEnum.Paladin):
+            # If is paladin or gnb with invuln on, then takes 0 damage
+                return # We exit this function since they take no damage
+
         residual_damage = -1 * DamageAmount
 
         # Will compute the residual damage after shields have been applied
@@ -93,8 +129,12 @@ class Player:
         # Damage that goes through the shield (if any) will then be substracted to the HP
         # If there is still damage to do, residual_damage < 0. Otherwise it is positive
         self.HP -= max(0, -1 * residual_damage)
-
-        if self.HP <= 0: self.TrueLock = True # Killing the player. Not allowed to raise.
+        
+        if self.HP <= 0:
+            if self.RoleEnum == RoleEnum.Tank and self.InvulnTimer > 0 and (self.JobEnum == JobEnum.Warrior or self.JobEnum == JobEnum.DarkKnight):
+                # If Warrior or DarkKnight with invuln
+                self.HP = 1
+            else : self.TrueLock = True # Killing the player. Not allowed to raise.
 
     def AddAction(self, actionObject) -> None:
         """
@@ -161,7 +201,9 @@ class Player:
         self.auras = [] # List containing all Auras at the start of the fight
 
         self.Trait = 1  # DPS mult from trait
-        self.buffList = []
+        self.buffList = [] # List of all damage buff on the player
+        self.ReceivedHealBuffList = [] # List of all healing buff on the player. Buffs incoming heals
+        self.GivenHealBuffList = [] # List of all healing buff on the player. Buffs given heal.
         self.EffectToRemove = [] # List filled with effect to remove.
         self.EffectToAdd = [] # List that will add effect to the effectlist or effectcdlist once it has been gone through once
 
@@ -460,6 +502,7 @@ class Player:
         #Timer
         self.BigMitTimer = 0
         self.RampartTimer = 0
+        self.InvulnTimer = 0
 
         #ActionEnum
         self.ClassAction = TankActions
@@ -478,6 +521,7 @@ class Player:
         def updateTimer(self, time : float):
             if (self.BigMitTimer > 0) : self.BigMitTimer = max(0,self.BigMitTimer - time)
             if (self.RampartTimer > 0) : self.RampartTimer = max(0,self.RampartTimer - time)
+            if (self.InvulnTimer > 0) : self.InvulnTimer = max(0,self.InvulnTimer - time)
 
         self.updateRoleCD = updateCD
         self.updateRoleTimer = updateTimer

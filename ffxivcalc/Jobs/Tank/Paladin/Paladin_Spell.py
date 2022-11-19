@@ -61,6 +61,8 @@ def HallowedGroundRequirement(Player, Spell):
 def ApplyHallowedGround(Player, Enemy):
     Player.HallowedGroundCD = 420
 
+    Player.InvulnTimer = 10
+
 
 def ApplyHolySheltron(Player, Enemy):
     Player.HolySheltronCD = 5

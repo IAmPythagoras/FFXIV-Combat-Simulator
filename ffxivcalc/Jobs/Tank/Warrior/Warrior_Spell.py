@@ -109,6 +109,8 @@ def ApplyShakeItOff(Player, Enemy):
 def ApplyHolmgang(Player, Enemy):
     Player.HolmgangCD = 240
 
+    Player.InvulnTimer = 10
+
 def ApplyThrillOfBattle(Player, Enemy):
     Player.ThrillOfBattleCD = 90
 

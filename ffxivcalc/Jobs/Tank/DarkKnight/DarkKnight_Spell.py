@@ -165,6 +165,8 @@ def DarkMissionaryCheck(Player, Enemy):
 def ApplyLivingDead(Player, Enemy):
     Player.LivingDeadCD = 300
 
+    Player.InvulnTimer = 10
+
 def ApplyUnleash(Player, Spell):
     if not (UnleashCombo in Player.EffectList) : Player.EffectList.append(UnleashCombo)
 

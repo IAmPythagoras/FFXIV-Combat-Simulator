@@ -171,9 +171,11 @@ class Fight:
 
                 self.Enemy.UpdateTimer(TimeUnit) # Updating the Enemy's timers
 
-            # Updating shield timer of all players
+            # Updating shield timer and healing buff timer of all players
             for player in self.PlayerList:
                 for shield in player.ShieldList: shield.UpdateTimer(TimeUnit)
+                for buff in player.ReceivedHealBuffList : buff.UpdateTimer(TimeUnit)
+                for buff in player.GivenHealBuffList : buff.UpdateTimer(TimeUnit)
 
             # Updating and casting DOT if needed
             for player in self.PlayerList:
@@ -511,7 +513,7 @@ def ComputeHeal(Player, Potency, Target, SpellBonus, type, spellObj) -> float:
         Potency (int): Potency of the heal
         Target (Player): Target of the healing
         SpellBonus (float): Bonus of the spell
-        type (int): Type of the action
+        type (int): Type of the action. type = 1 is Direct Heal, Type = 2 is DOT heal
         spellObj (Spell): Object corresponding to the action being casted
     """
     baseMain = 390  
@@ -528,18 +530,47 @@ def ComputeHeal(Player, Potency, Target, SpellBonus, type, spellObj) -> float:
     f_SPD = Player.f_SPD
     CritRate = (Player.CritRate)
     CritMult = Player.CritMult
-    DHRate = Player.DHRate
-
     
     # WARNING
     # THESE CONSTANTS ARE PROBABLY WRONG. I HAVE NOT VERIFIED AND AM SIMPLY USING THOSE IN ORDER TO TEST THE CODE.
     
+    if type == 1: # Direct Heal
+        H_1 = math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_heal * f_DET) * f_DET) * f_TEN) * f_WD ) * Player.Trait)
+        H_1_min = math.floor(H_1 * 97/100) # Minimal healing done
+        H_1_expected_crit = math.floor(H_1 * (1 + roundDown((CritRate * CritMult), 3))) # Expected healing done
+        # All buff the Player is giving
+        for HealingBuff in Player.GivenHealBuffList:
+            H_1_min = math.floor(H_1 * HealingBuff.PercentBuff)
+            H_1_expected_crit = math.floor(H_1 * HealingBuff.PercentBuff)
+        # All buff the target is receiving
+        for HealingBuff in Target.ReceivedHealBuffList:
+            H_1_min = math.floor(H_1 * HealingBuff.PercentBuff)
+            H_1_expected_crit = math.floor(H_1 * HealingBuff.PercentBuff)
 
-    H_1 = math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_heal * f_DET) * f_DET) * f_TEN) * f_WD ) * Player.Trait)
+        return H_1_min, H_1_expected_crit 
+    if type == 2: # DOT heal
+        H_1 = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_heal * f_DET) * f_DET) * f_TEN)  * f_SPD)* f_WD ) * Player.Trait)
+        H_1_min = math.floor(H_1 * 97/100) # Minimal healing done
+        H_1_expected_crit = math.floor(H_1 * (1 + roundDown((CritRate * CritMult), 3))) # Expected healing done
 
-    H_1_expected_crit = math.floor(H_1 * (1 + roundDown((CritRate * CritMult), 3)))
+        # If this is the first time the DOT is used. Will snapshot all buffs for later application of the heal.
 
-    return H_1_expected_crit
+        if not spellObj.onceThroughFlag:
+            spellObj.onceThroughFlag = True
+            # If this DOT has never been through. We take note of what buffs
+            for HealingBuff in Player.GivenHealBuffList:
+                spellObj.MultBonus.append(HealingBuff.PercentBuff)
+            # All buff the target is receiving
+            for HealingBuff in Target.ReceivedHealBuffList:
+                spellObj.MultBonus.append(HealingBuff.PercentBuff)
+
+        for buff in spellObj.MultBonus:
+            # Applying all buff saved. buff here is the percent bonus in float
+            H_1_min = math.floor(H_1_min * buff)
+            H_1_expected_crit = math.floor(H_1_expected_crit * buff)
+
+        return H_1_min, H_1_expected_crit
+    
 
 
 
