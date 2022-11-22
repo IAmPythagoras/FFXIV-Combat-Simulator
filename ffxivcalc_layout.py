@@ -46,12 +46,6 @@ from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import *
 Dummy = Enemy()
 Event = Fight(Dummy, False)
 
-# Giving the enemy an event list
-
-newEventList = [MagicRaidWide, WaitEvent(2), PhysicalRaidWide, TankBuster]
-
-Dummy.setEventList(newEventList)
-
 # ===============================================================================================
 # You don't need to to worry about anything above this point
 
