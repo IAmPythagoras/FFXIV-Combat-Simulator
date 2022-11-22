@@ -1,5 +1,6 @@
 from ffxivcalc.Jobs.Base_Spell import buff, empty, DOTSpell
 from ffxivcalc.Jobs.Tank.Tank_Spell import BigMit, GunbreakerSpell
+from ffxivcalc.Jobs.Player import MitBuff
 import copy
 Lock = 0.75
 
@@ -61,11 +62,8 @@ def ApplyCamouflage(Player, Enemy):
 
     # Since its a 50% that additional 20% mit is added. We will simply 
     # assume a 20% total mit
-    Player.CamouflageTimer = 20
-    Player.MagicMitigation *= 0.8
-    Player.PhysicalMitigation *= 0.8
-
-    Player.EffectCDList.append(CamouflageCheck)
+    CamouflageMit = MitBuff(0.8, 20, Player)
+    Player.MitBuffList.append(CamouflageMit)
 
 def ApplyDemonSlice(Player, Enemy):
     if not (DemonSliceCombo in Player.EffectList) : Player.EffectList.append(DemonSliceCombo)
@@ -79,10 +77,7 @@ def ApplyHeartOfLight(Player, Enemy):
     # Will give every player 10% magic mit
 
     for player in Player.CurrentFight.PlayerList:
-        player.MagicMitigation *= 0.9
-
-    Player.EffectCDList.append(HeartOfLightCheck)
-    Player.HeartOfLightTimer = 15
+        player.MitBuffList.append(MitBuff(0.9, 15, player, MagicMit=True))
 
 def ApplySuperbolide(Player, Enemy):
     Player.SuperbolideCD = 360
@@ -178,23 +173,6 @@ def BrutalShellCombo(Player, Spell):
 
 #Check
 
-def CamouflageCheck(Player, Enemy):
-    if Player.CamouflageTimer <= 0:
-
-        Player.MagicMitigation /= 0.8
-        Player.PhysicalMitigation /= 0.8
-
-        Player.EffectToRemove.append(CamouflageCheck)
-
-
-def HeartOfLightCheck(Player, Enemy):
-    if Player.HeartOfLightTimer <= 0:
-
-        for player in Player.CurrentFight.PlayerList:
-            player.MagicMitigation /= 0.9
-        
-        Player.EffectToRemove.append(HeartOfLightCheck)
-
 def NoMercyCheck(Player, Enemy):
     if Player.NoMercyTimer <= 0:
         Player.buffList.remove(NoMercyBuff)
@@ -276,31 +254,17 @@ def HeartOfCorundum(Target):
         Target (Player): Target of the action
     """
 
-    def ClarityCheck(Player, Enemy):
-        if Player.CorundumTimer <= 4:
-            Player.MagicMitigation *= 0.85
-            Player.PhysicalMitigation *= 0.85
-            Player.EffectToRemove.append(ClarityCheck)
-
-    def CorundumCheck(Player, Enemy):
-        if Player.CorundumTimer <= 0:
-            Player.MagicMitigation *= 0.85
-            Player.PhysicalMitigation *= 0.85
-            Player.EffectToRemove.append(CorundumCheck)
-
     def SpellApply(Player, Enemy):
         ApplyHeartOfCorundum(Player, Enemy)
 
         # Gives 15% mit for 8 seconds and 15% percent for 4 seconds
         # 8 seconds 15%
-        Target.MagicMitigation *= 0.85
-        Target.PhysicalMitigation *= 0.85
+        CorundumMit = MitBuff(0.85, 8, Target)
         # Clarity of corundum 15% for 4s
-        Target.MagicMitigation *= 0.85
-        Target.PhysicalMitigation *= 0.85
+        ClarityMit = MitBuff(0.85, 4, Target)
 
-        Target.EffectCDList.append(CorundumCheck)
-        Target.EffectCDList.append(ClarityCheck)
+        Target.MitBuffList.append(CorundumMit)
+        Target.MitBuffList.append(ClarityMit)
 
     HeartOfCorundum = GunbreakerSpell(25758, False, 0, 0, SpellApply, [HeartOfCorundumRequirement], 0)
     HeartOfCorundum.TargetID = Target.playerID

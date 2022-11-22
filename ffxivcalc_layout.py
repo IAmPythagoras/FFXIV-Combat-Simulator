@@ -136,7 +136,7 @@ GNBPlayer = Player([], [], GNBStat, JobEnum.Gunbreaker)
 # Note that if you are simulating with more than 1 per job you will need to create a new list of actions.
 
 # Caster
-BLMOpener = [Fire3, Fire4, Fire4, Fire4, Blizzard3, Blizzard4, Blizzard4, Blizzard4, Blizzard4]
+BLMOpener = [Fire3, Addle, Fire4, Fire4, Fire4, Blizzard3, Blizzard4, Blizzard4, Blizzard4, Blizzard4]
 SMNOpener = []
 RDMOpener = []
 
@@ -160,7 +160,7 @@ RPROpener = []
 
 # Tank 
 DRKOpener = []
-WAROpener = [TankStance, Provoke, BigMit, Rampart, Maim, Maim, Maim, Maim, Maim, Maim, Maim, Maim]
+WAROpener = [TankStance, Provoke,Holmgang ,Maim, Maim, Maim, Maim, Maim, Maim, Maim, Maim]
 PLDOpener = []
 GNBOpener = []
 

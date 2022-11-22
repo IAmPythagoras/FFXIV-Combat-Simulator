@@ -1,7 +1,7 @@
 from ffxivcalc.Jobs.Base_Spell import buff, empty, DOTSpell, ManaRequirement
 from ffxivcalc.Jobs.Tank.Tank_Spell import BigMit, PaladinSpell
 from ffxivcalc.helperCode.exceptions import InvalidTarget
-from ffxivcalc.Jobs.Player import Shield
+from ffxivcalc.Jobs.Player import Shield, MitBuff
 import copy
 Lock = 0
 
@@ -71,13 +71,11 @@ def ApplyHolySheltron(Player, Enemy):
     
     # Gives 20% from block for 8 sec and
     # 15% mit for 4 seconds
-    Player.MagicMitigation *= 0.8 * 0.85
-    Player.PhysicalMitigation *= 0.8 * 0.85
+    KnightResolveMit = MitBuff(0.85, 4, Player)
+    HolySheltronMit = MitBuff(0.8, 8, Player)
 
-    Player.HolySheltronTimer = 8
-
-    Player.EffecCDList.append(KnightResolveCheck)
-    Player.EffectCDList.append(HolySheltronCheck)
+    Player.MitBuffList.append(KnightResolveMit)
+    Player.MitBuffList.append(HolySheltronMit)
 
 def ApplyCover(Player, Enemy):
     Player.CoverCD = 120
@@ -232,18 +230,6 @@ def DivineVeilCheck(Player, Enemy):
     if Player.DivineVeilTimer <= 0:
         Player.EffectToRemove.append(DivineVeilCheck)
 
-def KnightResolveCheck(Player, Enemy):
-    if Player.HolySheltronTimer <= 4:
-        Player.MagicMitigation /= 0.85
-        Player.PhysicalMitigation /= 0.85
-        Player.EffectToRemove.append(KnightResolveCheck)
-
-def HolySheltronCheck(Player, Enemy):
-    if Player.HolySheltronTimer <= 0:
-        Player.MagicMitigation /= 0.8
-        Player.PhysicalMitigation /= 0.8
-        Player.EffectToRemove.append(HolySheltronCheck)
-
 def RequestACatCheck(Player, Enemy):
     if Player.RequestACatStack == 0:
         Player.RequestACat = False
@@ -332,24 +318,6 @@ def Intervention(Target):
     
     """
 
-    def KnightCheck(Player, Spell):
-        if Player.InterventionTimer < 4:
-            Player.MagicMitigation /= 0.9
-            Player.PhysicalMitigation /= 0.9
-            Player.EffectToRemove.append(KnightCheck)
-
-    def InterventionCheck(Player, Spell):
-        if Player.InterventionTimer <= 0:
-            if Player.InterventionBuff:
-                Player.InterventionBuff = False
-                Player.MagicMitigation /= 0.8
-                Player.PhysicalMitigation /= 0.8
-            else:
-                Player.MagicMitigation /= 0.9
-                Player.PhysicalMitigation /= 0.9
-
-        Player.EffectToRemove.append(InterventionCheck)
-
     def Apply(Player, Spell):
         ApplyIntervention(Player, Spell)
 
@@ -365,16 +333,14 @@ def Intervention(Target):
 
         if Player.BigMitTimer > 0 or Player.RampartTimer > 0:
             mit = 0.8
-            Target.InterventionBuff = True
             # Rampart and/or Sentinel are used
         
-        Target.MagicMitigation *= mit * 0.9
-        Target.PhysicalMitigation *= mit * 0.9
+        InterventionBuff = MitBuff(mit, 8, Target)
+        KnightBuff = MitBuff(0.9, 4, Target)
 
-        Target.InterventionTimer = 8
+        Target.MitBuffList.append(InterventionBuff)
+        Target.MitBuffList.append(KnightBuff)
 
-        Target.EffectCDList.append(KnightCheck)
-        Target.EffectCDList.append(InterventionCheck)
 
     Intervention = PaladinSpell(7382, False, 0, 0, 0, 0, Apply, [SheltronRequirement, InterventionRequirement], False)
     Intervention.TargetID = Target.playerID
@@ -386,13 +352,6 @@ def Intervention(Target):
 def PassageOfArms(time):
     #Function since we will be using it for a set time
 
-    def PassageOfArmsCheck(Player, Enemy):
-        if Player.PassageOfArmsTimer <= 0:
-            for player in Player.CurrentFight.PlayerList:
-                player.MagicMitigation /= 0.85
-                player.PhysicalMitigation /= 0.85  
-
-            Player.EffectToRemove.append(PassageOfArmsCheck) 
 
     def PassageOfArmsRequirement(Player, Spell):
         return Player.PassageOfArmsCD <= 0, Player.PassageOfArmsCD
@@ -403,12 +362,8 @@ def PassageOfArms(time):
         # Will assume every player gets 15% mit for 6 sec
 
         for player in Player.CurrentFight.PlayerList:
-            player.MagicMitigation *= 0.85
-            player.PhysicalMitigation *= 0.85
-        
-        Player.PassageOfArmsTimer = 6
+            player.MitBuffList.append(MitBuff(0.85, 5, player))
 
-        Player.EffectCDList.append(PassageOfArmsCheck)
 
     return PaladinSpell(7385, False, time, time, 0, 0, ApplyPassageOfArms, [PassageOfArmsRequirement], False)
 #buff

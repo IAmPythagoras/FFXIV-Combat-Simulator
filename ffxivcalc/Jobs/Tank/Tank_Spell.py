@@ -121,12 +121,14 @@ def ApplyBigMit(Player, Enemy):
 
     # Keeps pointer to buff if Warrior
     if Player.JobEnum == JobEnum.Warrior: Player.VengeanceBuff = BigMitBuff
+    elif Player.JobEnum == JobEnum.Paladin: Player.BigMitTimer = 15
 
 
 def ApplyRampart(Player, Enemy):
     Player.RampartCD = 90
     RampartBuff = MitBuff(0.8, 20, Player)
     Player.MitBuffList.append(RampartBuff)
+    if Player.JobEnum == JobEnum.Paladin: Player.RampartTimer = 20
 
 def ApplyLowBlow(Player, Enemy):
     Player.LowBlowCD = 25
@@ -142,6 +144,10 @@ def ApplyInterject(Player, Enemy):
 
 def ApplyReprisal(Player, Enemy):
     Player.ReprisalCD = 60
+    Enemy.Reprisal = True
+    Enemy.ReprisalTimer = 10
+
+
 
 
 

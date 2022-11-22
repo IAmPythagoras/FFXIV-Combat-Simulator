@@ -78,6 +78,8 @@ def ApplySurecast(Player, Enemy):
 
 def ApplyAddle(Player, Enemy):
     Player.AddleCD = 90
+    Enemy.Addle = True
+    Enemy.AddleTimer = 10
 
 
 #Effect

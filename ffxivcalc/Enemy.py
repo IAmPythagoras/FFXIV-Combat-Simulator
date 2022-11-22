@@ -66,13 +66,13 @@ class EnemyEvent:
         # Computes new damage because mitigation on the Enemy
         # Does not differentiate between magical and physical for now
         curr_mit = 1
-        if Enemy.Addle : 
+        if Enemy.Addle > 0: 
             if self.IsPhysical : curr_mit = roundDown(0.95 * curr_mit, 2) # 5% physical mit
             else : curr_mit = roundDown(0.9 * curr_mit, 2) # 10% magic mit
-        if Enemy.Feint : 
+        if Enemy.Feint  > 0: 
             if self.IsPhysical : curr_mit = roundDown(0.9 * curr_mit, 2) # 10% physical mit
             else : curr_mit = roundDown(0.95 * curr_mit, 2) # 5% magic mit
-        if Enemy.Reprisal : curr_mit = roundDown(0.9 * curr_mit, 2) # Flat 10% mit
+        if Enemy.Reprisal  > 0: curr_mit = roundDown(0.9 * curr_mit, 2) # Flat 10% mit
 
         self.Damage *= curr_mit # Updating the new damage based on global mit
 
@@ -84,7 +84,7 @@ class EnemyEvent:
             if self.IsPhysical : player_damage = self.Damage * player.PhysicalMitigation # Only applies physical mit
             else : player_damage = self.Damage * player.MagicMitigation # Only applies magic mit
             player_damage = roundDown(player_damage, 0) # Rounding down to lowest integer
-            player.TakeDamage(player_damage) # Applying the damage to the player
+            player.TakeDamage(player_damage, not self.IsPhysical) # Applying the damage to the player
 
         Enemy.EventNumber += 1 # Incrementing the pointer to the next event
 
@@ -159,12 +159,16 @@ class Enemy:
         self.Addle = False # 10% magical, 5% physical
         self.Feint = False # 10% physical, 5% magical
         self.Reprisal = False # 10% true mitigation
+        
 
         self.EventList = [] # List of all EnemyEvent object this boss will perform through the simulation
         self.EventNumber = 0 # Current index of the EvenList action.
         self.hasEventList = False # By default an enemy has nothing to do
         # Timer
         self.CastingTimer = 0
+        self.AddleTimer = 0
+        self.FeintTimer = 0
+        self.ReprisalTimer = 0
 
         # Currently Casting Action
         self.CastingAction = None
@@ -193,6 +197,17 @@ class Enemy:
         Args:
             time (float): value by which we update the timer
         """
+
+        if self.AddleTimer > 0 : 
+            self.AddleTimer = max(0, self.AddleTimer - time)
+            if self.AddleTimer == 0 : self.Addle = False
+        if self.FeintTimer > 0 : 
+            self.FeintTimer = max(0, self.FeintTimer - time)
+            if self.FeintTimer == 0 : self.Feint = False
+        if self.ReprisalTimer > 0 : 
+            self.ReprisalTimer = max(0, self.ReprisalTimer - time)
+            if self.ReprisalTimer == 0 : self.Reprisal = False
+
         if self.IsCasting : # Only decrements if the enemy is currently casting
             self.CastingTimer = max(0, self.CastingTimer - time)
 

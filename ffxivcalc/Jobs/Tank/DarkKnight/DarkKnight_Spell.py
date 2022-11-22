@@ -3,7 +3,7 @@
 #########################################
 from ffxivcalc.Jobs.Base_Spell import DOTSpell, Potion, buff, empty
 import copy
-from ffxivcalc.Jobs.Player import Pet, Shield
+from ffxivcalc.Jobs.Player import Pet, Shield, MitBuff
 from ffxivcalc.Jobs.Tank.Tank_Spell import BigMit, DRKSkill
 Lock = 0
 
@@ -101,12 +101,6 @@ def SyphonStrikeEffect(Player, Spell):
 
 #Cooldown checks to remove effect and restore charges
 
-def DarkMindCheck(Player, Enemy):
-    if Player.DarkMindTimer <= 0:
-        Player.MagicMitigation /= 0.8
-        Player.EffectToRemove.append(DarkMindCheck)
-
-
 
 def OblationStackCheck(Player, Spell):
     if Player.OblationCD <= 0:
@@ -154,11 +148,6 @@ def UnleashCombo(Player, Spell):
         Spell.Potency += 40
         Player.Blood = min(100, Player.Blood + 20)
 
-def DarkMissionaryCheck(Player, Enemy):
-    if Player.DarkMissionaryTimer <= 0:
-        for player in Player.CurrentFight.PlayerList:
-            player.MagicMitigation /= 0.9
-        Player.EffectToRemove.append(DarkMissionaryCheck)
 
 #Apply effects that happen upon action use
 
@@ -251,9 +240,8 @@ def ApplyDarkArts(Player, Spell):
 def ApplyDarkMind(Player, Spell):
     Player.DarkMindCD = 60
 
-    Player.DarkMindTimer = 10
-    Player.MagicMitigation *= 0.8
-    Player.EffectCDList.append(DarkMindCheck)
+    DarkMindMit = MitBuff(0.8, 10, Player, MagicMit=True)
+    Player.MitBuffList.append(DarkMindMit)
 
 def ApplyDarkMissionary(Player, Enemy):
     Player.DarkMissionaryCD = 90
@@ -261,11 +249,7 @@ def ApplyDarkMissionary(Player, Enemy):
     # Will give all players in the fight 10% magic mit
 
     for player in Player.CurrentFight.PlayerList:
-        player.MagicMitigation *= 0.9
-    
-    Player.DarkMissionaryTimer = 15
-
-    Player.EffectCDList.append(DarkMissionaryCheck)
+        player.MitBuffList.append(MitBuff(0.9, 15, player, MagicMit=True))
 
 
 def ApplyOblation(Player, Enemy):

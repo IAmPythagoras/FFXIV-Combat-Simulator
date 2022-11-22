@@ -190,6 +190,7 @@ class Player:
                 # If the damage is physical and the mit is physical
                 damage = int(damage * MitBuff.PercentMit)
 
+
         self.HP -= max(0, -1 * damage)
         
         if self.HP <= 0:
