@@ -9,15 +9,201 @@ from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
 from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import SongEffect
 from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
+from ffxivcalc.helperCode.exceptions import InvalidMitigation
+from ffxivcalc.helperCode.helper_math import roundDown
 
+class MitBuff:
+    """This class represents a mitigation buff given to a player. This object
+    also keeps track of the timer of such a buff.
+
+    Returns:
+        PercentMit (float) : Percent damage taken of the mitigation. So if 30% mit, PercentMit = 0.7
+        Timer (float) : Timer of the mit
+        Player (Player) : Player on which the mit is applied
+        MagicMit (bool) : If the Mit is only for magic damage
+        PhysicalMit (bool) : If the mit is only for physical damage.
+    """
+
+    def __init__(self, PercentMit : float, Timer : float, Player, MagicMit = False, PhysicalMit = False):
+        self.PercentMit = PercentMit
+        self.Timer = Timer
+        self.Player = Player
+
+        self.MagicMit = MagicMit
+        self.PhysicalMit = PhysicalMit
+
+        # Checks for invalid input and raises error in both cases
+        if self.MagicMit and self.PhysicalMit : raise InvalidMitigation()
+        elif self.PercentMit <=0 or self.PercentMit >= 1: raise InvalidMitigation(InvalidRange=True, PercentMit=self.PercentMit)
+
+        # If mitigation for both physical and magical will have TrueMit set to true.
+        if not MagicMit and not PhysicalMit: self.TrueMit = True
+        else :
+            self.TrueMit = False
+
+        
+
+    def UpdateTimer(self, time : float):
+        """Update the timer of the buff and removes itself if timer reaches 0.
+
+        Args:
+            time (float): time unit by which we update the timer
+        """
+
+        self.Timer -= time
+
+        if self.Timer <= 0:
+            self.Player.MitBuffList.remove(self)
+
+
+class HealingBuff:
+    """This class represents a buff for healing. It has a percent bonus and also
+    a timer. Once the timer has reached 0 the buff removes itself.
+
+    Returns:
+        PercentBuff (float): Percent healing buff
+        Timer (float) : Timer of the buff until end of its effect
+        Player (Player) : Player on which the buff is applied
+        GivenHealBuff (bool) : True if this buff buffs given healing instead of received healing.
+    """
+
+    def __init__(self, PercentBuff : float, Timer : float, Player, GivenHealBuff = True):
+        self.PercentBuff = PercentBuff
+        self.Timer = Timer
+        self.Player = Player
+        self.GivenHealBuff = GivenHealBuff
+
+    def UpdateTimer(self, time : float) -> None:
+        """Update a buff's timer value. If the timer reaches 0 removes the shield from the player.
+
+        Args:
+            time (float): time value by which we update the shield's timer
+        """
+
+        self.Timer -= time
+
+        if self.Timer <= 0: # Remove itself if time is 0
+            if self.GivenHealBuff : self.Player.GivenHealBuffList.remove(self) # Removes from GivenHeal list
+            else : self.Player.ReceivedHealBuffList.remove(self) # Remves from received heal list
+
+class Shield:
+    """This class represents a shield. It will take damage before the main HP of a player
+    is reduced. A shield will remove itself if its time limit is reached.
+
+    Attributes:
+        ShieldAmount (int) : Amount of the shield
+        Timer (float) : Timer of the shield
+        Player (Player) : Player on which the shield is applied
+    """
+
+    def __init__(self, ShieldAmount : int, Timer: float, Player):
+        self.ShieldAmont = ShieldAmount
+        self.Timer = Timer
+        self.Player = Player
+
+    def UpdateTimer(self, time : float) -> None:
+        """Update a shield's timer value. If the timer reaches 0 removes the shield from the player.
+
+        Args:
+            time (float): time value by which we update the shield's timer
+        """
+
+        self.Timer -= time
+
+        if self.Timer <= 0:
+            self.Player.ShieldList.remove(self) # Remove itself if time is 0
 
 class Player:
+    """
+    This class represents all players in the simulation. Objects of this class contain vital information relative to what a player
+    is.
 
-    def AddAction(self, actionObject):
+    Attribute:
+        ActionSet : List[Spell] -> List of spell the player will do in the simulation
+        EffectList : List[Function] -> List of all effects the player has. Can be empty.
+        CurrentFight : Fight -> Reference to the fight object in which the player is.
+        Stat : Dict -> Stats of the player as a dictionnary
+        Job : JobEnum -> Specific job of the player
+    """
+
+    def ApplyHeal(self, HealingAmount : int) -> None:
+        """This function will update the HP according to
+        the healing received.
+
+        Args:
+            HealingAmount (int) : Total amount of healing given to the player.
+        
+        """
+
+        self.HP = min(Player.HP + HealingAmount, Player.MaxHP)
+
+    def TakeDamage(self, DamageAmount : int, MagicDamage : bool) -> None:
+        """
+        This function will update the HP value of the players and will kill the player if its HP goes under 0
+
+        Args:
+            DamageAmount (int): Total damage the player is taking
+            MagicDamage (bool) : True if the damage is magical. False if physical.
+        """
+        input(str(self.JobEnum) + " took " + str(DamageAmount))
+
+        # Will first check if the player is a tank with their invuln on
+
+        if self.RoleEnum == RoleEnum.Tank and self.InvulnTimer > 0 and (self.JobEnum == JobEnum.Gunbreaker or self.JobEnum == JobEnum.Paladin):
+            # If is paladin or gnb with invuln on, then takes 0 damage
+                return # We exit this function since they take no damage
+
+        residual_damage = -1 * DamageAmount
+
+        # Will compute the residual damage after shields have been applied
+
+        for shield in self.ShieldList:
+            residual_damage += shield.ShieldAmount
+
+            if residual_damage > 0:
+                # If residal damage is bigger than 0, then the shield has taken the full amount of the damage.
+                # If such is the case the amount of remaining shield is the value of residual_damage
+
+                shield.ShieldAmount = residual_damage
+                return # Exit the function since all the damage has been taken care of
+            elif residual_damage == 0 :
+                # If the shield had exact damage
+                shield.Player.ShieldList.remove(shield) # Remove shield from the player
+                return # Exit the function since all the damage has been taken care of
+
+        # If we get here then there is still residual damage that will affect the player's HP.
+        # Damage that goes through the shield (if any) will then be substracted to the HP
+        # If there is still damage to do, residual_damage < 0. Otherwise it is positive
+
+        damage = -1 * residual_damage
+
+        # Will now apply every mitigation the player has
+
+        for MitBuff in self.MitBuffList:
+            if MitBuff.TrueMit :
+                # If true mit
+                damage = int(damage * MitBuff.PercentMit)
+            elif MitBuff.MagicMit and MagicDamage:
+                # If the damage is magical and the mit is magical
+                damage = int(damage * MitBuff.PercentMit)
+            elif MitBuff.PhysicalMit and not MagicDamage:
+                # If the damage is physical and the mit is physical
+                damage = int(damage * MitBuff.PercentMit)
+
+
+        self.HP -= max(0, -1 * damage)
+        
+        if self.HP <= 0:
+            if self.RoleEnum == RoleEnum.Tank and self.InvulnTimer > 0 and (self.JobEnum == JobEnum.Warrior or self.JobEnum == JobEnum.DarkKnight):
+                # If Warrior or DarkKnight with invuln
+                self.HP = 1
+            else : self.TrueLock = True # Killing the player. Not allowed to raise.
+
+    def AddAction(self, actionObject) -> None:
         """
         This function will append the spell object actionObject to the player's action list.
 
-        action_id : Spell
+        actionObject (Spell) : Action we wish to append
 
         """
         
@@ -34,14 +220,7 @@ class Player:
         
 
     def __init__(self, ActionSet, EffectList, Stat,Job : JobEnum):
-        """
-        Create the player object
-        ActionSet : List[Spell] -> List of spell the player will do in the simulation
-        EffectList : List[Function] -> List of all effects the player has. Can be empty.
-        CurrentFight : Fight -> Reference to the fight object in which the player is.
-        Stat : Dict -> Stats of the player as a dictionnary
-        Job : JobEnum -> Specific job of the player
-        """
+
         self.ActionSet = ActionSet # Known Action List
         self.EffectList = EffectList # Normally Empty, can has some effects initially
         self.RoleEnum = 0 # RoleEnum Value is set later on
@@ -67,8 +246,14 @@ class Player:
         self.PotionTimer = 0 # Timer on the effect of potion
         self.Delay = 3 # Default time difference between AAs
 
-        self.Mana = 10000 # Starting mana
-        self.HP = 1000  # Starting HP
+        self.Mana = 10000 # Current mana. Max is 10'000
+        self.HP = 2000  # Current HP
+        self.MaxHP = 2000 # Starting HP
+        self.ShieldList = [] # List of all shields currently applied on the player. Shield prio is lowest index to highest index
+        self.EnemyDOT = [] # List which contains all DOT applied by the enemy on the player.
+        self.TotalEnemity = 0 # Value of Enemity
+        self.MagicMitigation = 1 # Current value of magic mitigation
+        self.PhysicalMitigation = 1 # Current value of physical mitagation
         
         self.TotalPotency = 0 # Keeps track of total potency done
         self.TotalDamage = 0 # Keeps track of total damage done
@@ -79,13 +264,20 @@ class Player:
         self.auras = [] # List containing all Auras at the start of the fight
 
         self.Trait = 1  # DPS mult from trait
-        self.buffList = []
+        self.buffList = [] # List of all damage buff on the player
+        self.MitBuffList = [] # List of all MitBuff on the player
+        self.ReceivedHealBuffList = [] # List of all healing buff on the player. Buffs incoming heals
+        self.GivenHealBuffList = [] # List of all healing buff on the player. Buffs given heal.
         self.EffectToRemove = [] # List filled with effect to remove.
         self.EffectToAdd = [] # List that will add effect to the effectlist or effectcdlist once it has been gone through once
 
         self.ArcanumTimer = 0 # ArcanumTimer
         self.MeditativeBrotherhoodTimer = 0 # Meditative Brotherhood Timer
-
+        self.OblationTimer = 0 # Oblation timer if its received
+        self.CorundumTimer = 0 # Timer if corundum is given
+        self.NascentFlashTimer = 0 # Timer if Nascent flash is given
+        self.InterventionTimer = 0 # Timer if Intervention is given
+        self.InterventionBuff = False # True if a given intervention is buffed
         # Used for DPS graph and Potency/s graph
 
         self.DPSGraph = []
@@ -215,6 +407,10 @@ class Player:
         if (self.ArcanumTimer > 0) : self.ArcanumTimer = max(0, self.ArcanumTimer-time)
         if (self.PotionTimer > 0) : self.PotionTimer = max(0, self.PotionTimer-time)
         if (self.MeditativeBrotherhoodTimer > 0) : self.MeditativeBrotherhoodTimer = max(0, self.MeditativeBrotherhoodTimer-time)
+        if (self.OblationTimer > 0) : self.OblationTimer = max(0, self.OblationTimer-time)
+        if (self.CorundumTimer > 0) : self.CorundumTimer = max(0, self.CorundumTimer-time)
+        if (self.NascentFlashTimer > 0) : self.NascentFlashTimer = max(0, self.NascentFlashTimer-time)
+        if (self.InterventionTimer > 0) : self.InterventionTimer = max(0, self.InterventionTimer-time)
 
         # Will now call the Role and Job update functions
         self.updateRoleTimer(self, time)
@@ -367,6 +563,11 @@ class Player:
         self.BigMitCD = 0
         self.TankStanceCD = 0
 
+        #Timer
+        self.BigMitTimer = 0
+        self.RampartTimer = 0
+        self.InvulnTimer = 0
+
         #ActionEnum
         self.ClassAction = TankActions
     
@@ -382,7 +583,9 @@ class Player:
             if (self.TankStanceCD > 0) : self.TankStanceCD = max(0,self.TankStanceCD - time)
 
         def updateTimer(self, time : float):
-            pass
+            if (self.BigMitTimer > 0) : self.BigMitTimer = max(0,self.BigMitTimer - time)
+            if (self.RampartTimer > 0) : self.RampartTimer = max(0,self.RampartTimer - time)
+            if (self.InvulnTimer > 0) : self.InvulnTimer = max(0,self.InvulnTimer - time)
 
         self.updateRoleCD = updateCD
         self.updateRoleTimer = updateTimer
@@ -1647,6 +1850,8 @@ class Player:
         self.BowShockTimer = 0
         self.SonicBreakTimer = 0
         self.NoMercyTimer = 0
+        self.HeartOfLightTimer = 0
+        self.CamouflageTimer = 0
 
         #DOT
         self.SonicBreakDOT = None
@@ -1680,6 +1885,8 @@ class Player:
             if (self.BowShockTimer > 0) : self.BowShockTimer = max(0,self.BowShockTimer - time)
             if (self.SonicBreakTimer > 0) : self.SonicBreakTimer = max(0,self.SonicBreakTimer - time)
             if (self.NoMercyTimer > 0) : self.NoMercyTimer = max(0,self.NoMercyTimer - time)
+            if (self.HeartOfLightTimer > 0) : self.HeartOfLightTimer = max(0,self.HeartOfLightTimer - time)
+            if (self.CamouflageTimer > 0) : self.CamouflageTimer = max(0,self.CamouflageTimer - time)
 
         # update functions
         self.updateJobTimer = updateTimer
@@ -1701,6 +1908,8 @@ class Player:
         self.PlungeCharges = 2          #Charges of Plunge
         self.DarkArts = False           #Dark Arts Gauge, activates when TBN breaks.
         self.OblationStack = 2
+        self.DarkMindTimer = 0
+        self.DarkMissionaryTimer = 0
         #Cooldowns for all abilities, starting at 0 and adjusted by Apply.
 
         self.BloodWeaponCD = 0          #60s
@@ -1749,7 +1958,8 @@ class Player:
             if (self.BloodWeaponTimer > 0) : self.BloodWeaponTimer = max(0,self.BloodWeaponTimer - time)
             if (self.DeliriumTimer > 0) : self.DeliriumTimer = max(0,self.DeliriumTimer - time)
             if (self.SaltedEarthTimer > 0) : self.SaltedEarthTimer = max(0, self.SaltedEarthTimer-time)
-
+            if (self.DarkMindTimer > 0) : self.DarkMindTimer = max(0, self.DarkMindTimer-time)
+            if (self.DarkMissionaryTimer > 0) : self.DarkMissionaryTimer = max(0, self.DarkMissionaryTimer-time)
         # update functions
         self.updateJobTimer = updateTimer
         self.updateJobCD = updateCD
@@ -1777,6 +1987,9 @@ class Player:
         self.CircleScornTimer = 0
         self.ValorDOTTimer = 0
         self.FightOrFlighTimer = 0
+        self.HolySheltronTimer = 0
+        self.PassageOfArmsTimer = 0
+        self.DivineVeilTimer = 0
 
         #DOT
         self.GoringDOT = None
@@ -1821,6 +2034,9 @@ class Player:
             if (self.CircleScornTimer > 0) : self.CircleScornTimer = max(0,self.CircleScornTimer - time)
             if (self.FightOrFlighTimer > 0) : self.FightOrFlighTimer = max(0,self.FightOrFlighTimer - time)
             if (self.ValorDOTTimer > 0) : self.ValorDOTTimer = max(0,self.ValorDOTTimer - time)
+            if (self.HolySheltronTimer > 0) : self.HolySheltronTimer = max(0,self.HolySheltronTimer - time)
+            if (self.PassageOfArmsTimer > 0) : self.PassageOfArmsTimer = max(0,self.PassageOfArmsTimer - time)
+            if (self.DivineVeilTimer > 0) : self.DivineVeilTimer = max(0,self.DivineVeilTimer - time)
 
 
         # update functions
@@ -1837,6 +2053,11 @@ class Player:
     def init_warrior(self):
         #Buffs
         self.SurgingTempest = False #If surging tempest is on, set to true
+        
+        # Current mit
+        self.VengeanceBuff = None
+        self.BloodwhettingBuff = None
+        # Need to know which buff is up when casting shake it off
 
         #Gauge
         self.BeastGauge = 0
@@ -1851,6 +2072,7 @@ class Player:
         self.SurgingTempestTimer = 0
         self.PrimalRendTimer = 0
         self.NascentChaosTimer = 0
+        self.ThrillOfBattleTimer = 0
 
         #CD
         self.InfuriateCD = 0
@@ -1889,6 +2111,7 @@ class Player:
             if (self.SurgingTempestTimer > 0) : self.SurgingTempestTimer = max(0,self.SurgingTempestTimer - time)
             if (self.PrimalRendTimer > 0) : self.PrimalRendTimer = max(0,self.PrimalRendTimer - time)
             if (self.NascentChaosTimer > 0) : self.NascentChaosTimer = max(0,self.NascentChaosTimer - time)
+            if (self.ThrillOfBattleTimer > 0) : self.ThrillOfBattleTimer = max(0,self.ThrillOfBattleTimer - time)
 
         # update functions
         self.updateJobTimer = updateTimer

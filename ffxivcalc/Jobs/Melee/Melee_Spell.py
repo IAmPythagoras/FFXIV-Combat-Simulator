@@ -99,6 +99,8 @@ def ApplyBloodbath(Player, Enemy):
 
 def ApplyFeint(Player, Enemy):
     Player.FeintCD = 90
+    Enemy.Feint = True
+    Enemy.FeintTimer = 10
 
 def ApplyArmLength(Player, Enemy):
     Player.ArmLengthCD = 120

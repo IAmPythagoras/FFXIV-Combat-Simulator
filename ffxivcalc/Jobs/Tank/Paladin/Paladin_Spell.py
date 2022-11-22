@@ -1,5 +1,7 @@
 from ffxivcalc.Jobs.Base_Spell import buff, empty, DOTSpell, ManaRequirement
 from ffxivcalc.Jobs.Tank.Tank_Spell import BigMit, PaladinSpell
+from ffxivcalc.helperCode.exceptions import InvalidTarget
+from ffxivcalc.Jobs.Player import Shield, MitBuff
 import copy
 Lock = 0
 
@@ -59,10 +61,21 @@ def HallowedGroundRequirement(Player, Spell):
 def ApplyHallowedGround(Player, Enemy):
     Player.HallowedGroundCD = 420
 
+    Player.InvulnTimer = 10
+
 
 def ApplyHolySheltron(Player, Enemy):
     Player.HolySheltronCD = 5
     Player.OathGauge -= 50
+
+    
+    # Gives 20% from block for 8 sec and
+    # 15% mit for 4 seconds
+    KnightResolveMit = MitBuff(0.85, 4, Player)
+    HolySheltronMit = MitBuff(0.8, 8, Player)
+
+    Player.MitBuffList.append(KnightResolveMit)
+    Player.MitBuffList.append(HolySheltronMit)
 
 def ApplyCover(Player, Enemy):
     Player.CoverCD = 120
@@ -72,8 +85,28 @@ def ApplyIntervention(Player, Enemy):
     Player.InterventionCD = 5
     Player.OathGauge -= 50
 
+    
+
+    
+
 def ApplyDivineVeil(Player, Enemy):
+    # For now will be assumed the buff is given as soon as its 
+    # casted
     Player.DivineVeilCD = 90
+
+    # Gives a shield to every player except the PLD
+    # equal to 10% and cures every player by 400 potency
+
+    shield_value = int(Player.MaxHP * 0.1)
+
+    for player in Player.CurrentFight.PlayerList:
+        # Giving every player that is not the PLD the divine veil shield
+        if player != Player : player.ShieldList.append(Shield(shield_value, 30, player))
+        
+
+    
+
+
 
 def ApplyTotalEclipse(Player, Enemy):
     if not (TotalEclipseCombo in Player.EffectList) : Player.EffectList.append(TotalEclipseCombo)
@@ -193,6 +226,10 @@ def RiotBladeCombo(Player, Spell):
 
 #Check
 
+def DivineVeilCheck(Player, Enemy):
+    if Player.DivineVeilTimer <= 0:
+        Player.EffectToRemove.append(DivineVeilCheck)
+
 def RequestACatCheck(Player, Enemy):
     if Player.RequestACatStack == 0:
         Player.RequestACat = False
@@ -271,14 +308,62 @@ DivineVeil = PaladinSpell(3540, False, 0, 0, 0, 0, ApplyDivineVeil, [DivineVeilR
 HolySheltron = PaladinSpell(25746, False, 0, 0, 0, 0, ApplyHolySheltron, [HolySheltronRequirement,SheltronRequirement], False)
 Cover = PaladinSpell(27, False, 0, 0, 0, 0, ApplyCover, [SheltronRequirement, CoverRequirement], False)
 HallowedGround = PaladinSpell(30, False, 0, 0, 0, 0, ApplyHallowedGround, [HallowedGroundRequirement], False)
-Intervention = PaladinSpell(7382, False, 0, 0, 0, 0, ApplyIntervention, [SheltronRequirement, InterventionRequirement], False)
+
+def Intervention(Target):
+    """This function returns a PLDSpell object corresponding to
+    intervention.
+
+    Args:
+        Target (Player) : Target of the action
+    
+    """
+
+    def Apply(Player, Spell):
+        ApplyIntervention(Player, Spell)
+
+        # Check if the target is valid
+
+        if Target == Player: # Intervention cannot be used on the player itself
+            raise InvalidTarget("Intervention", Player)
+
+        # 10% for 8 sec. 10% for 4 secs and 10% (flat bonus)
+        # if rampart or sentinel is up
+
+        mit = 0.9
+
+        if Player.BigMitTimer > 0 or Player.RampartTimer > 0:
+            mit = 0.8
+            # Rampart and/or Sentinel are used
+        
+        InterventionBuff = MitBuff(mit, 8, Target)
+        KnightBuff = MitBuff(0.9, 4, Target)
+
+        Target.MitBuffList.append(InterventionBuff)
+        Target.MitBuffList.append(KnightBuff)
+
+
+    Intervention = PaladinSpell(7382, False, 0, 0, 0, 0, Apply, [SheltronRequirement, InterventionRequirement], False)
+    Intervention.TargetID = Target.playerID
+    return Intervention
+
+
+
+
 def PassageOfArms(time):
     #Function since we will be using it for a set time
+
+
     def PassageOfArmsRequirement(Player, Spell):
         return Player.PassageOfArmsCD <= 0, Player.PassageOfArmsCD
 
     def ApplyPassageOfArms(Player, Enemy):
         Player.PassageOfArmsCD = 120
+
+        # Will assume every player gets 15% mit for 6 sec
+
+        for player in Player.CurrentFight.PlayerList:
+            player.MitBuffList.append(MitBuff(0.85, 5, player))
+
 
     return PaladinSpell(7385, False, time, time, 0, 0, ApplyPassageOfArms, [PassageOfArmsRequirement], False)
 #buff

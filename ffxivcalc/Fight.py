@@ -1,7 +1,8 @@
 import math
 from ffxivcalc.helperCode.Vocal import PrintResult
-
 from ffxivcalc.Jobs.PlayerEnum import *
+
+from copy import deepcopy
 
 
 class NoMoreAction(Exception):# Exception called if a spell fails to cast
@@ -15,8 +16,24 @@ class Fight:
 
     """
 
+    def GetEnemityList(self, range : int):
+        """Returns a list of players in order of greather enemity to lowest enemity. The length of the
+        returned list is equal to range.
+
+        range (int) : Number of players we want
+        
+        """
+
+
+        sorted_list = sorted(self.PlayerList, key=lambda Player : Player.TotalEnemity, reverse=True)
+        # This returns a sorted list of the PlayerList with respect to their TotalEnemity
+        # This could be optimized. But for now we will reocompute this sorted list every time.
+
+        return sorted_list[0:range] # Returns the number of targets we are interested in
+
     def __init__(self, Enemy, ShowGraph):
         self.Enemy = Enemy
+        Enemy.CurrentFight = self
         self.ShowGraph = ShowGraph
         self.TimeStamp = 0
         self.TeamCompositionBonus = 1
@@ -144,7 +161,22 @@ class Fight:
                             player.oGCDLock = True
                             player.oGCDLockTimer = player.CastingSpell.CastTime
                             # print("oGCD with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(self.TimeStamp) )
+            
 
+            if self.Enemy.hasEventList and start :
+                # Only goes through the Enemy's EventList if the fight has started AND if the Enemy has an event list
+                if not self.Enemy.IsCasting:
+                    # If the enemy is not casting
+                    self.Enemy.EventList[self.Enemy.EventNumber].begin_cast(self.Enemy) # Begins the casting of the next event
+
+                self.Enemy.UpdateTimer(TimeUnit) # Updating the Enemy's timers
+
+            # Updating shield timer and healing buff timer of all players
+            for player in self.PlayerList:
+                for shield in player.ShieldList: shield.UpdateTimer(TimeUnit) # Update shield timer
+                for buff in player.ReceivedHealBuffList : buff.UpdateTimer(TimeUnit) # Update buff on received heal timer
+                for buff in player.GivenHealBuffList : buff.UpdateTimer(TimeUnit) # Update buff on given heal timer
+                for buff in player.MitBuffList : buff.UpdateTimer(TimeUnit) # Update Mit buff timer
 
             # Updating and casting DOT if needed
             for player in self.PlayerList:
@@ -288,7 +320,7 @@ def GCDReductionEffect(Player, Spell) -> None:
         Spell.CastTime *= Player.GCDReduction
         Spell.RecastTime *= Player.GCDReduction
 
-def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
+def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj) -> float:
 
     """
     This function computes the damage from a given potency.
@@ -472,6 +504,74 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj):
     else:# No auto_crit or auto_DH
         non_crit_dh_expected, dh_crit_expected = math.floor(Damage * ( 1 + roundDown((DHRate * 0.25), 2))), math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) # Non crit expected damage, expected damage with crit
         return non_crit_dh_expected , dh_crit_expected
+
+
+def ComputeHeal(Player, Potency, Target, SpellBonus, type, spellObj) -> float:
+    """This function computes and returns the healing done by an action.
+
+    Args:
+        Player (Player): Player casting the action
+        Potency (int): Potency of the heal
+        Target (Player): Target of the healing
+        SpellBonus (float): Bonus of the spell
+        type (int): Type of the action. type = 1 is Direct Heal, Type = 2 is DOT heal
+        spellObj (Spell): Object corresponding to the action being casted
+    """
+    baseMain = 390  
+
+
+    if Player.JobEnum == JobEnum.Pet: MainStat = Player.Stat["MainStat"] # Summons do not receive bonus
+    else: MainStat = math.floor(Player.Stat["MainStat"] * Player.CurrentFight.TeamCompositionBonus) # Scaling %bonus on mainstat
+    # Computing values used throughout all computations
+    f_MAIN_heal = (100+math.floor((MainStat-baseMain)*304/baseMain))/100
+    # These values are all already computed since they do not change
+    f_WD = Player.f_WD
+    f_DET = Player.f_DET
+    f_TEN = Player.f_TEN
+    f_SPD = Player.f_SPD
+    CritRate = (Player.CritRate)
+    CritMult = Player.CritMult
+    
+    # WARNING
+    # THESE CONSTANTS ARE PROBABLY WRONG. I HAVE NOT VERIFIED AND AM SIMPLY USING THOSE IN ORDER TO TEST THE CODE.
+    
+    if type == 1: # Direct Heal
+        H_1 = math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_heal * f_DET) * f_DET) * f_TEN) * f_WD ) * Player.Trait)
+        H_1_min = math.floor(H_1 * 97/100) # Minimal healing done
+        H_1_expected_crit = math.floor(H_1 * (1 + roundDown((CritRate * CritMult), 3))) # Expected healing done
+        # All buff the Player is giving
+        for HealingBuff in Player.GivenHealBuffList:
+            H_1_min = math.floor(H_1 * HealingBuff.PercentBuff)
+            H_1_expected_crit = math.floor(H_1 * HealingBuff.PercentBuff)
+        # All buff the target is receiving
+        for HealingBuff in Target.ReceivedHealBuffList:
+            H_1_min = math.floor(H_1 * HealingBuff.PercentBuff)
+            H_1_expected_crit = math.floor(H_1 * HealingBuff.PercentBuff)
+
+        return H_1_min, H_1_expected_crit 
+    if type == 2: # DOT heal
+        H_1 = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_heal * f_DET) * f_DET) * f_TEN)  * f_SPD)* f_WD ) * Player.Trait)
+        H_1_min = math.floor(H_1 * 97/100) # Minimal healing done
+        H_1_expected_crit = math.floor(H_1 * (1 + roundDown((CritRate * CritMult), 3))) # Expected healing done
+
+        # If this is the first time the DOT is used. Will snapshot all buffs for later application of the heal.
+
+        if not spellObj.onceThroughFlag:
+            spellObj.onceThroughFlag = True
+            # If this DOT has never been through. We take note of what buffs
+            for HealingBuff in Player.GivenHealBuffList:
+                spellObj.MultBonus.append(HealingBuff.PercentBuff)
+            # All buff the target is receiving
+            for HealingBuff in Target.ReceivedHealBuffList:
+                spellObj.MultBonus.append(HealingBuff.PercentBuff)
+
+        for buff in spellObj.MultBonus:
+            # Applying all buff saved. buff here is the percent bonus in float
+            H_1_min = math.floor(H_1_min * buff)
+            H_1_expected_crit = math.floor(H_1_expected_crit * buff)
+
+        return H_1_min, H_1_expected_crit
+    
 
 
 

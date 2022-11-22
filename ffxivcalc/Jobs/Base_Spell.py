@@ -135,15 +135,40 @@ class Spell:
         #    print("at : " + str(player.CurrentFight.TimeStamp))
         
 
-        if player.JobEnum == JobEnum.Pet:
+        if player.JobEnum == JobEnum.Pet: # Is a pet
+
+            # Updating damage and potency
             player.Master.TotalPotency+= self.Potency
             player.Master.TotalDamage += Damage
             player.Master.TotalMinDamage += minDamage
-        else:
+
+            # Updating Enemity
+            if player.Master.RoleEnum == RoleEnum.Tank and player.Master.TankStanceOn:
+                # If the player is a tank and have their tank stance on
+                player.Master.TotalEnemity += Damage/1000
+                # This Enemity computation is arbitrary and is simply based on the fact that a tank with tank stance on
+                # generates 10 times the enemity of a player without tank stance.
+                # The value is made arbitrarily small in order to avoid too big numbers
+            else:
+                player.Master.TotalEnemity += Damage/10000
+
+
+        else: # Is not a pet
+            # Updating damage and potency
             player.TotalPotency+= self.Potency
             player.TotalDamage += Damage
             player.TotalMinDamage += minDamage
-        
+
+            # Updating Enemity
+            if player.RoleEnum == RoleEnum.Tank and player.TankStanceOn:
+                # If the player is a tank and have their tank stance on
+                player.TotalEnemity += Damage/1000
+                # This Enemity computation is arbitrary and is simply based on the fact that a tank with tank stance on
+                # generates 10 times the enemity of a player without tank stance.
+                # The value is made arbitrarily small in order to avoid too big numbers
+            else:
+                player.TotalEnemity += Damage/10000
+
         Enemy.TotalPotency+= self.Potency  #Adding Potency
         Enemy.TotalDamage += Damage #Adding Damage
 
@@ -253,13 +278,15 @@ class DOTSpell(Spell):
         This function is called every time unit of the simulation and will check if a dot will be applied. A dot is applied every 3 seconds.
         If a dot has to be applied it will Cast and Castfinal itself and reset its DOTTimer to 3 seconds.
         """
+
+        self.DOTTimer = max(0, self.DOTTimer-TimeUnit)
+
         if(self.DOTTimer <= 0):
             #Apply DOT
             tempSpell  = self.Cast(Player, Enemy)#Cast the DOT
             tempSpell.CastFinal(Player, Enemy)
             self.DOTTimer = 3
-        else:
-            self.DOTTimer = max(0, self.DOTTimer-TimeUnit)
+            
 
 
 class Auto_Attack(DOTSpell):

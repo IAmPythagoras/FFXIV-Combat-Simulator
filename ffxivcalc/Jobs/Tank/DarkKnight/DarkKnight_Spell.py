@@ -3,7 +3,7 @@
 #########################################
 from ffxivcalc.Jobs.Base_Spell import DOTSpell, Potion, buff, empty
 import copy
-from ffxivcalc.Jobs.Player import Pet
+from ffxivcalc.Jobs.Player import Pet, Shield, MitBuff
 from ffxivcalc.Jobs.Tank.Tank_Spell import BigMit, DRKSkill
 Lock = 0
 
@@ -101,6 +101,7 @@ def SyphonStrikeEffect(Player, Spell):
 
 #Cooldown checks to remove effect and restore charges
 
+
 def OblationStackCheck(Player, Spell):
     if Player.OblationCD <= 0:
         if Player.OblationStack == 1:
@@ -152,6 +153,8 @@ def UnleashCombo(Player, Spell):
 
 def ApplyLivingDead(Player, Enemy):
     Player.LivingDeadCD = 300
+
+    Player.InvulnTimer = 10
 
 def ApplyUnleash(Player, Spell):
     if not (UnleashCombo in Player.EffectList) : Player.EffectList.append(UnleashCombo)
@@ -233,11 +236,21 @@ def SpendPlunge(Player,Spell):
 def ApplyDarkArts(Player, Spell):
     Player.DarkArts = True
 
+
 def ApplyDarkMind(Player, Spell):
     Player.DarkMindCD = 60
 
+    DarkMindMit = MitBuff(0.8, 10, Player, MagicMit=True)
+    Player.MitBuffList.append(DarkMindMit)
+
 def ApplyDarkMissionary(Player, Enemy):
     Player.DarkMissionaryCD = 90
+
+    # Will give all players in the fight 10% magic mit
+
+    for player in Player.CurrentFight.PlayerList:
+        player.MitBuffList.append(MitBuff(0.9, 15, player, MagicMit=True))
+
 
 def ApplyOblation(Player, Enemy):
     if Player.OblationStack == 2:
@@ -274,8 +287,6 @@ Shadowbringer = DRKSkill(25757, False, Lock, 0, 600, 0, 0, SpendShadowbringer, [
 LivingShadow = DRKSkill(16472, False, Lock, 0, 0, 0, 50, SummonLivingShadow, [BloodRequirement])
 Plunge = DRKSkill(3640, False, Lock, 0, 150, 0, 0, SpendPlunge, [PlungeRequirement])
 
-TBN = DRKSkill(7393, False, Lock, 0, 0, 3000, 0, ApplyDarkArts, [TBNRequirement])     #Simply makes the next EdgeShadow free for now.
-
 #AOE GCD
 Unleash = DRKSkill(20, True, 0, 2.5, 120, 0, 0, ApplyUnleash, [])
 StalwartSoul = DRKSkill(21, True, 0, 2.5, 100, 0, 0, empty, [])
@@ -288,14 +299,62 @@ PEdgeShadow = DRKSkill(26, True, 0.5, 2.33, 350, 0, 0, empty, [])
 PBloodspiller = DRKSkill(27, True, 0.5, 2.33, 350, 0, 0, empty, [])
 PCarveSpit = DRKSkill(28, True, 0.5, 2.33, 350, 0, 0, empty, [])
 PDelay = DRKSkill(29, True, 0, 6, 0, 0, 0, empty, [])    #6s animation before it starts attacking.
-
 #Living Shadow 
 
 #Mit
 LivingDead = DRKSkill(3638, False, 0, 0, 0, 0, 0, ApplyLivingDead, [LivingDeadRequirement])
 DarkMind = DRKSkill(3634, False, 0, 0, 0, 0, 0, ApplyDarkMind, [DarkMindRequirement])
 DarkMissionary = DRKSkill(16471, False, 0, 0, 0, 0, 0, ApplyDarkMissionary, [DarkMissionaryRequirement])
-Oblation = DRKSkill(25754, False, 0, 0, 0, 0, 0, ApplyOblation, [OblationRequirement])
+
+def TBN(Target):
+    """This function returns a DRKSpell object corresponding to TBN
+    that targets the given Target
+
+    Args:
+        Target (Player): Player targetted by TBN. Can be the DRK itself
+    """
+
+    def ApplyTBN(Player, Enemy):
+        ApplyDarkArts(Player, Enemy)
+
+        TBNShield = Shield(int(Target.MaxHP * 0.25), 7, Target)
+        Target.ShieldList.insert(0, TBNShield) # Inserting shield at first since TBN has prio
+
+    TBNSpell = DRKSkill(7393, False, Lock, 0, 0, 3000, 0, ApplyTBN, [TBNRequirement])     #Simply makes the next EdgeShadow free for now.
+    TBNSpell.TargetID == Target.playerID
+    return TBNSpell
+
+
+def Oblation(Target):
+    """This function returns a DRK spell object corresponding to oblation that targets a player
+
+
+    Args:
+        Target (Player): Player targetted by Oblation. Can be the DRK itself
+    """
+
+    def OblationCheck(Player, Enemy):
+        if Player.OblationTimer <= 0:
+            Target.MagicMitigation /= 0.9
+            Target.PhysicalMitigation /= 0.9
+            Player.EffectToRemove.append(OblationCheck)            
+
+    def ApplyTargetOblation(Player, Enemy):
+        ApplyOblation(Player, Enemy) # Applies any cooldown and stuff to the player
+
+        Target.OblationTimer = 10
+        if not (OblationCheck in Target.EffectCDList):
+            Target.MagicMitigation *= 0.9
+            Target.PhysicalMitigation *= 0.9
+            Target.EffectCDList.append(OblationCheck)
+    
+    OblationSpell = DRKSkill(25754, False, 0, 0, 0, 0, 0, ApplyTargetOblation, [OblationRequirement])
+    OblationSpell.TargetID = Target.playerID
+    return OblationSpell
+
+        
+
+
 #buff
 EdgeShadowBuff = buff(1.1)
 

@@ -40,7 +40,7 @@ def main() -> int:
     """
     parser = get_parser()
     args = parser.parse_args()
-    #input(args)
+    #input(args.json)
 
     match args.action:
         case 'simulate':

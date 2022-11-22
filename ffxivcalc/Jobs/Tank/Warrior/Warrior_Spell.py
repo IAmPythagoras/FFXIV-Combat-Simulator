@@ -4,6 +4,7 @@
 
 from ffxivcalc.Jobs.Base_Spell import buff, empty
 from ffxivcalc.Jobs.Tank.Tank_Spell import BigMit, WarriorSpell
+from ffxivcalc.Jobs.Player import Shield, MitBuff
 Lock = 0.75
 
 def BeastGaugeRequirement(Player, Spell):
@@ -64,8 +65,17 @@ def EquilibriumRequirement(Player, Spell):
 def ApplyEquilibrium(Player, Enemy):
     Player.EquilibriumCD = 60
 
+    # 1200 potency healing
+
 def ApplyBloodwhetting(Player, Enemy):
     Player.BloodwhettingCD = 25
+    BloodwhettingBuff = MitBuff(0.9, 8, Player)
+    StemFlowBuff = MitBuff(0.9, 4, Player)
+    Player.BuffMitList.append(BloodwhettingBuff)
+    Player.BuffMitList.append(StemFlowBuff)
+
+    Player.BloodwhettingBuff = BloodwhettingBuff
+
 
 def ApplyNascentFlash(Player, Enemy):
     Player.NascentFlashCD = 25
@@ -73,11 +83,46 @@ def ApplyNascentFlash(Player, Enemy):
 def ApplyShakeItOff(Player, Enemy):
     Player.ShakeItOffCD = 90
 
+    # Gives a shield equal to 15% of max HP + 2% per Thrill, Vengeance and bloodwhetting
+    shield_percent = 0.15
+
+    if Player.VengeanceBuff != None: 
+        Player.VengeanceBuff.Timer = 0
+        Player.VengeanceBuff = None
+        shield_percent += 0.02
+    if Player.BloodwhettingBuff != None:
+        Player.BloodwhettingBuff.Timer = 0
+        Player.BloodwhettingBuff = None
+        shield_percent += 0.02
+    if Player.ThrillOfBattleTimer > 0:
+        Player.ThrillOfBattleTimer = 0
+        shield_percent += 0.02
+    
+    # Removing mit if the timer is bigger than 0 and giving an extra 2%
+
+    shield_value = (Player.MaxHP * shield_percent)
+
+    for player in Player.CurrentFight.PlayerList:
+        player.ShieldList.append(Shield(shield_value, 15, player))
+
+    # Also does 300 potency healing
+
+
 def ApplyHolmgang(Player, Enemy):
-    PlayerHolmgangCD = 240
+    Player.HolmgangCD = 240
+
+    Player.InvulnTimer = 10
 
 def ApplyThrillOfBattle(Player, Enemy):
     Player.ThrillOfBattleCD = 90
+
+    # Increases max HP by 20%
+    HPReceive = Player.MaxHP * 0.2
+    Player.MaxHP *= 1.2
+    Player.ApplyHeal(HPReceive)
+    Player.ThrillOfBattleTimer = 10
+
+    Player.EffectCDList.append(ThrillOfBattleCheck)
 
 def ApplyOverpower(Player, Enemy):
     if not (OverpowerCombo in Player.EffectList) : Player.EffectList.append(OverpowerCombo)
@@ -174,6 +219,14 @@ def MaimEffect(Player, Spell):
 
 #Check
 
+
+def ThrillOfBattleCheck(Player, Enemy):
+    if Player.ThrillOfBattleTimer <= 0:
+        Player.EffectToRemove.append(ThrillOfBattleCheck)
+
+        Player.MaxHP /= 1.2 # Reducing maxHP
+        Player.HP = min(Player.HP, Player.MaxHP)
+
 def SurgingTempestCheck(Player, Enemy):
     if Player.SurgingTempestTimer <= 0: 
         Player.buffList.remove(SurgingTempestBuff)
@@ -228,9 +281,47 @@ Orogeny = WarriorSpell(25752, False, Lock, 0, 150, 0, ApplyUpheaval, [UpheavalRe
 ThrillOfBattle = WarriorSpell(40, False, 0, 0, 0, 0, ApplyThrillOfBattle, [ThrillOfBattleRequirement], 0)
 Holmgang = WarriorSpell(43, False, 0, 0, 0, 0, ApplyHolmgang, [HolmgangRequirement], 0)
 ShakeItOff = WarriorSpell(7388, False, 0, 0, 0, 0, ApplyShakeItOff, [ShakeItOffRequirement], 0)
-NascentFlash = WarriorSpell(16464, False, 0, 0, 0, 0, ApplyNascentFlash, [NascentFlashRequirement], 0)
 Bloodwhetting = WarriorSpell(25751, False, 0, 0, 0, 0, ApplyBloodwhetting, [BloodwhettingRequirement], 0)
 Equilibrium = WarriorSpell(3552, False, 0, 0, 0, 0, ApplyEquilibrium, [EquilibriumRequirement], 0)
+
+def NascentFlash(Target):
+    """This function returns a WARSpell object of Nascent Flash
+    with target whatever target has been given
+
+    Args:
+        Target (Player) : Target of the action
+    
+    """
+
+    def NascentGlintCheck(Player, Enemy):
+        if Player.NascentFlashTimer <= 4:
+            Player.MagicMitigation /= 0.9
+            Player.PhysicalMitigation  /= 0.9
+            Player.EffectToRemove.append(NascentGlintCheck)
+
+    def NascentFlashCheck(Player, Enemy):
+        if Player.NascentFlashTimer <= 0:
+            Player.MagicMitigation /= 0.9
+            Player.PhysicalMitigation  /= 0.9
+            Player.EffectToRemove.append(NascentFlashCheck)
+
+    def ApplySpell(Player, Enemy):
+        ApplyNascentFlash(Player, Enemy)
+        # Gives 10% for 8 sec and an add. 10% for 4 sec
+        Target.MagicMitigation *= 0.9 * 0.9
+        Target.PhysicalMitigation *= 0.9 * 0.9
+
+        Target.EffectCDList.append(NascentFlashCheck)
+        Target.EffectCDList.append(NascentGlintCheck)
+
+    NascentFlash = WarriorSpell(16464, False, 0, 0, 0, 0, ApplySpell, [NascentFlashRequirement], 0)
+    NascentFlash.TargetID = Target.playerID
+    return NascentFlash
+
+
+
+
+
 #buff
 SurgingTempestBuff = buff(1.1)
 
