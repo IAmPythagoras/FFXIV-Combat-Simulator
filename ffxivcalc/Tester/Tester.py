@@ -57,6 +57,7 @@ class Tester:
 
         self.fightResults = [] # Reseting the list
         f = open(self.filename) #Opening save
+        input(self.filename)
         data = json.load(f)
 
         for test in data["data"]["FightList"]:
