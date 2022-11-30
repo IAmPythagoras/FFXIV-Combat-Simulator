@@ -85,7 +85,7 @@ def ApplyWildFire(Player, Enemy):
 
 def ApplyAirAnchor(Player, Enemy):
     AddGauge(Player, 20, 0)
-    Player.AirAnchorCD = 40
+    Player.AirAnchorCD = 40 * Player.WeaponskillReduction
 
 def ApplyBarrelStabilizer(Player, Enemy):
     AddGauge(Player, 0, 50)
@@ -122,7 +122,7 @@ def ApplyRicochet(Player, Enemy):
     Player.RicochetStack -= 1
 
 def ApplyDrill(Player, Enemy):
-    Player.DrillCD = 20
+    Player.DrillCD = 20 * Player.WeaponskillReduction
 
 def ApplyOverdrive(Player, Enemy):
     Player.Overdrive = False
@@ -131,7 +131,7 @@ def ApplyOverdrive(Player, Enemy):
 
 def ApplyChainSaw(Player, Enemy):
     AddGauge(Player, 20, 0)
-    Player.ChainSawCD = 60
+    Player.ChainSawCD = 60 * Player.WeaponskillReduction
 
 def ApplyAutomaton(Player, Enemy):
     Player.QueenStartUpTimer = 5
@@ -273,27 +273,27 @@ def QueenAACheck(Player, Enemy):
 
 
 Wildfire = MachinistSpell(2878, False, 0, Lock, 0, 0, ApplyWildFire, [WildFireRequirement], False)
-AirAnchor = MachinistSpell(16500, True, 0, 2.5, 600, 0, ApplyAirAnchor, [AirAnchorRequirement], True)
+AirAnchor = MachinistSpell(16500, True, 0, 2.5, 600, 0, ApplyAirAnchor, [AirAnchorRequirement], True, type = 2)
 BarrelStabilizer = MachinistSpell(7414, False, 0, Lock, 0, 0, ApplyBarrelStabilizer, [BarrelStabilizerRequirement], False)
-HeatBlast = MachinistSpell(7410, True, Lock, 1.5, 200, 0, ApplyHeatBlast, [OverheatedRequirement], True)
+HeatBlast = MachinistSpell(7410, True, Lock, 1.5, 200, 0, ApplyHeatBlast, [OverheatedRequirement], True, type = 2)
 Hypercharge = MachinistSpell(17209, False, 0, Lock, 0, 0, ApplyHypercharge, [HyperchargeRequirement], False)
 Reassemble = MachinistSpell(2876, False, 0, Lock, 0, 0, ApplyReassemble, [ReassembleRequirement], False)
 GaussRound = MachinistSpell(2874, False, 0, Lock, 120, 0, ApplyGaussRound, [GaussRoundRequirement], False)
 Ricochet = MachinistSpell(2890, False, 0, Lock, 120, 0, ApplyRicochet, [RicochetRequirement], False)
-Drill = MachinistSpell(16498, True, 0, 2.5, 600, 0, ApplyDrill, [DrillRequirement], True)
-ChainSaw = MachinistSpell(25788, True, 0, 2.5, 600, 0, ApplyChainSaw, [ChainSawRequirement], True)
+Drill = MachinistSpell(16498, True, 0, 2.5, 600, 0, ApplyDrill, [DrillRequirement], True, type = 2)
+ChainSaw = MachinistSpell(25788, True, 0, 2.5, 600, 0, ApplyChainSaw, [ChainSawRequirement], True, type = 2)
 Tactician = MachinistSpell(16889, False, 0, 0, 0, 0, ApplyTactician, [TacticianRequirement], False)
 #Combo Action
 
-SplitShot = MachinistSpell(7411, True, Lock, 2.5, 200, 0, ApplySplitShot, [], True)
-SlugShot = MachinistSpell(7412, True, Lock, 2.5, 120, 0, ApplySlugShot, [], True )
-CleanShot = MachinistSpell(7413, True, Lock, 2.5, 110, 0, ApplyCleanShot, [], True)
+SplitShot = MachinistSpell(7411, True, Lock, 2.5, 200, 0, ApplySplitShot, [], True, type = 2)
+SlugShot = MachinistSpell(7412, True, Lock, 2.5, 120, 0, ApplySlugShot, [], True , type = 2)
+CleanShot = MachinistSpell(7413, True, Lock, 2.5, 110, 0, ApplyCleanShot, [], True, type = 2)
 
 
 #AOE GCD
-AutoCrossbow = MachinistSpell(16497, True, 0, 1.5, 140, 0, empty, [OverheatedRequirement], True)
-Scattergun = MachinistSpell(25768, True, 0, 2.5, 150, 0, ApplyScattergun, [], True)
-Bioblaster = MachinistSpell(16499, True, 0, 0, 50, 0, ApplyBioblaster, [DrillRequirement], True) #Shares CD with Drill
+AutoCrossbow = MachinistSpell(16497, True, 0, 1.5, 140, 0, empty, [OverheatedRequirement], True, type = 2)
+Scattergun = MachinistSpell(25768, True, 0, 2.5, 150, 0, ApplyScattergun, [], True, type = 2)
+Bioblaster = MachinistSpell(16499, True, 0, 0, 50, 0, ApplyBioblaster, [DrillRequirement], True, type = 2) #Shares CD with Drill
 BioblasterDOT = DOTSpell(-2, 50, True)
 FlamethrowerDOT = DOTSpell(-3, 80, True)
 def Flamethrower(time):

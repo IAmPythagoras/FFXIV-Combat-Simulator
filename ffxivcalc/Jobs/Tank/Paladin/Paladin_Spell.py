@@ -271,29 +271,29 @@ def ValorDOTCheck(Player, Enemy):
 
 #Combo action
 
-FastBlade = PaladinSpell(9, True, Lock, 2.5, 200, 0, ApplyFastBlade, [], True)
-RiotBlade = PaladinSpell(15, True, Lock, 2.5, 170, 0, empty, [], True)
-RoyalAuthority = PaladinSpell(3539, True, Lock, 2.5, 130,0, empty, [], True)
-GoringBlade = PaladinSpell(3538, True, Lock, 2.5, 100, 0, empty, [], True)
+FastBlade = PaladinSpell(9, True, Lock, 2.5, 200, 0, ApplyFastBlade, [], True, type = 2)
+RiotBlade = PaladinSpell(15, True, Lock, 2.5, 170, 0, empty, [], True, type = 2)
+RoyalAuthority = PaladinSpell(3539, True, Lock, 2.5, 130,0, empty, [], True, type = 2)
+GoringBlade = PaladinSpell(3538, True, Lock, 2.5, 100, 0, empty, [], True, type = 2)
 GoringDOT = DOTSpell(-5, 65, True)
 
 #Confiteor Combo Action
 
-Confetti = PaladinSpell(16459, True, Lock, 2.5, 1000, 1000, ApplyConfetti, [ManaRequirement, ConfettiRequirement], False) # >.>
-BladeFaith = PaladinSpell(25748, True, Lock, 2.5, 480, 0, ApplyBladeFaith, [BladeFaithRequirement], False)
-BladeTruth = PaladinSpell(25749, True, Lock, 2.5, 560, 0, ApplyBladeTruth, [BladeTruthRequirement], False)
-BladeValor = PaladinSpell(25750, True, Lock, 2.5, 620, 0, ApplyBladeValor, [BladeValorRequirement], False)
+Confetti = PaladinSpell(16459, True, Lock, 2.5, 1000, 1000, ApplyConfetti, [ManaRequirement, ConfettiRequirement], False, type = 1) # >.>
+BladeFaith = PaladinSpell(25748, True, Lock, 2.5, 480, 0, ApplyBladeFaith, [BladeFaithRequirement], False, type = 1)
+BladeTruth = PaladinSpell(25749, True, Lock, 2.5, 560, 0, ApplyBladeTruth, [BladeTruthRequirement], False, type = 1)
+BladeValor = PaladinSpell(25750, True, Lock, 2.5, 620, 0, ApplyBladeValor, [BladeValorRequirement], False, type = 1)
 BladeValorDOT = DOTSpell(-11, 80, True)
 
 #GCD
-HolySpirit = PaladinSpell(7384, True, 1.5, 2.5, 300, 1000, empty, [ManaRequirement], False)
-Atonement = PaladinSpell(16460, True, Lock, 2.5, 420, 0, ApplyAtonement, [AtonementRequirement], True)
-Clemency = PaladinSpell(3541, True, 1.5, 2.5, 0, 1000, empty, [ManaRequirement], False)
-ShieldLob = PaladinSpell(24, True, 0, 2.5, 100, 0, empty, [], True )
+HolySpirit = PaladinSpell(7384, True, 1.5, 2.5, 300, 1000, empty, [ManaRequirement], False, type = 1)
+Atonement = PaladinSpell(16460, True, Lock, 2.5, 420, 0, ApplyAtonement, [AtonementRequirement], True, type = 1)
+Clemency = PaladinSpell(3541, True, 1.5, 2.5, 0, 1000, empty, [ManaRequirement], False, type = 2)
+ShieldLob = PaladinSpell(24, True, 0, 2.5, 100, 0, empty, [], True , type = 2)
 #AOE GCD
-HolyCircle = PaladinSpell(16458, True, 1.5, 2.5,130, 1000, empty, [ManaRequirement], False)
-TotalEclipse = PaladinSpell(7381, True, 0, 2.5, 100, 0, ApplyTotalEclipse, [], True)
-Prominence = PaladinSpell(16457, True, 0, 2.5, 100, 0, empty, [], True)
+HolyCircle = PaladinSpell(16458, True, 1.5, 2.5,130, 1000, empty, [ManaRequirement], False, type = 1)
+TotalEclipse = PaladinSpell(7381, True, 0, 2.5, 100, 0, ApplyTotalEclipse, [], True, type = 2)
+Prominence = PaladinSpell(16457, True, 0, 2.5, 100, 0, empty, [], True, type = 2)
 
 #oGCD
 RequestACat = PaladinSpell(7383, False, 0, Lock, 400, 0, ApplyRequestACat, [RequestACatRequirement], True) #I NEED ONE RIGHT NOW :x

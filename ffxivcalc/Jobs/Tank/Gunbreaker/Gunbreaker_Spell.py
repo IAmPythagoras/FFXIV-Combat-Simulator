@@ -117,7 +117,7 @@ def ApplySonicBreak(Player, Enemy):
     Player.EffectCDList.append(SonicBreakDOTCheck)
 
 def ApplyDoubleDown(Player, Enemy):
-    Player.DoubleDownCD = 60
+    Player.DoubleDownCD = 60 * Player.WeaponskillReduction
 
 def ApplyHypervelocity(Player, Enemy):
     Player.ReadyToBurst = False
@@ -137,7 +137,7 @@ def ApplyKeenEdge(Player, Enemy):
 
 def ApplyGnashingFang(Player, Enemy):
     Player.ReadyToRip = True
-    Player.GnashingFangCD = 30
+    Player.GnashingFangCD = 30 * Player.WeaponskillReduction
 
 def ApplySavageClaw(Player, Enemy):
     Player.ReadyToRip = False
@@ -209,18 +209,18 @@ def AuroraStackCheck(Player, Enemy):
 
 #Combo Action
 
-KeenEdge = GunbreakerSpell(16137, True, 2.5, 170, ApplyKeenEdge, [], 0)
-BrutalShell = GunbreakerSpell(16139, True, 2.5, 130, empty, [], 0)
-SolidBarrel = GunbreakerSpell(16145, True, 2.5, 140, empty, [], 0)
+KeenEdge = GunbreakerSpell(16137, True, 2.5, 170, ApplyKeenEdge, [], 0, type = 2)
+BrutalShell = GunbreakerSpell(16139, True, 2.5, 130, empty, [], 0, type = 2)
+SolidBarrel = GunbreakerSpell(16145, True, 2.5, 140, empty, [], 0, type = 2)
 
-GnashingFang = GunbreakerSpell(16146, True, 2.5, 380, ApplyGnashingFang, [], 1)
+GnashingFang = GunbreakerSpell(16146, True, 2.5, 380, ApplyGnashingFang, [], 1, type = 2)
 JugularRip = GunbreakerSpell(16156, False, 0, 200, empty, [JugularRipRequirement], 0)
-SavageClaw = GunbreakerSpell(16147, True, 2.5, 460, ApplySavageClaw, [JugularRipRequirement], 0)
+SavageClaw = GunbreakerSpell(16147, True, 2.5, 460, ApplySavageClaw, [JugularRipRequirement], 0, type = 2)
 AbdomenTear = GunbreakerSpell(16157, False, 0, 240, empty, [AbdomenTearRequirement], 0)
-WickedTalon = GunbreakerSpell(16150, True, 2.5, 540, ApplyWickedTalon, [AbdomenTearRequirement], 0)
+WickedTalon = GunbreakerSpell(16150, True, 2.5, 540, ApplyWickedTalon, [AbdomenTearRequirement], 0, type = 2)
 EyeGouge = GunbreakerSpell(16158, False, 0, 280, ApplyEyeGouge, [EyeGougeRequirement], 0)
 
-BurstStrike = GunbreakerSpell(16162, True, 2.5, 380, ApplyBurstStrike, [], 1)
+BurstStrike = GunbreakerSpell(16162, True, 2.5, 380, ApplyBurstStrike, [], 1, type = 2)
 Hypervelocity = GunbreakerSpell(25759, False, 0, 180, ApplyHypervelocity,[HypervelocityRequirement], 0)
 
 #oGCD
@@ -231,14 +231,14 @@ BowShockDOT = DOTSpell(-10, 60, True)
 RoughDivide = GunbreakerSpell(16154, False, 0, 150, ApplyRoughDivide, [RoughDivideRequirement], 0)
 NoMercy = GunbreakerSpell(16138, False, 0, 0, ApplyNoMercy, [NoMercyRequirement], 0)
 #GCD
-DoubleDown = GunbreakerSpell(25760, True, 2.5, 1200, ApplyDoubleDown, [DoubleDownRequirement], 2)
-SonicBreak = GunbreakerSpell(16153, True, 2.5, 300, ApplySonicBreak, [SonicBreakRequirement], 0)
+DoubleDown = GunbreakerSpell(25760, True, 2.5, 1200, ApplyDoubleDown, [DoubleDownRequirement], 2, type = 2)
+SonicBreak = GunbreakerSpell(16153, True, 2.5, 300, ApplySonicBreak, [SonicBreakRequirement], 0, type = 2)
 SonicBreakDOT = DOTSpell(-9, 60,True)
-LightningShot = GunbreakerSpell(16143, True, 2.5, 150, empty, [], 0)
+LightningShot = GunbreakerSpell(16143, True, 2.5, 150, empty, [], 0, type = 2)
 #AOE GCD
-FatedCircle = GunbreakerSpell(16163, True, 2.5, 290, empty, [], 1)
-DemonSlice = GunbreakerSpell(16141, True, 2.5, 100, ApplyDemonSlice, [], 0)
-DemonSlaughter = GunbreakerSpell(16149, True, 2.5, 100, empty, [], 1)
+FatedCircle = GunbreakerSpell(16163, True, 2.5, 290, empty, [], 1, type = 2)
+DemonSlice = GunbreakerSpell(16141, True, 2.5, 100, ApplyDemonSlice, [], 0, type = 2)
+DemonSlaughter = GunbreakerSpell(16149, True, 2.5, 100, empty, [], 0, type = 2)
 
 
 #Mit

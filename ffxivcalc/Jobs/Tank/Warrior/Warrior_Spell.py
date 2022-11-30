@@ -251,10 +251,10 @@ def InfuriateStackCheck(Player, Enemy):
     
 
 #Combo Action
-HeavySwing = WarriorSpell(31, True, Lock, 2.5, 200, 0, ApplyHeavySwing, [],0)
-Maim = WarriorSpell(37, True, Lock, 2.5, 150, 0, ApplyMaim, [],0)
-StormEye = WarriorSpell(45, True, Lock, 2.5, 150, 0, ApplyStormEye, [],0)
-StormPath = WarriorSpell(42, True, Lock, 2.5, 150, 0, ApplyStormPath, [], 0)
+HeavySwing = WarriorSpell(31, True, Lock, 2.5, 200, 0, ApplyHeavySwing, [],0, type = 2)
+Maim = WarriorSpell(37, True, Lock, 2.5, 150, 0, ApplyMaim, [],0, type = 2)
+StormEye = WarriorSpell(45, True, Lock, 2.5, 150, 0, ApplyStormEye, [],0, type = 2)
+StormPath = WarriorSpell(42, True, Lock, 2.5, 150, 0, ApplyStormPath, [], 0, type = 2)
 #Missing Storm's path
 
 #oGCD
@@ -265,16 +265,16 @@ InnerRelease = WarriorSpell(7389, False, Lock, 0, 0, 0, ApplyInnerRelease, [Inne
 
 
 #GCD
-PrimalRend = WarriorSpell(25753, True, Lock, 2.5, 700, 0, ApplyPrimalRend, [PrimalRendRequirement],0)
-FellCleave = WarriorSpell(3549, True, Lock, 2.5, 490, 0, empty, [],50)
-InnerChaos = WarriorSpell(16465, True, Lock, 2.5, 650,0, ApplyInnerChaos, [InnerChaosRequirement], 50)
-Tomahawk = WarriorSpell(46, True, Lock, 2.5, 150, 0, empty, [], 0)
+PrimalRend = WarriorSpell(25753, True, Lock, 2.5, 700, 0, ApplyPrimalRend, [PrimalRendRequirement],0, type = 2)
+FellCleave = WarriorSpell(3549, True, Lock, 2.5, 490, 0, empty, [],50, type = 2)
+InnerChaos = WarriorSpell(16465, True, Lock, 2.5, 650,0, ApplyInnerChaos, [InnerChaosRequirement], 50, type = 2)
+Tomahawk = WarriorSpell(46, True, Lock, 2.5, 150, 0, empty, [], 0, type = 2)
 
 #AOE GCD
-Overpower = WarriorSpell(41,True, 0, 2.5, 110, 0 , ApplyOverpower, [], 0 )
-MythrilTempest = WarriorSpell(16462, True, 0, 2.5, 100, 0, empty, [], 0)
-Decimate = WarriorSpell(3550, True, 0, 2.5, 200, 0, empty, [], 50)
-ChaoticCyclone = WarriorSpell(16463, True, Lock, 2.5, 320,0, ApplyInnerChaos, [InnerChaosRequirement], 50) #AOE Version of Inner chaos
+Overpower = WarriorSpell(41,True, 0, 2.5, 110, 0 , ApplyOverpower, [], 0 , type = 2)
+MythrilTempest = WarriorSpell(16462, True, 0, 2.5, 100, 0, empty, [], 0, type = 2)
+Decimate = WarriorSpell(3550, True, 0, 2.5, 200, 0, empty, [], 50, type = 2)
+ChaoticCyclone = WarriorSpell(16463, True, Lock, 2.5, 320,0, ApplyInnerChaos, [InnerChaosRequirement], 50, type = 2) #AOE Version of Inner chaos
 #AOE oGCD
 Orogeny = WarriorSpell(25752, False, Lock, 0, 150, 0, ApplyUpheaval, [UpheavalRequirement],0) #AOE Version of Upheaval
 #Mit

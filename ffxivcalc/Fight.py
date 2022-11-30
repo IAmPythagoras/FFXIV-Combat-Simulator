@@ -116,10 +116,11 @@ class Fight:
             if hasTank: self.TeamCompositionBonus += 0.01
             if hasHealer: self.TeamCompositionBonus += 0.01
 
-        # Will first compute each player's GCD reduction value based on their Spell Speed or Skill Speed Value
+        # Will first compute each player's GCD reduction value based on their Spell Speed and Skill Speed Value
 
         for Player in self.PlayerList:
-            Player.GCDReduction = (1000 - (130 * (Player.Stat["SS"]-400) / 1900))/1000
+            Player.SpellReduction = (1000 - (130 * (Player.Stat["SS"]-400) / 1900))/1000
+            Player.WeaponskillReduction = (1000 - (130 * (Player.Stat["SkS"]-400) / 1900))/1000
             Player.EffectList.append(GCDReductionEffect)
 
         while(self.TimeStamp <= TimeLimit):
@@ -316,9 +317,12 @@ def GCDReductionEffect(Player, Spell) -> None:
     Player : player -> Player object
     Spell : Spell -> Spell object affected by the effect
     """
-    if Spell.GCD:
-        Spell.CastTime *= Player.GCDReduction
-        Spell.RecastTime *= Player.GCDReduction
+    if Spell.type == 1: # Spell
+        Spell.CastTime *= Player.SpellReduction
+        Spell.RecastTime *= Player.SpellReduction
+    elif Spell.type == 2: # Weaponskill
+        Spell.CastTime *= Player.WeaponskillReduction
+        Spell.RecastTime *= Player.WeaponskillReduction
 
 def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj) -> float:
 
