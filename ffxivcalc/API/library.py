@@ -31,7 +31,7 @@ def AverageDamageAction(Player, Potency, MultBonus, type=0):
     Player.f_DET = math.floor(1000+math.floor(140*(Player.Stat["Det"]-baseMain)/levelMod))/1000# Determination damage
     if Player.RoleEnum == RoleEnum.Tank : Player.f_TEN = (1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000 # Tenacity damage, 1 for non-tank player
     else : Player.f_TEN = 1 # if non-tank
-    Player.f_SPD = (1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000 # Used only for dots
+    Player.f_SPD = (1000+math.floor(130*((Player.Stat["SS"] if Player.RoleEnum == RoleEnum.Caster or Player.RoleEnum == RoleEnum.Healer else Player.Stat["SkS"])-baseSub)/levelMod))/1000 # Used only for dots
     Player.CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000 # Crit rate in decimal
     Player.CritMult = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000 # Crit Damage multiplier
     Player.DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000 # DH rate in decimal
