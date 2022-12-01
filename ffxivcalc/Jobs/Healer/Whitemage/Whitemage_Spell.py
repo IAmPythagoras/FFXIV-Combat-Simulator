@@ -135,20 +135,20 @@ def CheckPresenceOfMind(Player, Enemy):
 
 
 #Damage GCD
-Glare = WhitemageSpell(25859, True, 1.5, 2.5, 310, 400, empty, [ManaRequirement])
-Dia = WhitemageSpell(16532, True, 0, 2.5, 60, 400, ApplyDia, [ManaRequirement])
+Glare = WhitemageSpell(25859, True, 1.5, 2.5, 310, 400, empty, [ManaRequirement], type = 1)
+Dia = WhitemageSpell(16532, True, 0, 2.5, 60, 400, ApplyDia, [ManaRequirement], type = 1)
 DiaDOT = DOTSpell(-5, 60, False)
-AfflatusMisery = WhitemageSpell(16535, True, 0, 2.5, 1240, 0, ApplyAfflatusMisery, [BloomLilyRequirement])
-Holy = WhitemageSpell(25860, True, 2.5, 2.5, 150, 400, empty, [ManaRequirement])
+AfflatusMisery = WhitemageSpell(16535, True, 0, 2.5, 1240, 0, ApplyAfflatusMisery, [BloomLilyRequirement], type = 1)
+Holy = WhitemageSpell(25860, True, 2.5, 2.5, 150, 400, empty, [ManaRequirement], type = 1)
 #Healing GCD
-AfflatusRapture = WhitemageSpell(16534, True, 0, 2.5, 0, 0, ApplyLily, [BloodLilyRequirement])
-AfflatusSolace = WhitemageSpell(16531, False, 0, 0, 0, 0, ApplyLily, [BloodLilyRequirement])
-Regen = WhitemageSpell(137, True, 0, 2.5, 0, 400, empty, [ManaRequirement])
-Cure = WhitemageSpell(120, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement])
-Cure2 = WhitemageSpell(135, True, 2, 2.5, 0, 1000, empty, [ManaRequirement])
-Cure3 = WhitemageSpell(131, True, 2, 2.5, 0, 1500, empty, [ManaRequirement])
-Medica = WhitemageSpell(124, True, 2, 2.5, 0, 900, empty, [ManaRequirement])
-Medica2 = WhitemageSpell(133, True, 2, 2.5, 0, 1000, empty, [ManaRequirement])
+AfflatusRapture = WhitemageSpell(16534, True, 0, 2.5, 0, 0, ApplyLily, [BloodLilyRequirement], type = 1)
+AfflatusSolace = WhitemageSpell(16531, True, 0, 0, 0, 0, ApplyLily, [BloodLilyRequirement], type = 1)
+Regen = WhitemageSpell(137, True, 0, 2.5, 0, 400, empty, [ManaRequirement], type = 1)
+Cure = WhitemageSpell(120, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement], type = 1)
+Cure2 = WhitemageSpell(135, True, 2, 2.5, 0, 1000, empty, [ManaRequirement], type = 1)
+Cure3 = WhitemageSpell(131, True, 2, 2.5, 0, 1500, empty, [ManaRequirement], type = 1)
+Medica = WhitemageSpell(124, True, 2, 2.5, 0, 900, empty, [ManaRequirement], type = 1)
+Medica2 = WhitemageSpell(133, True, 2, 2.5, 0, 1000, empty, [ManaRequirement], type = 1)
 #Damage oGCD
 Assize = WhitemageSpell(3571, False, 0, 0, 400, 0, ApplyAssize, [AssizeRequirement])
 ThinAir = WhitemageSpell(7430, False, 0, 0, 0, 0, ApplyThinAir, [ThinAirRequirement])
