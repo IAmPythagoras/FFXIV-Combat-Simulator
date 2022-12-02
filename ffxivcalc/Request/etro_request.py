@@ -42,7 +42,8 @@ def get_gearset_data(set_id: str) -> dict:
         "WD" : stats["Weapon Damage"] if "Weapon Damage" in stats.keys() else 0,
         "Det" : stats["DET"],
         "Ten" : stats["TEN"] if "TEN" in stats.keys() else 400,
-        "SS" : stats["SPS"] if "SPS" in stats.keys() else stats["SKS"],
+        "SS" : stats["SPS"] if "SPS" in stats.keys() else 400,
+        "SkS" : stats["SkS"] if "SkS" in stats.keys() else 400,
         "Crit" : stats["CRT"],
         "DH" : stats["DH"]
     }
