@@ -3,8 +3,8 @@ from ffxivcalc.Jobs.Melee.Melee_Spell import ArmLength, SecondWind
 Lock = 0.75
 class RangedSpell(Spell):
 
-    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
-        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, type = 0):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, type = type)
 
 
 #########################################
@@ -14,8 +14,8 @@ class RangedSpell(Spell):
 
 class MachinistSpell(RangedSpell):
 
-    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, WeaponSkill):
-        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, WeaponSkill, type = 0):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, type = type)
 
         self.Weaponskill = WeaponSkill #Boolean Variable
 
@@ -27,8 +27,8 @@ class MachinistSpell(RangedSpell):
 
 class BardSpell(RangedSpell):
 
-    def __init__(self, id, GCD, RecastTime, Potency, Effect, Requirement, Weaponskill):
-        super().__init__(id, GCD, Lock, RecastTime, Potency, 0, Effect, Requirement)
+    def __init__(self, id, GCD, RecastTime, Potency, Effect, Requirement, Weaponskill, type = 0):
+        super().__init__(id, GCD, Lock, RecastTime, Potency, 0, Effect, Requirement, type = type)
 
         self.Weaponskill = Weaponskill
 
@@ -39,8 +39,8 @@ class BardSpell(RangedSpell):
 
 class DancerSpell(RangedSpell):
 
-    def __init__(self, id, GCD, RecastTime, Potency, Effect, Requirement, Weaponskill):
-        super().__init__(id, GCD, Lock, RecastTime, Potency, 0, Effect, Requirement)
+    def __init__(self, id, GCD, RecastTime, Potency, Effect, Requirement, Weaponskill, type = 0):
+        super().__init__(id, GCD, Lock, RecastTime, Potency, 0, Effect, Requirement, type = type)
         self.Weaponskill = Weaponskill
 
 

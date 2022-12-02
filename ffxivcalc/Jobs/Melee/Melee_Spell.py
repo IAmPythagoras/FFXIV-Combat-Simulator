@@ -2,8 +2,8 @@ from ffxivcalc.Jobs.Base_Spell import Potion, Spell
 Lock = 0
 class MeleeSpell(Spell):
 
-    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
-        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, type = 0):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, type = type)
 
 #########################################
 ########## NINJA SPELL  #################
@@ -11,8 +11,8 @@ class MeleeSpell(Spell):
 
 class NinjaSpell(MeleeSpell):
 
-    def __init__(self, id, GCD, CastTime, RecastTime, Potency, Effect, Requirement,Weaponskill, Ninjutsu):
-        super().__init__(id, GCD, CastTime, RecastTime, Potency, 0, Effect, Requirement)
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, Effect, Requirement,Weaponskill, Ninjutsu, type = 0):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, 0, Effect, Requirement, type = type)
         self.Weaponskill = Weaponskill
         self.Ninjutsu = Ninjutsu
 
@@ -22,8 +22,8 @@ class NinjaSpell(MeleeSpell):
 #########################################
 
 class SamuraiSpell(MeleeSpell):
-    def __init__(self, id, GCD, CastTime, RecastTime, Potency, Effect, Requirement, KenkiCost):
-        super().__init__(id, GCD, CastTime, RecastTime, Potency, 0, Effect, Requirement)
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, Effect, Requirement, KenkiCost, type = 0):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, 0, Effect, Requirement, type = type)
 
         self.KenkiCost = KenkiCost
         self.Requirement += [KenkiRequirement]
@@ -37,8 +37,8 @@ def KenkiRequirement(Player, Spell): #By default present in Samurai spell requir
 #########################################
 
 class DragoonSpell(MeleeSpell):
-    def __init__(self, id, GCD, RecastTime, Potency, Effect, Requirement, Weaponskill):
-        super().__init__(id, GCD, Lock, RecastTime, Potency, 0, Effect, Requirement)
+    def __init__(self, id, GCD, RecastTime, Potency, Effect, Requirement, Weaponskill, type = 0):
+        super().__init__(id, GCD, Lock, RecastTime, Potency, 0, Effect, Requirement, type = type)
 
         self.Weaponskill = Weaponskill
 
@@ -47,8 +47,8 @@ class DragoonSpell(MeleeSpell):
 #########################################
 
 class MonkSpell(MeleeSpell):
-    def __init__(self, id, GCD, RecastTime, Potency, Effect, Requirement, Weaponskill, MasterfulBlitz):
-        super().__init__(id, GCD, Lock, RecastTime, Potency, 0, Effect, Requirement)
+    def __init__(self, id, GCD, RecastTime, Potency, Effect, Requirement, Weaponskill, MasterfulBlitz, type = 0):
+        super().__init__(id, GCD, Lock, RecastTime, Potency, 0, Effect, Requirement, type = type)
 
         self.Weaponskill = Weaponskill
         self.MasterfulBlitz = MasterfulBlitz
@@ -58,8 +58,8 @@ class MonkSpell(MeleeSpell):
 #########################################
 
 class ReaperSpell(MeleeSpell):
-    def __init__(self, id, GCD, CastTime,RecastTime, Potency, Effect, Requirement, Weaponskill):
-        super().__init__(id, GCD, CastTime, RecastTime, Potency, 0, Effect, Requirement)
+    def __init__(self, id, GCD, CastTime,RecastTime, Potency, Effect, Requirement, Weaponskill, type = 0):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, 0, Effect, Requirement, type = type)
 
         self.Weaponskill = Weaponskill
 

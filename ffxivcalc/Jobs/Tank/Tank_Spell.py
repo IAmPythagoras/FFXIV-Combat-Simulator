@@ -8,8 +8,8 @@ Lock = 0.75
 
 class TankSpell(Spell):
 
-    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement):
-        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, type = 0):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, type = type)
 
 
 #########################################
@@ -22,8 +22,8 @@ def BeastGaugeRequirement(Player, Spell):
 
 class WarriorSpell(TankSpell):
 
-    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, Cost):
-        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, Cost, type = 0):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, type = type)
 
         self.Requirement += [BeastGaugeRequirement] 
         self.Cost = Cost
@@ -40,8 +40,8 @@ class DRKSkill(TankSpell):
     #A class for Dark Knight Skills containing all the relevant weaponskills/spells, cooldowns,
     #as well as their effects and requirements. For now does not consider out of combo actions.
 
-    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, BloodCost, Effect, Requirement):
-        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, BloodCost, Effect, Requirement, type = 0):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, type = type)
 
         self.BloodCost = BloodCost
 #########################################
@@ -50,8 +50,8 @@ class DRKSkill(TankSpell):
 
 class PaladinSpell(TankSpell):
 
-    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, isPhysical):
-        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement)
+    def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, isPhysical, type = 0):
+        super().__init__(id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, type = type)
 
         self.isPhysical = isPhysical #To know to what ability we will give FoF
 
@@ -67,8 +67,8 @@ def PowderRequirement(Player, Spell):
 
 class GunbreakerSpell(TankSpell):
 
-    def __init__(self, id, GCD, RecastTime, Potency, Effect, Requirement, PowderCost ):
-        super().__init__(id, GCD, 0.75, RecastTime, Potency, 0, Effect, Requirement)
+    def __init__(self, id, GCD, RecastTime, Potency, Effect, Requirement, PowderCost , type = 0):
+        super().__init__(id, GCD, 0.75, RecastTime, Potency, 0, Effect, Requirement, type = type)
 
         self.PowderCost = PowderCost
         self.Requirement += [PowderRequirement]
