@@ -397,8 +397,8 @@ BurstShot = BardSpell(16495, True, 2.5, 220, ApplyBurstShot, [], True, type = 2)
 RefulgentArrow = BardSpell(7409, True, 2.5, 280, ApplyRefulgentArrow, [RefulgentArrowRequirement], True, type = 2)
 Stormbite = BardSpell(7407, True, 2.5, 100, ApplyStormbite, [], True, type = 2)
 Causticbite = BardSpell(7406, True, 2.5, 150, ApplyCausticbite, [], True, type = 2)
-StormbiteDOT = DOTSpell(-20, 25, True, type = 2) #25
-CausticbiteDOT = DOTSpell(-21, 20, True, type = 2) #20
+StormbiteDOT = DOTSpell(-20, 25, True) #25
+CausticbiteDOT = DOTSpell(-21, 20, True) #20
 IronJaws = BardSpell(3560, True, 2.5, 100, ApplyIronJaws, [], True, type = 2)
 ApexArrow20 = BardSpell(6, True, 2.5, 200, ApplyApexArrow20, [], True, type = 2)
 ApexArrow80 = BardSpell(16496, True, 2.5, 500, ApplyApexArrow80, [], True, type = 2)
