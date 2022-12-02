@@ -317,7 +317,7 @@ def GCDReductionEffect(Player, Spell) -> None:
     Player : player -> Player object
     Spell : Spell -> Spell object affected by the effect
     """
-    input("hey")
+    
     if Spell.type == 1: # Spell
         Spell.CastTime *= Player.SpellReduction
         Spell.RecastTime *= Player.SpellReduction
