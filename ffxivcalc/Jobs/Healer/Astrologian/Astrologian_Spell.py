@@ -242,7 +242,7 @@ AspectedBenific = AstrologianSpell(2595, True, 0, 2.5, 0, 400, empty, [ManaRequi
 Benefic2 = AstrologianSpell(3610, True, 1.5, 2.5, 0, 700, empty, [ManaRequirement], type = 1)
 Benefic = AstrologianSpell(3594, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement], type = 1)
 Helios = AstrologianSpell(3600, True, 1.5, 2.5, 0, 700, empty, [ManaRequirement], type = 1)
-EssentialDignity = AstrologianSpell(10, False, 0, 0, 0, 0, ApplyEssentialDignity, [EssentialDignityRequirement, type = 1])
+EssentialDignity = AstrologianSpell(10, False, 0, 0, 0, 0, ApplyEssentialDignity, [EssentialDignityRequirement], type = 1)
 Macrocosmos = AstrologianSpell(25874, True, 0, 0, 250, 600, ApplyMacrocosmos, [MacrocosmosRequirement, ManaRequirement], type = 1)
 Microcosmos = AstrologianSpell(17, True, 0, 0, 0, 0, empty, [MicrocosmosRequirement], type = 1)
 LadyOfCrown = AstrologianSpell(7445, True, 0, 1, 0, 0, empty, [], type = 1)
