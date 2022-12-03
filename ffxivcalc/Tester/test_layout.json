@@ -15,7 +15,7 @@
                 "TestName": "redmage",
                 "Fight": "redmage_test.json",
                 "ExpectedResult": {
-                    "EndTime": "32.59",
+                    "EndTime": "32.61",
                     "1": {
                         "ExpectedTotalPotency": "8660"
                     }
@@ -25,7 +25,7 @@
                 "TestName": "summoner",
                 "Fight": "summoner_test.json",
                 "ExpectedResult": {
-                    "EndTime": "80.27",
+                    "EndTime": "80.31",
                     "1": {
                         "ExpectedTotalPotency": "9530"
                     }
@@ -45,7 +45,7 @@
                 "TestName": "sage",
                 "Fight": "sage_test.json",
                 "ExpectedResult": {
-                    "EndTime": "48.6",
+                    "EndTime": "49.16",
                     "1": {
                         "ExpectedTotalPotency": "7660"
                     }
@@ -55,7 +55,7 @@
                 "TestName": "astrologian",
                 "Fight": "astrologian_test.json",
                 "ExpectedResult": {
-                    "EndTime": "45.0",
+                    "EndTime": "45.57",
                     "1": {
                         "ExpectedTotalPotency": "5550"
                     }
@@ -95,7 +95,7 @@
                 "TestName": "paladin",
                 "Fight": "paladin_test.json",
                 "ExpectedResult": {
-                    "EndTime": "97.73",
+                    "EndTime": "98.26",
                     "1": {
                         "ExpectedTotalPotency": "15510"
                     }
@@ -115,7 +115,7 @@
                 "TestName": "samurai",
                 "Fight": "samurai_test.json",
                 "ExpectedResult": {
-                    "EndTime": "83.67",
+                    "EndTime": "83.39",
                     "1": {
                         "ExpectedTotalPotency": "13460"
                     }
@@ -175,7 +175,7 @@
                 "TestName": "dancer",
                 "Fight": "dancer_test.json",
                 "ExpectedResult": {
-                    "EndTime": "18.4",
+                    "EndTime": "18.45",
                     "1": {
                         "ExpectedTotalPotency": "5560"
                     }
