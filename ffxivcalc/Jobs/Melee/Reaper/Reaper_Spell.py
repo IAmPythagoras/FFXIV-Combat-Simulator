@@ -319,22 +319,22 @@ def DeathDesignCheck(Player, Enemy):
 #GCD
 
 #Combo Actions
-Slice = ReaperSpell(24373, True, Lock, 2.5, 300, ApplySlice, [], True)
-WaxingSlice = ReaperSpell(24374, True, Lock, 2.5, 140, empty, [], True)
-InfernalSlice = ReaperSpell(24375, True, Lock, 2.5, 140, empty, [], True)
+Slice = ReaperSpell(24373, True, Lock, 2.5, 300, ApplySlice, [], True, type = 2)
+WaxingSlice = ReaperSpell(24374, True, Lock, 2.5, 140, empty, [], True, type = 2)
+InfernalSlice = ReaperSpell(24375, True, Lock, 2.5, 140, empty, [], True, type = 2)
 
 #Other GCD
-Soulsow = ReaperSpell(24387, True, 5, 2.5, 0, ApplySoulsow, [], False)
-HarvestMoon = ReaperSpell(24388, True, Lock, 2.5, 600, ApplyHarvestMoon, [HarvestMoonRequirement], False)
-Harpe = ReaperSpell(24386, True, 1.3, 2.5, 300, empty, [], False)
-ShadowOfDeath = ReaperSpell(24378, True, Lock, 2.5, 300, ApplyShadowOfDeath, [], True)
-SoulSlice = ReaperSpell(24380, True, Lock, 2.5, 460, ApplySoulSlice, [SoulSliceRequirement], True)
-Gibbet = ReaperSpell(24382, True, Lock, 2.5, 460, ApplyGibbet, [GibbetRequirement], True)
-Gallows = ReaperSpell(24383, True, Lock, 2.5, 460, ApplyGallows, [GibbetRequirement], True) #shares same requirement as Gibbet
-PlentifulHarvest = ReaperSpell(24385, True, Lock, 2.5, 720, ApplyPlentifulHarvest, [PlentifulHarvestRequirement], True)
-VoidReaping = ReaperSpell(24395, True, Lock, 1.5, 460, ApplyVoidReaping, [VoidReapingRequirement], True)
-CrossReaping = ReaperSpell(24396, True, Lock, 1.5, 460, ApplyCrossReaping, [VoidReapingRequirement], True) #Same Requriement as VoidReaping
-Communio = ReaperSpell(24398, True, 1.3, 2.5, 1100, ApplyCommunio, [CommunioRequirement], False)
+Soulsow = ReaperSpell(24387, True, 5, 2.5, 0, ApplySoulsow, [], False, type = 1)
+HarvestMoon = ReaperSpell(24388, True, Lock, 2.5, 600, ApplyHarvestMoon, [HarvestMoonRequirement], False, type = 1)
+Harpe = ReaperSpell(24386, True, 1.3, 2.5, 300, empty, [], False, type = 1)
+ShadowOfDeath = ReaperSpell(24378, True, Lock, 2.5, 300, ApplyShadowOfDeath, [], True, type = 2)
+SoulSlice = ReaperSpell(24380, True, Lock, 2.5, 460, ApplySoulSlice, [SoulSliceRequirement], True, type = 2)
+Gibbet = ReaperSpell(24382, True, Lock, 2.5, 460, ApplyGibbet, [GibbetRequirement], True, type = 2)
+Gallows = ReaperSpell(24383, True, Lock, 2.5, 460, ApplyGallows, [GibbetRequirement], True, type = 2) #shares same requirement as Gibbet
+PlentifulHarvest = ReaperSpell(24385, True, Lock, 2.5, 720, ApplyPlentifulHarvest, [PlentifulHarvestRequirement], True, type = 2)
+VoidReaping = ReaperSpell(24395, True, Lock, 1.5, 460, ApplyVoidReaping, [VoidReapingRequirement], True, type = 2)
+CrossReaping = ReaperSpell(24396, True, Lock, 1.5, 460, ApplyCrossReaping, [VoidReapingRequirement], True, type = 2) #Same Requriement as VoidReaping
+Communio = ReaperSpell(24398, True, 1.3, 2.5, 1100, ApplyCommunio, [CommunioRequirement], False, type = 1)
 
 #oGCD
 ArcaneCircle = ReaperSpell(24405, False, Lock, 0, 0, ApplyArcaneCircle, [ArcaneCircleRequirement], False)
@@ -347,10 +347,10 @@ UnveiledGallows = ReaperSpell(24391, False, Lock, 0, 400, ApplyUnveiledGibbet, [
 HellIngress = ReaperSpell(24402, False, Lock, 0, 0, ApplyHellIngress, [HellIngressRequirement], False)
 ArcaneCrest = ReaperSpell(24404, False, 0, 0, 0, ApplyArcaneCrest, [ArcaneCrestRequirement], False)
 #AOE GCD
-SpinningScythe = ReaperSpell(24376, True, 0, 2.5, 140, ApplySpinningScythe, [], True)
-NightmareScythe = ReaperSpell(24377, True, 0, 2.5, 120, empty, [], True)
-WhorlOfDeath = ReaperSpell(24379, True, 0, 2.5, 100, ApplyShadowOfDeath, [], False)
-Guillotine = ReaperSpell(24384, False, 0, 0, 200, ApplyGuillotine, [GibbetRequirement], True) #AOE version of Gallows/Gibbet
+SpinningScythe = ReaperSpell(24376, True, 0, 2.5, 140, ApplySpinningScythe, [], True, type = 2)
+NightmareScythe = ReaperSpell(24377, True, 0, 2.5, 120, empty, [], True, type = 2)
+WhorlOfDeath = ReaperSpell(24379, True, 0, 2.5, 100, ApplyShadowOfDeath, [], False, type = 2)
+Guillotine = ReaperSpell(24384, False, 0, 0, 200, ApplyGuillotine, [GibbetRequirement], True, type = 2) #AOE version of Gallows/Gibbet
 #AOE oGCD
 GrimSwath = ReaperSpell(24392, False, 0, 0, 140, ApplyBloodStalk, [BloodStalkRequirement], False) #AOE version of bloodstalk
 SoulScyte = ReaperSpell(24381, False, 0, 0, 180, ApplySoulSlice, [SoulSliceRequirement], False) #AOE version of SoulSlice

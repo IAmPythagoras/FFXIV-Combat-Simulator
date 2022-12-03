@@ -262,12 +262,12 @@ def ApplyOblation(Player, Enemy):
 DRKGCD = 2.5         #GCD speed
 Lock = 0            #Fixed value for animation lock.
 
-HardSlash = DRKSkill(3617, True, Lock, DRKGCD, 170, 0, 0, ApplyHardSlashEffect, [])
-SyphonStrike = DRKSkill(3623, True, Lock, DRKGCD, 120, 0, 0, empty, [])
-Souleater = DRKSkill(3632, True, Lock, DRKGCD, 120, 0, 0, empty, [])
-Bloodspiller = DRKSkill(7392, True, Lock, DRKGCD, 500, 0, 50, empty, [BloodRequirement])
-Quietus = DRKSkill(5, True, Lock, DRKGCD, 200, 0, 50, empty, [BloodRequirement])
-Unmend = DRKSkill(3624, True, Lock, 2.50, 150, 0, 0, empty, [])
+HardSlash = DRKSkill(3617, True, Lock, DRKGCD, 170, 0, 0, ApplyHardSlashEffect, [], type = 2)
+SyphonStrike = DRKSkill(3623, True, Lock, DRKGCD, 120, 0, 0, empty, [], type = 2)
+Souleater = DRKSkill(3632, True, Lock, DRKGCD, 120, 0, 0, empty, [], type = 2)
+Bloodspiller = DRKSkill(7392, True, Lock, DRKGCD, 500, 0, 50, empty, [BloodRequirement], type = 2)
+Quietus = DRKSkill(5, True, Lock, DRKGCD, 200, 0, 50, empty, [BloodRequirement], type = 2)
+Unmend = DRKSkill(3624, True, Lock, 2.50, 150, 0, 0, empty, [], type = 1)
 
 #List of Buffs used by a Dark Knight Player.
 
@@ -288,8 +288,8 @@ LivingShadow = DRKSkill(16472, False, Lock, 0, 0, 0, 50, SummonLivingShadow, [Bl
 Plunge = DRKSkill(3640, False, Lock, 0, 150, 0, 0, SpendPlunge, [PlungeRequirement])
 
 #AOE GCD
-Unleash = DRKSkill(20, True, 0, 2.5, 120, 0, 0, ApplyUnleash, [])
-StalwartSoul = DRKSkill(21, True, 0, 2.5, 100, 0, 0, empty, [])
+Unleash = DRKSkill(20, True, 0, 2.5, 120, 0, 0, ApplyUnleash, [], type = 1)
+StalwartSoul = DRKSkill(21, True, 0, 2.5, 100, 0, 0, empty, [], type = 1)
 #List of Abilities performed by Living Shadow.
 
 PAbyssalDrain = DRKSkill(22, True, 0.5, 2.33, 350, 0, 0, empty, [])

@@ -116,10 +116,11 @@ class Fight:
             if hasTank: self.TeamCompositionBonus += 0.01
             if hasHealer: self.TeamCompositionBonus += 0.01
 
-        # Will first compute each player's GCD reduction value based on their Spell Speed or Skill Speed Value
+        # Will first compute each player's GCD reduction value based on their Spell Speed and Skill Speed Value
 
         for Player in self.PlayerList:
-            Player.GCDReduction = (1000 - (130 * (Player.Stat["SS"]-400) / 1900))/1000
+            Player.SpellReduction = (1000 - (130 * (Player.Stat["SS"]-400) / 1900))/1000
+            Player.WeaponskillReduction = (1000 - (130 * (Player.Stat["SkS"]-400) / 1900))/1000
             Player.EffectList.append(GCDReductionEffect)
 
         while(self.TimeStamp <= TimeLimit):
@@ -302,7 +303,7 @@ class Fight:
             Player.f_DET = math.floor(1000+math.floor(140*(Player.Stat["Det"]-baseMain)/levelMod))/1000# Determination damage
             if Player.RoleEnum == RoleEnum.Tank : Player.f_TEN = (1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000 # Tenacity damage, 1 for non-tank player
             else : Player.f_TEN = 1 # if non-tank
-            Player.f_SPD = (1000+math.floor(130*(Player.Stat["SS"]-baseSub)/levelMod))/1000 # Used only for dots
+            Player.f_SPD = (1000+math.floor(130*((Player.Stat["SS"] if Player.RoleEnum == RoleEnum.Caster or Player.RoleEnum == RoleEnum.Healer else Player.Stat["SkS"])-baseSub)/levelMod))/1000 # Used only for dots
             Player.CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000 # Crit rate in decimal
             Player.CritMult = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000 # Crit Damage multiplier
             Player.DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000 # DH rate in decimal
@@ -316,9 +317,15 @@ def GCDReductionEffect(Player, Spell) -> None:
     Player : player -> Player object
     Spell : Spell -> Spell object affected by the effect
     """
-    if Spell.GCD:
-        Spell.CastTime *= Player.GCDReduction
-        Spell.RecastTime *= Player.GCDReduction
+    
+    if Spell.type == 1: # Spell
+        Spell.CastTime *= Player.SpellReduction
+        Spell.RecastTime *= Player.SpellReduction
+        if Spell.RecastTime < 1.5 and Spell.RecastTime > 0 : Spell.RecastTime = 1.5 # A GCD cannot go under 1.5 sec
+    elif Spell.type == 2: # Weaponskill
+        Spell.CastTime *= Player.WeaponskillReduction
+        Spell.RecastTime *= Player.WeaponskillReduction
+        if Spell.RecastTime < 1.5 and Spell.RecastTime > 0 : Spell.RecastTime = 1.5 # A GCD cannot go under 1.5 sec
 
 def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj) -> float:
 

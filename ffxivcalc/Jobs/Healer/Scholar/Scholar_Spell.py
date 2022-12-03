@@ -174,17 +174,17 @@ def CheckBiolysis(Player, Enemy):
 
 
 #DamageGCD
-Broil = ScholarSpell(25865, True, 1.5, 2.5, 295,  400, empty, [ManaRequirement])
-Ruin = ScholarSpell(17870, True, 0, 2.5, 220,  300, empty, [ManaRequirement])
-Biolysis = ScholarSpell(16540, True, 0, 2.5, 0, 300, ApplyBiolysis, [ManaRequirement])
+Broil = ScholarSpell(25865, True, 1.5, 2.5, 295,  400, empty, [ManaRequirement], type = 1)
+Ruin = ScholarSpell(17870, True, 0, 2.5, 220,  300, empty, [ManaRequirement], type = 1)
+Biolysis = ScholarSpell(16540, True, 0, 2.5, 0, 300, ApplyBiolysis, [ManaRequirement], type = 1)
 BiolysisDOT = DOTSpell(-4, 70, False)
-ArtOfWar = ScholarSpell(25866, True, 0, 2.5, 165, 400, empty, [ManaRequirement])#AOE
+ArtOfWar = ScholarSpell(25866, True, 0, 2.5, 165, 400, empty, [ManaRequirement], type = 1)#AOE
 
 #HealGCD
-Succor = ScholarSpell(186, True, 2, 2.5, 0, 1000, ApplyAdloquium, [AdloquiumRequirement]) ##This action has apply and requirement because of recitation
-Adloquium = ScholarSpell(185, True, 2, 2.5, 0, 1000, ApplyAdloquium, [AdloquiumRequirement]) #This action has apply and requirement because of recitation
-Physick = ScholarSpell(190, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement])
-SummonEos = ScholarSpell(29, True, 1.5, 2.5, 0, 200, empty, [ManaRequirement])
+Succor = ScholarSpell(186, True, 2, 2.5, 0, 1000, ApplyAdloquium, [AdloquiumRequirement], type = 1) ##This action has apply and requirement because of recitation
+Adloquium = ScholarSpell(185, True, 2, 2.5, 0, 1000, ApplyAdloquium, [AdloquiumRequirement], type = 1) #This action has apply and requirement because of recitation
+Physick = ScholarSpell(190, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement], type = 1)
+SummonEos = ScholarSpell(29, True, 1.5, 2.5, 0, 200, empty, [ManaRequirement], type = 1)
 #Damage oGCD
 ChainStratagem = ScholarSpell(7436, False, 0, Lock, 0, 0, ApplyChainStratagem, [ChainStratagemRequirement])
 EnergyDrain = ScholarSpell(167, False, 0, Lock, 100, 0, ApplyEnergyDrain, [AetherStackRequirement])

@@ -114,7 +114,7 @@ def ApplySlipstream(Player, Enemy):
     Player.EffectCDList.append(SlipstreamDOTCheck)
 
 def ApplySummon(Player, Enemy):
-    Player.SummonCD = 60
+    Player.SummonCD = 60 * Player.SpellReduction
     Player.Enkindle = True
 
     #Will check if we already have a summon object
@@ -212,34 +212,34 @@ def SearingLightCheck(Player, Enemy):
 
 
 #GCD
-Ruin3 = SummonerSpell(3579, True, 1.5, 2.5, 310, 300, empty, [ManaRequirement])
-Ruin4 = SummonerSpell(7426, True, Lock, 2.5, 430, 400, ApplyRuin4, [ManaRequirement, Ruin4Requirement])
-FoF = SummonerSpell(16514, True, Lock, 2.5, 540, 300, empty, [FoFRequirement, ManaRequirement])
-AstralImpulse = SummonerSpell(25820, True, Lock, 2.5, 440, 300, empty, [AstralImpulseRequirement, ManaRequirement])
-TryDisaster = SummonerSpell(25826, True, 1.5, 2.5, 120, 300, empty, [ManaRequirement])
+Ruin3 = SummonerSpell(3579, True, 1.5, 2.5, 310, 300, empty, [ManaRequirement], type = 1)
+Ruin4 = SummonerSpell(7426, True, Lock, 2.5, 430, 400, ApplyRuin4, [ManaRequirement, Ruin4Requirement], type = 1)
+FoF = SummonerSpell(16514, True, Lock, 2.5, 540, 300, empty, [FoFRequirement, ManaRequirement], type = 1)
+AstralImpulse = SummonerSpell(25820, True, Lock, 2.5, 440, 300, empty, [AstralImpulseRequirement, ManaRequirement], type = 1)
+TryDisaster = SummonerSpell(25826, True, 1.5, 2.5, 120, 300, empty, [ManaRequirement], type = 1)
 #Primal
-Titan = SummonerSpell(25839, True, Lock, 2.5, 750, 0, ApplyTitan, [TitanRequirement])
-Garuda = SummonerSpell(25840, True, Lock, 2.5, 750, 0, ApplyGaruda, [GarudaRequirement])
-Ifrit = SummonerSpell(25838, True, Lock, 2.5, 750, 0, ApplyIfrit, [IfritRequirement])
+Titan = SummonerSpell(25839, True, Lock, 2.5, 750, 0, ApplyTitan, [TitanRequirement], type = 1)
+Garuda = SummonerSpell(25840, True, Lock, 2.5, 750, 0, ApplyGaruda, [GarudaRequirement], type = 1)
+Ifrit = SummonerSpell(25838, True, Lock, 2.5, 750, 0, ApplyIfrit, [IfritRequirement], type = 1)
 
 #Titan Ability
-Topaz = SummonerSpell(25824, True, Lock, 2.5, 330, 0, ApplyTopaz, [ManaRequirement, TopazRequirement])
+Topaz = SummonerSpell(25824, True, Lock, 2.5, 330, 0, ApplyTopaz, [ManaRequirement, TopazRequirement], type = 1)
 Mountain = SummonerSpell(25836, False, Lock, 0, 150, 0, ApplyMountain, [MountainRequirement])
-TopazCatastrophe = SummonerSpell(25833, True, 0, 2.5, 140, 300, ApplyTopaz, [ManaRequirement, TopazRequirement] ) #same effect and requirement as Topaz
+TopazCatastrophe = SummonerSpell(25833, True, 0, 2.5, 140, 300, ApplyTopaz, [ManaRequirement, TopazRequirement] , type = 1) #same effect and requirement as Topaz
 
 #IfritAbility
-Ruby = SummonerSpell(25823, True, 2.8, 3, 510, 300, ApplyRuby, [RubyRequirement, ManaRequirement] )
-Cyclone = SummonerSpell(25835, True, Lock, 2.5, 430, 0, ApplyCyclone, [CycloneRequirement])
-Strike = SummonerSpell(25885, True, Lock, 2.5, 430, 0, ApplyStrike, [StrikeRequirement])
-RubyCatastrophe = SummonerSpell(25832, True, 2.8, 2.5, 210, 300, ApplyRuby, [RubyRequirement, ManaRequirement]) #Same as Ruby
+Ruby = SummonerSpell(25823, True, 2.8, 3, 510, 300, ApplyRuby, [RubyRequirement, ManaRequirement] , type = 1)
+Cyclone = SummonerSpell(25835, True, Lock, 2.5, 430, 0, ApplyCyclone, [CycloneRequirement], type = 1)
+Strike = SummonerSpell(25885, True, Lock, 2.5, 430, 0, ApplyStrike, [StrikeRequirement], type = 1)
+RubyCatastrophe = SummonerSpell(25832, True, 2.8, 2.5, 210, 300, ApplyRuby, [RubyRequirement, ManaRequirement], type = 1) #Same as Ruby
 #GarudaAbility
-Emerald = SummonerSpell(25825, True, Lock, 1.5, 230, 300, ApplyEmerald, [EmeraldRequirement, ManaRequirement])
-EmeraldCatastrophe = SummonerSpell(25834, True, 0, 1.5, 100, 300, ApplyEmerald, [ManaRequirement, EmeraldRequirement])
-Slipstream = SummonerSpell(25837, True, 3, 3.5, 430, 0, ApplySlipstream, [SlipstreamRequirement])
+Emerald = SummonerSpell(25825, True, Lock, 1.5, 230, 300, ApplyEmerald, [EmeraldRequirement, ManaRequirement], type = 1)
+EmeraldCatastrophe = SummonerSpell(25834, True, 0, 1.5, 100, 300, ApplyEmerald, [ManaRequirement, EmeraldRequirement], type = 1)
+Slipstream = SummonerSpell(25837, True, 3, 3.5, 430, 0, ApplySlipstream, [SlipstreamRequirement], type = 1)
 SlipstreamDOT = DOTSpell(-13, 30, False)
 
 #Summon
-Summon = SummonerSpell(7427, True, Lock, 2.5, 0, 0, ApplySummon, [SummonRequirement])
+Summon = SummonerSpell(7427, True, Lock, 2.5, 0, 0, ApplySummon, [SummonRequirement], type = 1)
 #Bahamut and Phoenix damage will simply be a dot
 BahamutAA = SummonerSpell(115, False, 0, 0, 0, 0, ApplyBahamutAA, [])
 PhoenixAA = SummonerSpell(115, False, 0, 0, 0, 0, ApplyPhoenixAA, [])

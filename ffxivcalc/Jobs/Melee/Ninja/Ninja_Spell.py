@@ -402,17 +402,17 @@ def TenChiJinCheck(Player, Enemy):
 
 
 #GCD
-SpinningEdge = NinjaSpell(2240, True, Lock, 2.5, 220, ApplySpinningEdge, [], True, False)
-GustSlash = NinjaSpell(2242, True, Lock, 2.5, 160, empty, [], True, False)
-AeolianEdge = NinjaSpell(2255, True, Lock, 2.5, 200, empty, [], True, False)
-ArmorCrush = NinjaSpell(3563, True, Lock, 2.5, 200, empty, [], True, False)
-Huraijin = NinjaSpell(25876, True, Lock, 2.5, 200, ApplyHuraijin, [], True, False)
-FleetingRaiju = NinjaSpell(25777, True, Lock, 2.5, 560, ApplyFleetingRaiju, [FleetingRaijuRequirement], True, False)
-ThrowingDagger = NinjaSpell(2247, True, Lock, 2.5, 120, ApplyThrowingDagger, [], True, False)
-PhantomKamaitachi = NinjaSpell(25774, True, Lock, 2.5, 0, ApplyPhantomKamaitachi, [PhantomKamaitachiRequirement], True, False)
+SpinningEdge = NinjaSpell(2240, True, Lock, 2.5, 220, ApplySpinningEdge, [], True, False, type = 2)
+GustSlash = NinjaSpell(2242, True, Lock, 2.5, 160, empty, [], True, False, type = 2)
+AeolianEdge = NinjaSpell(2255, True, Lock, 2.5, 200, empty, [], True, False, type = 2)
+ArmorCrush = NinjaSpell(3563, True, Lock, 2.5, 200, empty, [], True, False, type = 2)
+Huraijin = NinjaSpell(25876, True, Lock, 2.5, 200, ApplyHuraijin, [], True, False, type = 2)
+FleetingRaiju = NinjaSpell(25777, True, Lock, 2.5, 560, ApplyFleetingRaiju, [FleetingRaijuRequirement], True, False, type = 2)
+ThrowingDagger = NinjaSpell(2247, True, Lock, 2.5, 120, ApplyThrowingDagger, [], True, False, type = 2)
+PhantomKamaitachi = NinjaSpell(25774, True, Lock, 2.5, 0, ApplyPhantomKamaitachi, [PhantomKamaitachiRequirement], True, False, type = 2)
 PhantomKamaitachiShadow = NinjaSpell(8, False, 0, 0, 600, empty, [], False, False) #Action done by the shadow
-DeathBlossom = NinjaSpell(2254, True, Lock, 2.5, 100, ApplyDeathBlossom, [],True, False )
-HakkeMujinsatsu = NinjaSpell(16488, True, Lock, 2.5, 100, empty, [], True, False)
+DeathBlossom = NinjaSpell(2254, True, Lock, 2.5, 100, ApplyDeathBlossom, [],True, False, type = 2)
+HakkeMujinsatsu = NinjaSpell(16488, True, Lock, 2.5, 100, empty, [], True, False, type = 2)
 
 #Ninjutsu
 FumaShuriken = NinjaSpell(2265, True, Lock,1.5, 450, ApplyHyoshoRanryu, [FumaShurikenRequirement], False, True) #Same effect as HyoshoRanruy, since only reset Player.CurrentRitual list

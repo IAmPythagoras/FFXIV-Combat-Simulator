@@ -309,23 +309,23 @@ def TechnicalFinishCheck(Player, Enemy):
 
 
 #GCD
-StarfallDance = DancerSpell(25792, True, 2.5, 600, ApplyStarfallDance, [StarfallDanceRequirement], True)
+StarfallDance = DancerSpell(25792, True, 2.5, 600, ApplyStarfallDance, [StarfallDanceRequirement], True, type = 2)
 #ComboAction
-Cascade = DancerSpell(15989, True, 2.5, 220,ApplyCascade, [], True)
-Fountain = DancerSpell(15990, True, 2.5, 100, empty, [], True)
-FountainFall = DancerSpell(15992, True, 2.5, 340, ApplyFountainFall, [FountainFallRequirement], True)
-ReverseCascade = DancerSpell(15991, True, 2.5, 280, ApplyReverseCascade, [ReverseCascadeRequirement], True)
-SaberDance = DancerSpell(16005, True, 2.5, 480, ApplySaberDance, [SaberDanceRequirement], True)
+Cascade = DancerSpell(15989, True, 2.5, 220,ApplyCascade, [], True, type = 2)
+Fountain = DancerSpell(15990, True, 2.5, 100, empty, [], True, type = 2)
+FountainFall = DancerSpell(15992, True, 2.5, 340, ApplyFountainFall, [FountainFallRequirement], True, type = 2)
+ReverseCascade = DancerSpell(15991, True, 2.5, 280, ApplyReverseCascade, [ReverseCascadeRequirement], True, type = 2)
+SaberDance = DancerSpell(16005, True, 2.5, 480, ApplySaberDance, [SaberDanceRequirement], True, type = 2)
 #AOE Combo action
-Windmill = DancerSpell(15993, True, 2.5, 100, ApplyWindmill, [], True ) #AOE Version of Cascade
-RisingWindmill = DancerSpell(15995, True, 2.5, 140, ApplyReverseCascade, [ReverseCascadeRequirement], True) #AOE version of Reverse Cascade
-Bladeshower = DancerSpell(15994, True, 2.5, 100, empty, [], True)
-Bloodshower = DancerSpell(15996, True, 2.5, 180, ApplyFountainFall, [FountainFallRequirement], True)
+Windmill = DancerSpell(15993, True, 2.5, 100, ApplyWindmill, [], True , type = 2) #AOE Version of Cascade
+RisingWindmill = DancerSpell(15995, True, 2.5, 140, ApplyReverseCascade, [ReverseCascadeRequirement], True, type = 2) #AOE version of Reverse Cascade
+Bladeshower = DancerSpell(15994, True, 2.5, 100, empty, [], True, type = 2)
+Bloodshower = DancerSpell(15996, True, 2.5, 180, ApplyFountainFall, [FountainFallRequirement], True, type = 2)
 #Dance
-StandardStep = DancerSpell(15997, True, 1.5, 0, ApplyStandardStep, [StandardStepRequirement], True)
-StandardFinish = DancerSpell(16003, True, 1.5, 360, ApplyStandardFinish, [StandardFinishRequirement], True)
-TechnicalStep = DancerSpell(15998, True, 1.5, 0, ApplyTechnicalStep, [TechnicalStepRequirement], True)
-TechnicalFinish = DancerSpell(16004, True, 1.5, 350, ApplyTechnicalFinish, [TechnicalFinishRequirement], True)
+StandardStep = DancerSpell(15997, True, 1.5, 0, ApplyStandardStep, [StandardStepRequirement], True, type = 2)
+StandardFinish = DancerSpell(16003, True, 1.5, 360, ApplyStandardFinish, [StandardFinishRequirement], True, type = 2)
+TechnicalStep = DancerSpell(15998, True, 1.5, 0, ApplyTechnicalStep, [TechnicalStepRequirement], True, type = 2)
+TechnicalFinish = DancerSpell(16004, True, 1.5, 350, ApplyTechnicalFinish, [TechnicalFinishRequirement], True, type = 2)
 
 def Improvisation(time): #Function, since we need to know for how long we are doing it
 
@@ -339,7 +339,7 @@ def Improvisation(time): #Function, since we need to know for how long we are do
     return DancerSpell(16014, True, time, time, ApplyImprovisation, [ImprovisationRequirement], False)
 
 ImprovisedFinish = DancerSpell(25789, True, 1.5, 0, ApplyImprovisedFinish, [ImprovisedFinishRequirement], False)
-Tillana = DancerSpell(25790, True, 1.5, 360, ApplyTillana, [TillanaRequirement], True)
+Tillana = DancerSpell(25790, True, 1.5, 360, ApplyTillana, [TillanaRequirement], True, type = 2)
 #Dance Move
 Emboite = DancerSpell(15999, True, 1, 0, ApplyEmboite, [DanceRequirement], True)
 Entrechat = DancerSpell(16000, True, 1, 0, ApplyEntrechat, [DanceRequirement], True)

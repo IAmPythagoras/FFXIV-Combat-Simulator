@@ -22,7 +22,7 @@ class Spell:
     """
     This class is any Spell, it will have some subclasses to take Job similar spell, etc.
     """
-    def __init__(self, id : int, GCD : bool, CastTime : float, RecastTime : float, Potency : int, ManaCost : int, Effect, Requirement):
+    def __init__(self, id : int, GCD : bool, CastTime : float, RecastTime : float, Potency : int, ManaCost : int, Effect, Requirement, type : int = 0):
         """
         Initialization of a Spell
         id : int -> id to identify the action
@@ -32,7 +32,8 @@ class Spell:
         Potency : int -> base potency of the action
         Manacost : int -> base manacost of the action
         Effect : function -> A function called upon the execution of the action which affects the player and the enemy.
-        Requirement : function -> Bool -> function called upon the execution to verify if the action can be executed.
+        Requirement : (function -> Bool) -> function called upon the execution to verify if the action can be executed.
+        type (int) : Type of the action. The types are Spell, Weaponskill and Ability. Type = 0 is ability, type = 1 is Spell and type = 2 is Weaponskill.
 
         """
         self.id = id
@@ -45,6 +46,7 @@ class Spell:
         self.Requirement = Requirement
         self.DPSBonus = 1
         self.TargetID = 0 #By default 0
+        self.type = type 
 
     def Cast(self, player, Enemy):
         """

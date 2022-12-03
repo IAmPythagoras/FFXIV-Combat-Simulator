@@ -269,23 +269,23 @@ def PowerSurgeCheck(Player, Enemy):
 
 #GCD
 #Combo Action
-TrueThrust = DragoonSpell(75, True, 2.5, 230, ApplyTrueThrust, [TrueThrustRequirement], True)
-Disembowel = DragoonSpell(87, True, 2.5, 140, empty, [], True)
-VorpalThrust = DragoonSpell(78, True, 2.5, 130, empty, [], True)
-ChaoticSpring = DragoonSpell(25772, True, 2.5, 140, empty, [], True)
+TrueThrust = DragoonSpell(75, True, 2.5, 230, ApplyTrueThrust, [TrueThrustRequirement], True, type = 2)
+Disembowel = DragoonSpell(87, True, 2.5, 140, empty, [], True, type = 2)
+VorpalThrust = DragoonSpell(78, True, 2.5, 130, empty, [], True, type = 2)
+ChaoticSpring = DragoonSpell(25772, True, 2.5, 140, empty, [], True, type = 2)
 ChaoticSpringDOT = DOTSpell(-22, 45, True)
-HeavenThrust = DragoonSpell(25771, True, 2.5, 100, empty, [], True)
+HeavenThrust = DragoonSpell(25771, True, 2.5, 100, empty, [], True, type = 2)
 
-WheelingThrust = DragoonSpell(3556, True, 2.5, 300, ApplyWheelingThrust, [WheelingThrustRequirement], True )
-FangAndClaw = DragoonSpell(3554, True, 2.5, 300, ApplyFangAndClaw, [FangAndClawRequirement], True)
-RaidenThrust = DragoonSpell(16479, True, 2.5, 280, ApplyRaidenThrust, [RaidenThrustRequirement], True)
-PiercingTalon = DragoonSpell(90, True, 2.5, 150, empty, [], True)
+WheelingThrust = DragoonSpell(3556, True, 2.5, 300, ApplyWheelingThrust, [WheelingThrustRequirement], True , type = 2)
+FangAndClaw = DragoonSpell(3554, True, 2.5, 300, ApplyFangAndClaw, [FangAndClawRequirement], True, type = 2)
+RaidenThrust = DragoonSpell(16479, True, 2.5, 280, ApplyRaidenThrust, [RaidenThrustRequirement], True, type = 2)
+PiercingTalon = DragoonSpell(90, True, 2.5, 150, empty, [], True, type = 2)
 
 #AOE combo Action
-DoomSpike = DragoonSpell(86, True, 2.5, 110, ApplyDoomSpike, [], True)
-SonicThrust = DragoonSpell(7397, True, 2.5, 100, empty, [], True)
-CoerthanTorment = DragoonSpell(16477, True, 2.5, 100, empty, [], True)
-DraconianFury = DragoonSpell(25770, True, 2.5, 130, ApplyRaidenThrust, [RaidenThrustRequirement], True) #AOE version of Raiden Thrust
+DoomSpike = DragoonSpell(86, True, 2.5, 110, ApplyDoomSpike, [], True, type = 2)
+SonicThrust = DragoonSpell(7397, True, 2.5, 100, empty, [], True, type = 2)
+CoerthanTorment = DragoonSpell(16477, True, 2.5, 100, empty, [], True, type = 2)
+DraconianFury = DragoonSpell(25770, True, 2.5, 130, ApplyRaidenThrust, [RaidenThrustRequirement], True, type = 2) #AOE version of Raiden Thrust
 
 #oGCD
 LanceCharge = DragoonSpell(85, False, 0, 0, ApplyLanceCharge, [LanceChargeRequirement], False)

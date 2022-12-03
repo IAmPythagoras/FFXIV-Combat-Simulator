@@ -279,31 +279,31 @@ def CorpsStackCheck(Player, Enemy):
 
 #GCD    
 
-Jolt = RedmageSpell(7524, True, 2, 2.5,310, 200, ApplyJolt, [ManaRequirement], 0, 0 )
-Verfire = RedmageSpell(7510, True, 2, 2.5, 330, 200, ApplyVerfire, [ManaRequirement], 0, 0)
-Verstone = RedmageSpell(7511, True, 2, 2.5, 330, 200, ApplyVerstone, [ManaRequirement], 0, 0)
-Verthunder = RedmageSpell(25855, True, 5, 2.5, 380, 300, ApplyVerthunder, [ManaRequirement], 0, 0)
-Verareo = RedmageSpell(25856, True, 5, 2.5, 380, 300, ApplyVerareao, [ManaRequirement], 0, 0)
+Jolt = RedmageSpell(7524, True, 2, 2.5,310, 200, ApplyJolt, [ManaRequirement], 0, 0, type = 1)
+Verfire = RedmageSpell(7510, True, 2, 2.5, 330, 200, ApplyVerfire, [ManaRequirement], 0, 0, type = 1)
+Verstone = RedmageSpell(7511, True, 2, 2.5, 330, 200, ApplyVerstone, [ManaRequirement], 0, 0, type = 1)
+Verthunder = RedmageSpell(25855, True, 5, 2.5, 380, 300, ApplyVerthunder, [ManaRequirement], 0, 0, type = 1)
+Verareo = RedmageSpell(25856, True, 5, 2.5, 380, 300, ApplyVerareao, [ManaRequirement], 0, 0, type = 1)
 #AoEs
-Impact = RedmageSpell(16526, True, 5, 2.5, 210, 400, ApplyImpact, [ManaRequirement], 0, 0)
+Impact = RedmageSpell(16526, True, 5, 2.5, 210, 400, ApplyImpact, [ManaRequirement], 0, 0, type = 1)
 #Combo actions
 #NonEnchanted
-Riposte = RedmageSpell(7504, True, 0, 2.5, 130, 0, ApplyRiposte, [], 0, 0)
-Zwerchhau = RedmageSpell(7512, True, 0, 2.5, 100, 0, empty, [], 0, 0)
-Redoublement = RedmageSpell(7516, True, 0, 2.5, 100, 0, empty, [], 0, 0)
-Reprise = RedmageSpell(16529, True, 0, 2.5, 100, 0, empty, [], 0, 0)
+Riposte = RedmageSpell(7504, True, 0, 2.5, 130, 0, ApplyRiposte, [], 0, 0, type = 2)
+Zwerchhau = RedmageSpell(7512, True, 0, 2.5, 100, 0, empty, [], 0, 0, type = 2)
+Redoublement = RedmageSpell(7516, True, 0, 2.5, 100, 0, empty, [], 0, 0, type = 2)
+Reprise = RedmageSpell(16529, True, 0, 2.5, 100, 0, empty, [], 0, 0, type = 2)
 #Enchanted
-EnchantedRiposte = RedmageSpell(7527, True, 0, 1.5, 280, 0, ApplyEnchantedRiposte, [RDMManaRequirement], 20,20)
-EnchantedZwerchhau = RedmageSpell(7528, True, 0, 1.5, 150, 0, ApplyZwerchhau, [RDMManaRequirement], 15, 15)
-EnchantedRedoublement = RedmageSpell(7529, True, 0, 2.2, 130, 0, ApplyRedoublement, [RDMManaRequirement], 15, 15)
-EnchantedReprise = RedmageSpell(16528, True, 0, 2.5, 330, 0, empty, [RDMManaRequirement], 5, 5)
-Verholy = RedmageSpell(7526, True, 0, 2.5, 580, 400, ApplyVerholy, [ManaRequirement, VerholyRequirement], 0, 0)
-Verflare = RedmageSpell(7525, True, 0, 2.5, 580, 400, ApplyVerflare, [ManaRequirement, VerholyRequirement], 0, 0) #Same Requirement as Verholy, just need 3 Mana stacks
-Scorch = RedmageSpell(16530, True, 0, 2.5, 680, 400, ApplyScorch, [ManaRequirement, ScorchRequirement], 0, 0)
-Resolution = RedmageSpell(25858, True, 0, 2.5, 750, 400, ApplyResolution, [ManaRequirement, ResolutionRequirement], 0, 0)
+EnchantedRiposte = RedmageSpell(7527, True, 0, 1.5, 280, 0, ApplyEnchantedRiposte, [RDMManaRequirement], 20,20, type = 2)
+EnchantedZwerchhau = RedmageSpell(7528, True, 0, 1.5, 150, 0, ApplyZwerchhau, [RDMManaRequirement], 15, 15, type = 2)
+EnchantedRedoublement = RedmageSpell(7529, True, 0, 2.2, 130, 0, ApplyRedoublement, [RDMManaRequirement], 15, 15, type = 2)
+EnchantedReprise = RedmageSpell(16528, True, 0, 2.5, 330, 0, empty, [RDMManaRequirement], 5, 5, type = 2)
+Verholy = RedmageSpell(7526, True, 0, 2.5, 580, 400, ApplyVerholy, [ManaRequirement, VerholyRequirement], 0, 0, type = 1)
+Verflare = RedmageSpell(7525, True, 0, 2.5, 580, 400, ApplyVerflare, [ManaRequirement, VerholyRequirement], 0, 0, type = 1) #Same Requirement as Verholy, just need 3 Mana stacks
+Scorch = RedmageSpell(16530, True, 0, 2.5, 680, 400, ApplyScorch, [ManaRequirement, ScorchRequirement], 0, 0, type = 1)
+Resolution = RedmageSpell(25858, True, 0, 2.5, 750, 400, ApplyResolution, [ManaRequirement, ResolutionRequirement], 0, 0, type = 1)
 #AOE Melee Action
-Moulinet = RedmageSpell(7513, True, 0, 1.5, 130, 0, ApplyMoulinet, [RDMManaRequirement], 20, 20)
-EnchantedMoulinet = RedmageSpell(30, True, 0, 1.5, 130, 0, ApplyEnchantedMoulinet, [RDMManaRequirement], 20, 20)
+Moulinet = RedmageSpell(7513, True, 0, 1.5, 130, 0, ApplyMoulinet, [RDMManaRequirement], 20, 20, type = 2)
+EnchantedMoulinet = RedmageSpell(30, True, 0, 1.5, 130, 0, ApplyEnchantedMoulinet, [RDMManaRequirement], 20, 20, type = 2)
 #For now combo action cannot be cancelled by doing something else
 Manafication = RedmageSpell(7521, False, 0, Lock, 0, 0, ApplyManafication, [ManaficationRequirement], 0, 0)
 Embolden = RedmageSpell(7520, False, 0, Lock, 0, 0, ApplyEmbolden, [EmboldenRequirement], 0, 0)
@@ -315,8 +315,8 @@ Corps = RedmageSpell(7506, False, 0, Lock, 130, 0, ApplyCorps, [CorpsRequirement
 
 #Other GCD/oGCD with no DPS goal
 MagickBarrier = RedmageSpell(25857, False, 0, 0, 0, 0, ApplyMagickBarrier, [MagickBarrierRequirement], 0, 0)
-Verraise = RedmageSpell(7523, True,10, 2.5, 0,2400, empty, [RDMManaRequirement], 0, 0)
-Vercure = RedmageSpell(7514, True, 2, 2.5, 0, 500, empty, [RDMManaRequirement], 0, 0)
+Verraise = RedmageSpell(7523, True,10, 2.5, 0,2400, empty, [RDMManaRequirement], 0, 0, type = 1)
+Vercure = RedmageSpell(7514, True, 2, 2.5, 0, 500, empty, [RDMManaRequirement], 0, 0, type = 1)
 
 
 

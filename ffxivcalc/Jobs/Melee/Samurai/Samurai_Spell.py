@@ -365,15 +365,15 @@ def MeikyoStackCheck(Player, Enemy):
 
 
 #GCD
-OgiNamikiri = SamuraiSpell(25781, True, 1.8, 2.5, 800, ApplyOgiNamikiri, [OgiNamikiriRequirement], 0)
-KaeshiNamikiri = SamuraiSpell(25782, True, 1.3, 1, 800, ApplyKaeshiNamikiri, [KaeshiNamikiriRequirement], 0)
-Enpi = SamuraiSpell(7486, True, 0, 1.5, 100, Add10Kenki, [], 0)
+OgiNamikiri = SamuraiSpell(25781, True, 1.8, 2.5, 800, ApplyOgiNamikiri, [OgiNamikiriRequirement], 0, type = 2)
+KaeshiNamikiri = SamuraiSpell(25782, True, 0, 1, 800, ApplyKaeshiNamikiri, [KaeshiNamikiriRequirement], 0)
+Enpi = SamuraiSpell(7486, True, 0, 1.5, 100, Add10Kenki, [], 0, type = 2)
 
 #Iaijutsu
-Higanbana = SamuraiSpell(7489, True, 1.3, 2.5, 200, ApplyHiganbana, [HiganbanaRequirement], 0)
+Higanbana = SamuraiSpell(7489, True, 1.3, 2.5, 200, ApplyHiganbana, [HiganbanaRequirement], 0, type = 2)
 HiganbanaDOT = DOTSpell(-1, 60, True)
-TenkaGoken = SamuraiSpell(7488, True, 1.3, 2.5, 280, ApplyTenkaGoken, [TenkaGokenRequirement], 0)
-Midare = SamuraiSpell(7487, True, 1.3, 2.5, 640, ApplyMidare, [MidareRequirement], 0)
+TenkaGoken = SamuraiSpell(7488, True, 1.3, 2.5, 280, ApplyTenkaGoken, [TenkaGokenRequirement], 0, type = 2)
+Midare = SamuraiSpell(7487, True, 1.3, 2.5, 640, ApplyMidare, [MidareRequirement], 0, type = 2)
 
 #Kaeshi
 KaeshiHiganbana = SamuraiSpell(16484, True, 0, 2.5, 200, ApplyKaeshiHiganbana, [KaeshiHiganbanaRequirement,TsubamegaeshiRequirement], 0)
@@ -381,17 +381,17 @@ KaeshiGoken = SamuraiSpell(16485, True, 0, 2.5, 280, ApplyKaeshiGoken, [KaeshiGo
 KaeshiSetsugekka = SamuraiSpell(16486, True, 0, 2.5, 640, ApplyKaeshi, [KaeshiSetsugekkaRequirement,TsubamegaeshiRequirement], 0)
 
 #Combo Actions
-Hakaze = SamuraiSpell(7477, True, Lock, 2.5, 200, ApplyHakaze, [], 0 )
-Jinpu = SamuraiSpell(7478, True, Lock, 2.5, 120, ApplyJinpu, [], 0)
-Gekko = SamuraiSpell(7481, True, Lock, 2.5, 170, empty, [], 0)
-Shifu = SamuraiSpell(7479, True, Lock, 2.5, 120, empty, [], 0)
-Kasha = SamuraiSpell(7482, True, Lock, 2.5, 170, empty, [], 0)
-Yukikaze = SamuraiSpell(7480, True, Lock, 2.5, 120, empty, [], 0)
+Hakaze = SamuraiSpell(7477, True, Lock, 2.5, 200, ApplyHakaze, [], 0 , type = 2)
+Jinpu = SamuraiSpell(7478, True, Lock, 2.5, 120, ApplyJinpu, [], 0, type = 2)
+Gekko = SamuraiSpell(7481, True, Lock, 2.5, 170, empty, [], 0, type = 2)
+Shifu = SamuraiSpell(7479, True, Lock, 2.5, 120, empty, [], 0, type = 2)
+Kasha = SamuraiSpell(7482, True, Lock, 2.5, 170, empty, [], 0, type = 2)
+Yukikaze = SamuraiSpell(7480, True, Lock, 2.5, 120, empty, [], 0, type = 2)
 
 #AOE Combo Action
-Fuko = SamuraiSpell(25780, True, 0, 2.5, 100, ApplyFuko, [], 0 )
-Mangetsu = SamuraiSpell(7484, True, 0, 2.5, 100, empty, [], 0)
-Oka = SamuraiSpell(7485, True, 0, 2.5, 100, empty, [], 0)
+Fuko = SamuraiSpell(25780, True, 0, 2.5, 100, ApplyFuko, [], 0 , type = 2)
+Mangetsu = SamuraiSpell(7484, True, 0, 2.5, 100, empty, [], 0, type = 2)
+Oka = SamuraiSpell(7485, True, 0, 2.5, 100, empty, [], 0, type = 2)
 
 #oGCD
 Meikyo = SamuraiSpell(7499, False, Lock, Lock, 0, ApplyMeikyo, [MeikyoRequirement], 0)
