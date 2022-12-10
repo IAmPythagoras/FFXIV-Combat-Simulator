@@ -20,7 +20,7 @@ class EnemyEvent:
             RaidWide (bool) : True if the Event is a raidwide. Default value is true
             nTBTarget (int) : Number of targets of a tank buster. Only needed if RaidWide is false. Must be 1 or 2 if Experimental is false
             IsPhysical (bool) : True if the damage of that event is physical. By default false (hence magical by default)
-            Experimental (bool) : False if we do not wish to overrule the automatic checking.
+            Experimental (bool) : False if we do not wish to overrule the automatic checking for a valid action.
         """
 
         if not Experimental and not RaidWide and (nTBTarget != 1 and nTBTarget != 2) or nTBTarget < 0 :
