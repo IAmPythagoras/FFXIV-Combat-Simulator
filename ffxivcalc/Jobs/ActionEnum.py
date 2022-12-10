@@ -287,8 +287,8 @@ class TankActions(ActionEnum):
 # DarkKnight
 
 class DarkKnightActions(ActionEnum):
-    HardSlah = 3617
-    SyphoneStrike = 3623
+    HardSlash = 3617
+    SyphonStrike = 3623
     Unmend = 3624
     BloodWeapon = 3625
     Souleater = 3632
