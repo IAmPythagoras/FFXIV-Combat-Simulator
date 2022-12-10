@@ -1,5 +1,6 @@
 import copy
-
+import logging
+from ffxivcalc.Jobs import ActionEnum
 import math
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
 from ffxivcalc.Jobs.PlayerEnum import RoleEnum
@@ -129,12 +130,6 @@ class Spell:
         
         if self.Potency != 0 : minDamage,Damage= player.CurrentFight.ComputeDamageFunction(player, self.Potency, Enemy, self.DPSBonus, type, self)    #Damage computation
         else: minDamage, Damage = 0,0
-
-        #if self.id > 0 or self.id == -2878: 
-        #    name = name_for_id(self.id,player.ClassAction, player.JobAction)
-        #    print("action " + name if name != "Unknown" else str(self.id) )
-        #    print("Did : " + str(self.Potency))
-        #    print("at : " + str(player.CurrentFight.TimeStamp))
         
 
         if player.JobEnum == JobEnum.Pet: # Is a pet
@@ -199,6 +194,15 @@ class Spell:
 
 
         if self.GCD: player.GCDCounter += 1 # If action was a GCD, increase the counter
+
+        log_str = "Timestamp : " + str(player.CurrentFight.TimeStamp)
+        + " , Event : end_cast"
+        + " , playerID : " + str(player.playerID)
+        + " , Ability : " + ActionEnum.name_for_id(self.id)
+        + " , Potency : " + str(self.Potency)
+        + " , Damage : " + str(Damage)
+        
+        logging.debug(log_str)
 
         return self # Return the spell object. Might not be needed.
 

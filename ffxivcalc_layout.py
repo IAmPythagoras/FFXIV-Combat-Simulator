@@ -130,7 +130,7 @@ GNBPlayer = Player([], [], GNBStat, JobEnum.Gunbreaker)
 # Note that if you are simulating with more than 1 per job you will need to create a new list of actions.
 
 # Caster
-BLMOpener = [Fire3, Addle, Fire4, Fire4, Fire4, Blizzard3, Blizzard4, Blizzard4, Blizzard4, Blizzard4]
+BLMOpener = []
 SMNOpener = []
 RDMOpener = []
 
@@ -153,7 +153,7 @@ NINOpener = []
 RPROpener = []
 
 # Tank 
-DRKOpener = []
+DRKOpener = [HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash]
 WAROpener = [TankStance, Provoke,Holmgang ,Maim, Maim, Maim, Maim, Maim, Maim, Maim, Maim]
 PLDOpener = []
 GNBOpener = []
@@ -201,7 +201,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [BLMPlayer, WARPlayer]
+PlayerList = [DRKPlayer]
 
 Event.AddPlayer(PlayerList)
 

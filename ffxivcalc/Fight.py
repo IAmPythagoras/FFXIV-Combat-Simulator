@@ -1,7 +1,8 @@
 import math
 from ffxivcalc.helperCode.Vocal import PrintResult
 from ffxivcalc.Jobs.PlayerEnum import *
-
+from ffxivcalc.Jobs import ActionEnum
+import logging
 from copy import deepcopy
 
 
@@ -72,7 +73,7 @@ class Fight:
             player.CurrentFight = self
             self.PlayerList.append(player)
 
-    def SimulateFight(self, TimeUnit, TimeLimit, vocal) -> None:
+    def SimulateFight(self, TimeUnit, TimeLimit, vocal, verbose=False, loglevel="CRITICAL") -> None:
 
         """
         This function will Simulate the fight given the enemy and player list of this Fight
@@ -83,10 +84,19 @@ class Fight:
         TimeUnit : float -> unit at which the simulator will advance through time in the simulation
         TimeLimit : float -> time limit at which the simulator will stop
         vocal : bool -> True if we want to print out the results
+        verbose (bool) -> True if we want the fight to record logs. The log file will be saved in the same folder the python script was executed from
+        loglevel (str) -> level at which we want the logging to record.
         """
 
         self.TimeStamp = 0   # Keep track of the time
         start = False
+        self.verbose = verbose
+
+        if verbose: # If want log creates log
+            numeric_level = getattr(logging, loglevel.upper(), None)
+            if not isinstance(numeric_level, int):
+                raise ValueError('Invalid log level: %s' % loglevel %' (Valid levels are DEBUG, INFO, WARNING, ERROR, CRITICAL)')
+            logging.basicConfig(filename='ffxivcalc_log.log', encoding='utf-8',level=numeric_level)
 
         self.timeValue = []  # Used for graph
 
@@ -123,6 +133,8 @@ class Fight:
             Player.WeaponskillReduction = (1000 - (130 * (Player.Stat["SkS"]-400) / 1900))/1000
             Player.EffectList.append(GCDReductionEffect)
 
+        logging.debug("Starting simulation with TeamCompositionBonus = " + str(self.TeamCompositionBonus))
+
         while(self.TimeStamp <= TimeLimit):
 
             for player in self.PlayerList:
@@ -144,6 +156,14 @@ class Fight:
                             player.GCDLock = True
                             player.GCDLockTimer = player.CastingSpell.RecastTime
                             player.CastingTarget = self.Enemy
+
+                            log_str = "Timestamp : " + str(self.TimeStamp)
+                            + " , Event : begin_cast_GCD"
+                            + " , playerID : " + str(player.playerID)
+                            + " , Ability : " + ActionEnum.name_for_id(player.CastingSpell.id)
+                            
+                            logging.debug(log_str)
+
                         # Else we do nothing since doing the nextspell is not currently possible
 
 
@@ -158,10 +178,15 @@ class Fight:
                             player.Casting = True
                             player.CastingLockTimer = player.CastingSpell.CastTime
                             player.CastingTarget = self.Enemy
-                            #player.CastingSpell.CastFinal(player, self.Enemy)
                             player.oGCDLock = True
                             player.oGCDLockTimer = player.CastingSpell.CastTime
-                            # print("oGCD with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(self.TimeStamp) )
+                            
+                            log_str = "Timestamp : " + str(self.TimeStamp)
+                            + " , Event : begin_cast_oGCD"
+                            + " , playerID : " + str(player.playerID)
+                            + " , Ability : " + ActionEnum.name_for_id(player.CastingSpell.id)
+                            
+                            logging.debug(log_str)
             
 
             if self.Enemy.hasEventList and start :
@@ -292,6 +317,8 @@ class Fight:
         self : Fight -> Fight for which we want to compute the values (for all its players)
         """
 
+        logging.debug("Initializing damage values for all players.")
+
         for Player in self.PlayerList:
             levelMod = 1900
             baseMain = 390  
@@ -307,6 +334,17 @@ class Fight:
             Player.CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000 # Crit rate in decimal
             Player.CritMult = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000 # Crit Damage multiplier
             Player.DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000 # DH rate in decimal
+
+            log_str = "ID : " + str(Player.playerID) + " , Job : " + JobEnum.name_for_id(Player.JobEnum) 
+            + " , f_WD : " + str(Player.f_WD) 
+            + " , f_DET" + str(Player.f_DET) 
+            + " , f_TEN" + str(Player.f_TEN) 
+            + " , f_SPD" + str(Player.f_SPD) 
+            + " , f_CritRate" + str(Player.f_CritRate) 
+            + " , f_CritMult" + str(Player.f_CritMult)
+            + " , f_DHRate" + str(Player.f_DHRate)  
+
+            logging.debug(log_str)
 
 # HELPER FUNCTIONS UNDER
 
