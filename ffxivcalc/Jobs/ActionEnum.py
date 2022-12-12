@@ -1,5 +1,8 @@
 # This will contain all action with their IDs in the game. It will map from ids -> name or name -> ids
 from enum import IntEnum
+import logging
+main_logging = logging.getLogger("ffxivcalc")
+action_logging = main_logging.getChild("ActionEnum")
 
 from ffxivcalc.Jobs.PlayerEnum import JobEnum, RoleEnum
 
@@ -12,6 +15,12 @@ class ActionEnum(IntEnum):
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
+
+        log_str = (
+            "Unable to match ID : " + str(id) + " to an ability name in class : " + str(cls)
+        )
+        
+        action_logging.warning(log_str)
         return 'Unknown'
 
     @classmethod
@@ -19,6 +28,13 @@ class ActionEnum(IntEnum):
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
+
+        log_str = (
+            "Unable to match name : " + name + " to an ability id in class : " + str(cls)
+        )
+        
+        action_logging.warning(log_str)
+        
         return -1 # Evaluated as Unknown
 
 # Caster
