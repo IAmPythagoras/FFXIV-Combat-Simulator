@@ -46,7 +46,7 @@ class Tester:
         """
         filename : str -> name of the file containing the tester's information
         """
-        self.filename = Path.cwd() / 'ffxivcalc' / 'Tester' / filename 
+        self.filename = Path.cwd() / filename 
         self.fightResults = [] # Empty list that will be filled with all the fight results
 
 
@@ -62,7 +62,7 @@ class Tester:
 
         for test in data["data"]["FightList"]:
             # Will iterate through every fight in the saved file and test them.
-            file = Path.cwd() / 'ffxivcalc' / 'Tester' / test["Fight"]
+            file = Path.cwd() / test["Fight"]
             f_test = open(file) # Opening saved file for the test
             data_test = json.load(f_test) # loading data
 
