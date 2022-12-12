@@ -156,6 +156,7 @@ class HealerActions(ActionEnum):
 # Astrologian
 
 class AstrologianActions(ActionEnum):
+    Lightspeed = 11
     Malefic = 25871
     Combust = 16554
     Gravity = 25872
@@ -557,6 +558,7 @@ class MonkActions(ActionEnum):
     Thunderclap = 25762
     RiddleOfEarth = 7394
     RiddleOfFire = 7395
+    RiddleOfWind = 25766
     Brotherhood = 7396
     Anatman = 16475
     Mantra = 65
