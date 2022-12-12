@@ -1,7 +1,7 @@
 import math
 from ffxivcalc.helperCode.Vocal import PrintResult
 from ffxivcalc.Jobs.PlayerEnum import *
-from ffxivcalc.Jobs import ActionEnum
+from ffxivcalc.Jobs.ActionEnum import name_for_id
 import logging
 main_logging = logging.getLogger("ffxivcalc")
 fight_logging = main_logging.getChild("Fight")
@@ -158,11 +158,11 @@ class Fight:
                             player.GCDLock = True
                             player.GCDLockTimer = player.CastingSpell.RecastTime
                             player.CastingTarget = self.Enemy
-
+                            
                             log_str = ( "Timestamp : " + str(self.TimeStamp)
                             + " , Event : begin_cast_GCD"
                             + " , playerID : " + str(player.playerID)
-                            + " , Ability : " + ActionEnum.name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction) )
+                            + " , Ability : " + name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction) )
 
                             fight_logging.debug(log_str)
 
@@ -186,7 +186,7 @@ class Fight:
                             log_str = ( "Timestamp : " + str(self.TimeStamp)
                             + " , Event : begin_cast_oGCD"
                             + " , playerID : " + str(player.playerID)
-                            + " , Ability : " + ActionEnum.name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction) )
+                            + " , Ability : " + name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction) )
                             
                             fight_logging.debug(log_str)
             
