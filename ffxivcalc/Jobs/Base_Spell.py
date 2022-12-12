@@ -204,11 +204,11 @@ class Spell:
 
 
         if self.GCD: player.GCDCounter += 1 # If action was a GCD, increase the counter
-
+        AbilityName = "DOT" if self.id < 0 else ActionEnum.name_for_id(self.id, player.ClassAction, player.JobAction)
         log_str = ( "Timestamp : " + str(player.CurrentFight.TimeStamp)
         + " , Event : end_cast"
         + " , playerID : " + str(player.playerID)
-        + " , Ability : " + ActionEnum.name_for_id(self.id, player.ClassAction, player.JobAction)
+        + " , Ability : " + AbilityName
         + " , Potency : " + str(self.Potency)
         + " , Damage : " + str(Damage) )
         
