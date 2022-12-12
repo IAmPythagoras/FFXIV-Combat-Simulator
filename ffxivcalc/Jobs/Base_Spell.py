@@ -88,7 +88,7 @@ class Spell:
                 #Will check if timeLeft is within a margin, so we will just wait for it to come
                 #timeLeft is the remaining time before the spell is available
 
-                addInfo = "" if timeLeft <= 0 else "player had to wait for or would have to wait for " + str(timeLeft) + " seconds."
+                addInfo = "" if timeLeft <= 0 else "player had to wait for or would have to wait for " + str(timeLeft) + " seconds. GCDLock " + str(player.GCDLock)
 
                 fatal =  not(timeLeft <= player.CurrentFight.waitingThreshold and timeLeft > 0) and  (player.CurrentFight.RequirementOn)  # true if stops the simulation
 
