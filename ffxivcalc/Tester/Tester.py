@@ -56,13 +56,13 @@ class Tester:
         """
 
         self.fightResults = [] # Reseting the list
-        f = open(self.filename) #Opening save
+        f = open(self.filename / "test_layout.json" ) #Opening save
         #input(self.filename)
         data = json.load(f)
 
         for test in data["data"]["FightList"]:
             # Will iterate through every fight in the saved file and test them.
-            file = Path.cwd() / test["Fight"]
+            file = self.filename / test["Fight"]
             f_test = open(file) # Opening saved file for the test
             data_test = json.load(f_test) # loading data
 

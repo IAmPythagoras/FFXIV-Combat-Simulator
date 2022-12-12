@@ -27,7 +27,7 @@ def get_parser() -> ArgumentParser:
 
     # Running tester
     test_parser = subparsers.add_parser('tests')
-    test_parser.add_argument('json', type=Path, help='path to test json', nargs='?', default='test_layout.json')
+    test_parser.add_argument('json', type=Path, help='path to test json', nargs='?', default='ffxivcalc/Tester')
 
     # Running tui
     subparsers.add_parser('tui')
