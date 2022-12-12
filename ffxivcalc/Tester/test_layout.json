@@ -157,7 +157,7 @@
                 "ExpectedResult": {
                     "EndTime": "53.39",
                     "1": {
-                        "ExpectedTotalPotency": "5620"
+                        "ExpectedTotalPotency": "7580"
                     }
                 }
             },
