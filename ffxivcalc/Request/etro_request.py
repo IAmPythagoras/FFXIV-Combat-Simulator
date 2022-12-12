@@ -8,6 +8,7 @@ and modified to fit the use I have of it.
 # coreapi==2.3.3
 # coreapi-cli==1.0.9
 import coreapi
+import logging
 
 def get_gearset_data(set_id: str) -> dict:
     """
@@ -15,6 +16,7 @@ def get_gearset_data(set_id: str) -> dict:
     set_id : str -> URL of the set from etro
     """
     # Handles urls by checking for webpage name and splitting
+    logging.debug("Requesting gearset info from etro.gg, set_id : " + set_id)
     cleaned_set_id = set_id.split("/")[-1] if "etro.gg/gearset" in set_id else set_id # Cleans the URL
     client = coreapi.Client()
     data = client .action(

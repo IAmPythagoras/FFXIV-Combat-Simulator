@@ -1,5 +1,6 @@
 import copy
 import json
+import logging
 from pathlib import Path
 
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
@@ -65,7 +66,7 @@ GNBStat = {"MainStat": 2891, "WD":126, "Det" : 1883, "Ten" : 631, "SS": 400, "Sk
 def ImportFightBackend(fightID,fightNumber):
 
     Event = Fight([], Enemy(), False) #Creating event
-
+    logging.debug("Constructing Event object from FFLogs link.")
     action_dict, player_dict = getAbilityList(fightID, fightNumber) #getting ability List
     
     for playerID in player_dict:
@@ -221,6 +222,8 @@ def RestoreFightObject(data : dict):
     data : dict -> dictionnary with the fight's data
     """
 
+    logging.debug("Restoring saved file into Event object.")
+
     
     PlayerActionList = {} #Dictionnary containing all player with their action
 
@@ -261,6 +264,7 @@ def RestoreFightObject(data : dict):
         
 
         job_object.playerID = player["playerID"] #Giving the playerID
+        logging.debug("Creating job object : " + job_name + " for playerID : " + str(player["playerID"]))
 
         PlayerActionList[str(job_object.playerID)] = {"job" : job_name, "job_object" : job_object, "actionList" : player["actionList"], "actionObject" : []} #Adding new Key accessible by IDs
 

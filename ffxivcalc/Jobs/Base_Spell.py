@@ -90,6 +90,12 @@ class Spell:
 
                 newFailedRequirementEvent = failedRequirementEvent(player.CurrentFight.TimeStamp, player.playerID, Requirement.__name__, addInfo, fatal) # Recording the event
                 player.CurrentFight.failedRequirementList.append(newFailedRequirementEvent) # storing the event in memory
+
+                log_str = "FailedRequirementEvent, " + " , Timestamp : " + str(player.CurrentFight.TimeStamp)
+                + " , PlayerID : " + str(player.playerID) + " , RequirementName : " + Requirement.__name__ + " , Fatal : " + str(fatal) + " , Info : " + addInfo
+
+                if fatal : logging.critical(log_str) # if fatal makes the sim crash
+                else : logging.warning(log_str) # if not fatal doesn't crash the sim
                 
                 if not (player.CurrentFight.RequirementOn) : return tempSpell # If we do not care about requirement simply go on.
                 elif timeLeft <= player.CurrentFight.waitingThreshold and timeLeft > 0: # If we care about requirement, we check if we can wait the allocated threshold. if we can we wait for it to come off cooldown.
@@ -195,12 +201,12 @@ class Spell:
 
         if self.GCD: player.GCDCounter += 1 # If action was a GCD, increase the counter
 
-        log_str = "Timestamp : " + str(player.CurrentFight.TimeStamp)
+        log_str = ( "Timestamp : " + str(player.CurrentFight.TimeStamp)
         + " , Event : end_cast"
         + " , playerID : " + str(player.playerID)
-        + " , Ability : " + ActionEnum.name_for_id(self.id)
+        + " , Ability : " + ActionEnum.name_for_id(self.id, player.ClassAction, player.JobAction)
         + " , Potency : " + str(self.Potency)
-        + " , Damage : " + str(Damage)
+        + " , Damage : " + str(Damage) )
         
         logging.debug(log_str)
 

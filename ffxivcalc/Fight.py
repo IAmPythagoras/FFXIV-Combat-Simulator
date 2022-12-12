@@ -3,7 +3,6 @@ from ffxivcalc.helperCode.Vocal import PrintResult
 from ffxivcalc.Jobs.PlayerEnum import *
 from ffxivcalc.Jobs import ActionEnum
 import logging
-from copy import deepcopy
 
 
 class NoMoreAction(Exception):# Exception called if a spell fails to cast
@@ -73,7 +72,7 @@ class Fight:
             player.CurrentFight = self
             self.PlayerList.append(player)
 
-    def SimulateFight(self, TimeUnit, TimeLimit, vocal, verbose=False, loglevel="CRITICAL") -> None:
+    def SimulateFight(self, TimeUnit, TimeLimit, vocal, verbose=True, loglevel="DEBUG") -> None:
 
         """
         This function will Simulate the fight given the enemy and player list of this Fight
@@ -157,11 +156,11 @@ class Fight:
                             player.GCDLockTimer = player.CastingSpell.RecastTime
                             player.CastingTarget = self.Enemy
 
-                            log_str = "Timestamp : " + str(self.TimeStamp)
+                            log_str = ( "Timestamp : " + str(self.TimeStamp)
                             + " , Event : begin_cast_GCD"
                             + " , playerID : " + str(player.playerID)
-                            + " , Ability : " + ActionEnum.name_for_id(player.CastingSpell.id)
-                            
+                            + " , Ability : " + ActionEnum.name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction) )
+
                             logging.debug(log_str)
 
                         # Else we do nothing since doing the nextspell is not currently possible
@@ -249,15 +248,21 @@ class Fight:
                     # But this function can be customized by the user to fit any use of it they might need
                     player.TrueLock = self.NextActionFunction(self, player)
                     if not player.TrueLock : player.NoMoreAction = False
+                    else:
+                        log_str = "Player ID " + str(player.playerID) + " has no more actions, Timestamp : " + str(self.TimeStamp)
+                        logging.debug(log_str)
 
 
             CheckFinalLock = True
             for player in self.PlayerList:
                 # Goes through every player and checks if they are done. If everyone has nothing to do the fight finishes
                 CheckFinalLock = player.TrueLock and CheckFinalLock # If all player's TrueLock is true, then CheckFinalLock will be True
+                
 
             if CheckFinalLock: 
                 if vocal : print("The Fight finishes at: " + str(self.TimeStamp))
+                log_str = "Simulation has succesfully finished."
+                logging.debug(log_str)
                 break
             
             
@@ -335,14 +340,14 @@ class Fight:
             Player.CritMult = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000 # Crit Damage multiplier
             Player.DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000 # DH rate in decimal
 
-            log_str = "ID : " + str(Player.playerID) + " , Job : " + JobEnum.name_for_id(Player.JobEnum) 
+            log_str = ("ID : " + str(Player.playerID) + " , Job : " + JobEnum.name_for_id(Player.JobEnum) 
             + " , f_WD : " + str(Player.f_WD) 
             + " , f_DET" + str(Player.f_DET) 
             + " , f_TEN" + str(Player.f_TEN) 
             + " , f_SPD" + str(Player.f_SPD) 
-            + " , f_CritRate" + str(Player.f_CritRate) 
-            + " , f_CritMult" + str(Player.f_CritMult)
-            + " , f_DHRate" + str(Player.f_DHRate)  
+            + " , f_CritRate" + str(Player.CritRate) 
+            + " , f_CritMult" + str(Player.CritMult)
+            + " , f_DHRate" + str(Player.DHRate)  )
 
             logging.debug(log_str)
 
