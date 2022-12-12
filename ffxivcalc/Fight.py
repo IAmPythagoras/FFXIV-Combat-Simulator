@@ -158,13 +158,13 @@ class Fight:
                             player.GCDLock = True
                             player.GCDLockTimer = player.CastingSpell.RecastTime
                             player.CastingTarget = self.Enemy
-                            
-                            log_str = ( "Timestamp : " + str(self.TimeStamp)
-                            + " , Event : begin_cast_GCD"
-                            + " , playerID : " + str(player.playerID)
-                            + " , Ability : " + name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction) )
+                            if player.CastingSpell.id > 0 and player.JobEnum != JobEnum.Pet:
+                                log_str = ( "Timestamp : " + str(self.TimeStamp)
+                                + " , Event : begin_cast_GCD"
+                                + " , playerID : " + str(player.playerID)
+                                + " , Ability : " + name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction) )
 
-                            fight_logging.debug(log_str)
+                                fight_logging.debug(log_str)
 
                         # Else we do nothing since doing the nextspell is not currently possible
 
@@ -182,14 +182,15 @@ class Fight:
                             player.CastingTarget = self.Enemy
                             player.oGCDLock = True
                             player.oGCDLockTimer = player.CastingSpell.CastTime
-                            
-                            log_str = ( "Timestamp : " + str(self.TimeStamp)
-                            + " , Event : begin_cast_oGCD"
-                            + " , playerID : " + str(player.playerID)
-                            + " , Ability : " + name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction) )
-                            
-                            fight_logging.debug(log_str)
-            
+
+                            if player.CastingSpell.id > 0 and player.JobEnum != JobEnum.Pet:
+                                log_str = ( "Timestamp : " + str(self.TimeStamp)
+                                + " , Event : begin_cast_oGCD"
+                                + " , playerID : " + str(player.playerID)
+                                + " , Ability : " + name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction) )
+                                
+                                fight_logging.debug(log_str)
+                
 
             if self.Enemy.hasEventList and start :
                 # Only goes through the Enemy's EventList if the fight has started AND if the Enemy has an event list
