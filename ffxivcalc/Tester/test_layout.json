@@ -77,7 +77,7 @@
                 "ExpectedResult": {
                     "EndTime": "22.74",
                     "1": {
-                        "ExpectedTotalPotency": "10890"
+                        "ExpectedTotalPotency": "10730"
                     }
                 }
             },
@@ -87,7 +87,7 @@
                 "ExpectedResult": {
                     "EndTime": "74.6",
                     "1": {
-                        "ExpectedTotalPotency": "10100"
+                        "ExpectedTotalPotency": "9600"
                     }
                 }
             },
@@ -97,7 +97,7 @@
                 "ExpectedResult": {
                     "EndTime": "98.26",
                     "1": {
-                        "ExpectedTotalPotency": "15510"
+                        "ExpectedTotalPotency": "14850"
                     }
                 }
             },
@@ -107,7 +107,7 @@
                 "ExpectedResult": {
                     "EndTime": "35.13",
                     "1": {
-                        "ExpectedTotalPotency": "8760"
+                        "ExpectedTotalPotency": "8520"
                     }
                 }
             },
@@ -117,7 +117,7 @@
                 "ExpectedResult": {
                     "EndTime": "83.39",
                     "1": {
-                        "ExpectedTotalPotency": "13460"
+                        "ExpectedTotalPotency": "12900"
                     }
                 }
             },
@@ -127,7 +127,7 @@
                 "ExpectedResult": {
                     "EndTime": "24.78",
                     "1": {
-                        "ExpectedTotalPotency": "9190"
+                        "ExpectedTotalPotency": "9010"
                     }
                 }
             },
@@ -137,7 +137,7 @@
                 "ExpectedResult": {
                     "EndTime": "25.27",
                     "1": {
-                        "ExpectedTotalPotency": "11590"
+                        "ExpectedTotalPotency": "11410"
                     }
                 }
             },
@@ -147,7 +147,7 @@
                 "ExpectedResult": {
                     "EndTime": "82.63",
                     "1": {
-                        "ExpectedTotalPotency": "10230"
+                        "ExpectedTotalPotency": "9670"
                     }
                 }
             },
@@ -167,7 +167,7 @@
                 "ExpectedResult": {
                     "EndTime": "82.57",
                     "1": {
-                        "ExpectedTotalPotency": "11580"
+                        "ExpectedTotalPotency": "10940"
                     }
                 }
             },
@@ -177,7 +177,7 @@
                 "ExpectedResult": {
                     "EndTime": "18.45",
                     "1": {
-                        "ExpectedTotalPotency": "5560"
+                        "ExpectedTotalPotency": "5420"
                     }
                 }
             },
@@ -187,7 +187,7 @@
                 "ExpectedResult": {
                     "EndTime": "70.59",
                     "1": {
-                        "ExpectedTotalPotency": "7110"
+                        "ExpectedTotalPotency": "6630"
                     }
                 }
             }

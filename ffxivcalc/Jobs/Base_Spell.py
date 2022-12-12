@@ -353,6 +353,9 @@ class Monk_AA(Melee_Auto):
         self.DOTTimer = 0
 
     def CheckDOT(self, Player, Enemy, TimeUnit):
+        
+        self.DOTTimer = max(0, self.DOTTimer-TimeUnit)
+
         if(self.DOTTimer <= 0):
             #Apply AA
             tempSpell  = self.Cast(Player, Enemy)#Cast the DOT
