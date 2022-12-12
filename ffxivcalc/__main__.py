@@ -53,7 +53,7 @@ def main() -> int:
                 level = logging.DEBUG
             case _: # more than 3 V is too much
                 level = logging.DEBUG
-        #logging.basicConfig(format='[%(levelname)s] %(message)s')
+        logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s')
         __logger__.setLevel(level=level)
 
     match args.action:
