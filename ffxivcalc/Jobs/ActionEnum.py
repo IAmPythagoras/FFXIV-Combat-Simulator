@@ -703,7 +703,7 @@ def name_for_id(id : int, cls : RoleEnum, job_cls : JobEnum):
         name = job_cls.name_for_id(id)
     if name == "Unknown": # IF still unknown
         log_str = (
-            "Unable to match ID : " + str(id) + " to an ability name in class : " + cls.__name__
+            "Unable to match ID : " + str(id) + " to an ability name in job : " + job_cls.__name__
         )
         action_logging.warning(log_str)
     return name
@@ -715,7 +715,7 @@ def id_for_name(name, cls, job_cls):
 
     if id == -1 : # if still -1
         log_str = (
-            "Unable to match name : " + name + " to an ability id in class : " + cls.__name__
+            "Unable to match name : " + name + " to an ability id in class : " + job_cls.__name__
         )
         
         action_logging.warning(log_str)
