@@ -71,6 +71,9 @@
                     },
                     {
                         "actionName": "BurstShot"
+                    },                    {
+                        "actionName": "WaitAbility",
+                        "waitTime": 0.9
                     },
                     {
                         "actionName": "EmpyrealArrow"
