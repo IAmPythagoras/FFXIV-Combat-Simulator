@@ -4,7 +4,7 @@ import logging
 main_logging = logging.getLogger("ffxivcalc")
 base_spell_logging = main_logging.getChild("Base_Spell")
 
-from ffxivcalc.Jobs import ActionEnum
+from ffxivcalc.Jobs.ActionEnum import name_for_id
 import math
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
 from ffxivcalc.Jobs.PlayerEnum import RoleEnum
@@ -204,7 +204,7 @@ class Spell:
 
 
         if self.GCD: player.GCDCounter += 1 # If action was a GCD, increase the counter
-        AbilityName = "DOT" if self.id < 0 else ActionEnum.name_for_id(self.id, player.ClassAction, player.JobAction)
+        AbilityName = "DOT" if self.id < 0 else name_for_id(self.id, player.ClassAction, player.JobAction)
         log_str = ( "Timestamp : " + str(player.CurrentFight.TimeStamp)
         + " , Event : end_cast"
         + " , playerID : " + str(player.playerID)

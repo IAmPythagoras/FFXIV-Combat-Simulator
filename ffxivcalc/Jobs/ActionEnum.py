@@ -17,7 +17,7 @@ class ActionEnum(IntEnum):
             return cls(id).name
 
         log_str = (
-            "Unable to match ID : " + str(id) + " to an ability name in class : " + str(cls)
+            "Unable to match ID : " + str(id) + " to an ability name in class : " + cls.__name__
         )
         
         action_logging.warning(log_str)
@@ -30,7 +30,7 @@ class ActionEnum(IntEnum):
             return cls[name].value
 
         log_str = (
-            "Unable to match name : " + name + " to an ability id in class : " + str(cls)
+            "Unable to match name : " + name + " to an ability id in class : " + cls.__name__
         )
         
         action_logging.warning(log_str)
