@@ -15,12 +15,6 @@ class ActionEnum(IntEnum):
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
-
-        log_str = (
-            "Unable to match ID : " + str(id) + " to an ability name in class : " + cls.__name__
-        )
-        
-        action_logging.warning(log_str)
         return 'Unknown'
 
     @classmethod
@@ -28,13 +22,6 @@ class ActionEnum(IntEnum):
         # maps from name -> id
         if name in cls.__members__.keys():
             return cls[name].value
-
-        log_str = (
-            "Unable to match name : " + name + " to an ability id in class : " + cls.__name__
-        )
-        
-        action_logging.warning(log_str)
-        
         return -1 # Evaluated as Unknown
 
 # Caster
@@ -713,13 +700,24 @@ class DancerActions(ActionEnum):
 def name_for_id(id : int, cls : RoleEnum, job_cls : JobEnum):
     name = cls.name_for_id(id)
     if name == "Unknown": 
-        return job_cls.name_for_id(id)
-    return name
+        name_2 = job_cls.name_for_id(id)
+    if name_2 == "Unknown":
+        log_str = (
+            "Unable to match ID : " + str(id) + " to an ability name in class : " + cls.__name__
+        )
+        action_logging.warning(log_str)
+    return name_2
 
 def id_for_name(name, cls, job_cls):
     id = cls.id_for_name(name)
     if id == -1: 
-        id = job_cls.id_for_name(name)
-    return id
+        id_2 = job_cls.id_for_name(name)
+    if id_2 == -1 :
+        log_str = (
+            "Unable to match name : " + name + " to an ability id in class : " + cls.__name__
+        )
+        
+        action_logging.warning(log_str)
+    return id_2
 
     
