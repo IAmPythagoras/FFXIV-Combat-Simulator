@@ -1,5 +1,9 @@
 import copy
 import logging
+
+main_logging = logging.getLogger("ffxivcalc")
+base_spell_logging = main_logging.getChild("Base_Spell")
+
 from ffxivcalc.Jobs import ActionEnum
 import math
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
@@ -91,11 +95,11 @@ class Spell:
                 newFailedRequirementEvent = failedRequirementEvent(player.CurrentFight.TimeStamp, player.playerID, Requirement.__name__, addInfo, fatal) # Recording the event
                 player.CurrentFight.failedRequirementList.append(newFailedRequirementEvent) # storing the event in memory
 
-                log_str = "FailedRequirementEvent, " + " , Timestamp : " + str(player.CurrentFight.TimeStamp)
-                + " , PlayerID : " + str(player.playerID) + " , RequirementName : " + Requirement.__name__ + " , Fatal : " + str(fatal) + " , Info : " + addInfo
+                log_str = ("FailedRequirementEvent, " + " , Timestamp : " + str(player.CurrentFight.TimeStamp)
+                + " , PlayerID : " + str(player.playerID) + " , RequirementName : " + Requirement.__name__ + " , Fatal : " + str(fatal) + " , Info : " + addInfo)
 
-                if fatal : logging.critical(log_str) # if fatal makes the sim crash
-                else : logging.warning(log_str) # if not fatal doesn't crash the sim
+                if fatal : base_spell_logging.critical(log_str) # if fatal makes the sim crash
+                else : base_spell_logging.warning(log_str) # if not fatal doesn't crash the sim
                 
                 if not (player.CurrentFight.RequirementOn) : return tempSpell # If we do not care about requirement simply go on.
                 elif timeLeft <= player.CurrentFight.waitingThreshold and timeLeft > 0: # If we care about requirement, we check if we can wait the allocated threshold. if we can we wait for it to come off cooldown.
@@ -208,7 +212,7 @@ class Spell:
         + " , Potency : " + str(self.Potency)
         + " , Damage : " + str(Damage) )
         
-        logging.debug(log_str)
+        base_spell_logging.debug(log_str)
 
         return self # Return the spell object. Might not be needed.
 

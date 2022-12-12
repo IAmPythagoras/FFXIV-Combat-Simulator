@@ -9,6 +9,8 @@ and modified to fit the use I have of it.
 # coreapi-cli==1.0.9
 import coreapi
 import logging
+main_logging = logging.getLogger("ffxivcalc")
+etro_logging = main_logging.getChild("etroAPI")
 
 def get_gearset_data(set_id: str) -> dict:
     """

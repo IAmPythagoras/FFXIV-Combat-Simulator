@@ -3,6 +3,8 @@ from ffxivcalc.helperCode.Vocal import PrintResult
 from ffxivcalc.Jobs.PlayerEnum import *
 from ffxivcalc.Jobs import ActionEnum
 import logging
+main_logging = logging.getLogger("ffxivcalc")
+fight_logging = main_logging.getChild("Fight")
 
 
 class NoMoreAction(Exception):# Exception called if a spell fails to cast
@@ -97,6 +99,7 @@ class Fight:
                 raise ValueError('Invalid log level: %s' % loglevel %' (Valid levels are DEBUG, INFO, WARNING, ERROR, CRITICAL)')
             logging.basicConfig(filename='ffxivcalc_log.log', encoding='utf-8',level=numeric_level)
 
+
         self.timeValue = []  # Used for graph
 
         self.ComputeFunctions() # Compute all damage functions for the players
@@ -132,7 +135,7 @@ class Fight:
             Player.WeaponskillReduction = (1000 - (130 * (Player.Stat["SkS"]-400) / 1900))/1000
             Player.EffectList.append(GCDReductionEffect)
 
-        logging.debug("Starting simulation with TeamCompositionBonus = " + str(self.TeamCompositionBonus))
+        fight_logging.debug("Starting simulation with TeamCompositionBonus = " + str(self.TeamCompositionBonus))
 
         while(self.TimeStamp <= TimeLimit):
 
@@ -161,7 +164,7 @@ class Fight:
                             + " , playerID : " + str(player.playerID)
                             + " , Ability : " + ActionEnum.name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction) )
 
-                            logging.debug(log_str)
+                            fight_logging.debug(log_str)
 
                         # Else we do nothing since doing the nextspell is not currently possible
 
@@ -180,12 +183,12 @@ class Fight:
                             player.oGCDLock = True
                             player.oGCDLockTimer = player.CastingSpell.CastTime
                             
-                            log_str = "Timestamp : " + str(self.TimeStamp)
+                            log_str = ( "Timestamp : " + str(self.TimeStamp)
                             + " , Event : begin_cast_oGCD"
                             + " , playerID : " + str(player.playerID)
-                            + " , Ability : " + ActionEnum.name_for_id(player.CastingSpell.id)
+                            + " , Ability : " + ActionEnum.name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction) )
                             
-                            logging.debug(log_str)
+                            fight_logging.debug(log_str)
             
 
             if self.Enemy.hasEventList and start :
@@ -250,7 +253,7 @@ class Fight:
                     if not player.TrueLock : player.NoMoreAction = False
                     else:
                         log_str = "Player ID " + str(player.playerID) + " has no more actions, Timestamp : " + str(self.TimeStamp)
-                        logging.debug(log_str)
+                        fight_logging.debug(log_str)
 
 
             CheckFinalLock = True
@@ -262,7 +265,7 @@ class Fight:
             if CheckFinalLock: 
                 if vocal : print("The Fight finishes at: " + str(self.TimeStamp))
                 log_str = "Simulation has succesfully finished."
-                logging.debug(log_str)
+                fight_logging.debug(log_str)
                 break
             
             
@@ -322,7 +325,7 @@ class Fight:
         self : Fight -> Fight for which we want to compute the values (for all its players)
         """
 
-        logging.debug("Initializing damage values for all players.")
+        fight_logging.debug("Initializing damage values for all players.")
 
         for Player in self.PlayerList:
             levelMod = 1900
@@ -349,7 +352,7 @@ class Fight:
             + " , f_CritMult" + str(Player.CritMult)
             + " , f_DHRate" + str(Player.DHRate)  )
 
-            logging.debug(log_str)
+            fight_logging.debug(log_str)
 
 # HELPER FUNCTIONS UNDER
 

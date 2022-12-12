@@ -4,7 +4,10 @@ and all other functions used to process the information offered by the library.
 """
 import math
 import numpy as np
+import logging
 import matplotlib.pyplot as plt
+logging.getLogger('matplotlib').setLevel(logging.INFO) # silencing matplotlib logger
+logging.getLogger('PIL').setLevel(logging.INFO) # silencing PIL logger
 
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
 

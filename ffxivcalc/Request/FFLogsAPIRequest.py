@@ -47,6 +47,8 @@ from ffxivcalc.Jobs.Melee.Reaper.Reaper_Spell import ReaperAbility
 
 
 import http.client, json, logging
+main_logging = logging.getLogger("ffxivcalc")
+fflogsapi_logging = main_logging.getChild("FFLogsAPI")
 from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, EnochianEffect
 from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
@@ -79,8 +81,8 @@ def lookup_abilityID(actionID, targetID, sourceID, player_list):
         if not (int(actionID) in JobDict.keys()): #if not in, then the action is in the ClassDict
             if not (int(actionID) in ClassDict.keys()):
                 log_str = "Action Not found , Job : " + job_name + " , ActionId : " + str(actionID) + " , targetID : " + str(targetID) + " , sourceID : " + str(sourceID)
-                logging.warning(log_str)
-                logging.warning("Since action was not found defaulting to WaitAbility(0).")
+                fflogsapi_logging.warning(log_str)
+                fflogsapi_logging.warning("Since action was not found defaulting to WaitAbility(0).")
                 return WaitAbility(0) #Currently at none so we can debug
                 raise ActionNotFound #Did not find action
             return ClassDict[int(actionID)] #Class actions do not have the possibility to target other allies, so we assume itll target an enemy
@@ -133,7 +135,7 @@ def lookup_abilityID(actionID, targetID, sourceID, player_list):
     elif job_name == "Dragoon":
         return lookup(DragoonAbility, MeleeAbility,job_name)
 
-    logging.critical("Job name not found : " + job_name)
+    fflogsapi_logging.critical("Job name not found : " + job_name)
 
     raise JobNotFound #If we get here, then we have not found the job in question
     #This should not happen, and if it does it means we either have a serious problem or the names aren't correct
@@ -160,7 +162,7 @@ def getAbilityList(fightID, fightNumber):
 
     client_id = "9686da23-55d6-4f64-bd9d-40e2c64f8edf" #Put your own client_id and client_secret obtained from FFLogs
     client_secret = "ioZontZKcMxZwc33K4zsWlMAPY5dfZKsuo3eSFXE" #Supposed to be secret >.>
-    logging.debug("Sending request to fflogs, client_id : " + client_id + " , client_secret : " + client_secret)
+    fflogsapi_logging.debug("Sending request to fflogs, client_id : " + client_id + " , client_secret : " + client_secret)
     conn = http.client.HTTPSConnection("www.fflogs.com")
     access_token = getAccessToken(conn, client_id, client_secret)
 
@@ -184,13 +186,13 @@ def getAbilityList(fightID, fightNumber):
     player_list = {} #Dict which will have all a list of players with their ids, role and name
     enemy_list = [] #List with all ids of enemies in the fight
     relative_timestamp_zero = int(data_json["data"]["reportData"]["report"]["fights"][0]["startTime"]) #relative 0 of the report
-    logging.debug("Setting up enemy ids")
+    fflogsapi_logging.debug("Setting up enemy ids")
     for enemy in enemy_data:
         enemy_list += [enemy["id"]] #Getting the enemies id so we can identifiate who an enemy is not targeted by an action
 
     for player_class in player_data: #player_data is a dictionnary with key "healers", "DPS", "tanks"
         for player in player_data[player_class]:
-            logging.debug("Creating Player object for playerID : " + str(player["id"]))
+            fflogsapi_logging.debug("Creating Player object for playerID : " + str(player["id"]))
             #Will check what job the player is so we can create a player object of the relevant job
 
             job_name = player["type"]
