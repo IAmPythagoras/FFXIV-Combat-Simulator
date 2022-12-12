@@ -204,15 +204,16 @@ class Spell:
 
 
         if self.GCD: player.GCDCounter += 1 # If action was a GCD, increase the counter
-        AbilityName = "DOT" if self.id < 0 else name_for_id(self.id, player.ClassAction, player.JobAction)
-        log_str = ( "Timestamp : " + str(player.CurrentFight.TimeStamp)
-        + " , Event : end_cast"
-        + " , playerID : " + str(player.playerID)
-        + " , Ability : " + AbilityName
-        + " , Potency : " + str(self.Potency)
-        + " , Damage : " + str(Damage) )
         
-        base_spell_logging.debug(log_str)
+        if self.id > 0 and (player.JobEnum != JobEnum.Pet) : # Only logs if is a player action and not a DOT
+            log_str = ( "Timestamp : " + str(player.CurrentFight.TimeStamp)
+            + " , Event : end_cast"
+            + " , playerID : " + str(player.playerID)
+            + " , Ability : " + name_for_id(self.id, player.ClassAction, player.JobAction)
+            + " , Potency : " + str(self.Potency)
+            + " , Damage : " + str(Damage) )
+            
+            base_spell_logging.debug(log_str)
 
         return self # Return the spell object. Might not be needed.
 
