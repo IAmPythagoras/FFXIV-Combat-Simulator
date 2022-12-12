@@ -700,24 +700,25 @@ class DancerActions(ActionEnum):
 def name_for_id(id : int, cls : RoleEnum, job_cls : JobEnum):
     name = cls.name_for_id(id)
     if name == "Unknown": 
-        name_2 = job_cls.name_for_id(id)
-    if name_2 == "Unknown":
+        name = job_cls.name_for_id(id)
+    if name == "Unknown": # IF still unknown
         log_str = (
             "Unable to match ID : " + str(id) + " to an ability name in class : " + cls.__name__
         )
         action_logging.warning(log_str)
-    return name_2
+    return name
 
 def id_for_name(name, cls, job_cls):
     id = cls.id_for_name(name)
     if id == -1: 
-        id_2 = job_cls.id_for_name(name)
-    if id_2 == -1 :
+        id = job_cls.id_for_name(name)
+
+    if id == -1 : # if still -1
         log_str = (
             "Unable to match name : " + name + " to an ability id in class : " + cls.__name__
         )
         
         action_logging.warning(log_str)
-    return id_2
+    return id
 
     
