@@ -1,5 +1,8 @@
 # This will contain all action with their IDs in the game. It will map from ids -> name or name -> ids
 from enum import IntEnum
+import logging
+main_logging = logging.getLogger("ffxivcalc")
+action_logging = main_logging.getChild("ActionEnum")
 
 from ffxivcalc.Jobs.PlayerEnum import JobEnum, RoleEnum
 
@@ -153,6 +156,7 @@ class HealerActions(ActionEnum):
 # Astrologian
 
 class AstrologianActions(ActionEnum):
+    Lightspeed = 11
     Malefic = 25871
     Combust = 16554
     Gravity = 25872
@@ -554,6 +558,7 @@ class MonkActions(ActionEnum):
     Thunderclap = 25762
     RiddleOfEarth = 7394
     RiddleOfFire = 7395
+    RiddleOfWind = 25766
     Brotherhood = 7396
     Anatman = 16475
     Mantra = 65
@@ -697,13 +702,25 @@ class DancerActions(ActionEnum):
 def name_for_id(id : int, cls : RoleEnum, job_cls : JobEnum):
     name = cls.name_for_id(id)
     if name == "Unknown": 
-        return job_cls.name_for_id(id)
+        name = job_cls.name_for_id(id)
+    if name == "Unknown": # IF still unknown
+        log_str = (
+            "Unable to match ID : " + str(id) + " to an ability name in job : " + job_cls.__name__
+        )
+        action_logging.warning(log_str)
     return name
 
 def id_for_name(name, cls, job_cls):
     id = cls.id_for_name(name)
     if id == -1: 
         id = job_cls.id_for_name(name)
+
+    if id == -1 : # if still -1
+        log_str = (
+            "Unable to match name : " + name + " to an ability id in class : " + job_cls.__name__
+        )
+        
+        action_logging.warning(log_str)
     return id
 
     

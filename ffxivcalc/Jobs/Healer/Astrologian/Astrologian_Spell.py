@@ -314,6 +314,7 @@ def CelestialArcanum(target):
     return returnSpell
 
 AstrologianAbility = {
+11 : Lightspeed,
 25871 : Malefic,
 16554 : Combust,
 25872 : Gravity,

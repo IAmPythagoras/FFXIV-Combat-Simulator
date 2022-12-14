@@ -32,7 +32,7 @@
                         "waitTime": 4
                     },
                     {
-                        "actionName": "HardSlah"
+                        "actionName": "HardSlash"
                     },
                     {
                         "actionName": "EdgeOfShadow"
@@ -41,7 +41,7 @@
                         "actionName": "Delirium"
                     },
                     {
-                        "actionName": "SyphoneStrike"
+                        "actionName": "SyphonStrike"
                     },
                     {
                         "actionName": "Souleater"
@@ -53,7 +53,7 @@
                         "actionName": "SaltedEarth"
                     },
                     {
-                        "actionName": "HardSlah"
+                        "actionName": "HardSlash"
                     },
                     {
                         "actionName": "Shadowbringer"
@@ -89,7 +89,7 @@
                         "actionName": "EdgeOfShadow"
                     },
                     {
-                        "actionName": "SyphoneStrike"
+                        "actionName": "SyphonStrike"
                     },
                     {
                         "actionName": "Plunge"

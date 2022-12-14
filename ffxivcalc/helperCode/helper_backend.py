@@ -1,5 +1,8 @@
 import copy
 import json
+import logging
+main_logging = logging.getLogger("ffxivcalc")
+helper_logging = main_logging.getChild("Helper")
 from pathlib import Path
 
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
@@ -65,7 +68,7 @@ GNBStat = {"MainStat": 2891, "WD":126, "Det" : 1883, "Ten" : 631, "SS": 400, "Sk
 def ImportFightBackend(fightID,fightNumber):
 
     Event = Fight([], Enemy(), False) #Creating event
-
+    helper_logging.debug("Constructing Event object from FFLogs link.")
     action_dict, player_dict = getAbilityList(fightID, fightNumber) #getting ability List
     
     for playerID in player_dict:
@@ -215,11 +218,13 @@ def SaveFight(Event, countdown, fightDuration, saveName):
         json.dump(data,write_files, indent=4) #saving file
 
 
-def RestoreFightObject(data : dict):
+def RestoreFightObject(data : dict, name : str = ""):
     """
     This takes a FightDict dictionnary and converts it back into an Event object.
     data : dict -> dictionnary with the fight's data
     """
+
+    helper_logging.debug("Restoring saved file " + name + " into Event object.")
 
     
     PlayerActionList = {} #Dictionnary containing all player with their action
@@ -261,6 +266,7 @@ def RestoreFightObject(data : dict):
         
 
         job_object.playerID = player["playerID"] #Giving the playerID
+        helper_logging.debug("Creating job object : " + job_name + " for playerID : " + str(player["playerID"]))
 
         PlayerActionList[str(job_object.playerID)] = {"job" : job_name, "job_object" : job_object, "actionList" : player["actionList"], "actionObject" : []} #Adding new Key accessible by IDs
 
@@ -398,7 +404,7 @@ def SimulateFightBackend(file_name : str):
 
     print("Restoring save file into Event object...")
 
-    Event = RestoreFightObject(data)
+    Event = RestoreFightObject(data, name=file_name)
 
     fightInfo = data["data"]["fightInfo"] #fight information
     Event.ShowGraph = fightInfo["ShowGraph"] #Default

@@ -241,11 +241,11 @@ SlipstreamDOT = DOTSpell(-13, 30, False)
 #Summon
 Summon = SummonerSpell(7427, True, Lock, 2.5, 0, 0, ApplySummon, [SummonRequirement], type = 1)
 #Bahamut and Phoenix damage will simply be a dot
-BahamutAA = SummonerSpell(115, False, 0, 0, 0, 0, ApplyBahamutAA, [])
-PhoenixAA = SummonerSpell(115, False, 0, 0, 0, 0, ApplyPhoenixAA, [])
+BahamutAA = SummonerSpell(-115, False, 0, 0, 0, 0, ApplyBahamutAA, [])
+PhoenixAA = SummonerSpell(-115, False, 0, 0, 0, 0, ApplyPhoenixAA, [])
 BahamutDOT = DOTSpell(-14, 180, False) #AA of bahamut and phoenix
 PhoenixDOT = DOTSpell(-15, 240, False)
-EnkindleSummon = SummonerSpell(17, False, 0, 0, 1300, 0, empty, []) #Enkindle done by pet
+EnkindleSummon = SummonerSpell(-17, False, 0, 0, 1300, 0, empty, []) #Enkindle done by pet
 #autos of summon seems to be faster if uses Enkindle, but always max 5
 
 #oGCD

@@ -1,5 +1,10 @@
 import copy
+import logging
 
+main_logging = logging.getLogger("ffxivcalc")
+base_spell_logging = main_logging.getChild("Base_Spell")
+
+from ffxivcalc.Jobs.ActionEnum import name_for_id
 import math
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
 from ffxivcalc.Jobs.PlayerEnum import RoleEnum
@@ -83,12 +88,18 @@ class Spell:
                 #Will check if timeLeft is within a margin, so we will just wait for it to come
                 #timeLeft is the remaining time before the spell is available
 
-                addInfo = "" if timeLeft <= 0 else "player had to wait for or would have to wait for " + str(timeLeft) + " seconds."
+                addInfo = "" if timeLeft <= 0 else "player had to wait for or would have to wait for " + str(timeLeft) + " seconds. GCDLock " + str(player.GCDLockTimer)
 
                 fatal =  not(timeLeft <= player.CurrentFight.waitingThreshold and timeLeft > 0) and  (player.CurrentFight.RequirementOn)  # true if stops the simulation
 
                 newFailedRequirementEvent = failedRequirementEvent(player.CurrentFight.TimeStamp, player.playerID, Requirement.__name__, addInfo, fatal) # Recording the event
                 player.CurrentFight.failedRequirementList.append(newFailedRequirementEvent) # storing the event in memory
+
+                log_str = ("FailedRequirementEvent, " + " , Timestamp : " + str(player.CurrentFight.TimeStamp)
+                + " , PlayerID : " + str(player.playerID) + " , RequirementName : " + Requirement.__name__ + " , Fatal : " + str(fatal) + " , Info : " + addInfo)
+
+                if fatal : base_spell_logging.critical(log_str) # if fatal makes the sim crash
+                else : base_spell_logging.warning(log_str) # if not fatal doesn't crash the sim
                 
                 if not (player.CurrentFight.RequirementOn) : return tempSpell # If we do not care about requirement simply go on.
                 elif timeLeft <= player.CurrentFight.waitingThreshold and timeLeft > 0: # If we care about requirement, we check if we can wait the allocated threshold. if we can we wait for it to come off cooldown.
@@ -129,12 +140,6 @@ class Spell:
         
         if self.Potency != 0 : minDamage,Damage= player.CurrentFight.ComputeDamageFunction(player, self.Potency, Enemy, self.DPSBonus, type, self)    #Damage computation
         else: minDamage, Damage = 0,0
-
-        #if self.id > 0 or self.id == -2878: 
-        #    name = name_for_id(self.id,player.ClassAction, player.JobAction)
-        #    print("action " + name if name != "Unknown" else str(self.id) )
-        #    print("Did : " + str(self.Potency))
-        #    print("at : " + str(player.CurrentFight.TimeStamp))
         
 
         if player.JobEnum == JobEnum.Pet: # Is a pet
@@ -199,6 +204,16 @@ class Spell:
 
 
         if self.GCD: player.GCDCounter += 1 # If action was a GCD, increase the counter
+        
+        if self.id > 0 and (player.JobEnum != JobEnum.Pet) : # Only logs if is a player action and not a DOT
+            log_str = ( "Timestamp : " + str(player.CurrentFight.TimeStamp)
+            + " , Event : end_cast"
+            + " , playerID : " + str(player.playerID)
+            + " , Ability : " + name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction)
+            + " , Potency : " + str(self.Potency)
+            + " , Damage : " + str(Damage) )
+            
+            base_spell_logging.debug(log_str)
 
         return self # Return the spell object. Might not be needed.
 
@@ -339,6 +354,9 @@ class Monk_AA(Melee_Auto):
         self.DOTTimer = 0
 
     def CheckDOT(self, Player, Enemy, TimeUnit):
+        
+        self.DOTTimer = max(0, self.DOTTimer-TimeUnit)
+
         if(self.DOTTimer <= 0):
             #Apply AA
             tempSpell  = self.Cast(Player, Enemy)#Cast the DOT

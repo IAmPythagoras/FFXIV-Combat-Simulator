@@ -46,7 +46,7 @@ class Tester:
         """
         filename : str -> name of the file containing the tester's information
         """
-        self.filename = Path.cwd() / 'ffxivcalc' / 'Tester' / filename 
+        self.filename = Path.cwd() / filename 
         self.fightResults = [] # Empty list that will be filled with all the fight results
 
 
@@ -56,20 +56,20 @@ class Tester:
         """
 
         self.fightResults = [] # Reseting the list
-        f = open(self.filename) #Opening save
+        f = open(self.filename / "test_layout.json" ) #Opening save
         #input(self.filename)
         data = json.load(f)
 
         for test in data["data"]["FightList"]:
             # Will iterate through every fight in the saved file and test them.
-            file = Path.cwd() / 'ffxivcalc' / 'Tester' / test["Fight"]
+            file = self.filename / test["Fight"]
             f_test = open(file) # Opening saved file for the test
             data_test = json.load(f_test) # loading data
 
             
             # Restoring into Event object
-            Event_Req = RestoreFightObject(data_test) # Requirement on
-            Event = RestoreFightObject(data_test) # No requirements
+            Event_Req = RestoreFightObject(data_test, name=test["Fight"]) # Requirement on
+            Event = RestoreFightObject(data_test, name=test["Fight"]) # No requirements
             
             Event.ShowGraph = False
             Event.RequirementOn = False

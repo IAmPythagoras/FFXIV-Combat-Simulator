@@ -1,8 +1,10 @@
 import math
 from ffxivcalc.helperCode.Vocal import PrintResult
 from ffxivcalc.Jobs.PlayerEnum import *
-
-from copy import deepcopy
+from ffxivcalc.Jobs.ActionEnum import name_for_id
+import logging
+main_logging = logging.getLogger("ffxivcalc")
+fight_logging = main_logging.getChild("Fight")
 
 
 class NoMoreAction(Exception):# Exception called if a spell fails to cast
@@ -83,10 +85,13 @@ class Fight:
         TimeUnit : float -> unit at which the simulator will advance through time in the simulation
         TimeLimit : float -> time limit at which the simulator will stop
         vocal : bool -> True if we want to print out the results
+        verbose (bool) -> True if we want the fight to record logs. The log file will be saved in the same folder the python script was executed from
+        loglevel (str) -> level at which we want the logging to record.
         """
 
         self.TimeStamp = 0   # Keep track of the time
         start = False
+
 
         self.timeValue = []  # Used for graph
 
@@ -123,6 +128,9 @@ class Fight:
             Player.WeaponskillReduction = (1000 - (130 * (Player.Stat["SkS"]-400) / 1900))/1000
             Player.EffectList.append(GCDReductionEffect)
 
+        fight_logging.debug("Starting simulation with TeamCompositionBonus = " + str(self.TeamCompositionBonus))
+        fight_logging.debug("Parameters are -> RequirementOn : " + str(self.RequirementOn) + ", IgnoreMana : " + str(self.IgnoreMana))
+
         while(self.TimeStamp <= TimeLimit):
 
             for player in self.PlayerList:
@@ -144,6 +152,14 @@ class Fight:
                             player.GCDLock = True
                             player.GCDLockTimer = player.CastingSpell.RecastTime
                             player.CastingTarget = self.Enemy
+                            if player.CastingSpell.id > 0 and player.JobEnum != JobEnum.Pet:
+                                log_str = ( "Timestamp : " + str(self.TimeStamp)
+                                + " , Event : begin_cast_GCD"
+                                + " , playerID : " + str(player.playerID)
+                                + " , Ability : " + name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction) )
+
+                                fight_logging.debug(log_str)
+
                         # Else we do nothing since doing the nextspell is not currently possible
 
 
@@ -158,11 +174,17 @@ class Fight:
                             player.Casting = True
                             player.CastingLockTimer = player.CastingSpell.CastTime
                             player.CastingTarget = self.Enemy
-                            #player.CastingSpell.CastFinal(player, self.Enemy)
                             player.oGCDLock = True
                             player.oGCDLockTimer = player.CastingSpell.CastTime
-                            # print("oGCD with ID " + str(player.CastingSpell.id) + " has begun casting at " +  str(self.TimeStamp) )
-            
+
+                            if player.CastingSpell.id > 0 and player.JobEnum != JobEnum.Pet:
+                                log_str = ( "Timestamp : " + str(self.TimeStamp)
+                                + " , Event : begin_cast_oGCD"
+                                + " , playerID : " + str(player.playerID)
+                                + " , Ability : " + name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction) )
+                                
+                                fight_logging.debug(log_str)
+                
 
             if self.Enemy.hasEventList and start :
                 # Only goes through the Enemy's EventList if the fight has started AND if the Enemy has an event list
@@ -224,15 +246,21 @@ class Fight:
                     # But this function can be customized by the user to fit any use of it they might need
                     player.TrueLock = self.NextActionFunction(self, player)
                     if not player.TrueLock : player.NoMoreAction = False
+                    else:
+                        log_str = "Player ID " + str(player.playerID) + " has no more actions, Timestamp : " + str(self.TimeStamp)
+                        fight_logging.debug(log_str)
 
 
             CheckFinalLock = True
             for player in self.PlayerList:
                 # Goes through every player and checks if they are done. If everyone has nothing to do the fight finishes
                 CheckFinalLock = player.TrueLock and CheckFinalLock # If all player's TrueLock is true, then CheckFinalLock will be True
+                
 
             if CheckFinalLock: 
                 if vocal : print("The Fight finishes at: " + str(self.TimeStamp))
+                log_str = "Simulation has succesfully finished."
+                fight_logging.debug(log_str)
                 break
             
             
@@ -292,6 +320,8 @@ class Fight:
         self : Fight -> Fight for which we want to compute the values (for all its players)
         """
 
+        fight_logging.debug("Initializing damage values for all players.")
+
         for Player in self.PlayerList:
             levelMod = 1900
             baseMain = 390  
@@ -307,6 +337,17 @@ class Fight:
             Player.CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000 # Crit rate in decimal
             Player.CritMult = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000 # Crit Damage multiplier
             Player.DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000 # DH rate in decimal
+
+            log_str = ("ID : " + str(Player.playerID) + " , Job : " + JobEnum.name_for_id(Player.JobEnum) 
+            + " , f_WD : " + str(Player.f_WD) 
+            + " , f_DET : " + str(Player.f_DET) 
+            + " , f_TEN : " + str(Player.f_TEN) 
+            + " , f_SPD : " + str(Player.f_SPD) 
+            + " , f_CritRate : " + str(Player.CritRate) 
+            + " , f_CritMult : " + str(Player.CritMult)
+            + " , f_DHRate : " + str(Player.DHRate)  )
+
+            fight_logging.debug(log_str)
 
 # HELPER FUNCTIONS UNDER
 
