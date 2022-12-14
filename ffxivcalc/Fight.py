@@ -339,12 +339,12 @@ class Fight:
 
             log_str = ("ID : " + str(Player.playerID) + " , Job : " + JobEnum.name_for_id(Player.JobEnum) 
             + " , f_WD : " + str(Player.f_WD) 
-            + " , f_DET" + str(Player.f_DET) 
-            + " , f_TEN" + str(Player.f_TEN) 
-            + " , f_SPD" + str(Player.f_SPD) 
-            + " , f_CritRate" + str(Player.CritRate) 
-            + " , f_CritMult" + str(Player.CritMult)
-            + " , f_DHRate" + str(Player.DHRate)  )
+            + " , f_DET : " + str(Player.f_DET) 
+            + " , f_TEN : " + str(Player.f_TEN) 
+            + " , f_SPD : " + str(Player.f_SPD) 
+            + " , f_CritRate : " + str(Player.CritRate) 
+            + " , f_CritMult : " + str(Player.CritMult)
+            + " , f_DHRate : " + str(Player.DHRate)  )
 
             fight_logging.debug(log_str)
 

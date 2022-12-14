@@ -209,7 +209,7 @@ class Spell:
             log_str = ( "Timestamp : " + str(player.CurrentFight.TimeStamp)
             + " , Event : end_cast"
             + " , playerID : " + str(player.playerID)
-            + " , Ability : " + "hey"
+            + " , Ability : " + name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction)
             + " , Potency : " + str(self.Potency)
             + " , Damage : " + str(Damage) )
             
