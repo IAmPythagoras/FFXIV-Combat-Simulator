@@ -45,19 +45,19 @@ def main() -> int:
 
     if args.verbose > 0:
         match args.verbose:
-            case 1:
+            case 1: # displays error and above
                 level = logging.ERROR
                 logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',level=level)
-            case 2:
+            case 2: # displays warning and above
                 level = logging.WARNING
                 logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',level=level)
-            case 3:
+            case 3: # saves everything to a save file
                 level = logging.DEBUG
                 logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
-            case _: # more than 3 V is too much
+            case _: # more than 3 V is too much, save as case 3
                 level = logging.DEBUG
                 logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
-        __logger__.setLevel(level=level)
+        __logger__.setLevel(level=level) # __logger__ = logging.getLogger("ffxivcalc") 
 
     match args.action:
         case 'simulate':

@@ -25,14 +25,12 @@
                 "Auras": [],
                 "actionList": [
                     {
-                        "actionName": "RuinIIId"
+                        "actionName": "RuinIII"
                     },
                     {
                         "actionName": "SummonBahamut"
                     },
                     {
-                        "actionName": "SearingLight"
-                    },{
                         "actionName": "SearingLight"
                     },
                     {
