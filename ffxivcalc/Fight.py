@@ -85,6 +85,8 @@ class Fight:
         TimeUnit : float -> unit at which the simulator will advance through time in the simulation
         TimeLimit : float -> time limit at which the simulator will stop
         vocal : bool -> True if we want to print out the results
+        verbose (bool) -> True if we want the fight to record logs. The log file will be saved in the same folder the python script was executed from
+        loglevel (str) -> level at which we want the logging to record.
         """
 
         self.TimeStamp = 0   # Keep track of the time

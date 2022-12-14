@@ -54,7 +54,8 @@ def main() -> int:
             case _: # more than 3 V is too much
                 level = logging.DEBUG
         logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s')
-        logging.basicConfig(filename='ffxivcalc_log.log', encoding='utf-8',level=logging.DEBUG)
+        numeric_level = getattr(logging, "DEBUG".upper(), None)
+        logging.basicConfig(filename='ffxivcalc_log.log', encoding='utf-8',level=numeric_level)
         __logger__.setLevel(level=level)
 
     match args.action:
