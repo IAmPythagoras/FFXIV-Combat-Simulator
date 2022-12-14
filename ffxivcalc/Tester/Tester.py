@@ -68,8 +68,8 @@ class Tester:
 
             
             # Restoring into Event object
-            Event_Req = RestoreFightObject(data_test) # Requirement on
-            Event = RestoreFightObject(data_test) # No requirements
+            Event_Req = RestoreFightObject(data_test, name=test["Fight"]) # Requirement on
+            Event = RestoreFightObject(data_test, name=test["Fight"]) # No requirements
             
             Event.ShowGraph = False
             Event.RequirementOn = False

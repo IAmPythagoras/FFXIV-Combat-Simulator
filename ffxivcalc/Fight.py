@@ -129,6 +129,7 @@ class Fight:
             Player.EffectList.append(GCDReductionEffect)
 
         fight_logging.debug("Starting simulation with TeamCompositionBonus = " + str(self.TeamCompositionBonus))
+        fight_logging.debug("Parameters are -> RequirementOn : " + str(self.RequirementOn) + ", IgnoreMana : " + str(self.IgnoreMana))
 
         while(self.TimeStamp <= TimeLimit):
 

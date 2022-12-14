@@ -218,13 +218,13 @@ def SaveFight(Event, countdown, fightDuration, saveName):
         json.dump(data,write_files, indent=4) #saving file
 
 
-def RestoreFightObject(data : dict):
+def RestoreFightObject(data : dict, name : str = ""):
     """
     This takes a FightDict dictionnary and converts it back into an Event object.
     data : dict -> dictionnary with the fight's data
     """
 
-    helper_logging.debug("Restoring saved file into Event object.")
+    helper_logging.debug("Restoring saved file " + name + " into Event object.")
 
     
     PlayerActionList = {} #Dictionnary containing all player with their action
@@ -404,7 +404,7 @@ def SimulateFightBackend(file_name : str):
 
     print("Restoring save file into Event object...")
 
-    Event = RestoreFightObject(data)
+    Event = RestoreFightObject(data, name=file_name)
 
     fightInfo = data["data"]["fightInfo"] #fight information
     Event.ShowGraph = fightInfo["ShowGraph"] #Default

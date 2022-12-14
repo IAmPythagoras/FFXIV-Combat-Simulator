@@ -15,8 +15,9 @@ def get_parser() -> ArgumentParser:
     """Defines all the cli arguments to be parsed
     :return: An ArgumentParser object
     """
+    verbose_help = " -v (Displays on terminal logging at level ERROR), -vv (Displays on terminal logging at level WARNING), -vvv (Creates a log file that has logging level DEBUG)"
     parser = ArgumentParser(prog=prog)
-    parser.add_argument('-v', '--verbose', action='count', default=0)
+    parser.add_argument('-v', '--verbose', action='count', default=0, help=verbose_help)
     subparsers = parser.add_subparsers(help='action to perform', dest='action')
 
     # Running in code simulation
