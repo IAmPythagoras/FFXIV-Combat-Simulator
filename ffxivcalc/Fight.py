@@ -74,7 +74,7 @@ class Fight:
             player.CurrentFight = self
             self.PlayerList.append(player)
 
-    def SimulateFight(self, TimeUnit, TimeLimit, vocal, verbose=True, loglevel="DEBUG") -> None:
+    def SimulateFight(self, TimeUnit, TimeLimit, vocal) -> None:
 
         """
         This function will Simulate the fight given the enemy and player list of this Fight
@@ -85,19 +85,10 @@ class Fight:
         TimeUnit : float -> unit at which the simulator will advance through time in the simulation
         TimeLimit : float -> time limit at which the simulator will stop
         vocal : bool -> True if we want to print out the results
-        verbose (bool) -> True if we want the fight to record logs. The log file will be saved in the same folder the python script was executed from
-        loglevel (str) -> level at which we want the logging to record.
         """
 
         self.TimeStamp = 0   # Keep track of the time
         start = False
-        self.verbose = verbose
-
-        if verbose: # If want log creates log
-            numeric_level = getattr(logging, loglevel.upper(), None)
-            if not isinstance(numeric_level, int):
-                raise ValueError('Invalid log level: %s' % loglevel %' (Valid levels are DEBUG, INFO, WARNING, ERROR, CRITICAL)')
-            logging.basicConfig(filename='ffxivcalc_log.log', encoding='utf-8',level=numeric_level)
 
 
         self.timeValue = []  # Used for graph
