@@ -8,6 +8,12 @@ Lock = 0
 
 #Requirement
 
+def GoringBladeRequirement(Player, Spell):
+    return Player.GoringBladeCD <= 0, Player.GoringBladeCD
+
+def BulwarkRequirement(Player, Spell):
+    return Player.BulwarkCD <= 0, Player.BulwarkCD
+
 def FightOrFlightRequirement(Player, Spell):
     return Player.FightOrFlightCD <= 0, Player.FightOrFlightCD
 
@@ -63,6 +69,11 @@ def ApplyHallowedGround(Player, Enemy):
 
     Player.InvulnTimer = 10
 
+def ApplyBulwark(Player, Enemy):
+    Player.BulwarkCD = 90
+    BulwarkMit = MitBuff(20, 10, Player)
+
+    Player.MitBuffList.append(BulwarkMit)
 
 def ApplyHolySheltron(Player, Enemy):
     Player.HolySheltronCD = 5
@@ -114,7 +125,7 @@ def ApplyTotalEclipse(Player, Enemy):
 def ApplyFightOrFlight(Player, Enemy):
     Player.FightOrFlightTimer = 25
     Player.FightOrFlightCD = 60
-    Player.EffectList.append(FightOrFlightEffect)
+    Player.buffList.append(FightOrFlightBuff)
     Player.EffectCDList.append(FightOrFlightCheck)
 
 def ApplyExpiacion(Player, Enemy):
@@ -140,7 +151,7 @@ def ApplyCircleScorn(Player, Enemy):
 def ApplyRequestACat(Player, Enemy):
     Player.RequestACatCD = 60
     Player.RequestACat = True
-    Player.RequestACatStack = 5
+    Player.RequestACatStack = 4
     Player.EffectList.append(RequestACatEffect)
     Player.EffectCDList.append(RequestACatCheck)
 
@@ -154,11 +165,6 @@ def ApplyBladeTruth(Player, Enemy):
 
 def ApplyBladeValor(Player, Enemy):
     Player.BladeValor = False
-    Player.GoringDOTTimer = 0   #Remove GoringBladeDOT
-    Player.ValorDOT = copy.deepcopy(BladeValorDOT)
-    Player.DOTList.append(Player.ValorDOT)
-    Player.ValorDOTTimer = 21
-    Player.EffectCDList.append(ValorDOTCheck)
 
 
 def ApplyConfetti(Player, Enemy):
@@ -166,52 +172,85 @@ def ApplyConfetti(Player, Enemy):
     Player.RequestACatStack = False
     Player.BladeFaith = True
 
-#Combo Action
 
 def ApplyFastBlade(Player, Enemy):
     if not (FastBladeCombo in Player.EffectList) : 
         Player.EffectList.append(FastBladeCombo)
 
+def ApplyGoringBlade(Player, Enemy):
+    Player.GoringBladeCD = 60 * Player.WeaponskillReduction # Cuz is weaponskill
 
-#Effect
 
-def TotalEclipseCombo(Player, Spell):
-    if Spell.id == Prominence.id:
-        Spell.Potency += 70
-        Player.EffectToRemove.append(TotalEclipseCombo)
 
+
+"""
+post 6.3 effect
 def FightOrFlightEffect(Player, Spell):
     if Spell.isPhysical or isinstance(Spell, DOTSpell):
         Spell.DPSBonus *= FightOrFlightBuff.MultDPS #Giving bonus to the spell if it is physical
+"""
+
+def DivineMightEffect(Player, Spell):
+    """Allows next holy spirit or holy circle to be cast immediately with increased potency.
+    """
+    if Spell.id == HolySpirit.id:
+        Spell.Potency += 100
+        Spell.CastTime = 0
+        Player.EffectToRemove.append(DivineMightEffect)
+    elif Spell.id == HolyCircle.id:
+        Spell.Potency += 100
+        Spell.CastTime = 0
+        Player.EffectToRemove.append(DivineMightEffect)
 
 def RequestACatEffect(Player, Spell):
-    if Spell.id == HolySpirit.id:
-        Spell.Potency += 300
-        Spell.CastTime = 0
-        Player.RequestACatStack -= 1
-    elif Spell.id == HolyCircle.id:
-        Spell.Potency += 170
-        Spell.CastTime = 0
-        Player.RequestACatStack -= 1
-    elif Spell.id == Clemency.id:
-        Spell.CastTime = 0
-        Player.RequestACatStack -= 1
+
+    match Spell.id:
+        case HolySpirit.id:
+            Spell.Potency += 300
+            Spell.CastTime = 0
+            Player.RequestACatStack -= 1
+        case HolyCircle.id:
+            Spell.Potency += 170
+            Spell.CastTime = 0
+            Player.RequestACatStack -= 1
+        case Clemency.id:
+            Spell.CastTime = 0
+            Player.RequestACatStack -= 1
+    #Confiteor combo
+        case Confetti.id | BladeFaith.id | BladeTruth.id | BladeValor.id:
+            Spell.Potency += 500
+            Player.RequestACatStack -= 1
+
+    
 
 
 
 #Combo Action
 
+def TotalEclipseCombo(Player, Spell):
+    if Spell.id == Prominence.id:
+        Spell.Potency += 70
+        Player.EffectToRemove.append(TotalEclipseCombo)
+        # also gives Divine might
+        Player.EffectList.append(DivineMightEffect)
+
+
 def FastBladeCombo(Player, Spell):
     if Spell.id == RiotBlade.id:
-        Spell.Potency += 130
+        Spell.Potency += 160
         Player.EffectToRemove.append(FastBladeCombo)
         Player.EffectList.append(RiotBladeCombo)
 
 def RiotBladeCombo(Player, Spell):
     if Spell.id == RoyalAuthority.id:
-        Spell.Potency += 290
+        Spell.Potency += 260
         Player.SwordOathStack += 3
         Player.EffectToRemove.append(RiotBladeCombo)
+        # also gives Divine might
+        Player.EffectList.append(DivineMightEffect)
+
+    """
+    Old goring blade
     elif Spell.id == GoringBlade.id:
         #Apply dot
 
@@ -222,6 +261,7 @@ def RiotBladeCombo(Player, Spell):
         Player.GoringDOTTimer = 21
         Spell.Potency += 150
         Player.EffectToRemove.append(RiotBladeCombo)
+    """
 
 
 #Check
@@ -237,9 +277,10 @@ def RequestACatCheck(Player, Enemy):
         Player.EffectToRemove.append(RequestACatCheck)
         Player.BladeFaith = True
 
+
 def FightOrFlightCheck(Player, Enemy):
     if Player.FightOrFlighTimer <= 0:
-        Player.EffectList.remove(FightOrFlightEffect)
+        Player.buffList.remove(FightOrFlightBuff)
         Player.EffectToRemove.append(FightOrFlightCheck)
 
 def InterveneStackCheck(Player, Enemy):
@@ -255,7 +296,8 @@ def CircleScornDOTCheck(Player, Enemy):
         Player.DOTList.remove(Player.CircleScornDOT)
         Player.CircleScornDOT = None
         Player.EffectToRemove.append(CircleScornDOTCheck)
-
+"""
+Post 6.3
 def GoringDOTCheck(Player, Enemy):
     if Player.GoringDOTTimer <= 0:
         Player.DOTList.remove(Player.GoringDOT)
@@ -267,40 +309,45 @@ def ValorDOTCheck(Player, Enemy):
         Player.DOTList.remove(Player.ValorDOT)
         Player.EffectToRemove.append(ValorDOTCheck)
         Player.ValorDOT = None
-
+"""
 
 #Combo action
 
 FastBlade = PaladinSpell(9, True, Lock, 2.5, 200, 0, ApplyFastBlade, [], True, type = 2)
-RiotBlade = PaladinSpell(15, True, Lock, 2.5, 170, 0, empty, [], True, type = 2)
-RoyalAuthority = PaladinSpell(3539, True, Lock, 2.5, 130,0, empty, [], True, type = 2)
+RiotBlade = PaladinSpell(15, True, Lock, 2.5, 120, 0, empty, [], True, type = 2)
+RoyalAuthority = PaladinSpell(3539, True, Lock, 2.5, 120,0, empty, [], True, type = 2)
+GoringBlade = PaladinSpell(3538, True, Lock, 2.5, 700, 0, ApplyGoringBlade, [GoringBladeRequirement], True, type = 2)
+"""
+Post 6.3 goring blade
 GoringBlade = PaladinSpell(3538, True, Lock, 2.5, 100, 0, empty, [], True, type = 2)
 GoringDOT = DOTSpell(-5, 65, True)
-
+"""
 #Confiteor Combo Action
 
-Confetti = PaladinSpell(16459, True, Lock, 2.5, 1000, 1000, ApplyConfetti, [ManaRequirement, ConfettiRequirement], False, type = 1) # >.>
-BladeFaith = PaladinSpell(25748, True, Lock, 2.5, 480, 0, ApplyBladeFaith, [BladeFaithRequirement], False, type = 1)
-BladeTruth = PaladinSpell(25749, True, Lock, 2.5, 560, 0, ApplyBladeTruth, [BladeTruthRequirement], False, type = 1)
-BladeValor = PaladinSpell(25750, True, Lock, 2.5, 620, 0, ApplyBladeValor, [BladeValorRequirement], False, type = 1)
+Confetti = PaladinSpell(16459, True, Lock, 2.5, 400, 1000, ApplyConfetti, [ManaRequirement, ConfettiRequirement], False, type = 1) # >.>
+BladeFaith = PaladinSpell(25748, True, Lock, 2.5, 200, 0, ApplyBladeFaith, [BladeFaithRequirement], False, type = 1)
+BladeTruth = PaladinSpell(25749, True, Lock, 2.5, 300, 0, ApplyBladeTruth, [BladeTruthRequirement], False, type = 1)
+BladeValor = PaladinSpell(25750, True, Lock, 2.5, 400, 0, ApplyBladeValor, [BladeValorRequirement], False, type = 1)
+"""
+Post 6.3
 BladeValorDOT = DOTSpell(-11, 80, True)
-
+"""
 #GCD
-HolySpirit = PaladinSpell(7384, True, 1.5, 2.5, 300, 1000, empty, [ManaRequirement], False, type = 1)
-Atonement = PaladinSpell(16460, True, Lock, 2.5, 420, 0, ApplyAtonement, [AtonementRequirement], True, type = 1)
+HolySpirit = PaladinSpell(7384, True, 1.5, 2.5, 350, 1000, empty, [ManaRequirement], False, type = 1)
+Atonement = PaladinSpell(16460, True, Lock, 2.5, 380, 0, ApplyAtonement, [AtonementRequirement], True, type = 1)
 Clemency = PaladinSpell(3541, True, 1.5, 2.5, 0, 1000, empty, [ManaRequirement], False, type = 2)
 ShieldLob = PaladinSpell(24, True, 0, 2.5, 100, 0, empty, [], True , type = 2)
 #AOE GCD
-HolyCircle = PaladinSpell(16458, True, 1.5, 2.5,130, 1000, empty, [ManaRequirement], False, type = 1)
+HolyCircle = PaladinSpell(16458, True, 1.5, 2.5,100, 1000, empty, [ManaRequirement], False, type = 1)
 TotalEclipse = PaladinSpell(7381, True, 0, 2.5, 100, 0, ApplyTotalEclipse, [], True, type = 2)
 Prominence = PaladinSpell(16457, True, 0, 2.5, 100, 0, empty, [], True, type = 2)
 
 #oGCD
-RequestACat = PaladinSpell(7383, False, 0, Lock, 400, 0, ApplyRequestACat, [RequestACatRequirement], True) #I NEED ONE RIGHT NOW :x
+RequestACat = PaladinSpell(7383, False, 0, Lock, 300, 0, ApplyRequestACat, [RequestACatRequirement], True) #I NEED ONE RIGHT NOW :x
 CircleScorn = PaladinSpell(23, False, 0, Lock, 100, 0, ApplyCircleScorn, [CircleScornRequirement], True)
 CircleScornDOT = DOTSpell(-6, 30, True)
 Intervene = PaladinSpell(16461, False, 0, Lock, 150, 0, ApplyIntervene, [InterveneRequirement], True)
-Expiacion = PaladinSpell(25747, False, 0, Lock, 420, 0, ApplyExpiacion, [ExpiacionRequirement], True)
+Expiacion = PaladinSpell(25747, False, 0, Lock, 450, 0, ApplyExpiacion, [ExpiacionRequirement], True)
 FightOrFlight = PaladinSpell(20, False, 0, Lock, 0, 0, ApplyFightOrFlight, [FightOrFlightRequirement], True)
 
 #Mitigation Actions
@@ -308,6 +355,7 @@ DivineVeil = PaladinSpell(3540, False, 0, 0, 0, 0, ApplyDivineVeil, [DivineVeilR
 HolySheltron = PaladinSpell(25746, False, 0, 0, 0, 0, ApplyHolySheltron, [HolySheltronRequirement,SheltronRequirement], False)
 Cover = PaladinSpell(27, False, 0, 0, 0, 0, ApplyCover, [SheltronRequirement, CoverRequirement], False)
 HallowedGround = PaladinSpell(30, False, 0, 0, 0, 0, ApplyHallowedGround, [HallowedGroundRequirement], False)
+Bulwark = PaladinSpell(11111, False, 0, 0, 0, 0, ApplyBulwark, [BulwarkRequirement], False)
 
 def Intervention(Target):
     """This function returns a PLDSpell object corresponding to
