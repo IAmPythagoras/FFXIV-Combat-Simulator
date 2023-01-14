@@ -142,7 +142,8 @@ def ApplyAtonement(Player, Enemy):
     Player.SwordOathStack -= 1
 
 def ApplyCircleScorn(Player, Enemy):
-    #Since DOT has 30 sec CD and 15 sec duration, we don't have to check
+    #Since DOT has 30 sec CD and 15 sec duration, we don't have to check if already applied
+    Player.CircleScornCD = 30
     Player.CircleScornDOT = copy.deepcopy(CircleScornDOT)
     Player.DOTList.append(Player.CircleScornDOT)
     Player.CircleScornTimer = 15
@@ -168,8 +169,6 @@ def ApplyBladeValor(Player, Enemy):
 
 
 def ApplyConfetti(Player, Enemy):
-    Player.RequestACatStack = 0
-    Player.RequestACatStack = False
     Player.BladeFaith = True
 
 

@@ -95,9 +95,9 @@
                 "TestName": "paladin",
                 "Fight": "paladin_test.json",
                 "ExpectedResult": {
-                    "EndTime": "98.26",
+                    "EndTime": "48.42",
                     "1": {
-                        "ExpectedTotalPotency": "14850"
+                        "ExpectedTotalPotency": "9630"
                     }
                 }
             },
