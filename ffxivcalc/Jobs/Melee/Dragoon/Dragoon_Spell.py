@@ -127,7 +127,7 @@ def ApplySpineshafter(Player, Enemy):
 def ApplyLifeSurge(Player, Enemy):
     if Player.LifeSurgeStack == 2:
         Player.EffectCDList.append(LifeSurgeStackCheck)
-        Player.LifeSurgeCD = 45
+        Player.LifeSurgeCD = 40
     Player.LifeSurgeStack -= 1
 
     Player.NextCrit = True
