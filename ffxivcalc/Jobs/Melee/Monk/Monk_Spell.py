@@ -68,10 +68,7 @@ def ApplyRiddleOfFire(Player, Enemy):
     Player.buffList.append(RiddleOfFireBuff)
 
 def ApplyRiddleOfEarth(Player, Enemy):
-    if Player.RiddleOfEarthStack == 3:
-        Player.EffectCDList.append(RiddleOfEarthStackCheck)
-        Player.RiddleOfEarthCD = 30
-    Player.RiddleOfEarthStack -= 1
+    Player.RiddleOfEarthCD = 120
 
 def ApplyElixirField(Player, Enemy):
     Player.ResetMasterGauge()

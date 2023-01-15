@@ -47,7 +47,7 @@
                 "ExpectedResult": {
                     "EndTime": "49.16",
                     "1": {
-                        "ExpectedTotalPotency": "7660"
+                        "ExpectedTotalPotency": "7620"
                     }
                 }
             },
@@ -95,9 +95,9 @@
                 "TestName": "paladin",
                 "Fight": "paladin_test.json",
                 "ExpectedResult": {
-                    "EndTime": "98.26",
+                    "EndTime": "48.42",
                     "1": {
-                        "ExpectedTotalPotency": "14850"
+                        "ExpectedTotalPotency": "9630"
                     }
                 }
             },
@@ -167,7 +167,7 @@
                 "ExpectedResult": {
                     "EndTime": "82.57",
                     "1": {
-                        "ExpectedTotalPotency": "10940"
+                        "ExpectedTotalPotency": "11050"
                     }
                 }
             },

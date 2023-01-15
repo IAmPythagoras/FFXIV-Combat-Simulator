@@ -19,10 +19,14 @@ def AddGauge(Player, Battery, Heat):
 def RemoveGauge(Player, Battery, Heat):
     Player.BatteryGauge = max(0, Player.BatteryGauge - Battery)
     Player.HeatGauge = max(0, Player.HeatGauge - Heat)
+
 #Requirement
 
+def DismantleRequirement(Player, Spell):
+    return Player.DismantleCD <= 0, Player.DismantleCD
+
 def OverheatedRequirement(Player, Spell):
-    return Player.HyperchargeTimer > 0, -1 #True if Overheated
+    return Player.HyperchargeStack > 0, -1 #True if Overheated
 
 def WildFireRequirement(Player, Spell):
     return Player.WildFireCD <= 0, Player.WildFireCD
@@ -62,6 +66,9 @@ def TacticianRequirement(Player, Spell):
 
 #Apply
 
+def ApplyDismantle(Player, Enemy):
+    Player.DismantleCD = 120
+
 def ApplyTactician(Player, Enemy):
     Player.TacticianCD = 90
 
@@ -96,7 +103,7 @@ def ApplyHeatBlast(Player, Enemy):
     Player.RicochetCD = max(0, Player.RicochetCD - 15)
 
 def ApplyHypercharge(Player, Enemy):
-    Player.HyperchargeTimer = 8
+    Player.HyperchargeStack = 5
     Player.HyperchargeCD = 10
     RemoveGauge(Player, 0, 50)#cost
     Player.EffectList.append(HyperchargeEffect)
@@ -172,18 +179,19 @@ def ApplyCleanShot(Player, Enemy):
 #Effect
 
 def WildFireEffect(Player, Spell):
-    if isinstance(Spell, MachinistSpell) and Spell.Weaponskill : Player.WildFireStack +=1
+    if isinstance(Spell, MachinistSpell) and Spell.Weaponskill : Player.WildFireStack = min(6, Player.WildFireStack + 1) # Max of 6
 
 def HyperchargeEffect(Player, Spell):
     if isinstance(Spell, MachinistSpell) and Spell.Weaponskill : 
         Spell.Potency += 20
+        Player.RemoveHyperchargeStack = True
 
 #Combo Actions effect
 
 def SplitShotEffect(Player, Spell):
     if Spell.id == SlugShot.id:
 
-        Spell.Potency += 160
+        Spell.Potency += 180
         Player.EffectToRemove.append(SplitShotEffect)
         if not (SlugShotEffect in Player.EffectList) : Player.EffectList.append(SlugShotEffect)
         AddGauge(Player, 0, 5)
@@ -191,7 +199,7 @@ def SplitShotEffect(Player, Spell):
 def SlugShotEffect(Player, Spell):
     if Spell.id == CleanShot.id:
 
-        Spell.Potency += 250
+        Spell.Potency += 260
         Player.EffectToRemove.append(SlugShotEffect)
         AddGauge(Player, 10, 5)
 
@@ -217,8 +225,8 @@ def BioblasterDOTCheck(Player, Enemy):
 
 def WildFireCheck(Player, Enemy):
     if Player.WildFireTimer <= 0:
-
-        WildFireOff = MachinistSpell(-2878, False, 0, 0, 240 * Player.WildFireStack, 0, empty, [], False)
+        WildFireOff = MachinistSpell(2878, False, 0, 0, 240 * Player.WildFireStack, 0, empty, [], False)
+        # Gives same ID as wildfire action so it shows in the log file
         #Temporary Spell that will be put in front of the Queue
         Player.ActionSet.insert(Player.NextSpell+1, WildFireOff) #Insert in queue, will be instantly executed
         Player.EffectList.remove(WildFireEffect)
@@ -226,7 +234,12 @@ def WildFireCheck(Player, Enemy):
         Player.WildFireStack = 0
 
 def HyperchargeCheck(Player, Enemy):
-    if Player.HyperchargeTimer <= 0:
+
+    if Player.RemoveHyperchargeStack:
+        Player.RemoveHyperchargeStack = False
+        Player.HyperchargeStack -= 1
+
+    if Player.HyperchargeStack == 0:
         Player.EffectList.remove(HyperchargeEffect)
         Player.EffectToRemove.append(HyperchargeCheck)
 
@@ -272,14 +285,16 @@ def QueenAACheck(Player, Enemy):
 
 
 
+
+Dismantle = MachinistSpell(111111, False, 0, 0, 0, 0, ApplyDismantle, [DismantleRequirement], False)
 Wildfire = MachinistSpell(2878, False, 0, Lock, 0, 0, ApplyWildFire, [WildFireRequirement], False)
 AirAnchor = MachinistSpell(16500, True, 0, 2.5, 600, 0, ApplyAirAnchor, [AirAnchorRequirement], True, type = 2)
 BarrelStabilizer = MachinistSpell(7414, False, 0, Lock, 0, 0, ApplyBarrelStabilizer, [BarrelStabilizerRequirement], False)
 HeatBlast = MachinistSpell(7410, True, Lock, 1.5, 200, 0, ApplyHeatBlast, [OverheatedRequirement], True, type = 2)
 Hypercharge = MachinistSpell(17209, False, 0, Lock, 0, 0, ApplyHypercharge, [HyperchargeRequirement], False)
 Reassemble = MachinistSpell(2876, False, 0, Lock, 0, 0, ApplyReassemble, [ReassembleRequirement], False)
-GaussRound = MachinistSpell(2874, False, 0, Lock, 120, 0, ApplyGaussRound, [GaussRoundRequirement], False)
-Ricochet = MachinistSpell(2890, False, 0, Lock, 120, 0, ApplyRicochet, [RicochetRequirement], False)
+GaussRound = MachinistSpell(2874, False, 0, Lock, 130, 0, ApplyGaussRound, [GaussRoundRequirement], False)
+Ricochet = MachinistSpell(2890, False, 0, Lock, 130, 0, ApplyRicochet, [RicochetRequirement], False)
 Drill = MachinistSpell(16498, True, 0, 2.5, 600, 0, ApplyDrill, [DrillRequirement], True, type = 2)
 ChainSaw = MachinistSpell(25788, True, 0, 2.5, 600, 0, ApplyChainSaw, [ChainSawRequirement], True, type = 2)
 Tactician = MachinistSpell(16889, False, 0, 0, 0, 0, ApplyTactician, [TacticianRequirement], False)
@@ -287,7 +302,7 @@ Tactician = MachinistSpell(16889, False, 0, 0, 0, 0, ApplyTactician, [TacticianR
 
 SplitShot = MachinistSpell(7411, True, Lock, 2.5, 200, 0, ApplySplitShot, [], True, type = 2)
 SlugShot = MachinistSpell(7412, True, Lock, 2.5, 120, 0, ApplySlugShot, [], True , type = 2)
-CleanShot = MachinistSpell(7413, True, Lock, 2.5, 110, 0, ApplyCleanShot, [], True, type = 2)
+CleanShot = MachinistSpell(7413, True, Lock, 2.5, 120, 0, ApplyCleanShot, [], True, type = 2)
 
 
 #AOE GCD

@@ -1132,6 +1132,9 @@ class Player:
         self.updateJobCD = updateCD
 
     def init_machinist(self):
+        #Special
+        self.RemoveHyperchargeStack = False # Used to know when to remove a hypercharge stack
+
         #Gauge
         self.BatteryGauge = 0
         self.HeatGauge = 0
@@ -1151,10 +1154,10 @@ class Player:
         self.AutomatonQueenCD = 0
         self.FlamethrowerCD = 0
         self.TacticianCD = 0
+        self.DismantleCD = 0
 
         #Timer
         self.WildFireTimer = 0
-        self.HyperchargeTimer = 0
         self.BioblasterDOTTimer = 0
         self.FlamethrowerDOTTimer = 0
         self.QueenStartUpTimer = 0
@@ -1166,6 +1169,7 @@ class Player:
         self.RicochetStack = 3
         self.WildFireStack = 0  #Used to know how many weaponskills have hit during Wildfire
         self.Reassemble = False
+        self.HyperchargeStack = 0
 
         #Combo Action
         self.SlugShot = False
@@ -1199,11 +1203,11 @@ class Player:
             if (self.AutomatonQueenCD > 0) : self.AutomatonQueenCD = max(0,self.AutomatonQueenCD - time)
             if (self.FlamethrowerCD > 0) : self.FlamethrowerCD = max(0,self.FlamethrowerCD - time)
             if (self.TacticianCD > 0) : self.TacticianCD = max(0,self.TacticianCD - time)
+            if (self.DismantleCD > 0) : self.DismantleCD = max(0,self.DismantleCD - time)
 
         def updateTimer(self, time : float):
             
             if (self.WildFireTimer > 0) : self.WildFireTimer = max(0,self.WildFireTimer - time)
-            if (self.HyperchargeTimer > 0) : self.HyperchargeTimer = max(0,self.HyperchargeTimer - time)
             if (self.BioblasterDOTTimer > 0) : self.BioblasterDOTTimer = max(0,self.BioblasterDOTTimer - time)
             if (self.FlamethrowerDOTTimer > 0) : self.FlamethrowerDOTTimer = max(0,self.FlamethrowerDOTTimer - time)
             if (self.QueenStartUpTimer > 0) : self.QueenStartUpTimer = max(0,self.QueenStartUpTimer - time)
@@ -1983,18 +1987,18 @@ class Player:
         self.RequestACat = False
 
         #Timer
-        self.GoringDOTTimer = 0
+        #self.GoringDOTTimer = 0
         self.CircleScornTimer = 0
-        self.ValorDOTTimer = 0
+        #self.ValorDOTTimer = 0
         self.FightOrFlighTimer = 0
         self.HolySheltronTimer = 0
         self.PassageOfArmsTimer = 0
         self.DivineVeilTimer = 0
 
         #DOT
-        self.GoringDOT = None
+        #self.GoringDOT = None
         self.CircleScornDOT = None
-        self.ValorDOT = None
+        #self.ValorDOT = None
 
         #CD
         self.RequestACatCD = 0
@@ -2008,6 +2012,8 @@ class Player:
         self.InterventionCD = 0
         self.PassageOfArmsCD = 0
         self.HallowedGroundCD = 0
+        self.BulwarkCD = 0
+        self.GoringBladeCD = 0
 
         #JobMod
         self.JobMod = 100
@@ -2027,13 +2033,15 @@ class Player:
             if (self.InterventionCD > 0) : self.InterventionCD = max(0,self.InterventionCD - time)
             if (self.PassageOfArmsCD > 0) : self.PassageOfArmsCD = max(0,self.PassageOfArmsCD - time)
             if (self.HallowedGroundCD > 0) : self.HallowedGroundCD = max(0,self.HallowedGroundCD - time)
+            if (self.BulwarkCD > 0) : self.BulwarkCD = max(0,self.BulwarkCD - time)
+            if (self.GoringBladeCD > 0) : self.GoringBladeCD = max(0,self.GoringBladeCD - time)
 
         def updateTimer(self, time : float):
             
-            if (self.GoringDOTTimer > 0) : self.GoringDOTTimer = max(0,self.GoringDOTTimer - time)
+            #if (self.GoringDOTTimer > 0) : self.GoringDOTTimer = max(0,self.GoringDOTTimer - time)
             if (self.CircleScornTimer > 0) : self.CircleScornTimer = max(0,self.CircleScornTimer - time)
             if (self.FightOrFlighTimer > 0) : self.FightOrFlighTimer = max(0,self.FightOrFlighTimer - time)
-            if (self.ValorDOTTimer > 0) : self.ValorDOTTimer = max(0,self.ValorDOTTimer - time)
+            #if (self.ValorDOTTimer > 0) : self.ValorDOTTimer = max(0,self.ValorDOTTimer - time)
             if (self.HolySheltronTimer > 0) : self.HolySheltronTimer = max(0,self.HolySheltronTimer - time)
             if (self.PassageOfArmsTimer > 0) : self.PassageOfArmsTimer = max(0,self.PassageOfArmsTimer - time)
             if (self.DivineVeilTimer > 0) : self.DivineVeilTimer = max(0,self.DivineVeilTimer - time)

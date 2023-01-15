@@ -97,7 +97,7 @@ def ApplyDia(Player, Enemy):
 
 def ApplyAssize(Player, Enemy):
     Player.Mana = min(10000, Player.Mana + 500)
-    Player.AssizeCD = 45
+    Player.AssizeCD = 40
 
 def ApplyThinAir(Player, Enemy):
     Player.ThinAirCD = 60

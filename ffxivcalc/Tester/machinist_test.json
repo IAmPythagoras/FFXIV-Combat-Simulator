@@ -78,10 +78,6 @@
                         "actionName": "Automaton"
                     },
                     {
-                        "actionName": "WaitAbility",
-                        "waitTime": 2
-                    },
-                    {
                         "actionName": "Hypercharge"
                     },
                     {
@@ -121,6 +117,7 @@
                         "actionName": "WaitAbility",
                         "waitTime": 60
                     }
+                    
                 ],
                 "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."
             }
