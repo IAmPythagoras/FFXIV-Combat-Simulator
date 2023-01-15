@@ -1132,6 +1132,9 @@ class Player:
         self.updateJobCD = updateCD
 
     def init_machinist(self):
+        #Special
+        self.RemoveHyperchargeStack = False # Used to know when to remove a hypercharge stack
+
         #Gauge
         self.BatteryGauge = 0
         self.HeatGauge = 0
@@ -1151,10 +1154,10 @@ class Player:
         self.AutomatonQueenCD = 0
         self.FlamethrowerCD = 0
         self.TacticianCD = 0
+        self.DismantleCD = 0
 
         #Timer
         self.WildFireTimer = 0
-        self.HyperchargeTimer = 0
         self.BioblasterDOTTimer = 0
         self.FlamethrowerDOTTimer = 0
         self.QueenStartUpTimer = 0
@@ -1166,6 +1169,7 @@ class Player:
         self.RicochetStack = 3
         self.WildFireStack = 0  #Used to know how many weaponskills have hit during Wildfire
         self.Reassemble = False
+        self.HyperchargeStack = 0
 
         #Combo Action
         self.SlugShot = False
@@ -1199,11 +1203,11 @@ class Player:
             if (self.AutomatonQueenCD > 0) : self.AutomatonQueenCD = max(0,self.AutomatonQueenCD - time)
             if (self.FlamethrowerCD > 0) : self.FlamethrowerCD = max(0,self.FlamethrowerCD - time)
             if (self.TacticianCD > 0) : self.TacticianCD = max(0,self.TacticianCD - time)
+            if (self.DismantleCD > 0) : self.DismantleCD = max(0,self.DismantleCD - time)
 
         def updateTimer(self, time : float):
             
             if (self.WildFireTimer > 0) : self.WildFireTimer = max(0,self.WildFireTimer - time)
-            if (self.HyperchargeTimer > 0) : self.HyperchargeTimer = max(0,self.HyperchargeTimer - time)
             if (self.BioblasterDOTTimer > 0) : self.BioblasterDOTTimer = max(0,self.BioblasterDOTTimer - time)
             if (self.FlamethrowerDOTTimer > 0) : self.FlamethrowerDOTTimer = max(0,self.FlamethrowerDOTTimer - time)
             if (self.QueenStartUpTimer > 0) : self.QueenStartUpTimer = max(0,self.QueenStartUpTimer - time)

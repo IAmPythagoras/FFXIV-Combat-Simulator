@@ -19,10 +19,14 @@ def AddGauge(Player, Battery, Heat):
 def RemoveGauge(Player, Battery, Heat):
     Player.BatteryGauge = max(0, Player.BatteryGauge - Battery)
     Player.HeatGauge = max(0, Player.HeatGauge - Heat)
+
 #Requirement
 
+def DismantleRequirement(Player, Spell):
+    return Player.DismantleCD <= 0, Player.DismantleCD
+
 def OverheatedRequirement(Player, Spell):
-    return Player.HyperchargeTimer > 0, -1 #True if Overheated
+    return Player.HyperchargeStack > 0, -1 #True if Overheated
 
 def WildFireRequirement(Player, Spell):
     return Player.WildFireCD <= 0, Player.WildFireCD
@@ -62,6 +66,9 @@ def TacticianRequirement(Player, Spell):
 
 #Apply
 
+def ApplyDismantle(Player, Enemy):
+    Player.DismantleCD = 120
+
 def ApplyTactician(Player, Enemy):
     Player.TacticianCD = 90
 
@@ -96,7 +103,7 @@ def ApplyHeatBlast(Player, Enemy):
     Player.RicochetCD = max(0, Player.RicochetCD - 15)
 
 def ApplyHypercharge(Player, Enemy):
-    Player.HyperchargeTimer = 8
+    Player.HyperchargeStack = 5
     Player.HyperchargeCD = 10
     RemoveGauge(Player, 0, 50)#cost
     Player.EffectList.append(HyperchargeEffect)
@@ -172,11 +179,12 @@ def ApplyCleanShot(Player, Enemy):
 #Effect
 
 def WildFireEffect(Player, Spell):
-    if isinstance(Spell, MachinistSpell) and Spell.Weaponskill : Player.WildFireStack +=1
+    if isinstance(Spell, MachinistSpell) and Spell.Weaponskill : Player.WildFireStack = min(6, Player.WildFireStack + 1) # Max of 6
 
 def HyperchargeEffect(Player, Spell):
     if isinstance(Spell, MachinistSpell) and Spell.Weaponskill : 
         Spell.Potency += 20
+        Player.RemoveHyperchargeStack = True
 
 #Combo Actions effect
 
@@ -217,8 +225,8 @@ def BioblasterDOTCheck(Player, Enemy):
 
 def WildFireCheck(Player, Enemy):
     if Player.WildFireTimer <= 0:
-
-        WildFireOff = MachinistSpell(-2878, False, 0, 0, 240 * Player.WildFireStack, 0, empty, [], False)
+        WildFireOff = MachinistSpell(2878, False, 0, 0, 240 * Player.WildFireStack, 0, empty, [], False)
+        # Gives same ID as wildfire action so it shows in the log file
         #Temporary Spell that will be put in front of the Queue
         Player.ActionSet.insert(Player.NextSpell+1, WildFireOff) #Insert in queue, will be instantly executed
         Player.EffectList.remove(WildFireEffect)
@@ -226,7 +234,12 @@ def WildFireCheck(Player, Enemy):
         Player.WildFireStack = 0
 
 def HyperchargeCheck(Player, Enemy):
-    if Player.HyperchargeTimer <= 0:
+
+    if Player.RemoveHyperchargeStack:
+        Player.RemoveHyperchargeStack = False
+        Player.HyperchargeStack -= 1
+
+    if Player.HyperchargeStack == 0:
         Player.EffectList.remove(HyperchargeEffect)
         Player.EffectToRemove.append(HyperchargeCheck)
 
@@ -273,7 +286,7 @@ def QueenAACheck(Player, Enemy):
 
 
 
-Dismantle = MachinistSpell(111111, False, 0, 0, 0, 0, empty, [], False)
+Dismantle = MachinistSpell(111111, False, 0, 0, 0, 0, ApplyDismantle, [DismantleRequirement], False)
 Wildfire = MachinistSpell(2878, False, 0, Lock, 0, 0, ApplyWildFire, [WildFireRequirement], False)
 AirAnchor = MachinistSpell(16500, True, 0, 2.5, 600, 0, ApplyAirAnchor, [AirAnchorRequirement], True, type = 2)
 BarrelStabilizer = MachinistSpell(7414, False, 0, Lock, 0, 0, ApplyBarrelStabilizer, [BarrelStabilizerRequirement], False)
