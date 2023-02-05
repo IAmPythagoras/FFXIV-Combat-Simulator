@@ -4,6 +4,7 @@ import logging
 main_logging = logging.getLogger("ffxivcalc")
 helper_logging = main_logging.getChild("Helper")
 from pathlib import Path
+import math
 
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
 from ffxivcalc.Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton
@@ -275,12 +276,25 @@ def RestoreFightObject(data : dict, name : str = ""):
         # Will check if the player is given an etro url.
 
         etro_url = player["etro_gearset_url"]
+        if "etro.gg/gearset/" in etro_url:
+            job_object.Stat = get_gearset_data(etro_url)
 
-        PlayerActionList[str(job_object.playerID)]["job_object"].Stat = get_gearset_data(etro_url) if "etro.gg/gearset/" in etro_url else player["stat"]
+            # Since etro now returns only the weapon damage multiplier, we have to find the the original WD.
+            job_object.f_WD = PlayerActionList[str(job_object.playerID)]["job_object"].Stat["WD"]/100 # Mult bonus we already know.
+            
+            baseMain = 390
+            JobMod = job_object.JobMod # Level 90 jobmod value, specific to each job
+            job_object.Stat["WD"] -= math.floor((baseMain * JobMod) /1000)
+            
+
+        else :
+            PlayerActionList[str(job_object.playerID)]["job_object"].Stat = player["stat"]
         # If detects an etro url copies the stats. Otherwise takes the stats from the file
         #We can access the information using the player's id
-
         #We will then check for Auras and do the appropriate effect
+        
+        # Logging the stat of the player
+        logging.debug("Player id " + str(job_object.playerID) + " has stats : " + str(job_object.Stat))
 
         for aura in player["Auras"]: #Going through all buffs in the player
             #We will look for a selection of buffs that are important. We will assume
