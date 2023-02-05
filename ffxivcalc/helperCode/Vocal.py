@@ -174,6 +174,13 @@ def PrintResult(self, time, TimeStamp) -> None:
             print("Expected FourfoldFeather : " + str(player.ExpectedFourfoldFeather) + " Used FourfoldFeather : " + str(player.UsedFourfoldFeather) )
             print("Expected ThreefoldFan : " + str(player.ExpectedThreefoldFan) + " Used ThreefoldFan : " + str(player.UsedThreefoldFan) )
             print("==================")
+        elif player.JobEnum == JobEnum.RedMage:
+            job = "Dancer"
+            print("==================")
+            print("Expected Vs Used Proc for Dancer")
+            print("Expected Verfire procs : " + str(player.ExpectedVerfireProc) + " Used Verfire procs : " + str(player.UsedVerfireProc) )
+            print("Expected Verstone procs : " + str(player.ExpectedVerstoneProc) + " Used Verstone procs : " + str(player.UsedVerstoneProc) )
+            print("==================")
 
 
 
