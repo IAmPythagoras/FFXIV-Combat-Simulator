@@ -86,6 +86,7 @@ def ApplyVerstone(Player,Enemy):
     Addmana(Player, 5, 0)
 
 def ApplyVerareao(Player, Enemy):
+    Player.ExpectedVerstoneProc += 0.5
     Addmana(Player, 6, 0)
 
 def ApplyVerthunder(Player, Enemy):
