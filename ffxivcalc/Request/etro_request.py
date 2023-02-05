@@ -44,13 +44,13 @@ def get_gearset_data(set_id: str) -> dict:
     # logging
 
     log_str = "Etro gear set stats. WD : " + str(stats["Weapon Damage"] if "Weapon Damage" in stats.keys() else 0)
-    log_str_2 = data["totalParams"]
+    log_str_2 = data
     logging.debug(log_str)
     logging.debug(log_str_2)
 
     return {
         "MainStat" : data["totalParams"][0]["value"] , # Always first value
-        "WD" : stats["Weapon Damage"] if "Weapon Damage" in stats.keys() else 0,
+        "WD" : stats["Weapon DMG Multiplier"] if "Weapon DMG Multiplier" in stats.keys() else 0,
         "Det" : stats["DET"],
         "Ten" : stats["TEN"] if "TEN" in stats.keys() else 400,
         "SS" : stats["SPS"] if "SPS" in stats.keys() else 400,
