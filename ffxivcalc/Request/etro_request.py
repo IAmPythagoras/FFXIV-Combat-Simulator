@@ -40,13 +40,6 @@ def get_gearset_data(set_id: str) -> dict:
 
 
     # Will now change the keys' name
-    
-    # logging
-
-    log_str = "Etro gear set stats. WD : " + str(stats["Weapon Damage"] if "Weapon Damage" in stats.keys() else 0)
-    log_str_2 = data
-    logging.debug(log_str)
-    logging.debug(log_str_2)
 
     return {
         "MainStat" : data["totalParams"][0]["value"] , # Always first value
