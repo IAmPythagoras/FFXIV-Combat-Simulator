@@ -310,9 +310,9 @@ class Fight:
                 print("It happened at : " + str(t.timeStamp))
 
         # Printing the results if vocal is true.
-        result = PrintResult(self, self.TimeStamp, self.timeValue)
+        result, fig = PrintResult(self, self.TimeStamp, self.timeValue)
         if vocal : print(result)
-        return result
+        return result, fig
             
 
 
