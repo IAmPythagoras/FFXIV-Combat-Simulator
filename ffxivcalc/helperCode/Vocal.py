@@ -148,8 +148,8 @@ def PrintResult(self, time, TimeStamp) -> str:
         result_string += (
             "Results for " + str(JobEnum.name_for_id(player.JobEnum)) + "\n" + 
             "DPS : " + str(round(DPS,2)) + 
-            "\tPPS : " + str(round(PPS,2)) + 
-            "\tGCD : " + str(player.GCDCounter) + "\n"
+            " PPS : " + str(round(PPS,2)) + 
+            " GCD : " + str(player.GCDCounter) + "\n"
         )
 
 
@@ -162,28 +162,28 @@ def PrintResult(self, time, TimeStamp) -> str:
             result_string += (
             "Procs/Gauge result (Used/Expected) : \n" +
             "Refulgent : " + str(round(player.ExpectedRefulgent,2)) + "/" + str(round(player.UsedRefulgent,2)) + 
-            "\tWanderer Repertoire : " + str(round(player.ExpectedTotalWandererRepertoire,2)) + "/" + str(round(player.UsedTotalWandererRepertoire,2)) +
-            "\tRepertoireAdd : " + str(round(player.UsedRepertoireAdd,2)) + 
-            "\tSoul Voice : " + str(round(player.ExpectedSoulVoiceGauge,2)) + "/" + str(round(player.UsedSoulVoiceGauge,2)) +
-            "\tSoul BloodLetter Reduction : " + str(round(player.ExpectedBloodLetterReduction,2)) + "/" + str(round(player.UsedBloodLetterReduction,2))
+            " Wanderer Repertoire : " + str(round(player.ExpectedTotalWandererRepertoire,2)) + "/" + str(round(player.UsedTotalWandererRepertoire,2)) +
+            " RepertoireAdd : " + str(round(player.UsedRepertoireAdd,2)) + 
+            "\nSoul Voice : " + str(round(player.ExpectedSoulVoiceGauge,2)) + "/" + str(round(player.UsedSoulVoiceGauge,2)) +
+            " Soul BloodLetter Reduction : " + str(round(player.ExpectedBloodLetterReduction,2)) + "/" + str(round(player.UsedBloodLetterReduction,2))
                              )
         elif player.JobEnum == JobEnum.Dancer:
             result_string += (
             "Procs/Gauge result (Used/Expected) : \n" +
             "Silken Symettry : " + str(round(player.ExpectedSilkenSymettry,2)) + "/" + str(round(player.UsedSilkenSymettry,2)) + 
-            "\tSilken Flow : " + str(round(player.ExpectedSilkenFlow,2)) + "/" + str(round(player.UsedSilkenFlow,2)) +
-            "\tFourfold Feather : " + str(round(player.ExpectedFourfoldFeather,2)) + "/" + str(round(player.UsedFourfoldFeather,2)) +
-            "\tThreefold Fan : " + str(round(player.ExpectedThreefoldFan,2)) + "/" + str(round(player.UsedThreefoldFan,2))
+            " Silken Flow : " + str(round(player.ExpectedSilkenFlow,2)) + "/" + str(round(player.UsedSilkenFlow,2)) +
+            "\nFourfold Feather : " + str(round(player.ExpectedFourfoldFeather,2)) + "/" + str(round(player.UsedFourfoldFeather,2)) +
+            " Threefold Fan : " + str(round(player.ExpectedThreefoldFan,2)) + "/" + str(round(player.UsedThreefoldFan,2))
                              )
         elif player.JobEnum == JobEnum.RedMage:
             result_string += (
             "Procs/Gauge result (Used/Expected) : \n" +
             "Verfire : " + str(round(player.ExpectedVerfireProc,2)) + "/" + str(round(player.UsedVerfireProc,2)) + 
-            "\tVerstone : " + str(round(player.ExpectedVerstoneProc,2)) + "/" + str(round(player.UsedVerstoneProc,2)) 
+            " Verstone : " + str(round(player.ExpectedVerstoneProc,2)) + "/" + str(round(player.UsedVerstoneProc,2)) 
                              )
 
 
-        result_string += "==="
+        result_string += "\n===\n"
 
 
         axs[0].plot(TimeStamp,player.DPSGraph, label=job)
