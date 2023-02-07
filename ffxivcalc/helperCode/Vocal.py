@@ -211,3 +211,5 @@ def PrintResult(self, time, TimeStamp) -> str:
     axs[0].legend()
     axs[1].legend()
     if self.ShowGraph: plt.show()
+
+    return result_string
