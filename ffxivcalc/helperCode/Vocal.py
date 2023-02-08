@@ -112,7 +112,7 @@ def PrintResult(self, time, TimeStamp) -> str:
     TimeStamp : List[float] -> list of all timestamp where the DPS was saved in memory. Used to generate the graphs
     """
 
-    result_string = ""
+    result_string = "The Fight finishes at: " + str(TimeStamp) + "\n========================\n" 
 
     fig, axs = plt.subplots(1, 2, constrained_layout=True) # DPS and PPS graph
     #fig2, axs2 = plt.subplots(2, 4, constrained_layout=True) # DPS Crit distribution
@@ -184,7 +184,7 @@ def PrintResult(self, time, TimeStamp) -> str:
                              )
 
 
-        result_string += "\n===\n"
+        result_string += "\n=================\n"
 
 
         axs[0].plot(TimeStamp,player.DPSGraph, label=job)

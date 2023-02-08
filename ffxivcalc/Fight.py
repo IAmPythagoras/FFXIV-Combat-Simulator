@@ -64,7 +64,7 @@ class Fight:
             """
             pass
 
-        self.ComputeDamageFunction = ComputeDamage # This would let someone overwrite this function.
+        self.ComputeDamageFunction = ComputeDamage 
         self.NextActionFunction = DefaultNextActionFunction
         self.ExtractInfo = DefaultExtractInfo
 
@@ -258,7 +258,6 @@ class Fight:
                 
 
             if CheckFinalLock: 
-                if vocal : print("The Fight finishes at: " + str(self.TimeStamp))
                 log_str = "Simulation has succesfully finished."
                 fight_logging.debug(log_str)
                 break
@@ -304,10 +303,16 @@ class Fight:
             self.PlayerList.pop(i-k)
             k+=1
 
-        for t in self.failedRequirementList: # Printing the failed requirement if it was fatal
-            if t.fatal : 
-                print("The first failed fatal requirement was : " + t.requirementName)
-                print("It happened at : " + str(t.timeStamp))
+        result_str = ""
+
+        if self.wipe:
+            # If the simulation ran into a problem caused by a failed requirement.
+            result_str = "The simulation ran into a problem. You can disable requirements by setting its value to 'False' in the JSON file.\n" + "=================\n"
+            for t in self.failedRequirementList: # Printing the failed requirement if it was fatal
+                if t.fatal : 
+                    result_str += (
+                        "Failed Fatal Requirement : " + t.requirementName + " Timestamp : " + str(t.timeStamp)
+                        )
 
         # Printing the results if vocal is true.
         result, fig = PrintResult(self, self.TimeStamp, self.timeValue)
@@ -330,7 +335,7 @@ class Fight:
             baseSub = 400# Level 90 LevelMod values
 
             JobMod = Player.JobMod # Level 90 jobmod value, specific to each job
-            print(Player.Stat)
+
             Player.f_WD = (Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))/100 # Necessary to check if its not 0 since etro only returns the damage multiplier.
             Player.f_DET = math.floor(1000+math.floor(140*(Player.Stat["Det"]-baseMain)/levelMod))/1000# Determination damage
             if Player.RoleEnum == RoleEnum.Tank : Player.f_TEN = (1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000 # Tenacity damage, 1 for non-tank player
