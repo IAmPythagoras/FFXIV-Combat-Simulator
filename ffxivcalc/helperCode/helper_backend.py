@@ -68,7 +68,7 @@ GNBStat = {"MainStat": 2891, "WD":126, "Det" : 1883, "Ten" : 631, "SS": 400, "Sk
 
 def ImportFightBackend(fightID,fightNumber):
 
-    Event = Fight([], Enemy(), False) #Creating event
+    Event = Fight(Enemy(), False) #Creating event
     helper_logging.debug("Constructing Event object from FFLogs link.")
     action_dict, player_dict = getAbilityList(fightID, fightNumber) #getting ability List
     
