@@ -27,7 +27,7 @@ class Spell:
     """
     This class is any Spell, it will have some subclasses to take Job similar spell, etc.
     """
-    def __init__(self, id : int, GCD : bool, CastTime : float, RecastTime : float, Potency : int, ManaCost : int, Effect, Requirement, type : int = 0, aoe_fn : function = None):
+    def __init__(self, id : int, GCD : bool, CastTime : float, RecastTime : float, Potency : int, ManaCost : int, Effect, Requirement, type : int = 0):
         """
         Initialization of a Spell
         id : int -> id to identify the action
