@@ -45,7 +45,7 @@ class Spell:
         if aoe_fn == None:
             def f():
                 pass
-            aoe_fn = f
+            self.aoe_fn = f
 
         self.id = id
         self.GCD = GCD #True if GCD
