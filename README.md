@@ -22,7 +22,10 @@ python -m uvicorn ffxivcalc.API.API:app
 ```
 This will locally launch the API.
 
-Discord bot : ```https://discord.com/oauth2/authorize?client_id=1071922835011932290&permissions=274878024704&scope=bot```
+Discord bot : 
+```
+https://discord.com/oauth2/authorize?client_id=1071922835011932290&permissions=274878024704&scope=bot
+```
 
 # FFXIVDPSCalculator
 Environment in which the simulation of FF14 combat (with multiple people) will be possible. 
