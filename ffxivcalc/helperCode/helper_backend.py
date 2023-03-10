@@ -371,8 +371,8 @@ def RestoreFightObject(data : dict, name : str = ""):
 
     EnemyDict = {}
 
-    for EnemyID in data["data"]["EnemyList"]["EnemyID"]:
-        EnemyDict[EnemyID] = Enemy()
+    for EnemyID in data["data"]["EnemyList"]:
+        EnemyDict[EnemyID["EnemyID"]] = Enemy()
 
     Event = Fight(EnemyDict, False)
 
