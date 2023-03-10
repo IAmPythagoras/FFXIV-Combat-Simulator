@@ -22,7 +22,7 @@ python -m uvicorn ffxivcalc.API.API:app
 ```
 This will locally launch the API.
 
-Discord bot : 
+Discord bot (Still not completely functionnal): 
 ```
 https://discord.com/oauth2/authorize?client_id=1071922835011932290&permissions=274878024704&scope=bot
 ```
