@@ -376,7 +376,6 @@ Thunder3DOT = DOTSpell(-21, 35, False)
 Thunder4 = BLMSpell(7420, True, 2.5, 2.5, 50, 400, False, False, ApplyThunder4, [ManaRequirement], type = 1)
 Thunder4DOT = DOTSpell(-40, 20, False)
 
-
 #oGCD
 Transpose = BLMSpell(149, False, Lock, 0, 0, 0, False, False, ApplyTranspose, [TransposeRequirement])
 Amplifier = BLMSpell(25796, False, Lock, 0, 0, 0, False, False, ApplyAmplifier, [AmplifierRequirement])
@@ -387,7 +386,6 @@ Manafront = BLMSpell(158, False, Lock, 0, 0, 0, False, False, ApplyManafront, [M
 BetweenTheLine = BLMSpell(7419, False, 0, 0, 0, 0, False, False, empty, [])
 AetherialManipulation = BLMSpell(155, False, 0, 0, 0, 0, False, False, empty, [])
 Manaward = BLMSpell(157, False, 0, 0, 0, 0, False, False, ApplyManaward, [ManawardRequirement])
-
 
 #buff
 Enochian = buff(1.21)
