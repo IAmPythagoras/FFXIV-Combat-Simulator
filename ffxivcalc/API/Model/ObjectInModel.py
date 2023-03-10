@@ -20,6 +20,7 @@ class statIn(BaseModel):
     Det : int
     Ten : int
     SS : int
+    SkS : int
     Crit : int
     DH : int
 

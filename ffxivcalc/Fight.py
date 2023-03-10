@@ -64,7 +64,7 @@ class Fight:
             """
             pass
 
-        self.ComputeDamageFunction = ComputeDamage # This would let someone overwrite this function.
+        self.ComputeDamageFunction = ComputeDamage 
         self.NextActionFunction = DefaultNextActionFunction
         self.ExtractInfo = DefaultExtractInfo
 
@@ -258,7 +258,6 @@ class Fight:
                 
 
             if CheckFinalLock: 
-                if vocal : print("The Fight finishes at: " + str(self.TimeStamp))
                 log_str = "Simulation has succesfully finished."
                 fight_logging.debug(log_str)
                 break
@@ -304,13 +303,21 @@ class Fight:
             self.PlayerList.pop(i-k)
             k+=1
 
-        for t in self.failedRequirementList: # Printing the failed requirement if it was fatal
-            if t.fatal : 
-                print("The first failed fatal requirement was : " + t.requirementName)
-                print("It happened at : " + str(t.timeStamp))
+        result_str = ""
+
+        if self.wipe:
+            # If the simulation ran into a problem caused by a failed requirement.
+            result_str = "The simulation ran into a problem. You can disable requirements by setting its value to 'False' in the JSON file.\n" + "=================\n"
+            for t in self.failedRequirementList: # Printing the failed requirement if it was fatal
+                if t.fatal : 
+                    result_str += (
+                        "Failed Fatal Requirement : " + t.requirementName + " Timestamp : " + str(t.timeStamp)
+                        )
 
         # Printing the results if vocal is true.
-        if vocal : PrintResult(self, self.TimeStamp, self.timeValue)
+        result, fig = PrintResult(self, self.TimeStamp, self.timeValue)
+        if vocal : print(result)
+        return result, fig
             
 
 

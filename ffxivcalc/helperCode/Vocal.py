@@ -104,13 +104,15 @@ def ComputeDPSDistribution(self, Player, fig, axs, job):
 
 # Functions to print out all the results and plot DPS/PPS graph
 
-def PrintResult(self, time, TimeStamp) -> None:
+def PrintResult(self, time, TimeStamp) -> str:
     """
-    This function prints out every relevant value onto the console.
+    This function puts the result in a string that it will return which can then be printed
     self : Fight -> Fight we want the result of to be printed
     time : float -> final timestamp of the simulation
     TimeStamp : List[float] -> list of all timestamp where the DPS was saved in memory. Used to generate the graphs
     """
+
+    result_string = "The Fight finishes at: " + str(time) + "\n========================\n" 
 
     fig, axs = plt.subplots(1, 2, constrained_layout=True) # DPS and PPS graph
     #fig2, axs2 = plt.subplots(2, 4, constrained_layout=True) # DPS Crit distribution
@@ -142,13 +144,15 @@ def PrintResult(self, time, TimeStamp) -> None:
         else:
             PPS = player.TotalPotency / time
             DPS = player.TotalDamage / time
+        
+        result_string += (
+            "Results for " + str(JobEnum.name_for_id(player.JobEnum)) + " :\n" + 
+            "DPS : " + str(round(DPS,2)) + 
+            " PPS : " + str(round(PPS,2)) + 
+            " TP : " + str(round(player.TotalPotency,2)) + 
+            " GCD : " + str(player.GCDCounter) + "\n"
+        )
 
-        print("The Total Potency done by player " + str(JobEnum.name_for_id(player.JobEnum)) + " was : " + str(player.TotalPotency))
-        print("This same player had a Potency Per Second of: " + str(round(PPS,2)))
-        print("This same Player had an average of " + str(round(player.TotalPotency/player.NextSpell,2)) + " Potency/Spell")
-        print("This same player did " + str(player.GCDCounter) + " GCD.")
-        print("The DPS is : " + str(round(DPS,2)))
-        print("=======================================================")
 
         # Plot part
 
@@ -156,32 +160,31 @@ def PrintResult(self, time, TimeStamp) -> None:
 
         
         if player.JobEnum == JobEnum.Bard : 
-            job = "Bard"
-            print("==================")
-            print("Expected Vs Used values for bard")
-            print("Expected Refulgent Proc : " + str(player.ExpectedRefulgent) + " Used Refulgent Proc : " + str(player.UsedRefulgent))
-            print("Expected Wanderer Repertoire Proc : " + str(player.ExpectedTotalWandererRepertoire) + " Used Repertoire Proc : " + str(player.UsedTotalWandererRepertoire))
-            print("RepertoireAdd : " + str(player.UsedRepertoireAdd))
-            print("Expected Soul Voice Gauge : " + str(player.ExpectedSoulVoiceGauge) + " Used SoulVoiceGauge : " + str(player.UsedSoulVoiceGauge))
-            print("Expected BloodLetterReduction : " + str(player.ExpectedBloodLetterReduction) + " Used BloodLetterReduction : " + str(player.UsedBloodLetterReduction))
-            print("==================")
+            result_string += (
+            "Procs/Gauge result (Used/Expected) : \n" +
+            "Refulgent : " + str(round(player.ExpectedRefulgent,2)) + "/" + str(round(player.UsedRefulgent,2)) + 
+            " Wanderer Repertoire : " + str(round(player.ExpectedTotalWandererRepertoire,2)) + "/" + str(round(player.UsedTotalWandererRepertoire,2)) +
+            " RepertoireAdd : " + str(round(player.UsedRepertoireAdd,2)) + 
+            "\nSoul Voice : " + str(round(player.ExpectedSoulVoiceGauge,2)) + "/" + str(round(player.UsedSoulVoiceGauge,2)) +
+            " Soul BloodLetter Reduction : " + str(round(player.ExpectedBloodLetterReduction,2)) + "/" + str(round(player.UsedBloodLetterReduction,2))
+                             )
         elif player.JobEnum == JobEnum.Dancer:
-            job = "Dancer"
-            print("==================")
-            print("Expected Vs Used Proc for Dancer")
-            print("Expected SilkenSymettry : " + str(player.ExpectedSilkenSymettry) + " Used SilkenSymettry : " + str(player.UsedSilkenSymettry) )
-            print("Expected SilkenFlow : " + str(player.ExpectedSilkenFlow) + " Used SilkenFlow : " + str(player.UsedSilkenFlow) )
-            print("Expected FourfoldFeather : " + str(player.ExpectedFourfoldFeather) + " Used FourfoldFeather : " + str(player.UsedFourfoldFeather) )
-            print("Expected ThreefoldFan : " + str(player.ExpectedThreefoldFan) + " Used ThreefoldFan : " + str(player.UsedThreefoldFan) )
-            print("==================")
+            result_string += (
+            "Procs/Gauge result (Used/Expected) : \n" +
+            "Silken Symettry : " + str(round(player.ExpectedSilkenSymettry,2)) + "/" + str(round(player.UsedSilkenSymettry,2)) + 
+            " Silken Flow : " + str(round(player.ExpectedSilkenFlow,2)) + "/" + str(round(player.UsedSilkenFlow,2)) +
+            "\nFourfold Feather : " + str(round(player.ExpectedFourfoldFeather,2)) + "/" + str(round(player.UsedFourfoldFeather,2)) +
+            " Threefold Fan : " + str(round(player.ExpectedThreefoldFan,2)) + "/" + str(round(player.UsedThreefoldFan,2))
+                             )
         elif player.JobEnum == JobEnum.RedMage:
-            job = "Dancer"
-            print("==================")
-            print("Expected Vs Used Proc for Dancer")
-            print("Expected Verfire procs : " + str(player.ExpectedVerfireProc) + " Used Verfire procs : " + str(player.UsedVerfireProc) )
-            print("Expected Verstone procs : " + str(player.ExpectedVerstoneProc) + " Used Verstone procs : " + str(player.UsedVerstoneProc) )
-            print("==================")
+            result_string += (
+            "Procs/Gauge result (Used/Expected) : \n" +
+            "Verfire : " + str(round(player.ExpectedVerfireProc,2)) + "/" + str(round(player.UsedVerfireProc,2)) + 
+            " Verstone : " + str(round(player.ExpectedVerstoneProc,2)) + "/" + str(round(player.UsedVerstoneProc,2)) 
+                             )
 
+
+        result_string += "\n=================\n"
 
 
         axs[0].plot(TimeStamp,player.DPSGraph, label=job)
@@ -193,10 +196,11 @@ def PrintResult(self, time, TimeStamp) -> None:
         #    if i == 4:
         #        i = 0
         #        j+=1
-
-    print("The Enemy has received a total potency of: " + str(round(self.Enemy.TotalPotency,2) if time != 0 else "0" ))
-    print("The Potency Per Second on the Enemy is: " + str(round(self.Enemy.TotalPotency/time,2) if time != 0 else "0" ))
-    print("The Enemy's total DPS is " + str(round(self.Enemy.TotalDamage / time, 2) if time != 0 else "0" ))
+    result_string += (
+        "Total DPS : " + str(round(self.Enemy.TotalDamage / time, 2) if time != 0 else "0" ) + "\t" +
+        "Total PPS : " + str(round(self.Enemy.TotalPotency/time,2) if time != 0 else "0" ) + "\t" +
+        "Total Potency : " + str(round(self.Enemy.TotalPotency/time,2))
+    )
     axs[0].xaxis.grid(True)
     axs[1].xaxis.grid(True)
     if len(TimeStamp) == 0: # If for some reason Fight ended before 3 second TimeStamp is empty and we need to do an edge case to avoid a crash
@@ -209,3 +213,5 @@ def PrintResult(self, time, TimeStamp) -> None:
     axs[0].legend()
     axs[1].legend()
     if self.ShowGraph: plt.show()
+
+    return result_string, fig
