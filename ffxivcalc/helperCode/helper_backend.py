@@ -150,8 +150,6 @@ def AskInput(range):
         else : #Non-valid input
             user_input = input("This is not a valid input. Please enter a valid number : ")
 
-
-
 def SaveFight(Event, countdown, fightDuration, saveName):
     #This function will save a fight into memory.
 
@@ -190,7 +188,7 @@ def SaveFight(Event, countdown, fightDuration, saveName):
                     actionList.append(copy.deepcopy(actionDict))#adding to dict
             else: #Normal ability
                 actionDict["actionName"] = name_for_id(action.id,Player.ClassAction, Player.JobAction)
-                if action.TargetID != 0 : actionDict["targetID"] = action.TargetID # id 0 is by default the main enemy. So no need to write if not needed
+                actionDict["TargetID"] = action.TargetID 
 
                 actionList.append(copy.deepcopy(actionDict))#adding to dict
 
@@ -199,8 +197,11 @@ def SaveFight(Event, countdown, fightDuration, saveName):
 
         PlayerListDict.append(copy.deepcopy(PlayerDict))
 
-    
+    EnemyList = []
+    for EnemyID in Event.EnemyDict:
+        EnemyList.append({"EnemyID" : EnemyID})
 
+    
 
     data = {"data" : {
                 "fightInfo" : {
@@ -212,12 +213,12 @@ def SaveFight(Event, countdown, fightDuration, saveName):
                     "IgnoreMana" : Event.IgnoreMana
 
                 },
+                "EnemyList" : EnemyList,
                 "PlayerList" : PlayerListDict
     }}
     save_dir: Path = Path.cwd() / 'saved'
     with open(save_dir / f'{saveName}.json', "w") as write_files:
         json.dump(data,write_files, indent=4) #saving file
-
 
 def RestoreFightObject(data : dict, name : str = ""):
     """
@@ -359,17 +360,21 @@ def RestoreFightObject(data : dict, name : str = ""):
                 #WaitAbility. WaitAbility has a special field where the waited time is specified
                 actionObject = WaitAbility(action["waitTime"])
             else: 
-                if "targetID" in action.keys(): # Action has atarget
-                    actionObject = lookup_abilityID(actionID,action["targetID"], playerID,PlayerActionList) #Getting action object
-                else:
-                    actionObject = lookup_abilityID(actionID,0, playerID,PlayerActionList) # Target is Enemy which defaults to id 0
+                actionObject = lookup_abilityID(actionID,action["TargetID"], playerID,PlayerActionList) #Getting action object
+
+                actionObject = copy.deepcopy(actionObject)
+                actionObject.TargetID = action["TargetID"] # Letting the action know who its target is
 
             PlayerActionList[playerID]["actionObject"] += [actionObject]
 
         #We will now create the event
 
-    Dummy = Enemy()
-    Event = Fight(Dummy, False)
+    EnemyDict = {}
+
+    for EnemyID in data["data"]["EnemyList"]:
+        EnemyDict[EnemyID] = Enemy()
+
+    Event = Fight(EnemyDict, False)
 
     for playerID in PlayerActionList:
         PlayerActionList[playerID]["job_object"].ActionSet = PlayerActionList[playerID]["actionObject"] #Linking player object and action list
@@ -434,6 +439,7 @@ def SimulateFightBackend(file_name : str):
     input("Press any key to return to the Main menu : ")
 
 def MergeFightBackEnd(child_fight, parent_fight, parent_name):
+    """DEPRECIATED"""
     #This will merge the two fights.
 
     
@@ -460,8 +466,7 @@ def GenerateLayoutBackend(player_list,namefile):
     save_dir: Path = Path.cwd() / 'saved'
     with open(save_dir / f'{namefile}.json', "w") as write_files:
         json.dump(data,write_files, indent=4) # saving file
-
-    
+   
 def GenerateLayoutDict(player_list):
     """
     This function generates a dictionnary that the simulator can use to simulate the fight
@@ -477,6 +482,7 @@ def GenerateLayoutDict(player_list):
                 "RequirementOn" : True,
                 "IgnoreMana" : False
             },
+            "EnemyList" : [{"EnemyID" : 0}],
             "PlayerList" : []
             }
     }
@@ -493,7 +499,7 @@ def GenerateLayoutDict(player_list):
         }
 
     # Will not fill the PlayerList
-    id = 1
+    id = 100
 
     for player in player_list:
         # player is a JobEnum
@@ -505,7 +511,7 @@ def GenerateLayoutDict(player_list):
             "etro_gearset_url":  "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url.",
             "Auras" : [],
             "actionList" : [
-                {"actionName": "putNameHere"}
+                {"actionName": "putNameHere", "TargetID" : "putTargetIDHere"}
             ]
         }
 

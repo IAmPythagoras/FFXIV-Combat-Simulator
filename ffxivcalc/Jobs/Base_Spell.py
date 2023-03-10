@@ -56,7 +56,7 @@ class Spell:
         self.Effect = [Effect]
         self.Requirement = Requirement
         self.DPSBonus = 1
-        self.TargetID = 0 #By default 0
+        self.TargetID = 0 #By default 0. Represents the Id of the Enemy who is the action's main target.
         self.type = type 
 
     def Cast(self, player, Enemy):
@@ -72,10 +72,17 @@ class Spell:
         #the player and the enemy have
         #Will apply each effect the player currently has on the spell
         if self.id != -1: #id = -1 is WaitAbility, we don't want anything with that
-            for Effect in player.EffectList:
-                Effect(player, tempSpell)#Changes tempSpell
-            for Effect in Enemy.EffectList:
-                Effect(player, tempSpell)#Changes tempSpell
+            if self.TargetID in player.CurrentFight.EnemyDict.keys():
+                # If targetting an enemy
+                EnemyTarget = player.CurrentFight.EnemyDict[self.TargetID] # Enemy being targetted.
+                for Effect in player.EffectList:
+                    Effect(player, tempSpell)#Changes tempSpell
+                for Effect in EnemyTarget.EffectList:
+                    Effect(player, tempSpell)#Changes tempSpell
+            else:
+                # Targetting an ally
+                    for Effect in player.EffectList:
+                        Effect(player, tempSpell)#Changes tempSpell
         #Checks if we meet the spell requirement
 
         #Remove all effects that have to be removed
@@ -130,6 +137,18 @@ class Spell:
         player : player -> player object casting
         Enemy : Enemy -> Enemy object on which the action is done.
         """
+
+        # We check if the action is AOE. If it is we call the aoe_fn and CastFinal the action onto the other targets.
+
+        if self.aoe_fn != None:
+            # Is an aoe
+            aoe_action = self.aoe_fn()
+            for EnemyId in player.CurrentFight.EnemyDict:
+                if self.TargetID != EnemyId:
+                    EnemyTarget = player.CurrentFight.EnemyDict[EnemyId]
+                    tmp_action = aoe_action.Cast(player, EnemyTarget)
+                    tmp_action.CastFinal(player, EnemyTarget)
+                    # It calls back CastFinal, but aoe_action will never have an aoe_fn.
         
         for Effect in self.Effect:
             Effect(player, Enemy)#Put effects on Player and/or Enemy

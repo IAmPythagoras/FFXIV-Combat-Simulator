@@ -33,9 +33,11 @@ class Fight:
 
         return sorted_list[0:range] # Returns the number of targets we are interested in
 
-    def __init__(self, Enemy, ShowGraph):
-        self.Enemy = Enemy
-        Enemy.CurrentFight = self
+    def __init__(self, EnemyDict, ShowGraph : bool):
+        self.EnemyDict = EnemyDict # Holds reference of all Enemy in this fight
+        for EnemyID in EnemyDict:
+            EnemyDict[EnemyID].CurrentFight = self
+            
         self.ShowGraph = ShowGraph
         self.TimeStamp = 0
         self.TeamCompositionBonus = 1

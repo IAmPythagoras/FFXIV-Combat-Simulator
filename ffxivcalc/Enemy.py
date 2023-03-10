@@ -141,7 +141,7 @@ class Enemy:
 
     def __init__(self):
 
-
+        self.Id = 0 # Initialized as 0, the id will be set to a unique value when the fight starts.
         self.EffectList = [] # List of all effect on the boss. These are effects applied by the players
 
         self.TotalPotency = 0
