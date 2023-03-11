@@ -25,8 +25,8 @@ This will locally launch the API.
 # Discord bot (Still in testing, but in a working state): 
 I made a disbord bot that uses the python library ffxivcalc in order to simulate fights. Feel free to install it using the link below. As of now, the main bot commands are :
 ```
-!simulate (With a JSON file as a file in the same message)
-!template <filename> <job1> <job2> ... (Generates a template JSON file used to simulate)
+!Simulate (With a JSON file as a file in the same message)
+!Template <filename> <job1> <job2> ... (Generates a template JSON file used to simulate)
 !Help (for help)
 ```
 Use this link to install the bot on your server : 
