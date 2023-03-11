@@ -22,7 +22,14 @@ python -m uvicorn ffxivcalc.API.API:app
 ```
 This will locally launch the API.
 
-Discord bot (Still not completely functionnal): 
+# Discord bot (Still in testing, but in a working state): 
+I made a disbord bot that uses the python library ffxivcalc in order to simulate fights. Feel free to install it using the link below. As of now, the main bot commands are :
+```
+!simulate (With a JSON file as a file in the same message)
+!template <filename> <job1> <job2> ... (Generates a template JSON file used to simulate)
+!Help (for help)
+```
+Use this link to install the bot on your server : 
 ```
 https://discord.com/oauth2/authorize?client_id=1071922835011932290&permissions=274878024704&scope=bot
 ```
@@ -67,61 +74,9 @@ will execute abilities for the whole duration of the simulation as it ends when 
 ![FullteamGraph](https://user-images.githubusercontent.com/62820030/171497291-93c94a7b-a9d9-471a-a132-bad3cd2a04e4.png)
 
 
+# Currently Working On
 
-We so far have implemented the following jobs :
-
-
-Healer:
-
-Whitemage : DONE
-
-Scholar : DONE
-
-Sage : DONE
-
-Astrologian : DONE
-
-Tank:
-
-Warrior : DONE
-
-Gunbreaker : DONE
-
-DarkKnight : DONE
-
-Paladin : DONE
-
-Caster:
-
-Blackmage : DONE
-
-Summoner : DONE
-
-Redmage : DONE
-
-Phys Ranged:
-
-Machinist : DONE
-
-Bard : DONE
-
-Dancer : DONE
-
-Melee:
-
-Ninja : DONE
-
-Samurai : DONE
-
-Reaper : DONE
-
-Monk : DONE
-
-Dragoon : DONE
-
-UPDATED : September 18th 2022
-
-We also plan to add Bluemage once we are done with the core program.
+Adding code to support multiple enemies at the same time and individual targetting of enemy by the players.
 
 
 # HOW IT WORKS
