@@ -186,9 +186,9 @@ def PrintResult(self, time, TimeStamp) -> str:
 
         result_string += "\n=================\n"
 
-
-        axs[0].plot(TimeStamp,player.DPSGraph, label=job)
-        axs[1].plot(TimeStamp,player.PotencyGraph, label=job)
+        job_label = job + ("" if player.PlayerName == "" else (" " + player.PlayerName))
+        axs[0].plot(TimeStamp,player.DPSGraph, label=job_label)
+        axs[1].plot(TimeStamp,player.PotencyGraph, label=job_label)
 
         #if len(self.PlayerList) <= 8:
         #    if DPS != 0 : ComputeDPSDistribution(self, player, fig2, axs2[j][i], job)
