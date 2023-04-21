@@ -186,5 +186,6 @@ WhiteMageAbility = {
 7430 : ThinAir,
 16536 : Temperance,
 25861 : Aquaveil,
-25862 : Bell
+25862 : Bell,
+19 : PlaneryIndulgence
 }

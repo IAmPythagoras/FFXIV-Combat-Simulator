@@ -344,5 +344,6 @@ AstrologianAbility = {
 16556 : CelestialIntersection,
 16557 : Horoscope,
 25873 : Exaltation,
-25874 : Macrocosmos
+25874 : Macrocosmos,
+17 : Microcosmos
 }
