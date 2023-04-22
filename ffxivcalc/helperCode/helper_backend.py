@@ -269,6 +269,9 @@ def RestoreFightObject(data : dict, name : str = ""):
         job_object.playerID = player["playerID"] #Giving the playerID
         helper_logging.debug("Creating job object : " + job_name + " for playerID : " + str(player["playerID"]))
 
+        if "PlayerName" in player.keys():
+            job_object.PlayerName = player["PlayerName"]
+
         PlayerActionList[str(job_object.playerID)] = {"job" : job_name, "job_object" : job_object, "actionList" : player["actionList"], "actionObject" : []} #Adding new Key accessible by IDs
 
         #Giving player object the stat dictionnary

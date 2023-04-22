@@ -234,6 +234,7 @@ class Player:
         self.playerID = 1 # Might not be necessary so by default 1
         self.Pet = None # Summoned Pet
         self.GCDCounter = 0 # Number of GCD done
+        self.PlayerName = "" # Can be used to give the player a name that will be displayed in the final graph and result.
 
         self.TrueLock = False   # Used to know when a player has finished all of its ActionSet
         self.NoMoreAction = False # Used to know when a player has no more actions to do. The user will have a choice to set TrueLock = True or to give anther action

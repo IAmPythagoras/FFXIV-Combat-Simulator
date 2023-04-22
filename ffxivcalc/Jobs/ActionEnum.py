@@ -139,6 +139,7 @@ class SummonerActions(ActionEnum):
     Painflare = 3578
     Physick = 16230
     Resurrection = 173
+    Summon = 7427
 
 # Healer
 
@@ -184,6 +185,7 @@ class AstrologianActions(ActionEnum):
     Horoscope = 16557
     Exaltation = 25783
     Macrocosmos = 25874
+    Microcosmos = 17
 
 
 # Sage
@@ -245,6 +247,7 @@ class ScholarActions(ActionEnum):
     BroilIV = 25865
     RuinII = 17870
     Biolysis = 16540
+    Consolation = 22
 
 
 
@@ -273,6 +276,8 @@ class WhiteMageActions(ActionEnum):
     Temperance = 16536
     Aquaveil = 25861
     Bell = 25862
+    PlaneryIndulgence = 19
+    Raise = 173
 
 # Tank
 

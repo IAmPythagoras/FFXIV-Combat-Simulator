@@ -239,5 +239,6 @@ ScholarAbility = {
 25866 : ArtOfWar, 
 25865 : Broil, 
 17870 : Ruin, 
-16540 : Biolysis
+16540 : Biolysis,
+22 : Consolation
 }
