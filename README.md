@@ -1,5 +1,10 @@
 [![Discord](https://img.shields.io/discord/970724799464738977?color=7289da&label=Discord&logo=discord)](https://discord.gg/mZXKUNy2sw)
 
+# Website
+
+Currently working on a website that will use the library, you can vist it here : https://ffxivdpscalc.azurewebsites.net/simulate/
+(Note that it is still in development and might be offline sometimes)
+
 # Install
 
 Either download the code above or install it using pip with the following command : 
