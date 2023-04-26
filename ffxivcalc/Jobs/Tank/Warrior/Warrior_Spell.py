@@ -71,8 +71,8 @@ def ApplyBloodwhetting(Player, Enemy):
     Player.BloodwhettingCD = 25
     BloodwhettingBuff = MitBuff(0.9, 8, Player)
     StemFlowBuff = MitBuff(0.9, 4, Player)
-    Player.BuffMitList.append(BloodwhettingBuff)
-    Player.BuffMitList.append(StemFlowBuff)
+    Player.MitBuffList.append(BloodwhettingBuff)
+    Player.MitBuffList.append(StemFlowBuff)
 
     Player.BloodwhettingBuff = BloodwhettingBuff
 

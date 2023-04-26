@@ -155,7 +155,7 @@ def ApplyReprisal(Player, Enemy):
 Rampart = TankSpell(7531, False, Lock, 0, 0, 0, ApplyRampart, [RampartRequirement])
 LowBlow = TankSpell(7540, False, Lock, 0, 0, 0, ApplyLowBlow, [LowBlowRequirement])
 Provoke = TankSpell(7533, False, Lock, 0, 0, 0, ApplyProvoke, [ProvokeRequirement])
-Interject = TankSpell(0, False, Lock, 0, 0, 0, ApplyInterject, [InterjectRequirement])
+Interject = TankSpell(10101010, False, Lock, 0, 0, 0, ApplyInterject, [InterjectRequirement])
 Reprisal = TankSpell(7535, False, Lock, 0, 0, 0, ApplyReprisal, [ReprisalRequirement])
 BigMit = TankSpell(44, False, 0, 0, 0, 0, ApplyBigMit, [BigMitRequirement]) #30% mit
 TankStance = TankSpell(16142, False, 0, 0, 0, 0, ApplyTankStance, [TankStanceRequirement]) #Turn on Tank Stance
@@ -183,6 +183,7 @@ def Shirk(Target):
 
 
 TankAbility = {
+10101010 : Interject,
 7531 : Rampart,
 7535 : Reprisal, 
 7548 : ArmLength,

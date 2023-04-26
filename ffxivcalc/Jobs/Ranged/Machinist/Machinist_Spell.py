@@ -22,6 +22,9 @@ def RemoveGauge(Player, Battery, Heat):
 
 #Requirement
 
+def DetonatorRequirement(Player, Spell):
+    return Player.WildFireTimer > 0, -1
+
 def DismantleRequirement(Player, Spell):
     return Player.DismantleCD <= 0, Player.DismantleCD
 
@@ -65,6 +68,9 @@ def TacticianRequirement(Player, Spell):
     return Player.TacticianCD <= 0, Player.TacticianCD
 
 #Apply
+
+def ApplyDetonator(Player, Spell):
+    Player.WildFireTimer = 0
 
 def ApplyDismantle(Player, Enemy):
     Player.DismantleCD = 120
@@ -288,6 +294,7 @@ def QueenAACheck(Player, Enemy):
 
 Dismantle = MachinistSpell(111111, False, 0, 0, 0, 0, ApplyDismantle, [DismantleRequirement], False)
 Wildfire = MachinistSpell(2878, False, 0, Lock, 0, 0, ApplyWildFire, [WildFireRequirement], False)
+Detonator = MachinistSpell(1111111, False, 0, 0, 0, 0, ApplyDetonator, [DetonatorRequirement], False)
 AirAnchor = MachinistSpell(16500, True, 0, 2.5, 600, 0, ApplyAirAnchor, [AirAnchorRequirement], True, type = 2)
 BarrelStabilizer = MachinistSpell(7414, False, 0, Lock, 0, 0, ApplyBarrelStabilizer, [BarrelStabilizerRequirement], False)
 HeatBlast = MachinistSpell(7410, True, Lock, 1.5, 200, 0, ApplyHeatBlast, [OverheatedRequirement], True, type = 2)
@@ -356,6 +363,7 @@ MachinistAbility = {
 7413 : CleanShot, 
 7410 : HeatBlast, 
 2878 : Wildfire,
+1111111 : Detonator,
 2874 : GaussRound, 
 2890 : Ricochet,
 2876 : Reassemble
