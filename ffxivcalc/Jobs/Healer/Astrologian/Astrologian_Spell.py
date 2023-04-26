@@ -56,8 +56,8 @@ def StellarDetonationRequirement(Player, Spell):
 def CelestialOppositionRequirement(Player, Spell):
     return Player.CelestialOppositionCD <= 0, Player.CelestialOppositionCD
 
-def CollectiveRequirement(Player, Spell):
-    return Player.CollectiveCD <= 0, Player.CollectiveCD
+def CollectiveUnconsciousRequirement(Player, Spell):
+    return Player.CollectiveUnconsciousCD <= 0, Player.CollectiveUnconsciousCD
 
 def SynastryRequirement(Player, Spell):
     return Player.SynastryCD <= 0, Player.SynastryCD
@@ -76,8 +76,8 @@ def ApplyEssentialDignity(Player, Enemy):
 def ApplySynastry(Player, Enemy):
     Player.SynastryCD = 120
 
-def ApplyCollective(Player, Enemy):
-    Player.CollectiveCD = 60
+def ApplyCollectiveUnconscious(Player, Enemy):
+    Player.CollectiveUnconsciousCD = 60
 
 def ApplyCelestialOpposition(Player, Enemy):
     Player.CelestialOppositionCD = 60
@@ -238,7 +238,7 @@ CumbustDOT = DOTSpell(-12, 55, False)
 Gravity = AstrologianSpell(25872, True, 1.5, 2.5, 130, 400, empty, [ManaRequirement], type = 1)
 #Heal GCD
 AspectedHelios = AstrologianSpell(3601, True, 1.5, 2.5, 0, 800, empty, [ManaRequirement], type = 1)
-AspectedBenific = AstrologianSpell(2595, True, 0, 2.5, 0, 400, empty, [ManaRequirement], type = 1)
+AspectedBenefic = AstrologianSpell(2595, True, 0, 2.5, 0, 400, empty, [ManaRequirement], type = 1)
 Benefic2 = AstrologianSpell(3610, True, 1.5, 2.5, 0, 700, empty, [ManaRequirement], type = 1)
 Benefic = AstrologianSpell(3594, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement], type = 1)
 Helios = AstrologianSpell(3600, True, 1.5, 2.5, 0, 700, empty, [ManaRequirement], type = 1)
@@ -254,14 +254,14 @@ Draw = AstrologianSpell(3590, False, Lock,0, 0, 0, ApplyDraw, [DrawRequirement])
 Redraw = AstrologianSpell(3593, False, Lock, 0, 0, 0, ApplyRedraw, [RedrawRequirement])
 Astrodyne = AstrologianSpell(25870, False, Lock, 0, 0, 0, ApplyAstrodyne, [])
 #Heal oGCD
-Exaltation = AstrologianSpell(18, False, 0, 0, 0, 0, ApplyExaltation, [ExaltationRequirement])
+Exaltation = AstrologianSpell(25873, False, 0, 0, 0, 0, ApplyExaltation, [ExaltationRequirement])
 NeutralSect = AstrologianSpell(16559, False, 0, 0, 0, 0, ApplyNeutralSect, [NeutralSectRequirement])
 Horoscope = AstrologianSpell(16557, False, 0, 0, 0, 0, ApplyHoroscope, [HoroscopeRequirement])
 CelestialIntersection = AstrologianSpell(16556, False, 0, 0, 0, 0, ApplyCelestialIntersection, [CelestialIntersectionRequirement])
 EarthlyStar = AstrologianSpell(7439, False, 0, 0, 0, 0, ApplyEarthlyStar, [EarthlyStarRequirement])
 StellarDetonation = AstrologianSpell(23, False, 0, 0, 0, 0, empty, [StellarDetonationRequirement])
 CelestialOpposition = AstrologianSpell(16553, False, 0, 0, 0, 0, ApplyCelestialOpposition, [CelestialOppositionRequirement])
-Collective = AstrologianSpell(3613, False, 0, 0, 0, 0, ApplyCollective, [CollectiveRequirement])
+CollectiveUnconscious = AstrologianSpell(3613, False, 0, 0, 0, 0, ApplyCollectiveUnconscious, [CollectiveUnconsciousRequirement])
 Synastry = AstrologianSpell(3612, False, 0, 0, 0, 0, ApplySynastry, [SynastryRequirement])
 
 #Arcanum require a target within the team, so it will be a function that will return a spell that
@@ -335,15 +335,16 @@ AstrologianAbility = {
 7439 : EarthlyStar,
 3594 : Benefic,
 3610 : Benefic2,
-2595 : AspectedBenific,
+2595 : AspectedBenefic,
 3600 : Helios,
 3601 : AspectedHelios,
 3612 : Synastry,
-3613 : Collective,
+3613 : CollectiveUnconscious,
 16553 : CelestialOpposition,
 16556 : CelestialIntersection,
 16557 : Horoscope,
 25873 : Exaltation,
 25874 : Macrocosmos,
-17 : Microcosmos
+17 : Microcosmos,
+10 : EssentialDignity
 }

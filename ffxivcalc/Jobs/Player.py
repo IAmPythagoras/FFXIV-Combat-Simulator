@@ -1013,7 +1013,7 @@ class Player:
         self.CelestialIntersectionCD = 0
         self.EarthlyStarCD = 0
         self.CelestialOppositionCD = 0
-        self.CollectiveCD = 0 #Collective Uncounscious
+        self.CollectiveUnconsciousCD = 0 #CollectiveUnconscious Uncounscious
         self.SynastryCD = 0
         self.EssentialDignityCD = 0
 
@@ -1044,7 +1044,7 @@ class Player:
             if (self.CelestialIntersectionCD > 0) : self.CelestialIntersectionCD = max(0,self.CelestialIntersectionCD - time)
             if (self.EarthlyStarCD > 0) : self.EarthlyStarCD = max(0,self.EarthlyStarCD - time)
             if (self.CelestialOppositionCD > 0) : self.CelestialOppositionCD = max(0,self.CelestialOppositionCD - time)
-            if (self.CollectiveCD > 0) : self.CollectiveCD = max(0,self.CollectiveCD - time)
+            if (self.CollectiveUnconsciousCD > 0) : self.CollectiveUnconsciousCD = max(0,self.CollectiveUnconsciousCD - time)
             if (self.SynastryCD > 0) : self.SynastryCD = max(0,self.SynastryCD - time)
 
         def updateTimer(self, time : float):

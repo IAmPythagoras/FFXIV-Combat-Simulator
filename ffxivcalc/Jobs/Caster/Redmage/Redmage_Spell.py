@@ -326,6 +326,7 @@ EmboldenBuff = buff(1.05)
 
 #ActionList
 RedMageAbility = {
+30 : EnchantedMoulinet,
 7504 : Riposte, 
 7506 : Corps, 
 7507 : Verareo, 
