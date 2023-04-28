@@ -9,6 +9,8 @@ The test will check for those things and make sure they are of the correct value
 This list will be expanded
 
 
+To execute this test suite, you must launch it from a path where it has the folder : ffxivcalc/Tester
+
 """
 from copy import deepcopy
 import json
