@@ -381,5 +381,10 @@ DarkKnightAbility = {
     25754: Oblation,
     25755: SaltDarkness,
     25757: Shadowbringer,
+    10 : FloodShadow,
+    20 : Unleash,
+    21 : StalwartSoul,
+    5 : Quietus,
+    12 : AbyssalDrain,
     34590541: Potion  # This is assumed to be strength pot grade 6
 }

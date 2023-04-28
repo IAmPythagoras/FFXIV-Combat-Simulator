@@ -352,8 +352,8 @@ NightmareScythe = ReaperSpell(24377, True, 0, 2.5, 120, empty, [], True, type = 
 WhorlOfDeath = ReaperSpell(24379, True, 0, 2.5, 100, ApplyShadowOfDeath, [], False, type = 2)
 Guillotine = ReaperSpell(24384, False, 0, 0, 200, ApplyGuillotine, [GibbetRequirement], True, type = 2) #AOE version of Gallows/Gibbet
 #AOE oGCD
-GrimSwath = ReaperSpell(24392, False, 0, 0, 140, ApplyBloodStalk, [BloodStalkRequirement], False) #AOE version of bloodstalk
-SoulScyte = ReaperSpell(24381, False, 0, 0, 180, ApplySoulSlice, [SoulSliceRequirement], False) #AOE version of SoulSlice
+GrimSwathe = ReaperSpell(24392, False, 0, 0, 140, ApplyBloodStalk, [BloodStalkRequirement], False) #AOE version of bloodstalk
+SoulScythe = ReaperSpell(24381, False, 0, 0, 180, ApplySoulSlice, [SoulSliceRequirement], False) #AOE version of SoulSlice
 GrimReaping = ReaperSpell(24397, True, 0, 2.5,200, ApplyGrimReaping, [VoidReapingRequirement], False)
 LemureScythe = ReaperSpell(24400, False, 0, 0, 100, ApplyLemureSlice, [LemureSliceRequirement], False) #AOE version of Lemure Slice
 #buff
@@ -371,12 +371,12 @@ ReaperAbility = {
 24376 : SpinningScythe,
 24377 : NightmareScythe,
 24379 : WhorlOfDeath,
-24381 : SoulScyte,
+24381 : SoulScythe,
 24384 : Guillotine,
 24389 : BloodStalk,
 24390 : UnveiledGibbet,
 24391 : UnveiledGallows,
-24392 : GrimSwath,
+24392 : GrimSwathe,
 24393 : Gluttony,
 24387 : Soulsow,
 24388 : HarvestMoon,

@@ -25,8 +25,8 @@ def AquaveilRequirement(Player, Spell):
 def TemperanceRequirement(Player, Spell):
     return Player.TemperanceCD <= 0, Player.TemperanceCD
 
-def PlaneryIndulgenceRequirement(Player, Spell):
-    return Player.PlaneryIndulgenceCD <= 0, Player.PlaneryIndulgenceCD
+def PlenaryIndulgenceRequirement(Player, Spell):
+    return Player.PlenaryIndulgenceCD <= 0, Player.PlenaryIndulgenceCD
 
 def DivineBenisonRequirement(Player, Spell):
     return Player.DivineBenisonCD <= 0, Player.DivineBenisonCD
@@ -72,8 +72,8 @@ def ApplyAquaveil(Player, Enemy):
 def ApplyTemperance(Player, Enemy):
     Player.TemperanceCD = 120
 
-def ApplyPlaneryIndulgence(Player, Enemy):
-    Player.PlaneryIndulgenceCD = 60
+def ApplyPlenaryIndulgence(Player, Enemy):
+    Player.PlenaryIndulgenceCD = 60
 
 def ApplyDivineBenison(Player, Enemy):
     Player.DivineBenisonCD = 30
@@ -158,7 +158,7 @@ PresenceOfMind = WhitemageSpell(136, False, 0, 0, 0, 0, ApplyPresenceOfMind, [Pr
 Bell = WhitemageSpell(25862, False, 0, 0, 0, 0, ApplyBell, [BellRequirement]) #Litturgy of the bell
 Aquaveil = WhitemageSpell(25861, False, 0, 0, 0, 0, ApplyAquaveil, [AquaveilRequirement])
 Temperance = WhitemageSpell(16536, False, 0, 0, 0, 0, ApplyTemperance, [TemperanceRequirement])
-PlaneryIndulgence = WhitemageSpell(19, False, 0, 0, 0, 0, ApplyPlaneryIndulgence, [PlaneryIndulgenceRequirement])
+PlenaryIndulgence = WhitemageSpell(19, False, 0, 0, 0, 0, ApplyPlenaryIndulgence, [PlenaryIndulgenceRequirement])
 DivineBenison =WhitemageSpell(7432, False, 0, 0, 0, 0, ApplyDivineBenison, [DivineBenisonRequirement])
 Tetragrammaton = WhitemageSpell(3570, False, 0, 0, 0, 0, ApplyTetragrammaton, [TetragrammatonRequirement])
 Asylum = WhitemageSpell(3569, False, 0, 0, 0, 0, ApplyAsylum, [AsylumRequirement])
@@ -187,5 +187,5 @@ WhiteMageAbility = {
 16536 : Temperance,
 25861 : Aquaveil,
 25862 : Bell,
-19 : PlaneryIndulgence
+19 : PlenaryIndulgence
 }

@@ -157,6 +157,8 @@ class HealerActions(ActionEnum):
 # Astrologian
 
 class AstrologianActions(ActionEnum):
+    EssentialDignity = 10
+    Ascend = 3603
     Lightspeed = 11
     Malefic = 25871
     Combust = 16554
@@ -175,15 +177,15 @@ class AstrologianActions(ActionEnum):
     EarthlyStar = 7439
     Benefic = 3594
     BeneficII = 3610
-    AspectedBenific = 2595
+    AspectedBenefic = 2595
     Helios = 3600
     AspectedHelios = 3601
     Synastry = 3612
-    Collective = 3613
+    CollectiveUnconscious = 3613
     CelestialOpposition = 16553
     CelestialIntersection = 16556
     Horoscope = 16557
-    Exaltation = 25783
+    Exaltation = 25873
     Macrocosmos = 25874
     Microcosmos = 17
 
@@ -248,6 +250,7 @@ class ScholarActions(ActionEnum):
     RuinII = 17870
     Biolysis = 16540
     Consolation = 22
+    Raise = 173
 
 
 
@@ -276,8 +279,8 @@ class WhiteMageActions(ActionEnum):
     Temperance = 16536
     Aquaveil = 25861
     Bell = 25862
-    PlaneryIndulgence = 19
-    Raise = 173
+    PlenaryIndulgence = 19
+    Raise = 125
 
 # Tank
 
@@ -291,11 +294,17 @@ class TankActions(ActionEnum):
     TankStance = 16142
     Potion = -2
     WaitAbility = 212
+    Interject = 10101010
 
 
 # DarkKnight
 
 class DarkKnightActions(ActionEnum):
+    Unleash = 20
+    FloodOfShadow = 10
+    StalwartSoul = 21
+    Quietus = 5
+    AbyssalDrain = 12
     HardSlash = 3617
     SyphonStrike = 3623
     Unmend = 3624
@@ -306,10 +315,10 @@ class DarkKnightActions(ActionEnum):
     LivingDead = 3638
     SaltedEarth = 3639
     Plunge = 3640
-    CarveSpit = 3643
+    CarveAndSpit = 3643
     Delirium = 7390
     Bloodspiller = 7392
-    TBN = 7393 # The Blackest Night
+    TheBlackestNight = 7393 # The Blackest Night
     EdgeOfShadow = 16470
     DarkMissionary = 16471
     LivingShadow = 16472
@@ -471,12 +480,12 @@ class ReaperActions(ActionEnum):
     SpinningScythe = 24376
     NightmareScythe = 24377
     WhorlOfDeath = 24379
-    SoulScyte = 24381
+    SoulScythe = 24381
     Guillotine = 24384
     BloodStalk = 24389
     UnveiledGibbet = 24390
     UnveiledGallows = 24391
-    GrimSwath = 24392
+    GrimSwathe = 24392
     Gluttony = 24393
     Soulsow = 24387
     HarvestMoon = 24388
@@ -488,7 +497,7 @@ class ReaperActions(ActionEnum):
     LemureSlice = 24399
     LemureScythe = 24400
     Communio = 24398
-    ArcanaCrest = 24404
+    ArcaneCrest = 24404
     ArcaneCircle = 24405
     HellIngress = 24402
     Regress = 24401
@@ -533,7 +542,7 @@ class NinjaActions(ActionEnum):
     TenChiJin = 7403
     Bunshin = 16493
     FleetingRaiju = 25777
-    ForkingRaiju = 25778
+    ForkingRaiju = 25777
     Kassatsu = 2264
     Meisui = 16489
 
@@ -587,7 +596,7 @@ class DragoonActions(ActionEnum):
     PiercingTalon = 90
     HighJump = 16478
     MirageDive = 7399
-    SpineshafterDive = 95
+    SpineshatterDive = 95
     DragonFireDive = 96
     BattleLitany = 3557
     DragonSight = 7398
@@ -646,7 +655,7 @@ class BardActions(ActionEnum):
 
 class MachinistActions(ActionEnum):
     SplitShot = 7411
-    SlughShot = 7412
+    SlugShot = 7412
     ChainSaw = 25788
     Scattergun = 25768
     Hypercharge = 17209
@@ -662,6 +671,7 @@ class MachinistActions(ActionEnum):
     CleanShot = 7413
     HeatBlast = 7410
     Wildfire = 2878
+    Detonator = 1111111
     GaussRound = 2874
     Ricochet = 2890
     Reassemble = 2876

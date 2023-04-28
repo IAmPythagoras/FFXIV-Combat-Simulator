@@ -27,7 +27,7 @@ def RisingPhoenixRequirement(Player, Spell):
     return Player.BeastChakraType() == 3, -1
 
 def CelestialRevolutionRequirement(Player, Spell):
-    return Player.BestChakraType() == 2, -1
+    return Player.BeastChakraType() == 2, -1
 
 def NadiRequirement(Player, Spell):
     return Player.MasterGauge[0] and Player.MasterGauge[4], -1
