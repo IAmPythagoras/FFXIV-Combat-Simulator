@@ -122,6 +122,11 @@ def ApplyHide(Player, Enemy):
         Player.NinjutsuCD = 0
 
 def ApplyPhantomKamaitachi(Player, Enemy):
+
+    if Player.Pet == None: #If no Shadow, we will create a new one
+        Player.Pet = Pet(Player) # Creating an object
+        Player.Pet.ActionSet.append(WaitAbility(0.01)) #Adding an action so program does not crash
+
     Player.PhantomKamaitachiReady = False
     #Will give Action to the Shadow
     Shadow = Player.Pet
