@@ -74,7 +74,7 @@ class Fight:
             player.CurrentFight = self
             self.PlayerList.append(player)
 
-    def SimulateFight(self, TimeUnit, TimeLimit, vocal) -> None:
+    def SimulateFight(self, TimeUnit, TimeLimit, vocal, PPSGraph : bool = True) -> None:
 
         """
         This function will Simulate the fight given the enemy and player list of this Fight
@@ -87,6 +87,7 @@ class Fight:
         vocal : bool -> True if we want to print out the results
         verbose (bool) -> True if we want the fight to record logs. The log file will be saved in the same folder the python script was executed from
         loglevel (str) -> level at which we want the logging to record.
+        PPSGraph (bool) = True -> If we want the PPS graph to be next to the DPS graph
         """
 
         self.TimeStamp = 0   # Keep track of the time
@@ -315,7 +316,7 @@ class Fight:
                         )
 
         # Printing the results if vocal is true.
-        result, fig = PrintResult(self, self.TimeStamp, self.timeValue)
+        result, fig = PrintResult(self, self.TimeStamp, self.timeValue, PPSGraph=PPSGraph)
         if vocal : print(result)
         return result, fig
             
