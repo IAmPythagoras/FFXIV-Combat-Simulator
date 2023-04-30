@@ -236,6 +236,7 @@ class Player:
         self.PlayerName = "" # Can be used to give the player a name that will be displayed in the final graph and result.
 
         self.TrueLock = False   # Used to know when a player has finished all of its ActionSet
+        self.NoMoreActionLog = True # Used to know if we have logged that the player has no more actions.
         self.NoMoreAction = False # Used to know when a player has no more actions to do. The user will have a choice to set TrueLock = True or to give anther action
         self.Casting = False    # Flag set to true if the player is casting
         self.oGCDLock = False   # If animation locked by oGCD

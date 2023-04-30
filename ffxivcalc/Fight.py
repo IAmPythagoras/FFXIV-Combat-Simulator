@@ -247,8 +247,13 @@ class Fight:
                     # NextActionFunction is by default nothing and only returns True.
                     # But this function can be customized by the user to fit any use of it they might need
                     player.TrueLock = self.NextActionFunction(self, player)
-                    if not player.TrueLock : player.NoMoreAction = False
-                    else:
+                    if not player.TrueLock : 
+                        player.NoMoreAction = False
+                        player.NoMoreActionLog = True
+                        log_str = "Player ID " + str(player.playerID) + " has received other actions to do, Timestamp : " + str(self.TimeStamp)
+                        fight_logging.debug(log_str)
+                    elif player.NoMoreActionLog:
+                        player.NoMoreActionLog = False # We want this log to only happen once everytime the player has no more actions
                         log_str = "Player ID " + str(player.playerID) + " has no more actions, Timestamp : " + str(self.TimeStamp)
                         fight_logging.debug(log_str)
 
