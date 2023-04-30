@@ -114,22 +114,28 @@ def PrintResult(self, time : float, TimeStamp, PPSGraph : bool = True) -> str:
     """
 
     result_string = "The Fight finishes at: " + str(time) + "\n========================\n" 
-
     fig, axs = plt.subplots(1, 2 if PPSGraph else 1, constrained_layout=True) # DPS and PPS graph
     #fig2, axs2 = plt.subplots(2, 4, constrained_layout=True) # DPS Crit distribution
-    axs[0].set_ylabel("DPS")
-    axs[0].set_xlabel("Time (s)")
-    axs[0].set_title("DPS over time")
-    axs[0].spines["top"].set_alpha(0.0)
-    axs[0].spines["right"].set_alpha(0.0)
-    axs[0].set_facecolor("lightgrey")
     if PPSGraph:
+        axs[0].set_ylabel("DPS")
+        axs[0].set_xlabel("Time (s)")
+        axs[0].set_title("DPS over time")
+        axs[0].spines["top"].set_alpha(0.0)
+        axs[0].spines["right"].set_alpha(0.0)
+        axs[0].set_facecolor("lightgrey")
         axs[1].set_ylabel("PPS")
         axs[1].set_xlabel("Time (s)")
         axs[1].set_title("PPS over time")
         axs[1].spines["top"].set_alpha(0.0)
         axs[1].spines["right"].set_alpha(0.0)
         axs[1].set_facecolor("lightgrey")
+    else:
+        axs.set_ylabel("DPS")
+        axs.set_xlabel("Time (s)")
+        axs.set_title("DPS over time")
+        axs.spines["top"].set_alpha(0.0)
+        axs.spines["right"].set_alpha(0.0)
+        axs.set_facecolor("lightgrey")
 
     fig.suptitle("Damage over time.")
 
@@ -189,9 +195,11 @@ def PrintResult(self, time : float, TimeStamp, PPSGraph : bool = True) -> str:
         result_string += "\n=================\n"
 
         job_label = job + ("" if player.PlayerName == "" else (" " + player.PlayerName))
-        axs[0].plot(TimeStamp,player.DPSGraph, label=job_label)
         if PPSGraph:
+            axs[0].plot(TimeStamp,player.DPSGraph, label=job_label)
             axs[1].plot(TimeStamp,player.PotencyGraph, label=job_label)
+        else:
+            axs.plot(TimeStamp,player.DPSGraph, label=job_label)
 
         #if len(self.PlayerList) <= 8:
         #    if DPS != 0 : ComputeDPSDistribution(self, player, fig2, axs2[j][i], job)
@@ -204,17 +212,32 @@ def PrintResult(self, time : float, TimeStamp, PPSGraph : bool = True) -> str:
         "Total PPS : " + str(round(self.Enemy.TotalPotency/time,2) if time != 0 else "0" ) + "\t" +
         "Total Potency : " + str(round(self.Enemy.TotalPotency,2))
     )
-    axs[0].xaxis.grid(True)
-    if PPSGraph: axs[1].xaxis.grid(True)
+    if PPSGraph: 
+        axs[0].xaxis.grid(True)
+        axs[1].xaxis.grid(True)
+    else:
+        axs.legend()
+        
     if len(TimeStamp) == 0: # If for some reason Fight ended before 3 second TimeStamp is empty and we need to do an edge case to avoid a crash
         # Note that however the plot will be empty since no damage has been sampled
-        axs[0].xaxis.set_ticks(np.arange(0, 4, 25))
-        if PPSGraph: axs[1].xaxis.set_ticks(np.arange(0, 4, 25))
+        if PPSGraph: 
+            axs[0].xaxis.set_ticks(np.arange(0, 4, 25))
+            axs[1].xaxis.set_ticks(np.arange(0, 4, 25))
+        else:
+            axs.xaxis.set_ticks(np.arange(0, 4, 25))
     else:
-        axs[0].xaxis.set_ticks(np.arange(0, max(TimeStamp)+1, 25))
-        if PPSGraph: axs[1].xaxis.set_ticks(np.arange(0, max(TimeStamp)+1, 25))
-    axs[0].legend()
-    if PPSGraph: axs[1].legend()
+        if PPSGraph: 
+            axs[0].xaxis.set_ticks(np.arange(0, max(TimeStamp)+1, 25))
+            axs[1].xaxis.set_ticks(np.arange(0, max(TimeStamp)+1, 25))
+        else:
+            axs.xaxis.set_ticks(np.arange(0, max(TimeStamp)+1, 25))
+
+    if PPSGraph: 
+        axs[0].legend()
+        axs[1].legend()
+    else:
+        axs.legend()
+    
     if self.ShowGraph: plt.show()
 
     return result_string, fig
