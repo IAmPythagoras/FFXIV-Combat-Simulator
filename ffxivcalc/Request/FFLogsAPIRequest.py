@@ -96,6 +96,9 @@ def lookup_abilityID(actionID, targetID, sourceID, player_list):
             return ClassDict[int(actionID)] #Class actions do not have the possibility to target other allies, so we assume itll target an enemy
 
         if callable(JobDict[int(actionID)]): #If the action is a function
+            if (not (str(targetID) in player_list.keys())):
+                player_obj = player_list[sourceID]["job_object"]
+                raise InvalidTarget(name_for_id(actionID, player_obj.ClassAction, player_obj.JobAction), player_obj, None,True, targetID)
             return JobDict[int(actionID)](player_list[str(targetID)]["job_object"])
         return JobDict[int(actionID)] #Else return object
 
