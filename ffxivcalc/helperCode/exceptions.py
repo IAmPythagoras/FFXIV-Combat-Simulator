@@ -23,20 +23,28 @@ class InvalidTarget(Exception):
     """
     This exception is raised when a non valid target is given as input to an action
 
+    e.g: If an action cannot target the player casting it
+         If the targetID is not an existing player
+
     Attributes:
         ActionName (str) : Name of the action which is given non valid target
+        Caster (object) : The player object of the caster of the action.
         Target (object) : What was passed as target. Will display it as a string.
+        InvalidID (bool) : If the given target ID is not a valid ID.
+        TargetID (int) : ID of the target. Only used if InvalidID is True.
     """
 
-    def __init__(self, ActionName : str, Target):
+    def __init__(self, ActionName : str, Caster, Target, InvalidID : bool, TargetID : int):
         self.Actionname = ActionName
         self.Target = str(Target)
-        self.message = "The given target for " + ActionName + " is not valid. Given target"
+        self.InvalidID = InvalidID
+        self.message = "Player with ID "+str(Caster.playerID)+" has an invalid target. The given target for " + ActionName + " is not valid. Given target : "
+        self.message_2 = "" if not InvalidID else " TargetID " + str(TargetID) + " is invalid." 
 
         super().__init__(self.message)
 
     def __str__(self) -> str:
-        return f'{self.message} {self.Target}'
+        return f'{self.message} {self.Target} {self.message_2}'
 
 
 class InvalidMitigation(Exception):
@@ -57,3 +65,8 @@ class InvalidMitigation(Exception):
 
     def __str__(self) -> str:
         return f'{self.message}'
+    
+class ActionNotFound(Exception):#Exception called if an action isn't found in the dictionnary
+    pass
+class JobNotFound(Exception):#Exception called if a Job isn't found
+    pass

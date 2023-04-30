@@ -10,6 +10,7 @@ how to get the data. You can DM him on discord if you have questions : Bri-kun#6
 from ffxivcalc.Jobs.Base_Spell import PrepullPotion, WaitAbility
 from ffxivcalc.Jobs.Player import Player
 from ffxivcalc.Jobs.PlayerEnum import *
+from ffxivcalc.Jobs.ActionEnum import name_for_id
 #CASTER
 
 from ffxivcalc.Jobs.Caster.Caster_Spell import CasterAbility
@@ -45,22 +46,24 @@ from ffxivcalc.Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton, NinjaAbility
 from ffxivcalc.Jobs.Melee.Dragoon.Dragoon_Spell import DragoonAbility
 from ffxivcalc.Jobs.Melee.Reaper.Reaper_Spell import ReaperAbility
 
+from ffxivcalc.helperCode.exceptions import ActionNotFound, JobNotFound, InvalidTarget
 
 import http.client, json, logging
 main_logging = logging.getLogger("ffxivcalc")
 fflogsapi_logging = main_logging.getChild("FFLogsAPI")
+
 from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, EnochianEffect
 from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
 from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import SongEffect
 from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
-
 from ffxivcalc.Jobs.Tank.Warrior.Warrior_Spell import SurgingTempestEffect 
 
 class ActionNotFound(Exception):#Exception called if an action isn't found in the dictionnary
     pass
 class JobNotFound(Exception):#Exception called if a Job isn't found
     pass
+
 
 def lookup_abilityID(actionID, targetID, sourceID, player_list):
     """
@@ -85,10 +88,17 @@ def lookup_abilityID(actionID, targetID, sourceID, player_list):
                 fflogsapi_logging.warning("Since action was not found defaulting to WaitAbility(0).")
                 return WaitAbility(0) #Currently at none so we can debug
                 raise ActionNotFound #Did not find action
+            if callable(ClassDict[int(actionID)]): #If the action is a function
+                if (not (str(targetID) in player_list.keys())):
+                    player_obj = player_list[sourceID]["job_object"]
+                    raise InvalidTarget(name_for_id(actionID, player_obj.ClassAction, player_obj.JobAction), player_obj, None,True, targetID)
+                return ClassDict[int(actionID)](player_list[str(targetID)]["job_object"])
             return ClassDict[int(actionID)] #Class actions do not have the possibility to target other allies, so we assume itll target an enemy
 
-
         if callable(JobDict[int(actionID)]): #If the action is a function
+            if (not (str(targetID) in player_list.keys())):
+                player_obj = player_list[sourceID]["job_object"]
+                raise InvalidTarget(name_for_id(actionID, player_obj.ClassAction, player_obj.JobAction), player_obj, None,True, targetID)
             return JobDict[int(actionID)](player_list[str(targetID)]["job_object"])
         return JobDict[int(actionID)] #Else return object
 

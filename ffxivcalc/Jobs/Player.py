@@ -218,7 +218,6 @@ class Player:
 
         self.Stat = get_gearset_data(url) # Updates the stats
         
-
     def __init__(self, ActionSet, EffectList, Stat,Job : JobEnum):
 
         self.ActionSet = ActionSet # Known Action List
@@ -237,6 +236,7 @@ class Player:
         self.PlayerName = "" # Can be used to give the player a name that will be displayed in the final graph and result.
 
         self.TrueLock = False   # Used to know when a player has finished all of its ActionSet
+        self.NoMoreActionLog = True # Used to know if we have logged that the player has no more actions.
         self.NoMoreAction = False # Used to know when a player has no more actions to do. The user will have a choice to set TrueLock = True or to give anther action
         self.Casting = False    # Flag set to true if the player is casting
         self.oGCDLock = False   # If animation locked by oGCD
@@ -273,6 +273,7 @@ class Player:
         self.EffectToAdd = [] # List that will add effect to the effectlist or effectcdlist once it has been gone through once
 
         self.ArcanumTimer = 0 # ArcanumTimer
+        self.ArcanumBuff = None # Arcanum buff given to the player if any
         self.MeditativeBrotherhoodTimer = 0 # Meditative Brotherhood Timer
         self.OblationTimer = 0 # Oblation timer if its received
         self.CorundumTimer = 0 # Timer if corundum is given

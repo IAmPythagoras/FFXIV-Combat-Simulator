@@ -74,7 +74,7 @@ class Fight:
             player.CurrentFight = self
             self.PlayerList.append(player)
 
-    def SimulateFight(self, TimeUnit, TimeLimit, vocal) -> None:
+    def SimulateFight(self, TimeUnit, TimeLimit, vocal, PPSGraph : bool = True) -> None:
 
         """
         This function will Simulate the fight given the enemy and player list of this Fight
@@ -87,6 +87,7 @@ class Fight:
         vocal : bool -> True if we want to print out the results
         verbose (bool) -> True if we want the fight to record logs. The log file will be saved in the same folder the python script was executed from
         loglevel (str) -> level at which we want the logging to record.
+        PPSGraph (bool) = True -> If we want the PPS graph to be next to the DPS graph
         """
 
         self.TimeStamp = 0   # Keep track of the time
@@ -218,6 +219,7 @@ class Fight:
                 for remove in player.EffectToRemove:
                     # Loops through all effect that have been classified as terminated and removes them from the EffectCDList
                     player.EffectCDList.remove(remove) # Removing relevant spell
+                    fight_logging.debug("Removing Check function : " + remove.__name__ + " TimeStamp : " + str(self.TimeStamp))
                 for add in player.EffectToAdd:
                     # Adds any function to EffectCDList that should be added
                     player.EffectCDList.append(add)
@@ -245,8 +247,13 @@ class Fight:
                     # NextActionFunction is by default nothing and only returns True.
                     # But this function can be customized by the user to fit any use of it they might need
                     player.TrueLock = self.NextActionFunction(self, player)
-                    if not player.TrueLock : player.NoMoreAction = False
-                    else:
+                    if not player.TrueLock : 
+                        player.NoMoreAction = False
+                        player.NoMoreActionLog = True
+                        log_str = "Player ID " + str(player.playerID) + " has received other actions to do, Timestamp : " + str(self.TimeStamp)
+                        fight_logging.debug(log_str)
+                    elif player.NoMoreActionLog:
+                        player.NoMoreActionLog = False # We want this log to only happen once everytime the player has no more actions
                         log_str = "Player ID " + str(player.playerID) + " has no more actions, Timestamp : " + str(self.TimeStamp)
                         fight_logging.debug(log_str)
 
@@ -315,7 +322,7 @@ class Fight:
                         )
 
         # Printing the results if vocal is true.
-        result, fig = PrintResult(self, self.TimeStamp, self.timeValue)
+        result, fig = PrintResult(self, self.TimeStamp, self.timeValue, PPSGraph=PPSGraph)
         if vocal : print(result)
         return result, fig
             

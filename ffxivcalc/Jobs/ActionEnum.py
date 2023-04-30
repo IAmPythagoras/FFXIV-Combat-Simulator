@@ -166,8 +166,12 @@ class AstrologianActions(ActionEnum):
     Draw = 3590
     Redraw = 3593
     MinorArcana = 7443
-    SolarArcanum = 4401
-    LunarArcanum = 4402
+    Balance = 4401
+    Bole = 4404
+    Arrow = 4402
+    Ewer = 4405
+    Spear = 4403
+    Spire = 4406
     CelestialArcanum = 4403
     LordOfCrown = 7444
     LadyOfCrown = 7445
