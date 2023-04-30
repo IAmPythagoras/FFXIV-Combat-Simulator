@@ -2,6 +2,7 @@ import copy
 
 from ffxivcalc.Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
 from ffxivcalc.Jobs.Healer.Healer_Spell import AstrologianSpell
+from copy import deepcopy
 Lock = 0
 
 #Requirement
@@ -266,28 +267,44 @@ Synastry = AstrologianSpell(3612, False, 0, 0, 0, 0, ApplySynastry, [SynastryReq
 
 #Arcanum require a target within the team, so it will be a function that will return a spell that
 #will target the given player. It is also assumed that the bonus is 6%
-ArcanumBuff = buff(1.06)
+ArcanumBuffMax = buff(1.06)
+ArcanumBuffMin = buff(1.03)
 AstrodyneBuff = buff(1.05)
 DivinatonBuff = buff(1.06)
 
 
-def Arcanum(Target, Type):
-    #Target is the player object to which we will apply the buff
-    #Type will specify which Astrosign
+def Arcanum(Target, Type, Melee):
+    """
+    This function generates an AstrologianSpell corresponding to a card being played.
+    Target : Player -> Reference of the player object being targetted
+    Type : string -> Type of the card played
+    Melee : bool -> True if this card gives 6% to melees and false otherwise (if false then it gives 6% to ranged)
+    """
 
     def ArcanumCheck(Player, Enemy):
         if Player.ArcanumTimer <= 0:
-            #input("Effect has been removed on : " + str(Player))
+            Player.buffList.remove(Player.ArcanumBuff)
+            Player.ArcanumBuff = None
             Player.EffectToRemove.append(ArcanumCheck)
-            Player.buffList.remove(ArcanumBuff)
-        pass #This function is just to know if the Target has already been given a buff
 
     def ApplyArcanum(Player, Spell):
         Player.HasCard = False
-        if Target.ArcanumTimer == 0 : #Can only have 1 buff at a time
-            Target.buffList.append(ArcanumBuff)
-            Target.EffectCDList.append(ArcanumCheck)
+                             # Default value for buff
+        buff = ArcanumBuffMin
 
+                             # Check if the 
+        if (Melee and (Target.RoleEnum == 3 or Target.RoleEnum == 4)):
+            buff = ArcanumBuffMax
+        elif (not Melee and (Target.RoleEnum == 1 or Target.RoleEnum == 2 or Target.RoleEnum == 5)):
+            buff = ArcanumBuffMax
+                             # The target already has a card given to him
+        if Target.ArcanumBuff == None:
+            Target.buffList.remove(Target.ArcanumBuff)
+
+                             # Given card buff to the target
+        Target.ArcanumBuff = deepcopy(buff)
+        Target.buffList.append(Target.ArcanumBuff)
+        Target.EffectCDList.append(ArcanumCheck)
         Target.ArcanumTimer = 15
 
         if Type == "Lunar" : Player.Lunar = True
@@ -298,19 +315,34 @@ def Arcanum(Target, Type):
     ArcanumSpell.TargetID = Target.playerID 
     return ArcanumSpell
 
-def LunarArcanum(target):
-    returnSpell = Arcanum(target,"Lunar")
-    returnSpell.id = 4402
-    return returnSpell
-
-def SolarArcanum(target):
-    returnSpell = Arcanum(target,"Solar")
+def Balance(target):
+    returnSpell = Arcanum(target,"Solar", True)
     returnSpell.id = 4401
     return returnSpell
 
-def CelestialArcanum(target):
-    returnSpell = Arcanum(target,"Celestial")
+def Arrow(target):
+    returnSpell = Arcanum(target,"Lunar", True)
+    returnSpell.id = 4402
+    return returnSpell
+
+def Spear(target):
+    returnSpell = Arcanum(target,"Celestial", True)
     returnSpell.id = 4403
+    return returnSpell
+
+def Bole(target):
+    returnSpell = Arcanum(target,"Solar", False)
+    returnSpell.id = 4404
+    return returnSpell
+
+def Ewer(target):
+    returnSpell = Arcanum(target,"Lunar", False)
+    returnSpell.id = 4405
+    return returnSpell
+
+def Spire(target):
+    returnSpell = Arcanum(target,"Celestial", False)
+    returnSpell.id = 4406
     return returnSpell
 
 AstrologianAbility = {
@@ -321,12 +353,12 @@ AstrologianAbility = {
 3590 : Draw,
 3593 : Redraw, 
 7443 : MinorArcana,
-4401 : SolarArcanum,
-4404 : SolarArcanum,
-4402 : LunarArcanum,
-4405 : LunarArcanum,
-4403 : CelestialArcanum,
-4406 : CelestialArcanum,
+4401 : Balance,
+4404 : Bole,
+4402 : Arrow,
+4405 : Ewer,
+4403 : Spear,
+4406 : Spire,
 7444 : LordOfCrown,
 7445 : LadyOfCrown,
 25870 : Astrodyne,

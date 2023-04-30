@@ -218,7 +218,6 @@ class Player:
 
         self.Stat = get_gearset_data(url) # Updates the stats
         
-
     def __init__(self, ActionSet, EffectList, Stat,Job : JobEnum):
 
         self.ActionSet = ActionSet # Known Action List
@@ -273,6 +272,7 @@ class Player:
         self.EffectToAdd = [] # List that will add effect to the effectlist or effectcdlist once it has been gone through once
 
         self.ArcanumTimer = 0 # ArcanumTimer
+        self.ArcanumBuff = None # Arcanum buff given to the player if any
         self.MeditativeBrotherhoodTimer = 0 # Meditative Brotherhood Timer
         self.OblationTimer = 0 # Oblation timer if its received
         self.CorundumTimer = 0 # Timer if corundum is given
