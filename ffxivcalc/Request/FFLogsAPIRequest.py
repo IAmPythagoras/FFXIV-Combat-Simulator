@@ -79,6 +79,7 @@ def lookup_abilityID(actionID, targetID, sourceID, player_list):
         ClassDict : dict -> same as JobDict, but for Class actions
         """
         print("Action is : " + str(actionID))
+        print(player_list[str(targetID)]["job_object"])
         if not (int(actionID) in JobDict.keys()): #if not in, then the action is in the ClassDict
             if not (int(actionID) in ClassDict.keys()):
                 log_str = "Action Not found , Job : " + job_name + " , ActionId : " + str(actionID) + " , targetID : " + str(targetID) + " , sourceID : " + str(sourceID)
