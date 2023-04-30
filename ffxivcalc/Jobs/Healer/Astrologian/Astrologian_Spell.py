@@ -1,5 +1,3 @@
-import copyArcanumRequirement
-
 from ffxivcalc.Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
 from ffxivcalc.Jobs.Healer.Healer_Spell import AstrologianSpell
 from copy import deepcopy
