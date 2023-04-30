@@ -298,7 +298,7 @@ def Arcanum(Target, Type, Melee):
         elif (not Melee and (Target.RoleEnum == 1 or Target.RoleEnum == 2 or Target.RoleEnum == 5)):
             buff = ArcanumBuffMax
                              # The target already has a card given to him
-        if Target.ArcanumBuff == None:
+        if Target.ArcanumBuff != None:
             Target.buffList.remove(Target.ArcanumBuff)
 
                              # Given card buff to the target
