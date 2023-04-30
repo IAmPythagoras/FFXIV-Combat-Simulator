@@ -87,7 +87,9 @@ def lookup_abilityID(actionID, targetID, sourceID, player_list):
                 raise ActionNotFound #Did not find action
             return ClassDict[int(actionID)] #Class actions do not have the possibility to target other allies, so we assume itll target an enemy
 
-
+        if (actionID == 7537):
+            print("HERE IS SHIRK")
+            print(str(player_list[str(targetID)]["job_object"]))
         if callable(JobDict[int(actionID)]): #If the action is a function
             print("actionID : " + str(actionID) + "is callable.")
             print("target : " + str(player_list[str(targetID)]["job_object"]))
