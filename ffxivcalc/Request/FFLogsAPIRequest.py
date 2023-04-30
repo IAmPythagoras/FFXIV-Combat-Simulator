@@ -78,8 +78,6 @@ def lookup_abilityID(actionID, targetID, sourceID, player_list):
         JobDict : dict -> dictionnary with keys being IDs and mapping to the Spell object (only for Job actions)
         ClassDict : dict -> same as JobDict, but for Class actions
         """
-        print("Action is : " + str(actionID))
-        print(player_list[str(targetID)]["job_object"])
         if not (int(actionID) in JobDict.keys()): #if not in, then the action is in the ClassDict
             if not (int(actionID) in ClassDict.keys()):
                 log_str = "Action Not found , Job : " + job_name + " , ActionId : " + str(actionID) + " , targetID : " + str(targetID) + " , sourceID : " + str(sourceID)
@@ -87,14 +85,11 @@ def lookup_abilityID(actionID, targetID, sourceID, player_list):
                 fflogsapi_logging.warning("Since action was not found defaulting to WaitAbility(0).")
                 return WaitAbility(0) #Currently at none so we can debug
                 raise ActionNotFound #Did not find action
+            if callable(ClassDict[int(actionID)]): #If the action is a function
+                return ClassDict[int(actionID)](player_list[str(targetID)]["job_object"])
             return ClassDict[int(actionID)] #Class actions do not have the possibility to target other allies, so we assume itll target an enemy
 
-        if (actionID == 7537):
-            print("HERE IS SHIRK")
-            print(str(player_list[str(targetID)]["job_object"]))
         if callable(JobDict[int(actionID)]): #If the action is a function
-            print("actionID : " + str(actionID) + "is callable.")
-            print("target : " + str(player_list[str(targetID)]["job_object"]))
             return JobDict[int(actionID)](player_list[str(targetID)]["job_object"])
         return JobDict[int(actionID)] #Else return object
 
