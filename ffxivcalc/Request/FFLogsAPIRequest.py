@@ -89,7 +89,7 @@ def lookup_abilityID(actionID, targetID, sourceID, player_list):
                 return WaitAbility(0) #Currently at none so we can debug
                 raise ActionNotFound #Did not find action
             if callable(ClassDict[int(actionID)]): #If the action is a function
-                if (not (str(targetID) in player_list[str(targetID)].keys())):
+                if (not (str(targetID) in player_list.keys())):
                     player_obj = player_list[sourceID]["job_object"]
                     raise InvalidTarget(name_for_id(actionID, player_obj.ClassAction, player_obj.JobAction), player_obj, None,True, targetID)
                 return ClassDict[int(actionID)](player_list[str(targetID)]["job_object"])
