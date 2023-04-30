@@ -1,6 +1,9 @@
 from ffxivcalc.Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
 from ffxivcalc.Jobs.Healer.Healer_Spell import AstrologianSpell
 from copy import deepcopy
+import logging
+main_logging = logging.getLogger("ffxivcalc")
+ast_logging = main_logging.getChild("astrologian")
 Lock = 0
 
 #Requirement
@@ -292,10 +295,10 @@ def Arcanum(Target, Type, Melee):
 
                              # Check if the target is a melee or ranged and has the 6% buff
         if (Melee and (Target.RoleEnum == 3 or Target.RoleEnum == 4)):
-            print("Giving to melee")
+            ast_logging.warning("Giving to melee")
             buff = ArcanumBuffMax
         elif (not Melee and (Target.RoleEnum == 1 or Target.RoleEnum == 2 or Target.RoleEnum == 5)):
-            print("giving to ranged")
+            ast_logging.warning("giving to ranged")
             buff = ArcanumBuffMax
                              # The target already has a card given to him
         if Target.ArcanumBuff != None:
