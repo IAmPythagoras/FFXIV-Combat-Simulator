@@ -78,6 +78,7 @@ def lookup_abilityID(actionID, targetID, sourceID, player_list):
         JobDict : dict -> dictionnary with keys being IDs and mapping to the Spell object (only for Job actions)
         ClassDict : dict -> same as JobDict, but for Class actions
         """
+        print("Action is : " + str(actionID))
         if not (int(actionID) in JobDict.keys()): #if not in, then the action is in the ClassDict
             if not (int(actionID) in ClassDict.keys()):
                 log_str = "Action Not found , Job : " + job_name + " , ActionId : " + str(actionID) + " , targetID : " + str(targetID) + " , sourceID : " + str(sourceID)
