@@ -219,6 +219,7 @@ class Fight:
                 for remove in player.EffectToRemove:
                     # Loops through all effect that have been classified as terminated and removes them from the EffectCDList
                     player.EffectCDList.remove(remove) # Removing relevant spell
+                    fight_logging.debug("Removing Check function : " + remove.__name__)
                 for add in player.EffectToAdd:
                     # Adds any function to EffectCDList that should be added
                     player.EffectCDList.append(add)
