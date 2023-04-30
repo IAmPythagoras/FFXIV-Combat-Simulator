@@ -362,7 +362,8 @@ def RestoreFightObject(data : dict, name : str = ""):
                 #WaitAbility. WaitAbility has a special field where the waited time is specified
                 actionObject = WaitAbility(action["waitTime"])
             else: 
-                if "targetID" in action.keys(): # Action has atarget
+                if "targetID" in action.keys(): # Action has a target
+                    print("actionID " + str(actionID))
                     actionObject = lookup_abilityID(actionID,action["targetID"], playerID,PlayerActionList) #Getting action object
                 else:
                     actionObject = lookup_abilityID(actionID,0, playerID,PlayerActionList) # Target is Enemy which defaults to id 0
