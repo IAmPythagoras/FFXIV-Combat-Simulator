@@ -292,7 +292,7 @@ def Arcanum(Target, Type, Melee):
                              # Default value for buff
         buff = ArcanumBuffMin
 
-                             # Check if the 
+                             # Check if the target is a melee or ranged and has the 6% buff
         if (Melee and (Target.RoleEnum == 3 or Target.RoleEnum == 4)):
             buff = ArcanumBuffMax
         elif (not Melee and (Target.RoleEnum == 1 or Target.RoleEnum == 2 or Target.RoleEnum == 5)):
@@ -300,11 +300,12 @@ def Arcanum(Target, Type, Melee):
                              # The target already has a card given to him
         if Target.ArcanumBuff != None:
             Target.buffList.remove(Target.ArcanumBuff)
+        else:                # If it already didn't have a card. We must give the target the Check
+            Target.EffectCDList.append(ArcanumCheck)
 
                              # Given card buff to the target
         Target.ArcanumBuff = deepcopy(buff)
         Target.buffList.append(Target.ArcanumBuff)
-        Target.EffectCDList.append(ArcanumCheck)
         Target.ArcanumTimer = 15
 
         if Type == "Lunar" : Player.Lunar = True
