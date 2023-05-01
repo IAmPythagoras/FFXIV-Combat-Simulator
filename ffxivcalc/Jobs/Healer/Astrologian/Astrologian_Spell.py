@@ -163,7 +163,7 @@ def ApplyLightspeed(Player, Enemy):
 
 def ApplyCombust(Player, Enemy):
     if Player.CumbustDOT == None:
-        Player.CumbustDOT = copy.deepcopy(CumbustDOT)
+        Player.CumbustDOT = deepcopy(CumbustDOT)
         Player.CumbustDOTTimer = 30
         Player.DOTList.append(Player.CumbustDOT)
         Player.EffectCDList.append(CumbustDOTCheck)
