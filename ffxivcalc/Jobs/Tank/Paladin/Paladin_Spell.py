@@ -1,5 +1,5 @@
 from ffxivcalc.Jobs.Base_Spell import buff, empty, DOTSpell, ManaRequirement
-from ffxivcalc.Jobs.Tank.Tank_Spell import BigMit, PaladinSpell
+from ffxivcalc.Jobs.Tank.Tank_Spell import BigMitRequirement, ApplyBigMit, PaladinSpell
 from ffxivcalc.helperCode.exceptions import InvalidTarget
 from ffxivcalc.Jobs.Player import Shield, MitBuff
 import copy
@@ -355,6 +355,7 @@ HolySheltron = PaladinSpell(25746, False, 0, 0, 0, 0, ApplyHolySheltron, [HolySh
 Cover = PaladinSpell(27, False, 0, 0, 0, 0, ApplyCover, [SheltronRequirement, CoverRequirement], False)
 HallowedGround = PaladinSpell(30, False, 0, 0, 0, 0, ApplyHallowedGround, [HallowedGroundRequirement], False)
 Bulwark = PaladinSpell(11111, False, 0, 0, 0, 0, ApplyBulwark, [BulwarkRequirement], False)
+Sentinel = PaladinSpell(17,False, 0, 0, 0, 0, ApplyBigMit, [BigMitRequirement], False)
 
 def Intervention(Target):
     """This function returns a PLDSpell object corresponding to
@@ -437,7 +438,7 @@ PaladinAbility = {
 16457 : Prominence,
 23 : CircleScorn,
 16458 : HolyCircle,
-17 : BigMit,
+17 : Sentinel,
 25746 : HolySheltron,
 7382 : Intervention,
 27 : Cover,

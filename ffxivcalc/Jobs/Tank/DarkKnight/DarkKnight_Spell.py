@@ -4,7 +4,7 @@
 from ffxivcalc.Jobs.Base_Spell import DOTSpell, Potion, buff, empty
 import copy
 from ffxivcalc.Jobs.Player import Pet, Shield, MitBuff
-from ffxivcalc.Jobs.Tank.Tank_Spell import BigMit, DRKSkill
+from ffxivcalc.Jobs.Tank.Tank_Spell import BigMitRequirement, ApplyBigMit, DRKSkill
 Lock = 0
 
 def BloodRequirement(Player, Spell):
@@ -305,6 +305,7 @@ PDelay = DRKSkill(29, True, 0, 6, 0, 0, 0, empty, [])    #6s animation before it
 LivingDead = DRKSkill(3638, False, 0, 0, 0, 0, 0, ApplyLivingDead, [LivingDeadRequirement])
 DarkMind = DRKSkill(3634, False, 0, 0, 0, 0, 0, ApplyDarkMind, [DarkMindRequirement])
 DarkMissionary = DRKSkill(16471, False, 0, 0, 0, 0, 0, ApplyDarkMissionary, [DarkMissionaryRequirement])
+ShadowWall = DRKSkill(3636, False, 0, 0, 0, 0, 0, ApplyBigMit, [BigMitRequirement])
 
 def TBN(Target):
     """This function returns a DRKSpell object corresponding to TBN
@@ -367,7 +368,7 @@ DarkKnightAbility = {
     3625: BloodWeapon,
     3632: Souleater,
     3634: DarkMind,
-    3636: BigMit,
+    3636: ShadowWall,
     3638: LivingDead,
     3639: SaltedEarth,
     3640: Plunge,

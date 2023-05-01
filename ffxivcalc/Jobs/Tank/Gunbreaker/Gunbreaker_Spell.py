@@ -1,5 +1,5 @@
 from ffxivcalc.Jobs.Base_Spell import buff, empty, DOTSpell
-from ffxivcalc.Jobs.Tank.Tank_Spell import BigMit, GunbreakerSpell
+from ffxivcalc.Jobs.Tank.Tank_Spell import BigMitRequirement, ApplyBigMit, GunbreakerSpell
 from ffxivcalc.Jobs.Player import MitBuff
 import copy
 Lock = 0.75
@@ -246,6 +246,7 @@ Aurora = GunbreakerSpell(16151, False, 0, 0, ApplyAurora, [AuroraRequirement], 0
 Superbolide = GunbreakerSpell(16152, False, 0, 0, ApplySuperbolide, [SuperbolideRequirement], 0)
 HeartOfLight = GunbreakerSpell(16160, False, 0, 0, ApplyHeartOfLight, [HeartOfLightRequirement], 0)
 Camouflage = GunbreakerSpell(16140, False, 0, 0, ApplyCamouflage, [CamouflageRequirement], 0)
+Nebula = GunbreakerSpell(16148, False, 0, 0, ApplyBigMit, [BigMitRequirement], 0)
 
 def HeartOfCorundum(Target):
     """This function returns a GBNSpell object corresponding to HeartOfCorundum
@@ -301,7 +302,7 @@ GunbreakerAbility = {
 16141 : DemonSlice,
 16149 : DemonSlaughter,
 16163 : FatedCircle,
-16148 : BigMit,
+16148 : Nebula,
 16140 : Camouflage,
 25758 : HeartOfCorundum,
 16151 : Aurora,

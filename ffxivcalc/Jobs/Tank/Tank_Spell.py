@@ -157,7 +157,6 @@ LowBlow = TankSpell(7540, False, Lock, 0, 0, 0, ApplyLowBlow, [LowBlowRequiremen
 Provoke = TankSpell(7533, False, Lock, 0, 0, 0, ApplyProvoke, [ProvokeRequirement])
 Interject = TankSpell(10101010, False, Lock, 0, 0, 0, ApplyInterject, [InterjectRequirement])
 Reprisal = TankSpell(7535, False, Lock, 0, 0, 0, ApplyReprisal, [ReprisalRequirement])
-BigMit = TankSpell(44, False, 0, 0, 0, 0, ApplyBigMit, [BigMitRequirement]) #30% mit
 TankStance = TankSpell(16142, False, 0, 0, 0, 0, ApplyTankStance, [TankStanceRequirement]) #Turn on Tank Stance
 TurnOffTankStance = TankSpell(0, False, 0, 0, 0, 0, ApplyTurnOffTankStance, [])#Turn off Tank Stance
 
@@ -197,8 +196,4 @@ TankAbility = {
 34590541 : Potion,
 34592395 : Potion,
 -2 : Potion,
-44 : BigMit,
-17 : BigMit,
-16148 : BigMit,
-3636 : BigMit
 }

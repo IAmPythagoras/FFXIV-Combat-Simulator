@@ -3,7 +3,7 @@
 #########################################
 
 from ffxivcalc.Jobs.Base_Spell import buff, empty
-from ffxivcalc.Jobs.Tank.Tank_Spell import BigMit, WarriorSpell
+from ffxivcalc.Jobs.Tank.Tank_Spell import BigMitRequirement, ApplyBigMit, WarriorSpell
 from ffxivcalc.Jobs.Player import Shield, MitBuff
 Lock = 0.75
 
@@ -283,6 +283,7 @@ Holmgang = WarriorSpell(43, False, 0, 0, 0, 0, ApplyHolmgang, [HolmgangRequireme
 ShakeItOff = WarriorSpell(7388, False, 0, 0, 0, 0, ApplyShakeItOff, [ShakeItOffRequirement], 0)
 Bloodwhetting = WarriorSpell(25751, False, 0, 0, 0, 0, ApplyBloodwhetting, [BloodwhettingRequirement], 0)
 Equilibrium = WarriorSpell(3552, False, 0, 0, 0, 0, ApplyEquilibrium, [EquilibriumRequirement], 0)
+Vengeance = WarriorSpell(44, False, 0, 0, 0, 0, ApplyBigMit,[BigMitRequirement], 0)
 
 def NascentFlash(Target):
     """This function returns a WARSpell object of Nascent Flash
@@ -343,7 +344,7 @@ WarriorAbility = {
 3550 : Decimate,
 16463 : ChaoticCyclone,
 25752 : Orogeny,
-44 : BigMit,
+44 : Vengeance,
 40 : ThrillOfBattle,
 3552 : Equilibrium,
 25751 : Bloodwhetting,

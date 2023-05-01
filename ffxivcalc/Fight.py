@@ -275,7 +275,7 @@ class Fight:
                 # The fight starts as soon as one player does damage.
                 # The finished time is based on when the fight starts and not when the simulation starts.
                 # If the simulation finishes before the fight starts there will be no damage done.
-                if self.TimeStamp >= 3 and (isclose(self.TimeStamp%1, 0.25) or isclose(self.TimeStamp%1, 0.5) or isclose(self.TimeStamp%1, 0.75) or isclose(self.TimeStamp%1, 0)):# last thing is to ensure no division by zero and also to have no spike at the begining
+                if self.TimeStamp >= 1 and (isclose(self.TimeStamp%1, 0.25) or isclose(self.TimeStamp%1, 0.5) or isclose(self.TimeStamp%1, 0.75) or isclose(self.TimeStamp%1, 0)):# last thing is to ensure no division by zero and also to have no spike at the begining
                     # Samples DPS every frame of the simulation.
                     # If it becomes a problem if fights are too long, could limit rate of sampling.
                     self.timeValue+= [self.TimeStamp]

@@ -322,7 +322,7 @@ class DarkKnightActions(ActionEnum):
     CarveAndSpit = 3643
     Delirium = 7390
     Bloodspiller = 7392
-    TheBlackestNight = 7393 # The Blackest Night
+    TheBlackestNight = 7393
     EdgeOfShadow = 16470
     DarkMissionary = 16471
     LivingShadow = 16472
