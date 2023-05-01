@@ -154,7 +154,7 @@ def PrintResult(self, time : float, TimeStamp, PPSGraph : bool = True) -> str:
             DPS = player.TotalDamage / time
         
         result_string += (
-            "Results for " + str(JobEnum.name_for_id(player.JobEnum)) + ("" if player.PlayerName == "" else " " + player.PlayerName) + " ID - "str(player.playerID)+" :\n" + 
+            "Results for " + str(JobEnum.name_for_id(player.JobEnum)) + ("" if player.PlayerName == "" else " " + player.PlayerName) + " ID - " + str(player.playerID) + " :\n" + 
             "DPS : " + str(round(DPS,2)) + 
             " PPS : " + str(round(PPS,2)) + 
             " TP : " + str(round(player.TotalPotency,2)) + 
