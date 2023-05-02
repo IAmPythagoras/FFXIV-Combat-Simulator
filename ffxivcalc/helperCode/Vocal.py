@@ -194,7 +194,7 @@ def PrintResult(self, time : float, TimeStamp, PPSGraph : bool = True) -> str:
 
         result_string += "\n=================\n"
 
-        job_label = job + ("" if player.PlayerName == "" else (" " + player.PlayerName))
+        job_label = job + ("" if player.PlayerName == "" else (" " + player.PlayerName)) + " ID - " + str(player.playerID)
         if PPSGraph:
             axs[0].plot(TimeStamp,player.DPSGraph, label=job_label)
             axs[1].plot(TimeStamp,player.PotencyGraph, label=job_label)
