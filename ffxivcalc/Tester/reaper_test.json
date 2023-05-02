@@ -25,6 +25,12 @@
                 "Auras": [],
                 "actionList": [
                     {
+                        "actionName": "Soulsow"
+                    },
+                    {
+                        "actionName": "HarvestMoon"
+                    },
+                    {
                         "actionName": "Harpe"
                     },
                     {

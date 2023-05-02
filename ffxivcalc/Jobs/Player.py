@@ -1512,7 +1512,7 @@ class Player:
         self.VoidShroudGauge = 0
 
         #Ready Effect
-
+        self.Soulsow = False
 
         #Stack
         self.SoulSliceStack = 2

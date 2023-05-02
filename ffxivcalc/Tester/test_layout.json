@@ -125,9 +125,9 @@
                 "TestName": "reaper",
                 "Fight": "reaper_test.json",
                 "ExpectedResult": {
-                    "EndTime": "24.78",
+                    "EndTime": "32.28",
                     "1": {
-                        "ExpectedTotalPotency": "9010"
+                        "ExpectedTotalPotency": "9610"
                     }
                 }
             },
