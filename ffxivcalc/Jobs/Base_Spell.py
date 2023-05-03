@@ -186,6 +186,7 @@ class Spell:
         Enemy.TotalDamage += Damage #Adding Damage
 
         if not (player.CurrentFight.FightStart) and Damage > 0 : 
+            base_spell_logging.debug("Fight has started after the action "+name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction)+" done by player " + str(player.playerID))
             player.CurrentFight.FightStart = True
 
             #Giving all players AA
@@ -320,8 +321,8 @@ class Auto_Attack(DOTSpell):
         """
         Ranged : bool -> True if the auto is ranged.
         """
-        if Ranged : super().__init__(id, 0, True) # Ranged AA, 80 potency
-        else: super().__init__(id, 0, True) # Melee AA, 90 potency
+        if Ranged : super().__init__(id, 80, True) # Ranged AA, 80 potency
+        else: super().__init__(id, 90, True) # Melee AA, 90 potency
 
         self.DOTTimer = 0 
 
