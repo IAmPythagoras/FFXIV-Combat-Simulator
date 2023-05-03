@@ -4,6 +4,12 @@ Lock = 0
 
 #Requirement
 
+def SoulsowRequirement(Player, Spell):
+    # This requirement will only serve to make the casting instant if the fight is not started
+    if not Player.CurrentFight.FightStart:
+        Spell.CastTime = 0
+    return True, -1
+
 def HarvestMoonRequirement(Player, Spell):
     return Player.Soulsow, -1
 
@@ -324,7 +330,7 @@ WaxingSlice = ReaperSpell(24374, True, Lock, 2.5, 140, empty, [], True, type = 2
 InfernalSlice = ReaperSpell(24375, True, Lock, 2.5, 140, empty, [], True, type = 2)
 
 #Other GCD
-Soulsow = ReaperSpell(24387, True, 5, 2.5, 0, ApplySoulsow, [], False, type = 1)
+Soulsow = ReaperSpell(24387, True, 5, 2.5, 0, ApplySoulsow, [SoulsowRequirement], False, type = 1)
 HarvestMoon = ReaperSpell(24388, True, Lock, 2.5, 600, ApplyHarvestMoon, [HarvestMoonRequirement], False, type = 1)
 Harpe = ReaperSpell(24386, True, 1.3, 2.5, 300, empty, [], False, type = 1)
 ShadowOfDeath = ReaperSpell(24378, True, Lock, 2.5, 300, ApplyShadowOfDeath, [], True, type = 2)
