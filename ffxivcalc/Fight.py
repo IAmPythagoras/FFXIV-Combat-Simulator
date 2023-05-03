@@ -48,6 +48,7 @@ class Fight:
         self.waitingThreshold = 1 # number of seconds we are willing to wait for. By default 1
         self.wipe = False # Will be set to True in case we are stopping the simulation.
         self.PlayerList = [] # Empty player list
+        self.MaxPotencyPlentifulHarvest = False # True will make Plentiful Harvest do max potency regardless of player.
         # functions
 
         def DefaultNextActionFunction(Fight, Player) -> bool:
@@ -74,7 +75,7 @@ class Fight:
             player.CurrentFight = self
             self.PlayerList.append(player)
 
-    def SimulateFight(self, TimeUnit, TimeLimit, vocal, PPSGraph : bool = True, MaxTeamBonus : bool = False) -> None:
+    def SimulateFight(self, TimeUnit, TimeLimit, vocal, PPSGraph : bool = True, MaxTeamBonus : bool = False, MaxPotencyPlentifulHarvest : bool = False) -> None:
 
         """
         This function will Simulate the fight given the enemy and player list of this Fight
@@ -90,7 +91,7 @@ class Fight:
         PPSGraph (bool) = True -> If we want the PPS graph to be next to the DPS graph
         MaaxTeamBonus (bool) = False -> If true, gives the 5% bonus regardless of team comp
         """
-
+        self.MaxPotencyPlentifulHarvest = MaxPotencyPlentifulHarvest
         self.TimeStamp = 0   # Keep track of the time
         start = False
 

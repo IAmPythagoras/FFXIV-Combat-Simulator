@@ -26,22 +26,19 @@ def BloodStalkRequirement(Player, Spell):
     return Player.SoulGauge >= 50, -1
 
 def GibbetRequirement(Player, Spell):
-    #input(Player.SoulReaverStack > 0)
-    #input(Player.AvatarTimer == 0)
     return Player.SoulReaverStack > 0 and Player.AvatarTimer == 0, -1
 
 def PlentifulHarvestRequirement(Player, Spell):
 
-    #Will modify Spell's potency depending on ImmortalStack, will add 35 potency for each stack, for a max of 800
-    #input(Player.ImmortalSacrificeStack)
-    Spell.Potency += (Player.ImmortalSacrificeStack - 1) * 40 #Removing minimal requirement, which is 1 stack
-    #input("Potency of plentiful is : " + str(Spell.Potency))
+    #Will modify Spell's potency depending on ImmortalStack, will add 40 potency for each stack, for a max of 1000
+    if Player.CurrentFight.MaxPotencyPlentifulHarvest:           # If wants max potency regardless team
+        Spell.Potency = 1000
+    else:
+        Spell.Potency += (Player.ImmortalSacrificeStack - 1) * 40 #Removing minimal requirement, which is 1 stack
 
     return Player.ImmortalSacrificeStack > 0 and Player.BloodsownTimer == 0, Player.BloodsownTimer
 
 def EnshroudRequirement(Player, Spell):
-    #input(Player.EnshroudCD <= 0)
-    #input(Player.ShroudGauge)
     return Player.EnshroudCD <= 0 and Player.ShroudGauge >= 50, Player.EnshroudCD
 
 
