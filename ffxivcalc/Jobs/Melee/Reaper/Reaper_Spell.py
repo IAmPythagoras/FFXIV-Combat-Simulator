@@ -26,8 +26,6 @@ def BloodStalkRequirement(Player, Spell):
     return Player.SoulGauge >= 50, -1
 
 def GibbetRequirement(Player, Spell):
-    #input(Player.SoulReaverStack > 0)
-    #input(Player.AvatarTimer == 0)
     return Player.SoulReaverStack > 0 and Player.AvatarTimer == 0, -1
 
 def PlentifulHarvestRequirement(Player, Spell):
@@ -41,8 +39,6 @@ def PlentifulHarvestRequirement(Player, Spell):
     return Player.ImmortalSacrificeStack > 0 and Player.BloodsownTimer == 0, Player.BloodsownTimer
 
 def EnshroudRequirement(Player, Spell):
-    #input(Player.EnshroudCD <= 0)
-    #input(Player.ShroudGauge)
     return Player.EnshroudCD <= 0 and Player.ShroudGauge >= 50, Player.EnshroudCD
 
 
