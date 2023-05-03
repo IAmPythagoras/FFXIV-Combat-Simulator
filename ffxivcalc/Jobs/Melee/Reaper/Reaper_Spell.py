@@ -32,10 +32,11 @@ def GibbetRequirement(Player, Spell):
 
 def PlentifulHarvestRequirement(Player, Spell):
 
-    #Will modify Spell's potency depending on ImmortalStack, will add 35 potency for each stack, for a max of 800
-    #input(Player.ImmortalSacrificeStack)
-    Spell.Potency += (Player.ImmortalSacrificeStack - 1) * 40 #Removing minimal requirement, which is 1 stack
-    #input("Potency of plentiful is : " + str(Spell.Potency))
+    #Will modify Spell's potency depending on ImmortalStack, will add 40 potency for each stack, for a max of 1000
+    if Player.CurrentFight.MaxPotencyPlentifulHarvest:           # If wants max potency regardless team
+        Spell.Potency = 1000
+    else:
+        Spell.Potency += (Player.ImmortalSacrificeStack - 1) * 40 #Removing minimal requirement, which is 1 stack
 
     return Player.ImmortalSacrificeStack > 0 and Player.BloodsownTimer == 0, Player.BloodsownTimer
 
