@@ -186,6 +186,7 @@ class Spell:
         Enemy.TotalDamage += Damage #Adding Damage
 
         if not (player.CurrentFight.FightStart) and Damage > 0 : 
+            base_spell_logging.debug("Fight has started after the action "+name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction)+" done by player " + str(player.playerID))
             player.CurrentFight.FightStart = True
 
             #Giving all players AA

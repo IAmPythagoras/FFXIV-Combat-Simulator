@@ -74,7 +74,7 @@ class Fight:
             player.CurrentFight = self
             self.PlayerList.append(player)
 
-    def SimulateFight(self, TimeUnit, TimeLimit, vocal, PPSGraph : bool = True) -> None:
+    def SimulateFight(self, TimeUnit, TimeLimit, vocal, PPSGraph : bool = True, MaxTeamBonus : bool = False) -> None:
 
         """
         This function will Simulate the fight given the enemy and player list of this Fight
@@ -88,6 +88,7 @@ class Fight:
         verbose (bool) -> True if we want the fight to record logs. The log file will be saved in the same folder the python script was executed from
         loglevel (str) -> level at which we want the logging to record.
         PPSGraph (bool) = True -> If we want the PPS graph to be next to the DPS graph
+        MaaxTeamBonus (bool) = False -> If true, gives the 5% bonus regardless of team comp
         """
 
         self.TimeStamp = 0   # Keep track of the time
@@ -102,25 +103,28 @@ class Fight:
         # The first thing we will do is compute the TEAM composition DPS bonus
         # each class will give 1%
         # Tank, Healer, Caster, Ranged, Melee
-        hasMelee = False
-        hasCaster = False
-        hasRanged = False
-        hasTank = False
-        hasHealer = False
-        for player in self.PlayerList:
-            if player.RoleEnum == RoleEnum.Melee : hasMelee = True
-            elif player.RoleEnum == RoleEnum.PhysicalRanged : hasCaster = True
-            elif player.RoleEnum == RoleEnum.Caster : hasRanged = True
-            elif player.RoleEnum == RoleEnum.Healer : hasTank = True
-            elif player.RoleEnum == RoleEnum.Tank : hasHealer = True
-
-        if len(self.PlayerList) == 1 : self.TeamCompositionBonus = 1 # If only one player, there is not bonus
+        if MaxTeamBonus:
+            self.TeamCompositionBonus = 1.05
         else:
-            if hasMelee: self.TeamCompositionBonus += 0.01
-            if hasCaster: self.TeamCompositionBonus += 0.01
-            if hasRanged: self.TeamCompositionBonus += 0.01
-            if hasTank: self.TeamCompositionBonus += 0.01
-            if hasHealer: self.TeamCompositionBonus += 0.01
+            hasMelee = False
+            hasCaster = False
+            hasRanged = False
+            hasTank = False
+            hasHealer = False
+            for player in self.PlayerList:
+                if player.RoleEnum == RoleEnum.Melee : hasMelee = True
+                elif player.RoleEnum == RoleEnum.PhysicalRanged : hasCaster = True
+                elif player.RoleEnum == RoleEnum.Caster : hasRanged = True
+                elif player.RoleEnum == RoleEnum.Healer : hasTank = True
+                elif player.RoleEnum == RoleEnum.Tank : hasHealer = True
+
+            if len(self.PlayerList) == 1 : self.TeamCompositionBonus = 1 # If only one player, there is not bonus
+            else:
+                if hasMelee: self.TeamCompositionBonus += 0.01
+                if hasCaster: self.TeamCompositionBonus += 0.01
+                if hasRanged: self.TeamCompositionBonus += 0.01
+                if hasTank: self.TeamCompositionBonus += 0.01
+                if hasHealer: self.TeamCompositionBonus += 0.01
 
         # Will first compute each player's GCD reduction value based on their Spell Speed and Skill Speed Value
 

@@ -28,9 +28,6 @@
                         "actionName": "Soulsow"
                     },
                     {
-                        "actionName": "HarvestMoon"
-                    },
-                    {
                         "actionName": "Harpe"
                     },
                     {
@@ -86,6 +83,9 @@
                     },
                     {
                         "actionName": "Gibbet"
+                    },
+                    {
+                        "actionName": "HarvestMoon"
                     }
                 ],
                 "etro_gearset_url": "Put a URL here if you want. The code will only overwirte the stats if it detects an etro url."
