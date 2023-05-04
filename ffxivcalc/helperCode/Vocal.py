@@ -102,6 +102,26 @@ def ComputeDPSDistribution(self, Player, fig, axs, job):
     axs.margins(-0.0001) # margin arrangement
     axs.legend()
 
+def SimulateRuns(fight, n : int):
+    """
+    This function will simulate the fight with ZIPActions the given number of time and will
+    generate the DPS distribution from it
+    n (int) -> Number of times to run the random simulation
+    """
+
+    for i in range(n):
+        fight.SimulateZIPFight()
+
+    for player in fight.PlayerList:
+                             # Will generate BoxPlot from all simulated runs
+        for runs in player.ZIPDPSRun:
+            if str(runs) in player.DPSBar.keys():
+                player.DPSBar[str(runs)] += 1
+            else:
+                player.DPSBar[str(runs)] = 1
+    
+        print(player.ZIPDPSRun)
+
 # Functions to print out all the results and plot DPS/PPS graph
 
 def PrintResult(self, time : float, TimeStamp, PPSGraph : bool = True) -> str:
