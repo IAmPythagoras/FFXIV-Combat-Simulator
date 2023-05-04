@@ -87,7 +87,7 @@ class Fight:
             player_current_damage = 0
             for ZIPAction in player.ZIPActionSet:
                 player_current_damage += ZIPAction.ComputeRandomDamage()
-            player.ZIPDPSRun.append(((player_current_damage/self.TimeStamp)%10) * 10 )
+            player.ZIPDPSRun.append(roundDown(player_current_damage/self.TimeStamp, 0))
 
     def SimulateFight(self, TimeUnit, TimeLimit, vocal, PPSGraph : bool = True, MaxTeamBonus : bool = False, MaxPotencyPlentifulHarvest : bool = False, n = 100) -> None:
 
