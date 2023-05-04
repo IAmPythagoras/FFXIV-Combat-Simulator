@@ -3,6 +3,7 @@ from ffxivcalc.helperCode.Vocal import PrintResult, SimulateRuns
 from ffxivcalc.Jobs.PlayerEnum import *
 from ffxivcalc.Jobs.ActionEnum import name_for_id
 from ffxivcalc.Jobs.Base_Spell import ZIPAction
+import matplotlib.pyplot as plt
 import logging
 main_logging = logging.getLogger("ffxivcalc")
 fight_logging = main_logging.getChild("Fight")
@@ -343,6 +344,13 @@ class Fight:
         result, fig = PrintResult(self, self.TimeStamp, self.timeValue, PPSGraph=PPSGraph)
         if vocal : print(result)
         SimulateRuns(self, n)
+        for player in self.PlayerList:
+            data = player.DPSBar
+            names = list(data.keys())
+            values = list(data.values())
+
+            plt.bar(range(len(data)), values, tick_label=names)
+            plt.show()
         return result, fig
             
 
