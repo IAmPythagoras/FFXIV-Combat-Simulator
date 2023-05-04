@@ -130,7 +130,7 @@ GNBPlayer = Player([], [], GNBStat, JobEnum.Gunbreaker)
 # Note that if you are simulating with more than 1 per job you will need to create a new list of actions.
 
 # Caster
-BLMOpener = []
+BLMOpener = [Fire3, Fire4, Fire4, Fire4, Despair, Blizzard3, LeyLines, Blizzard4, Paradox, Amplifier, Xenoglossy, Fire3, Triplecast, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Xenoglossy, Swiftcast, Despair]
 SMNOpener = []
 RDMOpener = []
 
@@ -201,7 +201,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [DRKPlayer]
+PlayerList = [BLMPlayer]
 
 Event.AddPlayer(PlayerList)
 
