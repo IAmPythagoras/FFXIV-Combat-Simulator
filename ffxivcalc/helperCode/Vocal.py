@@ -119,10 +119,17 @@ def SimulateRuns(fight, n : int):
             else:
                 player.DPSBar[str(runs)] = 1
 
+        # ordering dict
+        keys = list(player.DPSBar.keys())
+        keys.sort()
+
+        data = {i : player.DPSBar[i] for i in keys}
+
+
         x = []
         y = []
 
-        for bar in player.DPSBar:
+        for bar in data:
             x += [float(bar)]
             y += [player.DPSBar[bar]]
         fig, axs = plt.subplots(1,1)
