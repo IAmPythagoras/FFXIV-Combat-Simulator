@@ -121,7 +121,7 @@ def SimulateRuns(fight, n : int):
 
     
         fig, axs = plt.subplots(1,1)
-        axs[0].plot(list(player.DPSBar.keys()), list(player.DPSBar.values()))
+        axs.plot(list(player.DPSBar.keys()), list(player.DPSBar.values()))
 
 # Functions to print out all the results and plot DPS/PPS graph
 
