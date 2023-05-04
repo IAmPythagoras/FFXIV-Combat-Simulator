@@ -113,14 +113,15 @@ def SimulateRuns(fight, n : int):
         fight.SimulateZIPFight()
 
     for player in fight.PlayerList:
-                             # Will generate BoxPlot from all simulated runs
         for runs in player.ZIPDPSRun:
             if str(runs) in player.DPSBar.keys():
-                player.DPSBar[str(runs)] += 1
+                player.DPSBar[runs] += 1
             else:
-                player.DPSBar[str(runs)] = 1
+                player.DPSBar[runs] = 1
+
     
-        print(player.DPSBar)
+        fig, axs = plt.subplots(1,1)
+        axs[0].plot(list(player.DPSBar.keys()), list(player.DPSBar.values()))
 
 # Functions to print out all the results and plot DPS/PPS graph
 
