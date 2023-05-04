@@ -88,7 +88,7 @@ class Fight:
                 player_current_damage += ZIPAction.ComputeRandomDamage()
             player.ZIPDPSRun.append(roundDown(player_current_damage/self.TimeStamp, 1))
 
-    def SimulateFight(self, TimeUnit, TimeLimit, vocal, PPSGraph : bool = True, MaxTeamBonus : bool = False, MaxPotencyPlentifulHarvest : bool = False) -> None:
+    def SimulateFight(self, TimeUnit, TimeLimit, vocal, PPSGraph : bool = True, MaxTeamBonus : bool = False, MaxPotencyPlentifulHarvest : bool = False, n = 100) -> None:
 
         """
         This function will Simulate the fight given the enemy and player list of this Fight
@@ -342,7 +342,7 @@ class Fight:
         # Printing the results if vocal is true.
         result, fig = PrintResult(self, self.TimeStamp, self.timeValue, PPSGraph=PPSGraph)
         if vocal : print(result)
-        SimulateRuns(self, 100)
+        SimulateRuns(self, n)
         return result, fig
             
 
