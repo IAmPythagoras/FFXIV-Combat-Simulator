@@ -115,9 +115,9 @@ def SimulateRuns(fight, n : int):
     for player in fight.PlayerList:
         for runs in player.ZIPDPSRun:
             if str(runs) in player.DPSBar.keys():
-                player.DPSBar[runs] += 1
+                player.DPSBar[str(runs)] += 1
             else:
-                player.DPSBar[runs] = 1
+                player.DPSBar[str(runs)] = 1
 
     
         fig, axs = plt.subplots(1,1)
