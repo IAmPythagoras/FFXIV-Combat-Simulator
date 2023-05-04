@@ -120,7 +120,7 @@ def SimulateRuns(fight, n : int):
             else:
                 player.DPSBar[str(runs)] = 1
     
-        print(player.ZIPDPSRun)
+        print(player.DPSBar)
 
 # Functions to print out all the results and plot DPS/PPS graph
 
