@@ -119,10 +119,15 @@ def SimulateRuns(fight, n : int):
             else:
                 player.DPSBar[str(runs)] = 1
 
-    
+        x = []
+        y = []
+
+        for bar in player.DPSBar:
+            x += [int(bar)]
+            y += [player.DPSBar[bar]]
         fig, axs = plt.subplots(1,1)
         print(player.DPSBar)
-        axs.plot(list(player.DPSBar.keys()), list(player.DPSBar.values()))
+        axs.plot(x, y)
     plt.show()
 
 # Functions to print out all the results and plot DPS/PPS graph
