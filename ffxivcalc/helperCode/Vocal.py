@@ -135,6 +135,7 @@ def SimulateRuns(fight, n : int):
             y += [player.DPSBar[bar]/n]
         axs[i][j].plot(x, y)
         axs[i][j].plot([player.TotalDamage/fight.TimeStamp,player.TotalDamage/fight.TimeStamp], [0, 0.01])
+        axs[i][j].set_ylim(ymin=0)
         if len(fight.PlayerList) <= 8:
             i+=1
             if i == 4:
