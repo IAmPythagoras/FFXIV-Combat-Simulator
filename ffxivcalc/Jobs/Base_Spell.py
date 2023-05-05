@@ -9,6 +9,7 @@ import math
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
 from ffxivcalc.Jobs.PlayerEnum import RoleEnum
 from ffxivcalc.helperCode.requirementHandler import failedRequirementEvent
+from random import random, uniform
 Lock = 0.75
 
 class FailedToCast(Exception):#Exception called if a spell fails to cast
@@ -22,6 +23,42 @@ class buff:
     def __init__(self, MultDPS):
         self.MultDPS = MultDPS #DPS multiplier of the buff
 
+
+class ZIPAction:
+    """
+    This class holds the information of an action's damage. It will be used to efficiently and quicly compute
+    many runs with random crit and DH in order to get the DPS distribution of runs. In other words, ZIPActions
+    are a "pre-baked" version of the normal Spell class.
+    Damage (int) : Value corresponding to the pre computed damage value of the action. Doesn't include DH and Crit damage.
+    CritChange (float) : Chance for the action to crit.
+    CritMultiplier (float) : Crit multiplier of the action.
+    AutoCritBonus (float) : Damage bonus from crit buff when auto crit.
+    DHChance (float) : Chance for the action to DH.
+    AutoDHBonus (float) : Damage bonus from direct hit when auto direct hit.
+    """
+
+    def __init__(self, Damage : int, CritChance : float, CritMultiplier : float, DHChance : float, auto_crit : bool = False, auto_dh : bool = False, AutoCritBonus : float = 1, AutoDHBonus : float = 1):
+        self.Damage = Damage
+        self.CritChance = CritChance
+        self.CritMultiplier = CritMultiplier
+        self.DHChance = DHChance
+        self.auto_crit = auto_crit
+        self.auto_dh = auto_dh
+        self.AutoCritBonus = AutoCritBonus
+        self.AutoDHBonus = AutoDHBonus
+
+    def ComputeRandomDamage(self) -> int:
+        """
+        This function computes random damage of an action.
+        """
+
+        CritHit = (random() <= self.CritChance)
+        DirectHit = ((random() <= self.DHChance))
+
+        UniformDamage = math.floor(self.Damage * uniform(0.95, 1.05))
+        CritDamage = math.floor(UniformDamage * (1 + self.CritMultiplier if CritHit else 1) * (self.AutoCritBonus if self.auto_crit else 1))
+        DHDamage = math.floor(CritDamage * (1.25 if DirectHit else 1) * (self.AutoDHBonus if self.auto_dh else 1))
+        return DHDamage
 
 class Spell:
     """

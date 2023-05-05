@@ -8,6 +8,7 @@ import logging
 import matplotlib.pyplot as plt
 logging.getLogger('matplotlib').setLevel(logging.INFO) # silencing matplotlib logger
 logging.getLogger('PIL').setLevel(logging.INFO) # silencing PIL logger
+import time
 
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
 
@@ -102,6 +103,64 @@ def ComputeDPSDistribution(self, Player, fig, axs, job):
     axs.margins(-0.0001) # margin arrangement
     axs.legend()
 
+def SimulateRuns(fight, n : int):
+    """
+    This function will simulate the fight with ZIPActions the given number of time and will
+    generate the DPS distribution from it
+    n (int) -> Number of times to run the random simulation
+    """
+    start = time.time()
+    for i in range(n):
+        fight.SimulateZIPFight()
+    end = time.time()
+    print("Time for ZIP is : " + str(end-start))
+
+    l = len(fight.PlayerList)
+    fig, axs = plt.subplots((l // 4)+ (1 if l % 4 != 0 else 0), l if l < 4 else 4, constrained_layout=True) # DPS Crit distribution
+    fig.suptitle("DPS Distribution (n = "+str(n)+" )")
+    i = 0 # Used as coordinate for DPS distribution graph
+    j = 0
+
+    for player in fight.PlayerList:
+        for runs in player.ZIPDPSRun:
+            if str(runs) in player.DPSBar.keys():
+                player.DPSBar[str(runs)] += 1
+            else:
+                player.DPSBar[str(runs)] = 1
+
+        # ordering dict
+        keys = list(player.DPSBar.keys())
+        keys.sort()
+        data = {i : player.DPSBar[i] for i in keys}
+
+
+        x = []
+        y = []
+        for bar in data:
+            x += [float(bar)]
+            y += [player.DPSBar[bar]/n]
+        if l == 1:
+            axs.plot(x, y)
+            axs.plot([player.TotalDamage/fight.TimeStamp,player.TotalDamage/fight.TimeStamp], [0, 0.01])
+            axs.set_ylim(ymin=0)
+            axs.set_title(str(player.JobEnum))
+        elif l <= 4:
+            axs[i].plot(x, y)
+            axs[i].plot([player.TotalDamage/fight.TimeStamp,player.TotalDamage/fight.TimeStamp], [0, 0.01])
+            axs[i].set_ylim(ymin=0)
+            axs[i].set_title(str(player.JobEnum))
+        else:
+            axs[j][i].plot(x, y)
+            axs[j][i].plot([player.TotalDamage/fight.TimeStamp,player.TotalDamage/fight.TimeStamp], [0, 0.01])
+            axs[j][i].set_ylim(ymin=0)
+            axs[j][i].set_title(str(player.JobEnum))
+        i+=1
+        if i == 4:
+            i = 0
+            j+=1
+    fig.show()
+    input("")
+
 # Functions to print out all the results and plot DPS/PPS graph
 
 def PrintResult(self, time : float, TimeStamp, PPSGraph : bool = True) -> str:
@@ -115,7 +174,6 @@ def PrintResult(self, time : float, TimeStamp, PPSGraph : bool = True) -> str:
 
     result_string = "The Fight finishes at: " + str(time) + "\n========================\n" 
     fig, axs = plt.subplots(1, 2 if PPSGraph else 1, constrained_layout=True) # DPS and PPS graph
-    #fig2, axs2 = plt.subplots(2, 4, constrained_layout=True) # DPS Crit distribution
     if PPSGraph:
         axs[0].set_ylabel("DPS")
         axs[0].set_xlabel("Time (s)")

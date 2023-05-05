@@ -130,14 +130,14 @@ GNBPlayer = Player([], [], GNBStat, JobEnum.Gunbreaker)
 # Note that if you are simulating with more than 1 per job you will need to create a new list of actions.
 
 # Caster
-BLMOpener = []
-SMNOpener = []
-RDMOpener = []
+BLMOpener = [Fire3, Fire4, Fire4, Fire4, Despair, Blizzard3, LeyLines, Blizzard4, Paradox, Amplifier, Xenoglossy, Fire3, Triplecast, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Xenoglossy, Swiftcast, Despair]
+SMNOpener = [Summon, Deathflare, Enkindle,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3]
+RDMOpener = [Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder]
 
 # Healer
-SCHOpener = []
-WHMOpener = []
-ASTOpener = []
+SCHOpener = [Broil]
+WHMOpener = [Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare]
+ASTOpener = [Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic]
 SGEOpener = []
 
 # Physical Ranged 
@@ -150,7 +150,7 @@ SAMOpener = []
 DRGOpener = []
 MNKOpener = []
 NINOpener = []
-RPROpener = []
+RPROpener = [SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice]
 
 # Tank 
 DRKOpener = [HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash, Shadowbringer, Shadowbringer]
@@ -201,7 +201,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [DRKPlayer]
+PlayerList = [BLMPlayer, DRKPlayer, WARPlayer, RPRPlayer, WHMPlayer, SCHPlayer, SMNPlayer, RDMPlayer, ASTPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -222,5 +222,7 @@ Event.IgnoreMana = IgnoreMana
 
 
 # ===============================================================================================
-
-Event.SimulateFight(time_unit, TimeLimit, vocal) # Simulating fight
+import time
+start = time.time()
+Event.SimulateFight(time_unit, TimeLimit, vocal, n=100000) # Simulating fight
+print("time for the whole sim was : " + str(time.time() - start))
