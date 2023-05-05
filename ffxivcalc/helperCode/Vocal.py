@@ -8,7 +8,6 @@ import logging
 import matplotlib.pyplot as plt
 logging.getLogger('matplotlib').setLevel(logging.INFO) # silencing matplotlib logger
 logging.getLogger('PIL').setLevel(logging.INFO) # silencing PIL logger
-from scipy import interpolate
 
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
 
@@ -112,6 +111,9 @@ def SimulateRuns(fight, n : int):
 
     for i in range(n):
         fight.SimulateZIPFight()
+    fig, axs = plt.subplots(2, 4, constrained_layout=True) # DPS Crit distribution
+    i = 0 # Used as coordinate for DPS distribution graph
+    j = 0
 
     for player in fight.PlayerList:
         for runs in player.ZIPDPSRun:
@@ -123,7 +125,6 @@ def SimulateRuns(fight, n : int):
         # ordering dict
         keys = list(player.DPSBar.keys())
         keys.sort()
-
         data = {i : player.DPSBar[i] for i in keys}
 
 
@@ -132,14 +133,12 @@ def SimulateRuns(fight, n : int):
         for bar in data:
             x += [float(bar)]
             y += [player.DPSBar[bar]/n]
-        fig, axs = plt.subplots(1,1)
-        # x_new, bspline, y_new
-        x_new = np.linspace(10000, 14000)
-        bspline = interpolate.make_interp_spline(x, y)
-        y_new = bspline(x_new)
-        axs.plt(x_new, y_new)
-        #print(player.DPSBar)
-        axs.plot(x, y)
+        axs[i][j].plot(x, y)
+        if len(fight.PlayerList) <= 8:
+            i+=1
+            if i == 4:
+                i = 0
+                j+=1
     plt.show()
 
 # Functions to print out all the results and plot DPS/PPS graph
@@ -155,7 +154,6 @@ def PrintResult(self, time : float, TimeStamp, PPSGraph : bool = True) -> str:
 
     result_string = "The Fight finishes at: " + str(time) + "\n========================\n" 
     fig, axs = plt.subplots(1, 2 if PPSGraph else 1, constrained_layout=True) # DPS and PPS graph
-    #fig2, axs2 = plt.subplots(2, 4, constrained_layout=True) # DPS Crit distribution
     if PPSGraph:
         axs[0].set_ylabel("DPS")
         axs[0].set_xlabel("Time (s)")
