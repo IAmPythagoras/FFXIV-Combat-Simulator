@@ -8,6 +8,7 @@ import logging
 import matplotlib.pyplot as plt
 logging.getLogger('matplotlib').setLevel(logging.INFO) # silencing matplotlib logger
 logging.getLogger('PIL').setLevel(logging.INFO) # silencing PIL logger
+import time
 
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
 
@@ -108,12 +109,14 @@ def SimulateRuns(fight, n : int):
     generate the DPS distribution from it
     n (int) -> Number of times to run the random simulation
     """
-
+    start = time.time()
     for i in range(n):
         fight.SimulateZIPFight()
+    end = time.time()
+    print("Time for ZIP is : " + str(end-start))
 
     l = len(fight.PlayerList)
-    fig, axs = plt.subplots((l // 5)+1, l if l < 4 else 4, constrained_layout=True) # DPS Crit distribution
+    fig, axs = plt.subplots((l // 4)+ (1 if l % 4 != 0 else 0), l if l < 4 else 4, constrained_layout=True) # DPS Crit distribution
     fig.suptitle("DPS Distribution (n = "+str(n)+" )")
     i = 0 # Used as coordinate for DPS distribution graph
     j = 0
@@ -136,15 +139,27 @@ def SimulateRuns(fight, n : int):
         for bar in data:
             x += [float(bar)]
             y += [player.DPSBar[bar]/n]
-        axs[i][j].plot(x, y)
-        axs[i][j].plot([player.TotalDamage/fight.TimeStamp,player.TotalDamage/fight.TimeStamp], [0, 0.01])
-        axs[i][j].set_ylim(ymin=0)
-
+        if l == 1:
+            axs.plot(x, y)
+            axs.plot([player.TotalDamage/fight.TimeStamp,player.TotalDamage/fight.TimeStamp], [0, 0.01])
+            axs.set_ylim(ymin=0)
+            axs.set_title(str(player.JobEnum))
+        elif l <= 4:
+            axs[i].plot(x, y)
+            axs[i].plot([player.TotalDamage/fight.TimeStamp,player.TotalDamage/fight.TimeStamp], [0, 0.01])
+            axs[i].set_ylim(ymin=0)
+            axs[i].set_title(str(player.JobEnum))
+        else:
+            axs[j][i].plot(x, y)
+            axs[j][i].plot([player.TotalDamage/fight.TimeStamp,player.TotalDamage/fight.TimeStamp], [0, 0.01])
+            axs[j][i].set_ylim(ymin=0)
+            axs[j][i].set_title(str(player.JobEnum))
         i+=1
         if i == 4:
             i = 0
             j+=1
-    plt.show()
+    fig.show()
+    input("")
 
 # Functions to print out all the results and plot DPS/PPS graph
 

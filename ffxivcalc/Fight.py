@@ -89,7 +89,7 @@ class Fight:
                 player_current_damage += ZIPAction.ComputeRandomDamage()
             player.ZIPDPSRun.append(round(player_current_damage/self.TimeStamp/20)*20)
 
-    def SimulateFight(self, TimeUnit, TimeLimit, vocal, PPSGraph : bool = True, MaxTeamBonus : bool = False, MaxPotencyPlentifulHarvest : bool = False, n = 100) -> None:
+    def SimulateFight(self, TimeUnit, TimeLimit, vocal, PPSGraph : bool = True, MaxTeamBonus : bool = False, MaxPotencyPlentifulHarvest : bool = False, n = 0) -> None:
 
         """
         This function will Simulate the fight given the enemy and player list of this Fight
@@ -343,7 +343,7 @@ class Fight:
         # Printing the results if vocal is true.
         result, fig = PrintResult(self, self.TimeStamp, self.timeValue, PPSGraph=PPSGraph)
         if vocal : print(result)
-        SimulateRuns(self, n)
+        if n > 0 : SimulateRuns(self, n)
         return result, fig
             
 
@@ -571,7 +571,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj) -> float:
 
     if spellObj.id == -2878: #If wildfire it cannot crit or DH, so we remove it
         non_crit_dh_expected, dh_crit_expected = Damage, Damage # Non crit expected damage, expected damage with crit
-        Player.ZIPActionSet.append(ZIPAction(Damage, 0, CritMult, 0))
+        (Player if Player.JobEnum != JobEnum.Pet else Player.Master).ZIPActionSet.append(ZIPAction(Damage, 0, CritMult, 0))
         return non_crit_dh_expected , dh_crit_expected
 
     
@@ -579,16 +579,16 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj) -> float:
         auto_crit_bonus = (1 + roundDown(CritRateBonus * CritMult, 3)) # Auto_crit bonus if buffed
         auto_dh_bonus = (1 + roundDown(DHRateBonus * 0.25, 2)) # Auto_DH bonus if buffed
         non_crit_dh_expected, dh_crit_expected = math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))), math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2)))
-        Player.ZIPActionSet.append(ZIPAction(Damage, 1, CritMult, 1, auto_crit=True, auto_dh=False, AutoCritBonus=auto_crit_bonus, AutoDHBonus=auto_dh_bonus))
+        (Player if Player.JobEnum != JobEnum.Pet else Player.Master).ZIPActionSet.append(ZIPAction(Damage, 1, CritMult, 1, auto_crit=True, auto_dh=False, AutoCritBonus=auto_crit_bonus, AutoDHBonus=auto_dh_bonus))
         return math.floor(math.floor(non_crit_dh_expected * auto_crit_bonus) * auto_dh_bonus), math.floor(math.floor(dh_crit_expected * auto_crit_bonus) * auto_dh_bonus)
     elif auto_crit: # If sure to crit, add crit to min expected damage
         auto_crit_bonus = (1 + roundDown(CritRateBonus * CritMult, 3)) # Auto_crit bonus if buffed
         non_crit_dh_expected, dh_crit_expected = math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))), math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) # If we have auto crit, we return full damage
-        Player.ZIPActionSet.append(ZIPAction(Damage, 1, CritMult, DHRate, auto_crit=True, AutoCritBonus=auto_crit_bonus ))
+        (Player if Player.JobEnum != JobEnum.Pet else Player.Master).ZIPActionSet.append(ZIPAction(Damage, 1, CritMult, DHRate, auto_crit=True, AutoCritBonus=auto_crit_bonus ))
         return math.floor(non_crit_dh_expected * auto_crit_bonus), math.floor(dh_crit_expected * auto_crit_bonus) 
     else:# No auto_crit or auto_DH
         non_crit_dh_expected, dh_crit_expected = math.floor(Damage * ( 1 + roundDown((DHRate * 0.25), 2))), math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) # Non crit expected damage, expected damage with crit
-        Player.ZIPActionSet.append(ZIPAction(Damage, CritRate, CritMult, DHRate))
+        (Player if Player.JobEnum != JobEnum.Pet else Player.Master).ZIPActionSet.append(ZIPAction(Damage, CritRate, CritMult, DHRate))
         return non_crit_dh_expected , dh_crit_expected
 
 
