@@ -113,7 +113,7 @@ def SimulateRuns(fight, n : int):
         fight.SimulateZIPFight()
 
     l = len(fight.PlayerList)
-    fig, axs = plt.subplots((l // 4)+1, i if l < 4 else 4, constrained_layout=True) # DPS Crit distribution
+    fig, axs = plt.subplots((l // 4)+1, l if l < 4 else 4, constrained_layout=True) # DPS Crit distribution
     fig.suptitle("DPS Distribution (n = "+str(n)+" )")
     i = 0 # Used as coordinate for DPS distribution graph
     j = 0
