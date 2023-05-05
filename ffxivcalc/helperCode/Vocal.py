@@ -136,6 +136,7 @@ def SimulateRuns(fight, n : int):
 
         x = []
         y = []
+        title = "" if player.PlayerName == "" else player.PlayerName + " ID - " + str(player.playerID)
         for bar in data:
             x += [float(bar)]
             y += [player.DPSBar[bar]/n]
@@ -143,17 +144,17 @@ def SimulateRuns(fight, n : int):
             axs.plot(x, y)
             axs.plot([player.TotalDamage/fight.TimeStamp,player.TotalDamage/fight.TimeStamp], [0, 0.01])
             axs.set_ylim(ymin=0)
-            axs.set_title(str(player.JobEnum))
+            axs.set_title(title)
         elif l <= 4:
             axs[i].plot(x, y)
             axs[i].plot([player.TotalDamage/fight.TimeStamp,player.TotalDamage/fight.TimeStamp], [0, 0.01])
             axs[i].set_ylim(ymin=0)
-            axs[i].set_title(str(player.JobEnum))
+            axs.set_title(title)
         else:
             axs[j][i].plot(x, y)
             axs[j][i].plot([player.TotalDamage/fight.TimeStamp,player.TotalDamage/fight.TimeStamp], [0, 0.01])
             axs[j][i].set_ylim(ymin=0)
-            axs[j][i].set_title(str(player.JobEnum))
+            axs.set_title(title)
         i+=1
         if i == 4:
             i = 0
