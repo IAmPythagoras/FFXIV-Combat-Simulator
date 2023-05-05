@@ -128,10 +128,9 @@ def SimulateRuns(fight, n : int):
 
         x = []
         y = []
-
         for bar in data:
             x += [float(bar)]
-            y += [player.DPSBar[bar]]
+            y += [player.DPSBar[bar]/n]
         fig, axs = plt.subplots(1,1)
         #print(player.DPSBar)
         axs.plot(x, y)

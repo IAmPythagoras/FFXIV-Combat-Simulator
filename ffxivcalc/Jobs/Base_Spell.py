@@ -27,7 +27,8 @@ class buff:
 class ZIPAction:
     """
     This class holds the information of an action's damage. It will be used to efficiently and quicly compute
-    many runs with random crit and DH in order to get the DPS distribution of runs.
+    many runs with random crit and DH in order to get the DPS distribution of runs. In other words, ZIPActions
+    are a "pre-baked" version of the normal Spell class.
     Damage (int) : Value corresponding to the pre computed damage value of the action. Doesn't include DH and Crit damage.
     CritChange (float) : Chance for the action to crit.
     CritMultiplier (float) : Crit multiplier of the action.

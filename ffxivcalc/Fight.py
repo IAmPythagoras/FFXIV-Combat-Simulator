@@ -571,6 +571,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj) -> float:
 
     if spellObj.id == -2878: #If wildfire it cannot crit or DH, so we remove it
         non_crit_dh_expected, dh_crit_expected = Damage, Damage # Non crit expected damage, expected damage with crit
+        Player.ZIPActionSet.append(ZIPAction(Damage, 0, CritMult, 0))
         return non_crit_dh_expected , dh_crit_expected
 
     

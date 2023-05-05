@@ -223,4 +223,4 @@ Event.IgnoreMana = IgnoreMana
 
 # ===============================================================================================
 
-Event.SimulateFight(time_unit, TimeLimit, vocal, n=10000) # Simulating fight
+Event.SimulateFight(time_unit, TimeLimit, vocal, n=100000) # Simulating fight
