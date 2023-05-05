@@ -131,12 +131,12 @@ GNBPlayer = Player([], [], GNBStat, JobEnum.Gunbreaker)
 
 # Caster
 BLMOpener = [Fire3, Fire4, Fire4, Fire4, Despair, Blizzard3, LeyLines, Blizzard4, Paradox, Amplifier, Xenoglossy, Fire3, Triplecast, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Xenoglossy, Swiftcast, Despair]
-SMNOpener = []
-RDMOpener = []
+SMNOpener = [Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3]
+RDMOpener = [Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder]
 
 # Healer
 SCHOpener = [Broil]
-WHMOpener = []
+WHMOpener = [Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare]
 ASTOpener = []
 SGEOpener = []
 
@@ -150,7 +150,7 @@ SAMOpener = []
 DRGOpener = []
 MNKOpener = []
 NINOpener = []
-RPROpener = []
+RPROpener = [SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice]
 
 # Tank 
 DRKOpener = [HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash, Shadowbringer, Shadowbringer]
@@ -201,7 +201,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [BLMPlayer]
+PlayerList = [BLMPlayer, DRKPlayer, WARPlayer, RPRPlayer, WHMPlayer, SCHPlayer, SMNPlayer, RDMPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -223,4 +223,4 @@ Event.IgnoreMana = IgnoreMana
 
 # ===============================================================================================
 
-Event.SimulateFight(time_unit, TimeLimit, vocal, n=0) # Simulating fight
+Event.SimulateFight(time_unit, TimeLimit, vocal, n=100) # Simulating fight
