@@ -222,7 +222,4 @@ Event.IgnoreMana = IgnoreMana
 
 
 # ===============================================================================================
-import time
-start = time.time()
 Event.SimulateFight(time_unit, TimeLimit, vocal, n=100000) # Simulating fight
-print("time for the whole sim was : " + str(time.time() - start))

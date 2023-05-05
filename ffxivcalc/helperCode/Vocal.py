@@ -8,7 +8,6 @@ import logging
 import matplotlib.pyplot as plt
 logging.getLogger('matplotlib').setLevel(logging.INFO) # silencing matplotlib logger
 logging.getLogger('PIL').setLevel(logging.INFO) # silencing PIL logger
-import time
 
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
 
@@ -109,11 +108,8 @@ def SimulateRuns(fight, n : int):
     generate the DPS distribution from it
     n (int) -> Number of times to run the random simulation
     """
-    start = time.time()
     for i in range(n):
         fight.SimulateZIPFight()
-    end = time.time()
-    print("Time for ZIP is : " + str(end-start))
 
     l = len(fight.PlayerList)
     fig, axs = plt.subplots((l // 4)+ (1 if l % 4 != 0 else 0), l if l < 4 else 4, constrained_layout=True) # DPS Crit distribution
