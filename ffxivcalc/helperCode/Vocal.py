@@ -134,7 +134,7 @@ def SimulateRuns(fight, n : int):
             y += [player.DPSBar[bar]/n]
         fig, axs = plt.subplots(1,1)
         # x_new, bspline, y_new
-        x_new = np.linspace(x[0], x[-1], 25)
+        x_new = np.linspace(10000, 14000)
         bspline = interpolate.make_interp_spline(x, y)
         y_new = bspline(x_new)
         axs.plt(x_new, y_new)
