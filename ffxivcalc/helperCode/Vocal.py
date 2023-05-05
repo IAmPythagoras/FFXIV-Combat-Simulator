@@ -158,7 +158,7 @@ def SimulateRuns(fight, n : int):
         if i == 4:
             i = 0
             j+=1
-
+    return fig
 # Functions to print out all the results and plot DPS/PPS graph
 
 def PrintResult(self, time : float, TimeStamp, PPSGraph : bool = True) -> str:
