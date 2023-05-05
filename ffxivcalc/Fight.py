@@ -342,9 +342,10 @@ class Fight:
 
         # Printing the results if vocal is true.
         result, fig = PrintResult(self, self.TimeStamp, self.timeValue, PPSGraph=PPSGraph)
+        fig2 = None
         if vocal : print(result)
-        if n > 0 : SimulateRuns(self, n)
-        return result, fig
+        if n > 0 : fig2 = SimulateRuns(self, n)
+        return result, fig, fig2
             
 
 
