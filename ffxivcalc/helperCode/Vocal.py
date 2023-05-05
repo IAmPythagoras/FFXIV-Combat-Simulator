@@ -111,7 +111,10 @@ def SimulateRuns(fight, n : int):
 
     for i in range(n):
         fight.SimulateZIPFight()
-    fig, axs = plt.subplots(2, 4, constrained_layout=True) # DPS Crit distribution
+
+    l = len(fight.PlayerList)
+    fig, axs = plt.subplots((l // 4)+1, i if l < 4 else 4, constrained_layout=True) # DPS Crit distribution
+    fig.suptitle("DPS Distribution (n = "+str(n)+" )")
     i = 0 # Used as coordinate for DPS distribution graph
     j = 0
 
@@ -136,12 +139,12 @@ def SimulateRuns(fight, n : int):
         axs[i][j].plot(x, y)
         axs[i][j].plot([player.TotalDamage/fight.TimeStamp,player.TotalDamage/fight.TimeStamp], [0, 0.01])
         axs[i][j].set_ylim(ymin=0)
-        if len(fight.PlayerList) <= 8:
-            i+=1
-            if i == 4:
-                i = 0
-                j+=1
-    plt.show()
+
+        i+=1
+        if i == 4:
+            i = 0
+            j+=1
+    fig.show()
 
 # Functions to print out all the results and plot DPS/PPS graph
 
