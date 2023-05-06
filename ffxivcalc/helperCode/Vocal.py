@@ -145,12 +145,12 @@ def SimulateRuns(fight, n : int):
             axs[i].plot(x, y)
             axs[i].plot([player.TotalDamage/fight.TimeStamp,player.TotalDamage/fight.TimeStamp], [0, 0.01])
             axs[i].set_ylim(ymin=0)
-            axs.set_title(title)
+            axs[i].set_title(title)
         else:
             axs[j][i].plot(x, y)
             axs[j][i].plot([player.TotalDamage/fight.TimeStamp,player.TotalDamage/fight.TimeStamp], [0, 0.01])
             axs[j][i].set_ylim(ymin=0)
-            axs.set_title(title)
+            axs[j][i].set_title(title)
         i+=1
         if i == 4:
             i = 0
