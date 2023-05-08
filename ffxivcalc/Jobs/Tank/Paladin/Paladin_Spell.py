@@ -372,7 +372,7 @@ def Intervention(Target):
         # Check if the target is valid
 
         if Target == Player: # Intervention cannot be used on the player itself
-            raise InvalidTarget("Intervention", Player)
+            raise InvalidTarget("Intervention", Player, Target, False, Target.playerID)
 
         # 10% for 8 sec. 10% for 4 secs and 10% (flat bonus)
         # if rampart or sentinel is up
