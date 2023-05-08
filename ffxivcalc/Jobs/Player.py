@@ -868,7 +868,7 @@ class Player:
         self.BellCD = 0
         self.AquaveilCD = 0
         self.TemperanceCD = 0
-        self.PlanetyIndulgenceCD = 0
+        self.PlenaryIndulgenceCD = 0
         self.DivineBenisonCD = 0
         self.TetragrammatonCD = 0
         self.AsylumCD = 0
