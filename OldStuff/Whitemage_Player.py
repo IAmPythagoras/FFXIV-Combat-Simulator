@@ -22,7 +22,7 @@ class Whitemage(Healer):
         self.BellCD = 0
         self.AquaveilCD = 0
         self.TemperanceCD = 0
-        self.PlanetyIndulgenceCD = 0
+        self.PlenaryIndulgenceCD = 0
         self.DivineBenisonCD = 0
         self.TetragrammatonCD = 0
         self.AsylumCD = 0
@@ -52,7 +52,7 @@ class Whitemage(Healer):
         if (self.BellCD > 0) : self.BellCD = max(0,self.BellCD - time)
         if (self.AquaveilCD > 0) : self.AquaveilCD = max(0,self.AquaveilCD - time)
         if (self.TemperanceCD > 0) : self.TemperanceCD = max(0,self.TemperanceCD - time)
-        if (self.PlanetyIndulgenceCD > 0) : self.PlanetyIndulgenceCD = max(0,self.PlanetyIndulgenceCD - time)
+        if (self.PlenaryIndulgenceCD > 0) : self.PlenaryIndulgenceCD = max(0,self.PlenaryIndulgenceCD - time)
         if (self.DivineBenisonCD > 0) : self.DivineBenisonCD = max(0,self.DivineBenisonCD - time)
         if (self.TetragrammatonCD > 0) : self.TetragrammatonCD = max(0,self.TetragrammatonCD - time)
         if (self.AsylumCD > 0) : self.AsylumCD = max(0,self.AsylumCD - time)
