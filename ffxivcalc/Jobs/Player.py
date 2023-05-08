@@ -135,7 +135,7 @@ class Player:
         
         """
 
-        self.HP = min(Player.HP + HealingAmount, Player.MaxHP)
+        self.HP = min(self.HP + HealingAmount, self.MaxHP)
 
     def TakeDamage(self, DamageAmount : int, MagicDamage : bool) -> None:
         """
