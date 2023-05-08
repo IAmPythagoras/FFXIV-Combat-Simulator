@@ -295,11 +295,13 @@ def Arcanum(Target, Type, Melee):
 
                              # Check if the target is a melee or ranged and has the 6% buff
         if (Melee and (Target.RoleEnum == 3 or Target.RoleEnum == 4)):
-            ast_logging.warning("Giving to melee")
+            ast_logging.debug("Giving to melee")
             buff = ArcanumBuffMax
         elif (not Melee and (Target.RoleEnum == 1 or Target.RoleEnum == 2 or Target.RoleEnum == 5)):
-            ast_logging.warning("giving to ranged")
+            ast_logging.debug("giving to ranged")
             buff = ArcanumBuffMax
+        else:
+            ast_logging.debug("Not given to optimal job")
                              # The target already has a card given to him
         if Target.ArcanumBuff != None:
             Target.buffList.remove(Target.ArcanumBuff)
