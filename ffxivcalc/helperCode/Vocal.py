@@ -222,26 +222,26 @@ def PrintResult(self, time : float, TimeStamp, PPSGraph : bool = True) -> str:
         
         if player.JobEnum == JobEnum.Bard : 
             result_string += (
-            "Procs/Gauge result (Used/Expected) : \n" +
-            "Refulgent : " + str(round(player.ExpectedRefulgent,2)) + "/" + str(round(player.UsedRefulgent,2)) + 
-            " Wanderer Repertoire : " + str(round(player.ExpectedTotalWandererRepertoire,2)) + "/" + str(round(player.UsedTotalWandererRepertoire,2)) +
+            "Procs/Gauge result (Used/Expecte) : \n" +
+            "Refulgent : " + str(round(player.UsedRefulgent,2)) + "/" + str(round(player.ExpectedRefulgent,2)) + 
+            " Wanderer Repertoire : " + str(round(player.UsedTotalWandererRepertoire,2)) + "/" + str(round(player.ExpectedTotalWandererRepertoire,2)) +
             " RepertoireAdd : " + str(round(player.UsedRepertoireAdd,2)) + 
-            "\nSoul Voice : " + str(round(player.ExpectedSoulVoiceGauge,2)) + "/" + str(round(player.UsedSoulVoiceGauge,2)) +
-            " Soul BloodLetter Reduction : " + str(round(player.ExpectedBloodLetterReduction,2)) + "/" + str(round(player.UsedBloodLetterReduction,2))
+            "\nSoul Voice : " + str(round(player.UsedSoulVoiceGauge,2)) + "/" + str(round(player.ExpectedSoulVoiceGauge,2)) +
+            " Soul BloodLetter Reduction : " + str(round(player.UsedBloodLetterReduction,2)) + "/" + str(round(player.ExpectedBloodLetterReduction,2))
                              )
         elif player.JobEnum == JobEnum.Dancer:
             result_string += (
             "Procs/Gauge result (Used/Expected) : \n" +
-            "Silken Symettry : " + str(round(player.ExpectedSilkenSymettry,2)) + "/" + str(round(player.UsedSilkenSymettry,2)) + 
-            " Silken Flow : " + str(round(player.ExpectedSilkenFlow,2)) + "/" + str(round(player.UsedSilkenFlow,2)) +
-            "\nFourfold Feather : " + str(round(player.ExpectedFourfoldFeather,2)) + "/" + str(round(player.UsedFourfoldFeather,2)) +
-            " Threefold Fan : " + str(round(player.ExpectedThreefoldFan,2)) + "/" + str(round(player.UsedThreefoldFan,2))
+            "Silken Symettry : " + str(round(player.UsedSilkenSymettry,2)) + "/" + str(round(player.ExpectedSilkenSymettry,2)) + 
+            " Silken Flow : " + str(round(player.UsedSilkenFlow,2)) + "/" + str(round(player.ExpectedSilkenFlow,2)) +
+            "\nFourfold Feather : " + str(round(player.UsedFourfoldFeather,2)) + "/" + str(round(player.ExpectedFourfoldFeather,2)) +
+            " Threefold Fan : " + str(round(player.UsedThreefoldFan,2)) + "/" + str(round(player.ExpectedThreefoldFan,2))
                              )
         elif player.JobEnum == JobEnum.RedMage:
             result_string += (
             "Procs/Gauge result (Used/Expected) : \n" +
-            "Verfire : " + str(round(player.ExpectedVerfireProc,2)) + "/" + str(round(player.UsedVerfireProc,2)) + 
-            " Verstone : " + str(round(player.ExpectedVerstoneProc,2)) + "/" + str(round(player.UsedVerstoneProc,2)) 
+            "Verfire : " + str(round(player.UsedVerfireProc,2)) + "/" + str(round(player.ExpectedVerfireProc,2)) + 
+            " Verstone : " + str(round(player.UsedVerstoneProc,2)) + "/" + str(round(player.ExpectedVerstoneProc,2)) 
                              )
 
 
