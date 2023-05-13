@@ -185,6 +185,7 @@ Succor = ScholarSpell(186, True, 2, 2.5, 0, 1000, ApplyAdloquium, [AdloquiumRequ
 Adloquium = ScholarSpell(185, True, 2, 2.5, 0, 1000, ApplyAdloquium, [AdloquiumRequirement], type = 1) #This action has apply and requirement because of recitation
 Physick = ScholarSpell(190, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement], type = 1)
 SummonEos = ScholarSpell(29, True, 1.5, 2.5, 0, 200, empty, [ManaRequirement], type = 1)
+Resurrection = ScholarSpell(125, True, 8, 2.5, 0, 2400, empty, [ManaRequirement])
 #Damage oGCD
 ChainStratagem = ScholarSpell(7436, False, 0, Lock, 0, 0, ApplyChainStratagem, [ChainStratagemRequirement])
 EnergyDrain = ScholarSpell(167, False, 0, Lock, 100, 0, ApplyEnergyDrain, [AetherStackRequirement])
@@ -240,5 +241,6 @@ ScholarAbility = {
 25865 : Broil, 
 17870 : Ruin, 
 16540 : Biolysis,
-22 : Consolation
+22 : Consolation,
+173 : Resurrection
 }

@@ -149,6 +149,8 @@ Cure2 = WhitemageSpell(135, True, 2, 2.5, 0, 1000, empty, [ManaRequirement], typ
 Cure3 = WhitemageSpell(131, True, 2, 2.5, 0, 1500, empty, [ManaRequirement], type = 1)
 Medica = WhitemageSpell(124, True, 2, 2.5, 0, 900, empty, [ManaRequirement], type = 1)
 Medica2 = WhitemageSpell(133, True, 2, 2.5, 0, 1000, empty, [ManaRequirement], type = 1)
+Raise = WhitemageSpell(125, True, 8, 2.5, 0, 2400, empty, [ManaRequirement])
+
 #Damage oGCD
 Assize = WhitemageSpell(3571, False, 0, 0, 400, 0, ApplyAssize, [AssizeRequirement])
 ThinAir = WhitemageSpell(7430, False, 0, 0, 0, 0, ApplyThinAir, [ThinAirRequirement])
@@ -187,5 +189,6 @@ WhiteMageAbility = {
 16536 : Temperance,
 25861 : Aquaveil,
 25862 : Bell,
-19 : PlenaryIndulgence
+19 : PlenaryIndulgence,
+125 : Raise
 }

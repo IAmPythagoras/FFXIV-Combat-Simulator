@@ -227,6 +227,7 @@ class SageActions(ActionEnum):
 # Scholar
 
 class ScholarActions(ActionEnum):
+    Resurrection = 173
     Aetherflow = 166
     EnergyDrain = 167
     Adloquium = 185

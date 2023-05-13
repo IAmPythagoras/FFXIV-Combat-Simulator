@@ -61,7 +61,6 @@ def ApplyRescue(Player, Enemy):
 Repose = HealerSpell(16560, True, 2.5, 2.5, 0, 600, empty, [ManaRequirement])
 Esuna = HealerSpell(7568, True, 1, 2.5, 0, 400, empty, [ManaRequirement])
 Rescue = HealerSpell(7571, False, 0, 0, 0, 0, ApplyRescue, [RescueRequirement])
-Raise = HealerSpell(173, True, 8, 2.5, 0, 2400, empty, [ManaRequirement])
 HealerAbility = {
 16560 : Repose,
 7568 : Esuna,
@@ -69,10 +68,6 @@ HealerAbility = {
 7561 : Swiftcast,
 7562 : LucidDreaming,
 7559 : Surecast,
-173 : Raise, #Scholar Raise
-3603 : Raise, #Astro raise
-24287 : Raise, #sage raise
-125 : Raise, #whitemage raise
 34590545 : Potion,
 34592399 : Potion, 
 -2 : Potion
