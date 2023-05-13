@@ -4,6 +4,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Ignoring Folders
+saved/
+OldStuff/
+
 # C extensions
 *.so
 
