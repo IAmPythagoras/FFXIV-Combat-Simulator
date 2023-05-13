@@ -248,7 +248,7 @@ EssentialDignity = AstrologianSpell(10, False, 0, 0, 0, 0, ApplyEssentialDignity
 Macrocosmos = AstrologianSpell(25874, True, 0, 0, 250, 600, ApplyMacrocosmos, [MacrocosmosRequirement, ManaRequirement], type = 1)
 Microcosmos = AstrologianSpell(17, True, 0, 0, 0, 0, empty, [MicrocosmosRequirement], type = 1)
 LadyOfCrown = AstrologianSpell(7445, True, 0, 1, 0, 0, empty, [], type = 1)
-Ascend = AstrologianSpell(125, True, 8, 2.5, 0, 2400, empty, [ManaRequirement])
+Ascend = AstrologianSpell(3603, True, 8, 2.5, 0, 2400, empty, [ManaRequirement])
 #oGCD
 Lightspeed = AstrologianSpell(11, False, Lock, 0, 0, 0, ApplyLightspeed, [LightspeedRequirement])
 Divination = AstrologianSpell(16552, False, Lock, 0, 0, 0, ApplyDivination, [DivinationRequirement])
