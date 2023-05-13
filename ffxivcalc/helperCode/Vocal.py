@@ -290,7 +290,5 @@ def PrintResult(self, time : float, TimeStamp, PPSGraph : bool = True) -> str:
         axs[1].legend()
     else:
         axs.legend()
-    
-    if self.ShowGraph: plt.show()
 
     return result_string, fig

@@ -417,6 +417,12 @@ def SimulateFightBackend(file_name : str):
 
             PlayerList = [PlayerList[int(user_input) - 1]] #Only taking what we are interested in
 
+    # Asking for how many ZIP simulations
+    n = 0
+    if (input("Do you want to run ZIPSimulations?(y/n)") == "y"):
+        n = int(input("Enter the amount : "))
+    
+
     #We will now go through all actionID and transform into an abilityList
 
     print("Restoring save file into Event object...")
@@ -428,7 +434,7 @@ def SimulateFightBackend(file_name : str):
     Event.RequirementOn = fightInfo["RequirementOn"]
     Event.IgnoreMana = fightInfo["IgnoreMana"]
     
-    Event.SimulateFight(0.01,fightInfo["fightDuration"], vocal=True) #Simulates the fight
+    Event.SimulateFight(0.01,fightInfo["fightDuration"], vocal=True, n = n) #Simulates the fight
 
 
     print(
