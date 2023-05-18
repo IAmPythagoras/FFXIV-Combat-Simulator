@@ -233,7 +233,6 @@ ScholarAbility = {
 16542 : Recitation, 
 16543 : FeyBlessing, 
 16545 : SummonSeraph,
-16545 : SummonEos, 
 17215 : SummonEos, 
 25868 : Expedient, 
 25867 : Protraction, 
