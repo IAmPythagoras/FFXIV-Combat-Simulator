@@ -304,7 +304,7 @@ Scorch = RedmageSpell(16530, True, 0, 2.5, 680, 400, ApplyScorch, [ManaRequireme
 Resolution = RedmageSpell(25858, True, 0, 2.5, 750, 400, ApplyResolution, [ManaRequirement, ResolutionRequirement], 0, 0, type = 1)
 #AOE Melee Action
 Moulinet = RedmageSpell(7513, True, 0, 1.5, 130, 0, ApplyMoulinet, [RDMManaRequirement], 20, 20, type = 2)
-EnchantedMoulinet = RedmageSpell(30, True, 0, 1.5, 130, 0, ApplyEnchantedMoulinet, [RDMManaRequirement], 20, 20, type = 2)
+EnchantedMoulinet = RedmageSpell(7530, True, 0, 1.5, 130, 0, ApplyEnchantedMoulinet, [RDMManaRequirement], 20, 20, type = 2)
 #For now combo action cannot be cancelled by doing something else
 Manafication = RedmageSpell(7521, False, 0, Lock, 0, 0, ApplyManafication, [ManaficationRequirement], 0, 0)
 Embolden = RedmageSpell(7520, False, 0, Lock, 0, 0, ApplyEmbolden, [EmboldenRequirement], 0, 0)
@@ -326,7 +326,7 @@ EmboldenBuff = buff(1.05)
 
 #ActionList
 RedMageAbility = {
-30 : EnchantedMoulinet,
+7530 : EnchantedMoulinet,
 7504 : Riposte, 
 7506 : Corps, 
 7507 : Verareo, 
