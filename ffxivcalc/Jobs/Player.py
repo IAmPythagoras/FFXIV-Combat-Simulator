@@ -26,15 +26,18 @@ class MitBuff:
         Player (Player) : Player on which the mit is applied
         MagicMit (bool) : If the Mit is only for magic damage
         PhysicalMit (bool) : If the mit is only for physical damage.
+        BuffName (str) : Name of the buff
     """
 
-    def __init__(self, PercentMit : float, Timer : float, Player, MagicMit = False, PhysicalMit = False):
+    def __init__(self, PercentMit : float, Timer : float, Player, MagicMit = False, PhysicalMit = False, BuffName = ""):
         self.PercentMit = PercentMit
         self.Timer = Timer
         self.Player = Player
 
         self.MagicMit = MagicMit
         self.PhysicalMit = PhysicalMit
+
+        self.BuffName = BuffName
 
         # Checks for invalid input and raises error in both cases
         if self.MagicMit and self.PhysicalMit : raise InvalidMitigation()
@@ -58,7 +61,6 @@ class MitBuff:
 
         if self.Timer <= 0:
             self.Player.MitBuffList.remove(self)
-
 
 class HealingBuff:
     """This class represents a buff for healing. It has a percent bonus and also
@@ -103,10 +105,11 @@ class Shield:
         Player (Player) : Player on which the shield is applied
     """
 
-    def __init__(self, ShieldAmount : int, Timer: float, Player):
+    def __init__(self, ShieldAmount : int, Timer: float, Player, ShieldName = ""):
         self.ShieldAmont = ShieldAmount
         self.Timer = Timer
         self.Player = Player
+        self.ShieldName = ShieldName
 
     def UpdateTimer(self, time : float) -> None:
         """Update a shield's timer value. If the timer reaches 0 removes the shield from the player.
@@ -133,6 +136,71 @@ class Player:
         Job : JobEnum -> Specific job of the player
     """
 
+    def AddHealingBuff(self, buff : HealingBuff, GivenHealBuff = True, stackable = False):
+        """
+        This function appends a HealingBuff object to the player's ReceivedHealBuffList or GivenHealBuffList.
+        If an identical non-stackable effect is found. It simply reset the time on the buff.
+        buff : Healing buff object
+        GivenHealBuff : bool -> If the healing buff is on given heals rather than received heals
+        stackable : bool -> True of the buff is stackable
+        """
+
+        if GivenHealBuff and not stackable and (buff.BuffName in self.GivenHealBuffNameList):
+                             # The buff is non-stackable and already applied. So we reset the timer.
+            for AppliedBuff in self.GivenHealBuffList:
+                if AppliedBuff.BuffName == buff.BuffName:
+                    AppliedBuff.Timer = buff.Timer
+                    return
+        elif not GivenHealBuff and not stackable and (buff.BuffName in self.ReceivedHealBuffNameList):
+                             # The buff is non-stackable and already applied. So we reset the timer.
+            for AppliedBuff in self.ReceivedHealBuffList:
+                if AppliedBuff.BuffName == buff.BuffName:
+                    AppliedBuff.Timer = buff.Timer
+                    return
+                             # Else we simply append the buff
+        if GivenHealBuff: 
+            self.GivenHealBuffList.append(buff)
+            self.GivenHealBuffNameList.append(buff.BuffName)
+        else:
+            self.ReceivedHealBuffList.append(buff)
+            self.ReceivedHealBuffNameList.append(buff.BuffName)
+
+    def AddMitBuff(self, buff : MitBuff, stackable = False):
+        """
+        This function appends a MitBuff object to the player's MitBuffList. If a mit is non-stackable
+        it will simply reset the timer of the buff in the case where it is already applied.
+        buff : MitBuff -> MitBuff object to append
+        stackable : bool -> true if the buff is stackable
+        """
+
+        if not stackable and buff.BuffName in self.MitBuffNameList:
+                             # Buff is already applied and non-stackable
+            for MitBuff in self.MitBuffList:
+                if MitBuff.BuffName == buff.BuffName:
+                    MitBuff.Timer = buff.Timer
+                    return
+                
+        self.MitBuffList.append(buff)
+        self.MitBuffNameList.append(buff.BuffName)
+        
+    def AddShield(self, shield : Shield, stackable = False):
+        """
+        This function appends a shield to the player's ShieldList. If the shield is already applied
+        and non-stackable then it will simply reset the shield
+        shield : Shield -> Shield object to append
+        stackable : bool -> True of the shield is stackable.
+        """
+
+        if not stackable and shield.ShieldName in self.ShieldNameList:
+            for Shield in self.ShieldList:
+                if Shield.ShieldName == shield.ShieldName:
+                    Shield.Timer = shield.Timer
+                    Shield.ShieldAmount = shield.ShieldAmont
+                    return
+        
+        self.ShieldList.append(shield)
+        self.ShieldNameList.append(shield.ShieldName)
+        
     def ApplyHeal(self, HealingAmount : int) -> None:
         """This function will update the HP according to
         the healing received.
@@ -270,6 +338,7 @@ class Player:
         self.HP = 2000  # Current HP
         self.MaxHP = 2000 # Starting HP
         self.ShieldList = [] # List of all shields currently applied on the player. Shield prio is lowest index to highest index
+        self.ShieldNameList = [] # List of all shields' name currently applied on the player
         self.EnemyDOT = [] # List which contains all DOT applied by the enemy on the player.
         self.TotalEnemity = 0 # Value of Enemity
         self.MagicMitigation = 1 # Current value of magic mitigation
@@ -286,8 +355,11 @@ class Player:
         self.Trait = 1  # DPS mult from trait
         self.buffList = [] # List of all damage buff on the player
         self.MitBuffList = [] # List of all MitBuff on the player
+        self.MitBuffNameList = [] # List of all the MitBuff's name on the player
         self.ReceivedHealBuffList = [] # List of all healing buff on the player. Buffs incoming heals
+        self.ReceivedHealBuffNameList = [] # List of all healing buff's name on the player. 
         self.GivenHealBuffList = [] # List of all healing buff on the player. Buffs given heal.
+        self.GivenHealBuffNameList = [] # List of all healing buff's name on the player. 
         self.EffectToRemove = [] # List filled with effect to remove.
         self.EffectToAdd = [] # List that will add effect to the effectlist or effectcdlist once it has been gone through once
 

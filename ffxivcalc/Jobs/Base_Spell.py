@@ -362,6 +362,15 @@ class DOTSpell(Spell):
             tempSpell.CastFinal(Player, Enemy)
             self.DOTTimer = 3
             
+class HOTSpell(DOTSpell):
+    """
+    This represents a Healing Over Time effect.
+    """
+
+    def __init__(self, id, Potency):
+        super().__init__(id, Potency, False)
+                             # Every HOT is on only one target, hence they are targetted.
+        self.TargetHeal = True
 
 
 class Auto_Attack(DOTSpell):
