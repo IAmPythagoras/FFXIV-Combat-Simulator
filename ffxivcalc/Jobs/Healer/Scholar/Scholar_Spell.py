@@ -3,6 +3,7 @@
 #########################################
 
 from ffxivcalc.Jobs.Healer.Healer_Spell import ScholarSpell
+from ffxivcalc.Jobs.Player import HealingBuff
 
 from ffxivcalc.Jobs.Base_Spell import DOTSpell, empty, ManaRequirement
 import copy
@@ -156,6 +157,8 @@ def ApplyEnergyDrain(Player, Enemy):
 def ApplyDissipation(Player, Enemy):
     Player.DissipationCD = 180
     Player.AetherFlowStack = 3
+    Player.GivenHealBuffList.append(HealingBuff(1.2, 30, Player, BuffName="Dissipation"))
+
 #===================================
 
 def CheckChainStratagem(Player, Enemy):
@@ -202,7 +205,7 @@ DeploymentTactic = ScholarSpell(3585, False, 0, 0, 0, 0, ApplyDeploymentTactic, 
 Excogitation = ScholarSpell(7434, False, 0, 0, 0, 0, ApplyExcogitation, [ExcogitationRequirement,AetherHealRequirement]) #Can be used by recitation
 SacredSoil = ScholarSpell(188, False, 0, 0, 0, 0, ApplySacredSoil, [SacredSoilRequirement,AetherflowRequirement])
 Lustrate = ScholarSpell(189, False, 0, 0, 0, 0, ApplyLustrate, [LustrateRequirement,AetherflowRequirement])
-Indomitability = ScholarSpell(3583, False, 0, 0, 0, 0, ApplyIndomitability, [IndomitabilityRequirement,AetherHealRequirement])#Can be used by recitation
+Indomitability = ScholarSpell(3583, False, 0, 0, 400, 0, ApplyIndomitability, [IndomitabilityRequirement,AetherHealRequirement], AOEHeal=True)#Can be used by recitation
 
 #Fey Healing
 Consolation = ScholarSpell(22, False, 0, 0, 0, 0, ApplyConsolation, [ConsolationRequirement])

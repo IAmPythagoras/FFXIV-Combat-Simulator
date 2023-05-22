@@ -11,6 +11,10 @@ from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
 from ffxivcalc.helperCode.exceptions import InvalidMitigation
 from ffxivcalc.helperCode.helper_math import roundDown
+import logging
+
+main_logging = logging.getLogger("ffxivcalc")
+player_logging = main_logging.getChild("Player")
 
 class MitBuff:
     """This class represents a mitigation buff given to a player. This object
@@ -65,13 +69,15 @@ class HealingBuff:
         Timer (float) : Timer of the buff until end of its effect
         Player (Player) : Player on which the buff is applied
         GivenHealBuff (bool) : True if this buff buffs given healing instead of received healing.
+        BuffName (str) : name of the buff. Only used for logging.
     """
 
-    def __init__(self, PercentBuff : float, Timer : float, Player, GivenHealBuff = True):
+    def __init__(self, PercentBuff : float, Timer : float, Player, GivenHealBuff = True, BuffName : str =""):
         self.PercentBuff = PercentBuff
         self.Timer = Timer
         self.Player = Player
         self.GivenHealBuff = GivenHealBuff
+        self.BuffName = BuffName
 
     def UpdateTimer(self, time : float) -> None:
         """Update a buff's timer value. If the timer reaches 0 removes the shield from the player.
@@ -83,6 +89,7 @@ class HealingBuff:
         self.Timer -= time
 
         if self.Timer <= 0: # Remove itself if time is 0
+            player_logging.debug("TimeStamp : " + str(self.Player.CurrentFight.TimeStamp) + "Removing " + self.BuffName + " from player " + str(self.Player.playerID))
             if self.GivenHealBuff : self.Player.GivenHealBuffList.remove(self) # Removes from GivenHeal list
             else : self.Player.ReceivedHealBuffList.remove(self) # Remves from received heal list
 
@@ -145,7 +152,6 @@ class Player:
             DamageAmount (int): Total damage the player is taking
             MagicDamage (bool) : True if the damage is magical. False if physical.
         """
-        input(str(self.JobEnum) + " took " + str(DamageAmount))
 
         # Will first check if the player is a tank with their invuln on
 
@@ -190,14 +196,24 @@ class Player:
                 # If the damage is physical and the mit is physical
                 damage = int(damage * MitBuff.PercentMit)
 
+        # Take damage and record it
+        self.HP -= max(0, damage)
+        self.HPGraph[0].append(self.CurrentFight.TimeStamp)
+        self.HPGraph[1].append(self.HP)
+        player_logging.debug(
+            "Timestamp : " + str(self.CurrentFight.TimeStamp) + "-> ID " + str(self.playerID) + " took " + str(damage) + ("Magical" if MagicDamage else "Physical") + "damage. Current HP : " + str(self.HP)
+        )
 
-        self.HP -= max(0, -1 * damage)
         
         if self.HP <= 0:
             if self.RoleEnum == RoleEnum.Tank and self.InvulnTimer > 0 and (self.JobEnum == JobEnum.Warrior or self.JobEnum == JobEnum.DarkKnight):
                 # If Warrior or DarkKnight with invuln
                 self.HP = 1
-            else : self.TrueLock = True # Killing the player. Not allowed to raise.
+            else : 
+                player_logging.debug(
+                    "ID " + str(self.playerID) + " died as a result of the above damage. The overkill is " + str(self.HP * -1)
+                )
+                self.TrueLock = True # Killing the player. Not allowed to raise.
 
     def AddAction(self, actionObject) -> None:
         """
@@ -287,6 +303,7 @@ class Player:
 
         self.DPSGraph = []
         self.PotencyGraph = []
+        self.HPGraph = [[],[]]
 
         self.NumberDamageSpell = 0 # Number of damaging spell done, not including DOT and AA
         self.CritRateHistory = [] # History of crit rate, so we can average them at the end
