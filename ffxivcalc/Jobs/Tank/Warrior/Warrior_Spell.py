@@ -253,12 +253,12 @@ def InfuriateStackCheck(Player, Enemy):
 #Combo Action
 HeavySwing = WarriorSpell(31, True, Lock, 2.5, 200, 0, ApplyHeavySwing, [],0, type = 2)
 Maim = WarriorSpell(37, True, Lock, 2.5, 150, 0, ApplyMaim, [],0, type = 2)
-StormEye = WarriorSpell(45, True, Lock, 2.5, 150, 0, ApplyStormEye, [],0, type = 2)
-StormPath = WarriorSpell(42, True, Lock, 2.5, 150, 0, ApplyStormPath, [], 0, type = 2)
+StormEye = WarriorSpell(45, True, Lock, 2.5, 160, 0, ApplyStormEye, [],0, type = 2)
+StormPath = WarriorSpell(42, True, Lock, 2.5, 160, 0, ApplyStormPath, [], 0, type = 2)
 #Missing Storm's path
 
 #oGCD
-Upheaval = WarriorSpell(7387, False, Lock, 0, 370, 0, ApplyUpheaval, [UpheavalRequirement],0)
+Upheaval = WarriorSpell(7387, False, Lock, 0, 400, 0, ApplyUpheaval, [UpheavalRequirement],0)
 Onslaught = WarriorSpell(7386, False, Lock, 0, 150, 0, ApplyOnslaught, [OnslaughtRequirement],0)
 Infuriate = WarriorSpell(52, False, Lock, 0, 0, 0, ApplyInfuriate, [InfuriateRequirement],0)
 InnerRelease = WarriorSpell(7389, False, Lock, 0, 0, 0, ApplyInnerRelease, [InnerReleaseRequirement],0)
@@ -266,8 +266,8 @@ InnerRelease = WarriorSpell(7389, False, Lock, 0, 0, 0, ApplyInnerRelease, [Inne
 
 #GCD
 PrimalRend = WarriorSpell(25753, True, Lock, 2.5, 700, 0, ApplyPrimalRend, [PrimalRendRequirement],0, type = 2)
-FellCleave = WarriorSpell(3549, True, Lock, 2.5, 490, 0, empty, [],50, type = 2)
-InnerChaos = WarriorSpell(16465, True, Lock, 2.5, 650,0, ApplyInnerChaos, [InnerChaosRequirement], 50, type = 2)
+FellCleave = WarriorSpell(3549, True, Lock, 2.5, 520, 0, empty, [],50, type = 2)
+InnerChaos = WarriorSpell(16465, True, Lock, 2.5, 660,0, ApplyInnerChaos, [InnerChaosRequirement], 50, type = 2)
 Tomahawk = WarriorSpell(46, True, Lock, 2.5, 150, 0, empty, [], 0, type = 2)
 
 #AOE GCD

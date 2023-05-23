@@ -313,8 +313,8 @@ def ValorDOTCheck(Player, Enemy):
 #Combo action
 
 FastBlade = PaladinSpell(9, True, Lock, 2.5, 200, 0, ApplyFastBlade, [], True, type = 2)
-RiotBlade = PaladinSpell(15, True, Lock, 2.5, 120, 0, empty, [], True, type = 2)
-RoyalAuthority = PaladinSpell(3539, True, Lock, 2.5, 120,0, empty, [], True, type = 2)
+RiotBlade = PaladinSpell(15, True, Lock, 2.5, 140, 0, empty, [], True, type = 2)
+RoyalAuthority = PaladinSpell(3539, True, Lock, 2.5, 140,0, empty, [], True, type = 2)
 GoringBlade = PaladinSpell(3538, True, Lock, 2.5, 700, 0, ApplyGoringBlade, [GoringBladeRequirement], True, type = 2)
 """
 Post 6.3 goring blade
@@ -333,7 +333,7 @@ BladeValorDOT = DOTSpell(-11, 80, True)
 """
 #GCD
 HolySpirit = PaladinSpell(7384, True, 1.5, 2.5, 350, 1000, empty, [ManaRequirement], False, type = 1)
-Atonement = PaladinSpell(16460, True, Lock, 2.5, 380, 0, ApplyAtonement, [AtonementRequirement], True, type = 1)
+Atonement = PaladinSpell(16460, True, Lock, 2.5, 400, 0, ApplyAtonement, [AtonementRequirement], True, type = 1)
 Clemency = PaladinSpell(3541, True, 1.5, 2.5, 0, 1000, empty, [ManaRequirement], False, type = 2)
 ShieldLob = PaladinSpell(24, True, 0, 2.5, 100, 0, empty, [], True , type = 2)
 #AOE GCD
@@ -343,7 +343,7 @@ Prominence = PaladinSpell(16457, True, 0, 2.5, 100, 0, empty, [], True, type = 2
 
 #oGCD
 RequestACat = PaladinSpell(7383, False, 0, Lock, 300, 0, ApplyRequestACat, [RequestACatRequirement], True) #I NEED ONE RIGHT NOW :x
-CircleScorn = PaladinSpell(23, False, 0, Lock, 100, 0, ApplyCircleScorn, [CircleScornRequirement], True)
+CircleScorn = PaladinSpell(23, False, 0, Lock, 120, 0, ApplyCircleScorn, [CircleScornRequirement], True)
 CircleScornDOT = DOTSpell(-6, 30, True)
 Intervene = PaladinSpell(16461, False, 0, Lock, 150, 0, ApplyIntervene, [InterveneRequirement], True)
 Expiacion = PaladinSpell(25747, False, 0, Lock, 450, 0, ApplyExpiacion, [ExpiacionRequirement], True)

@@ -369,7 +369,7 @@ HighBlizzard = BLMSpell(25795, True, 3, 2.5, 140, 800, False, True, ApplyBlizzar
 #Unaspected Spell
 Scathe = BLMSpell(156, True, Lock, 2.5, 100, 800, False, False, empty, [ManaRequirement], type = 1)
 Paradox = BLMSpell(25797, True, 2.5, 2.5, 500, 1600, False, False, ApplyParadox, [ParadoxRequirement, ManaRequirement], type = 1) 
-Xenoglossy = BLMSpell(16507, True, Lock, 2.5, 800, 0, False, False, ApplyXenoglossy, [PolyglotRequirement], type = 1)
+Xenoglossy = BLMSpell(16507, True, Lock, 2.5, 880, 0, False, False, ApplyXenoglossy, [PolyglotRequirement], type = 1)
 Foul = BLMSpell(7422, True, Lock, 2.5, 600, 0, False, False, ApplyXenoglossy, [PolyglotRequirement], type = 1) #Same effect as Xeno
 Thunder3 = BLMSpell(153, True, 2.5, 2.5, 50, 400, False, False, ApplyThunder3, [ManaRequirement], type = 1)
 Thunder3DOT = DOTSpell(-21, 35, False)
@@ -388,7 +388,7 @@ AetherialManipulation = BLMSpell(155, False, 0, 0, 0, 0, False, False, empty, []
 Manaward = BLMSpell(157, False, 0, 0, 0, 0, False, False, ApplyManaward, [ManawardRequirement])
 
 #buff
-Enochian = buff(1.21)
+Enochian = buff(1.23)
 
 
 #All BlackMage abilities with their id in a dictionnary
