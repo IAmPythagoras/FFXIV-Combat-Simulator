@@ -302,7 +302,7 @@ def ApplyPotion(Player, Enemy):
     """
     Functions applies a potion and boosts the main stat of the player
     """
-    Player.Stat["MainStat"] = min(math.floor(Player.Stat["MainStat"] * 1.1), Player.Stat["MainStat"] + 223) #Grade 7 HQ tincture
+    Player.Stat["MainStat"] = min(math.floor(Player.Stat["MainStat"] * 1.1), Player.Stat["MainStat"] + 262) #Grade 8 HQ tincture
     Player.PotionTimer = 30
 
     Player.EffectCDList.append(PotionCheck)
