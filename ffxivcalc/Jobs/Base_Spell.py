@@ -64,7 +64,7 @@ class Spell:
     """
     This class is any Spell, it will have some subclasses to take Job similar spell, etc.
     """
-    def __init__(self, id : int, GCD : bool, CastTime : float, RecastTime : float, Potency : int, ManaCost : int, Effect, Requirement, type : int = 0, aoe_fn = None):
+    def __init__(self, id : int, GCD : bool, CastTime : float, RecastTime : float, Potency : int, ManaCost : int, Effect, Requirement, type : int = 0, aoe_fn = None, AOEHeal = False, TargetHeal = False):
         """
         Initialization of a Spell
         id : int -> id to identify the action
@@ -76,7 +76,9 @@ class Spell:
         Effect : function -> A function called upon the execution of the action which affects the player and the enemy.
         Requirement : (function -> Bool) -> function called upon the execution to verify if the action can be executed.
         type (int) : Type of the action. The types are Spell, Weaponskill and Ability. Type = 0 is ability, type = 1 is Spell and type = 2 is Weaponskill.
-        aoe_fn (function) : Function that will be called 
+        aoe_fn (function) : Function that will be called (eeeeeeh)
+        AOEHeal : bool -> True if the action is an AOE healing action
+        TargetHeal : bool -> True if the action is a target healing action
         """
 
         if aoe_fn == None:
@@ -95,6 +97,8 @@ class Spell:
         self.DPSBonus = 1
         self.TargetID = 0 #By default 0
         self.type = type 
+        self.AOEHeal = AOEHeal
+        self.TargetHeal = TargetHeal
 
     def Cast(self, player, Enemy):
         """
@@ -171,82 +175,92 @@ class Spell:
         for Effect in self.Effect:
             Effect(player, Enemy)#Put effects on Player and/or Enemy
         #This will include substracting the mana (it has been verified before that the mana was enough)
+        minDamage, Damage, Heal = 0,0,0
+        if self.AOEHeal or self.TargetHeal:
+            type = 1
+            if self.AOEHeal:
+                             # Affects all players
+                for gamer in player.CurrentFight.PlayerList:
+                    Heal = player.CurrentFight.ComputeHealingFunction(player, self.Potency, gamer, 1, type, self)[0]
+                    #base_spell_logging.debug(
+                    #    "Timestamp : " + str(player.CurrentFight.TimeStamp) + " Player " + str(gamer.playerID) + "received a healing of min value : " + str(heal[0])
+                    #)
+                    gamer.HP += Heal
+        else:
+            type = 0 #Default value for type
+            if isinstance(self, Auto_Attack):
+                type = 3
+            elif isinstance(self, DOTSpell): #Then dot
+                #We have to figure out if its a physical dot or not
+                if self.isPhysical: type = 2
+                else: type = 1   
 
-        type = 0 #Default value for type
-        if isinstance(self, Auto_Attack):
-            type = 3
-        elif isinstance(self, DOTSpell): #Then dot
-            #We have to figure out if its a physical dot or not
-            if self.isPhysical: type = 2
-            else: type = 1   
+                                # If the action has 0 potency we skip the computation
+                                # Note that this also means the action won't be added as a ZIPAction for the player.
+            if self.Potency != 0 : minDamage,Damage= player.CurrentFight.ComputeDamageFunction(player, self.Potency, Enemy, self.DPSBonus, type, self)    #Damage computation
+            
+            
+            if player.JobEnum == JobEnum.Pet and self.Potency != 0: # Is a pet and action does damage
 
-        
-        if self.Potency != 0 : minDamage,Damage= player.CurrentFight.ComputeDamageFunction(player, self.Potency, Enemy, self.DPSBonus, type, self)    #Damage computation
-        else: minDamage, Damage = 0,0
-        
+                # Updating damage and potency
+                player.Master.TotalPotency+= self.Potency
+                player.Master.TotalDamage += Damage
+                player.Master.TotalMinDamage += minDamage
 
-        if player.JobEnum == JobEnum.Pet: # Is a pet
+                # Updating Enemity
+                if player.Master.RoleEnum == RoleEnum.Tank and player.Master.TankStanceOn:
+                    # If the player is a tank and have their tank stance on
+                    player.Master.TotalEnemity += Damage/1000
+                    # This Enemity computation is arbitrary and is simply based on the fact that a tank with tank stance on
+                    # generates 10 times the enemity of a player without tank stance.
+                    # The value is made arbitrarily small in order to avoid too big numbers
+                else:
+                    player.Master.TotalEnemity += Damage/10000
+            elif self.Potency != 0: # Is not a pet and action does damage
+                # Updating damage and potency
+                player.TotalPotency+= self.Potency
+                player.TotalDamage += Damage
+                player.TotalMinDamage += minDamage
 
-            # Updating damage and potency
-            player.Master.TotalPotency+= self.Potency
-            player.Master.TotalDamage += Damage
-            player.Master.TotalMinDamage += minDamage
+                # Updating Enemity
+                if player.RoleEnum == RoleEnum.Tank and player.TankStanceOn:
+                    # If the player is a tank and have their tank stance on
+                    player.TotalEnemity += Damage/1000
+                    # This Enemity computation is arbitrary and is simply based on the fact that a tank with tank stance on
+                    # generates 10 times the enemity of a player without tank stance.
+                    # The value is made arbitrarily small in order to avoid too big numbers
+                else:
+                    player.TotalEnemity += Damage/10000
 
-            # Updating Enemity
-            if player.Master.RoleEnum == RoleEnum.Tank and player.Master.TankStanceOn:
-                # If the player is a tank and have their tank stance on
-                player.Master.TotalEnemity += Damage/1000
-                # This Enemity computation is arbitrary and is simply based on the fact that a tank with tank stance on
-                # generates 10 times the enemity of a player without tank stance.
-                # The value is made arbitrarily small in order to avoid too big numbers
-            else:
-                player.Master.TotalEnemity += Damage/10000
+            Enemy.TotalPotency+= self.Potency  #Adding Potency
+            Enemy.TotalDamage += Damage #Adding Damage
 
+                                # This code starts the fight the first time a damaging action is done.
+            if not (player.CurrentFight.FightStart) and Damage > 0 : 
+                base_spell_logging.debug("Fight has started after the action "+name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction)+" done by player " + str(player.playerID))
+                player.CurrentFight.FightStart = True
+                                # Giving all players AA
+                for gamer in player.CurrentFight.PlayerList:
+                    if gamer.JobEnum == JobEnum.Monk: gamer.DOTList.append(copy.deepcopy(Monk_Auto))
+                    elif gamer.RoleEnum == RoleEnum.Melee or gamer.JobEnum == JobEnum.Dancer or gamer.RoleEnum == RoleEnum.Tank:
+                        gamer.DOTList.append(copy.deepcopy(Melee_AADOT))
+                    elif gamer.RoleEnum == RoleEnum.PhysicalRanged:
+                        gamer.DOTList.append(copy.deepcopy(Ranged_AADOT))
 
-        else: # Is not a pet
-            # Updating damage and potency
-            player.TotalPotency+= self.Potency
-            player.TotalDamage += Damage
-            player.TotalMinDamage += minDamage
+                                # Will record the starting HP of every player for graph
+                for gamer in player.CurrentFight.PlayerList:
+                    gamer.HPGraph[0].append(0)
+                    gamer.HPGraph[1].append(gamer.HP)
 
-            # Updating Enemity
-            if player.RoleEnum == RoleEnum.Tank and player.TankStanceOn:
-                # If the player is a tank and have their tank stance on
-                player.TotalEnemity += Damage/1000
-                # This Enemity computation is arbitrary and is simply based on the fact that a tank with tank stance on
-                # generates 10 times the enemity of a player without tank stance.
-                # The value is made arbitrarily small in order to avoid too big numbers
-            else:
-                player.TotalEnemity += Damage/10000
-
-        Enemy.TotalPotency+= self.Potency  #Adding Potency
-        Enemy.TotalDamage += Damage #Adding Damage
-
-        if not (player.CurrentFight.FightStart) and Damage > 0 : 
-            base_spell_logging.debug("Fight has started after the action "+name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction)+" done by player " + str(player.playerID))
-            player.CurrentFight.FightStart = True
-
-            #Giving all players AA
-
-            for gamer in player.CurrentFight.PlayerList:
-                if gamer.JobEnum == JobEnum.Monk: gamer.DOTList.append(copy.deepcopy(Monk_Auto))
-                elif gamer.RoleEnum == RoleEnum.Melee or gamer.JobEnum == JobEnum.Dancer or gamer.RoleEnum == RoleEnum.Tank:
-                    gamer.DOTList.append(copy.deepcopy(Melee_AADOT))
-                elif gamer.RoleEnum == RoleEnum.PhysicalRanged:
-                    gamer.DOTList.append(copy.deepcopy(Ranged_AADOT))
-
-
-        #Will update the NextSpell of the player
-
+                             # Will update the NextSpell of the player
         if (not (isinstance(self, DOTSpell))) : player.NextSpell+=1 # Only increase counter if action was not a DOT
+                             # Checks if player has no more actions
         if (player.NextSpell == len(player.ActionSet)):
             if player.RoleEnum == RoleEnum.Pet: # If the player is a pet simply lock it
                 player.TrueLock = True
             else: # Else we will call NextAction on this player before locking it
                 player.NoMoreAction = True
             
-
-
         if self.GCD: player.GCDCounter += 1 # If action was a GCD, increase the counter
         
         if self.id > 0 and (player.JobEnum != JobEnum.Pet) : # Only logs if is a player action and not a DOT
@@ -255,7 +269,7 @@ class Spell:
             + " , playerID : " + str(player.playerID)
             + " , Ability : " + name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction)
             + " , Potency : " + str(self.Potency)
-            + " , Damage : " + str(Damage) )
+            + (" , Damage : " + str(Damage) if not (self.AOEHeal or self.TargetHeal) else " , Healing : " + str(Heal)))
             
             base_spell_logging.debug(log_str)
 
@@ -348,6 +362,15 @@ class DOTSpell(Spell):
             tempSpell.CastFinal(Player, Enemy)
             self.DOTTimer = 3
             
+class HOTSpell(DOTSpell):
+    """
+    This represents a Healing Over Time effect.
+    """
+
+    def __init__(self, id, Potency):
+        super().__init__(id, Potency, False)
+                             # Every HOT is on only one target, hence they are targetted.
+        self.TargetHeal = True
 
 
 class Auto_Attack(DOTSpell):

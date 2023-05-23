@@ -11,97 +11,6 @@ logging.getLogger('PIL').setLevel(logging.INFO) # silencing PIL logger
 
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
 
-# Functions related to computing and plotting graph of DPS distribution
-
-def Normal(mean, std, x):# returns value from NormalDistribution
-    if std == 0 : return 0
-    return 1/(std * np.sqrt(2 * np.pi)) * np.exp(-1/2 * ((x-mean)/std)**2)
-
-def AverageCritMult(Player, k):
-    n = Player.NumberDamageSpell # Total number of damage Spell
-    if n == 0 : return 0
-    # k is the number of success, so the number of crit
-    return ((k) * (1 + Player.CritMult)  + (n-k))/n # Average crit multiplier over the run, this can be seen as a fix bonus on the whole fight
-
-def ComputeDPSDistribution(self, Player, fig, axs, job):
-    # THIS WHOLE PART HAS BEEN SHOWN TO NOT BE ACCURATE AND IS NOT FIXED AS OF NOW
-    # USE AT YOUR OWN RISK
-
-    # Graph data
-    axs.set_ylabel("Percentage (%)")
-    axs.set_xlabel("Expected DPS")
-    axs.set_title(job + " DPS Distribution")
-    axs.spines["top"].set_alpha(0.0)
-    axs.spines["right"].set_alpha(0.0)
-    axs.set_facecolor("lightgrey")
-    # axs.yaxis.set_ticks(np.arange(0,15,1))
-
-
-
-
-    # This function will return a distribution of DPS and chance of having certain DPS
-    Player.DPS = Player.TotalMinDamage / self.TimeStamp # Computing DPS with no crit, expected DH
-    Player.ExpectedDPS = Player.TotalDamage / self.TimeStamp # Expected DPS with crit
-
-    n = Player.NumberDamageSpell # Number of spell that deals damage done by this player
-    p = round((Player.ExpectedDPS/Player.DPS - 1)/Player.CritMult,3)
-
-    # The value of p is found by using the fact that Player.DPS = DPS * ExpectedDHDamage, Player.ExpectedDPS = DPS * ExpectedDHDamage * ExpectedCritDamage
-    # And ExpectedCritDamage = ( 1 + (CritMult * CritRate)), so we simply isolate CritRate. This will give an average Crit rate over the whole fight which will
-    # take into account crit rate buffs throughout the fight
-    decimal_mean = n*p # Number of expected crit (not an integer)
-    mean = math.floor(decimal_mean) # Number of expected crit rounded down
-    radius = math.ceil(n/2) # Radius we for which we will graph the distribution
-    std = n*p * (1-p) # Standard deviation
-    # The binomial distribution of enough trials can be approximated to N(np, np(1-p)) for big enough n, so we will simply approximate the distribution by this
-    # Note that here n stands for the number of damage spell, and p is the averagecritrate of the player AverageCritRate = (CritRate + CritRateBonus)/time
-    # We will salvage values from the normal distribution, then find the average crit multiplier by number of crits gotten. We will then multiply the computed DPS
-    # by these multipliers to get DPS values for each chance
-    # We will sample n/2 points on each side
-
-    y_list = []
-    expected_dps_list = [] # List of expected DPS
-    resolution = 500 # Hardcoded value, represents how many points on the curve we take
-    i = max(0, mean-radius) # Starting point
-    j = mean + radius+1 # Upper limit
-    h = (j - i)/resolution # Step to take
-    x_list = np.linspace(i,j,resolution) # Evenly spaced out from i -> j with resolution number of points
-    # It will be computed by computing an average crit multiplier, and then multiplying the DPS by that
-    while i < j:
-        next_point = Normal(decimal_mean, std, i) * 100000 / 10
-        # input(next_point)
-        y_list += [math.floor(next_point)/100]
-        average_crit_mult = AverageCritMult(Player, i)
-        expected_dps_list += [average_crit_mult * Player.DPS]
-        i+= h
-
-
-    high_crit_mult_list = []
-    low_crit_mult_list = []
-    for i in range(1,4): # This loop will create boundary for the empirical rules, it will do 1 to 3 std away from the mean
-        high = decimal_mean + i*std
-        low = decimal_mean - i*std
-        high_crit_mult = AverageCritMult(Player, high)
-        low_crit_mult = AverageCritMult(Player, low)
-        high_crit_mult_list += [high_crit_mult * Player.DPS]
-        low_crit_mult_list += [low_crit_mult * Player.DPS]
-    # Even though low and high are not integers, the AverageCritMult is a continuous stricly increasing function, so we can use it on
-    # non integer value to get an "in-between" value
-
-    top_graph = max(y_list) * 1.3 # top of graph
-    lab = "\u03BC = " + str(round(Player.ExpectedDPS,1)) + " \u03C3 = " + str(round(std,2))
-    axs.plot(expected_dps_list, y_list,label=lab) # Distribution
-    axs.plot([Player.ExpectedDPS,Player.ExpectedDPS], [0,top_graph], label="Expected DPS", linestyle="dashed") # Expected DPS
-    # Plotting Empirical rule region
-    axs.axvspan(max(expected_dps_list[0],low_crit_mult_list[2]), min(expected_dps_list[-1],high_crit_mult_list[2]), color="green") # 99.7% empirical rule region, will most likely not appear in the graph
-    axs.axvspan(max(expected_dps_list[0],low_crit_mult_list[1]), high_crit_mult_list[1], color="blue") # 95% empirical rule region
-    axs.axvspan(low_crit_mult_list[0], high_crit_mult_list[0], color="red") # 68% empirical rule region
-
-
-    axs.fill_between(expected_dps_list, y_list,top_graph, fc="lightgrey") # Used to cover the vertical regions from axvspan so they stop under the line of the distribution
-    axs.margins(-0.0001) # margin arrangement
-    axs.legend()
-
 def SimulateRuns(fight, n : int):
     """
     This function will simulate the fight with ZIPActions the given number of time and will
@@ -169,6 +78,15 @@ def PrintResult(self, time : float, TimeStamp, PPSGraph : bool = True) -> str:
 
     result_string = "The Fight finishes at: " + str(time) + "\n========================\n" 
     fig, axs = plt.subplots(1, 2 if PPSGraph else 1, constrained_layout=True) # DPS and PPS graph
+    HPFig, HPaxs = plt.subplots(1,1, constrained_layout=True)
+
+    HPaxs.set_ylabel("HP")
+    HPaxs.set_xlabel("Time (s)")
+    HPaxs.set_title("HP over time")
+    HPaxs.spines["top"].set_alpha(0.0)
+    HPaxs.spines["right"].set_alpha(0.0)
+    HPaxs.set_facecolor("lightgrey")
+
     if PPSGraph:
         axs[0].set_ylabel("DPS")
         axs[0].set_xlabel("Time (s)")
@@ -196,7 +114,8 @@ def PrintResult(self, time : float, TimeStamp, PPSGraph : bool = True) -> str:
     j = 0
 
     for player in self.PlayerList:
-
+        HPaxs.plot(player.HPGraph[0], player.HPGraph[1], color="green")
+        HPaxs.set_ylim(ymin=0)
         if time == 0: time = 1 # This is only so we don't have division by 0 error
 
         if player.TotalPotency == 0:
@@ -292,3 +211,96 @@ def PrintResult(self, time : float, TimeStamp, PPSGraph : bool = True) -> str:
         axs.legend()
 
     return result_string, fig
+
+"""
+# Functions related to computing and plotting graph of DPS distribution
+
+def Normal(mean, std, x):# returns value from NormalDistribution
+    if std == 0 : return 0
+    return 1/(std * np.sqrt(2 * np.pi)) * np.exp(-1/2 * ((x-mean)/std)**2)
+
+def AverageCritMult(Player, k):
+    n = Player.NumberDamageSpell # Total number of damage Spell
+    if n == 0 : return 0
+    # k is the number of success, so the number of crit
+    return ((k) * (1 + Player.CritMult)  + (n-k))/n # Average crit multiplier over the run, this can be seen as a fix bonus on the whole fight
+
+def ComputeDPSDistribution(self, Player, fig, axs, job):
+    # THIS WHOLE PART HAS BEEN SHOWN TO NOT BE ACCURATE AND IS NOT FIXED AS OF NOW
+    # USE AT YOUR OWN RISK
+
+    # Graph data
+    axs.set_ylabel("Percentage (%)")
+    axs.set_xlabel("Expected DPS")
+    axs.set_title(job + " DPS Distribution")
+    axs.spines["top"].set_alpha(0.0)
+    axs.spines["right"].set_alpha(0.0)
+    axs.set_facecolor("lightgrey")
+    # axs.yaxis.set_ticks(np.arange(0,15,1))
+
+
+
+
+    # This function will return a distribution of DPS and chance of having certain DPS
+    Player.DPS = Player.TotalMinDamage / self.TimeStamp # Computing DPS with no crit, expected DH
+    Player.ExpectedDPS = Player.TotalDamage / self.TimeStamp # Expected DPS with crit
+
+    n = Player.NumberDamageSpell # Number of spell that deals damage done by this player
+    p = round((Player.ExpectedDPS/Player.DPS - 1)/Player.CritMult,3)
+
+    # The value of p is found by using the fact that Player.DPS = DPS * ExpectedDHDamage, Player.ExpectedDPS = DPS * ExpectedDHDamage * ExpectedCritDamage
+    # And ExpectedCritDamage = ( 1 + (CritMult * CritRate)), so we simply isolate CritRate. This will give an average Crit rate over the whole fight which will
+    # take into account crit rate buffs throughout the fight
+    decimal_mean = n*p # Number of expected crit (not an integer)
+    mean = math.floor(decimal_mean) # Number of expected crit rounded down
+    radius = math.ceil(n/2) # Radius we for which we will graph the distribution
+    std = n*p * (1-p) # Standard deviation
+    # The binomial distribution of enough trials can be approximated to N(np, np(1-p)) for big enough n, so we will simply approximate the distribution by this
+    # Note that here n stands for the number of damage spell, and p is the averagecritrate of the player AverageCritRate = (CritRate + CritRateBonus)/time
+    # We will salvage values from the normal distribution, then find the average crit multiplier by number of crits gotten. We will then multiply the computed DPS
+    # by these multipliers to get DPS values for each chance
+    # We will sample n/2 points on each side
+
+    y_list = []
+    expected_dps_list = [] # List of expected DPS
+    resolution = 500 # Hardcoded value, represents how many points on the curve we take
+    i = max(0, mean-radius) # Starting point
+    j = mean + radius+1 # Upper limit
+    h = (j - i)/resolution # Step to take
+    x_list = np.linspace(i,j,resolution) # Evenly spaced out from i -> j with resolution number of points
+    # It will be computed by computing an average crit multiplier, and then multiplying the DPS by that
+    while i < j:
+        next_point = Normal(decimal_mean, std, i) * 100000 / 10
+        # input(next_point)
+        y_list += [math.floor(next_point)/100]
+        average_crit_mult = AverageCritMult(Player, i)
+        expected_dps_list += [average_crit_mult * Player.DPS]
+        i+= h
+
+
+    high_crit_mult_list = []
+    low_crit_mult_list = []
+    for i in range(1,4): # This loop will create boundary for the empirical rules, it will do 1 to 3 std away from the mean
+        high = decimal_mean + i*std
+        low = decimal_mean - i*std
+        high_crit_mult = AverageCritMult(Player, high)
+        low_crit_mult = AverageCritMult(Player, low)
+        high_crit_mult_list += [high_crit_mult * Player.DPS]
+        low_crit_mult_list += [low_crit_mult * Player.DPS]
+    # Even though low and high are not integers, the AverageCritMult is a continuous stricly increasing function, so we can use it on
+    # non integer value to get an "in-between" value
+
+    top_graph = max(y_list) * 1.3 # top of graph
+    lab = "\u03BC = " + str(round(Player.ExpectedDPS,1)) + " \u03C3 = " + str(round(std,2))
+    axs.plot(expected_dps_list, y_list,label=lab) # Distribution
+    axs.plot([Player.ExpectedDPS,Player.ExpectedDPS], [0,top_graph], label="Expected DPS", linestyle="dashed") # Expected DPS
+    # Plotting Empirical rule region
+    axs.axvspan(max(expected_dps_list[0],low_crit_mult_list[2]), min(expected_dps_list[-1],high_crit_mult_list[2]), color="green") # 99.7% empirical rule region, will most likely not appear in the graph
+    axs.axvspan(max(expected_dps_list[0],low_crit_mult_list[1]), high_crit_mult_list[1], color="blue") # 95% empirical rule region
+    axs.axvspan(low_crit_mult_list[0], high_crit_mult_list[0], color="red") # 68% empirical rule region
+
+
+    axs.fill_between(expected_dps_list, y_list,top_graph, fc="lightgrey") # Used to cover the vertical regions from axvspan so they stop under the line of the distribution
+    axs.margins(-0.0001) # margin arrangement
+    axs.legend()
+"""

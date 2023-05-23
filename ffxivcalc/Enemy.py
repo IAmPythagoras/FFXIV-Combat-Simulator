@@ -225,7 +225,7 @@ def WaitEvent(time : float) -> EnemyEvent:
 
     return EnemyEvent(-212,time, 0)
 
-MagicRaidWide = EnemyEvent(1, 2, 500)
+MagicRaidWide = EnemyEvent(1, 2, 400)
 PhysicalRaidWide = EnemyEvent(3, 2, 500, IsPhysical=True)
 TankBuster = EnemyEvent(2, 2, 1000, RaidWide=False, nTBTarget=1)
 

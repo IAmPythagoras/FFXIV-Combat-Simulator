@@ -135,7 +135,7 @@ SMNOpener = [Summon, Deathflare, Enkindle,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ru
 RDMOpener = [Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder]
 
 # Healer
-SCHOpener = [Broil]
+SCHOpener = [WaitAbility(5),Indomitability, Dissipation, Indomitability, WaitAbility(30), Indomitability]
 WHMOpener = [Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare]
 ASTOpener = [Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic]
 SGEOpener = []
@@ -201,7 +201,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [BLMPlayer, DRKPlayer, WARPlayer, RPRPlayer, WHMPlayer, SCHPlayer, SMNPlayer, RDMPlayer, ASTPlayer]
+PlayerList = [SCHPlayer,BLMPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -220,6 +220,12 @@ Event.RequirementOn = RequirementOn
 Event.ShowGraph = ShowGraph
 Event.IgnoreMana = IgnoreMana
 
+Dummy.setEventList([MagicRaidWide,WaitEvent(20), MagicRaidWide])
+__logger__ = logging.getLogger("ffxivcalc") # root logger
+level = logging.DEBUG
+logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
+__logger__.setLevel(level=level) # __logger__ = logging.getLogger("ffxivcalc") 
+
 
 # ===============================================================================================
-Event.SimulateFight(time_unit, TimeLimit, vocal, n=100000) # Simulating fight
+Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False) # Simulating fight

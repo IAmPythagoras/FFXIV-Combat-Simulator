@@ -68,6 +68,7 @@ class Fight:
             pass
 
         self.ComputeDamageFunction = ComputeDamage 
+        self.ComputeHealingFunction = ComputeHeal
         self.NextActionFunction = DefaultNextActionFunction
         self.ExtractInfo = DefaultExtractInfo
 
@@ -339,6 +340,10 @@ class Fight:
                     result_str += (
                         "Failed Fatal Requirement : " + t.requirementName + " Timestamp : " + str(t.timeStamp)
                         )
+                             # Recording final HP value of players
+        for gamer in self.PlayerList:
+            gamer.HPGraph[0].append(self.TimeStamp)
+            gamer.HPGraph[1].append(gamer.HP)
 
         # Printing the results if vocal is true.
         result, fig = PrintResult(self, self.TimeStamp, self.timeValue, PPSGraph=PPSGraph)
@@ -349,8 +354,6 @@ class Fight:
             plt.show()
         return result, fig, fig2
             
-
-
     def ComputeFunctions(self) -> None:
         """
         This function computes all relevant values needed to compute damage from potency using the stats of each player
@@ -405,6 +408,7 @@ def GCDReductionEffect(Player, Spell) -> None:
         Spell.RecastTime *= Player.WeaponskillReduction
         if Spell.RecastTime < 1.5 and Spell.RecastTime > 0 : Spell.RecastTime = 1.5 # A GCD cannot go under 1.5 sec
 
+# Compute Damage
 def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj) -> float:
 
     """
@@ -594,7 +598,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj) -> float:
         (Player if Player.JobEnum != JobEnum.Pet else Player.Master).ZIPActionSet.append(ZIPAction(Damage, CritRate, CritMult, DHRate))
         return non_crit_dh_expected , dh_crit_expected
 
-
+# Compute Healing
 def ComputeHeal(Player, Potency, Target, SpellBonus, type, spellObj) -> float:
     """This function computes and returns the healing done by an action.
 
@@ -618,7 +622,7 @@ def ComputeHeal(Player, Potency, Target, SpellBonus, type, spellObj) -> float:
     f_DET = Player.f_DET
     f_TEN = Player.f_TEN
     f_SPD = Player.f_SPD
-    CritRate = (Player.CritRate)
+    CritRate = Player.CritRate
     CritMult = Player.CritMult
     
     # WARNING
@@ -630,12 +634,12 @@ def ComputeHeal(Player, Potency, Target, SpellBonus, type, spellObj) -> float:
         H_1_expected_crit = math.floor(H_1 * (1 + roundDown((CritRate * CritMult), 3))) # Expected healing done
         # All buff the Player is giving
         for HealingBuff in Player.GivenHealBuffList:
-            H_1_min = math.floor(H_1 * HealingBuff.PercentBuff)
-            H_1_expected_crit = math.floor(H_1 * HealingBuff.PercentBuff)
+            H_1_min = math.floor(H_1_min * HealingBuff.PercentBuff)
+            H_1_expected_crit = math.floor(H_1_expected_crit * HealingBuff.PercentBuff)
         # All buff the target is receiving
         for HealingBuff in Target.ReceivedHealBuffList:
-            H_1_min = math.floor(H_1 * HealingBuff.PercentBuff)
-            H_1_expected_crit = math.floor(H_1 * HealingBuff.PercentBuff)
+            H_1_min = math.floor(H_1_min * HealingBuff.PercentBuff)
+            H_1_expected_crit = math.floor(H_1_expected_crit * HealingBuff.PercentBuff)
 
         return H_1_min, H_1_expected_crit 
     if type == 2: # DOT heal
@@ -660,9 +664,6 @@ def ComputeHeal(Player, Potency, Target, SpellBonus, type, spellObj) -> float:
             H_1_expected_crit = math.floor(H_1_expected_crit * buff)
 
         return H_1_min, H_1_expected_crit
-    
-
-
 
 def isclose(a, b, rel_tol=1e-09, abs_tol=0.0): # Helper function to compare float
     return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)

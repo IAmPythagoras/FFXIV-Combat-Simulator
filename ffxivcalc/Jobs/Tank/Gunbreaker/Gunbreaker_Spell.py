@@ -209,8 +209,8 @@ def AuroraStackCheck(Player, Enemy):
 
 #Combo Action
 
-KeenEdge = GunbreakerSpell(16137, True, 2.5, 170, ApplyKeenEdge, [], 0, type = 2)
-BrutalShell = GunbreakerSpell(16139, True, 2.5, 130, empty, [], 0, type = 2)
+KeenEdge = GunbreakerSpell(16137, True, 2.5, 200, ApplyKeenEdge, [], 0, type = 2)
+BrutalShell = GunbreakerSpell(16139, True, 2.5, 160, empty, [], 0, type = 2)
 SolidBarrel = GunbreakerSpell(16145, True, 2.5, 140, empty, [], 0, type = 2)
 
 GnashingFang = GunbreakerSpell(16146, True, 2.5, 380, ApplyGnashingFang, [], 1, type = 2)

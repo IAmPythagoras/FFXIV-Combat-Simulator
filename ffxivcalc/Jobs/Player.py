@@ -11,6 +11,10 @@ from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
 from ffxivcalc.helperCode.exceptions import InvalidMitigation
 from ffxivcalc.helperCode.helper_math import roundDown
+import logging
+
+main_logging = logging.getLogger("ffxivcalc")
+player_logging = main_logging.getChild("Player")
 
 class MitBuff:
     """This class represents a mitigation buff given to a player. This object
@@ -22,15 +26,18 @@ class MitBuff:
         Player (Player) : Player on which the mit is applied
         MagicMit (bool) : If the Mit is only for magic damage
         PhysicalMit (bool) : If the mit is only for physical damage.
+        BuffName (str) : Name of the buff
     """
 
-    def __init__(self, PercentMit : float, Timer : float, Player, MagicMit = False, PhysicalMit = False):
+    def __init__(self, PercentMit : float, Timer : float, Player, MagicMit = False, PhysicalMit = False, BuffName = ""):
         self.PercentMit = PercentMit
         self.Timer = Timer
         self.Player = Player
 
         self.MagicMit = MagicMit
         self.PhysicalMit = PhysicalMit
+
+        self.BuffName = BuffName
 
         # Checks for invalid input and raises error in both cases
         if self.MagicMit and self.PhysicalMit : raise InvalidMitigation()
@@ -55,7 +62,6 @@ class MitBuff:
         if self.Timer <= 0:
             self.Player.MitBuffList.remove(self)
 
-
 class HealingBuff:
     """This class represents a buff for healing. It has a percent bonus and also
     a timer. Once the timer has reached 0 the buff removes itself.
@@ -65,13 +71,15 @@ class HealingBuff:
         Timer (float) : Timer of the buff until end of its effect
         Player (Player) : Player on which the buff is applied
         GivenHealBuff (bool) : True if this buff buffs given healing instead of received healing.
+        BuffName (str) : name of the buff. Only used for logging.
     """
 
-    def __init__(self, PercentBuff : float, Timer : float, Player, GivenHealBuff = True):
+    def __init__(self, PercentBuff : float, Timer : float, Player, GivenHealBuff = True, BuffName : str =""):
         self.PercentBuff = PercentBuff
         self.Timer = Timer
         self.Player = Player
         self.GivenHealBuff = GivenHealBuff
+        self.BuffName = BuffName
 
     def UpdateTimer(self, time : float) -> None:
         """Update a buff's timer value. If the timer reaches 0 removes the shield from the player.
@@ -83,6 +91,7 @@ class HealingBuff:
         self.Timer -= time
 
         if self.Timer <= 0: # Remove itself if time is 0
+            player_logging.debug("TimeStamp : " + str(self.Player.CurrentFight.TimeStamp) + "Removing " + self.BuffName + " from player " + str(self.Player.playerID))
             if self.GivenHealBuff : self.Player.GivenHealBuffList.remove(self) # Removes from GivenHeal list
             else : self.Player.ReceivedHealBuffList.remove(self) # Remves from received heal list
 
@@ -96,10 +105,11 @@ class Shield:
         Player (Player) : Player on which the shield is applied
     """
 
-    def __init__(self, ShieldAmount : int, Timer: float, Player):
+    def __init__(self, ShieldAmount : int, Timer: float, Player, ShieldName = ""):
         self.ShieldAmont = ShieldAmount
         self.Timer = Timer
         self.Player = Player
+        self.ShieldName = ShieldName
 
     def UpdateTimer(self, time : float) -> None:
         """Update a shield's timer value. If the timer reaches 0 removes the shield from the player.
@@ -126,6 +136,71 @@ class Player:
         Job : JobEnum -> Specific job of the player
     """
 
+    def AddHealingBuff(self, buff : HealingBuff, GivenHealBuff = True, stackable = False):
+        """
+        This function appends a HealingBuff object to the player's ReceivedHealBuffList or GivenHealBuffList.
+        If an identical non-stackable effect is found. It simply reset the time on the buff.
+        buff : Healing buff object
+        GivenHealBuff : bool -> If the healing buff is on given heals rather than received heals
+        stackable : bool -> True of the buff is stackable
+        """
+
+        if GivenHealBuff and not stackable and (buff.BuffName in self.GivenHealBuffNameList):
+                             # The buff is non-stackable and already applied. So we reset the timer.
+            for AppliedBuff in self.GivenHealBuffList:
+                if AppliedBuff.BuffName == buff.BuffName:
+                    AppliedBuff.Timer = buff.Timer
+                    return
+        elif not GivenHealBuff and not stackable and (buff.BuffName in self.ReceivedHealBuffNameList):
+                             # The buff is non-stackable and already applied. So we reset the timer.
+            for AppliedBuff in self.ReceivedHealBuffList:
+                if AppliedBuff.BuffName == buff.BuffName:
+                    AppliedBuff.Timer = buff.Timer
+                    return
+                             # Else we simply append the buff
+        if GivenHealBuff: 
+            self.GivenHealBuffList.append(buff)
+            self.GivenHealBuffNameList.append(buff.BuffName)
+        else:
+            self.ReceivedHealBuffList.append(buff)
+            self.ReceivedHealBuffNameList.append(buff.BuffName)
+
+    def AddMitBuff(self, buff : MitBuff, stackable = False):
+        """
+        This function appends a MitBuff object to the player's MitBuffList. If a mit is non-stackable
+        it will simply reset the timer of the buff in the case where it is already applied.
+        buff : MitBuff -> MitBuff object to append
+        stackable : bool -> true if the buff is stackable
+        """
+
+        if not stackable and buff.BuffName in self.MitBuffNameList:
+                             # Buff is already applied and non-stackable
+            for MitBuff in self.MitBuffList:
+                if MitBuff.BuffName == buff.BuffName:
+                    MitBuff.Timer = buff.Timer
+                    return
+                
+        self.MitBuffList.append(buff)
+        self.MitBuffNameList.append(buff.BuffName)
+        
+    def AddShield(self, shield : Shield, stackable = False):
+        """
+        This function appends a shield to the player's ShieldList. If the shield is already applied
+        and non-stackable then it will simply reset the shield
+        shield : Shield -> Shield object to append
+        stackable : bool -> True of the shield is stackable.
+        """
+
+        if not stackable and shield.ShieldName in self.ShieldNameList:
+            for Shield in self.ShieldList:
+                if Shield.ShieldName == shield.ShieldName:
+                    Shield.Timer = shield.Timer
+                    Shield.ShieldAmount = shield.ShieldAmont
+                    return
+        
+        self.ShieldList.append(shield)
+        self.ShieldNameList.append(shield.ShieldName)
+        
     def ApplyHeal(self, HealingAmount : int) -> None:
         """This function will update the HP according to
         the healing received.
@@ -145,7 +220,6 @@ class Player:
             DamageAmount (int): Total damage the player is taking
             MagicDamage (bool) : True if the damage is magical. False if physical.
         """
-        input(str(self.JobEnum) + " took " + str(DamageAmount))
 
         # Will first check if the player is a tank with their invuln on
 
@@ -190,14 +264,24 @@ class Player:
                 # If the damage is physical and the mit is physical
                 damage = int(damage * MitBuff.PercentMit)
 
+        # Take damage and record it
+        self.HP -= max(0, damage)
+        self.HPGraph[0].append(self.CurrentFight.TimeStamp)
+        self.HPGraph[1].append(self.HP)
+        player_logging.debug(
+            "Timestamp : " + str(self.CurrentFight.TimeStamp) + "-> ID " + str(self.playerID) + " took " + str(damage) + ("Magical" if MagicDamage else "Physical") + "damage. Current HP : " + str(self.HP)
+        )
 
-        self.HP -= max(0, -1 * damage)
         
         if self.HP <= 0:
             if self.RoleEnum == RoleEnum.Tank and self.InvulnTimer > 0 and (self.JobEnum == JobEnum.Warrior or self.JobEnum == JobEnum.DarkKnight):
                 # If Warrior or DarkKnight with invuln
                 self.HP = 1
-            else : self.TrueLock = True # Killing the player. Not allowed to raise.
+            else : 
+                player_logging.debug(
+                    "ID " + str(self.playerID) + " died as a result of the above damage. The overkill is " + str(self.HP * -1)
+                )
+                self.TrueLock = True # Killing the player. Not allowed to raise.
 
     def AddAction(self, actionObject) -> None:
         """
@@ -254,6 +338,7 @@ class Player:
         self.HP = 2000  # Current HP
         self.MaxHP = 2000 # Starting HP
         self.ShieldList = [] # List of all shields currently applied on the player. Shield prio is lowest index to highest index
+        self.ShieldNameList = [] # List of all shields' name currently applied on the player
         self.EnemyDOT = [] # List which contains all DOT applied by the enemy on the player.
         self.TotalEnemity = 0 # Value of Enemity
         self.MagicMitigation = 1 # Current value of magic mitigation
@@ -270,8 +355,11 @@ class Player:
         self.Trait = 1  # DPS mult from trait
         self.buffList = [] # List of all damage buff on the player
         self.MitBuffList = [] # List of all MitBuff on the player
+        self.MitBuffNameList = [] # List of all the MitBuff's name on the player
         self.ReceivedHealBuffList = [] # List of all healing buff on the player. Buffs incoming heals
+        self.ReceivedHealBuffNameList = [] # List of all healing buff's name on the player. 
         self.GivenHealBuffList = [] # List of all healing buff on the player. Buffs given heal.
+        self.GivenHealBuffNameList = [] # List of all healing buff's name on the player. 
         self.EffectToRemove = [] # List filled with effect to remove.
         self.EffectToAdd = [] # List that will add effect to the effectlist or effectcdlist once it has been gone through once
 
@@ -287,6 +375,7 @@ class Player:
 
         self.DPSGraph = []
         self.PotencyGraph = []
+        self.HPGraph = [[],[]]
 
         self.NumberDamageSpell = 0 # Number of damaging spell done, not including DOT and AA
         self.CritRateHistory = [] # History of crit rate, so we can average them at the end

@@ -3,6 +3,7 @@
 #########################################
 
 from ffxivcalc.Jobs.Healer.Healer_Spell import ScholarSpell
+from ffxivcalc.Jobs.Player import HealingBuff, MitBuff
 
 from ffxivcalc.Jobs.Base_Spell import DOTSpell, empty, ManaRequirement
 import copy
@@ -79,6 +80,10 @@ def ApplyFeyBlessing(Player, Enemy):
 def ApplyFeyIllumination(Player, Enemy):
     Player.FeyIlluminationCD = 120
 
+    for player in Player.CurrentFight.PlayerList:
+        player.AddHealingBuff(HealingBuff(1.1, 20, player, GivenHealBuff=False, BuffName="FeyIllumination"))
+        player.AddMitBuff(MitBuff(1.05, 20, player, MagicMit=True, BuffName="FeyIllumination"))
+
 def ApplyWhisperingDawn(Player, Enemy):
     Player.WhisperingDawnCD = 60
 
@@ -107,6 +112,9 @@ def ApplySacredSoil(Player, Enemy):
     Player.SacredSoilCD = 30
     Player.AetherFlowStack -= 1
 
+    for player in Player.CurrentFight.PlayerList:
+        player.AddMitBuff(MitBuff(1.1, 15, player, BuffName="SacredSoil"))
+
 def ApplyExcogitation(Player, Enemy):
     Player.ExcogitationCD = 45
     if Player.Recitation : Player.Recitation = False
@@ -117,6 +125,9 @@ def ApplyAdloquium(Player, Enemy):
 
 def ApplyExpedient(Player, Enemy):
     Player.ExpedientCD = 120
+
+    for player in Player.CurrentFight.PlayerList:
+        player.AddMitBuff(MitBuff(1.1, 20, player, BuffName="Expedient"))
 
 def ApplyProtraction(Player, Enemy):
     Player.ProtractionCD = 60
@@ -156,6 +167,8 @@ def ApplyEnergyDrain(Player, Enemy):
 def ApplyDissipation(Player, Enemy):
     Player.DissipationCD = 180
     Player.AetherFlowStack = 3
+    Player.GivenHealBuffList.append(HealingBuff(1.2, 30, Player, BuffName="Dissipation"))
+
 #===================================
 
 def CheckChainStratagem(Player, Enemy):
@@ -181,9 +194,9 @@ BiolysisDOT = DOTSpell(-4, 70, False)
 ArtOfWar = ScholarSpell(25866, True, 0, 2.5, 165, 400, empty, [ManaRequirement], type = 1)#AOE
 
 #HealGCD
-Succor = ScholarSpell(186, True, 2, 2.5, 0, 1000, ApplyAdloquium, [AdloquiumRequirement], type = 1) ##This action has apply and requirement because of recitation
-Adloquium = ScholarSpell(185, True, 2, 2.5, 0, 1000, ApplyAdloquium, [AdloquiumRequirement], type = 1) #This action has apply and requirement because of recitation
-Physick = ScholarSpell(190, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement], type = 1)
+Succor = ScholarSpell(186, True, 2, 2.5, 200, 1000, ApplyAdloquium, [AdloquiumRequirement], type = 1) ##This action has apply and requirement because of recitation. 160% shield
+Adloquium = ScholarSpell(185, True, 2, 2.5, 300, 1000, ApplyAdloquium, [AdloquiumRequirement], type = 1) #This action has apply and requirement because of recitation. 180% shield
+Physick = ScholarSpell(190, True, 1.5, 2.5, 450, 400, empty, [ManaRequirement], type = 1)
 SummonEos = ScholarSpell(29, True, 1.5, 2.5, 0, 200, empty, [ManaRequirement], type = 1)
 Resurrection = ScholarSpell(173, True, 8, 2.5, 0, 2400, empty, [ManaRequirement])
 #Damage oGCD
@@ -201,13 +214,13 @@ DeploymentTactic = ScholarSpell(3585, False, 0, 0, 0, 0, ApplyDeploymentTactic, 
 #AetherFlow Heal spell
 Excogitation = ScholarSpell(7434, False, 0, 0, 0, 0, ApplyExcogitation, [ExcogitationRequirement,AetherHealRequirement]) #Can be used by recitation
 SacredSoil = ScholarSpell(188, False, 0, 0, 0, 0, ApplySacredSoil, [SacredSoilRequirement,AetherflowRequirement])
-Lustrate = ScholarSpell(189, False, 0, 0, 0, 0, ApplyLustrate, [LustrateRequirement,AetherflowRequirement])
-Indomitability = ScholarSpell(3583, False, 0, 0, 0, 0, ApplyIndomitability, [IndomitabilityRequirement,AetherHealRequirement])#Can be used by recitation
+Lustrate = ScholarSpell(189, False, 0, 0, 600, 0, ApplyLustrate, [LustrateRequirement,AetherflowRequirement])
+Indomitability = ScholarSpell(3583, False, 0, 0, 400, 0, ApplyIndomitability, [IndomitabilityRequirement,AetherHealRequirement], AOEHeal=True)#Can be used by recitation
 
 #Fey Healing
 Consolation = ScholarSpell(22, False, 0, 0, 0, 0, ApplyConsolation, [ConsolationRequirement])
-SummonSeraph = ScholarSpell(16545, False, 0, 0, 0, 0, ApplySummonSeraph, [SummonSeraphRequirement])
-FeyBlessing =ScholarSpell(16543, False, 0, 0, 0, 0, ApplyFeyBlessing, [FeyBlessingRequirement])
+SummonSeraph = ScholarSpell(16545, False, 0, 0, 250, 0, ApplySummonSeraph, [SummonSeraphRequirement], AOEHeal=True) # 100% shield
+FeyBlessing = ScholarSpell(16543, False, 0, 0, 320, 0, ApplyFeyBlessing, [FeyBlessingRequirement], AOEHeal=True)
 Aetherpact = ScholarSpell(7437, False, 0, 0, 0, 0, empty, []) #No requirement, since 3 sec cd, so not really worth it imo
 DissolveUnion = ScholarSpell(26, False, 0, 0, 0, 0, empty, [])
 FeyIllumination = ScholarSpell(16538, False, 0, 0, 0, 0, ApplyFeyIllumination, [FeyIlluminationRequirement])

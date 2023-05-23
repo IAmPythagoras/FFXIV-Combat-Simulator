@@ -365,8 +365,8 @@ def MeikyoStackCheck(Player, Enemy):
 
 
 #GCD
-OgiNamikiri = SamuraiSpell(25781, True, 1.8, 2.5, 800, ApplyOgiNamikiri, [OgiNamikiriRequirement], 0, type = 2)
-KaeshiNamikiri = SamuraiSpell(25782, True, 0, 1, 800, ApplyKaeshiNamikiri, [KaeshiNamikiriRequirement], 0)
+OgiNamikiri = SamuraiSpell(25781, True, 1.8, 2.5, 860, ApplyOgiNamikiri, [OgiNamikiriRequirement], 0, type = 2)
+KaeshiNamikiri = SamuraiSpell(25782, True, 0, 1, 860, ApplyKaeshiNamikiri, [KaeshiNamikiriRequirement], 0)
 Enpi = SamuraiSpell(7486, True, 0, 1.5, 100, Add10Kenki, [], 0, type = 2)
 
 #Iaijutsu
@@ -396,13 +396,13 @@ Oka = SamuraiSpell(7485, True, 0, 2.5, 100, empty, [], 0, type = 2)
 #oGCD
 Meikyo = SamuraiSpell(7499, False, Lock, Lock, 0, ApplyMeikyo, [MeikyoRequirement], 0)
 Ikishoten = SamuraiSpell(16482, False, Lock, Lock, 0, ApplyIkishoten, [IkishotenRequirement], 0)
-Shoha = SamuraiSpell(16487, False, Lock, Lock, 520, ApplyShoha, [ShohaRequirement], 0)
+Shoha = SamuraiSpell(16487, False, Lock, Lock, 560, ApplyShoha, [ShohaRequirement], 0)
 Shoha2 = SamuraiSpell(25779, False, Lock, Lock, 200, ApplyShoha, [ShohaRequirement], 0) #AOEVersion of Shoha
 ThirdEye = SamuraiSpell(7498, False, 0, 0, 0, ApplyThirdEye, [ThirdEyeRequirement], 0)
 Hagakure = SamuraiSpell(7495, False, 0, 0, 0, ApplyHagakure, [HagakureRequirement], 0)
 
 #Kenki Action
-Senei = SamuraiSpell(16481, False, Lock, 2.5, 800, ApplySenei, [SeneiRequirement], 25)
+Senei = SamuraiSpell(16481, False, Lock, 2.5, 860, ApplySenei, [SeneiRequirement], 25)
 Guren = SamuraiSpell(7496, False, 0, 0, 500, ApplySenei, [SeneiRequirement], 25) #AOE version of Senei
 Shinten = SamuraiSpell(7490, False, Lock, 1, 250, ApplyShinten, [], 25)
 Gyoten = SamuraiSpell(7492, False, 0, 0, 100, ApplyGyoten,[GyotenRequirement],10 )
