@@ -1,3 +1,14 @@
+class MateriaOverflow(Exception):
+    """
+    This exception is raised when trying to add a Materia to a gear that has reached its limit.
+    """
+    pass
+
+class InvalidStatRequest(Exception):
+    """
+    This exception is raised when the user does an invalid request of stat of a gear piece
+    """
+
 class InvalidTankBusterTargetNumber(Exception):
     """
     This exception is raised when an event is defined as a tank buster
