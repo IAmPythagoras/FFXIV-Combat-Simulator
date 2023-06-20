@@ -31,7 +31,7 @@ class GearType(IntEnum):
         # maps from id -> name
         if id in cls.__members__.values():
             return cls(id).name
-        return 'Unknown'      
+        return 'INVALID'      
     
     @classmethod
     def id_for_name(cls, name : str) -> int:
@@ -41,13 +41,12 @@ class GearType(IntEnum):
         return -1 # Evaluated as Unknown
 
 class StatType(IntEnum):
-    INVALID = -1
     Crit = 0
     DH = 1
-    DET = 2
+    Det = 2
     SS = 3
     SkS = 4
-    TEN = 5
+    Ten = 5
     MainStat = 6
     WD = 7      
 
@@ -120,7 +119,7 @@ class Gear:
         self.Stat = {}
 
         for Stats in StatList:
-            self.Stat[StatType.name_for_id(Stats.StatType)] = Stats.Value
+            self.Stat[StatType.name_for_id(Stats.StatType)] = Stats
 
         self.Materias = []   # List of Materia object associated
         self.MateriaLimit = MateriaLimit
@@ -165,9 +164,9 @@ class Gear:
                 statValue = self.Stat[name].Value
         elif StatName != "":
             if StatName in self.Stat.keys():
-                statValue = self.Stat[name].Value
+                statValue = self.Stat[StatName].Value
 
-        StatEnum = StatType.id_for_name(StatEnum) if StatEnum == -2 else StatEnum
+        StatEnum = StatType.id_for_name(StatName) if StatEnum == -2 else StatEnum
 
         for Materia in self.Materias:
             if Materia.StatType == StatEnum:
@@ -208,11 +207,22 @@ class GearSet:
         "DH" : 390
     }   
 
-        for GearPiece in self.GearSet:
+        for key in self.GearSet:
+            GearPiece = self.GearSet[key]
             for type in StatType:
-                Stat[type.name] += GearPiece.GetStat(StatName = type.name)
+                Stat[type.name] += GearPiece.GetStat(type.name)
 
         return Stat
+
+
+G = Gear(0, [Stat(0, 300), Stat(7, 250)])
+MatGen = MateriaGenerator(12, 36)
+
+G.AddMateria(MatGen.GenerateMateria(0))
+G.AddMateria(MatGen.GenerateMateria(0))
+Set = GearSet()
+Set.AddGear(G)
+print(Set.GetGearSetStat())
 
         
 
