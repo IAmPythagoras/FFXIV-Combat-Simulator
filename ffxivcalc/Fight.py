@@ -462,7 +462,6 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj) -> float:
 
     if Enemy.BattleVoice: DHRate += 0.2 # If BattleVoice is active, increase DHRate
 
-
     DHRate += Player.DHRateBonus # Adding Bonus
     CritRate += Player.CritRateBonus # Adding bonus
 

@@ -60,6 +60,40 @@ class ZIPAction:
         DHDamage = math.floor(CritDamage * (1.25 if DirectHit else 1) * (self.AutoDHBonus if self.auto_dh else 1))
         return DHDamage
 
+class PreBakedAction:
+    """
+    This class is similar to ZIPAction, but it has less preprocessing than a ZIPAction does.
+    A PreBakedAction only has the given buffs in memory since the Stats of the player are not assumed
+    constant when computing the damage.
+    PercentageBonus : float -> Bonus multiplier of the action
+    CritBonus : float -> Crit bonus of the action
+    DHBonus : float -> DH Bonus of the action
+    type : int -> type of the damage
+    """
+
+    def __init__(self, PercentageBonus : float, TraitBonus : float, CritBonus : float, DHBonus : float, Potency : int, type : int):
+        self.PercentageBonus = PercentageBonus
+        self.TraitBonus = TraitBonus
+        self.CritBonus = CritBonus
+        self.DHBonus = DHBonus
+        self.type = type
+        self.Potency = Potency
+
+    def ComputeDamage(self, f_MAIN_DMG, f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH,Rate) -> int:
+        """
+        This function is called to compute the damage of the action.
+        Stat : dict -> Stats of this function will use to compute the damage of the action.
+        """
+        Damage = 0
+        if self.type == 0: # Type 0 is direct damage
+            Damage = math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG * f_DET) * f_TEN ) *f_WD) * self.TraitBonus) # Player.Trait is trait DPS bonus
+        elif self.type == 1: # Type 1 is magical DOT
+            Damage = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(self.Potency * f_WD) * f_MAIN_DMG) * f_SPD) * f_DET) * f_TEN) * self.TraitBonus) + 1
+        elif self.type == 2: # Type 2 is physical DOT
+            Damage = math.floor(math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG * f_DET) * f_TEN) * f_SPD) * f_WD) * self.TraitBonus) +1
+        elif self.type == 3: # Auto-attacks
+            Damage = math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG * f_DET) * f_TEN) * f_SPD)
+            Damage = math.floor(math.floor(Damage * math.floor(f_WD * (3/3) *100 )/100) * self.TraitBonus) # Player.Delay is assumed to be 3 for simplicity for now
 class Spell:
     """
     This class is any Spell, it will have some subclasses to take Job similar spell, etc.

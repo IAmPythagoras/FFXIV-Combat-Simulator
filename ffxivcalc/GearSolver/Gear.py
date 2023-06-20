@@ -9,6 +9,7 @@ This will also contain the Enum "GearType" which will differentiate the type of 
 """
 
 from ffxivcalc.helperCode.exceptions import MateriaOverflow, InvalidStatRequest
+import json
 
 from enum import IntEnum
 
@@ -214,17 +215,31 @@ class GearSet:
 
         return Stat
 
+def ImportGear(fileName : str) -> dict:
+    """
+    This function imports a list of gear. It reads the given file and will output a dictionnary with heach
+    gear type as key with a list of all gear of that type in the import file.
+    fileName : str -> Name of the file. Must be formatted correctly
+    """
 
-G = Gear(0, [Stat(0, 300), Stat(7, 250)])
-MatGen = MateriaGenerator(12, 36)
+    f = open(fileName) #Opening save
 
-G.AddMateria(MatGen.GenerateMateria(0))
-G.AddMateria(MatGen.GenerateMateria(0))
-Set = GearSet()
-Set.AddGear(G)
-print(Set.GetGearSetStat())
+    data = json.load(f) #Loading json file
 
-        
+    GearDict = {}
+
+
+    for GearPiece in data:
+        type = GearType.name_for_id(GearPiece["GearType"])
+        StatList = [Stat(StatType.id_for_name(S[0]), S[1]) for S in GearPiece["StatList"]]
+        ImportedGear = Gear(GearPiece["GearType"], StatList, MateriaLimit = GearPiece["MateriaLimit"])
+        if type in GearDict.keys():
+            GearDict[type].append(ImportedGear)
+        else:
+            GearDict[type] = [ImportedGear]
+
+    return GearDict
+
 
 
 

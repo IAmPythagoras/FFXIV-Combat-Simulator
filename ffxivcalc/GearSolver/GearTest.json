@@ -1,0 +1,9 @@
+[
+{
+"GearType" : 2,
+"MateriaLimit" : 2,
+"StatList" : [
+    ["Crit", 200],
+    ["DH", 300]
+]}
+]
