@@ -2,9 +2,10 @@ import math
 from ffxivcalc.helperCode.Vocal import PrintResult, SimulateRuns
 from ffxivcalc.Jobs.PlayerEnum import *
 from ffxivcalc.Jobs.ActionEnum import name_for_id
-from ffxivcalc.Jobs.Base_Spell import ZIPAction
+from ffxivcalc.Jobs.Base_Spell import ZIPAction, PreBakedAction
 import matplotlib.pyplot as plt
 import logging
+from ffxivcalc.helperCode.helper_math import roundDown, isclose
 main_logging = logging.getLogger("ffxivcalc")
 fight_logging = main_logging.getChild("Fight")
 
@@ -409,7 +410,7 @@ def GCDReductionEffect(Player, Spell) -> None:
         if Spell.RecastTime < 1.5 and Spell.RecastTime > 0 : Spell.RecastTime = 1.5 # A GCD cannot go under 1.5 sec
 
 # Compute Damage
-def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj) -> float:
+def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBakedAction : bool = False) -> float:
 
     """
     This function computes the damage from a given potency.
@@ -419,7 +420,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj) -> float:
     SpellBonus : float -> Multiplying value to the final damage coming from the action itself
     type : int -> type of the action. 0 is Direct Damage, 1 is magical DOT, 2 is physical DOT and 3 is autos
     spellObj : Spell -> Object of the spell being casted
-
+    SavePreBakedAction : bool -> If we want the simulator to save the PreBakedAction to the player's list. False by default.
     """
 
     # The type input signifies what type of damage we are dealing with, since the computation will chance according to what
@@ -436,11 +437,8 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj) -> float:
     # This function will compute the DPS given the stats of a player
 
     # These computations should be up to date with Endwalker.
-
     baseMain = 390  
-
     Enemy = Player.CurrentFight.Enemy # Enemy targetted
-
 
     if Player.JobEnum == JobEnum.Pet: MainStat = Player.Stat["MainStat"] # Summons do not receive bonus
     else: MainStat = math.floor(Player.Stat["MainStat"] * Player.CurrentFight.TeamCompositionBonus) # Scaling %bonus on mainstat
@@ -513,6 +511,24 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj) -> float:
                 CritRate = 1
                 Player.GuaranteedCrit = False
                 auto_crit = True
+
+
+    if SavePreBakedAction:
+        """
+        If that is set to true we will record all we need and will not compute the rest.
+        """
+        PercentageBonus = []
+        for buff in Player.buffList:
+            PercentageBonus.append(buff.MultDPS)
+
+        CritBonus = (Player.CritRateBonus + 
+                     0.1 if Enemy.ChainStratagem else 0 +
+                     0.02 if Enemy.WanderingMinuet else 0
+                    )
+        DHBonus = (Player.DHRateBonus + 0.2 if Enemy.BattleVoice else 0)
+
+        Player.PreBakedActionSet.append(PreBakedAction(PercentageBonus, Player.Trait, CritBonus, DHBonus, Potency, type,AutoCrit=auto_crit, AutoDH=auto_DH))
+        return Potency, Potency        # Exit the function since we are not interested in the immediate damage value. Still return potency as to not break the fight's duration.
 
     if type == 0: # Type 0 is direct damage
         Damage = math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN ) *f_WD) * Player.Trait) # Player.Trait is trait DPS bonus
@@ -663,10 +679,3 @@ def ComputeHeal(Player, Potency, Target, SpellBonus, type, spellObj) -> float:
             H_1_expected_crit = math.floor(H_1_expected_crit * buff)
 
         return H_1_min, H_1_expected_crit
-
-def isclose(a, b, rel_tol=1e-09, abs_tol=0.0): # Helper function to compare float
-    return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
-
-def roundDown(x, precision):
-    return math.floor(x * 10**precision)/10**precision
-    # Imagine not having a built in function to rounddown floats :x

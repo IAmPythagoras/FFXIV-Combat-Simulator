@@ -10,6 +10,7 @@ from ffxivcalc.Jobs.PlayerEnum import JobEnum
 from ffxivcalc.Jobs.PlayerEnum import RoleEnum
 from ffxivcalc.helperCode.requirementHandler import failedRequirementEvent
 from random import random, uniform
+from ffxivcalc.helperCode.helper_math import roundDown
 Lock = 0.75
 
 class FailedToCast(Exception):#Exception called if a spell fails to cast
@@ -65,13 +66,15 @@ class PreBakedAction:
     This class is similar to ZIPAction, but it has less preprocessing than a ZIPAction does.
     A PreBakedAction only has the given buffs in memory since the Stats of the player are not assumed
     constant when computing the damage.
-    PercentageBonus : float -> Bonus multiplier of the action
+    PercentageBonus : list(float) -> Bonus multiplier of the action
     CritBonus : float -> Crit bonus of the action
     DHBonus : float -> DH Bonus of the action
     type : int -> type of the damage
+    AutoCrit : bool -> If is an auto crit (true)
+    AutoDH : bool -> if is an auto DH (true)
     """
 
-    def __init__(self, PercentageBonus : float, TraitBonus : float, CritBonus : float, DHBonus : float, Potency : int, type : int):
+    def __init__(self, PercentageBonus, TraitBonus : float, CritBonus : float, DHBonus : float, Potency : int, type : int, AutoCrit : bool = False, AutoDH : bool = False):
         self.PercentageBonus = PercentageBonus
         self.TraitBonus = TraitBonus
         self.CritBonus = CritBonus
@@ -79,10 +82,14 @@ class PreBakedAction:
         self.type = type
         self.Potency = Potency
 
-    def ComputeDamage(self, f_MAIN_DMG, f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH,Rate) -> int:
+        self.AutoCrit = AutoCrit
+        self.AutoDH = AutoDH
+
+    def ComputeDamage(self, f_MAIN_DMG : float, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float) -> int:
         """
         This function is called to compute the damage of the action.
-        Stat : dict -> Stats of this function will use to compute the damage of the action.
+        This function requires all the values computed from the stat of the player
+        These values can be computed using the Fight.ComputeFunctions logic.
         """
         Damage = 0
         if self.type == 0: # Type 0 is direct damage
@@ -94,6 +101,27 @@ class PreBakedAction:
         elif self.type == 3: # Auto-attacks
             Damage = math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG * f_DET) * f_TEN) * f_SPD)
             Damage = math.floor(math.floor(Damage * math.floor(f_WD * (3/3) *100 )/100) * self.TraitBonus) # Player.Delay is assumed to be 3 for simplicity for now
+        
+        for buff in self.PercentageBonus:
+            Damage *= math.floor(buff)
+        
+        auto_crit_bonus = (1 + roundDown(self.CritBonus * f_CritMult, 3)) if self.AutoCrit else 1# Auto_crit bonus if buffed
+        auto_dh_bonus = (1 + roundDown(self.DHBonus * 0.25, 2)) if self.AutoDH else 1# Auto_DH bonus if buffed
+
+        ExpectedDamage = math.floor(math.floor(Damage * (1 + roundDown(((f_CritRate + self.CritBonus) * f_CritMult), 3)) ) * (1 + roundDown(((f_DH + self.DHBonus) * 0.25), 2)))
+        ExpectedDamage = math.floor(ExpectedDamage * auto_crit_bonus)
+        ExpectedDamage = math.floor(ExpectedDamage * auto_dh_bonus)
+
+        CritHit = (random() <= (f_CritRate + self.CritBonus)) or self.AutoCrit
+        DirectHit = ((random() <= (f_DH + self.DHBonus))) or self.AutoDH
+
+        UniformDamage = math.floor(self.Damage * uniform(0.95, 1.05))
+        CritDamage = math.floor(UniformDamage * (1 + self.CritMultiplier if CritHit else 1) * (self.AutoCritBonus if self.auto_crit else 1))
+        RandomDamage = math.floor(CritDamage * (1.25 if DirectHit else 1) * (self.AutoDHBonus if self.auto_dh else 1))
+        RandomDamage = math.floor(RandomDamage * auto_crit_bonus)
+        RandomDamage = math.floor(RandomDamage * auto_dh_bonus)
+        
+        return ExpectedDamage, RandomDamage
 class Spell:
     """
     This class is any Spell, it will have some subclasses to take Job similar spell, etc.

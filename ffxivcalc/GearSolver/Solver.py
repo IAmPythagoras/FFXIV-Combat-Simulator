@@ -9,13 +9,19 @@ For now the BiS Solver will only work if the Fight has one player variable, mean
 
 """
 
-def BiSSolver(Fight, GearSpace : dict, PlayerIndex : int):
+def BiSSolver(Fight, GearSpace : dict, PlayerIndex : int, n : int = 10000):
     """
     Finds the BiS of the player given a Gear search space and a Fight.
     Fight -> Fight object.
     GearSpace : dict -> Dictionnary filled with the different gear pieces the algorithm can search through.
     PlayerIndex : int -> Index of the player for which the user wants to optimize the gearset. Must be the index of the player
                          in the Fight.PlayerList.
+    n : int -> Number of tries the solver has.
     """
+
+    
+
+    for i in range(n):
+
 
     
