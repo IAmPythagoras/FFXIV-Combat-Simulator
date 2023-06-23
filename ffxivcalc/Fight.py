@@ -52,6 +52,11 @@ class Fight:
         self.wipe = False # Will be set to True in case we are stopping the simulation.
         self.PlayerList = [] # Empty player list
         self.MaxPotencyPlentifulHarvest = False # True will make Plentiful Harvest do max potency regardless of player.
+
+                             # These values can only be eddited by manually changing the values by accessing the Fight object.
+        self.SavePreBakedAction = False
+        self.PlayerIDSavePreBakedAction = 0
+
         # functions
 
         def DefaultNextActionFunction(Fight, Player) -> bool:
@@ -90,6 +95,34 @@ class Fight:
             for ZIPAction in player.ZIPActionSet:
                 player_current_damage += ZIPAction.ComputeRandomDamage()
             player.ZIPDPSRun.append(round(player_current_damage/self.TimeStamp/20)*20)
+
+    def SimulatePreBakedFight(self, Index : int, MainStat : int, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float):
+        """
+        This function is called when the user wants to simulate the damage done by the pre baked actions. The player ID with
+        the pre baked actions must be given. The user must also specify all the damage values computed from the stats.
+        Index : int -> Index of the player with the PreBakedActions.
+        """
+
+        ExpectedDamage, RandomDamage = 0
+        baseMain = 390
+
+        for PreBakedAction in self.PlayerList[Index].PreBakedActionSet:
+
+                             # Will compute f_MAIN_DMG from MainStat.
+            curMainStat = MainStat * PreBakedAction.MainStatPercentageBonus
+            if PreBakedAction.HasPotionEffect : curMainStat = min(math.floor(curMainStat * 1.1), curMainStat + 262)
+            
+            if PreBakedAction.IsTank : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
+            else: f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100
+
+            ActionExpected, ActionRandom = PreBakedAction.ComputeDamage(f_MAIN_DMG, f_WD = f_WD, f_DET = f_DET, f_TEN = f_TEN, f_SPD = f_SPD, f_CritRate = f_CritRate, f_CritMult = f_CritMult, f_DH = f_DH, n = 0)
+            ExpectedDamage += ActionExpected
+            RandomDamage += ActionRandom
+
+        return int(ExpectedDamage/self.TimeStamp), int(RandomDamage/self.TimeStamp)
+
+        
+
 
     def SimulateFight(self, TimeUnit, TimeLimit, vocal, PPSGraph : bool = True, MaxTeamBonus : bool = False, MaxPotencyPlentifulHarvest : bool = False, n = 0) -> None:
 
@@ -410,7 +443,7 @@ def GCDReductionEffect(Player, Spell) -> None:
         if Spell.RecastTime < 1.5 and Spell.RecastTime > 0 : Spell.RecastTime = 1.5 # A GCD cannot go under 1.5 sec
 
 # Compute Damage
-def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBakedAction : bool = False) -> float:
+def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBakedAction : bool = False, PlayerIDSavePreBakedAction : int = 0) -> float:
 
     """
     This function computes the damage from a given potency.
@@ -421,6 +454,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     type : int -> type of the action. 0 is Direct Damage, 1 is magical DOT, 2 is physical DOT and 3 is autos
     spellObj : Spell -> Object of the spell being casted
     SavePreBakedAction : bool -> If we want the simulator to save the PreBakedAction to the player's list. False by default.
+    PlayerIDSavePreBakedAction : int -> ID of the player for which we want to record the PreBakedActions.
     """
 
     # The type input signifies what type of damage we are dealing with, since the computation will chance according to what
@@ -513,7 +547,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
                 auto_crit = True
 
 
-    if SavePreBakedAction:
+    if SavePreBakedAction and Player.playerID == PlayerIDSavePreBakedAction:
         """
         If that is set to true we will record all we need and will not compute the rest.
         """
@@ -527,7 +561,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
                     )
         DHBonus = (Player.DHRateBonus + 0.2 if Enemy.BattleVoice else 0)
 
-        Player.PreBakedActionSet.append(PreBakedAction(PercentageBonus, Player.Trait, CritBonus, DHBonus, Potency, type,AutoCrit=auto_crit, AutoDH=auto_DH))
+        Player.PreBakedActionSet.append(PreBakedAction(Player.RoleEnum == RoleEnum.Tank, Player.CurrentFight.TeamCompositionBonus, Player.PotionTimer > 0, PercentageBonus, Player.Trait, CritBonus, DHBonus, Potency, type,AutoCrit=auto_crit, AutoDH=auto_DH))
         return Potency, Potency        # Exit the function since we are not interested in the immediate damage value. Still return potency as to not break the fight's duration.
 
     if type == 0: # Type 0 is direct damage

@@ -195,6 +195,9 @@ class GearSet:
         name = GearType.name_for_id(Type)
         if name in self.GearSet:
             self.GearSet.pop(name)
+
+    def ResetGearSet(self):
+        self.GearSet = {}
         
     def GetGearSetStat(self):
         Stat = {

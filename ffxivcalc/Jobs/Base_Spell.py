@@ -66,6 +66,9 @@ class PreBakedAction:
     This class is similar to ZIPAction, but it has less preprocessing than a ZIPAction does.
     A PreBakedAction only has the given buffs in memory since the Stats of the player are not assumed
     constant when computing the damage.
+    IsTank : bool -> If player is a tank. In which case f_MAIN_DAMAGE is different.
+    MainStatPercentageBonus : float -> PercentageBonus of the MainStat (given by comp)
+    HasPotionEffect : bool -> If the Action is under the effect of a tincture. Assumed to be Grade 8 HQ
     PercentageBonus : list(float) -> Bonus multiplier of the action
     CritBonus : float -> Crit bonus of the action
     DHBonus : float -> DH Bonus of the action
@@ -74,7 +77,10 @@ class PreBakedAction:
     AutoDH : bool -> if is an auto DH (true)
     """
 
-    def __init__(self, PercentageBonus, TraitBonus : float, CritBonus : float, DHBonus : float, Potency : int, type : int, AutoCrit : bool = False, AutoDH : bool = False):
+    def __init__(self, IsTank : bool, MainStatPercentageBonus : float, HasPotionEffect : bool, PercentageBonus : list[float], TraitBonus : float, CritBonus : float, DHBonus : float, Potency : int, type : int, AutoCrit : bool = False, AutoDH : bool = False):
+        self.IsTank = IsTank
+        self.MainStatPercentageBonus = MainStatPercentageBonus
+        self.HasPotionEffect = HasPotionEffect
         self.PercentageBonus = PercentageBonus
         self.TraitBonus = TraitBonus
         self.CritBonus = CritBonus
@@ -85,12 +91,14 @@ class PreBakedAction:
         self.AutoCrit = AutoCrit
         self.AutoDH = AutoDH
 
-    def ComputeDamage(self, f_MAIN_DMG : float, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float) -> int:
+    def ComputeDamage(self, f_MAIN_DMG : float, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float, n : int = 100) -> int:
         """
         This function is called to compute the damage of the action.
         This function requires all the values computed from the stat of the player
         These values can be computed using the Fight.ComputeFunctions logic.
+        n : int -> number of time for which the PreBakedAction will compute the random damage.
         """
+
         Damage = 0
         if self.type == 0: # Type 0 is direct damage
             Damage = math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG * f_DET) * f_TEN ) *f_WD) * self.TraitBonus) # Player.Trait is trait DPS bonus
@@ -112,15 +120,21 @@ class PreBakedAction:
         ExpectedDamage = math.floor(ExpectedDamage * auto_crit_bonus)
         ExpectedDamage = math.floor(ExpectedDamage * auto_dh_bonus)
 
-        CritHit = (random() <= (f_CritRate + self.CritBonus)) or self.AutoCrit
-        DirectHit = ((random() <= (f_DH + self.DHBonus))) or self.AutoDH
+        RandomDamageSample = 0
 
-        UniformDamage = math.floor(self.Damage * uniform(0.95, 1.05))
-        CritDamage = math.floor(UniformDamage * (1 + self.CritMultiplier if CritHit else 1) * (self.AutoCritBonus if self.auto_crit else 1))
-        RandomDamage = math.floor(CritDamage * (1.25 if DirectHit else 1) * (self.AutoDHBonus if self.auto_dh else 1))
-        RandomDamage = math.floor(RandomDamage * auto_crit_bonus)
-        RandomDamage = math.floor(RandomDamage * auto_dh_bonus)
-        
+        for i in range(n):
+            CritHit = (random() <= (f_CritRate + self.CritBonus)) or self.AutoCrit
+            DirectHit = ((random() <= (f_DH + self.DHBonus))) or self.AutoDH
+            UniformDamage = math.floor(self.Damage * uniform(0.95, 1.05))
+            CritDamage = math.floor(UniformDamage * (1 + self.CritMultiplier if CritHit else 1) * (self.AutoCritBonus if self.auto_crit else 1))
+            RandomDamage = math.floor(CritDamage * (1.25 if DirectHit else 1) * (self.AutoDHBonus if self.auto_dh else 1))
+            RandomDamage = math.floor(RandomDamage * auto_crit_bonus)
+            RandomDamage = math.floor(RandomDamage * auto_dh_bonus)
+            RandomDamageSample += RandomDamage
+
+                             # Averaging Over the total number of samples.
+        RandomDamage = math.floor(RandomDamageSample/n)
+
         return ExpectedDamage, RandomDamage
 class Spell:
     """
@@ -259,7 +273,7 @@ class Spell:
 
                                 # If the action has 0 potency we skip the computation
                                 # Note that this also means the action won't be added as a ZIPAction for the player.
-            if self.Potency != 0 : minDamage,Damage= player.CurrentFight.ComputeDamageFunction(player, self.Potency, Enemy, self.DPSBonus, type, self)    #Damage computation
+            if self.Potency != 0 : minDamage,Damage= player.CurrentFight.ComputeDamageFunction(player, self.Potency, Enemy, self.DPSBonus, type, self, SavePreBakedAction = player.CurrentFight.SavePreBakedAction, PlayerIDSavePreBakedAction = player.playerID)    #Damage computation
             
             
             if player.JobEnum == JobEnum.Pet and self.Potency != 0: # Is a pet and action does damage
