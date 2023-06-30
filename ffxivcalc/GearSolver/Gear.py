@@ -76,6 +76,9 @@ class Stat:
         self.StatType = StatType
         self.Value = Value
 
+    def __str__(self):
+        return StatType.name_for_id(self.StatType) + " : " + str(self.Value)
+
 class Materia:
     """
     This class represents a Materia. Gear pieces can have materias,
@@ -125,6 +128,13 @@ class Gear:
         self.Materias = []   # List of Materia object associated
         self.MateriaLimit = MateriaLimit
         self.MateriasCount = 0
+
+    def __str__(self):
+        strGenerator = (str(self.Stat[key]) + " | " for key in self.Stat)
+        strReturn = GearType.name_for_id(self.GearType) + " : "
+        for stat in strGenerator:
+            strReturn += stat
+        return strReturn
 
 
     def AddMateria(self, newMateria : Materia):
@@ -182,6 +192,13 @@ class GearSet:
 
     def __init__(self):
         self.GearSet = {}
+
+    def __str__(self):
+        gearInfoGenerator = (str(self.GearSet[gear]) + "\n" for gear in self.GearSet)
+        GearInfo = ""
+        for info in gearInfoGenerator:
+            GearInfo += info
+        return "Gearset's info:\n" + GearInfo + " Final Stats : " + str(self.GetGearSetStat())
 
     def AddGear(self, newGear : Gear):
         """

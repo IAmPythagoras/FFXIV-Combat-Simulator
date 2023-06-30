@@ -103,7 +103,7 @@ class Fight:
         Index : int -> Index of the player with the PreBakedActions.
         """
 
-        ExpectedDamage, RandomDamage = 0
+        ExpectedDamage, RandomDamage = 0, 0
         baseMain = 390
 
         for PreBakedAction in self.PlayerList[Index].PreBakedActionSet:
@@ -115,7 +115,7 @@ class Fight:
             if PreBakedAction.IsTank : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
             else: f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100
 
-            ActionExpected, ActionRandom = PreBakedAction.ComputeDamage(f_MAIN_DMG, f_WD = f_WD, f_DET = f_DET, f_TEN = f_TEN, f_SPD = f_SPD, f_CritRate = f_CritRate, f_CritMult = f_CritMult, f_DH = f_DH, n = 0)
+            ActionExpected, ActionRandom = PreBakedAction.ComputeDamage(f_MAIN_DMG, f_WD = f_WD, f_DET = f_DET, f_TEN = f_TEN, f_SPD = f_SPD, f_CritRate = f_CritRate, f_CritMult = f_CritMult, f_DH = f_DH, n = 1)
             ExpectedDamage += ActionExpected
             RandomDamage += ActionRandom
 

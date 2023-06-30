@@ -90,6 +90,8 @@ class PreBakedAction:
 
         self.AutoCrit = AutoCrit
         self.AutoDH = AutoDH
+        self.AutoCritBonus = 1
+        self.AutoDHBonus = 1
 
     def ComputeDamage(self, f_MAIN_DMG : float, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float, n : int = 100) -> int:
         """
@@ -125,9 +127,9 @@ class PreBakedAction:
         for i in range(n):
             CritHit = (random() <= (f_CritRate + self.CritBonus)) or self.AutoCrit
             DirectHit = ((random() <= (f_DH + self.DHBonus))) or self.AutoDH
-            UniformDamage = math.floor(self.Damage * uniform(0.95, 1.05))
-            CritDamage = math.floor(UniformDamage * (1 + self.CritMultiplier if CritHit else 1) * (self.AutoCritBonus if self.auto_crit else 1))
-            RandomDamage = math.floor(CritDamage * (1.25 if DirectHit else 1) * (self.AutoDHBonus if self.auto_dh else 1))
+            UniformDamage = math.floor(Damage * uniform(0.95, 1.05))
+            CritDamage = math.floor(UniformDamage * (1 + f_CritMult if CritHit else 1) * (self.AutoCritBonus if self.AutoCrit else 1))
+            RandomDamage = math.floor(CritDamage * (1.25 if DirectHit else 1) * (self.AutoDHBonus if self.AutoDH else 1))
             RandomDamage = math.floor(RandomDamage * auto_crit_bonus)
             RandomDamage = math.floor(RandomDamage * auto_dh_bonus)
             RandomDamageSample += RandomDamage

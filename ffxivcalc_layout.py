@@ -201,7 +201,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [SCHPlayer,BLMPlayer]
+PlayerList = [BLMPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -227,5 +227,11 @@ logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ff
 __logger__.setLevel(level=level) # __logger__ = logging.getLogger("ffxivcalc") 
 
 
+from ffxivcalc.GearSolver.Gear import ImportGear
+from ffxivcalc.GearSolver.Solver import BiSSolver
+
+GearSpace = ImportGear("GearTest.json")
+BiSSolver(Event, GearSpace, 0, n=1)
+
 # ===============================================================================================
-Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False) # Simulating fight
+#Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False) # Simulating fight

@@ -12,6 +12,7 @@ For now the BiS Solver will only work if the Fight has one player variable, mean
 from ffxivcalc.GearSolver.Gear import GearSet
 from ffxivcalc.Jobs.PlayerEnum import RoleEnum
 from math import floor
+from copy import deepcopy
 
 def BiSSolver(Fight, GearSpace : dict, PlayerIndex : int, n : int = 10000):
     """
@@ -30,7 +31,10 @@ def BiSSolver(Fight, GearSpace : dict, PlayerIndex : int, n : int = 10000):
     Result = []
 
     newGearSet = GearSet()
+    optimalGearSet = GearSet()
+    curOptimalDPS = 0
 
+                             # Need at least one of each gear piece.
     for Weapon in GearSpace["WEAPON"]:
         newGearSet.AddGear(Weapon)
         for Head in GearSpace["HEAD"]:
@@ -75,9 +79,12 @@ def BiSSolver(Fight, GearSpace : dict, PlayerIndex : int, n : int = 10000):
                                                 ExpectedDamage, RandomDamage = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)
                                                 Result += [(ExpectedDamage, RandomDamage)]
 
+                                                if curOptimalDPS <= ExpectedDamage:
+                                                    optimalGearSet = deepcopy(newGearSet)
+                                                    curOptimalDPS = ExpectedDamage
+
     print(Result)
-
-
-
+    print(optimalGearSet)
+    print(curOptimalDPS)
 
     
