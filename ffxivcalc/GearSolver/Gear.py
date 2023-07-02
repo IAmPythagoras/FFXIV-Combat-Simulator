@@ -91,6 +91,12 @@ class Materia:
     def __init__(self, StatType : StatType, Value : int):
         self.StatType = StatType
         self.Value = Value
+                             # Information related to if the materia wastes values.
+        self.wasteValue = False
+        self.wasteAmount = 0
+
+    def __str__(self):
+        return StatType.name_for_id(self.StatType) + " : " + str(self.Value) + (" Waste : " + str(self.wasteAmount) if self.wasteValue else "")
 
 class MateriaGenerator:
     """
@@ -116,14 +122,19 @@ class Gear:
     This class represent a gear piece.
     GearType -> Type of the gear piece
     StatList : list(Stat) -> List of all stat of the gear piece.
-    MateriaLimit : int -> Limit of materia the gear can receive
+    MateriaLimit : int -> Limit of materia the gear can receive.
+    Name : str -> Used to differentiate same type gear
     """
-    def __init__(self, GearType : GearType, StatList : list, MateriaLimit : int = 2):
+    def __init__(self, GearType : GearType, StatList : list, MateriaLimit : int = 2, Name : str = ""):
         self.GearType = GearType
         self.Stat = {}
+        self.Name = Name
+        self.StatLimit = 0   # StatLimit of a gear is always equal to the highest stat of it.
 
         for Stats in StatList:
             self.Stat[StatType.name_for_id(Stats.StatType)] = Stats
+                             # We look for the highest stat value
+            if Stats.Value > self.StatLimit : self.StatLimit = Stats.Value
 
         self.Materias = []   # List of Materia object associated
         self.MateriaLimit = MateriaLimit
@@ -131,15 +142,20 @@ class Gear:
 
     def __str__(self):
         strGenerator = (str(self.Stat[key]) + " | " for key in self.Stat)
+        materiaGenerator = (str(mat) + " | " for mat in self.Materias) if self.MateriasCount > 0 else ("" for i in range(0))
         strReturn = GearType.name_for_id(self.GearType) + " : "
         for stat in strGenerator:
             strReturn += stat
-        return strReturn
+
+        for mat in materiaGenerator:
+            strReturn += mat
+
+        return strReturn + " Name : " + self.Name
 
 
     def AddMateria(self, newMateria : Materia):
         """
-        This function adds a Materia Object to the gear
+        This function adds a Materia Object to the gear. It will also flag the materia if stat is wasted.
         """
 
         if len(self.Materias) >= self.MateriaLimit :
@@ -147,7 +163,21 @@ class Gear:
 
         self.Materias.append(newMateria)
         self.MateriasCount += 1
+        StatName = StatType.name_for_id(newMateria.StatType)
+        newStatValue = (self.Stat[StatName].Value if StatName in self.Stat.keys() else 0)  + newMateria.Value
+        if newStatValue > self.StatLimit:
+                             # If true means the materia is wasting ressources.
+            newMateria.wasteAmount = newStatValue - self.StatLimit
+            newMateria.wasteValue = True
 
+    def canAddMateriaNoLoss(self, newMateria : Materia) -> bool:
+        """
+        This function returns weither the materia can be added to the gear piece
+        without stat loss.
+        """
+        StatName = StatType.name_for_id(newMateria.StatType)
+        return (self.MateriasCount < self.MateriaLimit and 
+                (self.GetStat(StatName=StatName) if StatName in self.Stat.keys() else 0) + newMateria.Value <= self.StatLimit)
 
     def ResetMateriaSlot(self):
         """
@@ -157,11 +187,9 @@ class Gear:
         self.MateriasCount = 0
         
 
-
-
-    def GetStat(self, StatName : str = "", StatEnum : int = -2) -> Stat:
+    def GetStat(self, StatName : str = "", StatEnum : int = -2) -> int:
         """
-        This function returns the Stat object associated with thhe given StatEnum value
+        This function returns the  statv alue associated with thhe given StatEnum value
         or the StatName.
         """
 
@@ -172,16 +200,16 @@ class Gear:
         if StatEnum != -2 :
             name = StatType.id_for_name(StatEnum)
             if name in self.Stat.keys(): 
-                statValue = self.Stat[name].Value
+                statValue = self.Stat[name].Value if StatName in self.Stat.keys() else 0
         elif StatName != "":
             if StatName in self.Stat.keys():
-                statValue = self.Stat[StatName].Value
+                statValue = self.Stat[StatName].Value if StatName in self.Stat.keys() else 0
 
         StatEnum = StatType.id_for_name(StatName) if StatEnum == -2 else StatEnum
 
         for Materia in self.Materias:
             if Materia.StatType == StatEnum:
-                statValue += Materia.Value
+                statValue = min(Materia.Value + statValue, self.StatLimit)
         
         return statValue
             
@@ -200,6 +228,17 @@ class GearSet:
             GearInfo += info
         return "Gearset's info:\n" + GearInfo + " Final Stats : " + str(self.GetGearSetStat())
 
+    def findFirstPieceMateria(self, newMateria : Materia) -> str:
+        """
+        This function returns the key to the first piece of gear
+        in the gear set that can have the newMateria attached to it
+        without loss. If none is found, the function returns None
+        """
+        for key in self.GearSet:
+            if self.GearSet[key].canAddMateriaNoLoss(newMateria):
+                return key
+        return None
+
     def AddGear(self, newGear : Gear):
         """
         This function is used to add a new gear to the gear set. If a gear of the type is already present it is switched.
@@ -212,6 +251,18 @@ class GearSet:
         name = GearType.name_for_id(Type)
         if name in self.GearSet:
             self.GearSet.pop(name)
+
+    def getMateriaLimit(self) -> int:
+        """
+        This function returns the total number of materia the GearSet can receive, as well
+        as the total of Odd and Even it can receive.
+
+        FOR NOW ASSUMES ALL MATERIAS ARE EVEN
+        """
+        limit = 0
+        for key in self.GearSet:
+            limit += self.GearSet[key].MateriaLimit
+        return limit
 
     def ResetGearSet(self):
         self.GearSet = {}
@@ -234,6 +285,7 @@ class GearSet:
                 Stat[type.name] += GearPiece.GetStat(type.name)
 
         return Stat
+    
 
 def ImportGear(fileName : str) -> dict:
     """
@@ -242,17 +294,200 @@ def ImportGear(fileName : str) -> dict:
     fileName : str -> Name of the file. Must be formatted correctly
     """
 
-    f = open(fileName) #Opening save
+    #f = open(fileName) #Opening save
 
-    data = json.load(f) #Loading json file
-
+    #data = json.load(f) #Loading json file
+    data = [
+{
+"GearType" : 0,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["Crit", 306],
+["SS", 214],
+["MainStat", 416],
+["WD", 132]
+]},
+{
+"GearType" : 0,
+"MateriaLimit" : 2,
+"Name" : "Tome",
+"StatList" : [
+["Crit", 212],
+["SS", 303],
+["MainStat", 409],
+["WD", 131]
+]},
+{
+"GearType" : 2,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["SS", 184],
+["Det", 129],
+["MainStat", 248]
+]},
+{
+"GearType" : 2,
+"MateriaLimit" : 2,
+"Name" : "Tome",
+"StatList" : [
+["Crit", 184],
+["DH", 129],
+["MainStat", 248]
+]},
+{
+"GearType" : 3,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["SS", 292],
+["DH", 204],
+["MainStat", 394]
+]},
+{
+"GearType" : 3,
+"MateriaLimit" : 2,
+"Name" : "Tome",
+"StatList" : [
+["Crit", 292],
+["Det", 204],
+["MainStat", 394]
+]},
+{
+"GearType" : 4,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["Det", 129],
+["Crit", 184],
+["MainStat", 248]
+]},
+{
+"GearType" : 4,
+"MateriaLimit" : 2,
+"Name" : "Tome",
+"StatList" : [
+["SS", 184],
+["DH", 129],
+["MainStat", 248]
+]},
+{
+"GearType" : 5,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["Crit", 204],
+["DH", 292],
+["MainStat", 394]
+]},
+{
+"GearType" : 5,
+"MateriaLimit" : 2,
+"Name" : "Tome",
+"StatList" : [
+["Det", 292],
+["SS", 204],
+["MainStat", 394]
+]},
+{
+"GearType" : 6,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["Det", 184],
+["SS", 129],
+["MainStat", 248]
+]},
+{
+"GearType" : 6,
+"MateriaLimit" : 2,
+"Name" : "Tome",
+"StatList" : [
+["Crit", 129],
+["DH", 184],
+["MainStat", 248]
+]},
+{
+"GearType" : 7,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["Crit", 145],
+["Det", 102],
+["MainStat", 196]
+]},
+{
+"GearType" : 7,
+"MateriaLimit" : 2,
+"Name" : "Tome",
+"StatList" : [
+["DH", 102],
+["SS", 145],
+["MainStat", 196]
+]},
+{
+"GearType" : 8,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["SS", 102],
+["DH", 145],
+["MainStat", 196]
+]},
+{
+"GearType" : 8,
+"MateriaLimit" : 2,
+"Name" : "Tome",
+"StatList" : [
+["Det", 145],
+["Crit", 102],
+["MainStat", 196]
+]},
+{
+"GearType" : 9,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["Crit", 145],
+["Det", 102],
+["MainStat", 196]
+]},
+{
+"GearType" : 9,
+"MateriaLimit" : 2,
+"Name" : "Tome",
+"StatList" : [
+["Det", 145],
+["SS", 102],
+["MainStat", 196]
+]},
+{
+"GearType" : 10,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["Det", 102],
+["Crit", 145],
+["MainStat", 196]
+]},
+{
+"GearType" : 11,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["SS", 102],
+["DH", 145],
+["MainStat", 196]
+]}
+]
     GearDict = {}
 
 
     for GearPiece in data:
         type = GearType.name_for_id(GearPiece["GearType"])
         StatList = [Stat(StatType.id_for_name(S[0]), S[1]) for S in GearPiece["StatList"]]
-        ImportedGear = Gear(GearPiece["GearType"], StatList, MateriaLimit = GearPiece["MateriaLimit"])
+        ImportedGear = Gear(GearPiece["GearType"], StatList, MateriaLimit = GearPiece["MateriaLimit"], Name = GearPiece["Name"])
         if type in GearDict.keys():
             GearDict[type].append(ImportedGear)
         else:

@@ -1,0 +1,78 @@
+7Gearset's info:
+WEAPON : Crit : 306 | SS : 214 | MainStat : 416 | WD : 132 |  Name : Raid
+HEAD : Crit : 184 | DH : 129 | MainStat : 248 |  Name : Tome
+BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Name : Tome
+HANDS : Det : 129 | Crit : 184 | MainStat : 248 |  Name : Raid
+LEGS : Crit : 204 | DH : 292 | MainStat : 394 |  Name : Raid
+FEET : Crit : 129 | DH : 184 | MainStat : 248 |  Name : Tome
+EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Name : Raid
+NECKLACE : Det : 145 | Crit : 102 | MainStat : 196 |  Name : Tome
+BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Name : Raid
+LRING : Det : 102 | Crit : 145 | MainStat : 196 |  Name : Raid
+RING : SS : 102 | DH : 145 | MainStat : 196 |  Name : Raid
+ Final Stats : {'MainStat': 2928, 'WD': 132, 'Det': 1174, 'Ten': 400, 'SS': 716, 'SkS': 400, 'Crit': 2226, 'DH': 1140}
+10296
+99th percentile gear :
+Gearset's info:
+WEAPON : Crit : 306 | SS : 214 | MainStat : 416 | WD : 132 |  Name : Raid
+HEAD : Crit : 184 | DH : 129 | MainStat : 248 |  Name : Tome
+BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Name : Tome
+HANDS : SS : 184 | DH : 129 | MainStat : 248 |  Name : Tome
+LEGS : Crit : 204 | DH : 292 | MainStat : 394 |  Name : Raid
+FEET : Crit : 129 | DH : 184 | MainStat : 248 |  Name : Tome
+EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Name : Raid
+NECKLACE : Det : 145 | Crit : 102 | MainStat : 196 |  Name : Tome
+BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Name : Raid
+LRING : Det : 102 | Crit : 145 | MainStat : 196 |  Name : Raid
+RING : SS : 102 | DH : 145 | MainStat : 196 |  Name : Raid
+ Final Stats : {'MainStat': 2928, 'WD': 132, 'Det': 1045, 'Ten': 400, 'SS': 900, 'SkS': 400, 'Crit': 2042, 'DH': 1269}
+Damage is : {'1': 8856.974660865113, '10': 9421.499872024571, '25': 9767.852572306118, '50': 10176.170975172767, '75': 9421.499872024571, '90': 11011.159457384183, '99': 11977.604299974404}
+========================
+90th percentile gear :
+Gearset's info:
+WEAPON : Crit : 306 | SS : 214 | MainStat : 416 | WD : 132 |  Name : Raid
+HEAD : Crit : 184 | DH : 129 | MainStat : 248 |  Name : Tome
+BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Name : Tome
+HANDS : Det : 129 | Crit : 184 | MainStat : 248 |  Name : Raid
+LEGS : Crit : 204 | DH : 292 | MainStat : 394 |  Name : Raid
+FEET : Crit : 129 | DH : 184 | MainStat : 248 |  Name : Tome
+EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Name : Raid
+NECKLACE : Det : 145 | Crit : 102 | MainStat : 196 |  Name : Tome
+BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Name : Raid
+LRING : Det : 102 | Crit : 145 | MainStat : 196 |  Name : Raid
+RING : SS : 102 | DH : 145 | MainStat : 196 |  Name : Raid
+ Final Stats : {'MainStat': 2928, 'WD': 132, 'Det': 1174, 'Ten': 400, 'SS': 716, 'SkS': 400, 'Crit': 2226, 'DH': 1140}
+Damage is : {'1': 8931.968262093678, '10': 9573.278730483747, '25': 9922.344509854109, '50': 10337.650371128742, '75': 9573.278730483747, '90': 11150.65267468646, '99': 11848.707448169951}
+========================
+75th percentile gear :
+Gearset's info:
+WEAPON : Crit : 306 | SS : 214 | MainStat : 416 | WD : 132 |  Name : Raid
+HEAD : Crit : 184 | DH : 129 | MainStat : 248 |  Name : Tome
+BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Name : Tome
+HANDS : Det : 129 | Crit : 184 | MainStat : 248 |  Name : Raid
+LEGS : Crit : 204 | DH : 292 | MainStat : 394 |  Name : Raid
+FEET : Crit : 129 | DH : 184 | MainStat : 248 |  Name : Tome
+EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Name : Raid
+NECKLACE : Det : 145 | Crit : 102 | MainStat : 196 |  Name : Tome
+BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Name : Raid
+LRING : Det : 102 | Crit : 145 | MainStat : 196 |  Name : Raid
+RING : SS : 102 | DH : 145 | MainStat : 196 |  Name : Raid
+ Final Stats : {'MainStat': 2928, 'WD': 132, 'Det': 1174, 'Ten': 400, 'SS': 716, 'SkS': 400, 'Crit': 2226, 'DH': 1140}
+Damage is : {'1': 8931.968262093678, '10': 9573.278730483747, '25': 9922.344509854109, '50': 10337.650371128742, '75': 9573.278730483747, '90': 11150.65267468646, '99': 11848.707448169951}
+========================
+50th percentile gear :
+Gearset's info:
+WEAPON : Crit : 306 | SS : 214 | MainStat : 416 | WD : 132 |  Name : Raid
+HEAD : Crit : 184 | DH : 129 | MainStat : 248 |  Name : Tome
+BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Name : Tome
+HANDS : Det : 129 | Crit : 184 | MainStat : 248 |  Name : Raid
+LEGS : Crit : 204 | DH : 292 | MainStat : 394 |  Name : Raid
+FEET : Crit : 129 | DH : 184 | MainStat : 248 |  Name : Tome
+EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Name : Raid
+NECKLACE : Det : 145 | Crit : 102 | MainStat : 196 |  Name : Tome
+BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Name : Raid
+LRING : Det : 102 | Crit : 145 | MainStat : 196 |  Name : Raid
+RING : SS : 102 | DH : 145 | MainStat : 196 |  Name : Raid
+ Final Stats : {'MainStat': 2928, 'WD': 132, 'Det': 1174, 'Ten': 400, 'SS': 716, 'SkS': 400, 'Crit': 2226, 'DH': 1140}
+Damage is : {'1': 8931.968262093678, '10': 9573.278730483747, '25': 9922.344509854109, '50': 10337.650371128742, '75': 9573.278730483747, '90': 11150.65267468646, '99': 11848.707448169951}
+========================

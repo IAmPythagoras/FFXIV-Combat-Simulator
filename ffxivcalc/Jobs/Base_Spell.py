@@ -93,11 +93,13 @@ class PreBakedAction:
         self.AutoCritBonus = 1
         self.AutoDHBonus = 1
 
-    def ComputeDamage(self, f_MAIN_DMG : float, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float, n : int = 100) -> int:
+    def ComputeExpectedDamage(self, f_MAIN_DMG : float, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float):
         """
         This function is called to compute the damage of the action.
         This function requires all the values computed from the stat of the player
         These values can be computed using the Fight.ComputeFunctions logic.
+        This function also returns Damage without crit and DH in order to facilitate the computation
+        of random action damage in ComputeRandomDamage (which is computed afterward)
         n : int -> number of time for which the PreBakedAction will compute the random damage.
         """
 
@@ -122,22 +124,30 @@ class PreBakedAction:
         ExpectedDamage = math.floor(ExpectedDamage * auto_crit_bonus)
         ExpectedDamage = math.floor(ExpectedDamage * auto_dh_bonus)
 
-        RandomDamageSample = 0
+        return ExpectedDamage, Damage
+    
+    def ComputeRandomDamage(self,Damage : int, f_CritRate : float, f_CritMult : float, f_DH : float) -> int:
+        """
+        This function computes random damage of a PreBakedAction. It uses the Damage value precomputed in the
+        ComputeExpectedDamage in order to make the computation faster.
+        Damage : int -> Damage value without Crit/DH.
+        Relevant player values fr Crit/DH.
+        """
+                             # Checking if Critical and/or DH.
+        CritHit = (random() <= (f_CritRate + self.CritBonus)) or self.AutoCrit
+        DirectHit = ((random() <= (f_DH + self.DHBonus))) or self.AutoDH
 
-        for i in range(n):
-            CritHit = (random() <= (f_CritRate + self.CritBonus)) or self.AutoCrit
-            DirectHit = ((random() <= (f_DH + self.DHBonus))) or self.AutoDH
-            UniformDamage = math.floor(Damage * uniform(0.95, 1.05))
-            CritDamage = math.floor(UniformDamage * (1 + f_CritMult if CritHit else 1) * (self.AutoCritBonus if self.AutoCrit else 1))
-            RandomDamage = math.floor(CritDamage * (1.25 if DirectHit else 1) * (self.AutoDHBonus if self.AutoDH else 1))
-            RandomDamage = math.floor(RandomDamage * auto_crit_bonus)
-            RandomDamage = math.floor(RandomDamage * auto_dh_bonus)
-            RandomDamageSample += RandomDamage
+        auto_crit_bonus = (1 + roundDown(self.CritBonus * f_CritMult, 3)) if self.AutoCrit else 1# Auto_crit bonus if buffed
+        auto_dh_bonus = (1 + roundDown(self.DHBonus * 0.25, 2)) if self.AutoDH else 1# Auto_DH bonus if buffed
 
-                             # Averaging Over the total number of samples.
-        RandomDamage = math.floor(RandomDamageSample/n)
+        UniformDamage = math.floor(Damage * uniform(0.95, 1.05))
+        CritDamage = math.floor(UniformDamage * (1 + f_CritMult if CritHit else 1) * (self.AutoCritBonus if self.AutoCrit else 1))
+        RandomDamage = math.floor(CritDamage * (1.25 if DirectHit else 1) * (self.AutoDHBonus if self.AutoDH else 1))
+        RandomDamage = math.floor(RandomDamage * auto_crit_bonus)
+        RandomDamage = math.floor(RandomDamage * auto_dh_bonus)
 
-        return ExpectedDamage, RandomDamage
+        return RandomDamage
+
 class Spell:
     """
     This class is any Spell, it will have some subclasses to take Job similar spell, etc.

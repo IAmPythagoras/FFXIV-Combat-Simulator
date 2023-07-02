@@ -96,30 +96,56 @@ class Fight:
                 player_current_damage += ZIPAction.ComputeRandomDamage()
             player.ZIPDPSRun.append(round(player_current_damage/self.TimeStamp/20)*20)
 
-    def SimulatePreBakedFight(self, Index : int, MainStat : int, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float):
+    def SimulatePreBakedFight(self, Index : int, MainStat : int, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float, n : int = 500):
         """
         This function is called when the user wants to simulate the damage done by the pre baked actions. The player ID with
         the pre baked actions must be given. The user must also specify all the damage values computed from the stats.
         Index : int -> Index of the player with the PreBakedActions.
+        n : int -> number of trial for random DPS simulation
         """
 
         ExpectedDamage, RandomDamage = 0, 0
         baseMain = 390
 
-        for PreBakedAction in self.PlayerList[Index].PreBakedActionSet:
+        damageHistory = []   # This list will contain the damage of all PreBakedAction ComputeExpectedDamage used to
+                             # faster compute RandomDamage
 
-                             # Will compute f_MAIN_DMG from MainStat.
+                             # Will compute DPS
+        for PreBakedAction in self.PlayerList[Index].PreBakedActionSet:
+                                         # Will compute f_MAIN_DMG from MainStat.
             curMainStat = MainStat * PreBakedAction.MainStatPercentageBonus
             if PreBakedAction.HasPotionEffect : curMainStat = min(math.floor(curMainStat * 1.1), curMainStat + 262)
-            
+        
             if PreBakedAction.IsTank : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
             else: f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100
-
-            ActionExpected, ActionRandom = PreBakedAction.ComputeDamage(f_MAIN_DMG, f_WD = f_WD, f_DET = f_DET, f_TEN = f_TEN, f_SPD = f_SPD, f_CritRate = f_CritRate, f_CritMult = f_CritMult, f_DH = f_DH, n = 1)
+            ActionExpected, Damage = PreBakedAction.ComputeExpectedDamage(f_MAIN_DMG,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)
             ExpectedDamage += ActionExpected
-            RandomDamage += ActionRandom
+            damageHistory.append(Damage)
 
-        return int(ExpectedDamage/self.TimeStamp), int(RandomDamage/self.TimeStamp)
+                             # Will compute Random DPS
+        randomDPSRuns = []   # This list will contain all the DPS of the random runs
+        for run in range(n):
+            CurrentDamage = 0
+            index = 0
+            for PreBakedAction in self.PlayerList[Index].PreBakedActionSet:
+                CurrentDamage += PreBakedAction.ComputeRandomDamage(damageHistory[index], f_CritRate,f_CritMult, f_DH)
+                index += 1 
+            randomDPSRuns.append(CurrentDamage/self.TimeStamp)
+                             # Sorting array so we can find the percentiles.
+        randomDPSRuns.sort()
+
+        Percent = int(n/100)
+        percentileRuns = {
+            "1" : randomDPSRuns[Percent],
+            "10" : randomDPSRuns[10 * Percent],
+            "25" : randomDPSRuns[25 * Percent],
+            "50" : randomDPSRuns[50 * Percent],
+            "75" : randomDPSRuns[10 * Percent],
+            "90" : randomDPSRuns[90 * Percent],
+            "99" : randomDPSRuns[n - Percent]
+        }
+        
+        return int(ExpectedDamage/self.TimeStamp), percentileRuns
 
         
 
