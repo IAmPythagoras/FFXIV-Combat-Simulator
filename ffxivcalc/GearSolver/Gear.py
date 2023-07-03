@@ -134,7 +134,7 @@ class Gear:
         for Stats in StatList:
             self.Stat[StatType.name_for_id(Stats.StatType)] = Stats
                              # We look for the highest stat value
-            if Stats.Value > self.StatLimit : self.StatLimit = Stats.Value
+            if Stats.StatType != StatType.MainStat and Stats.Value > self.StatLimit : self.StatLimit = Stats.Value
 
         self.Materias = []   # List of Materia object associated
         self.MateriaLimit = MateriaLimit
@@ -177,7 +177,7 @@ class Gear:
         """
         StatName = StatType.name_for_id(newMateria.StatType)
         return (self.MateriasCount < self.MateriaLimit and 
-                (self.GetStat(StatName=StatName) if StatName in self.Stat.keys() else 0) + newMateria.Value <= self.StatLimit)
+                (self.GetStat(StatName) if StatName in self.Stat.keys() else 0) + newMateria.Value <= self.StatLimit)
 
     def ResetMateriaSlot(self):
         """
@@ -269,7 +269,7 @@ class GearSet:
         
     def GetGearSetStat(self):
         Stat = {
-        "MainStat" : 0,
+        "MainStat" : 390,
         "WD" : 0,
         "Det" : 390,
         "Ten" : 400,

@@ -106,6 +106,7 @@ class Fight:
 
         ExpectedDamage, RandomDamage = 0, 0
         baseMain = 390
+        baseKillTime = self.TimeStamp * self.PlayerList[Index].f_SPD
 
         damageHistory = []   # This list will contain the damage of all PreBakedAction ComputeExpectedDamage used to
                              # faster compute RandomDamage
@@ -130,7 +131,7 @@ class Fight:
             for PreBakedAction in self.PlayerList[Index].PreBakedActionSet:
                 CurrentDamage += PreBakedAction.ComputeRandomDamage(damageHistory[index], f_CritRate,f_CritMult, f_DH)
                 index += 1 
-            randomDPSRuns.append(CurrentDamage/self.TimeStamp)
+            randomDPSRuns.append(CurrentDamage/(baseKillTime/f_SPD))
                              # Sorting array so we can find the percentiles.
         randomDPSRuns.sort()
 
@@ -145,7 +146,7 @@ class Fight:
             "99" : randomDPSRuns[n - Percent]
         }
         
-        return int(ExpectedDamage/self.TimeStamp), percentileRuns
+        return int(ExpectedDamage/(baseKillTime/f_SPD)), percentileRuns
 
         
 
