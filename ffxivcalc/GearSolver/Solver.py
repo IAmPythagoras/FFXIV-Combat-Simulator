@@ -35,7 +35,7 @@ def computeDamageValue(GearStat : dict, JobMod : int, IsTank : bool, IsCaster : 
 
 
 
-def BiSSolver(Fight, GearSpace : dict, PlayerIndex : int, materiaDepthSearchIterator : int = 7):
+def BiSSolver(Fight, GearSpace : dict, FoodSpace : list, PlayerIndex : int, materiaDepthSearchIterator : int = 5):
     """
     Finds the BiS of the player given a Gear search space and a Fight.
     Fight -> Fight object.
@@ -111,26 +111,22 @@ def BiSSolver(Fight, GearSpace : dict, PlayerIndex : int, materiaDepthSearchIter
 
                              # First optimizes expected BiS
     print("Optimizing Best Expected BiS materia")
-    depth = 4
+    depth = materiaDepthSearchIterator
     limit = optimalGearSet.getMateriaLimit()
     counter = 0
     curMax = 0
     curRandom = {}
     while True:
         print("Progress : " + str(counter)+"/"+str(limit))
-        if counter + depth > limit:
+        if counter + materiaDepthSearchIterator > limit:
             d = limit - counter
         else:
-            d = depth
+            d = materiaDepthSearchIterator
         curBest, curMax, curRandom = materiaBisSolver(optimalGearSet, matGen, 4, d, Fight, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, percentile="exp")
         optimalGearSet = deepcopy(curBest)
-        counter += depth
+        counter += materiaDepthSearchIterator
         if counter > limit : break
 
-    text = "Solver result\nBest optimal : "
-    text += (str(optimalGearSet) + "\n")
-    text += ("Expected Damage : " + str(curMax) + "\n")
-    text += ("Random Damage : " + str(curRandom) + "\n")
                              # Will now optimize the random BiS
     for percentile in optimalRandomGearSet:
         print("Optimizing " + percentile + "th percentile BiS")
@@ -150,6 +146,46 @@ def BiSSolver(Fight, GearSpace : dict, PlayerIndex : int, materiaDepthSearchIter
         optimalRandomGearSetMateria[percentile][1] = deepcopy(curBest)
         optimalRandomGearSetMateria[percentile][2] = deepcopy(curRandom)
 
+                             # Optimizing food
+    print("Optimizing Food")
+    curMax = 0
+    curBestExpectedFood = None
+    for food in FoodSpace:
+        testSet = deepcopy(optimalGearSet)
+        testSet.addFood(food)
+        GearStat = testSet.GetGearSetStat()
+        JobMod = Fight.PlayerList[PlayerIndex].JobMod # Level 90 jobmod value, specific to each job
+
+        f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
+        ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)
+
+        if curMax < ExpectedDamage:
+            curBestExpectedFood = deepcopy(food)
+            curMax = ExpectedDamage
+
+    optimalGearSet.addFood(curBestExpectedFood)
+
+    for percentile in optimalRandomGearSetMateria:
+        bestFood = None
+        for food in FoodSpace:
+            testSet = deepcopy(optimalRandomGearSetMateria[percentile][1])
+            testSet.addFood(food)
+            GearStat = testSet.GetGearSetStat()
+            JobMod = Fight.PlayerList[PlayerIndex].JobMod # Level 90 jobmod value, specific to each job
+
+            f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
+            ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)
+
+            if optimalRandomGearSetMateria[percentile][2][percentile] < randomDamageDict[percentile]:
+                optimalRandomGearSetMateria[percentile][0] = ExpectedDamage
+                bestFood = food
+                optimalRandomGearSetMateria[percentile][2] = randomDamageDict
+        optimalRandomGearSetMateria[percentile][1].addFood(bestFood)
+
+    text = "Solver result\nBest optimal : "
+    text += (str(optimalGearSet) + "\n")
+    text += ("Expected Damage : " + str(curMax) + "\n")
+    text += ("Random Damage : " + str(curRandom) + "\n")
 
     for percentile in optimalRandomGearSetMateria:
         if percentile == "exp":

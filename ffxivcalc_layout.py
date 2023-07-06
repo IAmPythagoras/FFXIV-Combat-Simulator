@@ -227,19 +227,26 @@ logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ff
 __logger__.setLevel(level=level) # __logger__ = logging.getLogger("ffxivcalc") 
 
 
-from ffxivcalc.GearSolver.Gear import ImportGear
+from ffxivcalc.GearSolver.Gear import ImportGear, Food
 from ffxivcalc.GearSolver.Solver import BiSSolver
 
-#GearSpace = ImportGear("GearTest.json")
-#BiSSolver(Event, GearSpace, 0)
+GearSpace = ImportGear("GearTest.json")
+HD = Food({"DH" : [103, 0.1], "Det" : [62, 0.1]}, "Honeyed Dragonfruit")
+BE = Food({"Det" : [103, 0.1], "Crit" : [62, 0.1]}, "Baked Eggplant")
+CW = Food({"SS" : [103, 0.1], "DH" : [62, 0.1]}, "Caviar Sandwich")
+CC = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")
+BiSSolver(Event, GearSpace, [HD, BE, CW, CC],  0)
 
 # ===============================================================================================
+"""
 Event.SavePreBakedAction = True
 Event.PlayerIDSavePreBakedAction = 0
 Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False) # Simulating fight
 from ffxivcalc.GearSolver.Solver import computeDamageValue
-from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet
+from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet, Food
 matGen = MateriaGenerator(18, 36)
+foodDict = {"Crit" : [63, 0.1], "Det" : [103, 0.1]}
+raidFood = Food(foodDict, "Baked Eggplant")
 
 data = ImportGear("GearTest.json")
     #Crit = 0
@@ -300,11 +307,11 @@ gSet.AddGear(Neck)
 gSet.AddGear(Bracelet)
 gSet.AddGear(Lring)
 gSet.AddGear(ring)
-
+#gSet.addFood(raidFood)
 print(gSet)
 GearStat = gSet.GetGearSetStat()
 JobMod = Event.PlayerList[0].JobMod
 f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, False, True)
 ExpectedDamage, randomDamageDict = Event.SimulatePreBakedFight(0, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)
 print("Expected damage : " + str(ExpectedDamage))
-print("Random damage : " + str(randomDamageDict))
+print("Random damage : " + str(randomDamageDict))"""

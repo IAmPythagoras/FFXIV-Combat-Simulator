@@ -91,7 +91,12 @@ class Food:
         self.name = name
         self.statBonusDict = statBonusDict
 
-    
+    def __str__(self):
+        strGenerator = (key + " " + str(int( 100 * self.statBonusDict[key][1])) + "% max of " + str(self.statBonusDict[key][0]) + " |" for key in self.statBonusDict)
+        returnStr = "Food " + self.name + " gives -> "
+        for gen in strGenerator:
+            returnStr += gen
+        return returnStr
 
     def getLimitStatBonus(self, StatName : str) -> int:
         """
@@ -277,7 +282,7 @@ class GearSet:
         for info in gearInfoGenerator:
             GearInfo += info
 
-        return "Gearset's info:\n" + GearInfo + " Final Stats : " + str(self.GetGearSetStat()) + "\n" + self.strMateriaNumber()
+        return "Gearset's info:\n" + GearInfo + " Final Stats : " + str(self.GetGearSetStat()) + "\n" + self.strMateriaNumber() + "\n" + str(self.Food)
 
     def findFirstPieceMateria(self, newMateria : Materia) -> str:
         """
