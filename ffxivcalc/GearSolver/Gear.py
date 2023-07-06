@@ -78,6 +78,36 @@ class Stat:
 
     def __str__(self):
         return StatType.name_for_id(self.StatType) + " : " + str(self.Value)
+    
+class Food:
+    """
+    This class represents food. Food gives a stat bonus that caps at a certain value.
+    A food can be "attached" to a GearSet object and will buff it.
+    statBonusDict : dict -> Dictionnary where key is the StatType's Name and the value is the cap of that stat with the percentage bonus.
+    name : str -> Name of the food
+    """
+
+    def __init__(self, statBonusDict : dict, name : str):
+        self.name = name
+        self.statBonusDict = statBonusDict
+
+    
+
+    def getLimitStatBonus(self, StatName : str) -> int:
+        """
+        This function returns the limit of a stat for the food.
+        StatName : str -> Name of the StatType.
+        """
+
+        return self.statBonusDict[StatName][0] if StatName in self.statBonusDict.keys() else 0
+    
+    def getPercentStatBonus(self, StatName : str) -> float:
+        """
+        This function  returns the percent bonus from the food for the given StatName
+        StatName : str -> Name of the StatType.
+        """
+        return self.statBonusDict[StatName][1] if StatName in self.statBonusDict.keys() else 0
+    
 
 class Materia:
     """
@@ -233,6 +263,13 @@ class GearSet:
 
     def __init__(self):
         self.GearSet = {}
+        self.Food = None
+
+    def addFood(self, newFood : Food):
+        """
+        This function adds newFood to the gearset.
+        """
+        self.Food = newFood
 
     def __str__(self):
         gearInfoGenerator = (str(self.GearSet[gear]) + "\n" for gear in self.GearSet)
@@ -268,8 +305,6 @@ class GearSet:
 
         for key in self.GearSet:
             self.GearSet[key].getMateriaNumber(dataDict)
-
-        print(dataDict)
         
         returnStr = "Materia numbers : "
 
@@ -311,12 +346,24 @@ class GearSet:
         "SkS" : 400,
         "Crit" : 390,
         "DH" : 390
-    }   
+    }       
+        
+                             # Getting stats from gear and materia
 
         for key in self.GearSet:
             GearPiece = self.GearSet[key]
             for type in StatType:
                 Stat[type.name] += GearPiece.GetStat(type.name)
+
+                             # Getting stats from food
+        if self.Food != None:
+            for type in StatType:
+                percentBonus = self.Food.getPercentStatBonus(type.name)
+                limitBonus = self.Food.getLimitStatBonus(type.name)
+
+                if percentBonus != 0:
+                    flatBonus = min(int(percentBonus * Stat[type.name]), limitBonus)
+                    Stat[type.name] += flatBonus
 
         return Stat
     
@@ -346,13 +393,6 @@ def ImportGear(fileName : str) -> dict:
 
     return GearDict
 
-
-
-# Testing gear set stat addition
-    #Crit = 0
-    #DH = 1
-    #Det = 2
-    #SS = 3
 if __name__ == "__main__":
     matGen = MateriaGenerator(18, 36)
 
