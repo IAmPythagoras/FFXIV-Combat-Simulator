@@ -170,6 +170,21 @@ class Gear:
             newMateria.wasteAmount = newStatValue - self.StatLimit
             newMateria.wasteValue = True
 
+    def getMateriaNumber(self, dictData : dict):
+        """
+        This function returns the number of materia of each StatTypes currently on this gear piece as weel
+        as if the materia is even or odd.
+        (Out) dictData : dict -> This dictionnary is filled with the information. It can hence be passed on every gear pieces of the gear set.
+        """
+
+        for mat in self.Materias:
+            statName = StatType.name_for_id(mat.StatType)
+            if statName in dictData.keys():
+                dictData[statName] += 1
+            else :
+                dictData[statName] = 1
+        
+
     def canAddMateriaNoLoss(self, newMateria : Materia) -> bool:
         """
         This function returns weither the materia can be added to the gear piece
@@ -199,11 +214,9 @@ class Gear:
 
         if StatEnum != -2 :
             name = StatType.id_for_name(StatEnum)
-            if name in self.Stat.keys(): 
-                statValue = self.Stat[name].Value if StatName in self.Stat.keys() else 0
+            statValue = self.Stat[name].Value if StatName in self.Stat.keys() else 0
         elif StatName != "":
-            if StatName in self.Stat.keys():
-                statValue = self.Stat[StatName].Value if StatName in self.Stat.keys() else 0
+            statValue = self.Stat[StatName].Value if StatName in self.Stat.keys() else 0
 
         StatEnum = StatType.id_for_name(StatName) if StatEnum == -2 else StatEnum
 
@@ -226,7 +239,8 @@ class GearSet:
         GearInfo = ""
         for info in gearInfoGenerator:
             GearInfo += info
-        return "Gearset's info:\n" + GearInfo + " Final Stats : " + str(self.GetGearSetStat())
+
+        return "Gearset's info:\n" + GearInfo + " Final Stats : " + str(self.GetGearSetStat()) + "\n" + self.strMateriaNumber()
 
     def findFirstPieceMateria(self, newMateria : Materia) -> str:
         """
@@ -244,6 +258,26 @@ class GearSet:
         This function is used to add a new gear to the gear set. If a gear of the type is already present it is switched.
         """
         self.GearSet[GearType.name_for_id(newGear.GearType)] = newGear
+
+    def strMateriaNumber(self) -> str:
+        """
+        This function find the number of materia in the gear set and displays it in an easy way to understand.
+        """
+
+        dataDict = {}
+
+        for key in self.GearSet:
+            self.GearSet[key].getMateriaNumber(dataDict)
+
+        print(dataDict)
+        
+        returnStr = "Materia numbers : "
+
+        for stat in dataDict:
+            returnStr += stat + " " + str(dataDict[stat]) + "x" + " |"
+        
+        return returnStr
+
     def RemoveGear(self, Type : int):
         """
         This function removes the gear of the given type. If the gear set does not have the gear type then nothing happens.
@@ -269,7 +303,7 @@ class GearSet:
         
     def GetGearSetStat(self):
         Stat = {
-        "MainStat" : 390,
+        "MainStat" : 450,
         "WD" : 0,
         "Det" : 390,
         "Ten" : 400,
@@ -294,193 +328,10 @@ def ImportGear(fileName : str) -> dict:
     fileName : str -> Name of the file. Must be formatted correctly
     """
 
-    #f = open(fileName) #Opening save
+    f = open(fileName) #Opening save
 
-    #data = json.load(f) #Loading json file
-    data = [
-{
-"GearType" : 0,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["Crit", 306],
-["SS", 214],
-["MainStat", 416],
-["WD", 132]
-]},
-{
-"GearType" : 0,
-"MateriaLimit" : 2,
-"Name" : "Tome",
-"StatList" : [
-["Crit", 212],
-["SS", 303],
-["MainStat", 409],
-["WD", 131]
-]},
-{
-"GearType" : 2,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["SS", 184],
-["Det", 129],
-["MainStat", 248]
-]},
-{
-"GearType" : 2,
-"MateriaLimit" : 2,
-"Name" : "Tome",
-"StatList" : [
-["Crit", 184],
-["DH", 129],
-["MainStat", 248]
-]},
-{
-"GearType" : 3,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["SS", 292],
-["DH", 204],
-["MainStat", 394]
-]},
-{
-"GearType" : 3,
-"MateriaLimit" : 2,
-"Name" : "Tome",
-"StatList" : [
-["Crit", 292],
-["Det", 204],
-["MainStat", 394]
-]},
-{
-"GearType" : 4,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["Det", 129],
-["Crit", 184],
-["MainStat", 248]
-]},
-{
-"GearType" : 4,
-"MateriaLimit" : 2,
-"Name" : "Tome",
-"StatList" : [
-["SS", 184],
-["DH", 129],
-["MainStat", 248]
-]},
-{
-"GearType" : 5,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["Crit", 204],
-["DH", 292],
-["MainStat", 394]
-]},
-{
-"GearType" : 5,
-"MateriaLimit" : 2,
-"Name" : "Tome",
-"StatList" : [
-["Det", 292],
-["SS", 204],
-["MainStat", 394]
-]},
-{
-"GearType" : 6,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["Det", 184],
-["SS", 129],
-["MainStat", 248]
-]},
-{
-"GearType" : 6,
-"MateriaLimit" : 2,
-"Name" : "Tome",
-"StatList" : [
-["Crit", 129],
-["DH", 184],
-["MainStat", 248]
-]},
-{
-"GearType" : 7,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["Crit", 145],
-["Det", 102],
-["MainStat", 196]
-]},
-{
-"GearType" : 7,
-"MateriaLimit" : 2,
-"Name" : "Tome",
-"StatList" : [
-["DH", 102],
-["SS", 145],
-["MainStat", 196]
-]},
-{
-"GearType" : 8,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["SS", 102],
-["DH", 145],
-["MainStat", 196]
-]},
-{
-"GearType" : 8,
-"MateriaLimit" : 2,
-"Name" : "Tome",
-"StatList" : [
-["Det", 145],
-["Crit", 102],
-["MainStat", 196]
-]},
-{
-"GearType" : 9,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["Crit", 145],
-["Det", 102],
-["MainStat", 196]
-]},
-{
-"GearType" : 9,
-"MateriaLimit" : 2,
-"Name" : "Tome",
-"StatList" : [
-["Det", 145],
-["SS", 102],
-["MainStat", 196]
-]},
-{
-"GearType" : 10,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["Det", 102],
-["Crit", 145],
-["MainStat", 196]
-]},
-{
-"GearType" : 11,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["SS", 102],
-["DH", 145],
-["MainStat", 196]
-]}
-]
+    data = json.load(f) #Loading json file
+
     GearDict = {}
 
 
@@ -497,4 +348,74 @@ def ImportGear(fileName : str) -> dict:
 
 
 
+# Testing gear set stat addition
+    #Crit = 0
+    #DH = 1
+    #Det = 2
+    #SS = 3
+if __name__ == "__main__":
+    matGen = MateriaGenerator(18, 36)
+
+    data = ImportGear("GearTest.json")
+
+    Weapon = data["WEAPON"][0]
+    Weapon.AddMateria(matGen.GenerateMateria(2))
+    Weapon.AddMateria(matGen.GenerateMateria(1))
+
+    Head = data["HEAD"][1]
+    Head.AddMateria(matGen.GenerateMateria(1))
+    Head.AddMateria(matGen.GenerateMateria(3))
+    Body = data["BODY"][1]
+    Body.AddMateria(matGen.GenerateMateria(1))
+    Body.AddMateria(matGen.GenerateMateria(1))
+    Hand = data["HANDS"][0]
+    Hand.AddMateria(matGen.GenerateMateria(1))
+    Hand.AddMateria(matGen.GenerateMateria(1))
+
+    Leg = data["LEGS"][0]
+    Leg.AddMateria(matGen.GenerateMateria(0))
+    Leg.AddMateria(matGen.GenerateMateria(0))
+
+    Feet = data["FEET"][1]
+    Feet.AddMateria(matGen.GenerateMateria(0))
+    Feet.AddMateria(matGen.GenerateMateria(3))
+
+    Ear = data["EARRINGS"][0]
+    Ear.AddMateria(matGen.GenerateMateria(2))
+    Ear.AddMateria(matGen.GenerateMateria(3))
+
+    Neck = data["NECKLACE"][1]
+    Neck.AddMateria(matGen.GenerateMateria(0))
+    Neck.AddMateria(matGen.GenerateMateria(1))
+
+    Bracelet = data["BRACELETS"][0]
+    Bracelet.AddMateria(matGen.GenerateMateria(2))
+    Bracelet.AddMateria(matGen.GenerateMateria(3))
+
+    Lring = data["LRING"][0]
+    Lring.AddMateria(matGen.GenerateMateria(2))
+    Lring.AddMateria(matGen.GenerateMateria(1))
+
+    ring = data["RING"][0]
+    ring.AddMateria(matGen.GenerateMateria(0))
+    ring.AddMateria(matGen.GenerateMateria(0))
+
+    gSet = GearSet()
+    gSet.AddGear(Weapon)
+    gSet.AddGear(Head)
+    gSet.AddGear(Body)
+    gSet.AddGear(Hand)
+    gSet.AddGear(Leg)
+    gSet.AddGear(Feet)
+    gSet.AddGear(Ear)
+    gSet.AddGear(Neck)
+    gSet.AddGear(Bracelet)
+    gSet.AddGear(Lring)
+    gSet.AddGear(ring)
+
+    print(gSet)
+    GearStat = gSet.GetGearSetStat()
+    from Solver import computeDamageValue
+    f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
+    ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)
 

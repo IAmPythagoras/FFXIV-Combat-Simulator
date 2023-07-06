@@ -130,12 +130,12 @@ GNBPlayer = Player([], [], GNBStat, JobEnum.Gunbreaker)
 # Note that if you are simulating with more than 1 per job you will need to create a new list of actions.
 
 # Caster
-BLMOpener = [Fire3, Fire4, Fire4, Fire4, Despair, Blizzard3, LeyLines, Blizzard4, Paradox, Amplifier, Xenoglossy, Fire3, Triplecast, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Xenoglossy, Swiftcast, Despair]
+BLMOpener = [SharpCast, Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, SharpCast, Swiftcast, Despair, Manafront, Triplecast, Fire4, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose, Fire3, Fire4, Fire4, Fire4, Despair]
 SMNOpener = [Summon, Deathflare, Enkindle,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3]
 RDMOpener = [Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder]
 
 # Healer
-SCHOpener = [WaitAbility(2),Broil,Biolysis, Broil, Swiftcast, ChainStratagem, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil ]
+SCHOpener = [WaitAbility(2),Broil,Biolysis, Broil, Swiftcast, ChainStratagem, Broil, Broil ]
 WHMOpener = [Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare]
 ASTOpener = [Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic]
 SGEOpener = []
@@ -153,7 +153,7 @@ NINOpener = []
 RPROpener = [SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice]
 
 # Tank 
-DRKOpener = [HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash, Shadowbringer, Shadowbringer]
+DRKOpener = [BloodWeapon, TBN(DRKPlayer), Potion, HardSlash, EdgeShadow, Delirium, SyphonStrike, Souleater, LivingShadow, SaltedEarth, HardSlash, Shadowbringer, EdgeShadow, Bloodspiller, CarveSpit, Plunge, Bloodspiller, Shadowbringer, EdgeShadow, Bloodspiller, SaltDarkness, EdgeShadow, SyphonStrike, Plunge, EdgeShadow]
 WAROpener = [TankStance, Provoke,Holmgang ,Maim, Maim, Maim, Maim, Maim, Maim, Maim, Maim]
 PLDOpener = []
 GNBOpener = []
@@ -201,7 +201,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [BLMPlayer, SCHPlayer]
+PlayerList = [BLMPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -220,7 +220,7 @@ Event.RequirementOn = RequirementOn
 Event.ShowGraph = ShowGraph
 Event.IgnoreMana = IgnoreMana
 
-Dummy.setEventList([MagicRaidWide,WaitEvent(20), MagicRaidWide])
+#Dummy.setEventList([MagicRaidWide,WaitEvent(20), MagicRaidWide])
 __logger__ = logging.getLogger("ffxivcalc") # root logger
 level = logging.DEBUG
 logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
@@ -230,8 +230,81 @@ __logger__.setLevel(level=level) # __logger__ = logging.getLogger("ffxivcalc")
 from ffxivcalc.GearSolver.Gear import ImportGear
 from ffxivcalc.GearSolver.Solver import BiSSolver
 
-GearSpace = ImportGear("GearTest.json")
-BiSSolver(Event, GearSpace, 0, n=1)
+#GearSpace = ImportGear("GearTest.json")
+#BiSSolver(Event, GearSpace, 0)
 
 # ===============================================================================================
-#Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False) # Simulating fight
+Event.SavePreBakedAction = True
+Event.PlayerIDSavePreBakedAction = 0
+Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False) # Simulating fight
+from ffxivcalc.GearSolver.Solver import computeDamageValue
+from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet
+matGen = MateriaGenerator(18, 36)
+
+data = ImportGear("GearTest.json")
+    #Crit = 0
+    #DH = 1
+    #Det = 2
+    #SS = 3
+Weapon = data["WEAPON"][0]
+Weapon.AddMateria(matGen.GenerateMateria(3))
+Weapon.AddMateria(matGen.GenerateMateria(3))
+
+Head = data["HEAD"][1]
+Head.AddMateria(matGen.GenerateMateria(2))
+Head.AddMateria(matGen.GenerateMateria(2))
+Body = data["BODY"][1]
+Body.AddMateria(matGen.GenerateMateria(2))
+Body.AddMateria(matGen.GenerateMateria(2))
+Hand = data["HANDS"][0]
+Hand.AddMateria(matGen.GenerateMateria(2))
+Hand.AddMateria(matGen.GenerateMateria(1))
+
+Leg = data["LEGS"][0]
+Leg.AddMateria(matGen.GenerateMateria(0))
+Leg.AddMateria(matGen.GenerateMateria(0))
+
+Feet = data["FEET"][1]
+Feet.AddMateria(matGen.GenerateMateria(0))
+Feet.AddMateria(matGen.GenerateMateria(2))
+
+Ear = data["EARRINGS"][0]
+Ear.AddMateria(matGen.GenerateMateria(1))
+Ear.AddMateria(matGen.GenerateMateria(3))
+
+Neck = data["NECKLACE"][1]
+Neck.AddMateria(matGen.GenerateMateria(0))
+Neck.AddMateria(matGen.GenerateMateria(1))
+
+Bracelet = data["BRACELETS"][0]
+Bracelet.AddMateria(matGen.GenerateMateria(1))
+Bracelet.AddMateria(matGen.GenerateMateria(1))
+
+Lring = data["LRING"][0]
+Lring.AddMateria(matGen.GenerateMateria(1))
+Lring.AddMateria(matGen.GenerateMateria(1))
+
+ring = data["RING"][0]
+ring.AddMateria(matGen.GenerateMateria(0))
+ring.AddMateria(matGen.GenerateMateria(0))
+
+gSet = GearSet()
+gSet.AddGear(Weapon)
+gSet.AddGear(Head)
+gSet.AddGear(Body)
+gSet.AddGear(Hand)
+gSet.AddGear(Leg)
+gSet.AddGear(Feet)
+gSet.AddGear(Ear)
+gSet.AddGear(Neck)
+gSet.AddGear(Bracelet)
+gSet.AddGear(Lring)
+gSet.AddGear(ring)
+
+print(gSet)
+GearStat = gSet.GetGearSetStat()
+JobMod = Event.PlayerList[0].JobMod
+f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, False, True)
+ExpectedDamage, randomDamageDict = Event.SimulatePreBakedFight(0, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)
+print("Expected damage : " + str(ExpectedDamage))
+print("Random damage : " + str(randomDamageDict))

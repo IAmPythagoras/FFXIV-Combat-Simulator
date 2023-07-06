@@ -1,78 +1,89 @@
-Gearset's info:
-WEAPON : Crit : 306 | SS : 214 | MainStat : 416 | WD : 132 | Det : 32 | SS : 32 |  Name : Raid
-HEAD : Crit : 184 | DH : 129 | MainStat : 248 | SS : 32 | SS : 32 |  Name : Tome
-BODY : Crit : 292 | Det : 204 | MainStat : 394 | SS : 32 | SS : 32 |  Name : Tome
-HANDS : Det : 129 | Crit : 184 | MainStat : 248 | Crit : 32 | SS : 32 |  Name : Raid
-LEGS : Crit : 204 | DH : 292 | MainStat : 394 | SS : 32 | SS : 32 |  Name : Raid
-FEET : Crit : 129 | DH : 184 | MainStat : 248 | SS : 32 | SS : 32 |  Name : Tome
-EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 | Crit : 32 | SS : 32 |  Name : Raid
-NECKLACE : Det : 145 | Crit : 102 | MainStat : 196 | SS : 32 | SS : 32 |  Name : Tome
-BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 | SS : 32 | SS : 32 |  Name : Raid
-LRING : Det : 102 | Crit : 145 | MainStat : 196 | Crit : 32 | SS : 32 |  Name : Raid
-RING : SS : 102 | DH : 145 | MainStat : 196 | SS : 32 | SS : 32 |  Name : Raid
- Final Stats : {'MainStat': 2928, 'WD': 132, 'Det': 1206, 'Ten': 400, 'SS': 1292, 'SkS': 400, 'Crit': 2322, 'DH': 1140}
-10296
+Solver result
+Best optimal : Gearset's info:
+WEAPON : Crit : 306 | SS : 214 | MainStat : 416 | WD : 132 | Det : 36 | Det : 36 |  Name : Raid
+HEAD : SS : 184 | Det : 129 | MainStat : 248 | Crit : 36 | Crit : 36 |  Name : Raid
+BODY : SS : 292 | DH : 204 | MainStat : 394 | DH : 36 | DH : 36 |  Name : Raid
+HANDS : SS : 184 | DH : 129 | MainStat : 248 | DH : 36 | Det : 36 |  Name : Tome
+LEGS : Det : 292 | SS : 204 | MainStat : 394 | DH : 36 | SS : 36 |  Name : Tome
+FEET : Det : 184 | SS : 129 | MainStat : 248 | SS : 36 | DH : 36 |  Name : Raid
+EARRINGS : DH : 102 | SS : 145 | MainStat : 196 | Det : 36 | Det : 36 |  Name : Tome
+NECKLACE : SS : 102 | DH : 145 | MainStat : 196 | Det : 36 | Det : 36 |  Name : Raid
+BRACELETS : Det : 145 | SS : 102 | MainStat : 196 | DH : 36 | DH : 36 |  Name : Tome
+LRING : Det : 102 | Crit : 145 | MainStat : 196 | Det : 36 | DH : 36 |  Name : Raid
+RING : SS : 102 | DH : 145 | MainStat : 196 | Det : 36 | Det : 36 |  Name : Raid
+ Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1602, 'Ten': 400, 'SS': 2130, 'SkS': 400, 'Crit': 913, 'DH': 1403}
+Materia numbers : Det 10x |Crit 2x |DH 8x |SS 2x |
+Expected Damage : 12372
+Random Damage : {'1': 11385.352110395746, '10': 11773.06847925223, '25': 12034.653340313122, '50': 12356.694441895987, '75': 12727.909032526164, '90': 13098.972784232883, '99': 13819.168308175527}
 99th percentile gear :
 Gearset's info:
-WEAPON : Crit : 306 | SS : 214 | MainStat : 416 | WD : 132 | Det : 32 | SS : 32 |  Name : Raid
-HEAD : Crit : 184 | DH : 129 | MainStat : 248 | SS : 32 | SS : 32 |  Name : Tome
-BODY : Crit : 292 | Det : 204 | MainStat : 394 | SS : 32 | SS : 32 |  Name : Tome
-HANDS : Det : 129 | Crit : 184 | MainStat : 248 | Crit : 32 | SS : 32 |  Name : Raid
-LEGS : Crit : 204 | DH : 292 | MainStat : 394 | SS : 32 | SS : 32 |  Name : Raid
-FEET : Crit : 129 | DH : 184 | MainStat : 248 | SS : 32 | SS : 32 |  Name : Tome
-EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 | Crit : 32 | SS : 32 |  Name : Raid
-NECKLACE : Det : 145 | Crit : 102 | MainStat : 196 | SS : 32 | SS : 32 |  Name : Tome
-BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 | SS : 32 | SS : 32 |  Name : Raid
-LRING : Det : 102 | Crit : 145 | MainStat : 196 | SS : 32 | DH : 32 |  Name : Raid
-RING : SS : 102 | DH : 145 | MainStat : 196 | SS : 32 | Det : 32 |  Name : Raid
- Final Stats : {'MainStat': 2928, 'WD': 132, 'Det': 1238, 'Ten': 400, 'SS': 1260, 'SkS': 400, 'Crit': 2290, 'DH': 1172}
-Damage is : {'1': 9209.316611210648, '10': 9702.636293831585, '25': 10038.367033529563, '50': 10497.491681597134, '75': 9702.636293831585, '90': 11389.838750959816, '99': 12471.768620424878}
+WEAPON : Crit : 306 | SS : 214 | MainStat : 416 | WD : 132 | SS : 36 | DH : 36 |  Name : Raid
+HEAD : Crit : 184 | DH : 129 | MainStat : 248 | DH : 36 | Det : 36 |  Name : Tome
+BODY : Crit : 292 | Det : 204 | MainStat : 394 | DH : 36 | Det : 36 |  Name : Tome
+HANDS : Det : 129 | Crit : 184 | MainStat : 248 | Det : 36 | DH : 36 |  Name : Raid
+LEGS : Crit : 204 | DH : 292 | MainStat : 394 | Crit : 36 | Crit : 36 |  Name : Raid
+FEET : Crit : 129 | DH : 184 | MainStat : 248 | Crit : 36 | SS : 36 |  Name : Tome
+EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 | DH : 36 | DH : 36 |  Name : Raid
+NECKLACE : SS : 102 | DH : 145 | MainStat : 196 | Crit : 36 | Crit : 36 |  Name : Raid
+BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 | DH : 36 | DH : 36 |  Name : Raid
+LRING : Det : 102 | Crit : 145 | MainStat : 196 | DH : 36 | Det : 36 |  Name : Raid
+RING : SS : 102 | DH : 145 | MainStat : 196 | Crit : 36 | Crit : 36 |  Name : Raid
+ Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1173, 'Ten': 400, 'SS': 890, 'SkS': 400, 'Crit': 2376, 'DH': 1609}
+Materia numbers : SS 2x |DH 9x |Det 4x |Crit 7x |
+Expected Damage : 12318
+Random Damage : {'1': 10825.853602594752, '10': 11429.190003076143, '25': 11846.717189161183, '50': 12353.692585416924, '75': 12916.945930047437, '90': 13440.868821405635, '99': 14445.732634635207}
 ========================
 90th percentile gear :
 Gearset's info:
-WEAPON : Crit : 306 | SS : 214 | MainStat : 416 | WD : 132 | Det : 32 | SS : 32 |  Name : Raid
-HEAD : Crit : 184 | DH : 129 | MainStat : 248 | SS : 32 | SS : 32 |  Name : Tome
-BODY : Crit : 292 | Det : 204 | MainStat : 394 | SS : 32 | SS : 32 |  Name : Tome
-HANDS : Det : 129 | Crit : 184 | MainStat : 248 | Crit : 32 | SS : 32 |  Name : Raid
-LEGS : Crit : 204 | DH : 292 | MainStat : 394 | SS : 32 | SS : 32 |  Name : Raid
-FEET : Crit : 129 | DH : 184 | MainStat : 248 | SS : 32 | SS : 32 |  Name : Tome
-EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 | Crit : 32 | SS : 32 |  Name : Raid
-NECKLACE : Det : 145 | Crit : 102 | MainStat : 196 | SS : 32 | SS : 32 |  Name : Tome
-BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 | SS : 32 | SS : 32 |  Name : Raid
-LRING : Det : 102 | Crit : 145 | MainStat : 196 | Crit : 32 | DH : 32 |  Name : Raid
-RING : SS : 102 | DH : 145 | MainStat : 196 | Crit : 32 | Crit : 32 |  Name : Raid
- Final Stats : {'MainStat': 2928, 'WD': 132, 'Det': 1206, 'Ten': 400, 'SS': 1196, 'SkS': 400, 'Crit': 2386, 'DH': 1172}
-Damage is : {'1': 9133.50396723829, '10': 9759.099052981828, '25': 10067.161504991042, '50': 10490.581008446377, '75': 9759.099052981828, '90': 11509.163040696187, '99': 12121.371896595854}
+WEAPON : Crit : 306 | SS : 214 | MainStat : 416 | WD : 132 | Det : 36 | DH : 36 |  Name : Raid
+HEAD : Crit : 184 | DH : 129 | MainStat : 248 | DH : 36 | SS : 36 |  Name : Tome
+BODY : Crit : 292 | Det : 204 | MainStat : 394 | DH : 36 | Det : 36 |  Name : Tome
+HANDS : Det : 129 | Crit : 184 | MainStat : 248 | SS : 36 | DH : 36 |  Name : Raid
+LEGS : Crit : 204 | DH : 292 | MainStat : 394 | Crit : 36 | Crit : 36 |  Name : Raid
+FEET : Crit : 129 | DH : 184 | MainStat : 248 | Crit : 36 | SS : 36 |  Name : Tome
+EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 | DH : 36 | DH : 36 |  Name : Raid
+NECKLACE : Det : 145 | Crit : 102 | MainStat : 196 | Crit : 36 | DH : 36 |  Name : Tome
+BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 | Det : 36 | SS : 36 |  Name : Raid
+LRING : Det : 102 | Crit : 145 | MainStat : 196 | Det : 36 | DH : 36 |  Name : Raid
+RING : SS : 102 | DH : 145 | MainStat : 196 | Crit : 36 | Crit : 36 |  Name : Raid
+ Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1318, 'Ten': 400, 'SS': 860, 'SkS': 400, 'Crit': 2442, 'DH': 1428}
+Materia numbers : Det 4x |DH 8x |SS 4x |Crit 6x |
+Expected Damage : 12370
+Random Damage : {'1': 10783.805863019908, '10': 11429.123272368144, '25': 11870.79680189102, '50': 12375.677830725808, '75': 12926.990776968867, '90': 13468.566652455249, '99': 14370.08030351274}
 ========================
 75th percentile gear :
 Gearset's info:
-WEAPON : Crit : 306 | SS : 214 | MainStat : 416 | WD : 132 | Det : 32 | SS : 32 |  Name : Raid
-HEAD : Crit : 184 | DH : 129 | MainStat : 248 | SS : 32 | SS : 32 |  Name : Tome
-BODY : Crit : 292 | Det : 204 | MainStat : 394 | SS : 32 | SS : 32 |  Name : Tome
-HANDS : Det : 129 | Crit : 184 | MainStat : 248 | Crit : 32 | SS : 32 |  Name : Raid
-LEGS : Crit : 204 | DH : 292 | MainStat : 394 | SS : 32 | SS : 32 |  Name : Raid
-FEET : Crit : 129 | DH : 184 | MainStat : 248 | SS : 32 | SS : 32 |  Name : Tome
-EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 | Crit : 32 | SS : 32 |  Name : Raid
-NECKLACE : Det : 145 | Crit : 102 | MainStat : 196 | SS : 32 | SS : 32 |  Name : Tome
-BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 | SS : 32 | SS : 32 |  Name : Raid
-LRING : Det : 102 | Crit : 145 | MainStat : 196 | DH : 32 | DH : 32 |  Name : Raid
-RING : SS : 102 | DH : 145 | MainStat : 196 | Det : 32 | Crit : 32 |  Name : Raid
- Final Stats : {'MainStat': 2928, 'WD': 132, 'Det': 1238, 'Ten': 400, 'SS': 1196, 'SkS': 400, 'Crit': 2322, 'DH': 1204}
-Damage is : {'1': 9324.238546199129, '10': 9804.299974404914, '25': 10109.367801382135, '50': 10464.729971845405, '75': 9804.299974404914, '90': 11284.898899411313, '99': 11876.068594829792}
+WEAPON : Crit : 306 | SS : 214 | MainStat : 416 | WD : 132 | SS : 36 | Det : 36 |  Name : Raid
+HEAD : Crit : 184 | DH : 129 | MainStat : 248 | Det : 36 | Det : 36 |  Name : Tome
+BODY : Crit : 292 | Det : 204 | MainStat : 394 | Det : 36 | Det : 36 |  Name : Tome
+HANDS : Det : 129 | Crit : 184 | MainStat : 248 | Det : 36 | DH : 36 |  Name : Raid
+LEGS : Crit : 204 | DH : 292 | MainStat : 394 | Crit : 36 | Crit : 36 |  Name : Raid
+FEET : Crit : 129 | DH : 184 | MainStat : 248 | Crit : 36 | Det : 36 |  Name : Tome
+EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 | DH : 36 | Det : 36 |  Name : Raid
+NECKLACE : Det : 145 | Crit : 102 | MainStat : 196 | Crit : 36 | SS : 36 |  Name : Tome
+BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 | Det : 36 | SS : 36 |  Name : Raid
+LRING : Det : 102 | Crit : 145 | MainStat : 196 | SS : 36 | Det : 36 |  Name : Raid
+RING : SS : 102 | DH : 145 | MainStat : 196 | Crit : 36 | Crit : 36 |  Name : Raid
+ Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1534, 'Ten': 400, 'SS': 860, 'SkS': 400, 'Crit': 2442, 'DH': 1212}
+Materia numbers : SS 4x |Det 10x |DH 2x |Crit 6x |
+Expected Damage : 12320
+Random Damage : {'1': 10818.46983491368, '10': 11469.991149344027, '25': 11889.35287673303, '50': 12382.438139851158, '75': 12943.070853818464, '90': 13463.614656470423, '99': 14398.484729920076}
 ========================
 50th percentile gear :
 Gearset's info:
-WEAPON : Crit : 306 | SS : 214 | MainStat : 416 | WD : 132 | Det : 32 | SS : 32 |  Name : Raid
-HEAD : Crit : 184 | DH : 129 | MainStat : 248 | SS : 32 | SS : 32 |  Name : Tome
-BODY : Crit : 292 | Det : 204 | MainStat : 394 | SS : 32 | SS : 32 |  Name : Tome
-HANDS : Det : 129 | Crit : 184 | MainStat : 248 | Crit : 32 | SS : 32 |  Name : Raid
-LEGS : Crit : 204 | DH : 292 | MainStat : 394 | SS : 32 | SS : 32 |  Name : Raid
-FEET : Crit : 129 | DH : 184 | MainStat : 248 | SS : 32 | SS : 32 |  Name : Tome
-EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 | Crit : 32 | SS : 32 |  Name : Raid
-NECKLACE : Det : 145 | Crit : 102 | MainStat : 196 | SS : 32 | SS : 32 |  Name : Tome
-BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 | SS : 32 | SS : 32 |  Name : Raid
-LRING : Det : 102 | Crit : 145 | MainStat : 196 | DH : 32 | Crit : 32 |  Name : Raid
-RING : SS : 102 | DH : 145 | MainStat : 196 | Crit : 32 | DH : 32 |  Name : Raid
- Final Stats : {'MainStat': 2928, 'WD': 132, 'Det': 1206, 'Ten': 400, 'SS': 1196, 'SkS': 400, 'Crit': 2354, 'DH': 1204}
-Damage is : {'1': 9126.542103916048, '10': 9684.284617353467, '25': 10141.74558484771, '50': 10560.839518812389, '75': 9684.284617353467, '90': 11318.735602764269, '99': 12147.427693882775}
+WEAPON : Crit : 306 | SS : 214 | MainStat : 416 | WD : 132 | Det : 36 | DH : 36 |  Name : Raid
+HEAD : SS : 184 | Det : 129 | MainStat : 248 | Det : 36 | DH : 36 |  Name : Raid
+BODY : SS : 292 | DH : 204 | MainStat : 394 | DH : 36 | DH : 36 |  Name : Raid
+HANDS : SS : 184 | DH : 129 | MainStat : 248 | DH : 36 | Crit : 36 |  Name : Tome
+LEGS : Det : 292 | SS : 204 | MainStat : 394 | DH : 36 | DH : 36 |  Name : Tome
+FEET : Det : 184 | SS : 129 | MainStat : 248 | DH : 36 | SS : 36 |  Name : Raid
+EARRINGS : DH : 102 | SS : 145 | MainStat : 196 | Det : 36 | Det : 36 |  Name : Tome
+NECKLACE : SS : 102 | DH : 145 | MainStat : 196 | Det : 36 | SS : 36 |  Name : Raid
+BRACELETS : Det : 145 | SS : 102 | MainStat : 196 | DH : 36 | Crit : 36 |  Name : Tome
+LRING : Det : 102 | Crit : 145 | MainStat : 196 | Det : 36 | DH : 36 |  Name : Raid
+RING : SS : 102 | DH : 145 | MainStat : 196 | Det : 36 | Det : 36 |  Name : Raid
+ Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1530, 'Ten': 400, 'SS': 2130, 'SkS': 400, 'Crit': 913, 'DH': 1475}
+Materia numbers : Det 8x |DH 10x |Crit 2x |SS 2x |
+Expected Damage : 12315
+Random Damage : {'1': 11362.937446369884, '10': 11769.146667242321, '25': 12037.187434227217, '50': 12373.588401323284, '75': 12731.770508966689, '90': 13111.914763865581, '99': 13814.250959270796}
 ========================
