@@ -54,7 +54,7 @@ Event = Fight(Dummy, False)
 # These stats must include the bonus stats food gives.
 
 # Caster
-BLMStat = {"MainStat": 2945, "WD":126, "Det" : 1451, "Ten" : 400, "SS": 840, "SkS" : 400,  "Crit" : 2386, "DH" : 1307} # Stats for BlackMage
+BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1493, 'Ten': 400, 'SS': 824, 'SkS': 400, 'Crit': 2504, 'DH': 1392} # Stats for BlackMage
 RDMStat = {"MainStat": 2947, "WD":126, "Det" : 1548, "Ten" : 400, "SS": 495, "SkS" : 400, "Crit" : 2397, "DH" : 1544} # Stats for RedMage
 SMNStat = {"MainStat": 2948, "WD":126, "Det" : 1451, "Ten" : 400, "SS": 544, "SkS" : 400, "Crit" : 2436, "DH" : 1544} # Stats for Summoner
 
@@ -235,13 +235,15 @@ HD = Food({"DH" : [103, 0.1], "Det" : [62, 0.1]}, "Honeyed Dragonfruit")
 BE = Food({"Det" : [103, 0.1], "Crit" : [62, 0.1]}, "Baked Eggplant")
 CW = Food({"SS" : [103, 0.1], "DH" : [62, 0.1]}, "Caviar Sandwich")
 CC = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")
-BiSSolver(Event, GearSpace, [HD, BE, CW, CC],  0)
+#optimal, random = BiSSolver(Event, GearSpace,[0,1,2,4] , [HD, BE, CW, CC], materiaDepthSearchIterator=1, randomIteration=100 )
+
 
 # ===============================================================================================
-"""
-Event.SavePreBakedAction = True
+
+Event.SavePreBakedAction = False
 Event.PlayerIDSavePreBakedAction = 0
 Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False) # Simulating fight
+"""
 from ffxivcalc.GearSolver.Solver import computeDamageValue
 from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet, Food
 matGen = MateriaGenerator(18, 36)
@@ -307,11 +309,11 @@ gSet.AddGear(Neck)
 gSet.AddGear(Bracelet)
 gSet.AddGear(Lring)
 gSet.AddGear(ring)
-#gSet.addFood(raidFood)
+gSet.addFood(BE)
 print(gSet)
 GearStat = gSet.GetGearSetStat()
 JobMod = Event.PlayerList[0].JobMod
 f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, False, True)
-ExpectedDamage, randomDamageDict = Event.SimulatePreBakedFight(0, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)
+ExpectedDamage, randomDamageDict = Event.SimulatePreBakedFight(0, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, n=10000)
 print("Expected damage : " + str(ExpectedDamage))
 print("Random damage : " + str(randomDamageDict))"""

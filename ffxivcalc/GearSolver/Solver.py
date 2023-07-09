@@ -9,15 +9,21 @@ For now the BiS Solver will only work if the Fight has one player variable, mean
 
 """
 
-from ffxivcalc.GearSolver.Gear import GearSet, MateriaGenerator, StatType
-from ffxivcalc.Jobs.PlayerEnum import RoleEnum
+from ffxivcalc.GearSolver.Gear import GearSet, MateriaGenerator
+from ffxivcalc.Jobs.PlayerEnum import RoleEnum, JobEnum
+from ffxivcalc.helperCode.exceptions import InvalidFoodSpace, InvalidGearSpace, InvalidMateriaSpace, InvalidFunctionParameter
 from math import floor
 from copy import deepcopy
+import os
 
 
 def computeDamageValue(GearStat : dict, JobMod : int, IsTank : bool, IsCaster : bool):
     """
     this function computes all the damage values given a stat dict.
+    GearStat : dict -> Dict containing the value of all stats.
+    JobMod : int -> JobMod value of the player.
+    IsTank : bool -> True if the player is a tank
+    IsCaster : bool -> True if the player is a caster (Magical Ranged or Healer)
     """
     levelMod = 1900
     baseMain = 390  
@@ -33,23 +39,53 @@ def computeDamageValue(GearStat : dict, JobMod : int, IsTank : bool, IsCaster : 
     f_DH = floor(550*(GearStat["DH"]-baseSub)/levelMod)/1000 # DH rate in decimal
     return f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH
 
-
-
-def BiSSolver(Fight, GearSpace : dict, FoodSpace : list, PlayerIndex : int, materiaDepthSearchIterator : int = 5):
+def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list,
+              materiaDepthSearchIterator : int = 5, randomIteration : int = 10000, oddMateriaValue : int = 16, evenMateriaValue : int = 32,
+              PlayerIndex : int = 0):
     """
-    Finds the BiS of the player given a Gear search space and a Fight.
+    Finds the BiS of the player given a Gear search space and a Fight. The Solver will output to a file named
+    bisSolver[Job]Result[number].txt with all the relevant information and returns the gearSets. The solver outputs the best Expected Damage GearSet as well as
+    the best GearSet for the 50th, 75th, 90th and 99th DPS. The solver requires at least one piece of every possible slots.
+    Note that is is possible to give a "prebaked" BiS by only giving 1 choice for some pieces and that it is also possible to
+    add materias to the pieces in the GearSpace before running the solver. 
+    Note that since the percentile's BiS are using random damage this is only an approximation and might miss the actual best in slot. So it 
+    is recommended to run this solver multiple times or with very high value of randomIteration. Furthermore, using BF algorithm to look
+    for all (usually) 22 best melds at the same time is impossible due to how large the search space would be, this code takes adds materia iteratively
+    which makes the computation faster, but is also not guaranteed to give the true BiS. The solver finds the best GearSet without melds first, then finds the best
+    meldings and then finds the best food. 
     Fight -> Fight object.
-    GearSpace : dict -> Dictionnary filled with the different gear pieces the algorithm can search through.
-    PlayerIndex : int -> Index of the player for which the user wants to optimize the gearset. Must be the index of the player
-                         in the Fight.PlayerList.
+    GearSpace : dict -> Dictionnary filled with the different gear pieces the algorithm can search through. Must have at least one of each gear types
+    Materiaspace : list -> List of all the stats the solver will look through when optimizing melds. Must be at least 3 materias
+    FoodSpace : list -> List of all food to look into. Must be non-empty
     materiaDepthSearchIterator : int -> Depth for which the Materia optimization searches into per step.
+    randomIteration : int -> Number of times the solver will simulate random runs. Must be at least 100
+    oddMateriaValue : int -> Stat gained from odd Materia
+    evenMateriaValue : int -> Stat gained from even Materia
+    PlayerIndex : int -> Index of the player for which the user wants to optimize the gearset. 
+                                Must be the index of the player in the Fight.PlayerList.
     """
-                             # Computes the PreBakedAction
+
+                             # Checking the validity of the given search space and some other parameters.
+    if materiaDepthSearchIterator <= 0: raise InvalidFunctionParameter("BisSolver", "materiaDepthSearchIterator", "Must be higher than 1.")
+    if randomIteration < 100 : raise InvalidFunctionParameter("BisSolver", "randomIteration", "Must be higher than or 100")
+    if PlayerIndex < 0 or PlayerIndex > len(Fight.PlayerList) - 1: raise InvalidFunctionParameter("BisSolver", "PlayerIndex", "Invalid index value")
+    expectedGearSpaceKeys = ["WEAPON", "HEAD", "BODY", "HANDS", "LEGS", "FEET", "EARRINGS", "NECKLACE", "BRACELETS", "LRING", "RING"]
+    for key in expectedGearSpaceKeys:
+        if not (key in GearSpace.keys()) or len(GearSpace[key]) == 0: raise InvalidGearSpace(key)
+    
+    if len(MateriaSpace) < 3 : raise InvalidMateriaSpace
+
+    if len(FoodSpace) == 0 : raise InvalidFoodSpace
+
+
+                             # Computes the PreBakedAction and asks the fight object to remember those actions for the player with the given ID.
     Fight.SavePreBakedAction = True
-    Fight.PlayerIDSavePreBakedAction = 0
+    Fight.PlayerIDSavePreBakedAction = PlayerIndex
     Fight.SimulateFight(0.01, 500, False, n=0,PPSGraph=False)
+
     IsTank = Fight.PlayerList[PlayerIndex] == RoleEnum.Tank
     IsCaster = Fight.PlayerList[PlayerIndex].RoleEnum == RoleEnum.Caster or Fight.PlayerList[PlayerIndex].RoleEnum == RoleEnum.Healer
+    JobMod = Fight.PlayerList[PlayerIndex].JobMod # Level 90 jobmod value, specific to each job
 
     newGearSet = GearSet()
     optimalGearSet = GearSet()
@@ -95,7 +131,7 @@ def BiSSolver(Fight, GearSpace : dict, FoodSpace : list, PlayerIndex : int, mate
                                                 JobMod = Fight.PlayerList[PlayerIndex].JobMod # Level 90 jobmod value, specific to each job
 
                                                 f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
-                                                ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)
+                                                ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, n=randomIteration)
 
                                                 if curOptimalDPS <= ExpectedDamage:
                                                     optimalGearSet = deepcopy(newGearSet)
@@ -107,27 +143,32 @@ def BiSSolver(Fight, GearSpace : dict, FoodSpace : list, PlayerIndex : int, mate
                                                         optimalRandomGearSet[percentile][0] = randomDamageDict
 
                              # Will now find optimal Meld for the optimal sets that were found.
-    matGen = MateriaGenerator(18, 36)
-
+    matGen = MateriaGenerator(oddMateriaValue, evenMateriaValue)
                              # First optimizes expected BiS
     print("Optimizing Best Expected BiS materia")
-    depth = materiaDepthSearchIterator
-    limit = optimalGearSet.getMateriaLimit()
-    counter = 0
-    curMax = 0
-    curRandom = {}
+    depth = materiaDepthSearchIterator 
+    limit = optimalGearSet.getMateriaLimit()  # Number of materia the gearset can support
+    if materiaDepthSearchIterator > limit: raise InvalidFunctionParameter("BisSolver", "materiaDepthSearchIterator", "Must be lower than the limit of the gear set")
+
+    counter = 0              # Materia counter
+    curMax = 0               # cur Max DPS
+    curRandom = {}           # DPS percentiles of current best
+
     while True:
         print("Progress : " + str(counter)+"/"+str(limit))
         if counter + materiaDepthSearchIterator > limit:
             d = limit - counter
         else:
             d = materiaDepthSearchIterator
-        curBest, curMax, curRandom = materiaBisSolver(optimalGearSet, matGen, 4, d, Fight, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, percentile="exp")
+        curBest, curMax, curRandom = materiaBisSolver(optimalGearSet, matGen, MateriaSpace, d, Fight, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, percentile="exp")
+                             # Taking a copy of the found best and incrementing materia counter
         optimalGearSet = deepcopy(curBest)
         counter += materiaDepthSearchIterator
-        if counter > limit : break
+        if counter >= limit : break
 
-                             # Will now optimize the random BiS
+                             # Will now optimize the random BiS. Every percentile's gearset is optimized by using
+                             # the value of the DPS as their percentile. So the 90th percentile BiS is chosen using the
+                             # materia arrangement that maximizes the 90th percentile DPS.
     for percentile in optimalRandomGearSet:
         print("Optimizing " + percentile + "th percentile BiS")
         limit = optimalRandomGearSet[percentile][1].getMateriaLimit()
@@ -139,9 +180,9 @@ def BiSSolver(Fight, GearSpace : dict, FoodSpace : list, PlayerIndex : int, mate
                 d = limit - counter
             else:
                 d = depth
-            curBest, curMax, curRandom = materiaBisSolver(curBest, matGen, 4, d, Fight, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex,percentile=percentile)
+            curBest, curMax, curRandom = materiaBisSolver(curBest, matGen, MateriaSpace, d, Fight, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex,percentile=percentile)
             counter += depth
-            if counter > limit : break
+            if counter >= limit : break
         optimalRandomGearSetMateria[percentile][0] = curMax
         optimalRandomGearSetMateria[percentile][1] = deepcopy(curBest)
         optimalRandomGearSetMateria[percentile][2] = deepcopy(curRandom)
@@ -154,8 +195,6 @@ def BiSSolver(Fight, GearSpace : dict, FoodSpace : list, PlayerIndex : int, mate
         testSet = deepcopy(optimalGearSet)
         testSet.addFood(food)
         GearStat = testSet.GetGearSetStat()
-        JobMod = Fight.PlayerList[PlayerIndex].JobMod # Level 90 jobmod value, specific to each job
-
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
         ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)
 
@@ -186,6 +225,7 @@ def BiSSolver(Fight, GearSpace : dict, FoodSpace : list, PlayerIndex : int, mate
     text += (str(optimalGearSet) + "\n")
     text += ("Expected Damage : " + str(curMax) + "\n")
     text += ("Random Damage : " + str(curRandom) + "\n")
+    text += str(computeDamageValue(optimalGearSet.GetGearSetStat(), JobMod, IsTank, IsCaster))
 
     for percentile in optimalRandomGearSetMateria:
         if percentile == "exp":
@@ -195,18 +235,28 @@ def BiSSolver(Fight, GearSpace : dict, FoodSpace : list, PlayerIndex : int, mate
             text += (str(optimalRandomGearSetMateria[percentile][1])+ "\n")
             text += ("Expected Damage : " + str(optimalRandomGearSetMateria[percentile][0]) + "\n")
             text += ("Random Damage : " + str(optimalRandomGearSetMateria[percentile][2]) + "\n")
+            text += str(computeDamageValue(optimalRandomGearSetMateria[percentile][1].GetGearSetStat(), JobMod, IsTank, IsCaster))
             text += ("========================\n")
 
-    with open('bisSolverResult.txt', 'w') as f:
+                             # Will find appropriate name for the file so it doesn't overwrite another existing file
+    filenameSkeleton = 'bisSolver' + JobEnum.name_for_id(Fight.PlayerList[PlayerIndex].JobEnum) + "Result"
+    testFileName = filenameSkeleton
+    counter = 1
+    while os.path.isfile(testFileName + ".txt"):
+        testFileName = filenameSkeleton + "(" + str(counter) + ")"
+        counter += 1
+    with open(testFileName + ".txt", 'w') as f:
         f.write(text)
+
+    return optimalGearSet, optimalRandomGearSetMateria
    
 
-def materiaBisSolver(Set : GearSet, matGen : MateriaGenerator, matRange : int, maxDepth : int, Fight, JobMod : int, IsTank : bool, IsCaster : bool,PlayerIndex : int, percentile : str):
+def materiaBisSolver(Set : GearSet, matGen : MateriaGenerator, matSpace : int, maxDepth : int, Fight, JobMod : int, IsTank : bool, IsCaster : bool,PlayerIndex : int, percentile : str):
     """
     This functions solves the materia BiS for a given gearset.
     trialSet : GearSet -> GearSet for which to optimize Materias
     matGen : MateriaGenerator -> Materia Generator object
-    matRange : int -> Since Stats are enum from 0-7, we can say we want the materias to be within what range (6/7 non valid and 5 is TEN).
+    matSpace : list -> list of all the stats the materia solver will use for melds.
     maxDepth : int -> Up to what depth to search
     Fight : Fight -> Fight instance
     JobMod : int -> JobMod of the player
@@ -223,17 +273,19 @@ def materiaBisSolver(Set : GearSet, matGen : MateriaGenerator, matRange : int, m
     curOptimalDPS = 0
 
     result = []
+    matRange = len(matSpace)
 
     def solver(curDepth, matList, curOptimalDPS):
         for i in range(matRange):
             if curDepth > 1 :
+                             # Going recursively until at the max depth
                 solver(curDepth - 1, matList, curOptimalDPS)
             else:
                              # Will try to put all the materias in the matList onto the gear pieces.
                 trialSet = deepcopy(Set)
                 goNext = False
                 for matType in matList:
-                    newMateria = matGen.GenerateMateria(matType)
+                    newMateria = matGen.GenerateMateria(matSpace[matType])
                 
                              # Will find the first piece of gear on which the materia can go
                     key = trialSet.findFirstPieceMateria(newMateria)
@@ -248,14 +300,12 @@ def materiaBisSolver(Set : GearSet, matGen : MateriaGenerator, matRange : int, m
                     ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)
 
                     result.append([ExpectedDamage, deepcopy(trialSet), randomDamageDict])
-
-            matList[curDepth - 1] += 1
+                matList[curDepth - 1] += 1
         matList[curDepth - 1] = 0
 
     matList = [0 for i in range(maxDepth)]
-
+                             # solver will find all possible arrangements of materias of the given matSpace and try all of them.
     solver(maxDepth, matList, curOptimalDPS)
-
                              # result now has all the result. So we take the max of each percentile.
                              # The metric used here the dps corresponding to the percentile or expected.
     curMaxDPS = 0

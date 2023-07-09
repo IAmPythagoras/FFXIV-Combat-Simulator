@@ -96,7 +96,7 @@ class Fight:
                 player_current_damage += ZIPAction.ComputeRandomDamage()
             player.ZIPDPSRun.append(round(player_current_damage/self.TimeStamp/20)*20)
 
-    def SimulatePreBakedFight(self, Index : int, MainStat : int, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float, n : int = 10000):
+    def SimulatePreBakedFight(self, Index : int, MainStat : int, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float, n : int = 1000):
         """
         This function is called when the user wants to simulate the damage done by the pre baked actions. The player ID with
         the pre baked actions must be given. The user must also specify all the damage values computed from the stats.

@@ -235,6 +235,15 @@ class Gear:
         """
         self.Materias = []
         self.MateriasCount = 0
+
+    def removeMateriaType(self, StatType):
+        matRemove = []
+        for mat in self.Materias:
+            if mat.StatType == StatType:
+                matRemove.append(mat)
+                self.MateriasCount -= 1
+        for m in matRemove : self.Materias.remove(m)
+                
         
 
     def GetStat(self, StatName : str = "", StatEnum : int = -2) -> int:
@@ -269,6 +278,13 @@ class GearSet:
     def __init__(self):
         self.GearSet = {}
         self.Food = None
+
+    def removeMateriaType(self, StatType):
+        """
+        This function removes all materia of a given type.
+        """
+        for key in self.GearSet:
+            self.GearSet[key].removeMateriaType(StatType)
 
     def addFood(self, newFood : Food):
         """
