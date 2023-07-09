@@ -104,7 +104,7 @@ class Fight:
         n : int -> number of trial for random DPS simulation
         """
 
-        ExpectedDamage, RandomDamage = 0, 0
+        ExpectedDamage = 0
         baseMain = 390
         baseKillTime = self.TimeStamp * self.PlayerList[Index].f_SPD
 
@@ -117,8 +117,8 @@ class Fight:
             curMainStat = MainStat * PreBakedAction.MainStatPercentageBonus
             if PreBakedAction.HasPotionEffect : curMainStat = min(math.floor(curMainStat * 1.1), curMainStat + 262)
         
-            if PreBakedAction.IsTank : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
-            else: f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100
+            if PreBakedAction.IsTank : f_MAIN_DMG = (100+math.floor((curMainStat-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
+            else: f_MAIN_DMG = (100+math.floor((curMainStat-baseMain)*195/baseMain))/100
             ActionExpected, Damage = PreBakedAction.ComputeExpectedDamage(f_MAIN_DMG,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)
             ExpectedDamage += ActionExpected
             damageHistory.append(Damage)
@@ -573,7 +573,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
                 Player.GuaranteedCrit = False
                 auto_crit = True
 
-
+    if type == 0: fight_logging.debug(str((f_MAIN_DMG, f_WD, f_DET, f_TEN, f_SPD, CritRate, CritMult, DHRate)))
     if SavePreBakedAction and Player.playerID == PlayerIDSavePreBakedAction:
         """
         If that is set to true we will record all we need and will not compute the rest.

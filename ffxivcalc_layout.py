@@ -239,81 +239,81 @@ CC = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")
 
 
 # ===============================================================================================
-
-Event.SavePreBakedAction = False
+x = True
+Event.SavePreBakedAction = True
 Event.PlayerIDSavePreBakedAction = 0
 Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False) # Simulating fight
-"""
-from ffxivcalc.GearSolver.Solver import computeDamageValue
-from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet, Food
-matGen = MateriaGenerator(18, 36)
-foodDict = {"Crit" : [63, 0.1], "Det" : [103, 0.1]}
-raidFood = Food(foodDict, "Baked Eggplant")
+if x :
+    from ffxivcalc.GearSolver.Solver import computeDamageValue
+    from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet, Food
+    matGen = MateriaGenerator(18, 36)
+    foodDict = {"Crit" : [63, 0.1], "Det" : [103, 0.1]}
+    raidFood = Food(foodDict, "Baked Eggplant")
 
-data = ImportGear("GearTest.json")
-    #Crit = 0
-    #DH = 1
-    #Det = 2
-    #SS = 3
-Weapon = data["WEAPON"][0]
-Weapon.AddMateria(matGen.GenerateMateria(3))
-Weapon.AddMateria(matGen.GenerateMateria(3))
+    data = ImportGear("GearTest.json")
+        #Crit = 0
+        #DH = 1
+        #Det = 2
+        #SS = 3
+    Weapon = data["WEAPON"][0]
+    Weapon.AddMateria(matGen.GenerateMateria(3))
+    Weapon.AddMateria(matGen.GenerateMateria(3))
 
-Head = data["HEAD"][1]
-Head.AddMateria(matGen.GenerateMateria(2))
-Head.AddMateria(matGen.GenerateMateria(2))
-Body = data["BODY"][1]
-Body.AddMateria(matGen.GenerateMateria(2))
-Body.AddMateria(matGen.GenerateMateria(2))
-Hand = data["HANDS"][0]
-Hand.AddMateria(matGen.GenerateMateria(2))
-Hand.AddMateria(matGen.GenerateMateria(1))
+    Head = data["HEAD"][1]
+    Head.AddMateria(matGen.GenerateMateria(2))
+    Head.AddMateria(matGen.GenerateMateria(2))
+    Body = data["BODY"][1]
+    Body.AddMateria(matGen.GenerateMateria(2))
+    Body.AddMateria(matGen.GenerateMateria(2))
+    Hand = data["HANDS"][0]
+    Hand.AddMateria(matGen.GenerateMateria(2))
+    Hand.AddMateria(matGen.GenerateMateria(1))
 
-Leg = data["LEGS"][0]
-Leg.AddMateria(matGen.GenerateMateria(0))
-Leg.AddMateria(matGen.GenerateMateria(0))
+    Leg = data["LEGS"][0]
+    Leg.AddMateria(matGen.GenerateMateria(0))
+    Leg.AddMateria(matGen.GenerateMateria(0))
 
-Feet = data["FEET"][1]
-Feet.AddMateria(matGen.GenerateMateria(0))
-Feet.AddMateria(matGen.GenerateMateria(2))
+    Feet = data["FEET"][1]
+    Feet.AddMateria(matGen.GenerateMateria(0))
+    Feet.AddMateria(matGen.GenerateMateria(2))
 
-Ear = data["EARRINGS"][0]
-Ear.AddMateria(matGen.GenerateMateria(1))
-Ear.AddMateria(matGen.GenerateMateria(3))
+    Ear = data["EARRINGS"][0]
+    Ear.AddMateria(matGen.GenerateMateria(1))
+    Ear.AddMateria(matGen.GenerateMateria(3))
 
-Neck = data["NECKLACE"][1]
-Neck.AddMateria(matGen.GenerateMateria(0))
-Neck.AddMateria(matGen.GenerateMateria(1))
+    Neck = data["NECKLACE"][1]
+    Neck.AddMateria(matGen.GenerateMateria(0))
+    Neck.AddMateria(matGen.GenerateMateria(1))
 
-Bracelet = data["BRACELETS"][0]
-Bracelet.AddMateria(matGen.GenerateMateria(1))
-Bracelet.AddMateria(matGen.GenerateMateria(1))
+    Bracelet = data["BRACELETS"][0]
+    Bracelet.AddMateria(matGen.GenerateMateria(1))
+    Bracelet.AddMateria(matGen.GenerateMateria(1))
 
-Lring = data["LRING"][0]
-Lring.AddMateria(matGen.GenerateMateria(1))
-Lring.AddMateria(matGen.GenerateMateria(1))
+    Lring = data["LRING"][0]
+    Lring.AddMateria(matGen.GenerateMateria(1))
+    Lring.AddMateria(matGen.GenerateMateria(1))
 
-ring = data["RING"][0]
-ring.AddMateria(matGen.GenerateMateria(0))
-ring.AddMateria(matGen.GenerateMateria(0))
+    ring = data["RING"][0]
+    ring.AddMateria(matGen.GenerateMateria(0))
+    ring.AddMateria(matGen.GenerateMateria(0))
 
-gSet = GearSet()
-gSet.AddGear(Weapon)
-gSet.AddGear(Head)
-gSet.AddGear(Body)
-gSet.AddGear(Hand)
-gSet.AddGear(Leg)
-gSet.AddGear(Feet)
-gSet.AddGear(Ear)
-gSet.AddGear(Neck)
-gSet.AddGear(Bracelet)
-gSet.AddGear(Lring)
-gSet.AddGear(ring)
-gSet.addFood(BE)
-print(gSet)
-GearStat = gSet.GetGearSetStat()
-JobMod = Event.PlayerList[0].JobMod
-f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, False, True)
-ExpectedDamage, randomDamageDict = Event.SimulatePreBakedFight(0, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, n=10000)
-print("Expected damage : " + str(ExpectedDamage))
-print("Random damage : " + str(randomDamageDict))"""
+    gSet = GearSet()
+    gSet.AddGear(Weapon)
+    gSet.AddGear(Head)
+    gSet.AddGear(Body)
+    gSet.AddGear(Hand)
+    gSet.AddGear(Leg)
+    gSet.AddGear(Feet)
+    gSet.AddGear(Ear)
+    gSet.AddGear(Neck)
+    gSet.AddGear(Bracelet)
+    gSet.AddGear(Lring)
+    gSet.AddGear(ring)
+    gSet.addFood(BE)
+    print(gSet)
+    GearStat = gSet.GetGearSetStat()
+    JobMod = Event.PlayerList[0].JobMod
+    f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, False, True)
+    ExpectedDamage, randomDamageDict = Event.SimulatePreBakedFight(0, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, n=10000)
+    print("Expected damage : " + str(ExpectedDamage))
+    print("Random damage : " + str(randomDamageDict))

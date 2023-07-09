@@ -115,7 +115,7 @@ class PreBakedAction:
             Damage = math.floor(math.floor(Damage * math.floor(f_WD * (3/3) *100 )/100) * self.TraitBonus) # Player.Delay is assumed to be 3 for simplicity for now
         
         for buff in self.PercentageBonus:
-            Damage *= math.floor(buff)
+            Damage = math.floor(Damage * buff)
         
         auto_crit_bonus = (1 + roundDown(self.CritBonus * f_CritMult, 3)) if self.AutoCrit else 1# Auto_crit bonus if buffed
         auto_dh_bonus = (1 + roundDown(self.DHBonus * 0.25, 2)) if self.AutoDH else 1# Auto_DH bonus if buffed
@@ -123,6 +123,9 @@ class PreBakedAction:
         ExpectedDamage = math.floor(math.floor(Damage * (1 + roundDown(((f_CritRate + self.CritBonus) * f_CritMult), 3)) ) * (1 + roundDown(((f_DH + self.DHBonus) * 0.25), 2)))
         ExpectedDamage = math.floor(ExpectedDamage * auto_crit_bonus)
         ExpectedDamage = math.floor(ExpectedDamage * auto_dh_bonus)
+
+        base_spell_logging.debug("PreBakedAction has expected damage of " + str(ExpectedDamage) + " Potency :" + str(self.Potency) + " " + str(self.HasPotionEffect))
+        base_spell_logging.debug(str((f_MAIN_DMG, f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)))
 
         return ExpectedDamage, Damage
     
