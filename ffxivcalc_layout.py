@@ -54,7 +54,7 @@ Event = Fight(Dummy, False)
 # These stats must include the bonus stats food gives.
 
 # Caster
-BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1493, 'Ten': 400, 'SS': 824, 'SkS': 400, 'Crit': 2504, 'DH': 1392} # Stats for BlackMage
+BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1493, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2504, 'DH': 1392} # Stats for BlackMage
 RDMStat = {"MainStat": 2947, "WD":126, "Det" : 1548, "Ten" : 400, "SS": 495, "SkS" : 400, "Crit" : 2397, "DH" : 1544} # Stats for RedMage
 SMNStat = {"MainStat": 2948, "WD":126, "Det" : 1451, "Ten" : 400, "SS": 544, "SkS" : 400, "Crit" : 2436, "DH" : 1544} # Stats for Summoner
 
@@ -239,11 +239,10 @@ CC = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")
 
 
 # ===============================================================================================
-x = True
 Event.SavePreBakedAction = True
 Event.PlayerIDSavePreBakedAction = 0
 Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False) # Simulating fight
-if x :
+if True :
     from ffxivcalc.GearSolver.Solver import computeDamageValue
     from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet, Food
     matGen = MateriaGenerator(18, 36)
@@ -317,3 +316,4 @@ if x :
     ExpectedDamage, randomDamageDict = Event.SimulatePreBakedFight(0, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, n=10000)
     print("Expected damage : " + str(ExpectedDamage))
     print("Random damage : " + str(randomDamageDict))
+    print(Event.PlayerList[0].totalTimeNoFaster)

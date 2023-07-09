@@ -106,7 +106,12 @@ class Fight:
 
         ExpectedDamage = 0
         baseMain = 390
-        baseKillTime = self.TimeStamp * self.PlayerList[Index].f_SPD
+        timeCanBeReduced = self.TimeStamp - self.PlayerList[Index].totalTimeNoFaster
+        trialKillTime = roundDown(timeCanBeReduced / f_SPD,2) + self.PlayerList[Index].totalTimeNoFaster
+        print("Actual" + str(self.TimeStamp))
+        print("Trial" + str(trialKillTime))
+        print("f_SPD" + str(f_SPD))
+        print("Ratio : " + str(self.TimeStamp/trialKillTime))
 
         damageHistory = []   # This list will contain the damage of all PreBakedAction ComputeExpectedDamage used to
                              # faster compute RandomDamage
@@ -131,7 +136,7 @@ class Fight:
             for PreBakedAction in self.PlayerList[Index].PreBakedActionSet:
                 CurrentDamage += PreBakedAction.ComputeRandomDamage(damageHistory[index], f_CritRate,f_CritMult, f_DH)
                 index += 1 
-            randomDPSRuns.append(CurrentDamage/(baseKillTime/f_SPD))
+            randomDPSRuns.append(CurrentDamage/trialKillTime)
                              # Sorting array so we can find the percentiles.
         randomDPSRuns.sort()
 
@@ -146,7 +151,7 @@ class Fight:
             "99" : randomDPSRuns[n - Percent]
         }
         
-        return int(ExpectedDamage/(baseKillTime/f_SPD)), percentileRuns
+        return int(ExpectedDamage/trialKillTime), percentileRuns
 
         
 
@@ -577,7 +582,15 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     if SavePreBakedAction and Player.playerID == PlayerIDSavePreBakedAction:
         """
         If that is set to true we will record all we need and will not compute the rest.
+        We will check if the action is a GCD with recast time of lesser or equal to 1.5s since the GCD
+        cannot go lower. The total time will be remembered and substracted from the total time that is reduceable from more SpS.
         """
+
+        if spellObj.GCD and spellObj.RecastTime <= 1.5: # THis includes oGCD and GCD
+            Player.totalTimeNoFaster += spellObj.RecastTime
+        elif not spellObj.GCD:
+            Player.totalTimeNoFaster += spellObj.CastTime
+
         PercentageBonus = []
         for buff in Player.buffList:
             PercentageBonus.append(buff.MultDPS)

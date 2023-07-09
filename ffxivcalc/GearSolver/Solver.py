@@ -17,6 +17,22 @@ from copy import deepcopy
 import os
 
 
+def getBaseStat():
+    """
+    This function returns a base stat dictionnary
+    """
+
+    return {
+        "MainStat" : 450,
+        "WD" : 0,
+        "Det" : 390,
+        "Ten" : 400,
+        "SS" : 400,
+        "SkS" : 400,
+        "Crit" : 390,
+        "DH" : 390
+    }  
+
 def computeDamageValue(GearStat : dict, JobMod : int, IsTank : bool, IsCaster : bool):
     """
     this function computes all the damage values given a stat dict.
@@ -79,6 +95,8 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list,
 
 
                              # Computes the PreBakedAction and asks the fight object to remember those actions for the player with the given ID.
+                             # The simulated player will be given base stats.
+    Fight.PlayerList[PlayerIndex].Stat = getBaseStat()
     Fight.SavePreBakedAction = True
     Fight.PlayerIDSavePreBakedAction = PlayerIndex
     Fight.SimulateFight(0.01, 500, False, n=0,PPSGraph=False)

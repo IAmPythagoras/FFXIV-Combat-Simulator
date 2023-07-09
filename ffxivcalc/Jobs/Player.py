@@ -322,6 +322,7 @@ class Player:
         self.Pet = None # Summoned Pet
         self.GCDCounter = 0 # Number of GCD done
         self.PlayerName = "" # Can be used to give the player a name that will be displayed in the final graph and result.
+        self.totalTimeNoFaster = 0 # total time in seconds that cannot be made faster by having more SpS or SkS. Used for PreBakedActions.
 
         self.TrueLock = False   # Used to know when a player has finished all of its ActionSet
         self.NoMoreActionLog = True # Used to know if we have logged that the player has no more actions.
