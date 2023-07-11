@@ -1,4 +1,4 @@
-from ffxivcalc.Jobs.Base_Spell import DOTSpell, WaitAbility, buff, empty
+from ffxivcalc.Jobs.Base_Spell import DOTSpell, WaitAbility, buff, empty, buffPercentHistory
 from ffxivcalc.Jobs.Melee.Melee_Spell import NinjaSpell
 import copy
 
@@ -214,17 +214,31 @@ def ApplyBhavacakra(Player, Enemy):
     Player.AddNinki(-50)
 
 def ApplyTrickAttack(Player, Enemy):
-    Player.buffList.append(TrickAttackBuff)
     Player.TrickAttackCD = 60
     Player.TrickAttackTimer = 15
-    Player.EffectCDList.append(TrickAttackCheck)
+    if not Player.CurrentFight.SavePreBakedAction:
+        Player.EffectCDList.append(TrickAttackCheck)
+        Player.buffList.append(TrickAttackBuff)
+
+                             # Only relevant to PreBakedAction and only does that code if true. Also checking if the PreBakedAction player is this ninja
+    if Player.CurrentFight.SavePreBakedAction and Player == Player.CurrentFight.PlayerList[Player.CurrentFight.PlayerIDSavePreBakedAction]:
+        fight = Player.CurrentFight
+        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 15, TrickAttackBuff.MultDPS)
+        fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
 
 def ApplyMug(Player, Enemy):
-    Enemy.buffList.append(MugBuff)
     Player.MugCD = 120
     Player.MugTimer = 20
     Player.AddNinki(40)
-    Player.EffectCDList.append(MugCheck)
+    if not Player.CurrentFight.SavePreBakedAction:
+        Player.EffectCDList.append(MugCheck)
+        Enemy.buffList.append(MugBuff)
+
+    # Only relevant to PreBakedAction and only does that code if true
+    if Player.CurrentFight.SavePreBakedAction:
+        fight = Player.CurrentFight
+        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20, MugBuff.MultDPS)
+        fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
 
 def ApplyHuraijin(Player, Enemy):
     Player.HutonTimer = 60

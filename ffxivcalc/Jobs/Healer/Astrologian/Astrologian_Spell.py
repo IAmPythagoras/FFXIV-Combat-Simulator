@@ -1,4 +1,4 @@
-from ffxivcalc.Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
+from ffxivcalc.Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty, buffPercentHistory
 from ffxivcalc.Jobs.Healer.Healer_Spell import AstrologianSpell
 from copy import deepcopy
 import logging
@@ -126,9 +126,15 @@ def ApplyAstrodyne(Player, Enemy):
         Player.EffectCDList.append(BodyCheck)#Only 1 check for both Body and Mind since same Timer
         Player.BodyTimer = 15
     if check == 3:
-        Player.buffList.append(AstrodyneBuff)
-        Player.EffectCDList.append(MindCheck)
+        if not Player.CurrentFight.SavePreBakedAction:
+            Player.buffList.append(AstrodyneBuff)
+            Player.EffectCDList.append(MindCheck)
 
+                                        # Only relevant to PreBakedAction and only does that code if true
+        if Player.CurrentFight.SavePreBakedAction:
+            fight = Player.CurrentFight
+            history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 15, AstrodyneBuff.MultDPS)
+            Player.PercentBuffHistory.append(history)
 
 def ApplyDraw(Player, Enemy):
     Player.HasCard = True
@@ -150,10 +156,18 @@ def ApplyLordOfCrown(Player, Enemy):
     Player.LordOfCrown = False
 
 def ApplyDivination(Player, Enemy):
-    Enemy.buffList.append(DivinatonBuff) #Just give DPS bonus on Enemy instead of raid wide buff
     Player.DivinationCD = 120
     Player.DivinationTimer = 15
-    Player.EffectCDList.append(DivinationCheck)
+    if not Player.CurrentFight.SavePreBakedAction:
+        Player.EffectCDList.append(DivinationCheck)
+        Enemy.buffList.append(DivinationBuff) #Just give DPS bonus on Enemy instead of raid wide buff
+
+
+                             # Only relevant to PreBakedAction and only does that code if true
+    if Player.CurrentFight.SavePreBakedAction:
+        fight = Player.CurrentFight
+        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 15, DivinationBuff.MultDPS)
+        fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
 
 def ApplyLightspeed(Player, Enemy):
     Player.LightspeedTimer = 15
@@ -209,7 +223,7 @@ def DrawStackCheck(Player, Enemy):
 
 def DivinationCheck(Player, Enemy):
     if Player.DivinationTimer <= 0:
-        Enemy.buffList.remove(DivinatonBuff)
+        Enemy.buffList.remove(DivinationBuff)
         Player.EffectToRemove.append(DivinationCheck)
 
 def LightspeedCheck(Player, Enemy):
@@ -272,7 +286,7 @@ Synastry = AstrologianSpell(3612, False, 0, 0, 0, 0, ApplySynastry, [SynastryReq
 ArcanumBuffMax = buff(1.06)
 ArcanumBuffMin = buff(1.03)
 AstrodyneBuff = buff(1.05)
-DivinatonBuff = buff(1.06)
+DivinationBuff = buff(1.06)
 
 
 def Arcanum(Target, Type, Melee):
@@ -307,16 +321,24 @@ def Arcanum(Target, Type, Melee):
         if Target.ArcanumBuff != None:
             Target.buffList.remove(Target.ArcanumBuff)
         else:                # If it already didn't have a card. We must give the target the Check
-            Target.EffectCDList.append(ArcanumCheck)
+            if not Player.CurrentFight.SavePreBakedAction:
+                Target.EffectCDList.append(ArcanumCheck)
 
                              # Given card buff to the target
-        Target.ArcanumBuff = deepcopy(buff)
-        Target.buffList.append(Target.ArcanumBuff)
+        if not Player.CurrentFight.SavePreBakedAction:
+            Target.ArcanumBuff = deepcopy(buff)
+            Target.buffList.append(Target.ArcanumBuff)
         Target.ArcanumTimer = 15
 
         if Type == "Lunar" : Player.Lunar = True
         elif Type == "Solar" : Player.Solar = True
         elif Type == "Celestial" : Player.Celestial = True
+
+                                            # Only doing this if SavePreBakedAction is true
+        if Player.CurrentFight.SavePreBakedAction:
+            fight = Player.CurrentFight
+            history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 15 , Target.ArcanumBuff.MultDPS)
+            Target.PercentBuffHistory.append(history)
 
     ArcanumSpell = AstrologianSpell(0, False, Lock, 0, 0, 0, ApplyArcanum, [ArcanumRequirement])
     ArcanumSpell.TargetID = Target.playerID 

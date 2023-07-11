@@ -120,7 +120,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list,
         "50" : [0,GearSet(), {}],
     }
     curOptimalDPS = 0
-
+    i = 0
                              # Need at least one of each gear piece.
     for Weapon in GearSpace["WEAPON"]:
         newGearSet.AddGear(Weapon)
@@ -143,6 +143,8 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list,
                                         for LRing in GearSpace["LRING"]:
                                             newGearSet.AddGear(LRing)
                                             for Ring in GearSpace["RING"]:
+                                                print(i)
+                                                i+=1
                                                 newGearSet.AddGear(Ring)
 
                                                 GearStat = newGearSet.GetGearSetStat()
@@ -199,6 +201,10 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list,
             else:
                 d = depth
             curBest, curMax, curRandom = materiaBisSolver(curBest, matGen, MateriaSpace, d, Fight, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex,percentile=percentile)
+            #curBestSet, curExpected, curBestRandom
+            print(curBest)
+            print(curMax)
+            print(curRandom)
             counter += depth
             if counter >= limit : break
         optimalRandomGearSetMateria[percentile][0] = curMax

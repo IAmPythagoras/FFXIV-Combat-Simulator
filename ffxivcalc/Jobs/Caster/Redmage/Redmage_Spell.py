@@ -1,7 +1,7 @@
 #########################################
 ########## REDMAGE PLAYER ###############
 #########################################
-from ffxivcalc.Jobs.Base_Spell import ManaRequirement, buff, empty
+from ffxivcalc.Jobs.Base_Spell import ManaRequirement, buff, empty, buffPercentHistory
 from ffxivcalc.Jobs.Caster.Caster_Spell import RedmageSpell, SwiftcastEffect
 Lock = 0.75
 #Special
@@ -100,10 +100,17 @@ def ApplyManafication(Player, Enemy):
     Addmana(Player, 50, 50)
 
 def ApplyEmbolden(Player, Enemy):
-    Enemy.buffList.append(EmboldenBuff) #5% DPS boost for everyone. I put buff on Boss, but could put it on every other player
     Player.EmboldenTimer = 20
     Player.EmboldenCD = 120
-    Player.EffectCDList.append(EmboldenCheck)
+    if not Player.CurrentFight.SavePreBakedAction:
+        Player.EffectCDList.append(EmboldenCheck)
+        Enemy.buffList.append(EmboldenBuff) #5% DPS boost for everyone. I put buff on Boss, but could put it on every other player
+        
+                                     # Only doing this if SavePreBakedAction is true
+    if Player.CurrentFight.SavePreBakedAction:
+        fight = Player.CurrentFight
+        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , Embolden.MultDPS)
+        fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
 
 def ApplyAcceleration(Player, Enemy):
     if Player.AccelerationStack == 2:

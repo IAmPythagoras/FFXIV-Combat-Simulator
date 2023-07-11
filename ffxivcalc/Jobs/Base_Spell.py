@@ -24,7 +24,38 @@ class buff:
     def __init__(self, MultDPS):
         self.MultDPS = MultDPS #DPS multiplier of the buff
 
+class buffHistory:
+    """
+    This class represents an interval of time in which a buff was present.
+    """
 
+    def __init__(self, StartTime : float, EndTime : float):
+        self.StartTime = StartTime
+        self.EndTime = EndTime
+
+    def isUp(self, timeStamp : float) -> bool:
+        """
+        This function returns weither the buff was active under the given timeStamp
+        timeStamp : float -> Timestamp in secconds
+        """
+        return timeStamp >= self.StartTime and timeStamp <= self.EndTime
+    
+class buffPercentHistory(buffHistory):
+    """
+    This class is a buffHistory that was a percent damage bonus. This class will also hold
+    the percent bonus gained from the buff.
+    """
+
+    def __init__(self, StartTime : float, EndTime : float, PercentBonus : float):
+        super().__init__(StartTime, EndTime)
+        self.PercentBonus = PercentBonus
+
+    def getPercentBonus(self) -> float:
+        """
+        This function returns the PercentBonus of this buff
+        """
+        return self.PercentBonus
+    
 class ZIPAction:
     """
     This class holds the information of an action's damage. It will be used to efficiently and quicly compute
@@ -77,21 +108,39 @@ class PreBakedAction:
     AutoDH : bool -> if is an auto DH (true)
     """
 
-    def __init__(self, IsTank : bool, MainStatPercentageBonus : float, HasPotionEffect : bool, PercentageBonus : list[float], TraitBonus : float, CritBonus : float, DHBonus : float, Potency : int, type : int, AutoCrit : bool = False, AutoDH : bool = False):
+    def __init__(self, IsTank : bool, MainStatPercentageBonus : float, buffList : list,
+                 TraitBonus : float, Potency : int, type : int, 
+                 nonReducableStamp : float, reducableStamp : float, AutoCrit : bool = False, AutoDH : bool = False):
         self.IsTank = IsTank
         self.MainStatPercentageBonus = MainStatPercentageBonus
-        self.HasPotionEffect = HasPotionEffect
-        self.PercentageBonus = PercentageBonus
+        #self.HasPotionEffect = HasPotionEffect
+        self.buffList = buffList # This holds all buff that are not raid buffs, since those can be affected by f_SPD. So RaidBuffs are in PercentageBonus
         self.TraitBonus = TraitBonus
-        self.CritBonus = CritBonus
-        self.DHBonus = DHBonus
         self.type = type
         self.Potency = Potency
+
+        self.nonReducableStamp = nonReducableStamp
+        self.reducableStamp = reducableStamp
 
         self.AutoCrit = AutoCrit
         self.AutoDH = AutoDH
         self.AutoCritBonus = 1
         self.AutoDHBonus = 1
+
+
+                             # These values are computed once the PreBakedAction is being looped
+                             # through in SimulatePreBakedFight.
+        self.CritBonus = 0
+        self.DHBonus = 0
+        self.PercentageBonus = []
+
+    def resetTimeSensibleBuff(self):
+        """
+        This function resets the value for CritBonus, DHBonus and PercentageBonus.
+        """
+        self.CritBonus = 0
+        self.DHBonus = 0
+        self.PercentageBonus = []
 
     def ComputeExpectedDamage(self, f_MAIN_DMG : float, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float):
         """
@@ -124,7 +173,7 @@ class PreBakedAction:
         ExpectedDamage = math.floor(ExpectedDamage * auto_crit_bonus)
         ExpectedDamage = math.floor(ExpectedDamage * auto_dh_bonus)
 
-        base_spell_logging.debug("PreBakedAction has expected damage of " + str(ExpectedDamage) + " Potency :" + str(self.Potency) + " " + str(self.HasPotionEffect))
+        base_spell_logging.debug("PreBakedAction has expected damage of " + str(ExpectedDamage) + " Potency :" + str(self.Potency) +" Trait : " + str(self.TraitBonus))
         base_spell_logging.debug(str((f_MAIN_DMG, f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)))
 
         return ExpectedDamage, Damage
@@ -397,6 +446,12 @@ def ApplyPotion(Player, Enemy):
     Player.PotionTimer = 30
 
     Player.EffectCDList.append(PotionCheck)
+
+                                     # Only relevant to PreBakedAction and only does that code if true
+    if Player.CurrentFight.SavePreBakedAction:
+        fight = Player.CurrentFight
+        history = buffHistory(fight.TimeStamp, fight.TimeStamp + 30)
+        Player.PotionHistory.append(history)
 
 def PrepullPotion(Player, Enemy): #If potion is prepull
     """

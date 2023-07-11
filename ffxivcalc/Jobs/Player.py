@@ -324,6 +324,18 @@ class Player:
         self.PlayerName = "" # Can be used to give the player a name that will be displayed in the final graph and result.
         self.totalTimeNoFaster = 0 # total time in seconds that cannot be made faster by having more SpS or SkS. Used for PreBakedActions.
 
+        # Buff History
+        # These are used for PreBakedAction in order to know if chaning f_SPD changes what action is under what buff
+        self.ChainStratagemHistory = []
+        self.BattleLitanyHistory = []
+        self.WanderingMinuetHistory = []
+        self.BattleVoiceHistory = []
+        self.DevilmentHistory = []
+        self.PotionHistory = []
+        self.PercentBuffHistory = []
+
+
+
         self.TrueLock = False   # Used to know when a player has finished all of its ActionSet
         self.NoMoreActionLog = True # Used to know if we have logged that the player has no more actions.
         self.NoMoreAction = False # Used to know when a player has no more actions to do. The user will have a choice to set TrueLock = True or to give anther action
@@ -1833,6 +1845,9 @@ class Player:
     def init_ninja(self):
         #Gauge
         self.NinkiGauge = 0
+
+        # buff History
+        self.TrickAttackHistory = []
 
         #buff
         self.Suiton = False

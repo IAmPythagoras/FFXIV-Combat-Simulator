@@ -130,7 +130,7 @@ GNBPlayer = Player([], [], GNBStat, JobEnum.Gunbreaker)
 # Note that if you are simulating with more than 1 per job you will need to create a new list of actions.
 
 # Caster
-BLMOpener = [SharpCast, Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, SharpCast, Swiftcast, Despair, Manafront, Triplecast, Fire4, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose, Fire3, Fire4, Fire4, Fire4, Despair]
+BLMOpener = [SharpCast, Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, SharpCast, Swiftcast, Despair, Manafront, Triplecast, Fire4, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose, Fire3, Fire4, Fire4, Fire4, Despair, Blizzard3, Blizzard4, Paradox, SharpCast, Fire3, Fire4, Fire4, Thunder3, Fire4, Paradox, Fire4, Fire4, Fire4, Despair]
 SMNOpener = [Summon, Deathflare, Enkindle,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3]
 RDMOpener = [Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder]
 
@@ -235,14 +235,15 @@ HD = Food({"DH" : [103, 0.1], "Det" : [62, 0.1]}, "Honeyed Dragonfruit")
 BE = Food({"Det" : [103, 0.1], "Crit" : [62, 0.1]}, "Baked Eggplant")
 CW = Food({"SS" : [103, 0.1], "DH" : [62, 0.1]}, "Caviar Sandwich")
 CC = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")
-#optimal, random = BiSSolver(Event, GearSpace,[0,1,2,4] , [HD, BE, CW, CC], materiaDepthSearchIterator=1, randomIteration=100 )
+optimal, random = BiSSolver(Event, GearSpace,[0,1,2,3] , [HD, BE, CW, CC], materiaDepthSearchIterator=5, randomIteration=5000 )
 
 
 # ===============================================================================================
+"""
 Event.SavePreBakedAction = True
 Event.PlayerIDSavePreBakedAction = 0
 Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False) # Simulating fight
-if True :
+if False :
     from ffxivcalc.GearSolver.Solver import computeDamageValue
     from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet, Food
     matGen = MateriaGenerator(18, 36)
@@ -316,4 +317,4 @@ if True :
     ExpectedDamage, randomDamageDict = Event.SimulatePreBakedFight(0, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, n=10000)
     print("Expected damage : " + str(ExpectedDamage))
     print("Random damage : " + str(randomDamageDict))
-    print(Event.PlayerList[0].totalTimeNoFaster)
+    print(Event.PlayerList[0].totalTimeNoFaster)"""

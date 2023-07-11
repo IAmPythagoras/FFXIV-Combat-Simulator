@@ -103,24 +103,64 @@ class Fight:
         Index : int -> Index of the player with the PreBakedActions.
         n : int -> number of trial for random DPS simulation
         """
-
+        player = self.PlayerList[Index]
         ExpectedDamage = 0
         baseMain = 390
-        timeCanBeReduced = self.TimeStamp - self.PlayerList[Index].totalTimeNoFaster
-        trialKillTime = roundDown(timeCanBeReduced / f_SPD,2) + self.PlayerList[Index].totalTimeNoFaster
-        print("Actual" + str(self.TimeStamp))
-        print("Trial" + str(trialKillTime))
-        print("f_SPD" + str(f_SPD))
-        print("Ratio : " + str(self.TimeStamp/trialKillTime))
+        timeCanBeReduced = self.TimeStamp - player.totalTimeNoFaster
+        trialKillTime = roundDown(timeCanBeReduced / f_SPD,2) + player.totalTimeNoFaster
+        #print("Actual" + str(self.TimeStamp))
+        #print("Trial" + str(trialKillTime))
+        #print("f_SPD" + str(f_SPD))
+        #print("Ratio : " + str(self.TimeStamp/trialKillTime))
 
         damageHistory = []   # This list will contain the damage of all PreBakedAction ComputeExpectedDamage used to
                              # faster compute RandomDamage
-
+        self.ChainStratagemHistory = []
+        self.BattleLitanyHistory = []
+        self.WanderingMinuetHistory = []
+        self.BattleVoiceHistory = []
+        self.DevilmentHistory = []
+        self.PotionHistory = []
+        self.PercentBuffHistory = []
                              # Will compute DPS
-        for PreBakedAction in self.PlayerList[Index].PreBakedActionSet:
-                                         # Will compute f_MAIN_DMG from MainStat.
+        for PreBakedAction in player.PreBakedActionSet:
+                                         # Computing base MainStat for this action. Can prob move this above??
             curMainStat = MainStat * PreBakedAction.MainStatPercentageBonus
-            if PreBakedAction.HasPotionEffect : curMainStat = min(math.floor(curMainStat * 1.1), curMainStat + 262)
+                                         # Will check what buffs the action falls under.
+            timeStamp = PreBakedAction.nonReducableStamp + (PreBakedAction.reducableStamp / f_SPD)
+            fight_logging.debug("TimeStamp : " + str(timeStamp))
+                                         # Chain Stratagem
+            for history in player.ChainStratagemHistory:
+                if history.isUp(timeStamp):
+                    PreBakedAction.CritBonus += 0.1
+                                         # Devilment
+            for history in player.DevilmentHistory:
+                if history.isUp(timeStamp):
+                    PreBakedAction.CritBonus += 0.2
+                    PreBakedAction.DHBonus += 0.2
+                                         # Battle Litany
+            for history in player.BattleLitanyHistory:
+                if history.isUp(timeStamp):
+                    PreBakedAction.CritBonus += 0.1
+                                         # Wandering Minuet
+            for history in player.WanderingMinuetHistory:
+                if history.isUp(timeStamp):
+                    PreBakedAction.CritBonus += 0.02
+                                         # Battle Voice
+            for history in player.BattleVoiceHistory:
+                if history.isUp(timeStamp):
+                    PreBakedAction.DHBonus += 0.2
+                                         # Potion
+            for history in player.PotionHistory:
+                if history.isUp(timeStamp):
+                    curMainStat = min(math.floor(curMainStat * 1.1), curMainStat + 262) #Grade 8 HQ tincture
+                                         # Any other percent bonus
+            for history in player.PercentBuffHistory:
+                if history.isUp(timeStamp):
+                    PreBakedAction.PercentageBonus.append(history.getPercentBonus())
+
+            for buff in PreBakedAction.buffList:
+                PreBakedAction.PercentageBonus.append(buff)
         
             if PreBakedAction.IsTank : f_MAIN_DMG = (100+math.floor((curMainStat-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
             else: f_MAIN_DMG = (100+math.floor((curMainStat-baseMain)*195/baseMain))/100
@@ -133,7 +173,7 @@ class Fight:
         for run in range(n):
             CurrentDamage = 0
             index = 0
-            for PreBakedAction in self.PlayerList[Index].PreBakedActionSet:
+            for PreBakedAction in player.PreBakedActionSet:
                 CurrentDamage += PreBakedAction.ComputeRandomDamage(damageHistory[index], f_CritRate,f_CritMult, f_DH)
                 index += 1 
             randomDPSRuns.append(CurrentDamage/trialKillTime)
@@ -150,6 +190,9 @@ class Fight:
             "90" : randomDPSRuns[90 * Percent],
             "99" : randomDPSRuns[n - Percent]
         }
+                             # Reseting all bonus value for PreBakedActions
+        for PreBakedAction in player.PreBakedActionSet:
+            PreBakedAction.resetTimeSensibleBuff()
         
         return int(ExpectedDamage/trialKillTime), percentileRuns
 
@@ -586,22 +629,29 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         cannot go lower. The total time will be remembered and substracted from the total time that is reduceable from more SpS.
         """
 
-        if spellObj.GCD and spellObj.RecastTime <= 1.5: # THis includes oGCD and GCD
-            Player.totalTimeNoFaster += spellObj.RecastTime
+        #PercentageBonus = []
+        #for buff in Player.buffList:
+        #    PercentageBonus.append(buff.MultDPS)
+
+        #CritBonus = (Player.CritRateBonus + 
+        #             0.1 if Enemy.ChainStratagem else 0 +
+        #             0.02 if Enemy.WanderingMinuet else 0
+        #            )
+        #DHBonus = (Player.DHRateBonus + 0.2 if Enemy.BattleVoice else 0)
+
+        buffList = []
+        for buff in Player.buffList:
+            buffList.append(buff.MultDPS)
+
+        Player.PreBakedActionSet.append(PreBakedAction(Player.RoleEnum == RoleEnum.Tank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type, Player.totalTimeNoFaster, Player.CurrentFight.TimeStamp - Player.totalTimeNoFaster,AutoCrit=auto_crit, AutoDH=auto_DH))
+        
+        if spellObj.GCD and spellObj.RecastTime <= 1.5: # We check that the spellObj has recastTime lower than 1.5 and that it is not the last spell (since all those are insta cast)
+            if  Player.NextSpell != (len(Player.ActionSet) - 1): # if last spell only add casting time
+                Player.totalTimeNoFaster += spellObj.CastTime
+            else : 
+                Player.totalTimeNoFaster += spellObj.RecastTime
         elif not spellObj.GCD:
             Player.totalTimeNoFaster += spellObj.CastTime
-
-        PercentageBonus = []
-        for buff in Player.buffList:
-            PercentageBonus.append(buff.MultDPS)
-
-        CritBonus = (Player.CritRateBonus + 
-                     0.1 if Enemy.ChainStratagem else 0 +
-                     0.02 if Enemy.WanderingMinuet else 0
-                    )
-        DHBonus = (Player.DHRateBonus + 0.2 if Enemy.BattleVoice else 0)
-
-        Player.PreBakedActionSet.append(PreBakedAction(Player.RoleEnum == RoleEnum.Tank, Player.CurrentFight.TeamCompositionBonus, Player.PotionTimer > 0, PercentageBonus, Player.Trait, CritBonus, DHBonus, Potency, type,AutoCrit=auto_crit, AutoDH=auto_DH))
         return Potency, Potency        # Exit the function since we are not interested in the immediate damage value. Still return potency as to not break the fight's duration.
 
     if type == 0: # Type 0 is direct damage

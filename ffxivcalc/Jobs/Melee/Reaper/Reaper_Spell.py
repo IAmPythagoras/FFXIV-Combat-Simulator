@@ -1,4 +1,4 @@
-from ffxivcalc.Jobs.Base_Spell import buff, empty
+from ffxivcalc.Jobs.Base_Spell import buff, empty, buffPercentHistory
 from ffxivcalc.Jobs.Melee.Melee_Spell import ReaperSpell
 Lock = 0
 
@@ -171,7 +171,8 @@ def ApplyGluttony(Player, Enemy):
 
 
 def ApplyArcaneCircle(Player, Enemy):
-    if not (ArcaneCircleBuff in Enemy.buffList) : Enemy.buffList.append(ArcaneCircleBuff) #If not already in by another reaper
+    if not (ArcaneCircleBuff in Enemy.buffList) and not Player.CurrentFight.SavePreBakedAction: 
+        Enemy.buffList.append(ArcaneCircleBuff) #If not already in by another reaper
     #Will have to worry about if multiple reaper
     Player.ArcaneCircleCD = 120
     Player.ArcaneCircleTimer = 20
@@ -196,7 +197,11 @@ def ApplyArcaneCircle(Player, Enemy):
         player.EffectList.append(CircleOfSacrificeEffet) #Giving the effect to all players in the fight
         player.EffectCDList.append(CircleOfSacrificeCheck)
 
-    
+                             # Only doing this if SavePreBakedAction is true
+    if Player.CurrentFight.SavePreBakedAction:
+        fight = Player.CurrentFight
+        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , ArcaneCircleBuff.MultDPS)
+        fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
 
 def ApplySoulSlice(Player, Enemy):
     Player.AddGauge(50) #Adding 50 SoulGauge

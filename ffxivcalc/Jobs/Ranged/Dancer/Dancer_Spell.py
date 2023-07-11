@@ -1,4 +1,4 @@
-from ffxivcalc.Jobs.Base_Spell import buff, empty
+from ffxivcalc.Jobs.Base_Spell import buff, empty, buffHistory, buffPercentHistory
 from ffxivcalc.Jobs.Ranged.Ranged_Spell import DancerSpell
 import copy
 #Requirement
@@ -154,11 +154,12 @@ def ApplyTechnicalFinish(Player, Enemy):
     #and the dance partner
 
     #The check will be done on the dancer only
-    Player.EffectCDList.append(TechnicalFinishCheck)
+    if not Player.CurrentFight.SavePreBakedAction:
+        Player.EffectCDList.append(TechnicalFinishCheck)
+        Enemy.buffList.append(Player.TechnicalFinishBuff) #Since party wide, applies on enemy
+
 
     Player.TechnicalFinishTimer = 20
-    Enemy.buffList.append(Player.TechnicalFinishBuff) #Since party wide, applies on enemy
-
     Player.Emboite = False
     Player.Entrechat = False
     Player.Jete = False
@@ -166,6 +167,12 @@ def ApplyTechnicalFinish(Player, Enemy):
     #Reseting Dance move
 
     Player.FlourishingFinish = True #Enables Tillana
+
+                                     # Only doing this if SavePreBakedAction is true
+    if Player.CurrentFight.SavePreBakedAction:
+        fight = Player.CurrentFight
+        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , Player.TechnicalFinishBuff.MultDPS)
+        fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
 
 def ApplyEmboite(Player, Enemy):
     Player.Emboite = True
@@ -194,6 +201,12 @@ def ApplyDevilment(Player, Enemy):
         Player.DancePartner.DHRateBonus += 0.2
 
     Player.EffectCDList.append(DevilmentCheck)
+
+                                     # Only doing this if SavePreBakedAction is true
+    if Player.CurrentFight.SavePreBakedAction:
+        fight = Player.CurrentFight
+        history = buffHistory(fight.TimeStamp, fight.TimeStamp + 20)
+        fight.PlayerList[fight.PlayerIDSavePreBakedAction].DevilmentHistory.append(history)
 
 def ApplyTillana(Player, Enemy):
     Player.FlourishingFinish = False 
