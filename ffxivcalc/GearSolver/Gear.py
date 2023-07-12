@@ -402,7 +402,6 @@ def ImportGear(fileName : str) -> dict:
 
     GearDict = {}
 
-
     for GearPiece in data:
         type = GearType.name_for_id(GearPiece["GearType"])
         StatList = [Stat(StatType.id_for_name(S[0]), S[1]) for S in GearPiece["StatList"]]
