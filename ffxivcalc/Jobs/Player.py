@@ -302,6 +302,16 @@ class Player:
 
         self.Stat = get_gearset_data(url) # Updates the stats
         
+    def isLastGCD(self, ActionIndex : int) -> bool:
+        """
+        This function returns weither the provided ActionIndex is the last GCD of the ActionSet of the player.
+        ActionIndex : int -> Index of the action in the list ActionSet
+        """
+
+        for index in range(ActionIndex+1, len(self.ActionSet)):
+            if self.ActionSet[index].GCD : return False
+        return True
+
     def __init__(self, ActionSet, EffectList, Stat,Job : JobEnum):
 
         self.ActionSet = ActionSet # Known Action List

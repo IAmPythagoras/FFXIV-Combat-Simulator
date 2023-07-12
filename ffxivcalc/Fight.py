@@ -629,10 +629,6 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         cannot go lower. The total time will be remembered and substracted from the total time that is reduceable from more SpS.
         """
 
-        #PercentageBonus = []
-        #for buff in Player.buffList:
-        #    PercentageBonus.append(buff.MultDPS)
-
         #CritBonus = (Player.CritRateBonus + 
         #             0.1 if Enemy.ChainStratagem else 0 +
         #             0.02 if Enemy.WanderingMinuet else 0
@@ -645,13 +641,6 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
         Player.PreBakedActionSet.append(PreBakedAction(Player.RoleEnum == RoleEnum.Tank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type, Player.totalTimeNoFaster, Player.CurrentFight.TimeStamp - Player.totalTimeNoFaster,AutoCrit=auto_crit, AutoDH=auto_DH))
         
-        if spellObj.GCD and spellObj.RecastTime <= 1.5: # We check that the spellObj has recastTime lower than 1.5 and that it is not the last spell (since all those are insta cast)
-            if  Player.NextSpell != (len(Player.ActionSet) - 1): # if last spell only add casting time
-                Player.totalTimeNoFaster += spellObj.CastTime
-            else : 
-                Player.totalTimeNoFaster += spellObj.RecastTime
-        elif not spellObj.GCD:
-            Player.totalTimeNoFaster += spellObj.CastTime
         return Potency, Potency        # Exit the function since we are not interested in the immediate damage value. Still return potency as to not break the fight's duration.
 
     if type == 0: # Type 0 is direct damage

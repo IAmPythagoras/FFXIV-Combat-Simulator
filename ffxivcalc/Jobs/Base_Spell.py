@@ -339,7 +339,16 @@ class Spell:
                                 # Note that this also means the action won't be added as a ZIPAction for the player.
             if self.Potency != 0 : minDamage,Damage= player.CurrentFight.ComputeDamageFunction(player, self.Potency, Enemy, self.DPSBonus, type, self, SavePreBakedAction = player.CurrentFight.SavePreBakedAction, PlayerIDSavePreBakedAction = player.playerID)    #Damage computation
             
-            
+            if player.CurrentFight.SavePreBakedAction:
+                                # Adding to totalTimeNoFaster
+                if self.GCD and self.RecastTime <= 1.5: # We check that the spellObj has recastTime lower than 1.5 and that it is not the last spell (since all those are insta cast)
+                    if  player.isLastGCD(player.NextSpell): # if last GCD, add CastTime
+                        player.totalTimeNoFaster += self.CastTime
+                    else:        # Else adding recastTime. 
+                        player.totalTimeNoFaster += self.RecastTime
+                elif not self.GCD and player.isLastGCD(player.NextSpell) : 
+                                # Is an oGCD
+                    player.totalTimeNoFaster += self.CastTime
             if player.JobEnum == JobEnum.Pet and self.Potency != 0: # Is a pet and action does damage
 
                 # Updating damage and potency

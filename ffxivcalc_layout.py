@@ -130,9 +130,9 @@ GNBPlayer = Player([], [], GNBStat, JobEnum.Gunbreaker)
 # Note that if you are simulating with more than 1 per job you will need to create a new list of actions.
 
 # Caster
-BLMOpener = [SharpCast, Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, SharpCast, Swiftcast, Despair, Manafront, Triplecast, Fire4, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose, Fire3, Fire4, Fire4, Fire4, Despair, Blizzard3, Blizzard4, Paradox, SharpCast, Fire3, Fire4, Fire4, Thunder3, Fire4, Paradox, Fire4, Fire4, Fire4, Despair]
+BLMOpener = [SharpCast, Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, SharpCast, Swiftcast, Despair, Manafront, Triplecast, Fire4, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose, Fire3, Fire4, Fire4, Fire4, Despair, Blizzard3, Blizzard4,Paradox, SharpCast, Fire3, Fire4, Fire4, Thunder3, Fire4, Paradox, Fire4, Fire4, Fire4, Despair]
 SMNOpener = [Summon, Deathflare, Enkindle,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3]
-RDMOpener = [Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder]
+RDMOpener = []
 
 # Healer
 SCHOpener = [WaitAbility(2),Broil,Biolysis, Broil, Swiftcast, ChainStratagem, Broil, Broil ]
@@ -201,7 +201,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [BLMPlayer]
+PlayerList = [DRKPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -230,13 +230,13 @@ __logger__.setLevel(level=level) # __logger__ = logging.getLogger("ffxivcalc")
 from ffxivcalc.GearSolver.Gear import ImportGear, Food
 from ffxivcalc.GearSolver.Solver import BiSSolver, getBaseStat
 
-GearSpace = ImportGear("matTest.json")
+GearSpace = ImportGear("DRKGear.json")
 
 HD = Food({"DH" : [103, 0.1], "Det" : [62, 0.1]}, "Honeyed Dragonfruit")
 BE = Food({"Det" : [103, 0.1], "Crit" : [62, 0.1]}, "Baked Eggplant")
 CW = Food({"SS" : [103, 0.1], "DH" : [62, 0.1]}, "Caviar Sandwich")
 CC = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")
-optimal, random = BiSSolver(Event, GearSpace,[0,1,2,3] , [HD, BE, CW, CC],PercentileToOpt=["exp","99","50"],materiaDepthSearchIterator=1, randomIteration=100 )
+optimal, random = BiSSolver(Event, GearSpace,[0,1,2] , [BE, HD, CW, CC],PercentileToOpt=["exp"],materiaDepthSearchIterator=8, randomIteration=100, maxSPDValue=766)
 
 
 # ===============================================================================================
@@ -254,10 +254,7 @@ if False :
     raidFood = Food(foodDict, "Baked Eggplant")
 
     data = ImportGear("GearTest.json")
-        #Crit = 0
-        #DH = 1
-        #Det = 2
-        #SS = 3
+
     Weapon = data["WEAPON"][0]
     Weapon.AddMateria(matGen.GenerateMateria(3))
     Weapon.AddMateria(matGen.GenerateMateria(3))
