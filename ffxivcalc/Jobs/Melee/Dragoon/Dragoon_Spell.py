@@ -213,8 +213,8 @@ def DisembowelCombo(Player, Spell):
         if Player.ChaoticSpringDOT == None:
             Player.ChaoticSpringDOT = copy.deepcopy(ChaoticSpringDOT)
             Player.DOTList.append(Player.ChaoticSpringDOT)
+            Player.EffectCDList.append(ChaoticSpringDOTCheck)
         Player.ChaoticSpringDOTTimer = 24
-        Player.EffectCDList.append(ChaoticSpringDOTCheck)
 
         Player.WheelInMotion = True 
         Player.EffectToRemove.append(DisembowelCombo)

@@ -220,13 +220,15 @@ Event.RequirementOn = RequirementOn
 Event.ShowGraph = ShowGraph
 Event.IgnoreMana = IgnoreMana
 
-#Dummy.setEventList([MagicRaidWide,WaitEvent(20), MagicRaidWide])
 __logger__ = logging.getLogger("ffxivcalc") # root logger
 level = logging.DEBUG
 logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
 __logger__.setLevel(level=level) # __logger__ = logging.getLogger("ffxivcalc") 
 
+Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False) # Simulating fight
 
+# ===============================================================================================
+"""
 from ffxivcalc.GearSolver.Gear import ImportGear, Food
 from ffxivcalc.GearSolver.Solver import BiSSolver, getBaseStat
 
@@ -238,13 +240,9 @@ CW = Food({"SS" : [103, 0.1], "DH" : [62, 0.1]}, "Caviar Sandwich")
 CC = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")
 #optimal, random = BiSSolver(Event, GearSpace,[0,1,2] , [BE, HD, CW, CC],PercentileToOpt=["exp"],materiaDepthSearchIterator=8, randomIteration=100, maxSPDValue=766)
 
-
-# ===============================================================================================
-
 Event.SavePreBakedAction = True
 Event.PlayerIDSavePreBakedAction = 0
 Event.PlayerList[0].Stat = getBaseStat()
-Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False) # Simulating fight
 
 if True :
     from ffxivcalc.GearSolver.Solver import computeDamageValue
@@ -317,4 +315,4 @@ if True :
     ExpectedDamage, randomDamageDict = Event.SimulatePreBakedFight(0, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, n=100000)
     print("Expected damage : " + str(ExpectedDamage))
     print("Random damage : " + str(randomDamageDict))
-    print(Event.PlayerList[0].totalTimeNoFaster)
+    print(Event.PlayerList[0].totalTimeNoFaster)"""
