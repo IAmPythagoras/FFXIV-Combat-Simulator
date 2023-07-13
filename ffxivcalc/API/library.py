@@ -12,10 +12,7 @@ from ffxivcalc.Fight import ComputeDamage
 from ffxivcalc.Enemy import Enemy
 from ffxivcalc.Jobs.Base_Spell import Spell
 from ffxivcalc.Jobs.PlayerEnum import RoleEnum
-#Helper function
-
-def roundDown(x, precision):
-    return math.floor(x * 10**precision)/10**precision
+from ffxivcalc.helperCode.helper_math import roundDown
 
 # library
 

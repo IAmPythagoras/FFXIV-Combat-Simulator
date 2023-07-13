@@ -1,4 +1,4 @@
-from ffxivcalc.Jobs.Base_Spell import DOTSpell, ManaRequirement, WaitAbility, buff, empty
+from ffxivcalc.Jobs.Base_Spell import DOTSpell, ManaRequirement, WaitAbility, buff, empty, buffPercentHistory
 from ffxivcalc.Jobs.Caster.Caster_Spell import SummonerSpell
 import copy
 
@@ -167,9 +167,15 @@ def ApplyFester(Player, Enemy):
 def ApplySearingLight(Player, Enemy):
     Player.SearingLightTimer = 30
     Player.SearingLightCD = 120
+    if not Player.CurrentFight.SavePreBakedAction:
+        Enemy.buffList.append(SearingLightbuff)
+        Player.EffectCDList.append(SearingLightCheck)
 
-    Enemy.buffList.append(SearingLightbuff)
-    Player.EffectCDList.append(SearingLightCheck)
+                                     # Only doing this if SavePreBakedAction is true
+    if Player.CurrentFight.SavePreBakedAction:
+        fight = Player.CurrentFight
+        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , SearingLightbuff.MultDPS)
+        fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
 
 
 def ApplyBahamutAA(Player, Enemy):

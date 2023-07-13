@@ -302,11 +302,22 @@ class Player:
 
         self.Stat = get_gearset_data(url) # Updates the stats
         
+    def isLastGCD(self, ActionIndex : int) -> bool:
+        """
+        This function returns weither the provided ActionIndex is the last GCD of the ActionSet of the player.
+        ActionIndex : int -> Index of the action in the list ActionSet
+        """
+
+        for index in range(ActionIndex+1, len(self.ActionSet)):
+            if self.ActionSet[index].GCD : return False
+        return True
+
     def __init__(self, ActionSet, EffectList, Stat,Job : JobEnum):
 
         self.ActionSet = ActionSet # Known Action List
         self.ZIPActionSet = [] # List of ZIPActions of the player
         self.ZIPDPSRun = [] # List containing all ZIP runs' DPS
+        self.PreBakedActionSet = [] # Contains all PreBakedActions of the player
         self.DPSBar = {} # Dict containing the count of DPS occurence of the ZIPActions
         self.EffectList = EffectList # Normally Empty, can has some effects initially
         self.RoleEnum = 0 # RoleEnum Value is set later on
@@ -321,6 +332,20 @@ class Player:
         self.Pet = None # Summoned Pet
         self.GCDCounter = 0 # Number of GCD done
         self.PlayerName = "" # Can be used to give the player a name that will be displayed in the final graph and result.
+        self.mainStatBonus = 0 # Used to remember the stat gained from pots.
+        self.totalTimeNoFaster = 0 # total time in seconds that cannot be made faster by having more SpS or SkS. Used for PreBakedActions.
+
+        # Buff History
+        # These are used for PreBakedAction in order to know if chaning f_SPD changes what action is under what buff
+        self.ChainStratagemHistory = []
+        self.BattleLitanyHistory = []
+        self.WanderingMinuetHistory = []
+        self.BattleVoiceHistory = []
+        self.DevilmentHistory = []
+        self.PotionHistory = []
+        self.PercentBuffHistory = []
+
+
 
         self.TrueLock = False   # Used to know when a player has finished all of its ActionSet
         self.NoMoreActionLog = True # Used to know if we have logged that the player has no more actions.
@@ -1831,6 +1856,9 @@ class Player:
     def init_ninja(self):
         #Gauge
         self.NinkiGauge = 0
+
+        # buff History
+        self.TrickAttackHistory = []
 
         #buff
         self.Suiton = False

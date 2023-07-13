@@ -5,7 +5,7 @@
 from ffxivcalc.Jobs.Healer.Healer_Spell import ScholarSpell
 from ffxivcalc.Jobs.Player import HealingBuff, MitBuff
 
-from ffxivcalc.Jobs.Base_Spell import DOTSpell, empty, ManaRequirement
+from ffxivcalc.Jobs.Base_Spell import DOTSpell, empty, ManaRequirement, buffHistory
 import copy
 Lock = 0.75
 
@@ -158,7 +158,14 @@ def ApplyChainStratagem(Player, Enemy):
     Player.ChainStratagemCD = 120
     Player.ChainStratagemTimer = 15
     Enemy.ChainStratagem = True
-    Player.EffectCDList.append(CheckChainStratagem)
+    if not Player.CurrentFight.SavePreBakedAction:
+        Player.EffectCDList.append(CheckChainStratagem)
+
+                                     # Only doing this if SavePreBakedAction is true
+    if Player.CurrentFight.SavePreBakedAction:
+        fight = Player.CurrentFight
+        history = buffHistory(fight.TimeStamp, fight.TimeStamp + 15)
+        fight.PlayerList[fight.PlayerIDSavePreBakedAction].ChainStratagemHistory.append(history)
 
 def ApplyEnergyDrain(Player, Enemy):
     Player.EnergyDrainCD = 1

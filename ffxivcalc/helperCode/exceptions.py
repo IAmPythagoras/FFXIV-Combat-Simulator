@@ -1,3 +1,68 @@
+class MateriaOverflow(Exception):
+    """
+    This exception is raised when trying to add a Materia to a gear that has reached its limit.
+    """
+    def __init__(self):
+        self.message = "This gear piece cannot receive anymore Materias."
+
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'
+
+class InvalidFunctionParameter(Exception):
+    """
+    This exception is raised when a function's parameter is invalid.
+    """
+    def __init__(self, funcName : str, paramName : str, info : str):
+        self.message = "The parameter " + paramName + " in the function " + funcName + " is invalid. Info " + info
+
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'
+    
+class InvalidStatRequest(Exception):
+    """
+    This exception is raised when the user does an invalid request of stat of a gear piece
+    """
+    pass
+
+class InvalidGearSpace(Exception):
+    """
+    This exception is raised when the GearSpace is invalid.
+    """
+    def __init__(self, missingKey : str):
+        self.message = "The GearSpace is missing gear piece of type " + missingKey
+
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'
+
+class InvalidFoodSpace(Exception):
+    """
+    This exception is raised when the FoodSpace is invalid.
+    """
+    def __init__(self):
+        self.message = "The FoodSpace cannot be empty."
+
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'
+
+class InvalidMateriaSpace(Exception):
+    """
+    This exception is raised when the MateriaSpace is invalid.
+    """
+    def __init__(self):
+        self.message = "The size of the MateriaSpace must be at least 3."
+
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'
 class InvalidTankBusterTargetNumber(Exception):
     """
     This exception is raised when an event is defined as a tank buster

@@ -2,9 +2,10 @@ import math
 from ffxivcalc.helperCode.Vocal import PrintResult, SimulateRuns
 from ffxivcalc.Jobs.PlayerEnum import *
 from ffxivcalc.Jobs.ActionEnum import name_for_id
-from ffxivcalc.Jobs.Base_Spell import ZIPAction
+from ffxivcalc.Jobs.Base_Spell import ZIPAction, PreBakedAction
 import matplotlib.pyplot as plt
 import logging
+from ffxivcalc.helperCode.helper_math import roundDown, isclose
 main_logging = logging.getLogger("ffxivcalc")
 fight_logging = main_logging.getChild("Fight")
 
@@ -51,6 +52,11 @@ class Fight:
         self.wipe = False # Will be set to True in case we are stopping the simulation.
         self.PlayerList = [] # Empty player list
         self.MaxPotencyPlentifulHarvest = False # True will make Plentiful Harvest do max potency regardless of player.
+
+                             # These values can only be eddited by manually changing the values by accessing the Fight object.
+        self.SavePreBakedAction = False
+        self.PlayerIDSavePreBakedAction = 0
+
         # functions
 
         def DefaultNextActionFunction(Fight, Player) -> bool:
@@ -89,6 +95,109 @@ class Fight:
             for ZIPAction in player.ZIPActionSet:
                 player_current_damage += ZIPAction.ComputeRandomDamage()
             player.ZIPDPSRun.append(round(player_current_damage/self.TimeStamp/20)*20)
+
+    def SimulatePreBakedFight(self, Index : int, MainStat : int, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float, n : int = 1000):
+        """
+        This function is called when the user wants to simulate the damage done by the pre baked actions. The player ID with
+        the pre baked actions must be given. The user must also specify all the damage values computed from the stats.
+        Index : int -> Index of the player with the PreBakedActions.
+        n : int -> number of trial for random DPS simulation
+        """
+        player = self.PlayerList[Index]
+        ExpectedDamage = 0
+        baseMain = 390
+        timeCanBeReduced = roundDown(self.TimeStamp - player.totalTimeNoFaster,2)
+        trialKillTime = roundDown(timeCanBeReduced / f_SPD,2) + player.totalTimeNoFaster
+        #print("Actual" + str(self.TimeStamp))
+        #print("Trial" + str(trialKillTime))
+        #print("f_SPD" + str(f_SPD))
+        #print("Ratio : " + str(self.TimeStamp/trialKillTime))
+
+        damageHistory = []   # This list will contain the damage of all PreBakedAction ComputeExpectedDamage used to
+                             # faster compute RandomDamage
+        self.ChainStratagemHistory = []
+        self.BattleLitanyHistory = []
+        self.WanderingMinuetHistory = []
+        self.BattleVoiceHistory = []
+        self.DevilmentHistory = []
+        self.PotionHistory = []
+        self.PercentBuffHistory = []
+                             # Will compute DPS
+        for PreBakedAction in player.PreBakedActionSet:
+                                         # Computing base MainStat for this action. Can prob move this above??
+            curMainStat = MainStat * PreBakedAction.MainStatPercentageBonus
+                                         # Will check what buffs the action falls under.
+            timeStamp = PreBakedAction.nonReducableStamp + roundDown(PreBakedAction.reducableStamp / f_SPD, 2)
+            fight_logging.debug("TimeStamp : " + str(timeStamp))
+                                         # Chain Stratagem
+            for history in player.ChainStratagemHistory:
+                if history.isUp(timeStamp):
+                    PreBakedAction.CritBonus += 0.1
+                                         # Devilment
+            for history in player.DevilmentHistory:
+                if history.isUp(timeStamp):
+                    PreBakedAction.CritBonus += 0.2
+                    PreBakedAction.DHBonus += 0.2
+                                         # Battle Litany
+            for history in player.BattleLitanyHistory:
+                if history.isUp(timeStamp):
+                    PreBakedAction.CritBonus += 0.1
+                                         # Wandering Minuet
+            for history in player.WanderingMinuetHistory:
+                if history.isUp(timeStamp):
+                    PreBakedAction.CritBonus += 0.02
+                                         # Battle Voice
+            for history in player.BattleVoiceHistory:
+                if history.isUp(timeStamp):
+                    PreBakedAction.DHBonus += 0.2
+                                         # Potion
+            for history in player.PotionHistory:
+                if history.isUp(timeStamp):
+                    curMainStat = min(math.floor(curMainStat * 1.1), curMainStat + 262) #Grade 8 HQ tincture
+                                         # Any other percent bonus
+            for history in player.PercentBuffHistory:
+                if history.isUp(timeStamp):
+                    PreBakedAction.PercentageBonus.append(history.getPercentBonus())
+
+            for buff in PreBakedAction.buffList:
+                PreBakedAction.PercentageBonus.append(buff)
+        
+            if PreBakedAction.IsTank : f_MAIN_DMG = (100+math.floor((curMainStat-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
+            else: f_MAIN_DMG = (100+math.floor((curMainStat-baseMain)*195/baseMain))/100
+            ActionExpected, Damage = PreBakedAction.ComputeExpectedDamage(f_MAIN_DMG,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)
+            ExpectedDamage += ActionExpected
+            damageHistory.append(Damage)
+
+                             # Will compute Random DPS
+        randomDPSRuns = []   # This list will contain all the DPS of the random runs
+        for run in range(n):
+            CurrentDamage = 0
+            index = 0
+            for PreBakedAction in player.PreBakedActionSet:
+                CurrentDamage += PreBakedAction.ComputeRandomDamage(damageHistory[index], f_CritRate,f_CritMult, f_DH)
+                index += 1 
+            randomDPSRuns.append(CurrentDamage/trialKillTime)
+                             # Sorting array so we can find the percentiles.
+        randomDPSRuns.sort()
+
+        Percent = int(n/100)
+        percentileRuns = {
+            "1" : randomDPSRuns[Percent],
+            "10" : randomDPSRuns[10 * Percent],
+            "25" : randomDPSRuns[25 * Percent],
+            "50" : randomDPSRuns[50 * Percent],
+            "75" : randomDPSRuns[75 * Percent],
+            "90" : randomDPSRuns[90 * Percent],
+            "99" : randomDPSRuns[n - Percent]
+        }
+                             # Reseting all bonus value for PreBakedActions
+        for PreBakedAction in player.PreBakedActionSet:
+            PreBakedAction.resetTimeSensibleBuff()
+        
+        return int(ExpectedDamage/trialKillTime), percentileRuns
+
+        
+
 
     def SimulateFight(self, TimeUnit, TimeLimit, vocal, PPSGraph : bool = True, MaxTeamBonus : bool = False, MaxPotencyPlentifulHarvest : bool = False, n = 0) -> None:
 
@@ -409,7 +518,7 @@ def GCDReductionEffect(Player, Spell) -> None:
         if Spell.RecastTime < 1.5 and Spell.RecastTime > 0 : Spell.RecastTime = 1.5 # A GCD cannot go under 1.5 sec
 
 # Compute Damage
-def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj) -> float:
+def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBakedAction : bool = False, PlayerIDSavePreBakedAction : int = 0) -> float:
 
     """
     This function computes the damage from a given potency.
@@ -419,7 +528,8 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj) -> float:
     SpellBonus : float -> Multiplying value to the final damage coming from the action itself
     type : int -> type of the action. 0 is Direct Damage, 1 is magical DOT, 2 is physical DOT and 3 is autos
     spellObj : Spell -> Object of the spell being casted
-
+    SavePreBakedAction : bool -> If we want the simulator to save the PreBakedAction to the player's list. False by default.
+    PlayerIDSavePreBakedAction : int -> ID of the player for which we want to record the PreBakedActions.
     """
 
     # The type input signifies what type of damage we are dealing with, since the computation will chance according to what
@@ -436,11 +546,8 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj) -> float:
     # This function will compute the DPS given the stats of a player
 
     # These computations should be up to date with Endwalker.
-
     baseMain = 390  
-
     Enemy = Player.CurrentFight.Enemy # Enemy targetted
-
 
     if Player.JobEnum == JobEnum.Pet: MainStat = Player.Stat["MainStat"] # Summons do not receive bonus
     else: MainStat = math.floor(Player.Stat["MainStat"] * Player.CurrentFight.TeamCompositionBonus) # Scaling %bonus on mainstat
@@ -461,7 +568,6 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj) -> float:
     if Enemy.WanderingMinuet: CritRate += 0.02 # If WanderingMinuet is active, increase crit rate
 
     if Enemy.BattleVoice: DHRate += 0.2 # If BattleVoice is active, increase DHRate
-
 
     DHRate += Player.DHRateBonus # Adding Bonus
     CritRate += Player.CritRateBonus # Adding bonus
@@ -514,6 +620,28 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj) -> float:
                 CritRate = 1
                 Player.GuaranteedCrit = False
                 auto_crit = True
+
+    if type == 0: fight_logging.debug(str((Player.Stat["MainStat"],f_MAIN_DMG, f_WD, f_DET, f_TEN, f_SPD, CritRate, CritMult, DHRate)))
+    if SavePreBakedAction and Player.playerID == PlayerIDSavePreBakedAction:
+        """
+        If that is set to true we will record all we need and will not compute the rest.
+        We will check if the action is a GCD with recast time of lesser or equal to 1.5s since the GCD
+        cannot go lower. The total time will be remembered and substracted from the total time that is reduceable from more SpS.
+        """
+
+        #CritBonus = (Player.CritRateBonus + 
+        #             0.1 if Enemy.ChainStratagem else 0 +
+        #             0.02 if Enemy.WanderingMinuet else 0
+        #            )
+        #DHBonus = (Player.DHRateBonus + 0.2 if Enemy.BattleVoice else 0)
+
+        buffList = []
+        for buff in Player.buffList:
+            buffList.append(buff.MultDPS)
+
+        Player.PreBakedActionSet.append(PreBakedAction(Player.RoleEnum == RoleEnum.Tank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type, Player.totalTimeNoFaster, Player.CurrentFight.TimeStamp - Player.totalTimeNoFaster,AutoCrit=auto_crit, AutoDH=auto_DH))
+        
+        return Potency, Potency        # Exit the function since we are not interested in the immediate damage value. Still return potency as to not break the fight's duration.
 
     if type == 0: # Type 0 is direct damage
         Damage = math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN ) *f_WD) * Player.Trait) # Player.Trait is trait DPS bonus
@@ -664,10 +792,3 @@ def ComputeHeal(Player, Potency, Target, SpellBonus, type, spellObj) -> float:
             H_1_expected_crit = math.floor(H_1_expected_crit * buff)
 
         return H_1_min, H_1_expected_crit
-
-def isclose(a, b, rel_tol=1e-09, abs_tol=0.0): # Helper function to compare float
-    return abs(a-b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
-
-def roundDown(x, precision):
-    return math.floor(x * 10**precision)/10**precision
-    # Imagine not having a built in function to rounddown floats :x

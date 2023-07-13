@@ -54,7 +54,7 @@ Event = Fight(Dummy, False)
 # These stats must include the bonus stats food gives.
 
 # Caster
-BLMStat = {"MainStat": 2945, "WD":126, "Det" : 1451, "Ten" : 400, "SS": 840, "SkS" : 400,  "Crit" : 2386, "DH" : 1307} # Stats for BlackMage
+BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1493, 'Ten': 400, 'SS': 824, 'SkS': 400, 'Crit': 2504, 'DH': 1392} # Stats for BlackMage
 RDMStat = {"MainStat": 2947, "WD":126, "Det" : 1548, "Ten" : 400, "SS": 495, "SkS" : 400, "Crit" : 2397, "DH" : 1544} # Stats for RedMage
 SMNStat = {"MainStat": 2948, "WD":126, "Det" : 1451, "Ten" : 400, "SS": 544, "SkS" : 400, "Crit" : 2436, "DH" : 1544} # Stats for Summoner
 
@@ -130,12 +130,12 @@ GNBPlayer = Player([], [], GNBStat, JobEnum.Gunbreaker)
 # Note that if you are simulating with more than 1 per job you will need to create a new list of actions.
 
 # Caster
-BLMOpener = [Fire3, Fire4, Fire4, Fire4, Despair, Blizzard3, LeyLines, Blizzard4, Paradox, Amplifier, Xenoglossy, Fire3, Triplecast, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Xenoglossy, Swiftcast, Despair]
+BLMOpener = [SharpCast, Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, SharpCast, Swiftcast, Despair, Manafront, Triplecast, Fire4, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose, Fire3, Fire4, Fire4, Fire4, Despair, Blizzard3, Blizzard4,Paradox, SharpCast, Fire3, Fire4, Fire4, Thunder3, Fire4, Paradox, Fire4, Fire4, Fire4, Despair]
 SMNOpener = [Summon, Deathflare, Enkindle,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3]
-RDMOpener = [Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder,Jolt, Verthunder]
+RDMOpener = []
 
 # Healer
-SCHOpener = [WaitAbility(5),Indomitability, Dissipation, Indomitability, WaitAbility(30), Indomitability]
+SCHOpener = [WaitAbility(2),Broil,Biolysis, Broil, Swiftcast, ChainStratagem, Broil, Broil ]
 WHMOpener = [Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare]
 ASTOpener = [Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic]
 SGEOpener = []
@@ -153,7 +153,7 @@ NINOpener = []
 RPROpener = [SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice]
 
 # Tank 
-DRKOpener = [HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash,HardSlash, Shadowbringer, Shadowbringer]
+DRKOpener = [BloodWeapon, TBN(DRKPlayer), Potion, HardSlash, EdgeShadow, Delirium, SyphonStrike, Souleater, LivingShadow, SaltedEarth, HardSlash, Shadowbringer, EdgeShadow, Bloodspiller, CarveSpit, Plunge, Bloodspiller, Shadowbringer, EdgeShadow, Bloodspiller, SaltDarkness, EdgeShadow, SyphonStrike, Plunge, EdgeShadow]
 WAROpener = [TankStance, Provoke,Holmgang ,Maim, Maim, Maim, Maim, Maim, Maim, Maim, Maim]
 PLDOpener = []
 GNBOpener = []
@@ -201,7 +201,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [SCHPlayer,BLMPlayer]
+PlayerList = [BLMPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -220,12 +220,101 @@ Event.RequirementOn = RequirementOn
 Event.ShowGraph = ShowGraph
 Event.IgnoreMana = IgnoreMana
 
-Dummy.setEventList([MagicRaidWide,WaitEvent(20), MagicRaidWide])
+#Dummy.setEventList([MagicRaidWide,WaitEvent(20), MagicRaidWide])
 __logger__ = logging.getLogger("ffxivcalc") # root logger
 level = logging.DEBUG
 logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
 __logger__.setLevel(level=level) # __logger__ = logging.getLogger("ffxivcalc") 
 
 
+from ffxivcalc.GearSolver.Gear import ImportGear, Food
+from ffxivcalc.GearSolver.Solver import BiSSolver, getBaseStat
+
+#GearSpace = ImportGear("DRKGear.json")
+
+HD = Food({"DH" : [103, 0.1], "Det" : [62, 0.1]}, "Honeyed Dragonfruit")
+BE = Food({"Det" : [103, 0.1], "Crit" : [62, 0.1]}, "Baked Eggplant")
+CW = Food({"SS" : [103, 0.1], "DH" : [62, 0.1]}, "Caviar Sandwich")
+CC = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")
+#optimal, random = BiSSolver(Event, GearSpace,[0,1,2] , [BE, HD, CW, CC],PercentileToOpt=["exp"],materiaDepthSearchIterator=8, randomIteration=100, maxSPDValue=766)
+
+
 # ===============================================================================================
+
+Event.SavePreBakedAction = True
+Event.PlayerIDSavePreBakedAction = 0
+Event.PlayerList[0].Stat = getBaseStat()
 Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False) # Simulating fight
+
+if True :
+    from ffxivcalc.GearSolver.Solver import computeDamageValue
+    from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet, Food
+    matGen = MateriaGenerator(18, 36)
+    foodDict = {"Crit" : [63, 0.1], "Det" : [103, 0.1]}
+    raidFood = Food(foodDict, "Baked Eggplant")
+
+    data = ImportGear("GearTest.json")
+
+    Weapon = data["WEAPON"][0]
+    Weapon.AddMateria(matGen.GenerateMateria(3))
+    Weapon.AddMateria(matGen.GenerateMateria(3))
+
+    Head = data["HEAD"][1]
+    Head.AddMateria(matGen.GenerateMateria(2))
+    Head.AddMateria(matGen.GenerateMateria(2))
+    Body = data["BODY"][1]
+    Body.AddMateria(matGen.GenerateMateria(2))
+    Body.AddMateria(matGen.GenerateMateria(2))
+    Hand = data["HANDS"][0]
+    Hand.AddMateria(matGen.GenerateMateria(2))
+    Hand.AddMateria(matGen.GenerateMateria(1))
+
+    Leg = data["LEGS"][0]
+    Leg.AddMateria(matGen.GenerateMateria(0))
+    Leg.AddMateria(matGen.GenerateMateria(0))
+
+    Feet = data["FEET"][1]
+    Feet.AddMateria(matGen.GenerateMateria(0))
+    Feet.AddMateria(matGen.GenerateMateria(2))
+
+    Ear = data["EARRINGS"][0]
+    Ear.AddMateria(matGen.GenerateMateria(1))
+    Ear.AddMateria(matGen.GenerateMateria(3))
+
+    Neck = data["NECKLACE"][1]
+    Neck.AddMateria(matGen.GenerateMateria(0))
+    Neck.AddMateria(matGen.GenerateMateria(1))
+
+    Bracelet = data["BRACELETS"][0]
+    Bracelet.AddMateria(matGen.GenerateMateria(1))
+    Bracelet.AddMateria(matGen.GenerateMateria(1))
+
+    Lring = data["LRING"][0]
+    Lring.AddMateria(matGen.GenerateMateria(1))
+    Lring.AddMateria(matGen.GenerateMateria(1))
+
+    ring = data["RING"][0]
+    ring.AddMateria(matGen.GenerateMateria(0))
+    ring.AddMateria(matGen.GenerateMateria(0))
+
+    gSet = GearSet()
+    gSet.AddGear(Weapon)
+    gSet.AddGear(Head)
+    gSet.AddGear(Body)
+    gSet.AddGear(Hand)
+    gSet.AddGear(Leg)
+    gSet.AddGear(Feet)
+    gSet.AddGear(Ear)
+    gSet.AddGear(Neck)
+    gSet.AddGear(Bracelet)
+    gSet.AddGear(Lring)
+    gSet.AddGear(ring)
+    gSet.addFood(BE)
+    print(gSet)
+    GearStat = gSet.GetGearSetStat()
+    JobMod = Event.PlayerList[0].JobMod
+    f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, False, True)
+    ExpectedDamage, randomDamageDict = Event.SimulatePreBakedFight(0, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, n=100000)
+    print("Expected damage : " + str(ExpectedDamage))
+    print("Random damage : " + str(randomDamageDict))
+    print(Event.PlayerList[0].totalTimeNoFaster)
