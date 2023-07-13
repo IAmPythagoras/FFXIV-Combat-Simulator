@@ -201,7 +201,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [DRKPlayer]
+PlayerList = [BLMPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -230,23 +230,23 @@ __logger__.setLevel(level=level) # __logger__ = logging.getLogger("ffxivcalc")
 from ffxivcalc.GearSolver.Gear import ImportGear, Food
 from ffxivcalc.GearSolver.Solver import BiSSolver, getBaseStat
 
-GearSpace = ImportGear("DRKGear.json")
+#GearSpace = ImportGear("DRKGear.json")
 
 HD = Food({"DH" : [103, 0.1], "Det" : [62, 0.1]}, "Honeyed Dragonfruit")
 BE = Food({"Det" : [103, 0.1], "Crit" : [62, 0.1]}, "Baked Eggplant")
 CW = Food({"SS" : [103, 0.1], "DH" : [62, 0.1]}, "Caviar Sandwich")
 CC = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")
-optimal, random = BiSSolver(Event, GearSpace,[0,1,2] , [BE, HD, CW, CC],PercentileToOpt=["exp"],materiaDepthSearchIterator=8, randomIteration=100, maxSPDValue=766)
+#optimal, random = BiSSolver(Event, GearSpace,[0,1,2] , [BE, HD, CW, CC],PercentileToOpt=["exp"],materiaDepthSearchIterator=8, randomIteration=100, maxSPDValue=766)
 
 
 # ===============================================================================================
 
-Event.SavePreBakedAction = False
+Event.SavePreBakedAction = True
 Event.PlayerIDSavePreBakedAction = 0
 Event.PlayerList[0].Stat = getBaseStat()
-#Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False) # Simulating fight
+Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False) # Simulating fight
 
-if False :
+if True :
     from ffxivcalc.GearSolver.Solver import computeDamageValue
     from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet, Food
     matGen = MateriaGenerator(18, 36)

@@ -106,7 +106,7 @@ class Fight:
         player = self.PlayerList[Index]
         ExpectedDamage = 0
         baseMain = 390
-        timeCanBeReduced = self.TimeStamp - player.totalTimeNoFaster
+        timeCanBeReduced = roundDown(self.TimeStamp - player.totalTimeNoFaster,2)
         trialKillTime = roundDown(timeCanBeReduced / f_SPD,2) + player.totalTimeNoFaster
         #print("Actual" + str(self.TimeStamp))
         #print("Trial" + str(trialKillTime))
@@ -127,7 +127,7 @@ class Fight:
                                          # Computing base MainStat for this action. Can prob move this above??
             curMainStat = MainStat * PreBakedAction.MainStatPercentageBonus
                                          # Will check what buffs the action falls under.
-            timeStamp = PreBakedAction.nonReducableStamp + (PreBakedAction.reducableStamp / f_SPD)
+            timeStamp = PreBakedAction.nonReducableStamp + roundDown(PreBakedAction.reducableStamp / f_SPD, 2)
             fight_logging.debug("TimeStamp : " + str(timeStamp))
                                          # Chain Stratagem
             for history in player.ChainStratagemHistory:
@@ -621,7 +621,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
                 Player.GuaranteedCrit = False
                 auto_crit = True
 
-    if type == 0: fight_logging.debug(str((f_MAIN_DMG, f_WD, f_DET, f_TEN, f_SPD, CritRate, CritMult, DHRate)))
+    if type == 0: fight_logging.debug(str((Player.Stat["MainStat"],f_MAIN_DMG, f_WD, f_DET, f_TEN, f_SPD, CritRate, CritMult, DHRate)))
     if SavePreBakedAction and Player.playerID == PlayerIDSavePreBakedAction:
         """
         If that is set to true we will record all we need and will not compute the rest.

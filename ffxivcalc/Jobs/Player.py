@@ -332,6 +332,7 @@ class Player:
         self.Pet = None # Summoned Pet
         self.GCDCounter = 0 # Number of GCD done
         self.PlayerName = "" # Can be used to give the player a name that will be displayed in the final graph and result.
+        self.mainStatBonus = 0 # Used to remember the stat gained from pots.
         self.totalTimeNoFaster = 0 # total time in seconds that cannot be made faster by having more SpS or SkS. Used for PreBakedActions.
 
         # Buff History

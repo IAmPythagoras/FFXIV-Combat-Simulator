@@ -451,7 +451,8 @@ def ApplyPotion(Player, Enemy):
     """
     Functions applies a potion and boosts the main stat of the player
     """
-    Player.Stat["MainStat"] = min(math.floor(Player.Stat["MainStat"] * 1.1), Player.Stat["MainStat"] + 262) #Grade 8 HQ tincture
+    Player.mainStatBonus = min(math.floor(Player.Stat["MainStat"] * 0.1),262) # Capped from grade 8 HQ tincture
+    Player.Stat["MainStat"] += Player.mainStatBonus
     Player.PotionTimer = 30
 
     Player.EffectCDList.append(PotionCheck)
@@ -475,7 +476,7 @@ def PotionCheck(Player, Enemy):
     Check of potion effect
     """
     if Player.PotionTimer <= 0:
-        Player.Stat["MainStat"] -= 223 #Assuming we are capped
+        Player.Stat["MainStat"] -= Player.mainStatBonus #Assuming we are capped
         Player.EffectCDList.remove(PotionCheck)
 
 
