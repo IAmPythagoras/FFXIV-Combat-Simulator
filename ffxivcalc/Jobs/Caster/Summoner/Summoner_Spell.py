@@ -220,8 +220,10 @@ def SearingLightCheck(Player, Enemy):
 #GCD
 Ruin3 = SummonerSpell(3579, True, 1.5, 2.5, 310, 300, empty, [ManaRequirement], type = 1)
 Ruin4 = SummonerSpell(7426, True, Lock, 2.5, 430, 400, ApplyRuin4, [ManaRequirement, Ruin4Requirement], type = 1)
-FoF = SummonerSpell(16514, True, Lock, 2.5, 540, 300, empty, [FoFRequirement, ManaRequirement], type = 1)
+FountainOfFire = SummonerSpell(16514, True, Lock, 2.5, 540, 300, empty, [FoFRequirement, ManaRequirement], type = 1)
+BrandOfPurgatory = SummonerSpell(16515, True, Lock, 2.5, 240, 300, empty, [FoFRequirement, ManaRequirement], type = 1) # AOE of FoF
 AstralImpulse = SummonerSpell(25820, True, Lock, 2.5, 440, 300, empty, [AstralImpulseRequirement, ManaRequirement], type = 1)
+AstralFlare = SummonerSpell(25821, True, Lock, 2.5, 180, 300, empty, [AstralImpulseRequirement, ManaRequirement], type = 1)
 TryDisaster = SummonerSpell(25826, True, 1.5, 2.5, 120, 300, empty, [ManaRequirement], type = 1)
 #Primal
 Titan = SummonerSpell(25839, True, Lock, 2.5, 750, 0, ApplyTitan, [TitanRequirement], type = 1)
@@ -274,13 +276,13 @@ SummonerAbility = {
 #25789 : Carbunle,
 7427 : Summon, #Bahamut
 25820 : AstralImpulse,
-25821 : AstralImpulse, #Astral Flare
+25821 : AstralFlare, 
 3582 : Deathflare,
 7429 : Enkindle, #Enkindle Bahamut
 #7428 : Wyrmwave, #Bahamut Autos
 25831 : Summon, #Summon Phoenix
-16514 : FoF, #Fountain Of Fire
-16515 : FoF, #AOE of FoF
+16514 : FountainOfFire, #Fountain Of Fire
+16515 : BrandOfPurgatory, #AOE of FoF
 16516 : Enkindle, #Phoenix Enkindle
 #16519 : ScarletFlame, #Pheonix AA
 25838 : Ifrit,

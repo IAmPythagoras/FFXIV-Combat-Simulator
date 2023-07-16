@@ -118,7 +118,7 @@ class SummonerActions(ActionEnum):
     EnkindleBahamut = 7429
     SummonPhoenix = 25831
     FountainOfFire = 16514
-    AOEFountainOfFire = 16515
+    BrandOfPurgatory = 16515
     EnkindlePhoenix = 16516
     Ifrit = 25838
     Ruby = 25823
