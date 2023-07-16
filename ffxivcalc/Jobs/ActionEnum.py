@@ -140,6 +140,7 @@ class SummonerActions(ActionEnum):
     Physick = 16230
     Resurrection = 173
     Summon = 7427
+    SummonEnkindle = -17
 
 # Healer
 
