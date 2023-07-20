@@ -165,6 +165,7 @@ class Gear:
         self.Stat = {}
         self.Name = Name
         self.StatLimit = 0   # StatLimit of a gear is always equal to the highest stat of it.
+        self.illegalMeld = False # This is set to true when this piece of gear is illegaly Overmelded
 
         for Stats in StatList:
             self.Stat[StatType.name_for_id(Stats.StatType)] = Stats
@@ -188,13 +189,10 @@ class Gear:
         return strReturn + " Name : " + self.Name
 
 
-    def AddMateria(self, newMateria : Materia):
+    def __addMateria(self, newMateria : Materia):
         """
-        This function adds a Materia Object to the gear. It will also flag the materia if stat is wasted.
+        Private function called to add materia to the gear. This function is called by AddMateria and forceAddMateria.
         """
-
-        if len(self.Materias) >= self.MateriaLimit :
-            raise MateriaOverflow
 
         self.Materias.append(newMateria)
         self.MateriasCount += 1
@@ -205,9 +203,47 @@ class Gear:
             newMateria.wasteAmount = newStatValue - self.StatLimit
             newMateria.wasteValue = True
 
+    def AddMateria(self, newMateria : Materia):
+        """
+        This function adds a Materia Object to the gear. It will also flag the materia if stat is wasted.
+        """
+
+        if len(self.Materias) >= self.MateriaLimit :
+            raise MateriaOverflow
+
+        self.__addMateria(newMateria)
+
+    def forceAddMateria(self, newMateria : Materia):
+        """
+        This function force adds a materia onto the gear. If the gear has reached its maximum materia count
+        it will be flagged as "illegal". This function will never raise the MateriaOverflow error.
+        """
+
+        if len(self.Materias) >= self.MateriaLimit:
+            self.illegalMeld = True
+
+        self.__addMateria(newMateria)
+
+    def hasValidMelding(self) -> bool:
+        return not self.illegalMeld
+
+    def getNumberPossibleMateria(self, type : StatType, matGen : MateriaGenerator) -> int:
+        """
+        This function returns the total number of materia that can be added to the gear with no loss
+        of the given stat type. It uses the matGen to find the stat bonus from these materias. It is assumed
+        we will use even numbered materia.
+        type : StatType -> Type of the stat
+        matGen : MateriaGenerator -> Materia generator used to add materias.
+        """
+        statName = StatType.name_for_id(type)
+        if not (statName in self.Stat.keys()):
+            self.Stat[statName] = Stat(type, 0)
+        statLimitMateria = (self.StatLimit - self.Stat[statName].Value) // matGen.EvenValue
+        return min(self.MateriaLimit,statLimitMateria)
+
     def getMateriaNumber(self, dictData : dict):
         """
-        This function returns the number of materia of each StatTypes currently on this gear piece as weel
+        This function returns the number of materia of each StatTypes currently on this gear piece as well
         as if the materia is even or odd.
         (Out) dictData : dict -> This dictionnary is filled with the information. It can hence be passed on every gear pieces of the gear set.
         """
@@ -218,7 +254,6 @@ class Gear:
                 dictData[statName] += 1
             else :
                 dictData[statName] = 1
-        
 
     def canAddMateriaNoLoss(self, newMateria : Materia) -> bool:
         """
@@ -236,15 +271,24 @@ class Gear:
         self.Materias = []
         self.MateriasCount = 0
 
-    def removeMateriaType(self, StatType):
+    def removeMateriaType(self, statType : StatType):
+        """
+        This function removes the first materia of the given StatType found on the gear
+        """
         matRemove = []
         for mat in self.Materias:
-            if mat.StatType == StatType:
+            if mat.StatType == statType:
                 matRemove.append(mat)
                 self.MateriasCount -= 1
+                statName = StatType.name_for_id(statType)
+                             # Removing keys with 0 stat value
+                if statName in self.Stat.keys() and self.Stat[statName].Value == 0: self.Stat.pop(statName)
+                break
         for m in matRemove : self.Materias.remove(m)
-                
-        
+
+                             # Check if now is valid meld
+        if self.illegalMeld:
+            if self.MateriasCount <= self.MateriaLimit: self.illegalMeld = False
 
     def GetStat(self, StatName : str = "", StatEnum : int = -2) -> int:
         """
@@ -279,12 +323,28 @@ class GearSet:
         self.GearSet = {}
         self.Food = None
 
+    def __iter__(self):
+        self.gearSetIter = iter(self.GearSet)
+        return self
+
+    def __next__(self):
+        key = next(self.gearSetIter)
+        return self.GearSet[key]
+
     def removeMateriaType(self, StatType):
         """
         This function removes all materia of a given type.
         """
         for key in self.GearSet:
             self.GearSet[key].removeMateriaType(StatType)
+
+    def removeMateriaSpecGear(self, gearName : str, type : StatType):
+        """
+        This function removes the first materia of the given type from the given gear of the gear set
+        """
+
+        if gearName in self.GearSet.keys():
+            self.GearSet[gearName].removeMateriaType(type)
 
     def addFood(self, newFood : Food):
         """
@@ -396,9 +456,194 @@ def ImportGear(fileName : str) -> dict:
     fileName : str -> Name of the file. Must be formatted correctly
     """
 
-    f = open(fileName) #Opening save
+    #f = open(fileName) #Opening save
 
-    data = json.load(f) #Loading json file
+    #data = json.load(f) #Loading json file
+
+    data =[
+{
+"GearType" : 0,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["Crit", 306],
+["SS", 214],
+["MainStat", 416],
+["WD", 132]
+]},
+{
+"GearType" : 0,
+"MateriaLimit" : 2,
+"Name" : "Tome",
+"StatList" : [
+["Crit", 212],
+["SS", 303],
+["MainStat", 409],
+["WD", 131]
+]},
+{
+"GearType" : 2,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["SS", 184],
+["Det", 129],
+["MainStat", 248]
+]},
+{
+"GearType" : 2,
+"MateriaLimit" : 2,
+"Name" : "Tome",
+"StatList" : [
+["Crit", 184],
+["DH", 129],
+["MainStat", 248]
+]},
+{
+"GearType" : 3,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["SS", 292],
+["DH", 204],
+["MainStat", 394]
+]},
+{
+"GearType" : 3,
+"MateriaLimit" : 2,
+"Name" : "Tome",
+"StatList" : [
+["Crit", 292],
+["Det", 204],
+["MainStat", 394]
+]},
+{
+"GearType" : 4,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["Det", 129],
+["Crit", 184],
+["MainStat", 248]
+]},
+{
+"GearType" : 4,
+"MateriaLimit" : 2,
+"Name" : "Tome",
+"StatList" : [
+["SS", 184],
+["DH", 129],
+["MainStat", 248]
+]},
+{
+"GearType" : 5,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["Crit", 204],
+["DH", 292],
+["MainStat", 394]
+]},
+{
+"GearType" : 5,
+"MateriaLimit" : 2,
+"Name" : "Tome",
+"StatList" : [
+["Det", 292],
+["SS", 204],
+["MainStat", 394]
+]},
+{
+"GearType" : 6,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["Det", 184],
+["SS", 129],
+["MainStat", 248]
+]},
+{
+"GearType" : 6,
+"MateriaLimit" : 2,
+"Name" : "Tome",
+"StatList" : [
+["Crit", 129],
+["DH", 184],
+["MainStat", 248]
+]},
+{
+"GearType" : 7,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["Crit", 145],
+["Det", 102],
+["MainStat", 196]
+]},
+{
+"GearType" : 7,
+"MateriaLimit" : 2,
+"Name" : "Tome",
+"StatList" : [
+["DH", 102],
+["SS", 145],
+["MainStat", 196]
+]},
+{
+"GearType" : 8,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["SS", 102],
+["DH", 145],
+["MainStat", 196]
+]},
+{
+"GearType" : 8,
+"MateriaLimit" : 2,
+"Name" : "Tome",
+"StatList" : [
+["Det", 145],
+["Crit", 102],
+["MainStat", 196]
+]},
+{
+"GearType" : 9,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["Crit", 145],
+["Det", 102],
+["MainStat", 196]
+]},
+{
+"GearType" : 9,
+"MateriaLimit" : 2,
+"Name" : "Tome",
+"StatList" : [
+["Det", 145],
+["SS", 102],
+["MainStat", 196]
+]},
+{
+"GearType" : 10,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["Det", 102],
+["Crit", 145],
+["MainStat", 196]
+]},
+{
+"GearType" : 11,
+"MateriaLimit" : 2,
+"Name" : "Raid",
+"StatList" : [
+["SS", 102],
+["DH", 145],
+["MainStat", 196]
+]}
+]
 
     GearDict = {}
 
