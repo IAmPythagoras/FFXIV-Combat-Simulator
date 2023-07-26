@@ -108,10 +108,6 @@ class Fight:
         baseMain = 390
         timeCanBeReduced = roundDown(self.TimeStamp - player.totalTimeNoFaster,2)
         trialKillTime = roundDown(timeCanBeReduced / f_SPD,2) + player.totalTimeNoFaster
-        #print("Actual" + str(self.TimeStamp))
-        #print("Trial" + str(trialKillTime))
-        #print("f_SPD" + str(f_SPD))
-        #print("Ratio : " + str(self.TimeStamp/trialKillTime))
 
         damageHistory = []   # This list will contain the damage of all PreBakedAction ComputeExpectedDamage used to
                              # faster compute RandomDamage
@@ -182,13 +178,13 @@ class Fight:
 
         Percent = int(n/100)
         percentileRuns = {
-            "1" : randomDPSRuns[Percent],
-            "10" : randomDPSRuns[10 * Percent],
-            "25" : randomDPSRuns[25 * Percent],
-            "50" : randomDPSRuns[50 * Percent],
-            "75" : randomDPSRuns[75 * Percent],
-            "90" : randomDPSRuns[90 * Percent],
-            "99" : randomDPSRuns[n - Percent]
+            "1" :  0 if n < 100 else randomDPSRuns[Percent],
+            "10" : 0 if n < 100 else randomDPSRuns[10 * Percent],
+            "25" : 0 if n < 100 else randomDPSRuns[25 * Percent],
+            "50" : 0 if n < 100 else randomDPSRuns[50 * Percent],
+            "75" : 0 if n < 100 else randomDPSRuns[75 * Percent],
+            "90" : 0 if n < 100 else randomDPSRuns[90 * Percent],
+            "99" : 0 if n < 100 else randomDPSRuns[n - Percent]
         }
                              # Reseting all bonus value for PreBakedActions
         for PreBakedAction in player.PreBakedActionSet:

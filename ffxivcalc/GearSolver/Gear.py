@@ -182,7 +182,7 @@ class Gear:
         strReturn = GearType.name_for_id(self.GearType) + " : "
         for stat in strGenerator:
             strReturn += stat
-
+        strReturn += " Materias : "
         for mat in materiaGenerator:
             strReturn += mat
 
@@ -202,6 +202,12 @@ class Gear:
                              # If true means the materia is wasting ressources.
             newMateria.wasteAmount = newStatValue - self.StatLimit
             newMateria.wasteValue = True
+
+    def __hasStatType(self, type : StatType) -> bool:
+        """
+        This private function returns weither the given StatType has non zero value for this gear.
+        """
+        return (StatType.name_for_id(type) in self.Stat.keys()) and self.hasStatMeld(type)
 
     def AddMateria(self, newMateria : Materia):
         """
@@ -236,9 +242,7 @@ class Gear:
         matGen : MateriaGenerator -> Materia generator used to add materias.
         """
         statName = StatType.name_for_id(type)
-        if not (statName in self.Stat.keys()):
-            self.Stat[statName] = Stat(type, 0)
-        statLimitMateria = (self.StatLimit - self.Stat[statName].Value) // matGen.EvenValue
+        statLimitMateria = (self.StatLimit - self.GetStat(StatName=statName)) // matGen.EvenValue
         return min(self.MateriaLimit,statLimitMateria)
 
     def getMateriaNumber(self, dictData : dict):
@@ -275,20 +279,23 @@ class Gear:
         """
         This function removes the first materia of the given StatType found on the gear
         """
-        matRemove = []
         for mat in self.Materias:
             if mat.StatType == statType:
-                matRemove.append(mat)
                 self.MateriasCount -= 1
-                statName = StatType.name_for_id(statType)
-                             # Removing keys with 0 stat value
-                if statName in self.Stat.keys() and self.Stat[statName].Value == 0: self.Stat.pop(statName)
+                self.Materias.remove(mat)
                 break
-        for m in matRemove : self.Materias.remove(m)
-
-                             # Check if now is valid meld
+                        # Check if now is valid meld
         if self.illegalMeld:
             if self.MateriasCount <= self.MateriaLimit: self.illegalMeld = False
+
+    def hasStatMeld(self, type : StatType) -> bool:
+        """
+        This function returns true if the gear has the given stattype melded to it.
+        """
+
+        for mat in self.Materias:
+            if mat.StatType == type : return True
+        return False
 
     def GetStat(self, StatName : str = "", StatEnum : int = -2) -> int:
         """
@@ -456,194 +463,9 @@ def ImportGear(fileName : str) -> dict:
     fileName : str -> Name of the file. Must be formatted correctly
     """
 
-    #f = open(fileName) #Opening save
+    f = open(fileName) #Opening save
 
-    #data = json.load(f) #Loading json file
-
-    data =[
-{
-"GearType" : 0,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["Crit", 306],
-["SS", 214],
-["MainStat", 416],
-["WD", 132]
-]},
-{
-"GearType" : 0,
-"MateriaLimit" : 2,
-"Name" : "Tome",
-"StatList" : [
-["Crit", 212],
-["SS", 303],
-["MainStat", 409],
-["WD", 131]
-]},
-{
-"GearType" : 2,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["SS", 184],
-["Det", 129],
-["MainStat", 248]
-]},
-{
-"GearType" : 2,
-"MateriaLimit" : 2,
-"Name" : "Tome",
-"StatList" : [
-["Crit", 184],
-["DH", 129],
-["MainStat", 248]
-]},
-{
-"GearType" : 3,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["SS", 292],
-["DH", 204],
-["MainStat", 394]
-]},
-{
-"GearType" : 3,
-"MateriaLimit" : 2,
-"Name" : "Tome",
-"StatList" : [
-["Crit", 292],
-["Det", 204],
-["MainStat", 394]
-]},
-{
-"GearType" : 4,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["Det", 129],
-["Crit", 184],
-["MainStat", 248]
-]},
-{
-"GearType" : 4,
-"MateriaLimit" : 2,
-"Name" : "Tome",
-"StatList" : [
-["SS", 184],
-["DH", 129],
-["MainStat", 248]
-]},
-{
-"GearType" : 5,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["Crit", 204],
-["DH", 292],
-["MainStat", 394]
-]},
-{
-"GearType" : 5,
-"MateriaLimit" : 2,
-"Name" : "Tome",
-"StatList" : [
-["Det", 292],
-["SS", 204],
-["MainStat", 394]
-]},
-{
-"GearType" : 6,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["Det", 184],
-["SS", 129],
-["MainStat", 248]
-]},
-{
-"GearType" : 6,
-"MateriaLimit" : 2,
-"Name" : "Tome",
-"StatList" : [
-["Crit", 129],
-["DH", 184],
-["MainStat", 248]
-]},
-{
-"GearType" : 7,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["Crit", 145],
-["Det", 102],
-["MainStat", 196]
-]},
-{
-"GearType" : 7,
-"MateriaLimit" : 2,
-"Name" : "Tome",
-"StatList" : [
-["DH", 102],
-["SS", 145],
-["MainStat", 196]
-]},
-{
-"GearType" : 8,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["SS", 102],
-["DH", 145],
-["MainStat", 196]
-]},
-{
-"GearType" : 8,
-"MateriaLimit" : 2,
-"Name" : "Tome",
-"StatList" : [
-["Det", 145],
-["Crit", 102],
-["MainStat", 196]
-]},
-{
-"GearType" : 9,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["Crit", 145],
-["Det", 102],
-["MainStat", 196]
-]},
-{
-"GearType" : 9,
-"MateriaLimit" : 2,
-"Name" : "Tome",
-"StatList" : [
-["Det", 145],
-["SS", 102],
-["MainStat", 196]
-]},
-{
-"GearType" : 10,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["Det", 102],
-["Crit", 145],
-["MainStat", 196]
-]},
-{
-"GearType" : 11,
-"MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["SS", 102],
-["DH", 145],
-["MainStat", 196]
-]}
-]
+    data = json.load(f) #Loading json file
 
     GearDict = {}
 

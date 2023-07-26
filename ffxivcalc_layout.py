@@ -221,7 +221,7 @@ Event.ShowGraph = ShowGraph
 Event.IgnoreMana = IgnoreMana
 
 __logger__ = logging.getLogger("ffxivcalc") # root logger
-level = logging.DEBUG
+level = logging.WARNING
 logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
 __logger__.setLevel(level=level) # __logger__ = logging.getLogger("ffxivcalc") 
 
@@ -230,29 +230,46 @@ __logger__.setLevel(level=level) # __logger__ = logging.getLogger("ffxivcalc")
 # ===============================================================================================
 
 from ffxivcalc.GearSolver.Gear import ImportGear, Food
-from ffxivcalc.GearSolver.Solver import BiSSolver, getBaseStat
-
+from ffxivcalc.GearSolver.Solver import BiSSolver, getBaseStat, getGearDPSValue
+import matplotlib.pyplot as plt
 GearSpace = ImportGear("GearTest.json")
 
 HD = Food({"DH" : [103, 0.1], "Det" : [62, 0.1]}, "Honeyed Dragonfruit")
 BE = Food({"Det" : [103, 0.1], "Crit" : [62, 0.1]}, "Baked Eggplant")
 CW = Food({"SS" : [103, 0.1], "DH" : [62, 0.1]}, "Caviar Sandwich")
 CC = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")
-optimal, random = BiSSolver(Event, GearSpace,[0,1,2] , [BE, HD, CW, CC],PercentileToOpt=["99","90"],materiaDepthSearchIterator=1, randomIteration=10000, maxSPDValue=900)
+optimal, random = BiSSolver(Event, GearSpace,[0,1,2,3] , [BE, HD, CW, CC],PercentileToOpt=["exp"], randomIteration=100, maxSPDValue=3000, useNewAlgo=True, oversaturationLimit=0)
+x = []
+y = []
+for i in range(7):
+    break
+    F = deepcopy(Event)
+    optimal, random = BiSSolver(F, GearSpace,[0,1,2,3] , [BE, HD, CW, CC],PercentileToOpt=["exp"], randomIteration=2000, maxSPDValue=3000, useNewAlgo=True, oversaturationLimit=i)
+    F = deepcopy(Event)
+    dps, rand = getGearDPSValue(F, optimal, 0,n=0)
+    y += [dps]
+    x += [i]
 
-Event.SavePreBakedAction = False
-Event.PlayerIDSavePreBakedAction = 0
-Event.PlayerList[0].Stat = getBaseStat()
+    print("Stat limit of " + str(i) + " : " + str(optimal.GetGearSetStat()))
+#fig, axs = plt.subplots(1, 1, constrained_layout=True) # DPS and PPS graph
+#axs.plot(x,y)
+#fig.show()
+#input()
+
+
 
 if False :
-    from ffxivcalc.GearSolver.Solver import computeDamageValue
+    from ffxivcalc.GearSolver.Solver import computeDamageValue, getGearDPSValue
     from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet, Food
     matGen = MateriaGenerator(18, 36)
     foodDict = {"Crit" : [63, 0.1], "Det" : [103, 0.1]}
     raidFood = Food(foodDict, "Baked Eggplant")
 
     data = ImportGear("GearTest.json")
-
+    Crit = 0
+    DH = 1
+    Det = 2
+    SS = 3
     Weapon = data["WEAPON"][0]
     Weapon.AddMateria(matGen.GenerateMateria(3))
     Weapon.AddMateria(matGen.GenerateMateria(3))
@@ -264,8 +281,8 @@ if False :
     Body.AddMateria(matGen.GenerateMateria(2))
     Body.AddMateria(matGen.GenerateMateria(2))
     Hand = data["HANDS"][0]
-    Hand.AddMateria(matGen.GenerateMateria(2))
     Hand.AddMateria(matGen.GenerateMateria(1))
+    Hand.AddMateria(matGen.GenerateMateria(2))
 
     Leg = data["LEGS"][0]
     Leg.AddMateria(matGen.GenerateMateria(0))
@@ -308,11 +325,6 @@ if False :
     gSet.AddGear(Lring)
     gSet.AddGear(ring)
     gSet.addFood(BE)
-    print(gSet)
-    GearStat = gSet.GetGearSetStat()
-    JobMod = Event.PlayerList[0].JobMod
-    f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, False, True)
-    ExpectedDamage, randomDamageDict = Event.SimulatePreBakedFight(0, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, n=100000)
-    print("Expected damage : " + str(ExpectedDamage))
-    print("Random damage : " + str(randomDamageDict))
-    print(Event.PlayerList[0].totalTimeNoFaster)
+
+
+    getGearDPSValue(Event, gSet, 0,n=1000000)
