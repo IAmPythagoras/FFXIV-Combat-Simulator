@@ -232,33 +232,16 @@ __logger__.setLevel(level=level) # __logger__ = logging.getLogger("ffxivcalc")
 from ffxivcalc.GearSolver.Gear import ImportGear, Food
 from ffxivcalc.GearSolver.Solver import BiSSolver, getBaseStat, getGearDPSValue
 import matplotlib.pyplot as plt
-GearSpace = ImportGear("GearTest.json")
+GearSpace = ImportGear("BLMSet.json")
 
 HD = Food({"DH" : [103, 0.1], "Det" : [62, 0.1]}, "Honeyed Dragonfruit")
 BE = Food({"Det" : [103, 0.1], "Crit" : [62, 0.1]}, "Baked Eggplant")
 CW = Food({"SS" : [103, 0.1], "DH" : [62, 0.1]}, "Caviar Sandwich")
 CC = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")
-optimal, random = BiSSolver(Event, GearSpace,[0,1,2,3] , [BE, HD, CW, CC],PercentileToOpt=["exp"], randomIteration=100, maxSPDValue=3000, useNewAlgo=True, oversaturationLimit=0)
-x = []
-y = []
-for i in range(7):
-    break
-    F = deepcopy(Event)
-    optimal, random = BiSSolver(F, GearSpace,[0,1,2,3] , [BE, HD, CW, CC],PercentileToOpt=["exp"], randomIteration=2000, maxSPDValue=3000, useNewAlgo=True, oversaturationLimit=i)
-    F = deepcopy(Event)
-    dps, rand = getGearDPSValue(F, optimal, 0,n=0)
-    y += [dps]
-    x += [i]
-
-    print("Stat limit of " + str(i) + " : " + str(optimal.GetGearSetStat()))
-#fig, axs = plt.subplots(1, 1, constrained_layout=True) # DPS and PPS graph
-#axs.plot(x,y)
-#fig.show()
-#input()
+#optimal, random = BiSSolver(Event, GearSpace,[3,0,1,2] , [BE, HD, CW, CC],PercentileToOpt=["exp"], randomIteration=100, maxSPDValue=900, useNewAlgo=True, oversaturationLimit=0)
 
 
-
-if False :
+if True :
     from ffxivcalc.GearSolver.Solver import computeDamageValue, getGearDPSValue
     from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet, Food
     matGen = MateriaGenerator(18, 36)
@@ -271,18 +254,18 @@ if False :
     Det = 2
     SS = 3
     Weapon = data["WEAPON"][0]
-    Weapon.AddMateria(matGen.GenerateMateria(3))
-    Weapon.AddMateria(matGen.GenerateMateria(3))
+    Weapon.AddMateria(matGen.GenerateMateria(1))
+    Weapon.AddMateria(matGen.GenerateMateria(1))
 
     Head = data["HEAD"][1]
     Head.AddMateria(matGen.GenerateMateria(2))
-    Head.AddMateria(matGen.GenerateMateria(2))
+    Head.AddMateria(matGen.GenerateMateria(3))
     Body = data["BODY"][1]
-    Body.AddMateria(matGen.GenerateMateria(2))
-    Body.AddMateria(matGen.GenerateMateria(2))
+    Body.AddMateria(matGen.GenerateMateria(1))
+    Body.AddMateria(matGen.GenerateMateria(1))
     Hand = data["HANDS"][0]
     Hand.AddMateria(matGen.GenerateMateria(1))
-    Hand.AddMateria(matGen.GenerateMateria(2))
+    Hand.AddMateria(matGen.GenerateMateria(1))
 
     Leg = data["LEGS"][0]
     Leg.AddMateria(matGen.GenerateMateria(0))
@@ -294,10 +277,10 @@ if False :
 
     Ear = data["EARRINGS"][0]
     Ear.AddMateria(matGen.GenerateMateria(1))
-    Ear.AddMateria(matGen.GenerateMateria(3))
+    Ear.AddMateria(matGen.GenerateMateria(1))
 
     Neck = data["NECKLACE"][1]
-    Neck.AddMateria(matGen.GenerateMateria(0))
+    Neck.AddMateria(matGen.GenerateMateria(1))
     Neck.AddMateria(matGen.GenerateMateria(1))
 
     Bracelet = data["BRACELETS"][0]
@@ -324,7 +307,7 @@ if False :
     gSet.AddGear(Bracelet)
     gSet.AddGear(Lring)
     gSet.AddGear(ring)
-    gSet.addFood(BE)
+    gSet.addFood(CC)
 
 
-    getGearDPSValue(Event, gSet, 0,n=1000000)
+    getGearDPSValue(Event, gSet, 0,n=10000000)

@@ -267,6 +267,22 @@ class Gear:
         StatName = StatType.name_for_id(newMateria.StatType)
         return (self.MateriasCount < self.MateriaLimit and 
                 (self.GetStat(StatName) if StatName in self.Stat.keys() else 0) + newMateria.Value <= self.StatLimit)
+    
+    def canReplaceMateriaNoLoss(self, newMateria : Materia) -> bool:
+        """
+        This function returns True if a materia of the gear piece can be replaced by a new materia
+        without stat loss
+        """
+        StatName = StatType.name_for_id(newMateria.StatType)
+        return (self.GetStat(StatName) if StatName in self.Stat.keys() else 0) + newMateria.Value <= self.StatLimit
+    
+    def hasMateriaType(self, type : StatType) -> bool:
+        """
+        This function returns weither the gear piece has a materia of the given type
+        """
+        for mat in self.Materias:
+            if mat.StatType == type : return True
+        return False
 
     def ResetMateriaSlot(self):
         """
@@ -320,6 +336,12 @@ class Gear:
                 statValue = min(Materia.Value + statValue, self.StatLimit)
         
         return statValue
+    
+    def getGearTypeName(self) -> str:
+        """
+        This function returns the type of the gear.
+        """
+        return GearType.name_for_id(self.GearType)
             
 class GearSet:
     """
@@ -358,6 +380,12 @@ class GearSet:
         This function adds newFood to the gearset.
         """
         self.Food = newFood
+
+    def removeFood(self):
+        """
+        This function removes the food on the gear set.
+        """
+        self.Food = None
 
     def __str__(self):
         gearInfoGenerator = (str(self.GearSet[gear]) + "\n" for gear in self.GearSet)
@@ -454,6 +482,15 @@ class GearSet:
                     Stat[type.name] += flatBonus
 
         return Stat
+    
+    def hasValidMelding(self) -> bool:
+        """
+        This function returns weither all pieces in the GearSet have valid melding
+        """
+        valid = True
+        for gear in self:
+            valid = valid and gear.hasValidMelding()
+        return valid
     
 
 def ImportGear(fileName : str) -> dict:

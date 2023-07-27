@@ -1,0 +1,61 @@
+Solver result (Using BF up-down)
+Best optimal : Gearset's info:
+WEAPON : Crit : 306 | SS : 214 | MainStat : 416 | WD : 132 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+HEAD : Crit : 184 | DH : 129 | MainStat : 248 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+HANDS : Det : 129 | Crit : 184 | MainStat : 248 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+LEGS : Crit : 204 | DH : 292 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+FEET : Crit : 129 | DH : 184 | MainStat : 248 |  Materias : Crit : 36 | SS : 36 |  Name : Tome
+EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+NECKLACE : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+LRING : Det : 102 | Crit : 145 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+RING : SS : 102 | DH : 145 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+ Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1174, 'Ten': 400, 'SS': 886, 'SkS': 400, 'Crit': 2509, 'DH': 1644}
+Materia numbers : DH 14x |SS 3x |Crit 5x |
+Food Caviar Canapes gives -> Crit 10% max of 103 |SS 10% max of 62 |
+Expected : 14101
+Random : {'1': 12638.878477728123, '10': 13242.958051030704, '25': 13626.942482341068, '50': 14078.939022632261, '75': 14553.33717745423, 
+          '90': 14997.275479313823, '99': 15789.246071788957}
+(1.76, 1.057, 1, 1.033, 0.272, 0.622, 0.36)
+
+The balance 2.42s GCD BiS :
+Gearset's info:
+WEAPON : Crit : 306 | SS : 214 | MainStat : 416 | WD : 132 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+HEAD : Crit : 184 | DH : 129 | MainStat : 248 |  Materias : Det : 36 | Det : 36 |  Name : Tome
+BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : Det : 36 | Det : 36 |  Name : Tome
+HANDS : Det : 129 | Crit : 184 | MainStat : 248 |  Materias : DH : 36 | Det : 36 |  Name : Raid
+LEGS : Crit : 204 | DH : 292 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+FEET : Crit : 129 | DH : 184 | MainStat : 248 |  Materias : Crit : 36 | Det : 36 |  Name : Tome
+EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | SS : 36 |  Name : Raid
+NECKLACE : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | DH : 36 |  Name : Tome
+BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+LRING : Det : 102 | Crit : 145 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+RING : SS : 102 | DH : 145 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+ Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1493, 'Ten': 400, 'SS': 824, 'SkS': 400, 'Crit': 2504, 'DH': 1392}
+Materia numbers : SS 3x |Det 6x |DH 7x |Crit 6x |
+Food Baked Eggplant gives -> Det 10% max of 103 |Crit 10% max of 62 |
+Expected : 14087
+Random : {'1': 12663.411832280299, '10': 13260.22400919012, '25': 13640.608845491097, '50': 14088.7851809305, '75': 14559.678345778288, '90': 15000.129236071223, '99': 15789.933946008041}
+
+Solver result (Using BF up-down)
+Best optimal : Gearset's info:
+WEAPON : Crit : 306 | SS : 214 | MainStat : 416 | WD : 132 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+HEAD : Crit : 184 | DH : 129 | MainStat : 248 |  Materias : Det : 36 | SS : 36 |  Name : Tome
+BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+HANDS : Det : 129 | Crit : 184 | MainStat : 248 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+LEGS : Crit : 204 | DH : 292 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+FEET : Crit : 129 | DH : 184 | MainStat : 248 |  Materias : Crit : 36 | Det : 36 |  Name : Tome
+EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+NECKLACE : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+LRING : Det : 102 | Crit : 145 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+RING : SS : 102 | DH : 145 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+ Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1246, 'Ten': 400, 'SS': 814, 'SkS': 400, 'Crit': 2509, 'DH': 1644}
+Materia numbers : DH 14x |Det 2x |SS 1x |Crit 5x |
+Food Caviar Canapes gives -> Crit 10% max of 103 |SS 10% max of 62 |
+Expected Damage : 14110
+Random : {'1': 12645.882352941177, '10': 13251.362984218076, '25': 13635.50932568149, '50': 14087.890961262554, '75': 14562.912482065996, '90': 15006.929698708751, '99': 15800.301291248206}
+(1.76, 1.063, 1, 1.028, 0.272, 0.622, 0.36)
+
+

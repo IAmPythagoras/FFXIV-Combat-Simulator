@@ -149,7 +149,8 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     for key in GearSpace.keys():
         for gear in GearSpace[key]:
             for type in MateriaSpace:
-                for i in range(gear.getNumberPossibleMateria(type, matGen) + 9) : gear.forceAddMateria(matGen.GenerateMateria(type)) 
+                if type != 3:
+                    for i in range(gear.getNumberPossibleMateria(type, matGen)) : gear.forceAddMateria(matGen.GenerateMateria(type)) 
 
     curOptimalDPS = 0
     i = 0
@@ -179,23 +180,43 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
                                                 i+=1
                                                 newGearSet.AddGear(Ring)
 
-                                                GearStat = newGearSet.GetGearSetStat()
+                                                curBestFoodExpectedDPS = 0
+                                                curBestFoodExpectedSet = None
 
-                                                if not (GearStat["SS"] > maxSPDValue or GearStat["SkS"] > maxSPDValue):
+                                                curBestFoodRandomDPS = {key : [0,None,{}] for key in optimalRandomGearSetMateria}
+
+
+                                                for food in FoodSpace:
+                                                    trialSet = deepcopy(newGearSet)
+                                                    trialSet.addFood(food)
+                                                    GearStat = trialSet.GetGearSetStat()
+
                                                     JobMod = Fight.PlayerList[PlayerIndex].JobMod # Level 90 jobmod value, specific to each job
 
                                                     f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
                                                     ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, n=randomIteration)
 
-                                                    if curOptimalDPS <= ExpectedDamage:
-                                                        optimalGearSet = deepcopy(newGearSet)
-                                                        curOptimalDPS = ExpectedDamage
+                                                    if curBestFoodExpectedDPS <= ExpectedDamage:
+                                                        curBestFoodExpectedSet = deepcopy(trialSet)
+                                                        curBestFoodExpectedDPS = ExpectedDamage
 
-                                                    for percentile in optimalRandomGearSet:
-                                                        if optimalRandomGearSet[percentile][0] == 0 or optimalRandomGearSet[percentile][0][percentile] <= randomDamageDict[percentile]:
-                                                            optimalRandomGearSet[percentile][1] = deepcopy(newGearSet)
-                                                            optimalRandomGearSet[percentile][0] = randomDamageDict
+                                                    for percentile in curBestFoodRandomDPS:
+                                                        if curBestFoodRandomDPS[percentile][0] <= randomDamageDict[percentile]:
+                                                            curBestFoodRandomDPS[percentile][0] = randomDamageDict[percentile]
+                                                            curBestFoodRandomDPS[percentile][1] = deepcopy(trialSet)
+                                                            curBestFoodRandomDPS[percentile][2] = deepcopy(randomDamageDict)
 
+                                                if curOptimalDPS < curBestFoodExpectedDPS:
+                                                    optimalGearSet = deepcopy(curBestFoodExpectedSet)
+                                                    curOptimalDPS = curBestFoodExpectedDPS
+
+                                                for percentile in optimalRandomGearSet:
+                                                    if optimalRandomGearSet[percentile][0] <= curBestFoodRandomDPS[percentile][0]:
+                                                        optimalRandomGearSet[percentile][0] = curBestFoodRandomDPS[percentile][0]
+                                                        optimalRandomGearSet[percentile][1] = deepcopy(curBestFoodRandomDPS[percentile][1])
+                                                
+
+                                                        
                              # Will now find optimal Meld for the optimal sets that were found.
     if useNewAlgo:
         print("Using BF up-down")
@@ -232,8 +253,6 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
             optimalGearSet = deepcopy(curBest)
             counter += materiaDepthSearchIterator
             if counter >= limit : break
-            
-
                                 # Will now optimize the random BiS. Every percentile's gearset is optimized by using
                                 # the value of the DPS as their percentile. So the 90th percentile BiS is chosen using the
                                 # materia arrangement that maximizes the 90th percentile DPS.
@@ -258,26 +277,12 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
 
                              # Optimizing food
     text = "Solver result " + ("(Using BF up-down)" if useNewAlgo else "(Using BF down-up)") + "\n"
-    print("Optimizing Food")
-    curMax = 0
-    curBestExpectedFood = None
-    curRandom = {}
-    for food in FoodSpace:
-        if not "exp" in PercentileToOpt: break
-        testSet = deepcopy(optimalGearSet)
-        testSet.addFood(food)
-        GearStat = testSet.GetGearSetStat()
-        if True:#not (GearStat["SS"] > maxSPDValue or GearStat["SkS"] > maxSPDValue):
-            f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
-            ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH,n=randomIteration)
-            solver_logging.warning(str(food) + "has dps " + str(ExpectedDamage))
 
-            if curMax < ExpectedDamage:
-                curBestExpectedFood = deepcopy(food)
-                curMax = ExpectedDamage
-                curRandom = deepcopy(randomDamageDict)
+    GearStat = optimalGearSet.GetGearSetStat()
+    f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
+    curMax, curRandom = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH,n=randomIteration)
     if "exp" in PercentileToOpt:
-        optimalGearSet.addFood(curBestExpectedFood)
+        #optimalGearSet.addFood(curBestExpectedFood)
         text += "Best optimal : "
         text += (str(optimalGearSet) + "\n")
         text += ("Expected Damage : " + str(curMax) + "\n")
@@ -285,25 +290,9 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
         text += str(computeDamageValue(optimalGearSet.GetGearSetStat(), JobMod, IsTank, IsCaster))
 
     for percentile in optimalRandomGearSetMateria:
-        bestFood = None
-        for food in FoodSpace:
-            if not(percentile in PercentileToOpt): break
-            testSet = deepcopy(optimalRandomGearSetMateria[percentile][1])
-            testSet.addFood(food)
-            GearStat = testSet.GetGearSetStat()
-            if True:#not (GearStat["SS"] > maxSPDValue or GearStat["SkS"] > maxSPDValue):
-                JobMod = Fight.PlayerList[PlayerIndex].JobMod # Level 90 jobmod value, specific to each job
-                f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
-                ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH,n=randomIteration)
-                solver_logging.warning(str(food) + "has dps " + str(randomDamageDict[percentile]))
-                
-                if optimalRandomGearSetMateria[percentile][2][percentile] < randomDamageDict[percentile]:
-                    optimalRandomGearSetMateria[percentile][0] = ExpectedDamage
-                    bestFood = food
-                    optimalRandomGearSetMateria[percentile][2] = randomDamageDict
-        optimalRandomGearSetMateria[percentile][1].addFood(bestFood)
-
-    for percentile in optimalRandomGearSetMateria:
+        GearStat = optimalRandomGearSetMateria[percentile][1].GetGearSetStat()
+        f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
+        optimalRandomGearSetMateria[percentile][0], optimalRandomGearSetMateria[percentile][2] = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH,n=randomIteration)
         text += (percentile + "th percentile gear :"+ "\n")
         text += (str(optimalRandomGearSetMateria[percentile][1])+ "\n")
         text += ("Expected Damage : " + str(optimalRandomGearSetMateria[percentile][0]) + "\n")
@@ -322,6 +311,47 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
         f.write(text)
 
     return optimalGearSet, optimalRandomGearSetMateria
+    """
+    for percentile in optimalRandomGearSetMateria:
+        break
+        bestFood = None
+        for food in FoodSpace:
+            if not(percentile in PercentileToOpt): break
+            testSet = deepcopy(optimalRandomGearSetMateria[percentile][1])
+            testSet.addFood(food)
+            GearStat = testSet.GetGearSetStat()
+            if True:#not (GearStat["SS"] > maxSPDValue or GearStat["SkS"] > maxSPDValue):
+                JobMod = Fight.PlayerList[PlayerIndex].JobMod # Level 90 jobmod value, specific to each job
+                f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
+                ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH,n=randomIteration)
+                solver_logging.warning(str(food) + "has dps " + str(randomDamageDict[percentile]))
+                
+                if optimalRandomGearSetMateria[percentile][2][percentile] < randomDamageDict[percentile]:
+                    optimalRandomGearSetMateria[percentile][0] = ExpectedDamage
+                    bestFood = food
+                    optimalRandomGearSetMateria[percentile][2] = randomDamageDict
+        optimalRandomGearSetMateria[percentile][1].addFood(bestFood)
+    """
+    """
+    curMax = 0
+    curBestExpectedFood = None
+    curRandom = {}
+    for food in FoodSpace:
+        break
+        if not "exp" in PercentileToOpt: break
+        testSet = deepcopy(optimalGearSet)
+        testSet.addFood(food)
+        GearStat = testSet.GetGearSetStat()
+        if True:#not (GearStat["SS"] > maxSPDValue or GearStat["SkS"] > maxSPDValue):
+            f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
+            ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH,n=randomIteration)
+            solver_logging.warning(str(food) + "has dps " + str(ExpectedDamage))
+
+            if curMax < ExpectedDamage:
+                curBestExpectedFood = deepcopy(food)
+                curMax = ExpectedDamage
+                curRandom = deepcopy(randomDamageDict)
+    """
    
 
 def materiaBisSolver(Set : GearSet, matGen : MateriaGenerator, matSpace : list[int], maxDepth : int, Fight, JobMod : int, IsTank : bool, IsCaster : bool,PlayerIndex : int, percentile : str, randomIteration : int,maxSPDValue : int = 5000):
@@ -410,45 +440,105 @@ def materiaBisSolverV2(Set : GearSet, matGen : MateriaGenerator, matSpace : list
     we start at the bottom with a theoretical max meld. So every gear piece will have every materia that they can have with no limit.
     They are only limited by the maxStat. We will then remove materias from gear piece until the melding is legal.
     """
-
     optimalSet = deepcopy(Set)
     optimalPercentileDPS = 0
     optimalExpectedDPS = 0
                              # This first loop will forceAddMateria to the whole set until no more can be
     for gear in optimalSet:
         for type in matSpace:
-            for i in range(gear.getNumberPossibleMateria(type, matGen) + oversaturationLimitBonus) : gear.forceAddMateria(matGen.GenerateMateria(type)) 
+            if type != 3:
+                for i in range(gear.getNumberPossibleMateria(type, matGen)) : gear.forceAddMateria(matGen.GenerateMateria(type)) 
 
-    for key in optimalSet.GearSet.keys():
-        while not optimalSet.GearSet[key].hasValidMelding():
-            curMaxDPS = 0
-            curTypeToRemove = None
-            solver_logging.warning("Working on " + key)
-            solver_logging.warning(optimalSet.GetGearSetStat())
+    while not optimalSet.hasValidMelding():
+        for key in optimalSet.GearSet.keys():
+            if not optimalSet.GearSet[key].hasValidMelding():
+                curMaxDPS = 0
+                curTypeToRemove = None
+                solver_logging.warning("Working on " + key)
+                solver_logging.warning(optimalSet.GetGearSetStat())
 
-            for type in matSpace:
-                if optimalSet.GearSet[key].hasStatMeld(type):
-                    testSet = deepcopy(optimalSet)
+                for type in matSpace:
+                    if optimalSet.GearSet[key].hasStatMeld(type):
+                        testSet = deepcopy(optimalSet)
 
-                    testSet.removeMateriaSpecGear(key, type)
+                        testSet.removeMateriaSpecGear(key, type)
 
-                    GearStat = testSet.GetGearSetStat()
-                    f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
-                    ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH,n=randomIteration)
-                    
-                    if percentile == "exp" and ExpectedDamage > curMaxDPS:
-                        curMaxDPS = ExpectedDamage
-                        curTypeToRemove = type
-                    elif percentile != "exp" and randomDamageDict[percentile] > curMaxDPS:
-                        curMaxDPS = randomDamageDict[percentile]
-                        curTypeToRemove = type
+                        GearStat = testSet.GetGearSetStat()
+                        if type == 3 and GearStat["SS"] > maxSPDValue:
+                            curTypeToRemove = 3
+                            break
+                        f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
+                        ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH,n=randomIteration)
+                        
+                        if percentile == "exp" and ExpectedDamage > curMaxDPS:
+                            curMaxDPS = ExpectedDamage
+                            curTypeToRemove = type
+                        elif percentile != "exp" and randomDamageDict[percentile] > curMaxDPS:
+                            curMaxDPS = randomDamageDict[percentile]
+                            curTypeToRemove = type
 
-                    solver_logging.warning("Trial by removing " + StatType.name_for_id(type) + " dps : " + (str(ExpectedDamage) if percentile == "exp" else str(randomDamageDict[percentile])))
+                        solver_logging.warning("Trial by removing " + StatType.name_for_id(type) + " dps : " + (str(ExpectedDamage) if percentile == "exp" else str(randomDamageDict[percentile])))
 
-            optimalSet.removeMateriaSpecGear(key,curTypeToRemove)
-            solver_logging.warning("Removing " + StatType.name_for_id(curTypeToRemove) + " Damage is now " + str(curMaxDPS))
+                optimalSet.removeMateriaSpecGear(key,curTypeToRemove)
+                solver_logging.warning("Removing " + StatType.name_for_id(curTypeToRemove) + " Damage is now " + str(curMaxDPS))
 
+
+                             # Will now add SpS/SkS until required amount
     GearStat = optimalSet.GetGearSetStat()
+    curBestSSDPS = 0
+    curBestOptimal = None
+    while optimalSet.GetGearSetStat()["SS"] + 36 < maxSPDValue:
+                             # Will look for materia to remove that has smallest DPS loss if replaced with SpS/SkS
+        materia = matGen.GenerateMateria(3)
+        curPieceToEdit = ""
+        curBestDPS = 0
+        curTypeToReplace = None
+        for gear in optimalSet:
+            gearName = gear.getGearTypeName()
+            if gear.canReplaceMateriaNoLoss(materia):
+                for mat in gear.Materias:
+                    if mat.StatType != 3:
+                        trialSet = deepcopy(optimalSet)
+                        trialSet.removeMateriaSpecGear(gearName,mat.StatType)
+
+                        trialSet.GearSet[gearName].AddMateria(materia)
+                        GearStat = trialSet.GetGearSetStat()
+                        f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
+                        ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH,n=randomIteration)
+                        
+                        if percentile == "exp" and ExpectedDamage > curBestDPS:
+                            curBestDPS = ExpectedDamage
+                            curPieceToEdit = gearName
+                            curTypeToReplace = mat.StatType
+                        elif percentile != "exp" and randomDamageDict[percentile] > curBestDPS:
+                            curBestDPS = randomDamageDict[percentile]
+                            curPieceToEdit = gearName
+                            curTypeToReplace = mat.StatType    
+
+                             # Will now replace the found materia with SpS/SkS
+        
+
+        if curPieceToEdit == "":
+                             # Means none was found that could have meld
+            break
+
+        optimalSet.removeMateriaSpecGear(curPieceToEdit, curTypeToReplace)
+        optimalSet.GearSet[curPieceToEdit].AddMateria(deepcopy(materia))
+
+        GearStat = optimalSet.GetGearSetStat()
+        f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
+        ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH,n=randomIteration)
+
+        if percentile == "exp" and ExpectedDamage > curBestSSDPS:
+            curBestSSDPS = ExpectedDamage
+            curBestOptimal = deepcopy(optimalSet)
+        elif percentile != "exp" and randomDamageDict[percentile] > curBestDPS:
+            curBestSSDPS = randomDamageDict[percentile]
+            curBestOptimal = deepcopy(optimalSet)
+
+    optimalSet = deepcopy(curBestOptimal) if curBestOptimal != None else optimalSet
+
+    
 
     f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
     ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH,n=randomIteration)

@@ -10,6 +10,16 @@
 ["WD", 132]
 ]},
 {
+"GearType" : 0,
+"MateriaLimit" : 2,
+"Name" : "Tome",
+"StatList" : [
+["Crit", 212],
+["SS", 303],
+["MainStat", 409],
+["WD", 131]
+]},
+{
 "GearType" : 2,
 "MateriaLimit" : 2,
 "Name" : "Raid",
