@@ -331,6 +331,14 @@ class DarkKnightActions(ActionEnum):
     Oblation = 25754
     SaltAndDarkness = 25755
     Shadowbringer = 25757
+                             # Living Shadow actions
+    PAbyssalDrain = 22
+    PPlunge = 23
+    PShadowbringer = 25
+    PEdgeShadow = 26
+    PBloodspiller = 27
+    PCarveSpit = 28
+    PDelay = 29
 
 
 # Gunbreaker

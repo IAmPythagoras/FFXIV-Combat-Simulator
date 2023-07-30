@@ -173,15 +173,6 @@
     ["MainStat", 196]
     ]},
     {
-    "GearType" : 11,
-    "MateriaLimit" : 2,
-    "Name" : "Tome",
-    "StatList" : [
-    ["Crit", 102],
-    ["Det", 145],
-    ["MainStat", 196]
-    ]},
-    {
     "GearType" : 10,
     "MateriaLimit" : 2,
     "Name" : "Tome650",
@@ -189,5 +180,14 @@
     ["Crit", 99],
     ["Det", 142],
     ["MainStat", 186]
+    ]},
+    {
+    "GearType" : 11,
+    "MateriaLimit" : 2,
+    "Name" : "Tome",
+    "StatList" : [
+    ["Crit", 102],
+    ["Det", 145],
+    ["MainStat", 196]
     ]}
     ]

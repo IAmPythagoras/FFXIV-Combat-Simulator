@@ -14,7 +14,7 @@ class ProgressBar:
 
 
     def __iter__(self):
-        self.currentProgress = 0
+        self.currentProgress = -1
         self.name = self.name
         return self
 
@@ -25,7 +25,7 @@ class ProgressBar:
         self.currentProgress += 1
         percent = int((self.currentProgress/self.total)*1000)/10
         bar = "❚" * int(percent) + "-" * (100-int(percent))
-        print("\r"+ self.name +" |"+bar+"| " + str(percent) + " %", end="\r")
+        print("\r"+ self.name +" |"+bar+"| " + ((str(percent) + " %") if self.currentProgress > 0 else ""), end="\r")
         if self.total - self.currentProgress == 0:print()
         return self
     
@@ -44,4 +44,6 @@ class ProgressBar:
         newProgressBar = ProgressBar()
         newProgressBar.total = total
         newProgressBar.name = name
-        return iter(newProgressBar)
+        iterator = iter(newProgressBar)
+        next(iterator)
+        return iterator

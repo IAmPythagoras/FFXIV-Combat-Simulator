@@ -2334,8 +2334,8 @@ class Pet(Player):
         """
         self.Master = Master
         Master.Pet = self
-        self.ClassAction = CasterActions # Just a default
-        self.JobAction = SummonerActions # Won't be used
+        self.ClassAction = Master.ClassAction 
+        self.JobAction = Master.JobAction 
 
         # Jobmod
         self.JobMod = 100
@@ -2354,6 +2354,12 @@ class Pet(Player):
         self.Stat = deepcopy(self.Master.Stat)
         self.ArcanumTimer = self.Master.ArcanumTimer # ArcanumTimer
         self.MeditativeBrotherhoodTimer = self.Master.MeditativeBrotherhoodTimer # Meditative Brotherhood Timer
+
+                             # Pets do not have the 5% comp bonus, so we remove the comp bonus from this fight.
+        
+        self.Stat["MainStat"] /= Master.CurrentFight.TeamCompositionBonus
+
+        player_logging.debug("New Pet Created : " + str(self.Stat))
 
         super().__init__([], [], deepcopy(Master.Stat), JobEnum.Pet)
 

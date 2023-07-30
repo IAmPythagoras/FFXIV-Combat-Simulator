@@ -96,7 +96,6 @@ class Fight:
             for ZIPAction in player.ZIPActionSet:
                 player_current_damage += ZIPAction.ComputeRandomDamage()
             player.ZIPDPSRun.append(round(player_current_damage/self.TimeStamp/20)*20)
-            #player.ZIPDPSRun.sort()
 
     def SimulatePreBakedFight(self, Index : int, MainStat : int, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float, n : int = 1000):
         """
@@ -120,10 +119,11 @@ class Fight:
         self.DevilmentHistory = []
         self.PotionHistory = []
         self.PercentBuffHistory = []
+    
                              # Will compute DPS
         for PreBakedAction in player.PreBakedActionSet:
-                                         # Computing base MainStat for this action. Can prob move this above??
-            curMainStat = MainStat * PreBakedAction.MainStatPercentageBonus
+                                         # Computing base MainStat for this action. If from pet do not get teamcomp bonus
+            curMainStat = MainStat * (PreBakedAction.MainStatPercentageBonus if not PreBakedAction.isFromPet else 1)
                                          # Will check what buffs the action falls under.
             timeStamp = PreBakedAction.nonReducableStamp + roundDown(PreBakedAction.reducableStamp / f_SPD, 2)
             fight_logging.debug("TimeStamp : " + str(timeStamp))
@@ -152,7 +152,7 @@ class Fight:
             for history in player.PotionHistory:
                 if history.isUp(timeStamp):
                     curMainStat = min(math.floor(curMainStat * 1.1), curMainStat + 262) #Grade 8 HQ tincture
-                                         # Any other percent bonus
+                                         # Any other percent bonus. Might have to remake dragoon tether since pet not affected by this buff
             for history in player.PercentBuffHistory:
                 if history.isUp(timeStamp):
                     PreBakedAction.PercentageBonus.append(history.getPercentBonus())
@@ -498,7 +498,7 @@ class Fight:
             Player.CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000 # Crit rate in decimal
             Player.CritMult = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000 # Crit Damage multiplier
             Player.DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000 # DH rate in decimal
-
+            
             log_str = ("ID : " + str(Player.playerID) + " , Job : " + JobEnum.name_for_id(Player.JobEnum) 
             + " , f_WD : " + str(Player.f_WD) 
             + " , f_DET : " + str(Player.f_DET) 
@@ -560,11 +560,12 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     # These computations should be up to date with Endwalker.
     baseMain = 390  
     Enemy = Player.CurrentFight.Enemy # Enemy targetted
-
+    isPet = (Player.JobEnum == JobEnum.Pet)
+    isTank = Player.RoleEnum == RoleEnum.Tank or (isPet and Player.Master.RoleEnum == RoleEnum.Tank)
     if Player.JobEnum == JobEnum.Pet: MainStat = Player.Stat["MainStat"] # Summons do not receive bonus
     else: MainStat = math.floor(Player.Stat["MainStat"] * Player.CurrentFight.TeamCompositionBonus) # Scaling %bonus on mainstat
     # Computing values used throughout all computations
-    if Player.RoleEnum == RoleEnum.Tank : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
+    if isTank : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
     else: f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100
     # These values are all already computed since they do not change
     f_WD = Player.f_WD
@@ -633,25 +634,24 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
                 Player.GuaranteedCrit = False
                 auto_crit = True
 
-    if type == 0: fight_logging.debug(str((Player.Stat["MainStat"],f_MAIN_DMG, f_WD, f_DET, f_TEN, f_SPD, CritRate, CritMult, DHRate)))
-    if SavePreBakedAction and Player.playerID == PlayerIDSavePreBakedAction:
+    #if type == 0: fight_logging.debug(str((Player.Stat["MainStat"],f_MAIN_DMG, f_WD, f_DET, f_TEN, f_SPD, CritRate, CritMult, DHRate)))
+    if SavePreBakedAction and (Player.playerID == PlayerIDSavePreBakedAction or (isPet and Player.Master.playerID == PlayerIDSavePreBakedAction)): 
         """
         If that is set to true we will record all we need and will not compute the rest.
         We will check if the action is a GCD with recast time of lesser or equal to 1.5s since the GCD
         cannot go lower. The total time will be remembered and substracted from the total time that is reduceable from more SpS.
         """
 
-        #CritBonus = (Player.CritRateBonus + 
-        #             0.1 if Enemy.ChainStratagem else 0 +
-        #             0.02 if Enemy.WanderingMinuet else 0
-        #            )
-        #DHBonus = (Player.DHRateBonus + 0.2 if Enemy.BattleVoice else 0)
+        if (Player.JobEnum == JobEnum.Pet and Player.Master.playerID == PlayerIDSavePreBakedAction): fight_logging.warning("Added Living Shadow ACtion")
 
+
+                             # BuffList only contains personnal buff (I think? Have to check)
         buffList = []
         for buff in Player.buffList:
             buffList.append(buff.MultDPS)
 
-        Player.PreBakedActionSet.append(PreBakedAction(Player.RoleEnum == RoleEnum.Tank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type, Player.totalTimeNoFaster, Player.CurrentFight.TimeStamp - Player.totalTimeNoFaster,AutoCrit=auto_crit, AutoDH=auto_DH))
+        (Player if not isPet else Player.Master).PreBakedActionSet.append(PreBakedAction(isTank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type, Player.totalTimeNoFaster, 
+                                                       Player.CurrentFight.TimeStamp - Player.totalTimeNoFaster,AutoCrit=auto_crit, AutoDH=auto_DH, isFromPet=isPet))
         
         return Potency, Potency        # Exit the function since we are not interested in the immediate damage value. Still return potency as to not break the fight's duration.
 

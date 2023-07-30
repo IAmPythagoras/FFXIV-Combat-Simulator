@@ -106,11 +106,13 @@ class PreBakedAction:
     type : int -> type of the damage
     AutoCrit : bool -> If is an auto crit (true)
     AutoDH : bool -> if is an auto DH (true)
+    isFromPet : bool -> True if a Pet PreBakedAction
     """
 
     def __init__(self, IsTank : bool, MainStatPercentageBonus : float, buffList : list,
                  TraitBonus : float, Potency : int, type : int, 
-                 nonReducableStamp : float, reducableStamp : float, AutoCrit : bool = False, AutoDH : bool = False):
+                 nonReducableStamp : float, reducableStamp : float, AutoCrit : bool = False, AutoDH : bool = False,
+                 isFromPet : bool = False):
         self.IsTank = IsTank
         self.MainStatPercentageBonus = MainStatPercentageBonus
         #self.HasPotionEffect = HasPotionEffect
@@ -126,6 +128,8 @@ class PreBakedAction:
         self.AutoDH = AutoDH
         self.AutoCritBonus = 1
         self.AutoDHBonus = 1
+        
+        self.isFromPet = isFromPet
 
 
                              # These values are computed once the PreBakedAction is being looped
@@ -412,10 +416,10 @@ class Spell:
             
         if self.GCD: player.GCDCounter += 1 # If action was a GCD, increase the counter
         
-        if self.id > 0 and (player.JobEnum != JobEnum.Pet) : # Only logs if is a player action and not a DOT
+        if self.id > 0: # Only logs if is a player action and not a DOT
             log_str = ( "Timestamp : " + str(player.CurrentFight.TimeStamp)
             + " , Event : end_cast"
-            + " , playerID : " + str(player.playerID)
+            + (" , playerID : " + str(player.playerID) if player.JobEnum != JobEnum.Pet else " , MasterID : " + str(player.Master.playerID))
             + " , Ability : " + name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction)
             + " , Potency : " + str(self.Potency)
             + (" , Damage : " + str(Damage) if not (self.AOEHeal or self.TargetHeal) else " , Healing : " + str(Heal)))
@@ -460,7 +464,8 @@ def ApplyPotion(Player, Enemy):
                                      # Only relevant to PreBakedAction and only does that code if true
     if Player.CurrentFight.SavePreBakedAction:
         fight = Player.CurrentFight
-        history = buffHistory(fight.TimeStamp, fight.TimeStamp + 30)
+                                     # If prepull, make it start at 0
+        history = buffHistory(fight.TimeStamp if fight.FightStart else 0, fight.TimeStamp + 30)
         Player.PotionHistory.append(history)
 
 def PrepullPotion(Player, Enemy): #If potion is prepull
