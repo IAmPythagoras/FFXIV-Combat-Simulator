@@ -3,6 +3,7 @@ from ffxivcalc.helperCode.Vocal import PrintResult, SimulateRuns
 from ffxivcalc.Jobs.PlayerEnum import *
 from ffxivcalc.Jobs.ActionEnum import name_for_id
 from ffxivcalc.Jobs.Base_Spell import ZIPAction, PreBakedAction
+from ffxivcalc.helperCode.Progress import ProgressBar
 import matplotlib.pyplot as plt
 import logging
 from ffxivcalc.helperCode.helper_math import roundDown, isclose
@@ -95,6 +96,7 @@ class Fight:
             for ZIPAction in player.ZIPActionSet:
                 player_current_damage += ZIPAction.ComputeRandomDamage()
             player.ZIPDPSRun.append(round(player_current_damage/self.TimeStamp/20)*20)
+            #player.ZIPDPSRun.sort()
 
     def SimulatePreBakedFight(self, Index : int, MainStat : int, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float, n : int = 1000):
         """
@@ -178,14 +180,23 @@ class Fight:
 
         Percent = int(n/100)
         percentileRuns = {
-            "1" :  0 if n < 100 else randomDPSRuns[Percent],
-            "10" : 0 if n < 100 else randomDPSRuns[10 * Percent],
-            "25" : 0 if n < 100 else randomDPSRuns[25 * Percent],
-            "50" : 0 if n < 100 else randomDPSRuns[50 * Percent],
-            "75" : 0 if n < 100 else randomDPSRuns[75 * Percent],
-            "90" : 0 if n < 100 else randomDPSRuns[90 * Percent],
-            "99" : 0 if n < 100 else randomDPSRuns[n - Percent]
+            "1" :  0 if n < 100 else sum(randomDPSRuns[(Percent):(10*Percent-1)])/(len(randomDPSRuns[(Percent+1):(10*Percent-1)])),
+            "10" : 0 if n < 100 else sum(randomDPSRuns[(10*Percent+1):(25*Percent-1)])/(len(randomDPSRuns[(10*Percent+1):(25*Percent-1)])),
+            "25" : 0 if n < 100 else sum(randomDPSRuns[(25*Percent+1):(50*Percent-1)])/(len(randomDPSRuns[(25*Percent+1):(50*Percent-1)])),
+            "50" : 0 if n < 100 else sum(randomDPSRuns[(50*Percent+1):(75*Percent-1)])/(len(randomDPSRuns[(50*Percent+1):(75*Percent-1)])),
+            "75" : 0 if n < 100 else sum(randomDPSRuns[(75*Percent+1):(90*Percent-1)])/(len(randomDPSRuns[(75*Percent+1):(90*Percent-1)])),
+            "90" : 0 if n < 100 else sum(randomDPSRuns[(90*Percent+1):(99*Percent-1)])/(len(randomDPSRuns[(90*Percent+1):(99*Percent-1)])),
+            "99" : 0 if n < 100 else sum(randomDPSRuns[(99*Percent):])/(len(randomDPSRuns[(99*Percent):]))
         }
+        #percentileRuns = {
+        #    "1" :  0 if n < 100 else randomDPSRuns[Percent],
+        #    "10" : 0 if n < 100 else randomDPSRuns[10 * Percent],
+        #    "25" : 0 if n < 100 else randomDPSRuns[25 * Percent],
+        #    "50" : 0 if n < 100 else randomDPSRuns[50 * Percent],
+        #    "75" : 0 if n < 100 else randomDPSRuns[75 * Percent],
+        #    "90" : 0 if n < 100 else randomDPSRuns[90 * Percent],
+        #    "99" : 0 if n < 100 else randomDPSRuns[n - Percent]
+        #}
                              # Reseting all bonus value for PreBakedActions
         for PreBakedAction in player.PreBakedActionSet:
             PreBakedAction.resetTimeSensibleBuff()
@@ -257,6 +268,7 @@ class Fight:
         fight_logging.debug("Starting simulation with TeamCompositionBonus = " + str(self.TeamCompositionBonus))
         fight_logging.debug("Parameters are -> RequirementOn : " + str(self.RequirementOn) + ", IgnoreMana : " + str(self.IgnoreMana))
 
+        pB = ProgressBar.init(int(TimeLimit/TimeUnit), "Progress Of Fight (maxTime)")
         while(self.TimeStamp <= TimeLimit):
 
             for player in self.PlayerList:
@@ -414,6 +426,7 @@ class Fight:
             # update self.TimeStamp
             self.TimeStamp += TimeUnit
             self.TimeStamp = round(self.TimeStamp, 2) # Round it for cleaner value
+            if vocal and self.FightStart: next(pB)
 
             if self.FightStart and not start:
                 self.TimeStamp = 0
@@ -451,12 +464,15 @@ class Fight:
             gamer.HPGraph[1].append(gamer.HP)
 
         # Printing the results if vocal is true.
-        result, fig = PrintResult(self, self.TimeStamp, self.timeValue, PPSGraph=PPSGraph)
+        if vocal and self.TimeStamp < TimeLimit: pB.complete()
         fig2 = None
-        if n > 0 : fig2 = SimulateRuns(self, n)
+        if n > 0 and vocal : fig2 = SimulateRuns(self, n)
+        result, fig = PrintResult(self, self.TimeStamp, self.timeValue, PPSGraph=PPSGraph)
         if vocal:
             print(result) 
             plt.show()
+
+        
         return result, fig, fig2
             
     def ComputeFunctions(self) -> None:

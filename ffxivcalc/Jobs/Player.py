@@ -317,6 +317,7 @@ class Player:
         self.ActionSet = ActionSet # Known Action List
         self.ZIPActionSet = [] # List of ZIPActions of the player
         self.ZIPDPSRun = [] # List containing all ZIP runs' DPS
+        self.ZIPRunPercentile = {} # Percentiles of ZIPRuns
         self.PreBakedActionSet = [] # Contains all PreBakedActions of the player
         self.DPSBar = {} # Dict containing the count of DPS occurence of the ZIPActions
         self.EffectList = EffectList # Normally Empty, can has some effects initially

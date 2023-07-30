@@ -54,7 +54,7 @@ Event = Fight(Dummy, False)
 # These stats must include the bonus stats food gives.
 
 # Caster
-BLMStat = {'MainStat': 3371, 'WD': 132, 'Det': 1493, 'Ten': 400, 'SS': 841, 'SkS': 400, 'Crit': 2492, 'DH': 1402} # Stats for BlackMage
+BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1493, 'Ten': 400, 'SS': 824, 'SkS': 400, 'Crit': 2504, 'DH': 1392} # Stats for BlackMage
 RDMStat = {"MainStat": 2947, "WD":126, "Det" : 1548, "Ten" : 400, "SS": 495, "SkS" : 400, "Crit" : 2397, "DH" : 1544} # Stats for RedMage
 SMNStat = {"MainStat": 2948, "WD":126, "Det" : 1451, "Ten" : 400, "SS": 544, "SkS" : 400, "Crit" : 2436, "DH" : 1544} # Stats for Summoner
 
@@ -237,11 +237,12 @@ GearSpace = ImportGear("BLMSet.json")
 HD = Food({"DH" : [103, 0.1], "Det" : [62, 0.1]}, "Honeyed Dragonfruit")
 BE = Food({"Det" : [103, 0.1], "Crit" : [62, 0.1]}, "Baked Eggplant")
 CW = Food({"SS" : [103, 0.1], "DH" : [62, 0.1]}, "Caviar Sandwich")
-CC = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")
-#optimal, random = BiSSolver(Event, GearSpace,[3,0,1,2] , [BE, HD, CW, CC],PercentileToOpt=["exp"], randomIteration=100, maxSPDValue=900, useNewAlgo=True, oversaturationLimit=0)
+CC = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")#200000
+optimal, random = BiSSolver(Event, GearSpace,[0,1,2] , [BE, HD, CW, CC],PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=True,maxSPDValue=1000, useNewAlgo=True, 
+                            oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=1)
 
 
-if True :
+if False :
     from ffxivcalc.GearSolver.Solver import computeDamageValue, getGearDPSValue
     from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet, Food
     matGen = MateriaGenerator(18, 36)
@@ -254,18 +255,18 @@ if True :
     Det = 2
     SS = 3
     Weapon = data["WEAPON"][0]
-    Weapon.AddMateria(matGen.GenerateMateria(1))
-    Weapon.AddMateria(matGen.GenerateMateria(1))
+    Weapon.AddMateria(matGen.GenerateMateria(3))
+    Weapon.AddMateria(matGen.GenerateMateria(3))
 
     Head = data["HEAD"][1]
     Head.AddMateria(matGen.GenerateMateria(2))
-    Head.AddMateria(matGen.GenerateMateria(3))
+    Head.AddMateria(matGen.GenerateMateria(2))
     Body = data["BODY"][1]
-    Body.AddMateria(matGen.GenerateMateria(1))
-    Body.AddMateria(matGen.GenerateMateria(1))
+    Body.AddMateria(matGen.GenerateMateria(2))
+    Body.AddMateria(matGen.GenerateMateria(2))
     Hand = data["HANDS"][0]
     Hand.AddMateria(matGen.GenerateMateria(1))
-    Hand.AddMateria(matGen.GenerateMateria(1))
+    Hand.AddMateria(matGen.GenerateMateria(2))
 
     Leg = data["LEGS"][0]
     Leg.AddMateria(matGen.GenerateMateria(0))
@@ -277,10 +278,10 @@ if True :
 
     Ear = data["EARRINGS"][0]
     Ear.AddMateria(matGen.GenerateMateria(1))
-    Ear.AddMateria(matGen.GenerateMateria(1))
+    Ear.AddMateria(matGen.GenerateMateria(3))
 
     Neck = data["NECKLACE"][1]
-    Neck.AddMateria(matGen.GenerateMateria(1))
+    Neck.AddMateria(matGen.GenerateMateria(0))
     Neck.AddMateria(matGen.GenerateMateria(1))
 
     Bracelet = data["BRACELETS"][0]
@@ -307,7 +308,6 @@ if True :
     gSet.AddGear(Bracelet)
     gSet.AddGear(Lring)
     gSet.AddGear(ring)
-    gSet.addFood(CC)
+    gSet.addFood(BE)
 
-
-    getGearDPSValue(Event, gSet, 0,n=10000000)
+    getGearDPSValue(Event, gSet, 0,n=1000)

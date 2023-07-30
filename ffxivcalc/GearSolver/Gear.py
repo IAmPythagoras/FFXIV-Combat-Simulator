@@ -342,7 +342,23 @@ class Gear:
         This function returns the type of the gear.
         """
         return GearType.name_for_id(self.GearType)
-            
+    
+    def getMateriaTypeList(self, IgnoreSpeedMateria : bool = True) -> list[StatType]:
+        """
+        This function returns a list of all present materia's stattype on the gear.
+        """
+        statTypeList = []
+        for mat in self.Materias:
+            if not (mat.StatType in statTypeList) and not ((mat.StatType == StatType.SS or mat.StatType == StatType.SkS) and IgnoreSpeedMateria): 
+                statTypeList.append(mat.StatType)
+        return statTypeList
+    
+    def getNumberMateria(self) -> int:
+        """
+        This function returns the number of materia on this gear
+        """
+        return len(self.Materias)
+    
 class GearSet:
     """
     This class corresponds to a gearset. A player can have a gear set. A gear set is a list of Gear.
@@ -362,10 +378,22 @@ class GearSet:
 
     def removeMateriaType(self, StatType):
         """
-        This function removes all materia of a given type.
+        This function removes the first materia of the valid StatType found in every gear piece.
         """
         for key in self.GearSet:
             self.GearSet[key].removeMateriaType(StatType)
+
+    def removeFirstFoundMateriaInvalidPiece(self, type : StatType) -> str:
+        """
+        This function removes the first found materia of the given type on an invalid gear piece.
+        If none is found the function returns None and otherwise it returns the name of the gear piece.
+        """
+
+        for gear in self:
+            if not gear.hasValidMelding() and gear.hasStatMeld(type): 
+                gear.removeMateriaType(type)
+                return gear.getGearTypeName()
+        return None
 
     def removeMateriaSpecGear(self, gearName : str, type : StatType):
         """
@@ -448,7 +476,15 @@ class GearSet:
         for key in self.GearSet:
             limit += self.GearSet[key].MateriaLimit
         return limit
-
+    
+    def getNumberMateria(self) -> int:
+        """
+        This function returns the current number of materia on the gear set.
+        """
+        total = 0
+        for gear in self: total += gear.getNumberMateria()
+        return total
+    
     def ResetGearSet(self):
         self.GearSet = {}
         
@@ -492,6 +528,16 @@ class GearSet:
             valid = valid and gear.hasValidMelding()
         return valid
     
+    def getMateriaTypeList(self, IgnoreSpeedMateria : bool = True, ignoreValidMeld : bool = False) -> list[StatType]:
+        """
+        This function returns a list of type of the materias present in the gear set
+        IgnoreSpeedMateria : bool -> If true the function will only return non Speed related stattype.
+        ignoreValidMeld : bool -> If true, function only returns materias type that are on at least one gear with invalidMelding.
+        """
+        statTypeList = []
+        for gear in self:
+            if not (gear.hasValidMelding() and ignoreValidMeld) : statTypeList += [type for type in gear.getMateriaTypeList(IgnoreSpeedMateria=IgnoreSpeedMateria) if not (type in statTypeList)]
+        return statTypeList    
 
 def ImportGear(fileName : str) -> dict:
     """
@@ -516,70 +562,4 @@ def ImportGear(fileName : str) -> dict:
             GearDict[type] = [ImportedGear]
 
     return GearDict
-
-if __name__ == "__main__":
-    matGen = MateriaGenerator(18, 36)
-
-    data = ImportGear("GearTest.json")
-
-    Weapon = data["WEAPON"][0]
-    Weapon.AddMateria(matGen.GenerateMateria(2))
-    Weapon.AddMateria(matGen.GenerateMateria(1))
-
-    Head = data["HEAD"][1]
-    Head.AddMateria(matGen.GenerateMateria(1))
-    Head.AddMateria(matGen.GenerateMateria(3))
-    Body = data["BODY"][1]
-    Body.AddMateria(matGen.GenerateMateria(1))
-    Body.AddMateria(matGen.GenerateMateria(1))
-    Hand = data["HANDS"][0]
-    Hand.AddMateria(matGen.GenerateMateria(1))
-    Hand.AddMateria(matGen.GenerateMateria(1))
-
-    Leg = data["LEGS"][0]
-    Leg.AddMateria(matGen.GenerateMateria(0))
-    Leg.AddMateria(matGen.GenerateMateria(0))
-
-    Feet = data["FEET"][1]
-    Feet.AddMateria(matGen.GenerateMateria(0))
-    Feet.AddMateria(matGen.GenerateMateria(3))
-
-    Ear = data["EARRINGS"][0]
-    Ear.AddMateria(matGen.GenerateMateria(2))
-    Ear.AddMateria(matGen.GenerateMateria(3))
-
-    Neck = data["NECKLACE"][1]
-    Neck.AddMateria(matGen.GenerateMateria(0))
-    Neck.AddMateria(matGen.GenerateMateria(1))
-
-    Bracelet = data["BRACELETS"][0]
-    Bracelet.AddMateria(matGen.GenerateMateria(2))
-    Bracelet.AddMateria(matGen.GenerateMateria(3))
-
-    Lring = data["LRING"][0]
-    Lring.AddMateria(matGen.GenerateMateria(2))
-    Lring.AddMateria(matGen.GenerateMateria(1))
-
-    ring = data["RING"][0]
-    ring.AddMateria(matGen.GenerateMateria(0))
-    ring.AddMateria(matGen.GenerateMateria(0))
-
-    gSet = GearSet()
-    gSet.AddGear(Weapon)
-    gSet.AddGear(Head)
-    gSet.AddGear(Body)
-    gSet.AddGear(Hand)
-    gSet.AddGear(Leg)
-    gSet.AddGear(Feet)
-    gSet.AddGear(Ear)
-    gSet.AddGear(Neck)
-    gSet.AddGear(Bracelet)
-    gSet.AddGear(Lring)
-    gSet.AddGear(ring)
-
-    print(gSet)
-    GearStat = gSet.GetGearSetStat()
-    from Solver import computeDamageValue
-    f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
-    ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)
 
