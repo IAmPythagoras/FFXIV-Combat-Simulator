@@ -76,8 +76,8 @@ DRGStat = {"MainStat": 2949, "WD":126, "Det" : 1545, "Ten" : 400, "SS": 400, "Sk
 MNKStat = {"MainStat": 3076, "WD":126, "Det" : 1546, "Ten" : 400, "SS": 400, "SkS" : 769, "Crit" : 2490, "DH" : 1179} # Stats for Monk
 RPRStat = {"MainStat": 2946, "WD":126, "Det" : 1545, "Ten" : 400, "SS": 400, "SkS" : 400, "Crit" : 2462, "DH" : 1577} # Stats for Reaper
 
-# Tank
-DRKStat = {'MainStat': 3378, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 780, 'Crit': 2437, 'DH': 966} # Stats for DarkKnight
+# Tank {'MainStat': 3378, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 671, 'Crit': 2627, 'DH': 904}
+DRKStat = {'MainStat': 3378, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 780, 'Crit': 2437, 'DH': 976} # Stats for DarkKnight
 WARStat = {"MainStat": 2910, "WD":126, "Det" : 1844, "Ten" : 751, "SS": 400, "SkS" : 400, "Crit" : 2377, "DH" : 1012} # Stats for Warrior
 PLDStat = {"MainStat": 2891, "WD":126, "Det" : 1883, "Ten" : 631, "SS": 400, "SkS" : 650, "Crit" : 2352, "DH" : 868} # Stats for Paladin
 GNBStat = {"MainStat": 2891, "WD":126, "Det" : 1883, "Ten" : 631, "SS": 400, "SkS" : 650, "Crit" : 2352, "DH" : 868} # Stats for Gunbreaker
@@ -154,7 +154,7 @@ RPROpener = [SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSli
 
 # Tank 
 DRKOpener = [BloodWeapon, TBN(DRKPlayer), Potion, HardSlash, EdgeShadow, Delirium, SyphonStrike, Souleater, LivingShadow, SaltedEarth, HardSlash, Shadowbringer, EdgeShadow, Bloodspiller, CarveSpit, Plunge, Bloodspiller, Shadowbringer, EdgeShadow, Bloodspiller, SaltDarkness, EdgeShadow, SyphonStrike, Plunge, EdgeShadow, HardSlash, SyphonStrike, Souleater]
-WAROpener = [TankStance, Provoke,Holmgang ,Maim, Maim, Maim, Maim, Maim, Maim, Maim, Maim]
+WAROpener = []
 PLDOpener = []
 GNBOpener = []
 
@@ -201,7 +201,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [BLMPlayer]
+PlayerList = [DRKPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -220,98 +220,39 @@ Event.RequirementOn = RequirementOn
 Event.ShowGraph = ShowGraph
 Event.IgnoreMana = IgnoreMana
 
+findBiS = True
+
 __logger__ = logging.getLogger("ffxivcalc") # root logger
-level = logging.DEBUG
+level = logging.DEBUG if not findBiS else logging.WARNING
 logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
 __logger__.setLevel(level=level) # __logger__ = logging.getLogger("ffxivcalc") 
 
-#Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False) # Simulating fight
+if not findBiS:
+    Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False) # Simulating fight
 
 # ===============================================================================================
 
-from ffxivcalc.GearSolver.Gear import ImportGear, Food
-from ffxivcalc.GearSolver.Solver import BiSSolver, getBaseStat, getGearDPSValue
-import matplotlib.pyplot as plt
-GearSpace = ImportGear("GearTest.json")
 
-HD = Food({"DH" : [103, 0.1], "Det" : [62, 0.1]}, "Honeyed Dragonfruit")
-BE = Food({"Det" : [103, 0.1], "Crit" : [62, 0.1]}, "Baked Eggplant")
-CW = Food({"SS" : [103, 0.1], "DH" : [62, 0.1]}, "Caviar Sandwich")
-CC = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")
-BG = Food({"Crit" : [103, 0.1], "SkS" : [62, 0.1]}, "Baba Ghanoush")
-optimal, random = BiSSolver(Event, GearSpace,[0,1,2] , [BE, HD, CW, CC],PercentileToOpt=["90"], randomIteration=1000000, mendSpellSpeed=True,maxSPDValue=900, useNewAlgo=True, 
-                            oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=1,findOptMateriaGearBF=False)
+if findBiS:
+    from ffxivcalc.GearSolver.Gear import ImportGear, Food
+    from ffxivcalc.GearSolver.Solver import BiSSolver, getBaseStat, getGearDPSValue
 
+    GearSpace = ImportGear("DRKGear.json")
 
-if False :
-    from ffxivcalc.GearSolver.Solver import computeDamageValue, getGearDPSValue
-    from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet, Food
-    matGen = MateriaGenerator(18, 36)
-    foodDict = {"Crit" : [63, 0.1], "Det" : [103, 0.1]}
-    raidFood = Food(foodDict, "Baked Eggplant")
+    HD = Food({"DH" : [103, 0.1], "Det" : [62, 0.1]}, "Honeyed Dragonfruit")
+    DB = Food({"SkS" : [103, 0.1], "DH" : [62, 0.1]}, "Dragonfruit Blend")
+    BG = Food({"Crit" : [103, 0.1], "SkS" : [62, 0.1]}, "Baba Ghanoush")
+    BE = Food({"Det" : [103, 0.1], "Crit" : [62, 0.1]}, "Baked Eggplant")
+    CW = Food({"SS" : [103, 0.1], "DH" : [62, 0.1]}, "Caviar Sandwich")
+    CC = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")
+    MB = Food({"Ten" : [103, 0.1], "Det" : [62, 0.1]}, "Marinated Broccoflower")
+    BS =  Food({"Det" : [103, 0.1], "Ten" : [62, 0.1]}, "Broccoflower Stew")
+    foodSpace = [BE, HD, CW, BG]
 
-    data = ImportGear("DRKGear.json")
     Crit = 0
     DH = 1
     Det = 2
-    SS = 3
-    SkS = 4
-    Weapon = data["WEAPON"][0]
-    Weapon.AddMateria(matGen.GenerateMateria(0))
-    Weapon.AddMateria(matGen.GenerateMateria(0))
-
-    Head = data["HEAD"][0]
-    Head.AddMateria(matGen.GenerateMateria(1))
-    Head.AddMateria(matGen.GenerateMateria(2))
-
-    Body = data["BODY"][1]
-    Body.AddMateria(matGen.GenerateMateria(1))
-    Body.AddMateria(matGen.GenerateMateria(1))
-
-    Hand = data["HANDS"][0]
-    Hand.AddMateria(matGen.GenerateMateria(1))
-    Hand.AddMateria(matGen.GenerateMateria(1))
-
-    Leg = data["LEGS"][0]
-    Leg.AddMateria(matGen.GenerateMateria(0))
-    Leg.AddMateria(matGen.GenerateMateria(0))
-
-    Feet = data["FEET"][1]
-    Feet.AddMateria(matGen.GenerateMateria(1))
-    Feet.AddMateria(matGen.GenerateMateria(1))
-
-    Ear = data["EARRINGS"][1]
-    Ear.AddMateria(matGen.GenerateMateria(1))
-    Ear.AddMateria(matGen.GenerateMateria(1))
-
-    Neck = data["NECKLACE"][0]
-    Neck.AddMateria(matGen.GenerateMateria(1))
-    Neck.AddMateria(matGen.GenerateMateria(1))
-
-    Bracelet = data["BRACELETS"][1]
-    Bracelet.AddMateria(matGen.GenerateMateria(1))
-    Bracelet.AddMateria(matGen.GenerateMateria(1))
-
-    Lring = data["LRING"][1]
-    Lring.AddMateria(matGen.GenerateMateria(0))
-    Lring.AddMateria(matGen.GenerateMateria(1))
-
-    ring = data["RING"][0]
-    ring.AddMateria(matGen.GenerateMateria(1))
-    ring.AddMateria(matGen.GenerateMateria(0))
-
-    gSet = GearSet()
-    gSet.AddGear(Weapon)
-    gSet.AddGear(Head)
-    gSet.AddGear(Body)
-    gSet.AddGear(Hand)
-    gSet.AddGear(Leg)
-    gSet.AddGear(Feet)
-    gSet.AddGear(Ear)
-    gSet.AddGear(Neck)
-    gSet.AddGear(Bracelet)
-    gSet.AddGear(Lring)
-    gSet.AddGear(ring)
-    gSet.addFood(BE)
-
-    getGearDPSValue(Event, gSet, 0,n=0)
+    Ten = 5
+    materiaSpace = [Crit, DH, Det]
+    optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=False,maxSPDValue=900, useNewAlgo=True, 
+                                oversaturationIterationsPreGear=0, oversaturationIterationsPostGear=1,findOptMateriaGearBF=True)

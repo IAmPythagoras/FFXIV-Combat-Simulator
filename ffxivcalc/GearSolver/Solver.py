@@ -37,7 +37,14 @@ def getBaseStat():
         "DH" : 400
     }  
 
-def getGearDPSValue(Fight, gearSet, PlayerIndex, n=10000):
+def getGearDPSValue(Fight, gearSet : GearSet, PlayerIndex : int, n : int =10000):
+    """
+    This function returns the expected damage of a gear set given a fight
+    Fight -> Fight object
+    gearSet : GearSet -> Gear set to be tested
+    PlayerIndex : int -> index of the player to test the gear set on
+    n : int -> Number of times to run random simulations.
+    """
                              # Computes the PreBakedAction and asks the fight object to remember those actions for the player with the given ID.
                              # The simulated player will be given base stats.
     player = Fight.PlayerList[PlayerIndex]
@@ -95,10 +102,12 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     Note that is is possible to give a "prebaked" BiS by only giving 1 choice for some pieces and that it is also possible to
     add materias to the pieces in the GearSpace before running the solver. 
     Note that since the percentile's BiS are using random damage this is only an approximation and might miss the actual best in slot. So it 
-    is recommended to run this solver multiple times or with very high value of randomIteration. Furthermore, using BF algorithm to look
-    for all (usually) 22 best melds at the same time is impossible due to how large the search space would be, this code takes adds materia iteratively
-    which makes the computation faster, but is also not guaranteed to give the true BiS. The solver finds the best GearSet without melds first, then finds the best
-    meldings and then finds the best food. 
+    is recommended to run this solver multiple times or with very high value of randomIteration. 
+
+    It is also recommend to have useNewAlgo set to true in order to use the faster and more efficient algorithm.
+    If you are solving for the Expected Damage BiS it is also recommend to have findOptMateriaGearBF set to True in order to try
+    every possible gear set as otherwise the best meld is only found once a gear set is found.
+
     Fight -> Fight object.
     GearSpace : dict -> Dictionnary filled with the different gear pieces the algorithm can search through. Must have at least one of each gear types
     Materiaspace : list -> List of all the stats the solver will look through when optimizing melds. Must be at least 3 materias
@@ -332,6 +341,9 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
    
 def materiaBisSolver(Set : GearSet, matGen : MateriaGenerator, matSpace : list[int], maxDepth : int, Fight, JobMod : int, IsTank : bool, IsCaster : bool,PlayerIndex : int, percentile : str, randomIteration : int,mendSpellSpeed : bool,maxSPDValue : int = 5000):
     """
+
+    NOT RECOMMENDED TO USE SINCE SLOW.
+
     This functions solves the materia BiS for a given gearset.
     trialSet : GearSet -> GearSet for which to optimize Materias
     matGen : MateriaGenerator -> Materia Generator object
@@ -413,6 +425,9 @@ def materiaBisSolver(Set : GearSet, matGen : MateriaGenerator, matSpace : list[i
     
 def materiaBisSolverV2(Set : GearSet, matGen : MateriaGenerator, matSpace : list[int], Fight, JobMod : int, IsTank : bool, IsCaster : bool,PlayerIndex : int, percentile : str, randomIteration : int, mendSpellSpeed : bool,maxSPDValue : int = 5000, oversaturationIterationsPostGear : int = 0):
     """
+    
+    DEPRECATED
+    
     This function serves same purpose as materiaBisSolver(), but instead of going deeper into the materia serach space iteratively,
     we start at the bottom with a theoretical max meld. So every gear piece will have every materia that they can have with no limit.
     They are only limited by the maxStat. We will then remove materias from gear piece until the melding is legal.
@@ -528,7 +543,29 @@ def materiaBisSolverV2(Set : GearSet, matGen : MateriaGenerator, matSpace : list
     return optimalSet, ExpectedDamage, randomDamageDict
 
 def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list[int], Fight, JobMod : int, IsTank : bool, IsCaster : bool,PlayerIndex : int, percentile : str, randomIteration : int, mendSpellSpeed : bool,maxSPDValue : int = 5000, oversaturationIterationsPostGear : int = 0, findOptMateriaGearBF : bool = False):   
-    
+    """
+    This function finds the best melds for the given Gear Set.
+
+    The algorithm will first remove materias until the gear set is valid by removing the materias that are deemed
+    less contributing. After that SpS/SkS will replace lowest impact materias until Speed values are achieved.
+
+    THIS FUNCTION HAS NOT YET BEEN SHOWED TO BE OPTIMAL, BUT IT IS THE BEST ONE I HAVE FOUND.
+
+    Set : GearSet -> GearSet to optimize
+    matGen : MateriaGenerator -> Materia Generator
+    matSpace : list[int] -> list of Materias to consider when oversaturating and removing.
+    Fight -> Fight to consider
+    JobMod : int -> Value of the JobMod of the player the Gear Set is on.
+    IsTank : bool -> True if the player is a tank
+    IsCaster : bool -> True if the player is a caster
+    PlayerIndex : int -> Index of the player in the Fight's PlayerList
+    percentile : str -> Percentile to optimize. "exp" is Expected.
+    randomIteration : int -> Number of time to run random simulations.
+    mendSpellSpeed : bool -> If true the algorithm will add SpS materias and not SkS
+    maxSPDValue : int -> Maximum Speed value for the Gear Set with melds.
+    oversaturationIterationsPostGear : int -> Number of times the algorithm will oversaturate the gear set.
+    findOptMateriaGearBF : bool -> If true means we are solving materias for every possible gear set/food. So this simply mutes the ProgressBar usually present.
+    """
     optimalSet = deepcopy(Set)
                                  # This first loop will forceAddMateria to the whole set until no more can be
     for gear in optimalSet:
