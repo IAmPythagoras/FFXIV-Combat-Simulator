@@ -210,6 +210,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
                                                                          # Will find optimal meld with food
                                                     if findOptMateriaGearBF: 
                                                         trialSet, exp, ra = materiaBisSolverV3(trialSet, matGen, MateriaSpace, Fight, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, "exp",0,mendSpellSpeed,maxSPDValue=maxSPDValue,oversaturationIterationsPostGear=oversaturationIterationsPostGear,findOptMateriaGearBF=findOptMateriaGearBF)
+
                                                     GearStat = trialSet.GetGearSetStat()
                                                     if not ((mendSpellSpeed and GearStat["SS"] > maxSPDValue) or (not mendSpellSpeed and GearStat["SkS"] > maxSPDValue)):
 
@@ -617,7 +618,10 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
 
     GearStat = optimalSet.GetGearSetStat()
     pBTotal = max(0,int((maxSPDValue - GearStat["SS"])/matGen.EvenValue))
-    pbReplace = ProgressBar.init(pBTotal, "Replacing by SpS/SkS")
+    
+    if not findOptMateriaGearBF : 
+        pBTotal = max(0,int((maxSPDValue - GearStat["SS"])/matGen.EvenValue))
+        pbReplace = ProgressBar.init(pBTotal, "Replacing by SpS/SkS")
 
     while (mendSpellSpeed and GearStat["SS"] + matGen.EvenValue < maxSPDValue) or (not mendSpellSpeed and GearStat["SkS"] + matGen.EvenValue < maxSPDValue):
 

@@ -575,12 +575,14 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     CritRate = (Player.CritRate)
     CritMult = Player.CritMult
     DHRate = Player.DHRate
+    CritRateBonus = Player.CritRateBonus
+    DHRateBonus = Player.DHRateBonus # Saving value for later use if necessary
 
-    if Enemy.ChainStratagem: CritRate += 0.1    # If ChainStratagem is active, increase crit rate
+    if Enemy.ChainStratagem: CritRateBonus += 0.1    # If ChainStratagem is active, increase crit rate
 
-    if Enemy.WanderingMinuet: CritRate += 0.02 # If WanderingMinuet is active, increase crit rate
+    if Enemy.WanderingMinuet: CritRateBonus += 0.02 # If WanderingMinuet is active, increase crit rate
 
-    if Enemy.BattleVoice: DHRate += 0.2 # If BattleVoice is active, increase DHRate
+    if Enemy.BattleVoice: DHRateBonus += 0.2 # If BattleVoice is active, increase DHRate
 
     DHRate += Player.DHRateBonus # Adding Bonus
     CritRate += Player.CritRateBonus # Adding bonus
@@ -590,8 +592,6 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
     auto_crit = False
     auto_DH = False
-    CritRateBonus = CritRate # Saving value for later use if necessary
-    DHRateBonus = DHRate # Saving value for later use if necessary
 
     if type == 0: # Making sure its not an AA or DOT
         if Player.JobEnum == JobEnum.Machinist: 
@@ -603,7 +603,8 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
                 auto_crit = True
                 auto_DH = True   
         elif Player.JobEnum == JobEnum.Warrior:
-            if Player.InnerReleaseStack >= 1 and (Player.NextSpell < len(Player.ActionSet)) and (Player.ActionSet[Player.NextSpell].id == 9 or Player.ActionSet[Player.NextSpell].id == 8 or Player.ActionSet[Player.NextSpell].id == 10):
+            fight_logging.debug("Inner Release Stack : " + str(Player.InnerReleaseStack))        # Primal Rend                                     # Fell Cleave                                    # Inner Chaos
+            if Player.InnerReleaseStack >= 1 and (Player.NextSpell < len(Player.ActionSet)) and (Player.ActionSet[Player.NextSpell].id == 25753 or Player.ActionSet[Player.NextSpell].id == 3549 or Player.ActionSet[Player.NextSpell].id == 16465):
                 CritRate = 1# If inner release weaponskill
                 DHRate = 1
                 Player.InnerReleaseStack -= 1
@@ -634,7 +635,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
                 Player.GuaranteedCrit = False
                 auto_crit = True
 
-    #if type == 0: fight_logging.debug(str((Player.Stat["MainStat"],f_MAIN_DMG, f_WD, f_DET, f_TEN, f_SPD, CritRate, CritMult, DHRate)))
+    if type == 0: fight_logging.debug(str((Player.Stat["MainStat"],f_MAIN_DMG, f_WD, f_DET, f_TEN, f_SPD, CritRate, CritMult, DHRate)))
     if SavePreBakedAction and (Player.playerID == PlayerIDSavePreBakedAction or (isPet and Player.Master.playerID == PlayerIDSavePreBakedAction)): 
         """
         If that is set to true we will record all we need and will not compute the rest.
@@ -649,6 +650,9 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         buffList = []
         for buff in Player.buffList:
             buffList.append(buff.MultDPS)
+
+        if auto_crit and auto_DH : fight_logging.debug("Auto Crit/DH prebaked")
+        elif auto_crit : fight_logging.debug("Auto Crit prebaked")
 
         (Player if not isPet else Player.Master).PreBakedActionSet.append(PreBakedAction(isTank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type, Player.totalTimeNoFaster, 
                                                        Player.CurrentFight.TimeStamp - Player.totalTimeNoFaster,AutoCrit=auto_crit, AutoDH=auto_DH, isFromPet=isPet))
@@ -723,14 +727,20 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
     
     if auto_crit and auto_DH: # If both 
+        fight_logging.debug("Auto Crit/DH")
         auto_crit_bonus = (1 + roundDown(CritRateBonus * CritMult, 3)) # Auto_crit bonus if buffed
+        fight_logging.debug("CritRate : " + str(CritRateBonus) + " autocritbonus : " + str(auto_crit_bonus))
         auto_dh_bonus = (1 + roundDown(DHRateBonus * 0.25, 2)) # Auto_DH bonus if buffed
-        non_crit_dh_expected, dh_crit_expected = math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))), math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2)))
-        (Player if Player.JobEnum != JobEnum.Pet else Player.Master).ZIPActionSet.append(ZIPAction(Damage, 1, CritMult, 1, auto_crit=True, auto_dh=False, AutoCritBonus=auto_crit_bonus, AutoDHBonus=auto_dh_bonus))
+        fight_logging.debug("DHRateBonus : " + str(DHRateBonus) + " autodhbonus : " + str(auto_dh_bonus))
+        non_crit_dh_expected, dh_crit_expected = ( math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))), 
+                                                   math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) )
+        (Player if Player.JobEnum != JobEnum.Pet else Player.Master).ZIPActionSet.append(ZIPAction(Damage, 1, CritMult, 1, auto_crit=True, auto_dh=True, AutoCritBonus=auto_crit_bonus, AutoDHBonus=auto_dh_bonus))
         return math.floor(math.floor(non_crit_dh_expected * auto_crit_bonus) * auto_dh_bonus), math.floor(math.floor(dh_crit_expected * auto_crit_bonus) * auto_dh_bonus)
     elif auto_crit: # If sure to crit, add crit to min expected damage
+        fight_logging.debug("Auto Crit")
         auto_crit_bonus = (1 + roundDown(CritRateBonus * CritMult, 3)) # Auto_crit bonus if buffed
-        non_crit_dh_expected, dh_crit_expected = math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))), math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) # If we have auto crit, we return full damage
+        non_crit_dh_expected, dh_crit_expected = ( math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))), 
+                                                   math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) )# If we have auto crit, we return full damage
         (Player if Player.JobEnum != JobEnum.Pet else Player.Master).ZIPActionSet.append(ZIPAction(Damage, 1, CritMult, DHRate, auto_crit=True, AutoCritBonus=auto_crit_bonus ))
         return math.floor(non_crit_dh_expected * auto_crit_bonus), math.floor(dh_crit_expected * auto_crit_bonus) 
     else:# No auto_crit or auto_DH

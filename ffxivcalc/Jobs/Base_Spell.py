@@ -173,7 +173,7 @@ class PreBakedAction:
         auto_crit_bonus = (1 + roundDown(self.CritBonus * f_CritMult, 3)) if self.AutoCrit else 1# Auto_crit bonus if buffed
         auto_dh_bonus = (1 + roundDown(self.DHBonus * 0.25, 2)) if self.AutoDH else 1# Auto_DH bonus if buffed
 
-        ExpectedDamage = math.floor(math.floor(Damage * (1 + roundDown(((f_CritRate + self.CritBonus) * f_CritMult), 3)) ) * (1 + roundDown(((f_DH + self.DHBonus) * 0.25), 2)))
+        ExpectedDamage = math.floor(math.floor(Damage * (1 + roundDown(  ( (f_CritRate + self.CritBonus) if not self.AutoCrit else 1)  * (f_CritMult), 3) ) ) * (1 + roundDown(  ((f_DH + self.DHBonus) if not self.AutoDH else 1) * 0.25 , 2)))
         ExpectedDamage = math.floor(ExpectedDamage * auto_crit_bonus)
         ExpectedDamage = math.floor(ExpectedDamage * auto_dh_bonus)
 
@@ -415,7 +415,7 @@ class Spell:
                 player.NoMoreAction = True
             
         if self.GCD: player.GCDCounter += 1 # If action was a GCD, increase the counter
-        
+
         if self.id > 0: # Only logs if is a player action and not a DOT
             log_str = ( "Timestamp : " + str(player.CurrentFight.TimeStamp)
             + " , Event : end_cast"
