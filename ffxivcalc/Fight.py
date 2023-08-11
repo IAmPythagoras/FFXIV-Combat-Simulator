@@ -127,6 +127,7 @@ class Fight:
                                          # Will check what buffs the action falls under.
             timeStamp = PreBakedAction.nonReducableStamp + roundDown(PreBakedAction.reducableStamp / f_SPD, 2)
             fight_logging.debug("TimeStamp : " + str(timeStamp))
+            fight_logging.debug("Non Reducable : " + str(PreBakedAction.nonReducableStamp) + " Reducable : " + str(PreBakedAction.reducableStamp) + " f_SPD : " + str(f_SPD))
                                          # Chain Stratagem
             for history in player.ChainStratagemHistory:
                 if history.isUp(timeStamp):
@@ -643,7 +644,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         cannot go lower. The total time will be remembered and substracted from the total time that is reduceable from more SpS.
         """
 
-        if (Player.JobEnum == JobEnum.Pet and Player.Master.playerID == PlayerIDSavePreBakedAction): fight_logging.warning("Added Living Shadow ACtion")
+        #if (Player.JobEnum == JobEnum.Pet and Player.Master.playerID == PlayerIDSavePreBakedAction): fight_logging.warning("Added Living Shadow ACtion")
 
 
                              # BuffList only contains personnal buff (I think? Have to check)
@@ -660,6 +661,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         return Potency, Potency        # Exit the function since we are not interested in the immediate damage value. Still return potency as to not break the fight's duration.
 
     if type == 0: # Type 0 is direct damage
+        #Damage = Potency * f_MAIN_DMG * f_DET * f_TEN  *f_WD * Player.Trait
         Damage = math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN ) *f_WD) * Player.Trait) # Player.Trait is trait DPS bonus
         Damage = math.floor(Damage * SpellBonus)
         Player.NumberDamageSpell += 1
@@ -732,21 +734,21 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         fight_logging.debug("CritRate : " + str(CritRateBonus) + " autocritbonus : " + str(auto_crit_bonus))
         auto_dh_bonus = (1 + roundDown(DHRateBonus * 0.25, 2)) # Auto_DH bonus if buffed
         fight_logging.debug("DHRateBonus : " + str(DHRateBonus) + " autodhbonus : " + str(auto_dh_bonus))
-        non_crit_dh_expected, dh_crit_expected = ( math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))), 
+        non_crit_dh_expected, dh_crit_expected = ( 0, 
                                                    math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) )
         (Player if Player.JobEnum != JobEnum.Pet else Player.Master).ZIPActionSet.append(ZIPAction(Damage, 1, CritMult, 1, auto_crit=True, auto_dh=True, AutoCritBonus=auto_crit_bonus, AutoDHBonus=auto_dh_bonus))
-        return math.floor(math.floor(non_crit_dh_expected * auto_crit_bonus) * auto_dh_bonus), math.floor(math.floor(dh_crit_expected * auto_crit_bonus) * auto_dh_bonus)
+        return 0, math.floor(math.floor(dh_crit_expected * auto_crit_bonus) * auto_dh_bonus)
     elif auto_crit: # If sure to crit, add crit to min expected damage
         fight_logging.debug("Auto Crit")
         auto_crit_bonus = (1 + roundDown(CritRateBonus * CritMult, 3)) # Auto_crit bonus if buffed
-        non_crit_dh_expected, dh_crit_expected = ( math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))), 
+        non_crit_dh_expected, dh_crit_expected = ( 0, 
                                                    math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) )# If we have auto crit, we return full damage
         (Player if Player.JobEnum != JobEnum.Pet else Player.Master).ZIPActionSet.append(ZIPAction(Damage, 1, CritMult, DHRate, auto_crit=True, AutoCritBonus=auto_crit_bonus ))
-        return math.floor(non_crit_dh_expected * auto_crit_bonus), math.floor(dh_crit_expected * auto_crit_bonus) 
+        return 0, math.floor(dh_crit_expected * auto_crit_bonus) 
     else:# No auto_crit or auto_DH
-        non_crit_dh_expected, dh_crit_expected = math.floor(Damage * ( 1 + roundDown((DHRate * 0.25), 2))), math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) # Non crit expected damage, expected damage with crit
+        non_crit_dh_expected, dh_crit_expected = 0, math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) # Non crit expected damage, expected damage with crit
         (Player if Player.JobEnum != JobEnum.Pet else Player.Master).ZIPActionSet.append(ZIPAction(Damage, CritRate, CritMult, DHRate))
-        return non_crit_dh_expected , dh_crit_expected
+        return 0 , dh_crit_expected
 
 # Compute Healing
 def ComputeHeal(Player, Potency, Target, SpellBonus, type, spellObj) -> float:

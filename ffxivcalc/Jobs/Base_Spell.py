@@ -131,7 +131,6 @@ class PreBakedAction:
         
         self.isFromPet = isFromPet
 
-
                              # These values are computed once the PreBakedAction is being looped
                              # through in SimulatePreBakedFight.
         self.CritBonus = 0
