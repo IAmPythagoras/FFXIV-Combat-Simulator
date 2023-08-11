@@ -107,12 +107,13 @@ class PreBakedAction:
     AutoCrit : bool -> If is an auto crit (true)
     AutoDH : bool -> if is an auto DH (true)
     isFromPet : bool -> True if a Pet PreBakedAction
+    isGCD : bool -> True if the action is a GCD
     """
 
     def __init__(self, IsTank : bool, MainStatPercentageBonus : float, buffList : list,
                  TraitBonus : float, Potency : int, type : int, 
                  nonReducableStamp : float, reducableStamp : float, AutoCrit : bool = False, AutoDH : bool = False,
-                 isFromPet : bool = False):
+                 isFromPet : bool = False, isGCD : bool = False):
         self.IsTank = IsTank
         self.MainStatPercentageBonus = MainStatPercentageBonus
         #self.HasPotionEffect = HasPotionEffect
@@ -130,6 +131,7 @@ class PreBakedAction:
         self.AutoDHBonus = 1
         
         self.isFromPet = isFromPet
+        self.isGCD = isGCD
 
                              # These values are computed once the PreBakedAction is being looped
                              # through in SimulatePreBakedFight.

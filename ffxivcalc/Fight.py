@@ -107,8 +107,6 @@ class Fight:
         player = self.PlayerList[Index]
         ExpectedDamage = 0
         baseMain = 390
-        timeCanBeReduced = roundDown(self.TimeStamp - player.totalTimeNoFaster,2)
-        trialKillTime = roundDown(timeCanBeReduced / f_SPD,2) + player.totalTimeNoFaster
 
         damageHistory = []   # This list will contain the damage of all PreBakedAction ComputeExpectedDamage used to
                              # faster compute RandomDamage
@@ -119,15 +117,37 @@ class Fight:
         self.DevilmentHistory = []
         self.PotionHistory = []
         self.PercentBuffHistory = []
+
+        countGCD = 0
+        timeStamp = 0
+        totalPotency = 0
+
+
+                             # Find this set's finish time so we can cut off autos if they do not hit in the end.
+        trialFinishTime = 0
+        for PreBakedAction in player.PreBakedActionSet:
+            trialFinishTime = PreBakedAction.nonReducableStamp + roundDown(PreBakedAction.reducableStamp / f_SPD, 2) - (0.01 * countGCD)
     
                              # Will compute DPS
         for PreBakedAction in player.PreBakedActionSet:
+                             # The timestamp of the PreBakedAction. We are substracting 0.01 seconds for every previously done GCD
+                             # since roundDown(PreBakedAction.reducableStamp / f_SPD, 2) computes the GCD timer, but the simulator
+                             # starts counting at 0.00, so we have to substract for every GCD as otherwise we will gain 0.01 every GCD.
+            timeStamp = round(PreBakedAction.nonReducableStamp + roundDown(PreBakedAction.reducableStamp / f_SPD, 2) - (0.01 * countGCD),2)
+
+                             # If an auto doesn't land in this trial we simply continue
+            if PreBakedAction.type == 3 and (PreBakedAction.nonReducableStamp + PreBakedAction.reducableStamp) > trialFinishTime:
+                continue
+
                                          # Computing base MainStat for this action. If from pet do not get teamcomp bonus
+            totalPotency += PreBakedAction.Potency
             curMainStat = MainStat * (PreBakedAction.MainStatPercentageBonus if not PreBakedAction.isFromPet else 1)
-                                         # Will check what buffs the action falls under.
-            timeStamp = PreBakedAction.nonReducableStamp + roundDown(PreBakedAction.reducableStamp / f_SPD, 2)
+                                         # Count every GCD
+            if PreBakedAction.isGCD : countGCD += 1
+
             fight_logging.debug("TimeStamp : " + str(timeStamp))
-            fight_logging.debug("Non Reducable : " + str(PreBakedAction.nonReducableStamp) + " Reducable : " + str(PreBakedAction.reducableStamp) + " f_SPD : " + str(f_SPD))
+            #fight_logging.debug("Non Reducable : " + str(PreBakedAction.nonReducableStamp) + " Reducable : " + str(PreBakedAction.reducableStamp) + " f_SPD : " + str(f_SPD))
+                                         # Will check what buffs the action falls under.
                                          # Chain Stratagem
             for history in player.ChainStratagemHistory:
                 if history.isUp(timeStamp):
@@ -175,7 +195,7 @@ class Fight:
             for PreBakedAction in player.PreBakedActionSet:
                 CurrentDamage += PreBakedAction.ComputeRandomDamage(damageHistory[index], f_CritRate,f_CritMult, f_DH)
                 index += 1 
-            randomDPSRuns.append(CurrentDamage/trialKillTime)
+            randomDPSRuns.append(CurrentDamage/timeStamp)
                              # Sorting array so we can find the percentiles.
         randomDPSRuns.sort()
 
@@ -201,8 +221,10 @@ class Fight:
                              # Reseting all bonus value for PreBakedActions
         for PreBakedAction in player.PreBakedActionSet:
             PreBakedAction.resetTimeSensibleBuff()
+
+        #fight_logging.debug("Total Potency : " + str(totalPotency))
         
-        return int(ExpectedDamage/trialKillTime), percentileRuns
+        return round(ExpectedDamage/timeStamp,2), percentileRuns
 
         
 
@@ -656,7 +678,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         elif auto_crit : fight_logging.debug("Auto Crit prebaked")
 
         (Player if not isPet else Player.Master).PreBakedActionSet.append(PreBakedAction(isTank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type, Player.totalTimeNoFaster, 
-                                                       Player.CurrentFight.TimeStamp - Player.totalTimeNoFaster,AutoCrit=auto_crit, AutoDH=auto_DH, isFromPet=isPet))
+                                                       Player.CurrentFight.TimeStamp - Player.totalTimeNoFaster,AutoCrit=auto_crit, AutoDH=auto_DH, isFromPet=isPet, isGCD=spellObj.GCD))
         
         return Potency, Potency        # Exit the function since we are not interested in the immediate damage value. Still return potency as to not break the fight's duration.
 
