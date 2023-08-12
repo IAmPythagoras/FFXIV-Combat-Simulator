@@ -67,12 +67,12 @@ class EnemyEvent:
         # Does not differentiate between magical and physical for now
         curr_mit = 1
         if Enemy.Addle > 0: 
-            if self.IsPhysical : curr_mit = roundDown(0.95 * curr_mit, 2) # 5% physical mit
-            else : curr_mit = roundDown(0.9 * curr_mit, 2) # 10% magic mit
+            if self.IsPhysical : curr_mit = round(0.95 * curr_mit, 2) # 5% physical mit
+            else : curr_mit = round(0.9 * curr_mit, 2) # 10% magic mit
         if Enemy.Feint  > 0: 
-            if self.IsPhysical : curr_mit = roundDown(0.9 * curr_mit, 2) # 10% physical mit
-            else : curr_mit = roundDown(0.95 * curr_mit, 2) # 5% magic mit
-        if Enemy.Reprisal  > 0: curr_mit = roundDown(0.9 * curr_mit, 2) # Flat 10% mit
+            if self.IsPhysical : curr_mit = round(0.9 * curr_mit, 2) # 10% physical mit
+            else : curr_mit = round(0.95 * curr_mit, 2) # 5% magic mit
+        if Enemy.Reprisal  > 0: curr_mit = round(0.9 * curr_mit, 2) # Flat 10% mit
 
         self.Damage *= curr_mit # Updating the new damage based on global mit
 
@@ -83,7 +83,7 @@ class EnemyEvent:
             # Mit according to their own personnal mit
             if self.IsPhysical : player_damage = self.Damage * player.PhysicalMitigation # Only applies physical mit
             else : player_damage = self.Damage * player.MagicMitigation # Only applies magic mit
-            player_damage = roundDown(player_damage, 0) # Rounding down to lowest integer
+            player_damage = round(player_damage, 0) # Rounding down to lowest integer
             player.TakeDamage(player_damage, not self.IsPhysical) # Applying the damage to the player
 
         Enemy.EventNumber += 1 # Incrementing the pointer to the next event

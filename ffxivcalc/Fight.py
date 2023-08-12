@@ -125,7 +125,7 @@ class Fight:
 
                              # Find this set's finish time so we can cut off autos if they do not hit in the end.
         for PreBakedAction in player.PreBakedActionSet:
-            trialFinishTime = round(PreBakedAction.nonReducableStamp + max(0,roundDown(PreBakedAction.reducableStamp / f_SPD, 2) - (0.01 * (countGCD)),2),2)
+            trialFinishTime = round(PreBakedAction.nonReducableStamp + max(0,round(PreBakedAction.reducableStamp / f_SPD, 2) - (0.01 * (countGCD)),2),2)
             if PreBakedAction.isGCD : countGCD += 1
         
         countGCD = 0
@@ -133,9 +133,9 @@ class Fight:
                              # Will compute DPS
         for PreBakedAction in player.PreBakedActionSet:
                              # The timestamp of the PreBakedAction. We are substracting 0.01 seconds for every previously done GCD
-                             # since roundDown(PreBakedAction.reducableStamp / f_SPD, 2) computes the GCD timer, but the simulator
+                             # since round(PreBakedAction.reducableStamp / f_SPD, 2) computes the GCD timer, but the simulator
                              # starts counting at 0.00, so we have to substract for every GCD as otherwise we will gain 0.01 every GCD.
-            timeStamp = round(PreBakedAction.nonReducableStamp + max(0,roundDown(PreBakedAction.reducableStamp / f_SPD, 2) - (0.01 * countGCD)),2)
+            timeStamp = round(PreBakedAction.nonReducableStamp + max(0,round(PreBakedAction.reducableStamp / f_SPD, 2) - (0.01 * countGCD)),2)
 
                              # If an auto doesn't land in this trial we simply continue
             if PreBakedAction.type == 3 and timeStamp > trialFinishTime:
@@ -231,8 +231,8 @@ class Fight:
         fight_logging.debug("counted GCD  : " + str(countGCD))
         fight_logging.debug("previous GCD : " + str(player.GCDCounter))
         
-        if getInfo : return round(ExpectedDamage/timeStamp,2), percentileRuns, timeStamp, totalPotency
-        return round(ExpectedDamage/timeStamp,2), percentileRuns
+        if getInfo : return round(ExpectedDamage/trialFinishTime,2), percentileRuns, timeStamp, totalPotency
+        return round(ExpectedDamage/trialFinishTime,2), percentileRuns
 
         
 
@@ -456,7 +456,7 @@ class Fight:
 
             # update self.TimeStamp
             self.TimeStamp += TimeUnit
-            self.TimeStamp = round(self.TimeStamp, 2) # Round it for cleaner value
+            self.TimeStamp = round(self.TimeStamp,2) # Round it for cleaner value
             if vocal and self.FightStart: next(pB)
 
             if self.FightStart and not start:
@@ -608,7 +608,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     DHRate = Player.DHRate
     CritRateBonus = Player.CritRateBonus
     DHRateBonus = Player.DHRateBonus # Saving value for later use if necessary
-    f_DET_DH = round(f_DET + Player.DHRate,2)
+    f_DET_DH = math.floor((f_DET + Player.DHRate) * 1000 ) / 1000
 
     if Enemy.ChainStratagem: CritRateBonus += 0.1    # If ChainStratagem is active, increase crit rate
 
@@ -764,22 +764,22 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     
     if auto_crit and auto_DH: # If both 
         fight_logging.debug("Auto Crit/DH")
-        auto_crit_bonus = (1 + roundDown(CritRateBonus * CritMult, 3)) # Auto_crit bonus if buffed
+        auto_crit_bonus = (1 + CritRateBonus * CritMult) # Auto_crit bonus if buffed
         fight_logging.debug("CritRate : " + str(CritRateBonus) + " autocritbonus : " + str(auto_crit_bonus))
-        auto_dh_bonus = (1 + roundDown(DHRateBonus * 0.25, 2)) # Auto_DH bonus if buffed
+        auto_dh_bonus = (1 + DHRateBonus * 0.25) # Auto_DH bonus if buffed
         fight_logging.debug("DHRateBonus : " + str(DHRateBonus) + " autodhbonus : " + str(auto_dh_bonus))
-        non_crit_dh_expected, dh_crit_expected =  0, math.floor(math.floor(Damage * (1 + roundDown(CritMult, 3)) ) * (1.25)) 
+        non_crit_dh_expected, dh_crit_expected =  0, math.floor(math.floor(Damage * (1 + CritMult) ) * (1.25)) 
         (Player if Player.JobEnum != JobEnum.Pet else Player.Master).ZIPActionSet.append(ZIPAction(Damage, 1, CritMult, 1, auto_crit=True, auto_dh=True, AutoCritBonus=auto_crit_bonus, AutoDHBonus=auto_dh_bonus))
         return 0, math.floor(math.floor(dh_crit_expected * auto_crit_bonus) * auto_dh_bonus)
     elif auto_crit: # If sure to crit, add crit to min expected damage
         fight_logging.debug("Auto Crit")
-        auto_crit_bonus = (1 + roundDown(CritRateBonus * CritMult, 3)) # Auto_crit bonus if buffed
+        auto_crit_bonus = (1 + CritRateBonus * CritMult) # Auto_crit bonus if buffed
         non_crit_dh_expected, dh_crit_expected = ( 0, 
-                                                   math.floor(math.floor(Damage * (1 + roundDown(CritRate * CritMult, 3)) ) * (1 + roundDown((DHRate * 0.25), 2))) )# If we have auto crit, we return full damage
+                                                   math.floor(math.floor(Damage * (1 + CritMult) ) * (1 + (DHRate * 0.25))) )# If we have auto crit, we return full damage
         (Player if Player.JobEnum != JobEnum.Pet else Player.Master).ZIPActionSet.append(ZIPAction(Damage, 1, CritMult, DHRate, auto_crit=True, AutoCritBonus=auto_crit_bonus ))
         return 0, math.floor(dh_crit_expected * auto_crit_bonus) 
     else:# No auto_crit or auto_DH
-        non_crit_dh_expected, dh_crit_expected = 0, math.floor(math.floor(Damage * (1 + roundDown((CritRate * CritMult), 3)) ) * (1 + roundDown((DHRate * 0.25), 3))) # Non crit expected damage, expected damage with crit
+        non_crit_dh_expected, dh_crit_expected = 0, math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))) # Non crit expected damage, expected damage with crit
         (Player if Player.JobEnum != JobEnum.Pet else Player.Master).ZIPActionSet.append(ZIPAction(Damage, CritRate, CritMult, DHRate))
         return 0 , dh_crit_expected
 
@@ -816,7 +816,7 @@ def ComputeHeal(Player, Potency, Target, SpellBonus, type, spellObj) -> float:
     if type == 1: # Direct Heal
         H_1 = math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_heal * f_DET) * f_DET) * f_TEN) * f_WD ) * Player.Trait)
         H_1_min = math.floor(H_1 * 97/100) # Minimal healing done
-        H_1_expected_crit = math.floor(H_1 * (1 + roundDown((CritRate * CritMult), 3))) # Expected healing done
+        H_1_expected_crit = math.floor(H_1 * (1 + round((CritRate * CritMult), 3))) # Expected healing done
         # All buff the Player is giving
         for HealingBuff in Player.GivenHealBuffList:
             H_1_min = math.floor(H_1_min * HealingBuff.PercentBuff)
@@ -830,7 +830,7 @@ def ComputeHeal(Player, Potency, Target, SpellBonus, type, spellObj) -> float:
     if type == 2: # DOT heal
         H_1 = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_heal * f_DET) * f_DET) * f_TEN)  * f_SPD)* f_WD ) * Player.Trait)
         H_1_min = math.floor(H_1 * 97/100) # Minimal healing done
-        H_1_expected_crit = math.floor(H_1 * (1 + roundDown((CritRate * CritMult), 3))) # Expected healing done
+        H_1_expected_crit = math.floor(H_1 * (1 + round((CritRate * CritMult), 3))) # Expected healing done
 
         # If this is the first time the DOT is used. Will snapshot all buffs for later application of the heal.
 

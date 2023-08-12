@@ -40,6 +40,8 @@ class ProgressBar:
 
         predictedTime = roundDown(self.iterationAverage * (self.total-self.currentProgress),1)
 
+        #input(predictedTime)
+
         bar = "❚" * int(percent) + "-" * (100-int(percent))
         print("\r"+ self.name +" |"+bar+"| " + ((str(percent) + " %") if self.currentProgress > 0 else "") + " ETA : " + str(predictedTime) + "s", end="\r")
         if self.total - self.currentProgress == 0:print()

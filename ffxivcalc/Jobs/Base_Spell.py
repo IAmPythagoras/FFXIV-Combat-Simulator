@@ -157,7 +157,7 @@ class PreBakedAction:
         n : int -> number of time for which the PreBakedAction will compute the random damage.
         """
 
-        f_DET_DH = round(f_DET + f_DH,2)
+        f_DET_DH = math.floor((f_DET + f_DH) * 1000 ) / 1000
 
         Damage = 0
         if self.type == 0: # Type 0 is direct damage
@@ -173,10 +173,10 @@ class PreBakedAction:
         for buff in self.PercentageBonus:
             Damage = math.floor(Damage * buff)
         
-        auto_crit_bonus = (1 + roundDown(self.CritBonus * f_CritMult, 3)) if self.AutoCrit else 1# Auto_crit bonus if buffed
-        auto_dh_bonus = (1 + roundDown((self.DHBonus) * 0.25, 2)) if self.AutoDH else 1# Auto_DH bonus if buffed
+        auto_crit_bonus = (1 + self.CritBonus * f_CritMult) if self.AutoCrit else 1# Auto_crit bonus if buffed
+        auto_dh_bonus = (1 + (self.DHBonus) * 0.25) if self.AutoDH else 1# Auto_DH bonus if buffed
 
-        ExpectedDamage = math.floor(math.floor(Damage * (1 + roundDown(  ( (f_CritRate + self.CritBonus) if not self.AutoCrit else 1)  * (f_CritMult), 3) ) ) * (1 + roundDown(  ((f_DH + self.DHBonus) if not self.AutoDH else 1) * 0.25 , 3)))
+        ExpectedDamage = math.floor(math.floor(Damage * (1 + ((f_CritRate + self.CritBonus) if not self.AutoCrit else 1)  * (f_CritMult) ) ) * (1 + ((f_DH + self.DHBonus) if not self.AutoDH else 1) * 0.25))
         ExpectedDamage = math.floor(ExpectedDamage * auto_crit_bonus)
         ExpectedDamage = math.floor(ExpectedDamage * auto_dh_bonus)
 
@@ -196,8 +196,8 @@ class PreBakedAction:
         CritHit = (random() <= (f_CritRate + self.CritBonus)) or self.AutoCrit
         DirectHit = ((random() <= (f_DH + self.DHBonus))) or self.AutoDH
 
-        auto_crit_bonus = (1 + roundDown(self.CritBonus * f_CritMult, 3)) if self.AutoCrit else 1# Auto_crit bonus if buffed
-        auto_dh_bonus = (1 + roundDown(self.DHBonus * 0.25, 2)) if self.AutoDH else 1# Auto_DH bonus if buffed
+        auto_crit_bonus = (1 + (self.CritBonus * f_CritMult)) if self.AutoCrit else 1# Auto_crit bonus if buffed
+        auto_dh_bonus = (1 + (self.DHBonus * 0.25)) if self.AutoDH else 1# Auto_DH bonus if buffed
 
         UniformDamage = math.floor(Damage * uniform(0.95, 1.05))
         CritDamage = math.floor(UniformDamage * (1 + f_CritMult if CritHit else 1) * (self.AutoCritBonus if self.AutoCrit else 1))

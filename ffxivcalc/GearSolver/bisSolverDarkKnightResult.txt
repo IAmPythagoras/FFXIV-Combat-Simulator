@@ -1,0 +1,19 @@
+Solver result (Using BF up-down)
+Best optimal : Gearset's info:
+WEAPON : Crit : 214 | Det : 306 | MainStat : 416 | WD : 132 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+HEAD : Crit : 219 | Ten : 184 | MainStat : 248 |  Materias : SkS : 36 | SkS : 36 |  Name : Tome
+BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SkS : 36 | SkS : 36 |  Name : Tome
+HANDS : Ten : 129 | Crit : 184 | MainStat : 248 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+LEGS : Crit : 204 | Det : 292 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+FEET : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+NECKLACE : Det : 102 | Crit : 145 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+LRING : Crit : 145 | SkS : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+RING : Crit : 102 | Det : 145 | MainStat : 196 |  Materias : Crit : 36 | DH : 36 |  Name : Tome
+ Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1772, 'Ten': 713, 'SS': 400, 'SkS': 780, 'Crit': 2662, 'DH': 796}
+Materia numbers : Crit 5x |SkS 6x |DH 11x |
+Food Baba Ghanoush gives -> Crit 10% max of 103 |SkS 10% max of 62 |
+Expected Damage : 13845.46
+Potency : 9340TimeStamp : 24.35Random Damage : {'1': 14415.746553241419, '10': 13070.53861949139, '25': 13498.92152486385, '50': 14051.445406660116, '75': 14455.226662454586, '90': 14829.903197418596, '99': 15900.698151950717}
+(1.72, 1.101, 1.016, 1.026, 0.288, 0.638, 0.114)
