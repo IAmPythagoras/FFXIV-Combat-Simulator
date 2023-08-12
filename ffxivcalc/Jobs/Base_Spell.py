@@ -157,9 +157,11 @@ class PreBakedAction:
         n : int -> number of time for which the PreBakedAction will compute the random damage.
         """
 
+        f_DET_DH = round(f_DET + f_DH,2)
+
         Damage = 0
         if self.type == 0: # Type 0 is direct damage
-            Damage = math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG * f_DET) * f_TEN ) *f_WD) * self.TraitBonus) # Player.Trait is trait DPS bonus
+            Damage = math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG * (f_DET_DH if self.AutoCrit else f_DET)) * f_TEN ) *f_WD) * self.TraitBonus) # Player.Trait is trait DPS bonus
         elif self.type == 1: # Type 1 is magical DOT
             Damage = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(self.Potency * f_WD) * f_MAIN_DMG) * f_SPD) * f_DET) * f_TEN) * self.TraitBonus) + 1
         elif self.type == 2: # Type 2 is physical DOT
@@ -172,7 +174,7 @@ class PreBakedAction:
             Damage = math.floor(Damage * buff)
         
         auto_crit_bonus = (1 + roundDown(self.CritBonus * f_CritMult, 3)) if self.AutoCrit else 1# Auto_crit bonus if buffed
-        auto_dh_bonus = (1 + roundDown(self.DHBonus * 0.25, 2)) if self.AutoDH else 1# Auto_DH bonus if buffed
+        auto_dh_bonus = (1 + roundDown((self.DHBonus) * 0.25, 2)) if self.AutoDH else 1# Auto_DH bonus if buffed
 
         ExpectedDamage = math.floor(math.floor(Damage * (1 + roundDown(  ( (f_CritRate + self.CritBonus) if not self.AutoCrit else 1)  * (f_CritMult), 3) ) ) * (1 + roundDown(  ((f_DH + self.DHBonus) if not self.AutoDH else 1) * 0.25 , 2)))
         ExpectedDamage = math.floor(ExpectedDamage * auto_crit_bonus)
@@ -417,7 +419,7 @@ class Spell:
             
         if self.GCD: player.GCDCounter += 1 # If action was a GCD, increase the counter
 
-        if self.id > 0: # Only logs if is a player action and not a DOT
+        if self.id > 0 or type == 3: # Only logs if is a player action and not a DOT
             log_str = ( "Timestamp : " + str(player.CurrentFight.TimeStamp)
             + " , Event : end_cast"
             + (" , playerID : " + str(player.playerID) if player.JobEnum != JobEnum.Pet else " , MasterID : " + str(player.Master.playerID))
@@ -465,8 +467,9 @@ def ApplyPotion(Player, Enemy):
                                      # Only relevant to PreBakedAction and only does that code if true
     if Player.CurrentFight.SavePreBakedAction:
         fight = Player.CurrentFight
-                                     # If prepull, make it start at 0
-        history = buffHistory(fight.TimeStamp if fight.FightStart else 0, fight.TimeStamp + 30)
+                                     # If prepull, make it start at 0.05
+        startTime = fight.TimeStamp if fight.FightStart else -0.05
+        history = buffHistory(startTime, startTime + 30)
         Player.PotionHistory.append(history)
 
 def PrepullPotion(Player, Enemy): #If potion is prepull

@@ -57,15 +57,6 @@
 {
 "GearType" : 7,
 "MateriaLimit" : 2,
-"Name" : "Raid",
-"StatList" : [
-["Ten", 102],
-["Det", 145],
-["MainStat", 196]
-]},
-{
-"GearType" : 7,
-"MateriaLimit" : 2,
 "Name" : "Tome",
 "StatList" : [
 ["Crit", 145],
@@ -79,15 +70,6 @@
 "StatList" : [
 ["Det", 102],
 ["Crit", 145],
-["MainStat", 196]
-]},
-{
-"GearType" : 8,
-"MateriaLimit" : 2,
-"Name" : "Tome",
-"StatList" : [
-["Det", 145],
-["SkS", 102],
 ["MainStat", 196]
 ]},
 {
@@ -116,15 +98,6 @@
 ["Crit", 145],
 ["SkS", 102],
 ["MainStat", 196]
-]},
-{
-"GearType" : 10,
-"MateriaLimit" : 2,
-"Name" : "Tome650",
-"StatList" : [
-["Crit", 99],
-["Det", 142],
-["MainStat", 186]
 ]},
 {
 "GearType" : 11,

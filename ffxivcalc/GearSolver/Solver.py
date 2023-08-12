@@ -60,11 +60,13 @@ def getGearDPSValue(Fight, gearSet : GearSet, PlayerIndex : int, n : int =10000)
     GearStat = gearSet.GetGearSetStat()
 
     f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
-    ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, n=n)
+    ExpectedDamage, randomDamageDict, duration, potency = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, n=n,getInfo = True)
 
     print(gearSet)
     print("Expected : " + str(ExpectedDamage))
     print("Random : " + str(randomDamageDict))
+    print("Duration : " + str(duration))
+    print("Potency : " + str(potency))
 
     return ExpectedDamage, randomDamageDict
 
@@ -146,7 +148,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     Fight.PlayerIDSavePreBakedAction = PlayerIndex
     Fight.SimulateFight(0.01, 500, False, n=0,PPSGraph=False)
 
-    IsTank = Fight.PlayerList[PlayerIndex] == RoleEnum.Tank
+    IsTank = Fight.PlayerList[PlayerIndex].RoleEnum == RoleEnum.Tank
     IsCaster = Fight.PlayerList[PlayerIndex].RoleEnum == RoleEnum.Caster or Fight.PlayerList[PlayerIndex].RoleEnum == RoleEnum.Healer
     JobMod = Fight.PlayerList[PlayerIndex].JobMod # Level 90 jobmod value, specific to each job
 
@@ -308,12 +310,15 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
 
     GearStat = optimalGearSet.GetGearSetStat()
     f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
-    curMax, curRandom = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH,n=randomIteration)
+    logging.getLogger("ffxivcalc").setLevel(level=logging.DEBUG)
+    curMax, curRandom, duration, potency = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH,n=randomIteration, getInfo=True)
     if "exp" in PercentileToOpt:
         #optimalGearSet.addFood(curBestExpectedFood)
         text += "Best optimal : "
         text += (str(optimalGearSet) + "\n")
         text += ("Expected Damage : " + str(curMax) + "\n")
+        text += ("Potency : " + str(potency))
+        text += ("TimeStamp : " + str(duration))
         text += ("Random Damage : " + str(curRandom) + "\n")
         text += str(computeDamageValue(optimalGearSet.GetGearSetStat(), JobMod, IsTank, IsCaster))
 
@@ -614,7 +619,7 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
     solver_logging.warning("Replacing materias until SpS/SkS values are achieved.")
 
     optimalSpeedSet = deepcopy(optimalSet)
-    curMaxSpeedDPS = 0
+    curMaxSpeedDPS = curMaxDPS
 
     GearStat = optimalSet.GetGearSetStat()
     pBTotal = max(0,int((maxSPDValue - GearStat["SS"])/matGen.EvenValue))

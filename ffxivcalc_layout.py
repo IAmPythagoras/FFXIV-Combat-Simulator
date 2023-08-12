@@ -74,12 +74,16 @@ NINStat = {"MainStat": 2921, "WD":126, "Det" : 1669, "Ten" : 400, "SS": 400, "Sk
 SAMStat = {"MainStat": 2937, "WD":126, "Det" : 1571, "Ten" : 400, "SS": 400, "SkS" : 508, "Crit" : 2446, "DH" : 1459} # Stats for Samurai
 DRGStat = {"MainStat": 2949, "WD":126, "Det" : 1545, "Ten" : 400, "SS": 400, "SkS" : 400, "Crit" : 2462, "DH" : 1577} # Stats for Dragoon
 MNKStat = {"MainStat": 3076, "WD":126, "Det" : 1546, "Ten" : 400, "SS": 400, "SkS" : 769, "Crit" : 2490, "DH" : 1179} # Stats for Monk
-RPRStat = {"MainStat": 2946, "WD":126, "Det" : 1545, "Ten" : 400, "SS": 400, "SkS" : 400, "Crit" : 2462, "DH" : 1577} # Stats for Reaper
+RPRStat = {'MainStat': 3378, 'WD': 132, 'Det': 1870, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2567, 'DH': 1396} # Stats for Reaper
+RPRStat = {'MainStat': 3378, 'WD': 132, 'Det': 1707, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2474, 'DH': 1652} # Stats for Reaper me
 
 # Tank {'MainStat': 3378, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 671, 'Crit': 2627, 'DH': 904}
 DRKStat = {'MainStat': 3378, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 671, 'Crit': 2627, 'DH': 904} # Stats for DarkKnight
-WARStat = {'MainStat': 3378, 'WD': 132, 'Det': 2004, 'Ten': 529, 'SS': 400, 'SkS': 718, 'Crit': 2407, 'DH': 976} # Stats for Warrior
-WARStat = {'MainStat': 3368, 'WD': 132, 'Det': 2146, 'Ten': 529, 'SS': 400, 'SkS': 760, 'Crit': 2361, 'DH': 832}
+DRKStat = {'MainStat': 3378, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 924, 'Crit': 2447, 'DH': 832}
+#DRKStat = {'MainStat': 3378, 'WD': 132, 'Det': 2004, 'Ten': 529, 'SS': 400, 'SkS': 862, 'Crit': 2586, 'DH': 652}
+
+WARStat = {'MainStat': 3378, 'WD': 132, 'Det': 2182, 'Ten': 529, 'SS': 400, 'SkS': 400, 'Crit': 2576, 'DH': 940}
+#WARStat = {'MainStat': 3378, 'WD': 132, 'Det': 2006, 'Ten': 529, 'SS': 400, 'SkS': 604, 'Crit': 2199, 'DH': 1295}
 PLDStat = {"MainStat": 2891, "WD":126, "Det" : 1883, "Ten" : 631, "SS": 400, "SkS" : 650, "Crit" : 2352, "DH" : 868} # Stats for Paladin
 GNBStat = {"MainStat": 2891, "WD":126, "Det" : 1883, "Ten" : 631, "SS": 400, "SkS" : 650, "Crit" : 2352, "DH" : 868} # Stats for Gunbreaker
 
@@ -143,7 +147,7 @@ GNBPlayer = Player([], [], GNBStat, JobEnum.Gunbreaker)
 
 # Caster
 BLMOpener = [SharpCast, Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, SharpCast, Swiftcast, Despair, Manafront, Triplecast, Fire4, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose, Fire3, Fire4, Fire4, Fire4, Despair, Blizzard3, Blizzard4,Paradox, SharpCast, Fire3, Fire4, Fire4, Thunder3, Fire4, Paradox, Fire4, Fire4, Fire4, Despair]
-SMNOpener = [Summon, Deathflare, Enkindle,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3,Ruin3]
+SMNOpener = []
 RDMOpener = []
 
 # Healer
@@ -162,19 +166,15 @@ SAMOpener = []
 DRGOpener = []
 MNKOpener = []
 NINOpener = []
-RPROpener = [SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice,SoulSlice]
+RPROpener = [Soulsow, Harpe, ShadowOfDeath, ArcaneCircle, SoulSlice, SoulSlice, Potion, PlentifulHarvest, Enshroud, CrossReaping, VoidReaping, LemureSlice, CrossReaping, VoidReaping, LemureSlice, Communio, Gluttony, Gibbet, Gallows, UnveiledGibbet, Gibbet, ShadowOfDeath, Slice, WaxingSlice, InfernalSlice, Slice, WaxingSlice, InfernalSlice, UnveiledGallows, Gallows, SoulSlice, UnveiledGibbet, Gibbet, Enshroud, CrossReaping, VoidReaping, LemureSlice, CrossReaping, VoidReaping, LemureSlice, Communio, HarvestMoon ]
 
 # Tank 
 DRKOpener = [BloodWeapon, TBN(DRKPlayer), Potion, HardSlash, EdgeShadow, Delirium, SyphonStrike, Souleater, SaltedEarth, HardSlash, Shadowbringer, EdgeShadow, Bloodspiller, CarveSpit, Plunge, Bloodspiller, Shadowbringer, EdgeShadow, Bloodspiller, SaltDarkness, EdgeShadow, SyphonStrike, Plunge, EdgeShadow, HardSlash, SyphonStrike, Souleater]
 #DRKOpener = [HardSlash]
-WAROpener = [Tomahawk, Infuriate, HeavySwing, Maim, Potion, StormEye, InnerRelease, InnerChaos, Upheaval, Onslaught, PrimalRend, Infuriate, InnerChaos, Onslaught, FellCleave, FellCleave, HeavySwing, Maim, StormPath,FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath, HeavySwing, Maim, StormPath, FellCleave, FellCleave, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk, Tomahawk]
-i = 0
-for x in WAROpener:
-    if x.GCD : i+=1
-#input(i)
+#WAROpener = [HeavySwing, Infuriate, Maim, Potion, StormEye, InnerRelease, InnerChaos, Upheaval, Onslaught, PrimalRend, Infuriate, InnerChaos, Onslaught, FellCleave, FellCleave, HeavySwing, Maim, StormPath,FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath, HeavySwing, Maim, StormPath, FellCleave, FellCleave]
+WAROpener = [HeavySwing, Infuriate, Maim, WaitAbility(0.75), Potion, StormEye, InnerRelease, Upheaval, InnerChaos, Onslaught, FellCleave, Onslaught, PrimalRend, FellCleave, Onslaught, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath, FellCleave, Infuriate, InnerChaos, HeavySwing, Upheaval, Maim, StormEye, HeavySwing, Maim, StormPath, HeavySwing, Maim, StormPath, HeavySwing, Maim, StormEye, FellCleave, InnerRelease, Onslaught, FellCleave, FellCleave, PrimalRend, FellCleave, FellCleave]
 PLDOpener = []
 GNBOpener = []
-
 
 # ===============================================================================================
 
@@ -218,7 +218,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [WARPlayer]
+PlayerList = [RPRPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -237,7 +237,7 @@ Event.RequirementOn = RequirementOn
 Event.ShowGraph = ShowGraph
 Event.IgnoreMana = IgnoreMana
 
-findBiS = False
+findBiS = True
 
 __logger__ = logging.getLogger("ffxivcalc") # root logger
 level = logging.DEBUG if not findBiS else logging.WARNING
@@ -245,7 +245,7 @@ logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ff
 __logger__.setLevel(level=level) # __logger__ = logging.getLogger("ffxivcalc") 
 
 if not findBiS:
-    #Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False, MaxTeamBonus=False) # Simulating fight
+    Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False, MaxTeamBonus=False) # Simulating fight
     pass
 
 # ===============================================================================================
@@ -255,7 +255,7 @@ if findBiS:
     from ffxivcalc.GearSolver.Gear import ImportGear, Food
     from ffxivcalc.GearSolver.Solver import BiSSolver, getBaseStat, getGearDPSValue
 
-    GearSpace = ImportGear("TankTest.json")
+    GearSpace = ImportGear("RPRGear.json")
 
     HD = Food({"DH" : [103, 0.1], "Det" : [62, 0.1]}, "Honeyed Dragonfruit")
     DB = Food({"SkS" : [103, 0.1], "DH" : [62, 0.1]}, "Dragonfruit Blend")
@@ -272,15 +272,14 @@ if findBiS:
     Det = 2
     Ten = 5
     materiaSpace = [Crit, DH, Det]
-    optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=False,maxSPDValue=800, useNewAlgo=True, 
-                                oversaturationIterationsPreGear=0, oversaturationIterationsPostGear=1,findOptMateriaGearBF=True)
+    optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=False,maxSPDValue=500, useNewAlgo=True, 
+                                oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=1,findOptMateriaGearBF=True)
 
-if True:
+if False:
     from ffxivcalc.GearSolver.Solver import computeDamageValue, getGearDPSValue
     from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet, Food, ImportGear
     matGen = MateriaGenerator(18, 36)
-    foodDict = {"Crit" : [63, 0.1], "Det" : [103, 0.1]}
-    raidFood = Food(foodDict, "Baked Eggplant")
+    raidFood = Food({"DH" : [103, 0.1], "Det" : [62, 0.1]}, "Honeyed Dragonfruit")
 
     data = ImportGear("DRKGear.json")
     Crit = 0
@@ -289,24 +288,24 @@ if True:
     SS = 3
     SkS = 4
     Weapon = data["WEAPON"][0]
-    Weapon.AddMateria(matGen.GenerateMateria(4))
-    Weapon.AddMateria(matGen.GenerateMateria(4))
+    Weapon.AddMateria(matGen.GenerateMateria(1))
+    Weapon.AddMateria(matGen.GenerateMateria(1))
 
     Head = data["HEAD"][0]
-    Head.AddMateria(matGen.GenerateMateria(4))
-    Head.AddMateria(matGen.GenerateMateria(4))
+    Head.AddMateria(matGen.GenerateMateria(1))
+    Head.AddMateria(matGen.GenerateMateria(1))
 
     Body = data["BODY"][1]
-    Body.AddMateria(matGen.GenerateMateria(4))
-    Body.AddMateria(matGen.GenerateMateria(4))
+    Body.AddMateria(matGen.GenerateMateria(1))
+    Body.AddMateria(matGen.GenerateMateria(1))
 
     Hand = data["HANDS"][0]
-    Hand.AddMateria(matGen.GenerateMateria(4))
-    Hand.AddMateria(matGen.GenerateMateria(4))
+    Hand.AddMateria(matGen.GenerateMateria(1))
+    Hand.AddMateria(matGen.GenerateMateria(1))
 
     Leg = data["LEGS"][0]
-    Leg.AddMateria(matGen.GenerateMateria(4))
-    Leg.AddMateria(matGen.GenerateMateria(4))
+    Leg.AddMateria(matGen.GenerateMateria(1))
+    Leg.AddMateria(matGen.GenerateMateria(1))
 
     Feet = data["FEET"][1]
     Feet.AddMateria(matGen.GenerateMateria(1))
@@ -320,11 +319,11 @@ if True:
     Neck.AddMateria(matGen.GenerateMateria(1))
     Neck.AddMateria(matGen.GenerateMateria(1))
 
-    Bracelet = data["BRACELETS"][1]
+    Bracelet = data["BRACELETS"][0]
     Bracelet.AddMateria(matGen.GenerateMateria(1))
     Bracelet.AddMateria(matGen.GenerateMateria(1))
 
-    Lring = data["LRING"][1]
+    Lring = data["LRING"][0]
     Lring.AddMateria(matGen.GenerateMateria(1))
     Lring.AddMateria(matGen.GenerateMateria(1))
 
