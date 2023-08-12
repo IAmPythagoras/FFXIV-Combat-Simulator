@@ -75,7 +75,7 @@ SAMStat = {"MainStat": 2937, "WD":126, "Det" : 1571, "Ten" : 400, "SS": 400, "Sk
 DRGStat = {"MainStat": 2949, "WD":126, "Det" : 1545, "Ten" : 400, "SS": 400, "SkS" : 400, "Crit" : 2462, "DH" : 1577} # Stats for Dragoon
 MNKStat = {"MainStat": 3076, "WD":126, "Det" : 1546, "Ten" : 400, "SS": 400, "SkS" : 769, "Crit" : 2490, "DH" : 1179} # Stats for Monk
 RPRStat = {'MainStat': 3378, 'WD': 132, 'Det': 1870, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2567, 'DH': 1396} # Stats for Reaper
-RPRStat = {'MainStat': 3378, 'WD': 132, 'Det': 1707, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2474, 'DH': 1652} # Stats for Reaper me
+#RPRStat = {'MainStat': 3378, 'WD': 132, 'Det': 1726, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2567, 'DH': 1540}
 
 # Tank {'MainStat': 3378, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 671, 'Crit': 2627, 'DH': 904}
 DRKStat = {'MainStat': 3378, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 671, 'Crit': 2627, 'DH': 904} # Stats for DarkKnight
@@ -237,7 +237,7 @@ Event.RequirementOn = RequirementOn
 Event.ShowGraph = ShowGraph
 Event.IgnoreMana = IgnoreMana
 
-findBiS = True
+findBiS = False
 
 __logger__ = logging.getLogger("ffxivcalc") # root logger
 level = logging.DEBUG if not findBiS else logging.WARNING
@@ -265,62 +265,62 @@ if findBiS:
     CC = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")
     MB = Food({"Ten" : [103, 0.1], "Det" : [62, 0.1]}, "Marinated Broccoflower")
     BS =  Food({"Det" : [103, 0.1], "Ten" : [62, 0.1]}, "Broccoflower Stew")
-    foodSpace = [BE, HD, BG, MB, BS]
+    foodSpace = [BE]
 
     Crit = 0
     DH = 1
     Det = 2
     Ten = 5
     materiaSpace = [Crit, DH, Det]
-    optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=False,maxSPDValue=500, useNewAlgo=True, 
-                                oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=1,findOptMateriaGearBF=True)
+    optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=False,maxSPDValue=401, useNewAlgo=True, 
+                                oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0,findOptMateriaGearBF=True)
 
 if False:
     from ffxivcalc.GearSolver.Solver import computeDamageValue, getGearDPSValue
     from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet, Food, ImportGear
     matGen = MateriaGenerator(18, 36)
-    raidFood = Food({"DH" : [103, 0.1], "Det" : [62, 0.1]}, "Honeyed Dragonfruit")
+    raidFood = Food({"Det" : [103, 0.1], "Crit" : [62, 0.1]}, "Baked Eggplant")
 
-    data = ImportGear("DRKGear.json")
+    data = ImportGear("RPRGear.json")
     Crit = 0
     DH = 1
     Det = 2
     SS = 3
     SkS = 4
     Weapon = data["WEAPON"][0]
-    Weapon.AddMateria(matGen.GenerateMateria(1))
+    Weapon.AddMateria(matGen.GenerateMateria(2))
     Weapon.AddMateria(matGen.GenerateMateria(1))
 
-    Head = data["HEAD"][0]
-    Head.AddMateria(matGen.GenerateMateria(1))
+    Head = data["HEAD"][1]
+    Head.AddMateria(matGen.GenerateMateria(2))
     Head.AddMateria(matGen.GenerateMateria(1))
 
-    Body = data["BODY"][1]
+    Body = data["BODY"][0]
     Body.AddMateria(matGen.GenerateMateria(1))
     Body.AddMateria(matGen.GenerateMateria(1))
 
     Hand = data["HANDS"][0]
-    Hand.AddMateria(matGen.GenerateMateria(1))
-    Hand.AddMateria(matGen.GenerateMateria(1))
+    Hand.AddMateria(matGen.GenerateMateria(0))
+    Hand.AddMateria(matGen.GenerateMateria(0))
 
-    Leg = data["LEGS"][0]
+    Leg = data["LEGS"][1]
     Leg.AddMateria(matGen.GenerateMateria(1))
     Leg.AddMateria(matGen.GenerateMateria(1))
 
-    Feet = data["FEET"][1]
-    Feet.AddMateria(matGen.GenerateMateria(1))
+    Feet = data["FEET"][0]
+    Feet.AddMateria(matGen.GenerateMateria(2))
     Feet.AddMateria(matGen.GenerateMateria(1))
 
-    Ear = data["EARRINGS"][1]
+    Ear = data["EARRINGS"][0]
     Ear.AddMateria(matGen.GenerateMateria(1))
     Ear.AddMateria(matGen.GenerateMateria(1))
 
-    Neck = data["NECKLACE"][0]
-    Neck.AddMateria(matGen.GenerateMateria(1))
+    Neck = data["NECKLACE"][1]
+    Neck.AddMateria(matGen.GenerateMateria(2))
     Neck.AddMateria(matGen.GenerateMateria(1))
 
     Bracelet = data["BRACELETS"][0]
-    Bracelet.AddMateria(matGen.GenerateMateria(1))
+    Bracelet.AddMateria(matGen.GenerateMateria(2))
     Bracelet.AddMateria(matGen.GenerateMateria(1))
 
     Lring = data["LRING"][0]
@@ -328,7 +328,7 @@ if False:
     Lring.AddMateria(matGen.GenerateMateria(1))
 
     ring = data["RING"][0]
-    ring.AddMateria(matGen.GenerateMateria(1))
+    ring.AddMateria(matGen.GenerateMateria(2))
     ring.AddMateria(matGen.GenerateMateria(1))
 
     gSet = GearSet()
@@ -345,4 +345,4 @@ if False:
     gSet.AddGear(ring)
     gSet.addFood(raidFood)
 
-    getGearDPSValue(Event, gSet, 0, n=0)
+    getGearDPSValue(Event, gSet, 0, n=100000)

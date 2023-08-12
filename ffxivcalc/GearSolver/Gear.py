@@ -501,7 +501,6 @@ class GearSet:
     }       
         
                              # Getting stats from gear and materia
-
         for key in self.GearSet:
             GearPiece = self.GearSet[key]
             for type in StatType:

@@ -1,10 +1,10 @@
 Solver result (Using BF up-down)
 Best optimal : Gearset's info:
-WEAPON : Crit : 306 | Det : 214 | MainStat : 416 | WD : 132 |  Materias : Det : 36 | DH : 36 |  Name : Raid
-HEAD : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : DH : 36 | DH : 36 |  Name : Raid
-BODY : DH : 184 | Det : 129 | MainStat : 248 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
-HANDS : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : DH : 36 | DH : 36 |  Name : Tome
-LEGS : Crit : 184 | DH : 129 | MainStat : 248 |  Materias : DH : 36 | Det : 36 |  Name : Raid
+WEAPON : Crit : 306 | Det : 214 | MainStat : 416 | WD : 132 |  Materias : DH : 36 | Det : 36 |  Name : Raid
+HEAD : Crit : 184 | DH : 129 | MainStat : 248 |  Materias : DH : 36 | Det : 36 |  Name : Tome
+BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+HANDS : DH : 184 | Det : 129 | MainStat : 248 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+LEGS : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : DH : 36 | DH : 36 |  Name : Tome
 FEET : Crit : 184 | DH : 129 | MainStat : 248 |  Materias : DH : 36 | Det : 36 |  Name : Raid
 EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
 NECKLACE : Crit : 145 | DH : 102 | MainStat : 196 |  Materias : DH : 36 | Det : 36 |  Name : Tome
@@ -12,8 +12,8 @@ BRACELETS : Crit : 145 | DH : 102 | MainStat : 196 |  Materias : DH : 36 | Det :
 LRING : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
 RING : Crit : 145 | DH : 102 | MainStat : 196 |  Materias : DH : 36 | Det : 36 |  Name : Tome
  Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1707, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2474, 'DH': 1652}
-Materia numbers : Det 6x |DH 14x |Crit 2x |
+Materia numbers : DH 14x |Det 6x |Crit 2x |
 Food Baked Eggplant gives -> Det 10% max of 103 |Crit 10% max of 62 |
 Expected Damage : 14234.64
-Potency : 19130TimeStamp : 60.62Random Damage : {'1': 15191.478531366358, '10': 13751.035454153236, '25': 14097.821783598472, '50': 14381.469022994273, '75': 14791.144075324215, '90': 15269.00598576613, '99': 15747.261629825141}
+Potency : 19130TimeStamp : 60.62Random Damage : {'1': 15274.902201065184, '10': 13767.581148643505, '25': 14062.392953968412, '50': 14471.14957038142, '75': 14813.58779788341, '90': 15290.288447942687, '99': 16409.22137908281}
 (1.76, 1.097, 1, 1.0, 0.268, 0.618, 0.362)

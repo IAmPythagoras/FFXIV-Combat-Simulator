@@ -1,3 +1,6 @@
+from time import time
+from ffxivcalc.helperCode.helper_math import roundDown
+
 class ProgressBar:
     """
     This class can be used to represent a progress bar that the user will see.
@@ -11,7 +14,11 @@ class ProgressBar:
         self.total = 0
         self.currentProgress = 0
         self.name = ""
-
+        
+                             # Timing related fields
+        self.iterationAverage = 0 
+        self.sumIterations = 0
+        self.lastIterTime = 0
 
     def __iter__(self):
         self.currentProgress = -1
@@ -24,8 +31,17 @@ class ProgressBar:
         """
         self.currentProgress += 1
         percent = int((self.currentProgress/self.total)*1000)/10
+
+
+        curTimeIteration = roundDown(time() - self.lastIterTime,1)
+        self.lastIterTime = time()
+        self.sumIterations += curTimeIteration
+        self.iterationAverage = roundDown(self.sumIterations/self.currentProgress,1) if self.currentProgress > 0 else self.sumIterations
+
+        predictedTime = roundDown(self.iterationAverage * (self.total-self.currentProgress),1)
+
         bar = "❚" * int(percent) + "-" * (100-int(percent))
-        print("\r"+ self.name +" |"+bar+"| " + ((str(percent) + " %") if self.currentProgress > 0 else ""), end="\r")
+        print("\r"+ self.name +" |"+bar+"| " + ((str(percent) + " %") if self.currentProgress > 0 else "") + " ETA : " + str(predictedTime) + "s", end="\r")
         if self.total - self.currentProgress == 0:print()
         return self
     
@@ -44,6 +60,7 @@ class ProgressBar:
         newProgressBar = ProgressBar()
         newProgressBar.total = total
         newProgressBar.name = name
+        newProgressBar.lastIterTime = time()
         iterator = iter(newProgressBar)
         next(iterator)
         return iterator

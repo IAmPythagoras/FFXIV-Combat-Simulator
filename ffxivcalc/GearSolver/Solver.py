@@ -583,6 +583,7 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
                              # Will remove materias until the gearset is valid.
     if not findOptMateriaGearBF : 
         pB = ProgressBar.init(optimalSet.getNumberMateria() - optimalSet.getMateriaLimit(), "Removing oversaturated")
+
     while not optimalSet.hasValidMelding():
 
         curMaxDPS = 0
@@ -600,7 +601,7 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
             ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH,n=randomIteration)
             
             solver_logging.warning("Trial by removing " + StatType.name_for_id(type) + " from " + gearName + " : " + (str(ExpectedDamage) if percentile == "exp" else str(randomDamageDict[percentile])) + (" Expected : " + str(ExpectedDamage) if percentile != "exp" else ""))
-            
+            solver_logging.warning("Dict Stat : " + str(GearStat))
             if percentile == "exp" and ExpectedDamage > curMaxDPS:
                 curMaxDPS = ExpectedDamage
                 curTypeToRemove = type
@@ -625,7 +626,7 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
     pBTotal = max(0,int((maxSPDValue - GearStat["SS"])/matGen.EvenValue))
     
     if not findOptMateriaGearBF : 
-        pBTotal = max(0,int((maxSPDValue - GearStat["SS"])/matGen.EvenValue))
+        pBTotal = max(1,int((maxSPDValue - GearStat["SS"])/matGen.EvenValue))
         pbReplace = ProgressBar.init(pBTotal, "Replacing by SpS/SkS")
 
     while (mendSpellSpeed and GearStat["SS"] + matGen.EvenValue < maxSPDValue) or (not mendSpellSpeed and GearStat["SkS"] + matGen.EvenValue < maxSPDValue):
