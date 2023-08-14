@@ -59,6 +59,7 @@ BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1493, 'Ten': 400, 'SS': 824, 'SkS
 #RDMStat = {"MainStat": 3378, "WD": 132, "Det": 1601, "Ten": 400, "SS": 502, "SkS": 400, "Crit": 2514, "DH": 1616} # Stats for RedMage
 RDMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1673, 'Ten': 400, 'SS': 502, 'SkS': 400, 'Crit': 2514, 'DH': 1544}
 #RDMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1637, 'Ten': 400, 'SS': 502, 'SkS': 400, 'Crit': 2514, 'DH': 1580}
+RDMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1529, 'Ten': 400, 'SS': 502, 'SkS': 400, 'Crit': 2514, 'DH': 1688}
 
 SMNStat = {'MainStat': 3378, 'WD': 132, 'Det': 1534, 'Ten': 400, 'SS': 591, 'SkS': 400, 'Crit': 2555, 'DH': 1544} # Stats for Summoner
 SMNStat = {'MainStat': 3378, 'WD': 132, 'Det': 1462, 'Ten': 400, 'SS': 591, 'SkS': 400, 'Crit': 2555, 'DH': 1616}
