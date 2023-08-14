@@ -193,15 +193,15 @@ class Gear:
         """
         Private function called to add materia to the gear. This function is called by AddMateria and forceAddMateria.
         """
-
-        self.Materias.append(newMateria)
-        self.MateriasCount += 1
         StatName = StatType.name_for_id(newMateria.StatType)
-        newStatValue = (self.Stat[StatName].Value if StatName in self.Stat.keys() else 0)  + newMateria.Value
+        newStatValue = self.GetStat(StatName=StatName) + newMateria.Value
         if newStatValue > self.StatLimit:
                              # If true means the materia is wasting ressources.
             newMateria.wasteAmount = newStatValue - self.StatLimit
             newMateria.wasteValue = True
+
+        self.Materias.append(newMateria)
+        self.MateriasCount += 1
 
     def __hasStatType(self, type : StatType) -> bool:
         """

@@ -1,0 +1,102 @@
+[
+    {
+    "GearType" : 0,
+    "MateriaLimit" : 2,
+    "Name" : "Raid",
+    "StatList" : [
+    ["Crit", 306],
+    ["SS", 214],
+    ["MainStat", 416],
+    ["WD", 132]
+    ]},
+    {
+    "GearType" : 2,
+    "MateriaLimit" : 2,
+    "Name" : "Tome",
+    "StatList" : [
+    ["Crit", 184],
+    ["DH", 129],
+    ["MainStat", 248]
+    ]},
+    {
+    "GearType" : 3,
+    "MateriaLimit" : 2,
+    "Name" : "Tome",
+    "StatList" : [
+    ["Crit", 292],
+    ["Det", 204],
+    ["MainStat", 394]
+    ]},
+    {
+    "GearType" : 4,
+    "MateriaLimit" : 2,
+    "Name" : "Raid",
+    "StatList" : [
+    ["Det", 129],
+    ["Crit", 184],
+    ["MainStat", 248]
+    ]},
+    {
+    "GearType" : 5,
+    "MateriaLimit" : 2,
+    "Name" : "Raid",
+    "StatList" : [
+    ["Crit", 204],
+    ["DH", 292],
+    ["MainStat", 394]
+    ]},
+    {
+    "GearType" : 6,
+    "MateriaLimit" : 2,
+    "Name" : "Tome",
+    "StatList" : [
+    ["Crit", 129],
+    ["DH", 184],
+    ["MainStat", 248]
+    ]},
+    {
+    "GearType" : 7,
+    "MateriaLimit" : 2,
+    "Name" : "Raid",
+    "StatList" : [
+    ["Crit", 145],
+    ["Det", 102],
+    ["MainStat", 196]
+    ]},
+    {
+    "GearType" : 8,
+    "MateriaLimit" : 2,
+    "Name" : "Tome",
+    "StatList" : [
+    ["Det", 145],
+    ["Crit", 102],
+    ["MainStat", 196]
+    ]},
+    {
+    "GearType" : 9,
+    "MateriaLimit" : 2,
+    "Name" : "Raid",
+    "StatList" : [
+    ["Crit", 145],
+    ["Det", 102],
+    ["MainStat", 196]
+    ]},
+    {
+    "GearType" : 10,
+    "MateriaLimit" : 2,
+    "Name" : "Raid",
+    "StatList" : [
+    ["Det", 102],
+    ["Crit", 145],
+    ["MainStat", 196]
+    ]},
+    {
+    "GearType" : 11,
+    "MateriaLimit" : 2,
+    "Name" : "Raid",
+    "StatList" : [
+    ["SS", 102],
+    ["DH", 145],
+    ["MainStat", 196]
+    ]}
+    ]

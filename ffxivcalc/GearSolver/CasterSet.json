@@ -5,7 +5,7 @@
 "Name" : "Raid",
 "StatList" : [
 ["Crit", 306],
-["SS", 214],
+["DH", 214],
 ["MainStat", 416],
 ["WD", 132]
 ]},
@@ -15,7 +15,7 @@
 "Name" : "Tome",
 "StatList" : [
 ["Crit", 212],
-["SS", 303],
+["Det", 303],
 ["MainStat", 409],
 ["WD", 131]
 ]},

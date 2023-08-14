@@ -418,6 +418,7 @@ class Player:
             self.CritRate = 0
             self.CritMult = 0
             self.DHRate = 0
+            self.DHAuto = 0
             self.GCDReduction = 1 # Mult GCD reduction based on Spell Speed or Skill Speed (computed before fight)
             self.CritRateBonus = 0  # CritRateBonus
             self.DHRateBonus = 0 # DHRate Bonus Very usefull for dancer personnal and dance partner crit/DH rate bonus
@@ -2348,6 +2349,7 @@ class Pet(Player):
         self.CritRate = Master.CritRate
         self.CritMult = Master.CritMult
         self.DHRate = Master.DHRate
+        self.DHAuto = 0
         self.GCDReduction = Master.GCDReduction
         self.CritRateBonus = self.Master.CritRateBonus  # CritRateBonus
         self.DHRateBonus = self.Master.DHRateBonus # DHRate Bonus Very usefull for dancer personnal and dance partner crit/DH rate bonus

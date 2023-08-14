@@ -33,14 +33,12 @@ class ProgressBar:
         percent = int((self.currentProgress/self.total)*1000)/10
 
 
-        curTimeIteration = roundDown(time() - self.lastIterTime,1)
+        curTimeIteration = round(time() - self.lastIterTime,1)
         self.lastIterTime = time()
         self.sumIterations += curTimeIteration
-        self.iterationAverage = roundDown(self.sumIterations/self.currentProgress,1) if self.currentProgress > 0 else self.sumIterations
+        self.iterationAverage = round(self.sumIterations/self.currentProgress,1) if self.currentProgress > 0 else self.sumIterations
 
-        predictedTime = roundDown(self.iterationAverage * (self.total-self.currentProgress),1)
-
-        #input(predictedTime)
+        predictedTime = round(self.iterationAverage * (self.total-self.currentProgress),1)
 
         bar = "❚" * int(percent) + "-" * (100-int(percent))
         print("\r"+ self.name +" |"+bar+"| " + ((str(percent) + " %") if self.currentProgress > 0 else "") + " ETA : " + str(predictedTime) + "s", end="\r")

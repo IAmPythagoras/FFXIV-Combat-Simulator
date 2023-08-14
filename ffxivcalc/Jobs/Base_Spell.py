@@ -108,12 +108,13 @@ class PreBakedAction:
     AutoDH : bool -> if is an auto DH (true)
     isFromPet : bool -> True if a Pet PreBakedAction
     isGCD : bool -> True if the action is a GCD
+    spellDPSBuff : float -> Flat bonus applied on this action
     """
 
     def __init__(self, IsTank : bool, MainStatPercentageBonus : float, buffList : list,
                  TraitBonus : float, Potency : int, type : int, 
                  nonReducableStamp : float, reducableStamp : float, AutoCrit : bool = False, AutoDH : bool = False,
-                 isFromPet : bool = False, isGCD : bool = False):
+                 isFromPet : bool = False, isGCD : bool = False, spellDPSBuff : float = 1):
         self.IsTank = IsTank
         self.MainStatPercentageBonus = MainStatPercentageBonus
         #self.HasPotionEffect = HasPotionEffect
@@ -132,6 +133,7 @@ class PreBakedAction:
         
         self.isFromPet = isFromPet
         self.isGCD = isGCD
+        self.spellDPSBuff = spellDPSBuff
 
                              # These values are computed once the PreBakedAction is being looped
                              # through in SimulatePreBakedFight.
@@ -147,7 +149,7 @@ class PreBakedAction:
         self.DHBonus = 0
         self.PercentageBonus = []
 
-    def ComputeExpectedDamage(self, f_MAIN_DMG : float, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float):
+    def ComputeExpectedDamage(self, f_MAIN_DMG : float, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float, DHAuto : float):
         """
         This function is called to compute the damage of the action.
         This function requires all the values computed from the stat of the player
@@ -157,26 +159,29 @@ class PreBakedAction:
         n : int -> number of time for which the PreBakedAction will compute the random damage.
         """
 
-        f_DET_DH = math.floor((f_DET + f_DH) * 1000 ) / 1000
+        f_DET_DH = math.floor((f_DET + DHAuto) * 1000 ) / 1000
 
         Damage = 0
         if self.type == 0: # Type 0 is direct damage
-            Damage = math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG * (f_DET_DH if self.AutoCrit else f_DET)) * f_TEN ) *f_WD) * self.TraitBonus) # Player.Trait is trait DPS bonus
+            Damage = math.floor(math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG) * (f_DET_DH if self.AutoCrit else f_DET)) * f_TEN ) *f_WD) * self.TraitBonus) # Player.Trait is trait DPS bonus
         elif self.type == 1: # Type 1 is magical DOT
             Damage = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(self.Potency * f_WD) * f_MAIN_DMG) * f_SPD) * f_DET) * f_TEN) * self.TraitBonus) + 1
         elif self.type == 2: # Type 2 is physical DOT
-            Damage = math.floor(math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG * f_DET) * f_TEN) * f_SPD) * f_WD) * self.TraitBonus) +1
+            Damage = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG) * f_DET) * f_TEN) * f_SPD) * f_WD) * self.TraitBonus) +1
         elif self.type == 3: # Auto-attacks
             Damage = math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG * f_DET) * f_TEN) * f_SPD)
             Damage = math.floor(math.floor(Damage * math.floor(f_WD * (3/3) *100 )/100) * self.TraitBonus) # Player.Delay is assumed to be 3 for simplicity for now
         
         for buff in self.PercentageBonus:
             Damage = math.floor(Damage * buff)
+
+        Damage = math.floor(Damage * self.spellDPSBuff)
         
         auto_crit_bonus = (1 + self.CritBonus * f_CritMult) if self.AutoCrit else 1# Auto_crit bonus if buffed
         auto_dh_bonus = (1 + (self.DHBonus) * 0.25) if self.AutoDH else 1# Auto_DH bonus if buffed
 
-        ExpectedDamage = math.floor(math.floor(Damage * (1 + ((f_CritRate + self.CritBonus) if not self.AutoCrit else 1)  * (f_CritMult) ) ) * (1 + ((f_DH + self.DHBonus) if not self.AutoDH else 1) * 0.25))
+        ExpectedDamage = math.floor(Damage *         (1 + ( (f_CritRate + self.CritBonus) if not self.AutoCrit else 1)  * f_CritMult))
+        ExpectedDamage = math.floor(ExpectedDamage * (1 + ((f_DH + self.DHBonus) if not self.AutoDH else 1) * 0.25))
         ExpectedDamage = math.floor(ExpectedDamage * auto_crit_bonus)
         ExpectedDamage = math.floor(ExpectedDamage * auto_dh_bonus)
 

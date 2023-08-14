@@ -280,7 +280,7 @@ def ApplyRadiantFinale(Player, Enemy):
     if Player.WandererCoda: coda += 1
     Player.RadiantFinalBuff = copy.deepcopy(RadiantFinaleBuff)
     Player.RadiantFinalBuff.MultDPS *= coda
-    Player.RadiantFinalBuff.MultDPS = roundDown(1 + Player.RadiantFinalBuff.MultDPS%1, 2)
+    Player.RadiantFinalBuff.MultDPS = round(1 + Player.RadiantFinalBuff.MultDPS%1, 2)
     Player.RadiantFinaleTimer = 15
     if not Player.CurrentFight.SavePreBakedAction:
         Enemy.buffList.append(Player.RadiantFinalBuff)

@@ -97,7 +97,7 @@ class Fight:
                 player_current_damage += ZIPAction.ComputeRandomDamage()
             player.ZIPDPSRun.append(round(player_current_damage/self.TimeStamp/20)*20)
 
-    def SimulatePreBakedFight(self, Index : int, MainStat : int, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float, n : int = 1000, getInfo : bool = False):
+    def SimulatePreBakedFight(self, Index : int, MainStat : int, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float, DHAuto : float, n : int = 1000, getInfo : bool = False):
         """
         This function is called when the user wants to simulate the damage done by the pre baked actions. The player ID with
         the pre baked actions must be given. The user must also specify all the damage values computed from the stats.
@@ -186,7 +186,7 @@ class Fight:
         
             if PreBakedAction.IsTank : f_MAIN_DMG = (100+math.floor((curMainStat-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
             else: f_MAIN_DMG = (100+math.floor((curMainStat-baseMain)*195/baseMain))/100
-            ActionExpected, Damage = PreBakedAction.ComputeExpectedDamage(f_MAIN_DMG,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)
+            ActionExpected, Damage = PreBakedAction.ComputeExpectedDamage(f_MAIN_DMG,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto)
             ExpectedDamage += ActionExpected
             damageHistory.append(Damage)
 
@@ -231,8 +231,8 @@ class Fight:
         fight_logging.debug("counted GCD  : " + str(countGCD))
         fight_logging.debug("previous GCD : " + str(player.GCDCounter))
         
-        if getInfo : return round(ExpectedDamage/trialFinishTime,2), percentileRuns, timeStamp, totalPotency
-        return round(ExpectedDamage/trialFinishTime,2), percentileRuns
+        if getInfo : return round(ExpectedDamage/timeStamp,2), percentileRuns, timeStamp, totalPotency
+        return round(ExpectedDamage/timeStamp,2), percentileRuns
 
         
 
@@ -529,6 +529,7 @@ class Fight:
             Player.CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000 # Crit rate in decimal
             Player.CritMult = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000 # Crit Damage multiplier
             Player.DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000 # DH rate in decimal
+            Player.DHAuto = math.floor(140*(Player.Stat["DH"]-baseMain)/levelMod)/1000 # DH bonus when auto crit/DH
             
             log_str = ("ID : " + str(Player.playerID) + " , Job : " + JobEnum.name_for_id(Player.JobEnum) 
             + " , f_WD : " + str(Player.f_WD) 
@@ -608,7 +609,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     DHRate = Player.DHRate
     CritRateBonus = Player.CritRateBonus
     DHRateBonus = Player.DHRateBonus # Saving value for later use if necessary
-    f_DET_DH = math.floor((f_DET + Player.DHRate) * 1000 ) / 1000
+    f_DET_DH = math.floor((f_DET + Player.DHAuto) * 1000 ) / 1000
 
     if Enemy.ChainStratagem: CritRateBonus += 0.1    # If ChainStratagem is active, increase crit rate
 
@@ -690,7 +691,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         reducableStamp = 0 if not Player.CurrentFight.FightStart else Player.CurrentFight.TimeStamp - Player.totalTimeNoFaster
 
         (Player if not isPet else Player.Master).PreBakedActionSet.append(PreBakedAction(isTank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type, nonReducableStamp + (0 if type == 0 else reducableStamp), 
-                                                       reducableStamp if type == 0 else 0 ,AutoCrit=auto_crit, AutoDH=auto_DH, isFromPet=isPet, isGCD=spellObj.GCD))
+                                                       reducableStamp if type == 0 else 0 ,AutoCrit=auto_crit, AutoDH=auto_DH, isFromPet=isPet, isGCD=spellObj.GCD,spellDPSBuff=SpellBonus))
         
         return Potency, Potency        # Exit the function since we are not interested in the immediate damage value. Still return potency as to not break the fight's duration.
 
@@ -722,7 +723,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
             spellObj.onceThroughFlag = True # set flag to True, so never snapshot again
 
     elif type == 2: # Physical DOT
-        Damage = math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN) * f_SPD) * f_WD) * Player.Trait) +1
+        Damage = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG) * f_DET) * f_TEN) * f_SPD) * f_WD) * Player.Trait) +1
     
         if not spellObj.onceThroughFlag:# If we haven't gotten through with this DOT once, we have to snapshot the buffs
 
@@ -743,7 +744,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
             spellObj.onceThroughFlag = True # set flag to True, so never snapshot again
 
     elif type == 3: # Auto-attacks
-        Damage = math.floor(math.floor(math.floor(Potency * f_MAIN_DMG * f_DET) * f_TEN) * f_SPD)
+        Damage = math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG) * f_DET) * f_TEN) * f_SPD)
         Damage = math.floor(math.floor(Damage * math.floor(f_WD * (Player.Delay/3) *100 )/100) * Player.Trait)
     # Now applying buffs
 

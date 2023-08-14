@@ -109,7 +109,7 @@ def ApplyEmbolden(Player, Enemy):
                                      # Only doing this if SavePreBakedAction is true
     if Player.CurrentFight.SavePreBakedAction:
         fight = Player.CurrentFight
-        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , Embolden.MultDPS)
+        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , EmboldenBuff.MultDPS)
         fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
 
 def ApplyAcceleration(Player, Enemy):
