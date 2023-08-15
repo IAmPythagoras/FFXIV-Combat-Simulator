@@ -68,7 +68,8 @@ SMNStat = {'MainStat': 3378, 'WD': 132, 'Det': 1534, 'Ten': 400, 'SS': 591, 'SkS
 SMNStat = {'MainStat': 3378, 'WD': 132, 'Det': 1462, 'Ten': 400, 'SS': 591, 'SkS': 400, 'Crit': 2555, 'DH': 1616}
 SMNStat = {'MainStat': 3378, 'WD': 132, 'Det': 1565, 'Ten': 400, 'SS': 538, 'SkS': 400, 'Crit': 2514, 'DH': 1616}
 # Healer
-SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 990, 'SkS': 400, 'Crit': 2502, 'DH': 688, 'Piety': 400} # Stats for Scholar
+#SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 990, 'SkS': 400, 'Crit': 2502, 'DH': 688, 'Piety': 400} # Stats for Scholar
+SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 918, 'SkS': 400, 'Crit': 2502, 'DH': 760, 'Piety': 400}
 #SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 954, 'SkS': 400, 'Crit': 2502, 'DH': 724, 'Piety': 400}
 
 WHMStat = {"MainStat": 2945, "WD":126, "Det" : 1792, "Ten" : 400, "SS": 839, "SkS" : 400, "Crit" : 2313, "DH" : 904} # Stats for WhiteMage
@@ -172,7 +173,7 @@ SMNOpener = [Ruin3, Summon, SearingLight, AstralImpulse, AstralImpulse, AstralIm
 RDMOpener = [Verthunder, Verareo, Swiftcast,Acceleration, Verthunder, Potion, Verthunder, Embolden, Manafication, EnchantedRiposte, Fleche, EnchantedZwerchhau, Contre, EnchantedRedoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verstone, Verareo, Verfire, Verthunder, Acceleration, Verareo, Verstone, Verthunder, Fleche, Jolt, Verthunder, Verfire, Verareo, Contre, Jolt, Verareo, Engagement, Corps, Verstone, Verthunder, EnchantedRiposte, EnchantedZwerchhau, EnchantedRedoublement, Fleche, Verflare, Scorch, Resolution]
 
 # Healer
-SCHOpener = [WaitAbility(3.5),Broil, Biolysis, Aetherflow, Broil, Swiftcast, Broil, ChainStratagem, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil]
+SCHOpener = [WaitAbility(3.5),Broil, Biolysis, Aetherflow, Broil, Swiftcast, Broil, WaitAbility(1), ChainStratagem, WaitAbility(1), EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil]
 WHMOpener = [Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare]
 ASTOpener = [Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic]
 SGEOpener = []
@@ -258,7 +259,7 @@ Event.RequirementOn = RequirementOn
 Event.ShowGraph = ShowGraph
 Event.IgnoreMana = IgnoreMana
 
-findBiS = True
+findBiS = False
 
 __logger__ = logging.getLogger("ffxivcalc") # root logger
 level = logging.DEBUG if not findBiS else logging.WARNING
@@ -300,59 +301,59 @@ if False:
     from ffxivcalc.GearSolver.Solver import computeDamageValue, getGearDPSValue
     from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet, Food, ImportGear
     matGen = MateriaGenerator(18, 36)
-    raidFood = Food({"Det" : [103, 0.1], "Crit" : [62, 0.1]}, "Baked Eggplant")
+    raidFood = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")
 
-    data = ImportGear("CasterSet.json")
+    data = ImportGear("HealingGear.json")
     Crit = 0
     DH = 1
     Det = 2
     SS = 3
     SkS = 4
     Weapon = data["WEAPON"][0]
-    Weapon.AddMateria(matGen.GenerateMateria(2))
-    Weapon.AddMateria(matGen.GenerateMateria(2))
+    Weapon.AddMateria(matGen.GenerateMateria(3))
+    Weapon.AddMateria(matGen.GenerateMateria(3))
 
     Head = data["HEAD"][1]
-    Head.AddMateria(matGen.GenerateMateria(2))
-    Head.AddMateria(matGen.GenerateMateria(2))
+    Head.AddMateria(matGen.GenerateMateria(0))
+    Head.AddMateria(matGen.GenerateMateria(3))
 
-    Body = data["BODY"][1]
-    Body.AddMateria(matGen.GenerateMateria(2))
-    Body.AddMateria(matGen.GenerateMateria(2))
+    Body = data["BODY"][0]
+    Body.AddMateria(matGen.GenerateMateria(3))
+    Body.AddMateria(matGen.GenerateMateria(3))
 
-    Hand = data["HANDS"][0]
-    Hand.AddMateria(matGen.GenerateMateria(2))
-    Hand.AddMateria(matGen.GenerateMateria(1))
+    Hand = data["HANDS"][1]
+    Hand.AddMateria(matGen.GenerateMateria(3))
+    Hand.AddMateria(matGen.GenerateMateria(3))
 
-    Leg = data["LEGS"][0]
-    Leg.AddMateria(matGen.GenerateMateria(0))
-    Leg.AddMateria(matGen.GenerateMateria(0))
+    Leg = data["LEGS"][1]
+    Leg.AddMateria(matGen.GenerateMateria(1))
+    Leg.AddMateria(matGen.GenerateMateria(1))
 
-    Feet = data["FEET"][1]
-    Feet.AddMateria(matGen.GenerateMateria(0))
-    Feet.AddMateria(matGen.GenerateMateria(2))
+    Feet = data["FEET"][0]
+    Feet.AddMateria(matGen.GenerateMateria(1))
+    Feet.AddMateria(matGen.GenerateMateria(1))
 
-    Ear = data["EARRINGS"][0]
-    Ear.AddMateria(matGen.GenerateMateria(2))
-    Ear.AddMateria(matGen.GenerateMateria(1))
+    Ear = data["EARRINGS"][1]
+    Ear.AddMateria(matGen.GenerateMateria(0))
+    Ear.AddMateria(matGen.GenerateMateria(0))
 
-    Neck = data["NECKLACE"][1]
+    Neck = data["NECKLACE"][0]
     Neck.AddMateria(matGen.GenerateMateria(0))
-    Neck.AddMateria(matGen.GenerateMateria(1))
+    Neck.AddMateria(matGen.GenerateMateria(0))
 
     Bracelet = data["BRACELETS"][0]
     Bracelet.AddMateria(matGen.GenerateMateria(1))
-    #Bracelet.AddMateria(matGen.GenerateMateria(1))
-    Bracelet.forceAddMateria(matGen.GenerateMateria(2))
+    Bracelet.AddMateria(matGen.GenerateMateria(1))
+    #Bracelet.forceAddMateria(matGen.GenerateMateria(2))
 
-    Lring = data["LRING"][0]
+    Lring = data["LRING"][1]
     Lring.AddMateria(matGen.GenerateMateria(1))
     Lring.AddMateria(matGen.GenerateMateria(1))
-    Lring.forceAddMateria(matGen.GenerateMateria(2))
+    #Lring.forceAddMateria(matGen.GenerateMateria(2))
 
     ring = data["RING"][0]
-    ring.AddMateria(matGen.GenerateMateria(0))
-    ring.AddMateria(matGen.GenerateMateria(0))
+    ring.AddMateria(matGen.GenerateMateria(1))
+    ring.AddMateria(matGen.GenerateMateria(1))
 
     gSet = GearSet()
     gSet.AddGear(Weapon)

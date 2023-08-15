@@ -617,8 +617,8 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
     if Enemy.BattleVoice: DHRateBonus += 0.2 # If BattleVoice is active, increase DHRate
 
-    DHRate += Player.DHRateBonus # Adding Bonus
-    CritRate += Player.CritRateBonus # Adding bonus
+    DHRate += Player.DHRateBonus + DHRateBonus# Adding Bonus
+    CritRate += Player.CritRateBonus + CritRateBonus# Adding bonus
 
     # We will check if the ability is an assured crit and/ord DH, in which case we will have to buff the damage
     # Depending on the buffs the player is currently receiving
