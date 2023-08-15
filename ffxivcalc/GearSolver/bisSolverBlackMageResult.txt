@@ -1,0 +1,8 @@
+Solver result (Using BF up-down)
+Best optimal : Gearset's info:
+ Final Stats : {'MainStat': 450, 'WD': 0, 'Det': 390, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 400, 'DH': 400}
+Materia numbers : 
+None
+Expected Damage : 216.94
+Potency : 15593.0TimeStamp : 71.37Random Damage : {'1': 242.50285233891788, '10': 213.18373373858867, '25': 214.96305231159113, '50': 217.77509731893193, '75': 220.9557991399101, '90': 223.73346143837946, '99': 227.47653075521927}
+(0.44, 1.0, 1, 1.0, 0.05, 0.4, 0.0, 0.0)

@@ -1,0 +1,19 @@
+Solver result (Using BF up-down)
+Best optimal : Gearset's info:
+WEAPON : Crit : 306 | DH : 214 | MainStat : 416 | WD : 132 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+HEAD : Crit : 184 | DH : 129 | MainStat : 248 |  Materias : Det : 36 | DH : 36 |  Name : Tome
+BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : Det : 36 | Det : 36 |  Name : Tome
+HANDS : Det : 129 | Crit : 184 | MainStat : 248 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+LEGS : Crit : 204 | DH : 292 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+FEET : Crit : 129 | DH : 184 | MainStat : 248 |  Materias : Crit : 36 | Det : 36 |  Name : Tome
+EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+NECKLACE : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | DH : 36 |  Name : Tome
+BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+LRING : Det : 102 | Crit : 145 | MainStat : 196 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+RING : SS : 102 | DH : 145 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+ Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 502, 'SkS': 400, 'Crit': 2514, 'DH': 1616}
+Materia numbers : Det 9x |DH 7x |Crit 6x |
+Food Baked Eggplant gives -> Det 10% max of 103 |Crit 10% max of 62 |
+Expected Damage : 12194.25
+Potency : 14820TimeStamp : 60.13Random Damage : {'1': 13031.327362143926, '10': 11714.64647110747, '25': 12045.506475101049, '50': 12436.724054403861, '75': 12871.130499302792, '90': 13290.465895322039, '99': 13836.886745384998}
+(1.76, 1.089, 1, 1.006, 0.272, 0.622, 0.352, 0.09)

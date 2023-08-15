@@ -55,6 +55,8 @@ Event = Fight(Dummy, False)
 
 # Caster
 BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1493, 'Ten': 400, 'SS': 824, 'SkS': 400, 'Crit': 2514, 'DH': 1402} # Stats for BlackMage
+#BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1534, 'Ten': 400, 'SS': 886, 'SkS': 400, 'Crit': 2519, 'DH': 1294}
+BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1529, 'Ten': 400, 'SS': 824, 'SkS': 400, 'Crit': 2514, 'DH': 1294}
 
 #RDMStat = {"MainStat": 3378, "WD": 132, "Det": 1601, "Ten": 400, "SS": 502, "SkS": 400, "Crit": 2514, "DH": 1616} # Stats for RedMage
 RDMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1673, 'Ten': 400, 'SS': 502, 'SkS': 400, 'Crit': 2514, 'DH': 1544}
@@ -63,7 +65,7 @@ RDMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1529, 'Ten': 400, 'SS': 502, 'SkS
 
 SMNStat = {'MainStat': 3378, 'WD': 132, 'Det': 1534, 'Ten': 400, 'SS': 591, 'SkS': 400, 'Crit': 2555, 'DH': 1544} # Stats for Summoner
 SMNStat = {'MainStat': 3378, 'WD': 132, 'Det': 1462, 'Ten': 400, 'SS': 591, 'SkS': 400, 'Crit': 2555, 'DH': 1616}
-SMNStat = {"MainStat": 3378, "WD": 132, "Det": 1601, "Ten": 400, "SS": 502, "SkS": 400, "Crit": 2514, "DH": 1616}
+SMNStat = {'MainStat': 3378, 'WD': 132, 'Det': 1565, 'Ten': 400, 'SS': 538, 'SkS': 400, 'Crit': 2514, 'DH': 1616}
 # Healer
 SCHStat = {"MainStat": 2931, "WD":126, "Det" : 1750, "Ten" : 400, "SS": 1473, "SkS" : 400, "Crit" : 2351, "DH" : 436} # Stats for Scholar
 WHMStat = {"MainStat": 2945, "WD":126, "Det" : 1792, "Ten" : 400, "SS": 839, "SkS" : 400, "Crit" : 2313, "DH" : 904} # Stats for WhiteMage
@@ -234,7 +236,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [RDMPlayer]
+PlayerList = [BLMPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -271,7 +273,7 @@ if findBiS:
     from ffxivcalc.GearSolver.Gear import ImportGear, Food
     from ffxivcalc.GearSolver.Solver import BiSSolver, getBaseStat, getGearDPSValue
 
-    GearSpace = ImportGear("CasterSet.json")
+    GearSpace = ImportGear("BLMSet.json")
 
     HD = Food({"DH" : [103, 0.1], "Det" : [62, 0.1]}, "Honeyed Dragonfruit")
     DB = Food({"SkS" : [103, 0.1], "DH" : [62, 0.1]}, "Dragonfruit Blend")
@@ -288,7 +290,7 @@ if findBiS:
     Det = 2
     Ten = 5
     materiaSpace = [Crit, DH, Det]
-    optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=True,maxSPDValue=510, useNewAlgo=True, 
+    optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=True,maxSPDValue=850, useNewAlgo=True, 
                                 oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=1,findOptMateriaGearBF=True)
 
 if False:
