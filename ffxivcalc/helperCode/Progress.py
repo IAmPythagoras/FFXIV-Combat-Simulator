@@ -19,6 +19,7 @@ class ProgressBar:
         self.iterationAverage = 0 
         self.sumIterations = 0
         self.lastIterTime = 0
+        self.lenLoadBar = 0
 
     def __iter__(self):
         self.currentProgress = -1
@@ -41,7 +42,14 @@ class ProgressBar:
         predictedTime = round(self.iterationAverage * (self.total-self.currentProgress),1)
 
         bar = "❚" * int(percent) + "-" * (100-int(percent))
-        print("\r"+ self.name +" |"+bar+"| " + ((str(percent) + " %") if self.currentProgress > 0 else "") + " ETA : " + str(predictedTime) + "s", end="\r")
+
+        loadBar = "\r"+ self.name +" |"+bar+"| " + ((str(percent) + " %") if self.currentProgress > 0 else "") + " ETA : " + str(predictedTime) + "s"
+
+                             # This will remove characters that are not supposed to be there anymore
+        if len(loadBar) > self.lenLoadBar: self.lenLoadBar = len(loadBar)
+        for i in range(len(loadBar), self.lenLoadBar): loadBar += " "
+
+        print(loadBar, end="\r")
         if self.total - self.currentProgress == 0:print()
         return self
     
@@ -64,3 +72,7 @@ class ProgressBar:
         iterator = iter(newProgressBar)
         next(iterator)
         return iterator
+    
+
+if __name__ == "__main__":
+    pass

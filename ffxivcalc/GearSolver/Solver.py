@@ -34,7 +34,8 @@ def getBaseStat():
         "SS" : 400,
         "SkS" : 400,
         "Crit" : 400,
-        "DH" : 400
+        "DH" : 400,
+        "Piety" : 400
     }  
 
 def getGearDPSValue(Fight, gearSet : GearSet, PlayerIndex : int, n : int =10000):
@@ -686,7 +687,7 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
 
     #############
 
-    exploringDepth = 4
+    exploringDepth = 22
     curDepth = 0
     solver_logging.warning("Exploring DH/Det replacement in a depth of " + str(exploringDepth))
 

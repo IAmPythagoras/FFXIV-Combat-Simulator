@@ -54,9 +54,10 @@ Event = Fight(Dummy, False)
 # These stats must include the bonus stats food gives.
 
 # Caster
-BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1493, 'Ten': 400, 'SS': 824, 'SkS': 400, 'Crit': 2514, 'DH': 1402} # Stats for BlackMage
+#BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1493, 'Ten': 400, 'SS': 824, 'SkS': 400, 'Crit': 2514, 'DH': 1402} # Stats for BlackMage
 #BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1534, 'Ten': 400, 'SS': 886, 'SkS': 400, 'Crit': 2519, 'DH': 1294}
-BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1529, 'Ten': 400, 'SS': 824, 'SkS': 400, 'Crit': 2514, 'DH': 1294}
+#BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1529, 'Ten': 400, 'SS': 824, 'SkS': 400, 'Crit': 2514, 'DH': 1294}
+BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1246, 'Ten': 400, 'SS': 814, 'SkS': 400, 'Crit': 2509, 'DH': 1644}
 
 #RDMStat = {"MainStat": 3378, "WD": 132, "Det": 1601, "Ten": 400, "SS": 502, "SkS": 400, "Crit": 2514, "DH": 1616} # Stats for RedMage
 RDMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1673, 'Ten': 400, 'SS': 502, 'SkS': 400, 'Crit': 2514, 'DH': 1544}
@@ -67,7 +68,9 @@ SMNStat = {'MainStat': 3378, 'WD': 132, 'Det': 1534, 'Ten': 400, 'SS': 591, 'SkS
 SMNStat = {'MainStat': 3378, 'WD': 132, 'Det': 1462, 'Ten': 400, 'SS': 591, 'SkS': 400, 'Crit': 2555, 'DH': 1616}
 SMNStat = {'MainStat': 3378, 'WD': 132, 'Det': 1565, 'Ten': 400, 'SS': 538, 'SkS': 400, 'Crit': 2514, 'DH': 1616}
 # Healer
-SCHStat = {"MainStat": 2931, "WD":126, "Det" : 1750, "Ten" : 400, "SS": 1473, "SkS" : 400, "Crit" : 2351, "DH" : 436} # Stats for Scholar
+SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 990, 'SkS': 400, 'Crit': 2502, 'DH': 688, 'Piety': 400} # Stats for Scholar
+#SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 954, 'SkS': 400, 'Crit': 2502, 'DH': 724, 'Piety': 400}
+
 WHMStat = {"MainStat": 2945, "WD":126, "Det" : 1792, "Ten" : 400, "SS": 839, "SkS" : 400, "Crit" : 2313, "DH" : 904} # Stats for WhiteMage
 ASTStat = {"MainStat": 2949, "WD":126, "Det" : 1659, "Ten" : 400, "SS": 1473, "SkS" : 400, "Crit" : 2280, "DH" : 436} # Stats for Astrologian
 SGEStat = {"MainStat": 2928, "WD":126, "Det" : 1859, "Ten" : 400, "SS": 827, "SkS" : 400, "Crit" : 2312, "DH" : 1012} # Stats for Sage
@@ -236,7 +239,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [BLMPlayer]
+PlayerList = [SCHPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -273,7 +276,7 @@ if findBiS:
     from ffxivcalc.GearSolver.Gear import ImportGear, Food
     from ffxivcalc.GearSolver.Solver import BiSSolver, getBaseStat, getGearDPSValue
 
-    GearSpace = ImportGear("BLMSet.json")
+    GearSpace = ImportGear("HealingGear.json")
 
     HD = Food({"DH" : [103, 0.1], "Det" : [62, 0.1]}, "Honeyed Dragonfruit")
     DB = Food({"SkS" : [103, 0.1], "DH" : [62, 0.1]}, "Dragonfruit Blend")
@@ -283,14 +286,14 @@ if findBiS:
     CC = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")
     MB = Food({"Ten" : [103, 0.1], "Det" : [62, 0.1]}, "Marinated Broccoflower")
     BS =  Food({"Det" : [103, 0.1], "Ten" : [62, 0.1]}, "Broccoflower Stew")
-    foodSpace = [BE]
+    foodSpace = [CC]
 
     Crit = 0
     DH = 1
     Det = 2
     Ten = 5
     materiaSpace = [Crit, DH, Det]
-    optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=True,maxSPDValue=850, useNewAlgo=True, 
+    optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=True,maxSPDValue=989, useNewAlgo=True, 
                                 oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=1,findOptMateriaGearBF=True)
 
 if False:

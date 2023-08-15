@@ -48,8 +48,9 @@ class StatType(IntEnum):
     SS = 3
     SkS = 4
     Ten = 5
-    MainStat = 6
-    WD = 7      
+    Piety = 6
+    MainStat = 7
+    WD = 8      
 
     @classmethod
     def name_for_id(cls, id : int) -> str:
@@ -497,7 +498,8 @@ class GearSet:
         "SS" : 400,
         "SkS" : 400,
         "Crit" : 400,
-        "DH" : 400
+        "DH" : 400,
+        "Piety" : 400
     }       
         
                              # Getting stats from gear and materia
