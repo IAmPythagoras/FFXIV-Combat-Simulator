@@ -1,0 +1,19 @@
+Solver result (Using BF up-down)
+Best optimal : Gearset's info:
+WEAPON : Crit : 306 | Det : 214 | MainStat : 416 | WD : 132 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+HEAD : Det : 184 | Crit : 129 | MainStat : 248 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+HANDS : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+LEGS : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+FEET : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+EARRINGS : Det : 145 | SS : 102 | MainStat : 196 |  Materias : Crit : 36 | SS : 36 |  Name : Tome
+NECKLACE : Det : 145 | SS : 102 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+LRING : Crit : 142 | Det : 99 | MainStat : 186 |  Materias : SS : 36 | SS : 36 |  Name : Tome650
+RING : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+ Final Stats : {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 1350, 'SkS': 400, 'Crit': 2430, 'DH': 400, 'Piety': 400}
+Materia numbers : SS 19x |Crit 3x |
+Food Caviar Canapes gives -> Crit 10% max of 103 |SS 10% max of 62 |
+Expected Damage : 7112.85
+Potency : 9265TimeStamp : 62.9Random Damage : {'1': 7570.420168067227, '10': 6830.631038278098, '25': 6979.366834865557, '50': 7191.796502384739, '75': 7405.576617341324, '90': 7575.298660004542, '99': 7735.961844197139}
+(1.76, 1.122, 1, 1.065, 0.263, 0.613, 0.0, 0.0)

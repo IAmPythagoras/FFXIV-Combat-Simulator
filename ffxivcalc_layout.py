@@ -68,9 +68,13 @@ SMNStat = {'MainStat': 3378, 'WD': 132, 'Det': 1534, 'Ten': 400, 'SS': 591, 'SkS
 SMNStat = {'MainStat': 3378, 'WD': 132, 'Det': 1462, 'Ten': 400, 'SS': 591, 'SkS': 400, 'Crit': 2555, 'DH': 1616}
 SMNStat = {'MainStat': 3378, 'WD': 132, 'Det': 1565, 'Ten': 400, 'SS': 538, 'SkS': 400, 'Crit': 2514, 'DH': 1616}
 # Healer
-#SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 990, 'SkS': 400, 'Crit': 2502, 'DH': 688, 'Piety': 400} # Stats for Scholar
+SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 990, 'SkS': 400, 'Crit': 2502, 'DH': 688, 'Piety': 400} # Stats for Scholar
 SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 918, 'SkS': 400, 'Crit': 2502, 'DH': 760, 'Piety': 400}
-#SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 954, 'SkS': 400, 'Crit': 2502, 'DH': 724, 'Piety': 400}
+SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 954, 'SkS': 400, 'Crit': 2502, 'DH': 724, 'Piety': 400}
+#SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2155, 'Ten': 400, 'SS': 810, 'SkS': 400, 'Crit': 2502, 'DH': 760, 'Piety': 400}
+SCHStat = {'MainStat': 3369, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 1350, 'SkS': 400, 'Crit': 2430, 'DH': 400, 'Piety': 400}
+#SCHStat = {'MainStat': 3369, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 1479, 'SkS': 400, 'Crit': 2301, 'DH': 400, 'Piety': 400}
+
 
 WHMStat = {"MainStat": 2945, "WD":126, "Det" : 1792, "Ten" : 400, "SS": 839, "SkS" : 400, "Crit" : 2313, "DH" : 904} # Stats for WhiteMage
 ASTStat = {"MainStat": 2949, "WD":126, "Det" : 1659, "Ten" : 400, "SS": 1473, "SkS" : 400, "Crit" : 2280, "DH" : 436} # Stats for Astrologian
@@ -173,7 +177,7 @@ SMNOpener = [Ruin3, Summon, SearingLight, AstralImpulse, AstralImpulse, AstralIm
 RDMOpener = [Verthunder, Verareo, Swiftcast,Acceleration, Verthunder, Potion, Verthunder, Embolden, Manafication, EnchantedRiposte, Fleche, EnchantedZwerchhau, Contre, EnchantedRedoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verstone, Verareo, Verfire, Verthunder, Acceleration, Verareo, Verstone, Verthunder, Fleche, Jolt, Verthunder, Verfire, Verareo, Contre, Jolt, Verareo, Engagement, Corps, Verstone, Verthunder, EnchantedRiposte, EnchantedZwerchhau, EnchantedRedoublement, Fleche, Verflare, Scorch, Resolution]
 
 # Healer
-SCHOpener = [WaitAbility(3.5),Broil, Biolysis, Aetherflow, Broil, Swiftcast, Broil, WaitAbility(1), ChainStratagem, WaitAbility(1), EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil]
+SCHOpener = [Broil, Biolysis, Aetherflow, Broil, Swiftcast, Broil, WaitAbility(0), WaitAbility(0.25), EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil]
 WHMOpener = [Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare]
 ASTOpener = [Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic,Malefic]
 SGEOpener = []
@@ -294,7 +298,7 @@ if findBiS:
     Det = 2
     Ten = 5
     materiaSpace = [Crit, DH, Det]
-    optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=True,maxSPDValue=989, useNewAlgo=True, 
+    optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=True,maxSPDValue=1500, useNewAlgo=True, 
                                 oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=1,findOptMateriaGearBF=True)
 
 if False:

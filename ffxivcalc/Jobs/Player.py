@@ -546,18 +546,18 @@ class Player:
         self.updateRoleCD(self, time)
 
     def updateLock(self):
-        if (self.GCDLockTimer <= 0):
+        if (self.GCDLockTimer < self.CurrentFight.TimeUnit):
             self.GCDLockTimer = 0
             self.GCDLock = False
         
-        if (self.oGCDLockTimer <= 0):
+        if (self.oGCDLockTimer < self.CurrentFight.TimeUnit):
             self.oGCDLockTimer = 0
             self.oGCDLock = False
         
-        if(self.Casting and self.CastingLockTimer <=0):
+        if(self.Casting and self.CastingLockTimer < self.CurrentFight.TimeUnit):
             self.CastingSpell.CastFinal(self, self.CastingTarget)
 
-        if (self.CastingLockTimer <= 0):
+        if (self.CastingLockTimer < self.CurrentFight.TimeUnit):
             self.CastingLockTimer = 0
             self.Casting = False
 

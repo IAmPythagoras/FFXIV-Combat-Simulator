@@ -6,7 +6,7 @@ from ffxivcalc.Jobs.Base_Spell import ZIPAction, PreBakedAction
 from ffxivcalc.helperCode.Progress import ProgressBar
 import matplotlib.pyplot as plt
 import logging
-from ffxivcalc.helperCode.helper_math import roundDown, isclose
+from ffxivcalc.helperCode.helper_math import roundDown, isclose, roundUp
 main_logging = logging.getLogger("ffxivcalc")
 fight_logging = main_logging.getChild("Fight")
 
@@ -53,6 +53,7 @@ class Fight:
         self.wipe = False # Will be set to True in case we are stopping the simulation.
         self.PlayerList = [] # Empty player list
         self.MaxPotencyPlentifulHarvest = False # True will make Plentiful Harvest do max potency regardless of player.
+        self.TimeUnit = 0
 
                              # These values can only be eddited by manually changing the values by accessing the Fight object.
         self.SavePreBakedAction = False
@@ -122,10 +123,12 @@ class Fight:
         timeStamp = 0
         totalPotency = 0
 
+        amountToRemoveEveryGCD = 2.5 * roundDown(2 - f_SPD,3) - roundDown(2.5 * roundDown(2 - f_SPD,3),2)
+
 
                              # Find this set's finish time so we can cut off autos if they do not hit in the end.
         for PreBakedAction in player.PreBakedActionSet:
-            trialFinishTime = round(PreBakedAction.nonReducableStamp + max(0,round(PreBakedAction.reducableStamp / f_SPD, 2) - (0.01 * (countGCD)),2),2)
+            trialFinishTime = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(2 - f_SPD,3)) - (amountToRemoveEveryGCD * countGCD/1)),2)
             if PreBakedAction.isGCD : countGCD += 1
         
         countGCD = 0
@@ -135,7 +138,7 @@ class Fight:
                              # The timestamp of the PreBakedAction. We are substracting 0.01 seconds for every previously done GCD
                              # since round(PreBakedAction.reducableStamp / f_SPD, 2) computes the GCD timer, but the simulator
                              # starts counting at 0.00, so we have to substract for every GCD as otherwise we will gain 0.01 every GCD.
-            timeStamp = round(PreBakedAction.nonReducableStamp + max(0,round(PreBakedAction.reducableStamp / f_SPD, 2) - (0.01 * countGCD)),2)
+            timeStamp = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(2 - f_SPD,3)) - (amountToRemoveEveryGCD * countGCD/1)),2)
 
                              # If an auto doesn't land in this trial we simply continue
             if PreBakedAction.type == 3 and timeStamp > trialFinishTime:
@@ -149,7 +152,7 @@ class Fight:
 
             fight_logging.debug("TimeStamp : " + str(timeStamp))
             fight_logging.debug("Finish : " + str(trialFinishTime))
-            #fight_logging.debug("Non Reducable : " + str(PreBakedAction.nonReducableStamp) + " Reducable : " + str(PreBakedAction.reducableStamp) + " f_SPD : " + str(f_SPD))
+            fight_logging.debug("Non Reducable : " + str(PreBakedAction.nonReducableStamp) + " Reducable : " + str(PreBakedAction.reducableStamp) + " SPD : " + str(roundDown(2 - f_SPD,3)))
                                          # Will check what buffs the action falls under.
                                          # Chain Stratagem
             for history in player.ChainStratagemHistory:
@@ -256,6 +259,7 @@ class Fight:
         self.MaxPotencyPlentifulHarvest = MaxPotencyPlentifulHarvest
         self.TimeStamp = 0   # Keep track of the time
         start = False
+        self.TimeUnit = TimeUnit
 
 
         self.timeValue = []  # Used for graph
@@ -553,8 +557,8 @@ def GCDReductionEffect(Player, Spell) -> None:
     """
     
     if Spell.type == 1: # Spell
-        Spell.CastTime *= Player.SpellReduction
-        Spell.RecastTime *= Player.SpellReduction
+        Spell.CastTime = roundDown(Player.SpellReduction * Spell.CastTime,2)
+        Spell.RecastTime = roundDown(Player.SpellReduction * Spell.RecastTime,2)
         if Spell.RecastTime < 1.5 and Spell.RecastTime > 0 : Spell.RecastTime = 1.5 # A GCD cannot go under 1.5 sec
     elif Spell.type == 2: # Weaponskill
         Spell.CastTime *= Player.WeaponskillReduction
