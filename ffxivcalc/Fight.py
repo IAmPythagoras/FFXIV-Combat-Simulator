@@ -296,8 +296,8 @@ class Fight:
         # Will first compute each player's GCD reduction value based on their Spell Speed and Skill Speed Value
 
         for Player in self.PlayerList:
-            Player.SpellReduction = (1000 - (130 * (Player.Stat["SS"]-400) / 1900))/1000
-            Player.WeaponskillReduction = (1000 - (130 * (Player.Stat["SkS"]-400) / 1900))/1000
+            Player.SpellReduction = math.floor(1000 - (130 * (Player.Stat["SS"]-400) / 1900))/1000
+            Player.WeaponskillReduction = math.floor(1000 - (130 * (Player.Stat["SkS"]-400) / 1900))/1000
             Player.EffectList.append(GCDReductionEffect)
 
         fight_logging.debug("Starting simulation with TeamCompositionBonus = " + str(self.TeamCompositionBonus))

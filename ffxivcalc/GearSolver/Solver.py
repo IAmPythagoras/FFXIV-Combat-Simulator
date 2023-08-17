@@ -719,41 +719,52 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
     trialSetDet = deepcopy(optimalSet)
     trialSetDetCurMaxDPS = 0
 
-    for gear in trialSetDH:
-        if gear.hasStatMeld(StatType.Det) and gear.canReplaceMateriaNoLoss(matGen.GenerateMateria(StatType.DH)):
-            curDepth += 1
-            gear.removeMateriaType(StatType.Det)
-            gear.AddMateria(matGen.GenerateMateria(StatType.DH))
+    while True:
 
-            GearStat = trialSetDH.GetGearSetStat()
+        hasChangedMeld = False
 
-            f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
-            ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=randomIteration)
+        for gear in trialSetDH:
+            if gear.hasStatMeld(StatType.Det) and gear.canReplaceMateriaNoLoss(matGen.GenerateMateria(StatType.DH)):
+                hasChangedMeld = True
+                curDepth += 1
+                gear.removeMateriaType(StatType.Det)
+                gear.AddMateria(matGen.GenerateMateria(StatType.DH))
 
-            if ExpectedDamage > curMaxDPS and ExpectedDamage > trialSetDHCurMaxDPS :
-                optimalSet = deepcopy(trialSetDH)
-                trialSetDHCurMaxDPS = ExpectedDamage
+                GearStat = trialSetDH.GetGearSetStat()
+
+                f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
+                ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=randomIteration)
+
+                if ExpectedDamage > curMaxDPS and ExpectedDamage > trialSetDHCurMaxDPS :
+                    optimalSet = deepcopy(trialSetDH)
+                    trialSetDHCurMaxDPS = ExpectedDamage
         
-        if curDepth == exploringDepth : break
+        if not hasChangedMeld : break
 
     curDepth = 0
 
-    for gear in trialSetDet:
-        if gear.hasStatMeld(StatType.DH) and gear.canReplaceMateriaNoLoss(matGen.GenerateMateria(StatType.Det)):
-            curDepth += 1
-            gear.removeMateriaType(StatType.DH)
-            gear.AddMateria(matGen.GenerateMateria(StatType.Det))
+    while True:
 
-            GearStat = trialSetDH.GetGearSetStat()
+        hasChangedMeld = False
 
-            f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
-            ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=randomIteration)
-            
-            if ExpectedDamage > curMaxDPS and ExpectedDamage > trialSetDHCurMaxDPS and ExpectedDamage > trialSetDetCurMaxDPS :
-                optimalSet = deepcopy(trialSetDH)
-                trialSetDHCurMaxDPS = ExpectedDamage
+        for gear in trialSetDet:
+            if gear.hasStatMeld(StatType.DH) and gear.canReplaceMateriaNoLoss(matGen.GenerateMateria(StatType.Det)):
+                hasChangedMeld = True
+                curDepth += 1
+                gear.removeMateriaType(StatType.DH)
+                gear.AddMateria(matGen.GenerateMateria(StatType.Det))
 
-        if curDepth == exploringDepth : break
+                GearStat = trialSetDH.GetGearSetStat()
+
+                f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
+                ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=randomIteration)
+                
+                if ExpectedDamage > curMaxDPS and ExpectedDamage > trialSetDHCurMaxDPS and ExpectedDamage > trialSetDetCurMaxDPS :
+                    optimalSet = deepcopy(trialSetDH)
+                    trialSetDHCurMaxDPS = ExpectedDamage
+
+        if not hasChangedMeld : break
+
 
     ############
     return optimalSet, 0, {}
