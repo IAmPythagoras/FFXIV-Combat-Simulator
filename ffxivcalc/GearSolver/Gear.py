@@ -189,7 +189,6 @@ class Gear:
 
         return strReturn + " Name : " + self.Name
 
-
     def __addMateria(self, newMateria : Materia):
         """
         Private function called to add materia to the gear. This function is called by AddMateria and forceAddMateria.
@@ -478,6 +477,19 @@ class GearSet:
             limit += self.GearSet[key].MateriaLimit
         return limit
     
+    def getMateriaTypeLimit(self, type : StatType, matGen : MateriaGenerator) -> int:
+        """
+        This function returns the total number of even materia (of the given MateriaGenerator object) of a given type the gear set can additionally receive.
+        
+        type : StatType -> Type of the materia
+        matGen : MateriaGenerator : -> Materia Generator
+        """
+
+        limit = 0
+        for gear in self:
+            limit += gear.getNumberPossibleMateria(type, matGen)
+        return limit
+    
     def getNumberMateria(self) -> int:
         """
         This function returns the current number of materia on the gear set.
@@ -499,7 +511,7 @@ class GearSet:
         "SkS" : 400,
         "Crit" : 400,
         "DH" : 400,
-        "Piety" : 400
+        "Piety" : 390
     }       
         
                              # Getting stats from gear and materia

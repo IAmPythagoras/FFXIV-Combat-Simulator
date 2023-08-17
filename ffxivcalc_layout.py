@@ -72,8 +72,8 @@ SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 990, 'SkS
 SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 918, 'SkS': 400, 'Crit': 2502, 'DH': 760, 'Piety': 400}
 SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 954, 'SkS': 400, 'Crit': 2502, 'DH': 724, 'Piety': 400}
 #SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2155, 'Ten': 400, 'SS': 810, 'SkS': 400, 'Crit': 2502, 'DH': 760, 'Piety': 400}
-SCHStat = {'MainStat': 3369, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 1350, 'SkS': 400, 'Crit': 2430, 'DH': 400, 'Piety': 400}
-#SCHStat = {'MainStat': 3369, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 1479, 'SkS': 400, 'Crit': 2301, 'DH': 400, 'Piety': 400}
+#SCHStat = {'MainStat': 3369, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 1350, 'SkS': 400, 'Crit': 2430, 'DH': 400, 'Piety': 400}
+#SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2155, 'Ten': 400, 'SS': 903, 'SkS': 400, 'Crit': 2409, 'DH': 760, 'Piety': 390}
 
 
 WHMStat = {"MainStat": 2945, "WD":126, "Det" : 1792, "Ten" : 400, "SS": 839, "SkS" : 400, "Crit" : 2313, "DH" : 904} # Stats for WhiteMage
@@ -263,7 +263,7 @@ Event.RequirementOn = RequirementOn
 Event.ShowGraph = ShowGraph
 Event.IgnoreMana = IgnoreMana
 
-findBiS = False
+findBiS = True
 
 __logger__ = logging.getLogger("ffxivcalc") # root logger
 level = logging.DEBUG if not findBiS else logging.WARNING
@@ -271,7 +271,7 @@ logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ff
 __logger__.setLevel(level=level) # __logger__ = logging.getLogger("ffxivcalc") 
 
 if not findBiS:
-    Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False, MaxTeamBonus=False) # Simulating fight
+    #Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False, MaxTeamBonus=False) # Simulating fight
     pass
 
 # ===============================================================================================
@@ -298,7 +298,7 @@ if findBiS:
     Det = 2
     Ten = 5
     materiaSpace = [Crit, DH, Det]
-    optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=True,maxSPDValue=1500, useNewAlgo=True, 
+    optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=True,minSPDValue=0,maxSPDValue=1500, useNewAlgo=True, 
                                 oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=1,findOptMateriaGearBF=True)
 
 if False:
@@ -314,20 +314,20 @@ if False:
     SS = 3
     SkS = 4
     Weapon = data["WEAPON"][0]
-    Weapon.AddMateria(matGen.GenerateMateria(3))
-    Weapon.AddMateria(matGen.GenerateMateria(3))
+    #Weapon.AddMateria(matGen.GenerateMateria(3))
+    #Weapon.AddMateria(matGen.GenerateMateria(3))
 
     Head = data["HEAD"][1]
     Head.AddMateria(matGen.GenerateMateria(0))
-    Head.AddMateria(matGen.GenerateMateria(3))
+    #Head.AddMateria(matGen.GenerateMateria(3))
 
     Body = data["BODY"][0]
-    Body.AddMateria(matGen.GenerateMateria(3))
-    Body.AddMateria(matGen.GenerateMateria(3))
+    #Body.AddMateria(matGen.GenerateMateria(3))
+    #Body.AddMateria(matGen.GenerateMateria(3))
 
     Hand = data["HANDS"][1]
-    Hand.AddMateria(matGen.GenerateMateria(3))
-    Hand.AddMateria(matGen.GenerateMateria(3))
+    #Hand.AddMateria(matGen.GenerateMateria(3))
+    #Hand.AddMateria(matGen.GenerateMateria(3))
 
     Leg = data["LEGS"][1]
     Leg.AddMateria(matGen.GenerateMateria(1))
@@ -372,5 +372,7 @@ if False:
     gSet.AddGear(Lring)
     gSet.AddGear(ring)
     gSet.addFood(raidFood)
+
+    print(gSet.getMateriaTypeLimit(3, matGen))
 
     getGearDPSValue(Event, gSet, 0, n=0)

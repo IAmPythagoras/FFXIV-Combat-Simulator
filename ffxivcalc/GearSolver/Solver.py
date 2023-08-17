@@ -98,7 +98,7 @@ def computeDamageValue(GearStat : dict, JobMod : int, IsTank : bool, IsCaster : 
 
 def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, PercentileToOpt : list = ["exp", "99", "90", "75", "50"],
               materiaDepthSearchIterator : int = 1, randomIteration : int = 10000, oddMateriaValue : int = 18, evenMateriaValue : int = 36,
-              PlayerIndex : int = 0, mendSpellSpeed : bool = False, maxSPDValue : int = 5000, useNewAlgo : bool = False, oversaturationIterationsPreGear : int = 0,
+              PlayerIndex : int = 0, mendSpellSpeed : bool = False, maxSPDValue : int = 5000, minSPDValue : int = 0, useNewAlgo : bool = False, oversaturationIterationsPreGear : int = 0,
               oversaturationIterationsPostGear : int = 0, findOptMateriaGearBF : bool = False):
     """
     Finds the BiS of the player given a Gear search space and a Fight. The Solver will output to a file named
@@ -125,6 +125,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     PlayerIndex : int -> Index of the player for which the user wants to optimize the gearset. Must be the index of the player in the Fight.PlayerList.
     mendSpellSpeed : bool -> If True the solver will look at Spell Speed value for speed.
     maxSPDValue : int -> Max Spell Speed or skill Speed value. Every gear set above that value will be discarded.
+    minSPDValue : int -> Min Spell Speed or skill Speed value. Every gear set under that value will be discarded.
     useNewAlgo : bool -> If set to true will use V2 of materiaBiSSolver
     oversaturationIterationsPreGear : int -> Number of times the algorithm will oversaturate gear before looking for best gear set
     oversaturationIterationsPostGear : int -> Number of times the algorithm will oversaturate gear before looking for best materias
@@ -138,6 +139,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     if useNewAlgo and oversaturationIterationsPreGear + oversaturationIterationsPostGear < 1: raise InvalidFunctionParameter("BiSSolver", "OverSaturationIteration", "If using newAlgo, must oversaturate gearset at least once. (oversaturationIterationsPreGear + oversaturationIterationsPostGear >= 1)")
     if useNewAlgo and (StatType.SS in MateriaSpace or StatType.SkS in MateriaSpace) : raise InvalidFunctionParameter("BiSSolver", "MateriaSpace", "MateriaSpace cannot invclue Speed Materias while using V2")
     if findOptMateriaGearBF and PercentileToOpt != ["exp"] : raise InvalidFunctionParameter("BiSSolver", "PercentileToOpt", "Can only optimize Expected if findOptMateriaGearBF is True")
+    if minSPDValue > maxSPDValue : raise InvalidFunctionParameter("BiSSolver", "Limitations to Speed Values", "minSPDValue cannot be bigger than maxSPDValue")
     expectedGearSpaceKeys = ["WEAPON", "HEAD", "BODY", "HANDS", "LEGS", "FEET", "EARRINGS", "NECKLACE", "BRACELETS", "LRING", "RING"]
     for key in expectedGearSpaceKeys:
         if not (key in GearSpace.keys()) or len(GearSpace[key]) == 0: raise InvalidGearSpace(key)
@@ -208,15 +210,30 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
                                                 curBestFoodExpectedSet = None
                                                 curBestFoodRandomDPS = {key : [0,None,{}] for key in optimalRandomGearSetMateria}
 
+
+                                                                        # Adding here so I don't forget. SpS/SkS are not usually as high as the other
+                                                                        # stats here because we do not oversaturate with Speed melds. THis could
+                                                                        # affect the buff given by food. Should add an option to add all the SpS/SkS bonus
+                                                                        # from food to see if this affects the final results.
                                                 for food in FoodSpace:
                                                     trialSet = deepcopy(newGearSet)
                                                     trialSet.addFood(food)
-                        
+                                                    GearStat = trialSet.GetGearSetStat()
+                                                                         # Will test for SpS/SkS to see if it can fall within the accepted minSPDValue.
+                                                                         # Checking if 0 before so we can speedup if it will work for sure.
+
+                                                    gearSetMaxSPDValue = ((GearStat["SS"] if mendSpellSpeed else GearStat["SkS"]) + trialSet.getMateriaTypeLimit((StatType.SS if mendSpellSpeed else StatType.SkS), matGen) * matGen.EvenValue)
+                                                    gearSetMaxSPDValueFood = min(int(gearSetMaxSPDValue * 0.1) + gearSetMaxSPDValue, gearSetMaxSPDValue + 103)
+                                                    canReachMinSPD = (minSPDValue == 0) or gearSetMaxSPDValueFood >= minSPDValue
+
+                                                    if not canReachMinSPD:
+                                                        continue
                                                                          # Will find optimal meld with food
                                                     if findOptMateriaGearBF: 
-                                                        trialSet, exp, ra = materiaBisSolverV3(trialSet, matGen, MateriaSpace, Fight, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, "exp",0,mendSpellSpeed,maxSPDValue=maxSPDValue,oversaturationIterationsPostGear=oversaturationIterationsPostGear,findOptMateriaGearBF=findOptMateriaGearBF)
+                                                        trialSet, exp, ra = materiaBisSolverV3(trialSet, matGen, MateriaSpace, Fight, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, "exp",0,mendSpellSpeed,minSPDValue=minSPDValue,maxSPDValue=maxSPDValue,oversaturationIterationsPostGear=oversaturationIterationsPostGear,findOptMateriaGearBF=findOptMateriaGearBF)
 
                                                     GearStat = trialSet.GetGearSetStat()
+
                                                     if not ((mendSpellSpeed and GearStat["SS"] > maxSPDValue) or (not mendSpellSpeed and GearStat["SkS"] > maxSPDValue)):
 
                                                         JobMod = Fight.PlayerList[PlayerIndex].JobMod # Level 90 jobmod value, specific to each job
@@ -255,14 +272,14 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
             print("Using BF up-down")
             if "exp" in PercentileToOpt : 
                 print("Optimizing Best Expected BiS materia")
-                optimalGearSet, curMax, curRandom = materiaBisSolverV3(optimalGearSet, matGen, MateriaSpace, Fight, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, "exp",0,mendSpellSpeed,maxSPDValue=maxSPDValue,oversaturationIterationsPostGear=oversaturationIterationsPostGear,findOptMateriaGearBF=findOptMateriaGearBF)
+                optimalGearSet, curMax, curRandom = materiaBisSolverV3(optimalGearSet, matGen, MateriaSpace, Fight, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, "exp",0,mendSpellSpeed,minSPDValue=minSPDValue,maxSPDValue=maxSPDValue,oversaturationIterationsPostGear=oversaturationIterationsPostGear,findOptMateriaGearBF=findOptMateriaGearBF)
                                     # Will now optimize the random BiS. Every percentile's gearset is optimized by using
                                     # the value of the DPS as their percentile. So the 90th percentile BiS is chosen using the
                                     # materia arrangement that maximizes the 90th percentile DPS.
             for percentile in optimalRandomGearSet:
                 if percentile != "exp" : 
                     print("Optimizing " + percentile + "th percentile BiS")
-                    optimalRandomGearSetMateria[percentile][1], optimalRandomGearSetMateria[percentile][0], curRandom = materiaBisSolverV3(optimalRandomGearSet[percentile][1], matGen, MateriaSpace, Fight, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, percentile,randomIteration,mendSpellSpeed,maxSPDValue=maxSPDValue, oversaturationIterationsPostGear=oversaturationIterationsPostGear)
+                    optimalRandomGearSetMateria[percentile][1], optimalRandomGearSetMateria[percentile][0], curRandom = materiaBisSolverV3(optimalRandomGearSet[percentile][1], matGen, MateriaSpace, Fight, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, percentile,randomIteration,mendSpellSpeed,minSPDValue=minSPDValue,maxSPDValue=maxSPDValue, oversaturationIterationsPostGear=oversaturationIterationsPostGear)
                     optimalRandomGearSetMateria[percentile][2] = deepcopy(curRandom)
         else:
             print("Using BF down-up")
@@ -551,7 +568,8 @@ def materiaBisSolverV2(Set : GearSet, matGen : MateriaGenerator, matSpace : list
 
     return optimalSet, ExpectedDamage, randomDamageDict
 
-def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list[int], Fight, JobMod : int, IsTank : bool, IsCaster : bool,PlayerIndex : int, percentile : str, randomIteration : int, mendSpellSpeed : bool,maxSPDValue : int = 5000, oversaturationIterationsPostGear : int = 0, findOptMateriaGearBF : bool = False):   
+def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list[int], Fight, JobMod : int, IsTank : bool, IsCaster : bool,PlayerIndex : int, 
+                       percentile : str, randomIteration : int, mendSpellSpeed : bool,minSPDValue : int = 0, maxSPDValue : int = 5000, oversaturationIterationsPostGear : int = 0, findOptMateriaGearBF : bool = False):   
     """
     This function finds the best melds for the given Gear Set.
 
@@ -572,6 +590,7 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
     randomIteration : int -> Number of time to run random simulations.
     mendSpellSpeed : bool -> If true the algorithm will add SpS materias and not SkS
     maxSPDValue : int -> Maximum Speed value for the Gear Set with melds.
+    minSPDValue : int -> Minimal Speed value for the Gear Set with melds.
     oversaturationIterationsPostGear : int -> Number of times the algorithm will oversaturate the gear set.
     findOptMateriaGearBF : bool -> If true means we are solving materias for every possible gear set/food. So this simply mutes the ProgressBar usually present.
     """
@@ -627,13 +646,14 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
 
     GearStat = optimalSet.GetGearSetStat()
     pBTotal = max(0,int((maxSPDValue - GearStat["SS"])/matGen.EvenValue))
+
+    haveFoundMinSPDSet = GearStat[("SS" if mendSpellSpeed else "SkS")] >= minSPDValue
     
     if not findOptMateriaGearBF : 
         pBTotal = max(1,int((maxSPDValue - GearStat["SS"])/matGen.EvenValue))
         pbReplace = ProgressBar.init(pBTotal, "Replacing by SpS/SkS")
 
-    while (mendSpellSpeed and GearStat["SS"] + matGen.EvenValue < maxSPDValue) or (not mendSpellSpeed and GearStat["SkS"] + matGen.EvenValue < maxSPDValue):
-
+    while (GearStat["SS"] if mendSpellSpeed else GearStat["SkS"]) + matGen.EvenValue < maxSPDValue:
         curMaxDPS = 0
         curTypeToReplace = None
         curGearPieceToReplace = None
@@ -674,14 +694,17 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
         optimalSet.removeMateriaSpecGear(curGearPieceToReplace, curTypeToReplace)
         optimalSet.GearSet[curGearPieceToReplace].AddMateria(mat)
         GearStat = optimalSet.GetGearSetStat()
-        solver_logging.warning("Replacing " + StatType.name_for_id(curTypeToReplace) + " from " + curGearPieceToReplace)
+        solver_logging.warning("Replacing " + StatType.name_for_id(curTypeToReplace) + " from " + curGearPieceToReplace + " Speed is now : " + str(GearStat[("SS" if mendSpellSpeed else "SkS")]))
         if not findOptMateriaGearBF : next(pbReplace)
 
                              # Will now compare with previous best to see if new Speed values are better
-        if curMaxDPS > curMaxSpeedDPS:
+                             # Or take the first set has minSPDValue
+        if curMaxDPS > curMaxSpeedDPS or ((not haveFoundMinSPDSet) and GearStat[("SS" if mendSpellSpeed else "SkS")] > minSPDValue):
+            if not haveFoundMinSPDSet : solver_logging.warning("Found minSPDValue set with SPD value : " + str(GearStat[("SS" if mendSpellSpeed else "SkS")]))
+            haveFoundMinSPDSet = True if not haveFoundMinSPDSet else False
             curMaxSpeedDPS = curMaxDPS
             optimalSpeedSet = deepcopy(optimalSet)
-            solver_logging.warning("Found new optimal Speed set with damage " + str(curMaxDPS) + " Speed value : " + str(GearStat["SS"]))
+            solver_logging.warning("Found new optimal Speed set with damage " + str(curMaxDPS) + " Speed value : " + str(GearStat[("SS" if mendSpellSpeed else "SkS")]))
 
     optimalSet = deepcopy(optimalSpeedSet)
 
