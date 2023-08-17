@@ -700,8 +700,9 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
                              # Will now compare with previous best to see if new Speed values are better
                              # Or take the first set has minSPDValue
         if curMaxDPS > curMaxSpeedDPS or ((not haveFoundMinSPDSet) and GearStat[("SS" if mendSpellSpeed else "SkS")] > minSPDValue):
-            if not haveFoundMinSPDSet : solver_logging.warning("Found minSPDValue set with SPD value : " + str(GearStat[("SS" if mendSpellSpeed else "SkS")]))
-            haveFoundMinSPDSet = True if not haveFoundMinSPDSet else False
+            if not haveFoundMinSPDSet and GearStat[("SS" if mendSpellSpeed else "SkS")] > minSPDValue : 
+                haveFoundMinSPDSet = True
+                solver_logging.warning("Found minSPDValue set with SPD value : " + str(GearStat[("SS" if mendSpellSpeed else "SkS")]))
             curMaxSpeedDPS = curMaxDPS
             optimalSpeedSet = deepcopy(optimalSet)
             solver_logging.warning("Found new optimal Speed set with damage " + str(curMaxDPS) + " Speed value : " + str(GearStat[("SS" if mendSpellSpeed else "SkS")]))
