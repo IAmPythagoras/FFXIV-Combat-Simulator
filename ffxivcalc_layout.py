@@ -55,9 +55,10 @@ Event = Fight(Dummy, False)
 
 # Caster
 BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1493, 'Ten': 400, 'SS': 824, 'SkS': 400, 'Crit': 2514, 'DH': 1402} # Stats for BlackMage
-#BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1277, 'Ten': 400, 'SS': 1292, 'SkS': 400, 'Crit': 2514,  'DH': 1150}
 BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1530, 'Ten': 400, 'SS': 2521, 'SkS': 400, 'Crit': 851, 'DH': 1331, 'Piety': 390}
+#BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1422, 'Ten': 400, 'SS': 2521, 'SkS': 400, 'Crit': 851, 'DH': 1439, 'Piety': 390}
 RDMStat = {"MainStat": 3378, "WD": 132, "Det": 1601, "Ten": 400, "SS": 502, "SkS": 400, "Crit": 2514, "DH": 1616} # Stats for RedMage
+RDMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1530, 'Ten': 400, 'SS': 2163, 'SkS': 400, 'Crit': 887, 'DH': 1653, 'Piety': 390}
 SMNStat = {'MainStat': 3378, 'WD': 132, 'Det': 1534, 'Ten': 400, 'SS': 591, 'SkS': 400, 'Crit': 2555, 'DH': 1544} # Stats for Summoner
 
 # Healer
@@ -150,7 +151,11 @@ BLMOpener = [SharpCast, Fire3, Thunder3, Fire4, Triplecast, Fire4, Fire4, Amplif
              Blizzard3, Blizzard4,Paradox, Fire3, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Despair]
 
 SMNOpener = [Ruin3, Summon, SearingLight, AstralImpulse, AstralImpulse, AstralImpulse, EnergyDrainSMN, Enkindle, AstralImpulse, Deathflare, Fester, AstralImpulse, Fester, AstralImpulse, Garuda, Swiftcast, Slipstream, Emerald, Emerald, Emerald, Emerald, Titan, Topaz, Mountain, Topaz, Mountain, Topaz, Mountain, Topaz, Mountain, Ifrit, Cyclone, Strike, Ruby, Ruby, Ruin4, Ruin3]
-RDMOpener = [Verthunder, Verareo, Swiftcast,Acceleration, Verthunder, Potion, Verthunder, Embolden, Manafication, EnchantedRiposte, Fleche, EnchantedZwerchhau, Contre, EnchantedRedoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verstone, Verareo, Verfire, Verthunder, Acceleration, Verareo, Verstone, Verthunder, Fleche, Jolt, Verthunder, Verfire, Verareo, Contre, Jolt, Verareo, Engagement, Corps, Verstone, Verthunder, EnchantedRiposte, EnchantedZwerchhau, EnchantedRedoublement, Fleche, Verflare, Scorch, Resolution]
+
+RDMOpener = [Verthunder, Verareo, Swiftcast,Acceleration, Verthunder, Potion, Verthunder, Embolden, Manafication, EnchantedRiposte, Fleche, EnchantedZwerchhau, 
+             Contre, EnchantedRedoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verstone, Verareo, Verfire, Verthunder, 
+             Acceleration, Verareo, Verstone, Verthunder, Fleche, Jolt, Verthunder, Verfire, Verareo, Contre, Jolt, Verareo, Engagement, Corps, Verstone, 
+             Verthunder, EnchantedRiposte, EnchantedZwerchhau, EnchantedRedoublement, Fleche, Verflare, Scorch, Resolution]
 
 # Healer
 SCHOpener = [Broil, Biolysis, Aetherflow, Broil, Swiftcast, Broil, WaitAbility(0), WaitAbility(0.25), EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Broil, Broil, Broil]
@@ -220,7 +225,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [BLMPlayer]
+PlayerList = [RDMPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -247,7 +252,7 @@ logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ff
 __logger__.setLevel(level=level) # __logger__ = logging.getLogger("ffxivcalc") 
 
 if not findBiS:
-    Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False, MaxTeamBonus=False) # Simulating fight
+   # Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False, MaxTeamBonus=False) # Simulating fight
     pass
 
 # ===============================================================================================
@@ -257,7 +262,7 @@ if findBiS:
     from ffxivcalc.GearSolver.Gear import ImportGear, Food
     from ffxivcalc.GearSolver.Solver import BiSSolver, getBaseStat, getGearDPSValue
 
-    GearSpace = ImportGear("BLMSet.json")
+    GearSpace = ImportGear("CasterSet.json")
 
     HD = Food({"DH" : [103, 0.1], "Det" : [62, 0.1]}, "Honeyed Dragonfruit")
     DB = Food({"SkS" : [103, 0.1], "DH" : [62, 0.1]}, "Dragonfruit Blend")
@@ -274,64 +279,64 @@ if findBiS:
     Det = 2
     Ten = 5
     materiaSpace = [Crit, DH, Det]
-    optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=True,minSPDValue=400,maxSPDValue=3000, useNewAlgo=True, 
-                                oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0,findOptMateriaGearBF=True)
+    optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=True,minSPDValue=400,maxSPDValue=600, useNewAlgo=True, 
+                                oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=1,findOptMateriaGearBF=True)
 
-if False:
+if True:
     from ffxivcalc.GearSolver.Solver import computeDamageValue, getGearDPSValue
     from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet, Food, ImportGear
     matGen = MateriaGenerator(18, 36)
-    raidFood = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")
+    raidFood = Food({"SS" : [103, 0.1], "DH" : [62, 0.1]}, "Caviar Sandwich")
 
-    data = ImportGear("FendingGear.json")
+    data = ImportGear("CasterSet.json")
     Crit = 0
     DH = 1
     Det = 2
     SS = 3
     SkS = 4
     Weapon = data["WEAPON"][0]
-    Weapon.AddMateria(matGen.GenerateMateria(4))
-    Weapon.AddMateria(matGen.GenerateMateria(4))
+    Weapon.AddMateria(matGen.GenerateMateria(3))
+    Weapon.AddMateria(matGen.GenerateMateria(1))
 
-    Head = data["HEAD"][1]
-    Head.AddMateria(matGen.GenerateMateria(4))
-    Head.AddMateria(matGen.GenerateMateria(4))
+    Head = data["HEAD"][0]
+    Head.AddMateria(matGen.GenerateMateria(0))
+    Head.AddMateria(matGen.GenerateMateria(1))
 
-    Body = data["BODY"][1]
-    Body.AddMateria(matGen.GenerateMateria(4))
-    Body.AddMateria(matGen.GenerateMateria(4))
+    Body = data["BODY"][0]
+    Body.AddMateria(matGen.GenerateMateria(2))
+    Body.AddMateria(matGen.GenerateMateria(1))
 
-    Hand = data["HANDS"][0]
-    Hand.AddMateria(matGen.GenerateMateria(4))
-    Hand.AddMateria(matGen.GenerateMateria(4))
+    Hand = data["HANDS"][1]
+    Hand.AddMateria(matGen.GenerateMateria(2))
+    Hand.AddMateria(matGen.GenerateMateria(1))
 
-    Leg = data["LEGS"][0]
-    Leg.AddMateria(matGen.GenerateMateria(4))
-    Leg.AddMateria(matGen.GenerateMateria(4))
+    Leg = data["LEGS"][1]
+    Leg.AddMateria(matGen.GenerateMateria(3))
+    Leg.AddMateria(matGen.GenerateMateria(3))
 
-    Feet = data["FEET"][1]
-    Feet.AddMateria(matGen.GenerateMateria(0))
-    Feet.AddMateria(matGen.GenerateMateria(2))
+    Feet = data["FEET"][0]
+    Feet.AddMateria(matGen.GenerateMateria(1))
+    Feet.AddMateria(matGen.GenerateMateria(3))
 
-    Ear = data["EARRINGS"][0]
+    Ear = data["EARRINGS"][1]
+    Ear.AddMateria(matGen.GenerateMateria(2))
     Ear.AddMateria(matGen.GenerateMateria(1))
-    Ear.AddMateria(matGen.GenerateMateria(1))
 
-    Neck = data["NECKLACE"][1]
-    Neck.AddMateria(matGen.GenerateMateria(0))
-    Neck.AddMateria(matGen.GenerateMateria(1))
+    Neck = data["NECKLACE"][0]
+    Neck.AddMateria(matGen.GenerateMateria(2))
+    Neck.AddMateria(matGen.GenerateMateria(2))
 
-    Bracelet = data["BRACELETS"][0]
-    Bracelet.AddMateria(matGen.GenerateMateria(2))
+    Bracelet = data["BRACELETS"][1]
     Bracelet.AddMateria(matGen.GenerateMateria(1))
+    Bracelet.AddMateria(matGen.GenerateMateria(3))
 
     Lring = data["LRING"][0]
     Lring.AddMateria(matGen.GenerateMateria(2))
-    Lring.AddMateria(matGen.GenerateMateria(1))
+    Lring.AddMateria(matGen.GenerateMateria(3))
 
     ring = data["RING"][0]
-    ring.AddMateria(matGen.GenerateMateria(0))
-    ring.AddMateria(matGen.GenerateMateria(0))
+    ring.AddMateria(matGen.GenerateMateria(2))
+    ring.AddMateria(matGen.GenerateMateria(2))
 
     gSet = GearSet()
     gSet.AddGear(Weapon)
@@ -345,6 +350,6 @@ if False:
     gSet.AddGear(Bracelet)
     gSet.AddGear(Lring)
     gSet.AddGear(ring)
-    #gSet.addFood(raidFood)
+    gSet.addFood(raidFood)
 
     getGearDPSValue(Event, gSet, 0, n=0)

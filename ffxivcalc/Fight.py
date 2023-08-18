@@ -126,12 +126,14 @@ class Fight:
         amountToRemoveEveryGCD = 0
         trialFinishTime = 0
 
+        gcdReductionRatio = round(2 - f_SPD,8)
+
                              # Find this set's finish time so we can cut off autos if they do not hit in the end.
         for PreBakedAction in player.PreBakedActionSet:
-            amountToRemoveEveryGCD += PreBakedAction.gcdLockTimer * roundDown(2 - f_SPD,3) - roundDown(PreBakedAction.gcdLockTimer * roundDown(2 - f_SPD,3),2)
+            amountToRemoveEveryGCD += PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3) - roundDown(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),2)
             if PreBakedAction.isGCD : countGCD += 1
 
-            trialFinishTime = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(2 - f_SPD,3)) - (amountToRemoveEveryGCD * countGCD)),2)
+            trialFinishTime = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(gcdReductionRatio,3)) - (amountToRemoveEveryGCD * countGCD)),2)
         
         countGCD = 0
         amountToRemoveEveryGCD = 0
@@ -144,9 +146,9 @@ class Fight:
 
                                                      # Count every GCD
             if PreBakedAction.isGCD : countGCD += 1
-            amountToRemoveEveryGCD += PreBakedAction.gcdLockTimer * roundDown(2 - f_SPD,3) - roundDown(PreBakedAction.gcdLockTimer * roundDown(2 - f_SPD,3),2)
+            amountToRemoveEveryGCD += PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3) - roundDown(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),2)
 
-            timeStamp = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(2 - f_SPD,3)) - (amountToRemoveEveryGCD)),2)
+            timeStamp = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(gcdReductionRatio,3)) - (amountToRemoveEveryGCD)),2)
             
 
                              # If an auto doesn't land in this trial we simply continue
@@ -159,7 +161,10 @@ class Fight:
 
             fight_logging.debug("TimeStamp : " + str(timeStamp))
             fight_logging.debug("Finish : " + str(trialFinishTime))
-            fight_logging.debug("Non Reducable : " + str(PreBakedAction.nonReducableStamp) + " Reducable : " + str(PreBakedAction.reducableStamp) + " SPD : " + str(roundDown(2 - f_SPD,3)))
+            #fight_logging.debug("f_SPD : " + str(f_SPD))
+            #fight_logging.debug("Non rounded : " + str(gcdReductionRatio))
+            fight_logging.debug("Non Reducable : " + str(PreBakedAction.nonReducableStamp) + " Reducable : " + str(PreBakedAction.reducableStamp) + " SPD : " + str(roundDown(gcdReductionRatio,3)))
+            fight_logging.debug("GCDLock : " + str(PreBakedAction.gcdLockTimer))
             fight_logging.debug("amountToRemoveEveryGCD : " + str(amountToRemoveEveryGCD))
                                          # Will check what buffs the action falls under.
                                          # Chain Stratagem
