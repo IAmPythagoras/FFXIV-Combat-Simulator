@@ -1,5 +1,6 @@
 from ffxivcalc.Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
 from ffxivcalc.Jobs.Caster.Caster_Spell import BLMSpell, SwiftcastEffect
+from ffxivcalc.helperCode.helper_math import roundDown
 import copy
 import math
 Lock = 0
@@ -220,8 +221,8 @@ def TripleCastEffect(Player, Spell):
 
 def LeyLinesEffect(Player, Spell):
     if Spell.GCD:
-        Spell.CastTime *= 0.85
-        Spell.RecastTime *= 0.85
+        Spell.CastTime = roundDown(Spell.CastTime * 0.85,2)
+        Spell.RecastTime = roundDown(Spell.RecastTime * 0.85,2)
 
 def EnochianEffect(Player, Spell):
     if Player.ElementalGauge != 0:

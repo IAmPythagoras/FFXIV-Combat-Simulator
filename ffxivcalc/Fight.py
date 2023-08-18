@@ -123,22 +123,31 @@ class Fight:
         timeStamp = 0
         totalPotency = 0
 
-        amountToRemoveEveryGCD = 2.5 * roundDown(2 - f_SPD,3) - roundDown(2.5 * roundDown(2 - f_SPD,3),2)
-
+        amountToRemoveEveryGCD = 0
+        trialFinishTime = 0
 
                              # Find this set's finish time so we can cut off autos if they do not hit in the end.
         for PreBakedAction in player.PreBakedActionSet:
-            trialFinishTime = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(2 - f_SPD,3)) - (amountToRemoveEveryGCD * countGCD/1)),2)
+            amountToRemoveEveryGCD += PreBakedAction.gcdLockTimer * roundDown(2 - f_SPD,3) - roundDown(PreBakedAction.gcdLockTimer * roundDown(2 - f_SPD,3),2)
             if PreBakedAction.isGCD : countGCD += 1
+
+            trialFinishTime = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(2 - f_SPD,3)) - (amountToRemoveEveryGCD * countGCD)),2)
         
         countGCD = 0
+        amountToRemoveEveryGCD = 0
 
                              # Will compute DPS
         for PreBakedAction in player.PreBakedActionSet:
                              # The timestamp of the PreBakedAction. We are substracting 0.01 seconds for every previously done GCD
                              # since round(PreBakedAction.reducableStamp / f_SPD, 2) computes the GCD timer, but the simulator
                              # starts counting at 0.00, so we have to substract for every GCD as otherwise we will gain 0.01 every GCD.
-            timeStamp = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(2 - f_SPD,3)) - (amountToRemoveEveryGCD * countGCD/1)),2)
+
+                                                     # Count every GCD
+            if PreBakedAction.isGCD : countGCD += 1
+            amountToRemoveEveryGCD += PreBakedAction.gcdLockTimer * roundDown(2 - f_SPD,3) - roundDown(PreBakedAction.gcdLockTimer * roundDown(2 - f_SPD,3),2)
+
+            timeStamp = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(2 - f_SPD,3)) - (amountToRemoveEveryGCD)),2)
+            
 
                              # If an auto doesn't land in this trial we simply continue
             if PreBakedAction.type == 3 and timeStamp > trialFinishTime:
@@ -147,12 +156,11 @@ class Fight:
                                          # Computing base MainStat for this action. If from pet do not get teamcomp bonus
             totalPotency += PreBakedAction.Potency
             curMainStat = MainStat * (PreBakedAction.MainStatPercentageBonus if not PreBakedAction.isFromPet else 1)
-                                         # Count every GCD
-            if PreBakedAction.isGCD : countGCD += 1
 
             fight_logging.debug("TimeStamp : " + str(timeStamp))
             fight_logging.debug("Finish : " + str(trialFinishTime))
             fight_logging.debug("Non Reducable : " + str(PreBakedAction.nonReducableStamp) + " Reducable : " + str(PreBakedAction.reducableStamp) + " SPD : " + str(roundDown(2 - f_SPD,3)))
+            fight_logging.debug("amountToRemoveEveryGCD : " + str(amountToRemoveEveryGCD))
                                          # Will check what buffs the action falls under.
                                          # Chain Stratagem
             for history in player.ChainStratagemHistory:
@@ -294,10 +302,9 @@ class Fight:
                 if hasHealer: self.TeamCompositionBonus += 0.01
 
         # Will first compute each player's GCD reduction value based on their Spell Speed and Skill Speed Value
-
         for Player in self.PlayerList:
-            Player.SpellReduction = math.floor(1000 - (130 * (Player.Stat["SS"]-400) / 1900))/1000
-            Player.WeaponskillReduction = math.floor(1000 - (130 * (Player.Stat["SkS"]-400) / 1900))/1000
+            Player.SpellReduction = (1000 - math.floor(130 * (Player.Stat["SS"]-400) / 1900))/1000
+            Player.WeaponskillReduction = (1000 - math.floor(130 * (Player.Stat["SkS"]-400) / 1900))/1000
             Player.EffectList.append(GCDReductionEffect)
 
         fight_logging.debug("Starting simulation with TeamCompositionBonus = " + str(self.TeamCompositionBonus))
@@ -556,13 +563,18 @@ def GCDReductionEffect(Player, Spell) -> None:
     Spell : Spell -> Spell object affected by the effect
     """
     
+                             # The added 0.00001 seemed necessary to fix rounding errors occuring
+                             # that would make the predicted GCD timer be 0.01 second less than it should
+                             # have been. This also should not tip the balance in regular situations
+                             # as the increment is so small.
+
     if Spell.type == 1: # Spell
-        Spell.CastTime = roundDown(Player.SpellReduction * Spell.CastTime,2)
-        Spell.RecastTime = roundDown(Player.SpellReduction * Spell.RecastTime,2)
+        Spell.CastTime = roundDown(Player.SpellReduction * Spell.CastTime + 0.00000001,2)
+        Spell.RecastTime = roundDown(Player.SpellReduction * Spell.RecastTime + 0.00000001,2)
         if Spell.RecastTime < 1.5 and Spell.RecastTime > 0 : Spell.RecastTime = 1.5 # A GCD cannot go under 1.5 sec
     elif Spell.type == 2: # Weaponskill
-        Spell.CastTime *= Player.WeaponskillReduction
-        Spell.RecastTime *= Player.WeaponskillReduction
+        Spell.CastTime = roundDown(Player.WeaponskillReduction * Spell.CastTime + 0.00000001,2)
+        Spell.RecastTime = roundDown(Player.WeaponskillReduction * Spell.RecastTime + 0.00000001,2)
         if Spell.RecastTime < 1.5 and Spell.RecastTime > 0 : Spell.RecastTime = 1.5 # A GCD cannot go under 1.5 sec
 
 # Compute Damage
@@ -694,8 +706,10 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         nonReducableStamp = 0 if not Player.CurrentFight.FightStart else Player.totalTimeNoFaster
         reducableStamp = 0 if not Player.CurrentFight.FightStart else Player.CurrentFight.TimeStamp - Player.totalTimeNoFaster
 
+        gcdLockTimer = max(spellObj.RecastTime, spellObj.CastTime) if spellObj.GCD  and (Player.RoleEnum != RoleEnum.Pet) else 0
+
         (Player if not isPet else Player.Master).PreBakedActionSet.append(PreBakedAction(isTank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type, nonReducableStamp + (0 if type == 0 else reducableStamp), 
-                                                       reducableStamp if type == 0 else 0 ,AutoCrit=auto_crit, AutoDH=auto_DH, isFromPet=isPet, isGCD=spellObj.GCD,spellDPSBuff=SpellBonus))
+                                                       reducableStamp if type == 0 else 0 ,AutoCrit=auto_crit, AutoDH=auto_DH, isFromPet=isPet, isGCD=spellObj.GCD,gcdLockTimer=gcdLockTimer,spellDPSBuff=SpellBonus))
         
         return Potency, Potency        # Exit the function since we are not interested in the immediate damage value. Still return potency as to not break the fight's duration.
 

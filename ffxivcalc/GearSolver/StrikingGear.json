@@ -98,7 +98,8 @@
 ["DH", 184],
 ["SkS", 129],
 ["MainStat", 248]
-]}{
+]},
+{
 "GearType" : 7,
 "MateriaLimit" : 2,
 "Name" : "Raid",

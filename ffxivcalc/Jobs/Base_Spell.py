@@ -108,13 +108,14 @@ class PreBakedAction:
     AutoDH : bool -> if is an auto DH (true)
     isFromPet : bool -> True if a Pet PreBakedAction
     isGCD : bool -> True if the action is a GCD
+    gcdLockTimer : float -> Time value for which the player cannot take another GCD action.
     spellDPSBuff : float -> Flat bonus applied on this action
     """
 
     def __init__(self, IsTank : bool, MainStatPercentageBonus : float, buffList : list,
                  TraitBonus : float, Potency : int, type : int, 
                  nonReducableStamp : float, reducableStamp : float, AutoCrit : bool = False, AutoDH : bool = False,
-                 isFromPet : bool = False, isGCD : bool = False, spellDPSBuff : float = 1):
+                 isFromPet : bool = False, isGCD : bool = False,gcdLockTimer : float = 0, spellDPSBuff : float = 1):
         self.IsTank = IsTank
         self.MainStatPercentageBonus = MainStatPercentageBonus
         #self.HasPotionEffect = HasPotionEffect
@@ -122,6 +123,7 @@ class PreBakedAction:
         self.TraitBonus = TraitBonus
         self.type = type
         self.Potency = Potency
+        self.gcdLockTimer = gcdLockTimer
 
         self.nonReducableStamp = nonReducableStamp
         self.reducableStamp = reducableStamp
