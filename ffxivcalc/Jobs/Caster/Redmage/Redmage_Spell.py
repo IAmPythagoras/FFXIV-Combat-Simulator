@@ -97,6 +97,7 @@ def ApplyManafication(Player, Enemy):
     Player.ManaficationStack = 6
     Player.ManaficationCD = 110
     Player.EffectList.insert(0,ManaficationEffect)
+    Player.EffectCDList.append(ManaficationCheck)
     Addmana(Player, 50, 50)
 
 def ApplyEmbolden(Player, Enemy):
@@ -250,7 +251,9 @@ def AccelerationEffect(Player, Spell):
 #Check
 
 def ManaficationCheck(Player, Enemy):
-    if Player.ManaficationStack == 0: Player.EffectList.remove(ManaficationEffect)#If no stack remove it
+    if Player.ManaficationStack == 0: 
+        Player.EffectList.remove(ManaficationEffect)#If no stack remove it
+        Player.EffectToRemove.append(ManaficationCheck)
 
 def EmboldenCheck(Player, Enemy):
     if Player.EmboldenTimer <= 0:

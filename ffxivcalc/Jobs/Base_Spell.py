@@ -449,6 +449,7 @@ class Spell:
             + (" , playerID : " + str(player.playerID) if player.JobEnum != JobEnum.Pet else " , MasterID : " + str(player.Master.playerID))
             + " , CastTime : " + str(self.CastTime) + " RecastTime : " + str(self.RecastTime)
             + " , Ability : " + name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction)
+            + " , SpellBonus : " + str(self.DPSBonus)
             + " , Potency : " + str(self.Potency)
             + (" , Damage : " + str(Damage) if not (self.AOEHeal or self.TargetHeal) else " , Healing : " + str(Heal)))
             
