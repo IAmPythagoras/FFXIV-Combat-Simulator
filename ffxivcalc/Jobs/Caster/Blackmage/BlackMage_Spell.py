@@ -215,14 +215,14 @@ def Thunder3ProcEffect(Player, Spell):
         Player.EffectToRemove.append(Thunder3ProcEffect)
 
 def TripleCastEffect(Player, Spell): 
-    if not (SwiftcastEffect in Player.EffectList) and Spell.GCD and Spell.CastTime > Lock: #If GCD and not already insta cast, also Swift will go before
+    if not (SwiftcastEffect in Player.EffectList) and Spell.GCD and Spell.CastTime > 0 : #If GCD and not already insta cast, also Swift will go before
         Spell.CastTime = Lock
         Player.TripleCastStack -= 1
 
 def LeyLinesEffect(Player, Spell):
     if Spell.GCD:
-        Spell.CastTime = roundDown(Spell.CastTime * 0.85,2)
-        Spell.RecastTime = roundDown(Spell.RecastTime * 0.85,2)
+        Spell.CastTime = (Spell.CastTime * 0.85)
+        Spell.RecastTime = (Spell.RecastTime * 0.85)
 
 def EnochianEffect(Player, Spell):
     if Player.ElementalGauge != 0:

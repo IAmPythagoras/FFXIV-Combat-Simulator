@@ -563,13 +563,13 @@ def GCDReductionEffect(Player, Spell) -> None:
     Spell : Spell -> Spell object affected by the effect
     """
     
-                             # The added 0.00001 seemed necessary to fix rounding errors occuring
+                             # The added 0.00000001 seemed necessary to fix rounding errors occuring
                              # that would make the predicted GCD timer be 0.01 second less than it should
                              # have been. This also should not tip the balance in regular situations
                              # as the increment is so small.
 
     if Spell.type == 1: # Spell
-        Spell.CastTime = round(Player.SpellReduction * Spell.CastTime,5) if Spell.CastTime > 0 else 0
+        Spell.CastTime = Player.SpellReduction * Spell.CastTime + 0.00000001 if Spell.CastTime > 0 else 0
         Spell.RecastTime = Player.SpellReduction * Spell.RecastTime + 0.00000001
         if Spell.RecastTime < 1.5 and Spell.RecastTime > 0 : Spell.RecastTime = 1.5 # A GCD cannot go under 1.5 sec
     elif Spell.type == 2: # Weaponskill
