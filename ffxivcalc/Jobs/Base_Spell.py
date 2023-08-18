@@ -273,6 +273,10 @@ class Spell:
                 Effect(player, tempSpell)#Changes tempSpell
         #Checks if we meet the spell requirement
 
+        # Round casting and recasting time :
+
+        tempSpell.CastTime = roundDown(tempSpell.CastTime, 2)
+        tempSpell.RecastTime = roundDown(tempSpell.RecastTime, 2)
         #Remove all effects that have to be removed
 
         for remove in player.EffectToRemove:
