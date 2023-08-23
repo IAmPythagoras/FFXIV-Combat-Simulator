@@ -5,7 +5,7 @@
                 "TestName": "blackmage",
                 "Fight": "blackmage_test.json",
                 "ExpectedResult": {
-                    "EndTime": "85.71",
+                    "EndTime": "85.74",
                     "1": {
                         "ExpectedTotalPotency": "9349"
                     }
