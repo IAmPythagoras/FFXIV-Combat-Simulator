@@ -133,7 +133,7 @@ class Fight:
             amountToRemoveEveryGCD += round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10) - roundDown(round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10),2)
             if PreBakedAction.isGCD : countGCD += 1
 
-            trialFinishTime = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(gcdReductionRatio,3)) - (amountToRemoveEveryGCD * countGCD)),2)
+            trialFinishTime = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(gcdReductionRatio,3)) - (amountToRemoveEveryGCD)),2)
         
         countGCD = 0
         amountToRemoveEveryGCD = 0
@@ -250,7 +250,8 @@ class Fight:
 
         fight_logging.debug("counted GCD  : " + str(countGCD))
         fight_logging.debug("previous GCD : " + str(player.GCDCounter))
-        input(sumGCDLock)
+        #input(sumGCDLock)
+        timeStamp = (timeStamp + (0.01 if f_SPD > 1 else 0))
         if getInfo : return round(ExpectedDamage/timeStamp,2), percentileRuns, timeStamp, totalPotency
         return round(ExpectedDamage/timeStamp,2), percentileRuns
 
@@ -715,7 +716,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         nonReducableStamp = 0 if not Player.CurrentFight.FightStart else Player.totalTimeNoFaster
         reducableStamp = 0 if not Player.CurrentFight.FightStart else Player.CurrentFight.TimeStamp - Player.totalTimeNoFaster
 
-        gcdLockTimer = max(spellObj.RecastTime, spellObj.CastTime) if spellObj.GCD  and (Player.RoleEnum != RoleEnum.Pet) else 0
+        gcdLockTimer = max(spellObj.RecastTime, spellObj.CastTime) if spellObj.GCD  and (Player.RoleEnum != RoleEnum.Pet) and max(spellObj.RecastTime, spellObj.CastTime) > 1.5 else 0
 
         (Player if not isPet else Player.Master).PreBakedActionSet.append(PreBakedAction(isTank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type, nonReducableStamp + (0 if type == 0 else reducableStamp), 
                                                        reducableStamp if type == 0 else 0 ,AutoCrit=auto_crit, AutoDH=auto_DH, isFromPet=isPet, isGCD=spellObj.GCD,gcdLockTimer=gcdLockTimer,spellDPSBuff=SpellBonus))

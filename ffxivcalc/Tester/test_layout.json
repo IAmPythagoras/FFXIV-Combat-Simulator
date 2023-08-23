@@ -5,7 +5,7 @@
                 "TestName": "blackmage",
                 "Fight": "blackmage_test.json",
                 "ExpectedResult": {
-                    "EndTime": "85.99",
+                    "EndTime": "85.71",
                     "1": {
                         "ExpectedTotalPotency": "9349"
                     }
@@ -15,7 +15,7 @@
                 "TestName": "redmage",
                 "Fight": "redmage_test.json",
                 "ExpectedResult": {
-                    "EndTime": "32.61",
+                    "EndTime": "32.47",
                     "1": {
                         "ExpectedTotalPotency": "8660"
                     }
@@ -25,7 +25,7 @@
                 "TestName": "summoner",
                 "Fight": "summoner_test.json",
                 "ExpectedResult": {
-                    "EndTime": "80.31",
+                    "EndTime": "80.18",
                     "1": {
                         "ExpectedTotalPotency": "9530"
                     }
@@ -35,7 +35,7 @@
                 "TestName": "scholar",
                 "Fight": "scholar_test.json",
                 "ExpectedResult": {
-                    "EndTime": "37.11",
+                    "EndTime": "36.95",
                     "1": {
                         "ExpectedTotalPotency": "6020"
                     }
@@ -45,7 +45,7 @@
                 "TestName": "sage",
                 "Fight": "sage_test.json",
                 "ExpectedResult": {
-                    "EndTime": "49.16",
+                    "EndTime": "48.95",
                     "1": {
                         "ExpectedTotalPotency": "7670"
                     }
@@ -55,7 +55,7 @@
                 "TestName": "astrologian",
                 "Fight": "astrologian_test.json",
                 "ExpectedResult": {
-                    "EndTime": "45.57",
+                    "EndTime": "45.37",
                     "1": {
                         "ExpectedTotalPotency": "5550"
                     }
@@ -65,7 +65,7 @@
                 "TestName": "whitemage",
                 "Fight": "whitemage_test.json",
                 "ExpectedResult": {
-                    "EndTime": "37.38",
+                    "EndTime": "37.21",
                     "1": {
                         "ExpectedTotalPotency": "6330"
                     }
@@ -75,7 +75,7 @@
                 "TestName": "darkknight",
                 "Fight": "darkknight_test.json",
                 "ExpectedResult": {
-                    "EndTime": "22.74",
+                    "EndTime": "22.66",
                     "1": {
                         "ExpectedTotalPotency": "10730"
                     }
@@ -85,7 +85,7 @@
                 "TestName": "gunbreaker",
                 "Fight": "gunbreaker_test.json",
                 "ExpectedResult": {
-                    "EndTime": "74.6",
+                    "EndTime": "74.49",
                     "1": {
                         "ExpectedTotalPotency": "9690"
                     }
@@ -95,7 +95,7 @@
                 "TestName": "paladin",
                 "Fight": "paladin_test.json",
                 "ExpectedResult": {
-                    "EndTime": "48.42",
+                    "EndTime": "48.3",
                     "1": {
                         "ExpectedTotalPotency": "9750"
                     }
@@ -105,7 +105,7 @@
                 "TestName": "warrior",
                 "Fight": "warrior_test.json",
                 "ExpectedResult": {
-                    "EndTime": "35.13",
+                    "EndTime": "34.99",
                     "1": {
                         "ExpectedTotalPotency": "8720"
                     }
@@ -115,7 +115,7 @@
                 "TestName": "samurai",
                 "Fight": "samurai_test.json",
                 "ExpectedResult": {
-                    "EndTime": "83.39",
+                    "EndTime": "83.24",
                     "1": {
                         "ExpectedTotalPotency": "13120"
                     }
@@ -125,7 +125,7 @@
                 "TestName": "reaper",
                 "Fight": "reaper_test.json",
                 "ExpectedResult": {
-                    "EndTime": "27.29",
+                    "EndTime": "27.17",
                     "1": {
                         "ExpectedTotalPotency": "9700"
                     }
@@ -135,7 +135,7 @@
                 "TestName": "ninja",
                 "Fight": "ninja_test.json",
                 "ExpectedResult": {
-                    "EndTime": "25.27",
+                    "EndTime": "25.08",
                     "1": {
                         "ExpectedTotalPotency": "11410"
                     }
@@ -145,7 +145,7 @@
                 "TestName": "dragoon",
                 "Fight": "dragoon_test.json",
                 "ExpectedResult": {
-                    "EndTime": "82.63",
+                    "EndTime": "82.49",
                     "1": {
                         "ExpectedTotalPotency": "9670"
                     }
@@ -155,7 +155,7 @@
                 "TestName": "monk",
                 "Fight": "monk_test.json",
                 "ExpectedResult": {
-                    "EndTime": "53.39",
+                    "EndTime": "53.26",
                     "1": {
                         "ExpectedTotalPotency": "8030"
                     }
@@ -165,7 +165,7 @@
                 "TestName": "machinist",
                 "Fight": "machinist_test.json",
                 "ExpectedResult": {
-                    "EndTime": "82.57",
+                    "EndTime": "82.45",
                     "1": {
                         "ExpectedTotalPotency": "11050"
                     }
@@ -175,7 +175,7 @@
                 "TestName": "dancer",
                 "Fight": "dancer_test.json",
                 "ExpectedResult": {
-                    "EndTime": "18.45",
+                    "EndTime": "18.32",
                     "1": {
                         "ExpectedTotalPotency": "5420"
                     }
@@ -185,7 +185,7 @@
                 "TestName": "bard",
                 "Fight": "bard_test.json",
                 "ExpectedResult": {
-                    "EndTime": "70.59",
+                    "EndTime": "70.49",
                     "1": {
                         "ExpectedTotalPotency": "6630"
                     }

@@ -421,7 +421,7 @@ class GearSet:
         for info in gearInfoGenerator:
             GearInfo += info
 
-        return "Gearset's info:\n" + GearInfo + " Final Stats : " + str(self.GetGearSetStat()) + "\n" + self.strMateriaNumber() + "\n" + str(self.Food)
+        return "Gearset's info:\n" + GearInfo + " Final Stats : " + str(self.GetGearSetStat(IsTank=self.IsTank)) + "\n" + self.strMateriaNumber() + "\n" + str(self.Food)
 
     def findFirstPieceMateria(self, newMateria : Materia) -> str:
         """
@@ -501,9 +501,10 @@ class GearSet:
     def ResetGearSet(self):
         self.GearSet = {}
         
-    def GetGearSetStat(self):
+    def GetGearSetStat(self, IsTank : bool = False):
+        self.IsTank = IsTank
         Stat = {
-        "MainStat" : 450,
+        "MainStat" : 450 if not self.IsTank else 410,
         "WD" : 0,
         "Det" : 390,
         "Ten" : 400,

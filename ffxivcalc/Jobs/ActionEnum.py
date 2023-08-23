@@ -560,6 +560,11 @@ class NinjaActions(ActionEnum):
     Kassatsu = 2264
     Meisui = 16489
 
+    # Shadow Actions
+
+    BunshinPhantom = 8
+    ShadowAuto = 35
+
 
 # Monk
 
@@ -689,6 +694,10 @@ class MachinistActions(ActionEnum):
     GaussRound = 2874
     Ricochet = 2890
     Reassemble = 2876
+
+    # Queen actions
+    Bunker = 15
+    Collider = 16
 
 # Dancer
 
