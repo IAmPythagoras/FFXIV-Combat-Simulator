@@ -289,6 +289,12 @@ class Spell:
 
         for Requirement in tempSpell.Requirement:
             ableToCast, timeLeft = Requirement(player, tempSpell)
+
+                             # I just realized that this logic has an issue. If a time based requirement fails, then the simulator checks
+                             # if we can just wait. If it can it omits to check all other requirements. Effectively ignoring other requirements
+                             # that could result in a simulation crash. Leaving this here so I don't forget to look deeper into it
+                             # at a later point.
+
             if(not ableToCast): #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
                 #Will check if timeLeft is within a margin, so we will just wait for it to come
                 #timeLeft is the remaining time before the spell is available
@@ -643,6 +649,36 @@ Melee_AADOT = Melee_Auto(-22, False)
 Ranged_AADOT = Ranged_Auto(-23, True)
 Queen_AADOT = Queen_Auto(-24, False)
 Potion = Spell(-2, False, 1, 1, 0, 0, ApplyPotion, [])
+
+def conditionalAction(action : Spell, conditionFn) -> Spell:
+    """
+    This function returns an Spell object that will only be used if a certain condition is met. If
+    the condition is not met the action is equivalent to WaitAbility(0).
+    Note that the use of this will add 0.01 seconds to the end time if the condition evaluates to false
+    action : Spell -> Action to perform if the condition evaluates to True
+    conditionFn : function -> Function to evaluate. This function must return a boolean value. 
+                              This function will be given the Player object as input when evaluated.
+    """
+
+    def __requirement(Player, Spell):
+                             # The conditionFn will be evaluated in the requirement checking phase.
+                             # If the conditionFn evaluates to true we return true. This requirement will be put at
+                             # the end of the Requirement list of action.
+        if not conditionFn(Player) :
+            Spell.CastTime = 0
+            Spell.RecastTime = 0
+            Spell.Potency = 0
+            Spell.Effect = []
+                             # Effectively making this WaitAbility(0)
+        return True, 0
+    
+    newAction = copy.deepcopy(action)
+    newAction.Requirement.append(__requirement)
+    return newAction
+
+        
+
+        
 
 
 

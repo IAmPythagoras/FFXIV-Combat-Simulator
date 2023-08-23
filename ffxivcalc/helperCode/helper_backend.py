@@ -523,3 +523,19 @@ def GenerateLayoutDict(player_list):
         id+=1
 
     return data
+
+
+# Condition functions to go with conditionalAction
+
+def timeCheck(timeStamp : float):
+    """
+    This function returns a condition function to be used with conditionalAction.
+    The returned function will return True if the timeStamp of the fight is less than the given timeStamp.
+    False otherwise.
+    timeStamp : float -> timeStamp to compare against. Function returns true if the timeStamp of the fight
+                         is less than this timeStamp and False otherwise.
+    """
+
+    def __condition(Player):
+        return Player.CurrentFight.TimeStamp < timeStamp
+    return __condition
