@@ -58,6 +58,7 @@ class Fight:
                              # These values can only be eddited by manually changing the values by accessing the Fight object.
         self.SavePreBakedAction = False
         self.PlayerIDSavePreBakedAction = 0
+        self.alwaysAllowConditionalAction = False # Having this value set to True will make the conditionalActions always happen for players in the fight.
 
         # functions
 
@@ -137,7 +138,8 @@ class Fight:
         
         countGCD = 0
         amountToRemoveEveryGCD = 0
-        sumGCDLock = 0
+        amountToRemoveFailCondition = 0
+        actionFailsCondition = False
 
                              # Will compute DPS
         for PreBakedAction in player.PreBakedActionSet:
@@ -150,8 +152,17 @@ class Fight:
                              # Have to round PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3) as it sometime has repeating 9s when it should be the value above.
             amountToRemoveEveryGCD += round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10) - roundDown(round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10),2)
 
-            timeStamp = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(gcdReductionRatio,3)) - (amountToRemoveEveryGCD)),2)
-            sumGCDLock += roundDown(round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10),2)
+            timeStamp = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(gcdReductionRatio,3)) - (amountToRemoveEveryGCD)),2) - roundDown(amountToRemoveFailCondition,2)
+
+
+                             # Checking if action is conditional. If it is we check for requirment.
+            if PreBakedAction.isConditionalAction:
+
+                if timeStamp >= 8:
+                             # Do not meet the requirement
+                    actionFailsCondition = True
+                    amountToRemoveFailCondition += max(PreBakedAction.gcdLockTimer,1.5)
+                    amountToRemoveEveryGCD -= round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10) - roundDown(round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10),2)
 
                              # If an auto doesn't land in this trial we simply continue
             if PreBakedAction.type == 3 and timeStamp > trialFinishTime:
@@ -203,12 +214,13 @@ class Fight:
 
             for buff in PreBakedAction.buffList:
                 PreBakedAction.PercentageBonus.append(buff)
-        
+
             if PreBakedAction.IsTank : f_MAIN_DMG = (100+math.floor((curMainStat-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
             else: f_MAIN_DMG = (100+math.floor((curMainStat-baseMain)*195/baseMain))/100
-            ActionExpected, Damage = PreBakedAction.ComputeExpectedDamage(f_MAIN_DMG,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto)
+            ActionExpected, Damage = PreBakedAction.ComputeExpectedDamage(f_MAIN_DMG,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto) if not actionFailsCondition else (0,0)
             ExpectedDamage += ActionExpected
             damageHistory.append(Damage)
+            actionFailsCondition = False
 
                              # Will compute Random DPS
         randomDPSRuns = []   # This list will contain all the DPS of the random runs
@@ -250,7 +262,6 @@ class Fight:
 
         fight_logging.debug("counted GCD  : " + str(countGCD))
         fight_logging.debug("previous GCD : " + str(player.GCDCounter))
-        #input(sumGCDLock)
         timeStamp = (timeStamp + (0.01 if f_SPD > 1 else 0))
         if getInfo : return round(ExpectedDamage/timeStamp,2), percentileRuns, timeStamp, totalPotency
         return round(ExpectedDamage/timeStamp,2), percentileRuns
@@ -719,7 +730,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         gcdLockTimer = max(spellObj.RecastTime, spellObj.CastTime) if spellObj.GCD  and (Player.RoleEnum != RoleEnum.Pet) and max(spellObj.RecastTime, spellObj.CastTime) > 1.5 else 0
 
         (Player if not isPet else Player.Master).PreBakedActionSet.append(PreBakedAction(isTank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type, nonReducableStamp + (0 if type == 0 else reducableStamp), 
-                                                       reducableStamp if type == 0 else 0 ,AutoCrit=auto_crit, AutoDH=auto_DH, isFromPet=isPet, isGCD=spellObj.GCD,gcdLockTimer=gcdLockTimer,spellDPSBuff=SpellBonus))
+                                                       reducableStamp if type == 0 else 0 ,AutoCrit=auto_crit, AutoDH=auto_DH, isFromPet=isPet, isGCD=spellObj.GCD,gcdLockTimer=gcdLockTimer,spellDPSBuff=SpellBonus, isConditionalAction=spellObj.conditionalAction))
         
         return Potency, Potency        # Exit the function since we are not interested in the immediate damage value. Still return potency as to not break the fight's duration.
 

@@ -110,12 +110,14 @@ class PreBakedAction:
     isGCD : bool -> True if the action is a GCD
     gcdLockTimer : float -> Time value for which the player cannot take another GCD action.
     spellDPSBuff : float -> Flat bonus applied on this action
+    isConditionalAction : bool -> True if this action is a conditional Action.
     """
 
     def __init__(self, IsTank : bool, MainStatPercentageBonus : float, buffList : list,
                  TraitBonus : float, Potency : int, type : int, 
                  nonReducableStamp : float, reducableStamp : float, AutoCrit : bool = False, AutoDH : bool = False,
-                 isFromPet : bool = False, isGCD : bool = False,gcdLockTimer : float = 0, spellDPSBuff : float = 1):
+                 isFromPet : bool = False, isGCD : bool = False,gcdLockTimer : float = 0, spellDPSBuff : float = 1,
+                 isConditionalAction : bool = False):
         self.IsTank = IsTank
         self.MainStatPercentageBonus = MainStatPercentageBonus
         #self.HasPotionEffect = HasPotionEffect
@@ -142,6 +144,8 @@ class PreBakedAction:
         self.CritBonus = 0
         self.DHBonus = 0
         self.PercentageBonus = []
+
+        self.isConditionalAction = isConditionalAction
 
     def resetTimeSensibleBuff(self):
         """
@@ -253,6 +257,7 @@ class Spell:
         self.type = type 
         self.AOEHeal = AOEHeal
         self.TargetHeal = TargetHeal
+        self.conditionalAction = False
 
     def Cast(self, player, Enemy):
         """
@@ -662,18 +667,18 @@ def conditionalAction(action : Spell, conditionFn) -> Spell:
 
     def __requirement(Player, Spell):
                              # The conditionFn will be evaluated in the requirement checking phase.
-                             # If the conditionFn evaluates to true we return true. This requirement will be put at
-                             # the end of the Requirement list of action.
-        if not conditionFn(Player) :
+                             # If the conditionFn evaluates to false and we do not always allow conditional 
+                             # action we effectively make this action WaitAbility(0).
+        if not conditionFn(Player) and (not Player.CurrentFight.alwaysAllowConditionalAction) :
             Spell.CastTime = 0
             Spell.RecastTime = 0
             Spell.Potency = 0
-            Spell.Effect = []
-                             # Effectively making this WaitAbility(0)
+            Spell.Effect = [] 
         return True, 0
     
     newAction = copy.deepcopy(action)
     newAction.Requirement.append(__requirement)
+    newAction.conditionalAction = True
     return newAction
 
         

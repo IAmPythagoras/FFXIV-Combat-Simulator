@@ -82,7 +82,7 @@ MNKStat = {"MainStat": 3076, "WD":126, "Det" : 1546, "Ten" : 400, "SS": 400, "Sk
 RPRStat = {'MainStat': 3378, 'WD': 132, 'Det': 1876, 'Ten': 400, 'SS': 400, 'SkS': 868, 'Crit': 1293, 'DH': 1665, 'Piety': 390} # Stats for Reaper
 
 # Tank {'MainStat': 3378, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 671, 'Crit': 2627, 'DH': 904}
-DRKStat = {'MainStat': 3378, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 888, 'Crit': 2627, 'DH': 688, 'Piety': 390} # Stats for DarkKnight
+DRKStat = {'MainStat': 3338, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 888, 'Crit': 2627, 'DH': 688, 'Piety': 390} # Stats for DarkKnight
 WARStat = {'MainStat': 3378, 'WD': 132, 'Det': 2182, 'Ten': 529, 'SS': 400, 'SkS': 400, 'Crit': 2576, 'DH': 940}
 PLDStat = {"MainStat": 2891, "WD":126, "Det" : 1883, "Ten" : 631, "SS": 400, "SkS" : 650, "Crit" : 2352, "DH" : 868} # Stats for Paladin
 GNBStat = {"MainStat": 2891, "WD":126, "Det" : 1883, "Ten" : 631, "SS": 400, "SkS" : 650, "Crit" : 2352, "DH" : 868} # Stats for Gunbreaker
@@ -181,7 +181,7 @@ RPROpener = [Soulsow, Harpe, ShadowOfDeath, ArcaneCircle, SoulSlice, SoulSlice, 
 
 # Tank 
 DRKOpener = [BloodWeapon,WaitAbility(5),TBN(DRKPlayer), HardSlash, EdgeShadow, Delirium, SyphonStrike, WaitAbility(1), Potion, Souleater, LivingShadow, SaltedEarth, HardSlash, Shadowbringer, EdgeShadow, Bloodspiller, EdgeShadow, CarveSpit, Bloodspiller, Plunge, EdgeShadow, Bloodspiller, SaltDarkness, Shadowbringer, SyphonStrike, EdgeShadow, Plunge,Souleater, HardSlash, SyphonStrike, Souleater, Bloodspiller, HardSlash, SyphonStrike, Souleater, HardSlash, SyphonStrike, Plunge, Souleater, Bloodspiller, HardSlash, SyphonStrike, Souleater, HardSlash, BloodWeapon, SyphonStrike, Delirium, Bloodspiller, Bloodspiller, EdgeShadow, Bloodspiller, Bloodspiller, CarveSpit, Souleater, EdgeShadow, HardSlash ]
-DRKOpener = [HardSlash, SyphonStrike, Souleater,HardSlash, HardSlash]
+DRKOpener = [HardSlash, SyphonStrike, Souleater,conditionalAction(HardSlash, timeCheck(5)), HardSlash]
 #DRKOpener = [HardSlash]
 #WAROpener = [HeavySwing, Infuriate, Maim, Potion, StormEye, InnerRelease, InnerChaos, Upheaval, Onslaught, PrimalRend, Infuriate, InnerChaos, Onslaught, FellCleave, FellCleave, HeavySwing, Maim, StormPath,FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath, HeavySwing, Maim, StormPath, FellCleave, FellCleave]
 WAROpener = [HeavySwing, Infuriate, Maim, WaitAbility(0.75), Potion, StormEye, InnerRelease, Upheaval, InnerChaos, Onslaught, FellCleave, Onslaught, PrimalRend, FellCleave, Onslaught, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath, FellCleave, Infuriate, InnerChaos, HeavySwing, Upheaval, Maim, StormEye, HeavySwing, Maim, StormPath, HeavySwing, Maim, StormPath, HeavySwing, Maim, StormEye, FellCleave, InnerRelease, Onslaught, FellCleave, FellCleave, PrimalRend, FellCleave, FellCleave, HeavySwing, Maim, StormEye, HeavySwing, Maim, StormEye, HeavySwing, Maim]
@@ -305,44 +305,44 @@ if False:
     Weapon.AddMateria(matGen.GenerateMateria(0))
 
     Head = data["HEAD"][0]
-    Head.AddMateria(matGen.GenerateMateria(3))
-    Head.AddMateria(matGen.GenerateMateria(1))
+    Head.AddMateria(matGen.GenerateMateria(4))
+    Head.AddMateria(matGen.GenerateMateria(4))
 
     Body = data["BODY"][1]
-    Body.AddMateria(matGen.GenerateMateria(1))
-    Body.AddMateria(matGen.GenerateMateria(1))
+    Body.AddMateria(matGen.GenerateMateria(4))
+    Body.AddMateria(matGen.GenerateMateria(4))
 
     Hand = data["HANDS"][0]
-    Hand.AddMateria(matGen.GenerateMateria(1))
-    Hand.AddMateria(matGen.GenerateMateria(1))
+    Hand.AddMateria(matGen.GenerateMateria(4))
+    Hand.AddMateria(matGen.GenerateMateria(4))
 
     Leg = data["LEGS"][0]
     Leg.AddMateria(matGen.GenerateMateria(0))
     Leg.AddMateria(matGen.GenerateMateria(0))
 
     Feet = data["FEET"][1]
-    Feet.AddMateria(matGen.GenerateMateria(1))
-    Feet.AddMateria(matGen.GenerateMateria(3))
+    Feet.AddMateria(matGen.GenerateMateria(4))
+    Feet.AddMateria(matGen.GenerateMateria(4))
 
     Ear = data["EARRINGS"][1]
-    Ear.AddMateria(matGen.GenerateMateria(2))
+    Ear.AddMateria(matGen.GenerateMateria(4))
     Ear.AddMateria(matGen.GenerateMateria(1))
 
     Neck = data["NECKLACE"][0]
-    Neck.AddMateria(matGen.GenerateMateria(2))
-    Neck.AddMateria(matGen.GenerateMateria(2))
+    Neck.AddMateria(matGen.GenerateMateria(1))
+    Neck.AddMateria(matGen.GenerateMateria(1))
 
     Bracelet = data["BRACELETS"][1]
     Bracelet.AddMateria(matGen.GenerateMateria(1))
-    Bracelet.AddMateria(matGen.GenerateMateria(3))
+    Bracelet.AddMateria(matGen.GenerateMateria(1))
 
     Lring = data["LRING"][0]
-    Lring.AddMateria(matGen.GenerateMateria(2))
-    Lring.AddMateria(matGen.GenerateMateria(3))
+    Lring.AddMateria(matGen.GenerateMateria(1))
+    Lring.AddMateria(matGen.GenerateMateria(1))
 
     ring = data["RING"][0]
-    ring.AddMateria(matGen.GenerateMateria(2))
-    ring.AddMateria(matGen.GenerateMateria(2))
+    ring.AddMateria(matGen.GenerateMateria(0))
+    ring.AddMateria(matGen.GenerateMateria(1))
 
     gSet = GearSet()
     gSet.AddGear(Weapon)
