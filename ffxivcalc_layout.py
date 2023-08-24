@@ -75,18 +75,18 @@ BRDStat = {'MainStat': 3378, 'WD': 132, 'Det': 1736, 'Ten': 400, 'SS': 400, 'SkS
 DNCStat = {"MainStat": 2949, "WD":126, "Det" : 1721, "Ten" : 400, "SS": 400, "SkS" : 536, "Crit" : 2387, "DH" : 1340} # Stats for Dancer
 
 # Melee
-NINStat = {"MainStat": 2921, "WD":126, "Det" : 1669, "Ten" : 400, "SS": 400, "SkS" : 400, "Crit" : 2399, "DH" : 1511} # Stats for Ninja
+NINStat = {"MainStat": 3378, "WD":132, "Det" : 1697, "Ten" : 400, "SS": 400, "SkS" : 400, "Crit" : 2554, "DH" : 1582} # Stats for Ninja
 SAMStat = {"MainStat": 2937, "WD":126, "Det" : 1571, "Ten" : 400, "SS": 400, "SkS" : 508, "Crit" : 2446, "DH" : 1459} # Stats for Samurai
 DRGStat = {"MainStat": 3378, "WD":132, "Det" : 1870, "Ten" : 400, "SS": 400, "SkS" : 400, "Crit" : 2567, "DH" : 1396} # Stats for Dragoon
 MNKStat = {"MainStat": 3076, "WD":126, "Det" : 1546, "Ten" : 400, "SS": 400, "SkS" : 769, "Crit" : 2490, "DH" : 1179} # Stats for Monk
-RPRStat = {'MainStat': 3378, 'WD': 132, 'Det': 1876, 'Ten': 400, 'SS': 400, 'SkS': 868, 'Crit': 1293, 'DH': 1665, 'Piety': 390} # Stats for Reaper
+RPRStat = {'MainStat': 3378, 'WD': 132, 'Det': 1870, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2567, 'DH': 1360, 'Piety': 390} # Stats for Reaper
 
 # Tank {'MainStat': 3378, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 671, 'Crit': 2627, 'DH': 904}
-DRKStat = {'MainStat': 3338, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 888, 'Crit': 2627, 'DH': 688, 'Piety': 390} # Stats for DarkKnight
-WARStat = {'MainStat': 3378, 'WD': 132, 'Det': 2182, 'Ten': 529, 'SS': 400, 'SkS': 400, 'Crit': 2576, 'DH': 940}
-PLDStat = {"MainStat": 2891, "WD":126, "Det" : 1883, "Ten" : 631, "SS": 400, "SkS" : 650, "Crit" : 2352, "DH" : 868} # Stats for Paladin
-GNBStat = {"MainStat": 2891, "WD":126, "Det" : 1883, "Ten" : 631, "SS": 400, "SkS" : 650, "Crit" : 2352, "DH" : 868} # Stats for Gunbreaker
-
+DRKStat = {'MainStat': 3338, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 591, 'Crit': 2627, 'DH': 976, 'Piety': 390} # Stats for DarkKnight
+WARStat =  {'MainStat': 3338, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 591, 'Crit': 2627, 'DH': 976, 'Piety': 390}
+PLDStat = {'MainStat': 3328, 'WD': 132, 'Det': 2182, 'Ten': 529, 'SS': 400, 'SkS': 400, 'Crit': 2576, 'DH': 940, 'Piety': 390} # Stats for Paladin
+#GNBStat = {"MainStat": 3338, "WD":132, "Det" : 1901, "Ten" : 529, "SS": 400, "SkS" : 708, "Crit" : 2627, "DH" : 868} # Stats for Gunbreaker
+GNBStat = {'MainStat': 3338, 'WD': 132, 'Det': 1944, 'Ten': 529, 'SS': 400, 'SkS': 1462, 'Crit': 2262, 'DH': 436, 'Piety': 390}
 #DRKStat =  {
 #"MainStat" : 450,
 #"WD" : 0,
@@ -176,17 +176,19 @@ DNCOpener = [StandardStep, Pirouette, Jete, WaitAbility(15), StandardFinish, Tec
 SAMOpener = []
 DRGOpener = [TrueThrust, Disembowel, LanceCharge, DragonSight(RDMPlayer), ChaoticSpring, BattleLitany, WheelingThrust, Geirskogul, LifeSurge, FangAndClaw, HighJump, RaidenThrust, DragonFireDive, VorpalThrust, LifeSurge, MirageDive, HeavenThrust, SpineshafterDive, FangAndClaw, SpineshafterDive, WheelingThrust, RaidenThrust, WyrmwindThrust, Disembowel, ChaoticSpring, WheelingThrust]
 MNKOpener = []
-NINOpener = [Jin, Chi, Ten, Huton, Hide, Ten, Chi, Jin, WaitAbility(5), Suiton, Kassatsu, SpinningEdge, GustSlash, Mug, Bunshin, PhantomKamaitachi, TrickAttack, AeolianEdge, DreamWithinADream, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, TenChiJin, Ten2, Chi2, Jin2, Meisui, FleetingRaiju, Bhavacakra, FleetingRaiju, Bhavacakra, Ten, Chi, Raiton, FleetingRaiju ]
+NINOpener = [Jin, Chi, Ten, Huton, Hide, Ten, Chi, Jin, WaitAbility(5), Suiton, Kassatsu, SpinningEdge, GustSlash, Mug, Bunshin, PhantomKamaitachi, TrickAttack, AeolianEdge, DreamWithinADream, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, TenChiJin, Ten2, Chi2, Jin2, Meisui, FleetingRaiju, Bhavacakra, FleetingRaiju, Bhavacakra, Ten, Chi, Raiton, FleetingRaiju, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, GustSlash, ArmorCrush, Bhavacakra, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, Ten, Chi, Jin, Suiton, GustSlash, AeolianEdge, Kassatsu, SpinningEdge, GustSlash, AeolianEdge, TrickAttack, SpinningEdge, DreamWithinADream, Bhavacakra, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, Ten, Chi, Raiton, FleetingRaiju, FleetingRaiju, GustSlash, ArmorCrush, SpinningEdge, GustSlash, AeolianEdge]
 RPROpener = [Soulsow, Harpe, ShadowOfDeath, ArcaneCircle, SoulSlice, SoulSlice, Potion, PlentifulHarvest, Enshroud, CrossReaping, VoidReaping, LemureSlice, CrossReaping, VoidReaping, LemureSlice, Communio, Gluttony, Gibbet, Gallows, UnveiledGibbet, Gibbet, ShadowOfDeath, Slice, WaxingSlice, InfernalSlice, Slice, WaxingSlice, InfernalSlice, UnveiledGallows, Gallows, SoulSlice, UnveiledGibbet, Gibbet, Enshroud, CrossReaping, VoidReaping, LemureSlice, CrossReaping, VoidReaping, LemureSlice, Communio, HarvestMoon ]
 
 # Tank 
 DRKOpener = [BloodWeapon,WaitAbility(5),TBN(DRKPlayer), HardSlash, EdgeShadow, Delirium, SyphonStrike, WaitAbility(1), Potion, Souleater, LivingShadow, SaltedEarth, HardSlash, Shadowbringer, EdgeShadow, Bloodspiller, EdgeShadow, CarveSpit, Bloodspiller, Plunge, EdgeShadow, Bloodspiller, SaltDarkness, Shadowbringer, SyphonStrike, EdgeShadow, Plunge,Souleater, HardSlash, SyphonStrike, Souleater, Bloodspiller, HardSlash, SyphonStrike, Souleater, HardSlash, SyphonStrike, Plunge, Souleater, Bloodspiller, HardSlash, SyphonStrike, Souleater, HardSlash, BloodWeapon, SyphonStrike, Delirium, Bloodspiller, Bloodspiller, EdgeShadow, Bloodspiller, Bloodspiller, CarveSpit, Souleater, EdgeShadow, HardSlash ]
-DRKOpener = [HardSlash, SyphonStrike, Souleater,conditionalAction(HardSlash, timeCheck(5)), HardSlash]
+#DRKOpener = [HardSlash, SyphonStrike, Souleater,conditionalAction(HardSlash, timeCheck(5)), HardSlash]
 #DRKOpener = [HardSlash]
 #WAROpener = [HeavySwing, Infuriate, Maim, Potion, StormEye, InnerRelease, InnerChaos, Upheaval, Onslaught, PrimalRend, Infuriate, InnerChaos, Onslaught, FellCleave, FellCleave, HeavySwing, Maim, StormPath,FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath, HeavySwing, Maim, StormPath, FellCleave, FellCleave]
-WAROpener = [HeavySwing, Infuriate, Maim, WaitAbility(0.75), Potion, StormEye, InnerRelease, Upheaval, InnerChaos, Onslaught, FellCleave, Onslaught, PrimalRend, FellCleave, Onslaught, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath, FellCleave, Infuriate, InnerChaos, HeavySwing, Upheaval, Maim, StormEye, HeavySwing, Maim, StormPath, HeavySwing, Maim, StormPath, HeavySwing, Maim, StormEye, FellCleave, InnerRelease, Onslaught, FellCleave, FellCleave, PrimalRend, FellCleave, FellCleave, HeavySwing, Maim, StormEye, HeavySwing, Maim, StormEye, HeavySwing, Maim]
-PLDOpener = []
-GNBOpener = []
+WAROpener = [Tomahawk, Infuriate, HeavySwing, Upheaval ,Maim, WaitAbility(1), Potion, StormEye, InnerRelease, Onslaught, InnerChaos, Onslaught, PrimalRend,Onslaught, FellCleave, FellCleave, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath, FellCleave, Infuriate, Upheaval, InnerChaos, HeavySwing, Maim, StormEye, HeavySwing, Maim, StormPath, FellCleave, HeavySwing, Maim, Onslaught, StormEye , HeavySwing, Upheaval, Maim, StormPath, InnerRelease, PrimalRend, FellCleave, FellCleave, Onslaught, FellCleave, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath]
+#FastWAr = [Tomahawk, Infuriate, HeavySwing, Upheaval ,Maim, WaitAbility(1), Potion, StormEye, InnerRelease, Onslaught, InnerChaos, Onslaught, PrimalRend,Onslaught, FellCleave, FellCleave, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath, FellCleave, Infuriate, Upheaval, InnerChaos, HeavySwing, Maim, StormEye, HeavySwing, Maim, StormPath, FellCleave, HeavySwing, Maim, Onslaught, StormEye , HeavySwing, Maim,Upheaval, StormPath, HeavySwing, InnerRelease, PrimalRend, FellCleave, FellCleave, Onslaught, FellCleave, FellCleave, Infuriate, InnerChaos, Maim, StormPath]
+
+PLDOpener = [HolySpirit, FastBlade, RiotBlade, WaitAbility(1), Potion, RoyalAuthority, FightOrFlight, RequestACat, GoringBlade, CircleScorn, Expiacion, Confetti, Intervene, BladeFaith, Intervene, BladeTruth, BladeValor, HolySpirit, Atonement, Atonement, Atonement, FastBlade, RiotBlade, RoyalAuthority, Atonement, CircleScorn, Expiacion, Atonement, Atonement, FastBlade, RiotBlade, HolySpirit, RoyalAuthority, Atonement, Atonement, Atonement, FastBlade, RiotBlade, FightOrFlight, RequestACat, GoringBlade, Expiacion, Confetti, BladeFaith, Intervene, BladeTruth, Intervene, BladeValor, HolySpirit, RoyalAuthority, HolySpirit, Atonement ]
+GNBOpener = [KeenEdge, Potion, BrutalShell, NoMercy, Bloodfest, GnashingFang, JugularRip, SonicBreak, BowShock, BlastingZone, DoubleDown, RoughDivide, SavageClaw, AbdomenTear, WickedTalon, EyeGouge, RoughDivide, SolidBarrel, BurstStrike, Hypervelocity, KeenEdge, BrutalShell, SolidBarrel, KeenEdge, BrutalShell, GnashingFang, JugularRip,SavageClaw, AbdomenTear, BlastingZone, WickedTalon, EyeGouge, SolidBarrel, KeenEdge, BrutalShell, SolidBarrel, KeenEdge, BrutalShell, SolidBarrel,KeenEdge, BrutalShell, NoMercy, RoughDivide, GnashingFang, JugularRip, DoubleDown, BlastingZone, RoughDivide, SavageClaw, AbdomenTear, WickedTalon, EyeGouge, SolidBarrel, BurstStrike, Hypervelocity, KeenEdge, BrutalShell, SolidBarrel]
 
 # ===============================================================================================
 
@@ -230,7 +232,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [DRKPlayer]
+PlayerList = [RPRPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -284,7 +286,7 @@ if findBiS:
     Det = 2
     Ten = 5
     materiaSpace = [Crit, DH, Det]
-    optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=False,minSPDValue=400,maxSPDValue=2000, useNewAlgo=True, 
+    optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=False,minSPDValue=400,maxSPDValue=400, useNewAlgo=True, 
                                 oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0,findOptMateriaGearBF=True)
 
 if False:
@@ -292,57 +294,57 @@ if False:
     from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet, Food, ImportGear
     matGen = MateriaGenerator(18, 36)
 
-    raidFood = Food({"Crit" : [103, 0.1], "SkS" : [62, 0.1]}, "Baba Ghanoush")
+    raidFood = Food({"Det" : [103, 0.1], "Crit" : [62, 0.1]}, "Baked Eggplant")
 
-    data = ImportGear("FendingGear.json")
+    data = ImportGear("MaimingGear.json")
     Crit = 0
     DH = 1
     Det = 2
     SS = 3
     SkS = 4
     Weapon = data["WEAPON"][0]
-    Weapon.AddMateria(matGen.GenerateMateria(0))
-    Weapon.AddMateria(matGen.GenerateMateria(0))
+    Weapon.AddMateria(matGen.GenerateMateria(1))
+    Weapon.AddMateria(matGen.GenerateMateria(4))
 
-    Head = data["HEAD"][0]
-    Head.AddMateria(matGen.GenerateMateria(4))
-    Head.AddMateria(matGen.GenerateMateria(4))
+    Head = data["HEAD"][1]
+    Head.AddMateria(matGen.GenerateMateria(2))
+    Head.AddMateria(matGen.GenerateMateria(1))
 
-    Body = data["BODY"][1]
-    Body.AddMateria(matGen.GenerateMateria(4))
-    Body.AddMateria(matGen.GenerateMateria(4))
+    Body = data["BODY"][0]
+    Body.AddMateria(matGen.GenerateMateria(2))
+    Body.AddMateria(matGen.GenerateMateria(1))
 
-    Hand = data["HANDS"][0]
-    Hand.AddMateria(matGen.GenerateMateria(4))
-    Hand.AddMateria(matGen.GenerateMateria(4))
+    Hand = data["HANDS"][1]
+    Hand.AddMateria(matGen.GenerateMateria(1))
+    Hand.AddMateria(matGen.GenerateMateria(1))
 
-    Leg = data["LEGS"][0]
-    Leg.AddMateria(matGen.GenerateMateria(0))
-    Leg.AddMateria(matGen.GenerateMateria(0))
+    Leg = data["LEGS"][1]
+    Leg.AddMateria(matGen.GenerateMateria(2))
+    Leg.AddMateria(matGen.GenerateMateria(1))
 
-    Feet = data["FEET"][1]
-    Feet.AddMateria(matGen.GenerateMateria(4))
-    Feet.AddMateria(matGen.GenerateMateria(4))
+    Feet = data["FEET"][0]
+    Feet.AddMateria(matGen.GenerateMateria(2))
+    Feet.AddMateria(matGen.GenerateMateria(1))
 
-    Ear = data["EARRINGS"][1]
-    Ear.AddMateria(matGen.GenerateMateria(4))
+    Ear = data["EARRINGS"][0]
+    Ear.AddMateria(matGen.GenerateMateria(1))
     Ear.AddMateria(matGen.GenerateMateria(1))
 
-    Neck = data["NECKLACE"][0]
-    Neck.AddMateria(matGen.GenerateMateria(1))
+    Neck = data["NECKLACE"][1]
+    Neck.AddMateria(matGen.GenerateMateria(2))
     Neck.AddMateria(matGen.GenerateMateria(1))
 
-    Bracelet = data["BRACELETS"][1]
-    Bracelet.AddMateria(matGen.GenerateMateria(1))
-    Bracelet.AddMateria(matGen.GenerateMateria(1))
+    Bracelet = data["BRACELETS"][0]
+    Bracelet.AddMateria(matGen.GenerateMateria(2))
+    Bracelet.AddMateria(matGen.GenerateMateria(2))
 
     Lring = data["LRING"][0]
-    Lring.AddMateria(matGen.GenerateMateria(1))
+    Lring.AddMateria(matGen.GenerateMateria(0))
     Lring.AddMateria(matGen.GenerateMateria(1))
 
     ring = data["RING"][0]
-    ring.AddMateria(matGen.GenerateMateria(0))
-    ring.AddMateria(matGen.GenerateMateria(1))
+    ring.AddMateria(matGen.GenerateMateria(2))
+    ring.AddMateria(matGen.GenerateMateria(2))
 
     gSet = GearSet()
     gSet.AddGear(Weapon)
