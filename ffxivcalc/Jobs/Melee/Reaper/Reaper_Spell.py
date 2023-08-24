@@ -173,6 +173,7 @@ def ApplyGluttony(Player, Enemy):
 def ApplyArcaneCircle(Player, Enemy):
     if not (ArcaneCircleBuff in Enemy.buffList) and not Player.CurrentFight.SavePreBakedAction: 
         Enemy.buffList.append(ArcaneCircleBuff) #If not already in by another reaper
+        Player.EffectCDList.append(ArcaneCircleCheck)
     #Will have to worry about if multiple reaper
     Player.ArcaneCircleCD = 120
     Player.ArcaneCircleTimer = 20
@@ -283,6 +284,11 @@ def GallowsEffect(Player, Spell):
         Player.EnhancedGibbet = False
 
 #check
+
+def ArcaneCircleCheck(Player, Enemy):
+    if Player.ArcaneCircleTimer <= 0:
+        Enemy.buffList.remove(ArcaneCircleBuff)
+        Player.EffectToRemove.append(ArcaneCircleCheck)
 
 def HellIngressCheck(Player, Enemy):
     if Player.HellIngressTimer <= 0:
