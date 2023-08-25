@@ -287,10 +287,10 @@ if findBiS:
     Ten = 5
     materiaSpace = [Crit, DH, Det]
     optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=False,minSPDValue=400,maxSPDValue=400, useNewAlgo=True, 
-                                oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0,findOptMateriaGearBF=True)
+                                oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=False)
 
 if False:
-    from ffxivcalc.GearSolver.Solver import computeDamageValue, getGearDPSValue
+    from ffxivcalc.GearSolver.Solver import computeDamageValue, getGearDPSValue, materiaBisSolverV3
     from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet, Food, ImportGear
     matGen = MateriaGenerator(18, 36)
 
@@ -311,7 +311,7 @@ if False:
     Head.AddMateria(matGen.GenerateMateria(1))
 
     Body = data["BODY"][0]
-    Body.AddMateria(matGen.GenerateMateria(2))
+    Body.AddMateria(matGen.GenerateMateria(1))
     Body.AddMateria(matGen.GenerateMateria(1))
 
     Hand = data["HANDS"][1]
@@ -336,14 +336,14 @@ if False:
 
     Bracelet = data["BRACELETS"][0]
     Bracelet.AddMateria(matGen.GenerateMateria(2))
-    Bracelet.AddMateria(matGen.GenerateMateria(2))
+    Bracelet.AddMateria(matGen.GenerateMateria(1))
 
     Lring = data["LRING"][0]
     Lring.AddMateria(matGen.GenerateMateria(0))
     Lring.AddMateria(matGen.GenerateMateria(1))
 
     ring = data["RING"][0]
-    ring.AddMateria(matGen.GenerateMateria(2))
+    ring.AddMateria(matGen.GenerateMateria(1))
     ring.AddMateria(matGen.GenerateMateria(2))
 
     gSet = GearSet()
