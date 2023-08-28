@@ -663,7 +663,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     auto_crit = False
     auto_DH = False
 
-    f#ight_logging.debug("Action has crit bonus of " + str(Player.CritRateBonus + CritRateBonus))
+    #fight_logging.debug("Action has crit bonus of " + str(Player.CritRateBonus + CritRateBonus))
 
     if type == 0: # Making sure its not an AA or DOT
         if Player.JobEnum == JobEnum.Machinist: 
