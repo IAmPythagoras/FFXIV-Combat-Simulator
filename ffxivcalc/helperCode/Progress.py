@@ -34,7 +34,7 @@ class ProgressBar:
         percent = int((self.currentProgress/self.total)*1000)/10
 
 
-        curTimeIteration = round(time() - self.lastIterTime,1)
+        curTimeIteration = time() - self.lastIterTime
         self.lastIterTime = time()
         self.sumIterations += curTimeIteration
         self.iterationAverage = round(self.sumIterations/self.currentProgress,1) if self.currentProgress > 0 else self.sumIterations

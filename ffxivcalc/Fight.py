@@ -173,14 +173,14 @@ class Fight:
             curMainStat = MainStat * (PreBakedAction.MainStatPercentageBonus if not PreBakedAction.isFromPet else 1)
 
             fight_logging.debug("TimeStamp : " + str(timeStamp))
-            fight_logging.debug("Finish : " + str(trialFinishTime))
-            fight_logging.debug("f_SPD : " + str(f_SPD))
-            fight_logging.debug("Non rounded : " + str(gcdReductionRatio))
-            fight_logging.debug("Non Reducable : " + str(PreBakedAction.nonReducableStamp) + " Reducable : " + str(PreBakedAction.reducableStamp) + " SPD : " + str(roundDown(gcdReductionRatio,3)))
-            fight_logging.debug("GCDLock : " + str(PreBakedAction.gcdLockTimer))
-            fight_logging.debug("Amount not rounded : " + str(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3)))
-            fight_logging.debug("Amount rounded : " + str(roundDown(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),2)))
-            fight_logging.debug("amountToRemoveEveryGCD : " + str(amountToRemoveEveryGCD))
+            #fight_logging.debug("Finish : " + str(trialFinishTime))
+            #fight_logging.debug("f_SPD : " + str(f_SPD))
+            #fight_logging.debug("Non rounded : " + str(gcdReductionRatio))
+            #fight_logging.debug("Non Reducable : " + str(PreBakedAction.nonReducableStamp) + " Reducable : " + str(PreBakedAction.reducableStamp) + " SPD : " + str(roundDown(gcdReductionRatio,3)))
+            #fight_logging.debug("GCDLock : " + str(PreBakedAction.gcdLockTimer))
+            #fight_logging.debug("Amount not rounded : " + str(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3)))
+            #fight_logging.debug("Amount rounded : " + str(roundDown(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),2)))
+            #fight_logging.debug("amountToRemoveEveryGCD : " + str(amountToRemoveEveryGCD))
                                          # Will check what buffs the action falls under.
                                          # Chain Stratagem
             for history in player.ChainStratagemHistory:
@@ -533,7 +533,7 @@ class Fight:
         result, fig = PrintResult(self, self.TimeStamp, self.timeValue, PPSGraph=PPSGraph)
         if vocal:
             print(result) 
-            plt.show()
+            #plt.show()
 
         
         return result, fig, fig2
@@ -654,14 +654,16 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
     if Enemy.BattleVoice: DHRateBonus += 0.2 # If BattleVoice is active, increase DHRate
 
-    DHRate += Player.DHRateBonus + DHRateBonus# Adding Bonus
-    CritRate += Player.CritRateBonus + CritRateBonus# Adding bonus
+    DHRate += DHRateBonus# Adding Bonus
+    CritRate += CritRateBonus# Adding bonus
 
     # We will check if the ability is an assured crit and/ord DH, in which case we will have to buff the damage
     # Depending on the buffs the player is currently receiving
 
     auto_crit = False
     auto_DH = False
+
+    f#ight_logging.debug("Action has crit bonus of " + str(Player.CritRateBonus + CritRateBonus))
 
     if type == 0: # Making sure its not an AA or DOT
         if Player.JobEnum == JobEnum.Machinist: 
@@ -738,7 +740,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
     if type == 0: # Type 0 is direct damage
         #Damage = Potency * f_MAIN_DMG * f_DET * f_TEN  *f_WD * Player.Trait
-        Damage = math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG) * (f_DET_DH if CritRate == 1 else f_DET)) * f_TEN ) *f_WD) * Player.Trait) # Player.Trait is trait DPS bonus
+        Damage = math.floor(math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG) * (f_DET_DH if auto_crit and auto_DH else f_DET)) * f_TEN ) *f_WD) * Player.Trait) # Player.Trait is trait DPS bonus
         Damage = math.floor(Damage * SpellBonus)
         Player.NumberDamageSpell += 1
         Player.CritRateHistory += [CritRate]

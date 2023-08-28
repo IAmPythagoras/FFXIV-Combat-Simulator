@@ -169,7 +169,7 @@ class PreBakedAction:
 
         Damage = 0
         if self.type == 0: # Type 0 is direct damage
-            Damage = math.floor(math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG) * (f_DET_DH if self.AutoCrit else f_DET)) * f_TEN ) *f_WD) * self.TraitBonus) # Player.Trait is trait DPS bonus
+            Damage = math.floor(math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG) * (f_DET_DH if (self.AutoCrit and self.AutoDH) else f_DET)) * f_TEN ) *f_WD) * self.TraitBonus) # Player.Trait is trait DPS bonus
         elif self.type == 1: # Type 1 is magical DOT
             Damage = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(self.Potency * f_WD) * f_MAIN_DMG) * f_SPD) * f_DET) * f_TEN) * self.TraitBonus) + 1
         elif self.type == 2: # Type 2 is physical DOT
@@ -191,7 +191,7 @@ class PreBakedAction:
         ExpectedDamage = math.floor(ExpectedDamage * auto_crit_bonus)
         ExpectedDamage = math.floor(ExpectedDamage * auto_dh_bonus)
 
-        base_spell_logging.debug("PreBakedAction has expected damage of " + str(ExpectedDamage) + " Potency :" + str(self.Potency) +" Trait : " + str(self.TraitBonus))
+        base_spell_logging.debug("PreBakedAction has expected damage of " + str(ExpectedDamage) + " Potency :" + str(self.Potency) +" Trait : " + str(self.TraitBonus) + " critBonus : " + str(self.CritBonus) + " DHBonus : " + str(self.DHBonus))
         base_spell_logging.debug(str((f_MAIN_DMG, f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)))
 
         return ExpectedDamage, Damage
