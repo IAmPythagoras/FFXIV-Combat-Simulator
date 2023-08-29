@@ -173,14 +173,14 @@ class Fight:
             curMainStat = MainStat * (PreBakedAction.MainStatPercentageBonus if not PreBakedAction.isFromPet else 1)
 
             fight_logging.debug("TimeStamp : " + str(timeStamp))
-            #fight_logging.debug("Finish : " + str(trialFinishTime))
-            #fight_logging.debug("f_SPD : " + str(f_SPD))
-            #fight_logging.debug("Non rounded : " + str(gcdReductionRatio))
-            #fight_logging.debug("Non Reducable : " + str(PreBakedAction.nonReducableStamp) + " Reducable : " + str(PreBakedAction.reducableStamp) + " SPD : " + str(roundDown(gcdReductionRatio,3)))
-            #fight_logging.debug("GCDLock : " + str(PreBakedAction.gcdLockTimer))
-            #fight_logging.debug("Amount not rounded : " + str(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3)))
-            #fight_logging.debug("Amount rounded : " + str(roundDown(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),2)))
-            #fight_logging.debug("amountToRemoveEveryGCD : " + str(amountToRemoveEveryGCD))
+            fight_logging.debug("Finish : " + str(trialFinishTime))
+            fight_logging.debug("f_SPD : " + str(f_SPD))
+            fight_logging.debug("Non rounded : " + str(gcdReductionRatio))
+            fight_logging.debug("Non Reducable : " + str(PreBakedAction.nonReducableStamp) + " Reducable : " + str(PreBakedAction.reducableStamp) + " SPD : " + str(roundDown(gcdReductionRatio,3)))
+            fight_logging.debug("GCDLock : " + str(PreBakedAction.gcdLockTimer))
+            fight_logging.debug("Amount not rounded : " + str(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3)))
+            fight_logging.debug("Amount rounded : " + str(roundDown(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),2)))
+            fight_logging.debug("amountToRemoveEveryGCD : " + str(amountToRemoveEveryGCD))
                                          # Will check what buffs the action falls under.
                                          # Chain Stratagem
             for history in player.ChainStratagemHistory:
@@ -729,7 +729,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         nonReducableStamp = 0 if not Player.CurrentFight.FightStart else Player.totalTimeNoFaster
         reducableStamp = 0 if not Player.CurrentFight.FightStart else Player.CurrentFight.TimeStamp - Player.totalTimeNoFaster
 
-        gcdLockTimer = max(spellObj.RecastTime, spellObj.CastTime) if spellObj.GCD  and (Player.RoleEnum != RoleEnum.Pet) and max(spellObj.RecastTime, spellObj.CastTime) > 1.5 else 0
+        gcdLockTimer = max(spellObj.notRoundRecastTime, spellObj.notRoundCastTime) if spellObj.GCD  and (Player.RoleEnum != RoleEnum.Pet) and max(spellObj.notRoundRecastTime, spellObj.notRoundCastTime) > 1.5 else 0
         if spellObj.GCD and (Player.RoleEnum == RoleEnum.Melee or Player.RoleEnum == RoleEnum.Tank) and spellObj.type == 1 : gcdLockTimer = 0
         elif spellObj.GCD and (Player.RoleEnum == RoleEnum.Caster) and spellObj.type == 2 : gcdLockTimer = 0
 

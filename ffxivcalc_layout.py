@@ -76,14 +76,17 @@ DNCStat = {"MainStat": 2949, "WD":126, "Det" : 1721, "Ten" : 400, "SS": 400, "Sk
 
 # Melee
 NINStat = {"MainStat": 3378, "WD":132, "Det" : 1697, "Ten" : 400, "SS": 400, "SkS" : 400, "Crit" : 2554, "DH" : 1582} # Stats for Ninja
-SAMStat = {"MainStat": 2937, "WD":126, "Det" : 1571, "Ten" : 400, "SS": 400, "SkS" : 508, "Crit" : 2446, "DH" : 1459} # Stats for Samurai
-DRGStat = {"MainStat": 3378, "WD":132, "Det" : 1870, "Ten" : 400, "SS": 400, "SkS" : 400, "Crit" : 2567, "DH" : 1396} # Stats for Dragoon
-MNKStat = {"MainStat": 3076, "WD":126, "Det" : 1546, "Ten" : 400, "SS": 400, "SkS" : 769, "Crit" : 2490, "DH" : 1179} # Stats for Monk
+SAMStat =  {'MainStat': 3378, 'WD': 132, 'Det': 1164, 'Ten': 400, 'SS': 400, 'SkS': 1513, 'Crit': 2282, 'DH': 1274, 'Piety': 390} # Stats for Samurai
+#SAMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1325, 'Ten': 400, 'SS': 400, 'SkS': 1059, 'Crit': 2647, 'DH': 1202, 'Piety': 390}
+DRGStat =  {'MainStat': 3378, 'WD': 132, 'Det': 1726, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2567, 'DH': 1540, 'Piety': 390} # Stats for Dragoon
+MNKStat = {'MainStat': 3378, 'WD': 132, 'Det': 1289, 'Ten': 400, 'SS': 400, 'SkS': 930, 'Crit': 2628, 'DH': 1386, 'Piety': 390} # Stats for Monk
+#MNKStat = {'MainStat': 3378, 'WD': 132, 'Det': 1289, 'Ten': 400, 'SS': 400, 'SkS': 858, 'Crit': 2628, 'DH': 1458, 'Piety': 390}
 RPRStat = {'MainStat': 3378, 'WD': 132, 'Det': 1870, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2567, 'DH': 1360, 'Piety': 390} # Stats for Reaper
 
 # Tank {'MainStat': 3378, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 671, 'Crit': 2627, 'DH': 904}
 DRKStat = {'MainStat': 3338, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 591, 'Crit': 2627, 'DH': 976, 'Piety': 390} # Stats for DarkKnight
 WARStat =  {'MainStat': 3338, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 591, 'Crit': 2627, 'DH': 976, 'Piety': 390}
+WARStat = {'MainStat': 3338, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 591, 'Crit': 2627, 'DH': 976, 'Piety': 390}
 PLDStat = {'MainStat': 3328, 'WD': 132, 'Det': 2182, 'Ten': 529, 'SS': 400, 'SkS': 400, 'Crit': 2576, 'DH': 940, 'Piety': 390} # Stats for Paladin
 #GNBStat = {"MainStat": 3338, "WD":132, "Det" : 1901, "Ten" : 529, "SS": 400, "SkS" : 708, "Crit" : 2627, "DH" : 868} # Stats for Gunbreaker
 GNBStat = {'MainStat': 3338, 'WD': 132, 'Det': 1944, 'Ten': 529, 'SS': 400, 'SkS': 1462, 'Crit': 2262, 'DH': 436, 'Piety': 390}
@@ -173,9 +176,16 @@ MCHOpener = [Reassemble, WaitAbility(5), AirAnchor, GaussRound, Ricochet, Drill,
 DNCOpener = [StandardStep, Pirouette, Jete, WaitAbility(15), StandardFinish, TechnicalStep, Pirouette, Jete, Entrechat, Emboite, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Jete, Pirouette, StandardFinish]
 
 # Melee
-SAMOpener = []
-DRGOpener = [TrueThrust, Disembowel, LanceCharge, DragonSight(RDMPlayer), ChaoticSpring, BattleLitany, WheelingThrust, Geirskogul, LifeSurge, FangAndClaw, HighJump, RaidenThrust, DragonFireDive, VorpalThrust, LifeSurge, MirageDive, HeavenThrust, SpineshafterDive, FangAndClaw, SpineshafterDive, WheelingThrust, RaidenThrust, WyrmwindThrust, Disembowel, ChaoticSpring, WheelingThrust]
-MNKOpener = []
+SAMOpener = [Meikyo, Gekko, WaitAbility(1), Potion, Kasha, Ikishoten, Yukikaze, Midare, KaeshiSetsugekka, Senei, Meikyo, Gekko, Shinten, Higanbana, Shinten, Gekko, Shinten, OgiNamikiri, Shoha, KaeshiNamikiri, Kasha, Shinten, Hakaze, Yukikaze, Midare, KaeshiSetsugekka, Shinten, Hakaze, Jinpu, Gekko, Shinten, Hakaze, Shifu, Kasha, Hakaze, Shinten, Yukikaze, Midare, Hakaze, Jinpu, Gekko, Hakaze, Shifu, Kasha, Shinten, Hakaze, Yukikaze, Shinten, Meikyo, Kasha, Kasha, Shinten, Shoha, Gekko, Shinten, Hakaze, Yukikaze, Shinten, Midare, KaeshiSetsugekka, Hakaze, Yukikaze, Hakaze, Shinten, Shifu, Kasha]
+DRGOpener = [TrueThrust, Disembowel, LanceCharge, DragonSight(NINPlayer), ChaoticSpring, BattleLitany, Geirskogul, WheelingThrust, HighJump,
+			LifeSurge, FangAndClaw, DragonFireDive, SpineshafterDive, RaidenThrust, MirageDive, SpineshafterDive, VorpalThrust, LifeSurge,
+			HeavenThrust, FangAndClaw, WheelingThrust, RaidenThrust, WyrmwindThrust, Disembowel, ChaoticSpring, WheelingThrust, FangAndClaw,
+			Geirskogul, RaidenThrust, HighJump, MirageDive, VorpalThrust, HeavenThrust, FangAndClaw, WheelingThrust, RaidenThrust, WyrmwindThrust,
+			Disembowel, ChaoticSpring, WheelingThrust, FangAndClaw, RaidenThrust, LanceCharge, VorpalThrust, LifeSurge, Geirskogul, HeavenThrust,
+			Nastrond, HighJump, FangAndClaw, Stardiver, WheelingThrust, MirageDive, RaidenThrust, WyrmwindThrust, VorpalThrust, Nastrond, HeavenThrust,
+			FangAndClaw, WheelingThrust]
+
+MNKOpener = [DragonKick, PerfectBalance, TwinSnakes, RiddleOfFire, Demolish, WaitAbility(1), Potion, Bootshine, Brotherhood, TheForbiddenChakra, RisingPhoenix, RiddleOfWind, DragonKick, TheForbiddenChakra, PerfectBalance, Bootshine, SnapPunch, TheForbiddenChakra, TwinSnakes, RisingPhoenix, TheForbiddenChakra, DragonKick, TrueStrike, TheForbiddenChakra, Demolish, Bootshine, TwinSnakes, SnapPunch, DragonKick, TrueStrike, SnapPunch, Bootshine, TwinSnakes, Demolish, DragonKick, TrueStrike, SnapPunch, TheForbiddenChakra, Bootshine, TwinSnakes, SnapPunch, DragonKick, TrueStrike, Demolish, Bootshine, TwinSnakes, RiddleOfFire, DragonKick, Bootshine, TheForbiddenChakra, DragonKick, ElixirField, Bootshine, TwinSnakes, DragonKick, DragonKick, DragonKick, DragonKick ]
 NINOpener = [Jin, Chi, Ten, Huton, Hide, Ten, Chi, Jin, WaitAbility(5), Suiton, Kassatsu, SpinningEdge, GustSlash, Mug, Bunshin, PhantomKamaitachi, TrickAttack, AeolianEdge, DreamWithinADream, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, TenChiJin, Ten2, Chi2, Jin2, Meisui, FleetingRaiju, Bhavacakra, FleetingRaiju, Bhavacakra, Ten, Chi, Raiton, FleetingRaiju, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, GustSlash, ArmorCrush, Bhavacakra, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, Ten, Chi, Jin, Suiton, GustSlash, AeolianEdge, Kassatsu, SpinningEdge, GustSlash, AeolianEdge, TrickAttack, SpinningEdge, DreamWithinADream, Bhavacakra, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, Ten, Chi, Raiton, FleetingRaiju, FleetingRaiju, GustSlash, ArmorCrush, SpinningEdge, GustSlash, AeolianEdge]
 RPROpener = [Soulsow, Harpe, ShadowOfDeath, ArcaneCircle, SoulSlice, SoulSlice, Potion, PlentifulHarvest, Enshroud, CrossReaping, VoidReaping, LemureSlice, CrossReaping, VoidReaping, LemureSlice, Communio, Gluttony, Gibbet, Gallows, UnveiledGibbet, Gibbet, ShadowOfDeath, Slice, WaxingSlice, InfernalSlice, Slice, WaxingSlice, InfernalSlice, UnveiledGallows, Gallows, SoulSlice, UnveiledGibbet, Gibbet, Enshroud, CrossReaping, VoidReaping, LemureSlice, CrossReaping, VoidReaping, LemureSlice, Communio, HarvestMoon ]
 
@@ -232,7 +242,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [RPRPlayer]
+PlayerList = [SAMPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -259,7 +269,7 @@ logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ff
 __logger__.setLevel(level=level) # __logger__ = logging.getLogger("ffxivcalc") 
 
 if not findBiS:
-    Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False, MaxTeamBonus=False) # Simulating fight
+    #Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False, MaxTeamBonus=False) # Simulating fight
     pass
 
 # ===============================================================================================
@@ -269,7 +279,7 @@ if findBiS:
     from ffxivcalc.GearSolver.Gear import ImportGear, Food
     from ffxivcalc.GearSolver.Solver import BiSSolver, getBaseStat, getGearDPSValue
 
-    GearSpace = ImportGear("FendingGear.json")
+    GearSpace = ImportGear("MaimingGear.json")
 
     HD = Food({"DH" : [103, 0.1], "Det" : [62, 0.1]}, "Honeyed Dragonfruit")
     DB = Food({"SkS" : [103, 0.1], "DH" : [62, 0.1]}, "Dragonfruit Blend")
@@ -287,66 +297,70 @@ if findBiS:
     Ten = 5
     materiaSpace = [Crit, DH, Det]
     optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=False,minSPDValue=400,maxSPDValue=400, useNewAlgo=True, 
-                                oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=False)
+                                oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=1,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=True)
 
-if False:
+if True:
     from ffxivcalc.GearSolver.Solver import computeDamageValue, getGearDPSValue, materiaBisSolverV3
     from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet, Food, ImportGear
     matGen = MateriaGenerator(18, 36)
 
-    raidFood = Food({"Det" : [103, 0.1], "Crit" : [62, 0.1]}, "Baked Eggplant")
+    raidFood = Food({"Crit" : [103, 0.1], "SkS" : [62, 0.1]}, "Baba Ghanoush")
 
-    data = ImportGear("MaimingGear.json")
+    #data = ImportGear("StrikingGear.json")
     Crit = 0
     DH = 1
     Det = 2
     SS = 3
     SkS = 4
+    """
     Weapon = data["WEAPON"][0]
-    Weapon.AddMateria(matGen.GenerateMateria(1))
+    Weapon.AddMateria(matGen.GenerateMateria(4))
     Weapon.AddMateria(matGen.GenerateMateria(4))
 
-    Head = data["HEAD"][1]
-    Head.AddMateria(matGen.GenerateMateria(2))
+    Head = data["HEAD"][0]
+    Head.AddMateria(matGen.GenerateMateria(4))
     Head.AddMateria(matGen.GenerateMateria(1))
 
     Body = data["BODY"][0]
-    Body.AddMateria(matGen.GenerateMateria(1))
-    Body.AddMateria(matGen.GenerateMateria(1))
+    Body.AddMateria(matGen.GenerateMateria(4))
+    Body.AddMateria(matGen.GenerateMateria(4))
 
-    Hand = data["HANDS"][1]
-    Hand.AddMateria(matGen.GenerateMateria(1))
+    Hand = data["HANDS"][0]
+    Hand.AddMateria(matGen.GenerateMateria(4))
     Hand.AddMateria(matGen.GenerateMateria(1))
 
     Leg = data["LEGS"][1]
-    Leg.AddMateria(matGen.GenerateMateria(2))
-    Leg.AddMateria(matGen.GenerateMateria(1))
+    Leg.AddMateria(matGen.GenerateMateria(4))
+    Leg.AddMateria(matGen.GenerateMateria(4))
 
     Feet = data["FEET"][0]
-    Feet.AddMateria(matGen.GenerateMateria(2))
-    Feet.AddMateria(matGen.GenerateMateria(1))
+    Feet.AddMateria(matGen.GenerateMateria(4))
+    Feet.AddMateria(matGen.GenerateMateria(4))
 
-    Ear = data["EARRINGS"][0]
-    Ear.AddMateria(matGen.GenerateMateria(1))
-    Ear.AddMateria(matGen.GenerateMateria(1))
+    Ear = data["EARRINGS"][1]
+    Ear.AddMateria(matGen.GenerateMateria(0))
+    Ear.AddMateria(matGen.GenerateMateria(0))
 
     Neck = data["NECKLACE"][1]
-    Neck.AddMateria(matGen.GenerateMateria(2))
-    Neck.AddMateria(matGen.GenerateMateria(1))
+    Neck.AddMateria(matGen.GenerateMateria(4))
+    Neck.AddMateria(matGen.GenerateMateria(4))
 
     Bracelet = data["BRACELETS"][0]
-    Bracelet.AddMateria(matGen.GenerateMateria(2))
-    Bracelet.AddMateria(matGen.GenerateMateria(1))
+    Bracelet.AddMateria(matGen.GenerateMateria(4))
+    Bracelet.AddMateria(matGen.GenerateMateria(4))
 
     Lring = data["LRING"][0]
-    Lring.AddMateria(matGen.GenerateMateria(0))
-    Lring.AddMateria(matGen.GenerateMateria(1))
+    Lring.AddMateria(matGen.GenerateMateria(4))
+    Lring.AddMateria(matGen.GenerateMateria(4))
 
     ring = data["RING"][0]
-    ring.AddMateria(matGen.GenerateMateria(1))
-    ring.AddMateria(matGen.GenerateMateria(2))
+    ring.AddMateria(matGen.GenerateMateria(4))
+    ring.AddMateria(matGen.GenerateMateria(4))
+    """
 
     gSet = GearSet()
+    gSet.IsTank = False
+    """
     gSet.AddGear(Weapon)
     gSet.AddGear(Head)
     gSet.AddGear(Body)
@@ -359,5 +373,6 @@ if False:
     gSet.AddGear(Lring)
     gSet.AddGear(ring)
     gSet.addFood(raidFood)
+    """
 
     getGearDPSValue(Event, gSet, 0, n=0)

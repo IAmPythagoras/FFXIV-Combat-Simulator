@@ -376,9 +376,9 @@ TenkaGoken = SamuraiSpell(7488, True, 1.3, 2.5, 280, ApplyTenkaGoken, [TenkaGoke
 Midare = SamuraiSpell(7487, True, 1.3, 2.5, 640, ApplyMidare, [MidareRequirement], 0, type = 2)
 
 #Kaeshi
-KaeshiHiganbana = SamuraiSpell(16484, True, 0, 2.5, 200, ApplyKaeshiHiganbana, [KaeshiHiganbanaRequirement,TsubamegaeshiRequirement], 0)
-KaeshiGoken = SamuraiSpell(16485, True, 0, 2.5, 280, ApplyKaeshiGoken, [KaeshiGokenRequirement,TsubamegaeshiRequirement], 0)
-KaeshiSetsugekka = SamuraiSpell(16486, True, 0, 2.5, 640, ApplyKaeshi, [KaeshiSetsugekkaRequirement,TsubamegaeshiRequirement], 0)
+KaeshiHiganbana = SamuraiSpell(16484, True, 0, 2.5, 200, ApplyKaeshiHiganbana, [KaeshiHiganbanaRequirement,TsubamegaeshiRequirement], 0, type = 2)
+KaeshiGoken = SamuraiSpell(16485, True, 0, 2.5, 280, ApplyKaeshiGoken, [KaeshiGokenRequirement,TsubamegaeshiRequirement], 0, type = 2)
+KaeshiSetsugekka = SamuraiSpell(16486, True, 0, 2.5, 640, ApplyKaeshi, [KaeshiSetsugekkaRequirement,TsubamegaeshiRequirement], 0, type = 2)
 
 #Combo Actions
 Hakaze = SamuraiSpell(7477, True, Lock, 2.5, 200, ApplyHakaze, [], 0 , type = 2)

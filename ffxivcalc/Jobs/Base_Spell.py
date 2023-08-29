@@ -280,8 +280,14 @@ class Spell:
 
         # Round casting and recasting time :
 
+        tempSpell.notRoundCastTime = tempSpell.CastTime
+        tempSpell.notRoundRecastTime = tempSpell.RecastTime
+
         tempSpell.CastTime = roundDown(tempSpell.CastTime, 2)
         tempSpell.RecastTime = roundDown(tempSpell.RecastTime, 2)
+
+
+
         #Remove all effects that have to be removed
 
         for remove in player.EffectToRemove:
@@ -369,22 +375,22 @@ class Spell:
                                 # Adding to totalTimeNoFaster
                 if self.GCD and self.RecastTime <= 1.5: # We check that the spellObj has recastTime lower than 1.5 and that it is not the last spell (since all those are insta cast)
                     if  player.isLastGCD(player.NextSpell): # if last GCD, add CastTime
-                        player.totalTimeNoFaster += self.CastTime
+                        player.totalTimeNoFaster += self.notRoundCastTime
                     else:        # Else adding recastTime. 
-                        player.totalTimeNoFaster += self.RecastTime
+                        player.totalTimeNoFaster += self.notRoundRecastTime
                 elif not self.GCD and player.isLastGCD(player.NextSpell) : 
                                 # Is an oGCD
-                    player.totalTimeNoFaster += self.CastTime
+                    player.totalTimeNoFaster += self.notRoundCastTime
                 elif self.GCD and (player.RoleEnum == RoleEnum.Caster) and self.type == 2: # If is a weaponskill and has Spell speed. Only needed for RDM now
                     if  player.isLastGCD(player.NextSpell): # if last GCD, add CastTime
-                        player.totalTimeNoFaster += self.CastTime
+                        player.totalTimeNoFaster += self.CnotRoundastTime
                     else:        # Else adding recastTime. 
-                        player.totalTimeNoFaster += self.RecastTime
+                        player.totalTimeNoFaster += self.notRoundRecastTime
                 elif self.GCD and (player.RoleEnum == RoleEnum.Melee or player.RoleEnum == RoleEnum.Tank) and self.type == 1: # If is a spell and has skill speed
                     if  player.isLastGCD(player.NextSpell): # if last GCD, add CastTime
-                        player.totalTimeNoFaster += self.CastTime
+                        player.totalTimeNoFaster += self.notRoundCastTime
                     else:        # Else adding recastTime. 
-                        player.totalTimeNoFaster += self.RecastTime
+                        player.totalTimeNoFaster += self.notRoundRecastTime
 
                                 # If the action has 0 potency we skip the computation
                                 # Note that this also means the action won't be added as a ZIPAction for the player.
