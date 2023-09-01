@@ -99,6 +99,40 @@ def computeDamageValue(GearStat : dict, JobMod : int, IsTank : bool, IsCaster : 
     DHAuto = floor(140*(GearStat["DH"]-baseMain)/levelMod)/1000 # DH bonus when auto crit/DH
     return f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto
 
+def computeGCDTimer(speedStatValue : int) -> str:
+    """This function returns the GCD timer value given a speed value.
+
+    Args:
+        speedStatValue (int): Value of the speed stat
+
+    Returns:
+        str: GCD timer rounded down to 2 decimals as a string.
+    """
+    gcdReductionValue = (1000 - floor(130 * (speedStatValue-400) / 1900))/1000
+    return str(floor(floor(floor((2500 * gcdReductionValue)))/10)/100)
+
+def findGCDTimerRange(minSPDValue : int, maxSPDValue : int) -> list[float]:
+    """This function finds all possible GCD tiers for speed values going from [minSPDValue, maxSPDValue].
+    It returns a list of tuples that has the GCD timer and a given speed value for that corresponding GCD.
+    Args:
+        minSPDValue (int): Minimal speed value
+        maxSPDValue (int): Maximal speed value
+    """
+
+    gcdTierList = []
+    gcdTimerDone = []
+
+                             # Finding all values assuming the gear set can full of meld (36*22)
+    trialSPDValue = max(400, minSPDValue - 792)
+
+    while trialSPDValue <= maxSPDValue:
+        gcdTimer = computeGCDTimer(trialSPDValue)
+        if not gcdTimer in gcdTimerDone : gcdTierList.append((gcdTimer, trialSPDValue))
+        gcdTimerDone.append(gcdTimer)
+        trialSPDValue += 10
+
+    return gcdTierList
+
 def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, PercentileToOpt : list = ["exp", "99", "90", "75", "50"],
               materiaDepthSearchIterator : int = 1, randomIteration : int = 10000, oddMateriaValue : int = 18, evenMateriaValue : int = 36,
               PlayerIndex : int = 0, mendSpellSpeed : bool = False, maxSPDValue : int = 5000, minSPDValue : int = 0, useNewAlgo : bool = False, oversaturationIterationsPreGear : int = 0,
@@ -156,11 +190,23 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     IsTank = Fight.PlayerList[PlayerIndex].RoleEnum == RoleEnum.Tank
     IsCaster = Fight.PlayerList[PlayerIndex].RoleEnum == RoleEnum.Caster or Fight.PlayerList[PlayerIndex].RoleEnum == RoleEnum.Healer
     JobMod = Fight.PlayerList[PlayerIndex].JobMod # Level 90 jobmod value, specific to each job
-
     Fight.PlayerList[PlayerIndex].Stat = getBaseStat(IsTank=IsTank)
     Fight.SavePreBakedAction = True
     Fight.PlayerIDSavePreBakedAction = PlayerIndex
-    Fight.SimulateFight(0.01, 500, False, n=0,PPSGraph=False)
+
+                             # Getting all possible gcdTimers from the given range of speed value. Will simulate prebakedsimulation for all of them.
+    gcdTimerList = findGCDTimerRange(minSPDValue, maxSPDValue)
+    solver_logging.warning("Computed GCD timer : " + str(gcdTimerList))
+    gcdTimerProgress = ProgressBar.init(len(gcdTimerList), "Prebaking GCD tier")
+
+                             # This dictionnary contains all Fight object corresponding to the GCD timer (key)
+    preBakedFightGCDTierList = {}
+
+    for tier in gcdTimerList:
+        Fight.PlayerList[PlayerIndex].Stat['SS' if IsCaster else "SkS"] = tier[1]
+        preBakedFightGCDTierList[tier[0]] = deepcopy(Fight)
+        preBakedFightGCDTierList[tier[0]].SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        next(gcdTimerProgress)
 
     matGen = MateriaGenerator(oddMateriaValue, evenMateriaValue)
     newGearSet = GearSet()
@@ -211,6 +257,9 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
                                             for Ring in GearSpace["RING"]:
                                                 newGearSet.AddGear(Ring)
 
+                                                GearStat = newGearSet.GetGearSetStat(IsTank=IsTank)
+                                                if GearStat["SS" if mendSpellSpeed else "SkS"] > maxSPDValue : continue
+
                                                 curBestFoodExpectedDPS = 0
                                                 curBestFoodExpectedSet = None
                                                 curBestFoodRandomDPS = {key : [0,None,{}] for key in optimalRandomGearSetMateria}
@@ -224,6 +273,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
                                                     trialSet = deepcopy(newGearSet)
                                                     trialSet.addFood(food)
                                                     GearStat = trialSet.GetGearSetStat(IsTank=IsTank)
+                                                    if GearStat["SS" if mendSpellSpeed else "SkS"] > maxSPDValue : continue
                                                                          # Will test for SpS/SkS to see if it can fall within the accepted minSPDValue.
                                                                          # Checking if 0 before so we can speedup if it will work for sure.
 
@@ -235,7 +285,9 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
                                                         continue
                                                                          # Will find optimal meld with food
                                                     if findOptMateriaGearBF: 
-                                                        trialSet, exp, ra = materiaBisSolverV3(trialSet, matGen, MateriaSpace, Fight, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, "exp",0,mendSpellSpeed,minSPDValue=minSPDValue,maxSPDValue=maxSPDValue,oversaturationIterationsPostGear=oversaturationIterationsPostGear,findOptMateriaGearBF=findOptMateriaGearBF,swapDHDetBeforeSpeed=swapDHDetBeforeSpeed)
+                                                        trialSet, exp, ra = materiaBisSolverV3(trialSet, matGen, MateriaSpace, preBakedFightGCDTierList, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex,
+                                                                                               "exp",0,mendSpellSpeed,minSPDValue=minSPDValue,maxSPDValue=maxSPDValue,oversaturationIterationsPostGear=oversaturationIterationsPostGear,
+                                                                                               findOptMateriaGearBF=findOptMateriaGearBF,swapDHDetBeforeSpeed=swapDHDetBeforeSpeed)
 
                                                     GearStat = trialSet.GetGearSetStat(IsTank=IsTank)
 
@@ -244,7 +296,9 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
                                                         JobMod = Fight.PlayerList[PlayerIndex].JobMod # Level 90 jobmod value, specific to each job
                                 
                                                         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
-                                                        ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=randomIteration)
+                                                        gcdTimer = computeGCDTimer(GearStat["SS" if IsCaster else "SkS"])
+                                                        ExpectedDamage, randomDamageDict = preBakedFightGCDTierList[gcdTimer].SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, 
+                                                                                                                                                    f_CritMult, f_DH, DHAuto, n=randomIteration)
 
                                                         if curBestFoodExpectedDPS <= ExpectedDamage:
                                                             curBestFoodExpectedSet = deepcopy(trialSet)
@@ -277,14 +331,14 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
             print("Using BF up-down")
             if "exp" in PercentileToOpt : 
                 print("Optimizing Best Expected BiS materia")
-                optimalGearSet, curMax, curRandom = materiaBisSolverV3(optimalGearSet, matGen, MateriaSpace, Fight, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, "exp",0,mendSpellSpeed,minSPDValue=minSPDValue,maxSPDValue=maxSPDValue,oversaturationIterationsPostGear=oversaturationIterationsPostGear,findOptMateriaGearBF=findOptMateriaGearBF, swapDHDetBeforeSpeed=swapDHDetBeforeSpeed)
+                optimalGearSet, curMax, curRandom = materiaBisSolverV3(optimalGearSet, matGen, MateriaSpace, preBakedFightGCDTierList, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, "exp",0,mendSpellSpeed,minSPDValue=minSPDValue,maxSPDValue=maxSPDValue,oversaturationIterationsPostGear=oversaturationIterationsPostGear,findOptMateriaGearBF=findOptMateriaGearBF, swapDHDetBeforeSpeed=swapDHDetBeforeSpeed)
                                     # Will now optimize the random BiS. Every percentile's gearset is optimized by using
                                     # the value of the DPS as their percentile. So the 90th percentile BiS is chosen using the
                                     # materia arrangement that maximizes the 90th percentile DPS.
             for percentile in optimalRandomGearSet:
                 if percentile != "exp" : 
                     print("Optimizing " + percentile + "th percentile BiS")
-                    optimalRandomGearSetMateria[percentile][1], optimalRandomGearSetMateria[percentile][0], curRandom = materiaBisSolverV3(optimalRandomGearSet[percentile][1], matGen, MateriaSpace, Fight, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, percentile,randomIteration,mendSpellSpeed,minSPDValue=minSPDValue,maxSPDValue=maxSPDValue, oversaturationIterationsPostGear=oversaturationIterationsPostGear,swapDHDetBeforeSpeed=swapDHDetBeforeSpeed)
+                    optimalRandomGearSetMateria[percentile][1], optimalRandomGearSetMateria[percentile][0], curRandom = materiaBisSolverV3(optimalRandomGearSet[percentile][1], matGen, MateriaSpace, preBakedFightGCDTierList, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, percentile,randomIteration,mendSpellSpeed,minSPDValue=minSPDValue,maxSPDValue=maxSPDValue, oversaturationIterationsPostGear=oversaturationIterationsPostGear,swapDHDetBeforeSpeed=swapDHDetBeforeSpeed)
                     optimalRandomGearSetMateria[percentile][2] = deepcopy(curRandom)
         else:
             print("Using BF down-up")
@@ -303,7 +357,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
                     d = limit - counter
                 else:
                     d = materiaDepthSearchIterator
-                curBest, curMax, curRandom = materiaBisSolver(optimalGearSet, matGen, MateriaSpace, d, Fight, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, "exp",0,mendSpellSpeed,maxSPDValue=maxSPDValue)
+                curBest, curMax, curRandom = materiaBisSolver(optimalGearSet, matGen, MateriaSpace, d, preBakedFightGCDTierList, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, "exp",0,mendSpellSpeed,maxSPDValue=maxSPDValue)
                                     # Taking a copy of the found best and incrementing materia counter
                 optimalGearSet = deepcopy(curBest)
                 counter += materiaDepthSearchIterator
@@ -336,7 +390,8 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     GearStat = optimalGearSet.GetGearSetStat(IsTank=IsTank)
     f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
     logging.getLogger("ffxivcalc").setLevel(level=logging.DEBUG)
-    curMax, curRandom, duration, potency = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=randomIteration, getInfo=True)
+    gcdTimer = computeGCDTimer(GearStat["SS" if IsCaster else "SkS"])
+    curMax, curRandom, duration, potency = preBakedFightGCDTierList[gcdTimer].SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=randomIteration, getInfo=True)
     if "exp" in PercentileToOpt:
         #optimalGearSet.addFood(curBestExpectedFood)
         text += "Best optimal : "
@@ -350,7 +405,8 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     for percentile in optimalRandomGearSetMateria:
         GearStat = optimalRandomGearSetMateria[percentile][1].GetGearSetStat(IsTank=IsTank)
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
-        optimalRandomGearSetMateria[percentile][0], optimalRandomGearSetMateria[percentile][2] = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=randomIteration)
+        gcdTimer = computeGCDTimer(GearStat["SS" if IsCaster else "SkS"])
+        optimalRandomGearSetMateria[percentile][0], optimalRandomGearSetMateria[percentile][2] = preBakedFightGCDTierList[gcdTimer].SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=randomIteration)
         text += (percentile + "th percentile gear :"+ "\n")
         text += (str(optimalRandomGearSetMateria[percentile][1])+ "\n")
         text += ("Expected Damage : " + str(optimalRandomGearSetMateria[percentile][0]) + "\n")
@@ -573,7 +629,7 @@ def materiaBisSolverV2(Set : GearSet, matGen : MateriaGenerator, matSpace : list
 
     return optimalSet, ExpectedDamage, randomDamageDict
 
-def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list[int], Fight, JobMod : int, IsTank : bool, IsCaster : bool,PlayerIndex : int, 
+def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list[int], gcdTimerTierFight, JobMod : int, IsTank : bool, IsCaster : bool,PlayerIndex : int, 
                        percentile : str, randomIteration : int, mendSpellSpeed : bool,minSPDValue : int = 0, maxSPDValue : int = 5000, oversaturationIterationsPostGear : int = 0, 
                        findOptMateriaGearBF : bool = False, swapDHDetBeforeSpeed : bool = False):   
     """
@@ -587,7 +643,7 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
     Set : GearSet -> GearSet to optimize
     matGen : MateriaGenerator -> Materia Generator
     matSpace : list[int] -> list of Materias to consider when oversaturating and removing.
-    Fight -> Fight to consider
+    gcdTimerTierFight -> Dictionnary of different GCD timer and the given Fight object.
     JobMod : int -> Value of the JobMod of the player the Gear Set is on.
     IsTank : bool -> True if the player is a tank
     IsCaster : bool -> True if the player is a caster
@@ -627,7 +683,8 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
             GearStat = trialSet.GetGearSetStat(IsTank=IsTank)
 
             f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
-            ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=randomIteration)
+            gcdTimer = computeGCDTimer(GearStat["SS" if IsCaster else "SkS"])
+            ExpectedDamage, randomDamageDict = gcdTimerTierFight[gcdTimer].SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=randomIteration)
             
             solver_logging.warning("Trial by removing " + StatType.name_for_id(type) + " from " + gearName + " : " + (str(ExpectedDamage) if percentile == "exp" else str(randomDamageDict[percentile])) + (" Expected : " + str(ExpectedDamage) if percentile != "exp" else ""))
             solver_logging.warning("Dict Stat : " + str(GearStat))
@@ -648,7 +705,7 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
 
 
     if swapDHDetBeforeSpeed:
-        optimalSet, curMaxDPS = materiaDHAndDetSolver(curMaxDPS,optimalSet, matGen, IsTank=IsTank, IsCaster=IsCaster, JobMod=JobMod, Fight=Fight,PlayerIndex=PlayerIndex, randomIteration=randomIteration)
+        optimalSet, curMaxDPS = materiaDHAndDetSolver(curMaxDPS,optimalSet, matGen, IsTank=IsTank, IsCaster=IsCaster, JobMod=JobMod, gcdTimerTierFight=gcdTimerTierFight,PlayerIndex=PlayerIndex, randomIteration=randomIteration)
 
     solver_logging.warning("Replacing materias until SpS/SkS values are achieved.")
 
@@ -682,7 +739,8 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
                     GearStat = trialSet.GetGearSetStat(IsTank=IsTank)
 
                     f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
-                    ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=randomIteration)
+                    gcdTimer = computeGCDTimer(GearStat["SS" if IsCaster else "SkS"])
+                    ExpectedDamage, randomDamageDict = gcdTimerTierFight[gcdTimer].SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=randomIteration)
 
                     solver_logging.warning("Trial be replacing " + StatType.name_for_id(type) + " from " + gear.getGearTypeName() + " : " + (str(ExpectedDamage) if percentile == "exp" else str(randomDamageDict[percentile])) + (" Expected : " + str(ExpectedDamage) if percentile != "exp" else ""))
                     
@@ -874,7 +932,7 @@ def materiaBisSolverV4(Set : GearSet, matGen : MateriaGenerator, matSpace : list
     return optimalSpeedSet, 0, {}
                 
 
-def materiaDHAndDetSolver(curMaxDPS : float, Set : GearSet, matGen : MateriaGenerator, IsTank : bool, IsCaster : bool, JobMod, Fight, PlayerIndex : int, randomIteration : int):
+def materiaDHAndDetSolver(curMaxDPS : float, Set : GearSet, matGen : MateriaGenerator, IsTank : bool, IsCaster : bool, JobMod, gcdTimerTierFight, PlayerIndex : int, randomIteration : int):
     """
     This function swapes DH and Det melds to see if an improvement to DPS can be made.
 
@@ -885,7 +943,7 @@ def materiaDHAndDetSolver(curMaxDPS : float, Set : GearSet, matGen : MateriaGene
         IsTank (bool): True if player is tank
         IsCaster (bool): True if player is caster
         JobMod (_type_): JobMod of the player
-        Fight (_type_): Fight object
+        gcdTimerTierFight (dict): Dictionnary of different GCD timer and the given Fight object.
         PlayerIndex (int): Index of the player in the Fight's PlayerList
         randomIteration (int): number of random iterations.
 
@@ -914,7 +972,8 @@ def materiaDHAndDetSolver(curMaxDPS : float, Set : GearSet, matGen : MateriaGene
                 GearStat = trialSetDH.GetGearSetStat(IsTank=IsTank)
 
                 f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
-                ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=randomIteration)
+                gcdTimer = computeGCDTimer(GearStat["SS" if IsCaster else "SkS"])
+                ExpectedDamage, randomDamageDict = gcdTimerTierFight[gcdTimer].SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=randomIteration)
 
                 if ExpectedDamage > curMaxDPS and ExpectedDamage > trialSetDHCurMaxDPS :
                     solver_logging.warning("Found Better DH : " + str(GearStat))
@@ -936,7 +995,8 @@ def materiaDHAndDetSolver(curMaxDPS : float, Set : GearSet, matGen : MateriaGene
                 GearStat = trialSetDH.GetGearSetStat(IsTank=IsTank)
 
                 f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
-                ExpectedDamage, randomDamageDict = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=randomIteration)
+                gcdTimer = computeGCDTimer(GearStat["SS" if IsCaster else "SkS"])
+                ExpectedDamage, randomDamageDict = gcdTimerTierFight[gcdTimer].SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=randomIteration)
                 
                 if ExpectedDamage > curMaxDPS and ExpectedDamage > trialSetDHCurMaxDPS and ExpectedDamage > trialSetDetCurMaxDPS :
                     solver_logging.warning("Found Better Det : " + str(GearStat))

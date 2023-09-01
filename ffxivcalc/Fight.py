@@ -125,16 +125,16 @@ class Fight:
         totalPotency = 0
 
         amountToRemoveEveryGCD = 0
-        trialFinishTime = 0
+        trialFinishTime = player.PreBakedActionSet[-1].timeStamp
 
         gcdReductionRatio = round(2 - f_SPD,8)
 
                              # Find this set's finish time so we can cut off autos if they do not hit in the end.
-        for PreBakedAction in player.PreBakedActionSet:
-            amountToRemoveEveryGCD += round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10) - roundDown(round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10),2)
-            if PreBakedAction.isGCD : countGCD += 1
-
-            trialFinishTime = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(gcdReductionRatio,3)) - (amountToRemoveEveryGCD)),2)
+        #for PreBakedAction in player.PreBakedActionSet:
+        #    amountToRemoveEveryGCD += round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10) - roundDown(round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10),2)
+        #    if PreBakedAction.isGCD : countGCD += 1
+        #
+        #    trialFinishTime = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(gcdReductionRatio,3)) - (amountToRemoveEveryGCD)),2)
         
         countGCD = 0
         amountToRemoveEveryGCD = 0
@@ -152,8 +152,8 @@ class Fight:
                              # Have to round PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3) as it sometime has repeating 9s when it should be the value above.
             amountToRemoveEveryGCD += round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10) - roundDown(round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10),2)
 
-            timeStamp = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(gcdReductionRatio,3)) - (amountToRemoveEveryGCD)),2)# - roundDown(amountToRemoveFailCondition,2)
-
+            #timeStamp = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(gcdReductionRatio,3)) - (amountToRemoveEveryGCD)),2)# - roundDown(amountToRemoveFailCondition,2)
+            timeStamp = PreBakedAction.timeStamp
 
                              # Checking if action is conditional. If it is we check for requirment.
             #if PreBakedAction.isConditionalAction:
@@ -269,7 +269,8 @@ class Fight:
         
 
 
-    def SimulateFight(self, TimeUnit, TimeLimit, vocal, PPSGraph : bool = True, MaxTeamBonus : bool = False, MaxPotencyPlentifulHarvest : bool = False, n = 0) -> None:
+    def SimulateFight(self, TimeUnit, TimeLimit, vocal, PPSGraph : bool = True, MaxTeamBonus : bool = False, MaxPotencyPlentifulHarvest : bool = False, n = 0, showProgress : bool = True,
+                      computeGraph : bool = True) -> None:
 
         """
         This function will Simulate the fight given the enemy and player list of this Fight
@@ -284,11 +285,16 @@ class Fight:
         loglevel (str) -> level at which we want the logging to record.
         PPSGraph (bool) = True -> If we want the PPS graph to be next to the DPS graph
         MaaxTeamBonus (bool) = False -> If true, gives the 5% bonus regardless of team comp
+        showProgress (bool) = True -> If true show fight progress bar.
+        computeGraph (bool) = True -> If true will process the Graphs even if they do not show.
         """
         self.MaxPotencyPlentifulHarvest = MaxPotencyPlentifulHarvest
         self.TimeStamp = 0   # Keep track of the time
         start = False
         self.TimeUnit = TimeUnit
+
+        self.showProgress = showProgress
+        self.computeGraph = computeGraph
 
 
         self.timeValue = []  # Used for graph
@@ -330,8 +336,8 @@ class Fight:
 
         fight_logging.debug("Starting simulation with TeamCompositionBonus = " + str(self.TeamCompositionBonus))
         fight_logging.debug("Parameters are -> RequirementOn : " + str(self.RequirementOn) + ", IgnoreMana : " + str(self.IgnoreMana))
-
-        pB = ProgressBar.init(int(TimeLimit/TimeUnit), "Progress Of Fight (maxTime)")
+        if self.showProgress:
+            pB = ProgressBar.init(int(TimeLimit/TimeUnit), "Progress Of Fight (maxTime)")
         while(self.TimeStamp <= TimeLimit):
 
             for player in self.PlayerList:
@@ -489,7 +495,7 @@ class Fight:
             # update self.TimeStamp
             self.TimeStamp += TimeUnit
             self.TimeStamp = round(self.TimeStamp,2) # Round it for cleaner value
-            if vocal and self.FightStart: next(pB)
+            if vocal and self.FightStart and self.showProgress: next(pB)
 
             if self.FightStart and not start:
                 self.TimeStamp = 0
@@ -530,7 +536,8 @@ class Fight:
         if vocal and self.TimeStamp < TimeLimit: pB.complete()
         fig2 = None
         if n > 0 and vocal : fig2 = SimulateRuns(self, n)
-        result, fig = PrintResult(self, self.TimeStamp, self.timeValue, PPSGraph=PPSGraph)
+        if computeGraph : result, fig = PrintResult(self, self.TimeStamp, self.timeValue, PPSGraph=PPSGraph)
+        else : result, fig = "", None
         if vocal:
             print(result) 
             #plt.show()
@@ -733,7 +740,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         if spellObj.GCD and (Player.RoleEnum == RoleEnum.Melee or Player.RoleEnum == RoleEnum.Tank) and spellObj.type == 1 : gcdLockTimer = 0
         elif spellObj.GCD and (Player.RoleEnum == RoleEnum.Caster) and spellObj.type == 2 : gcdLockTimer = 0
 
-        (Player if not isPet else Player.Master).PreBakedActionSet.append(PreBakedAction(isTank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type, nonReducableStamp + (0 if type == 0 else reducableStamp), 
+        (Player if not isPet else Player.Master).PreBakedActionSet.append(PreBakedAction(isTank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type,Player.CurrentFight.TimeStamp, nonReducableStamp + (0 if type == 0 else reducableStamp), 
                                                        reducableStamp if type == 0 else 0 ,AutoCrit=auto_crit, AutoDH=auto_DH, isFromPet=isPet, isGCD=spellObj.GCD,gcdLockTimer=gcdLockTimer,spellDPSBuff=SpellBonus, isConditionalAction=spellObj.conditionalAction))
         
         return Potency, Potency        # Exit the function since we are not interested in the immediate damage value. Still return potency as to not break the fight's duration.

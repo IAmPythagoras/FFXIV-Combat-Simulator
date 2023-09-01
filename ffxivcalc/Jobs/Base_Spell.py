@@ -104,6 +104,7 @@ class PreBakedAction:
     CritBonus : float -> Crit bonus of the action
     DHBonus : float -> DH Bonus of the action
     type : int -> type of the damage
+    timeStamp : float -> Timestamp of the action
     AutoCrit : bool -> If is an auto crit (true)
     AutoDH : bool -> if is an auto DH (true)
     isFromPet : bool -> True if a Pet PreBakedAction
@@ -114,16 +115,17 @@ class PreBakedAction:
     """
 
     def __init__(self, IsTank : bool, MainStatPercentageBonus : float, buffList : list,
-                 TraitBonus : float, Potency : int, type : int, 
+                 TraitBonus : float, Potency : int, type : int, timeStamp : float, 
                  nonReducableStamp : float, reducableStamp : float, AutoCrit : bool = False, AutoDH : bool = False,
                  isFromPet : bool = False, isGCD : bool = False,gcdLockTimer : float = 0, spellDPSBuff : float = 1,
-                 isConditionalAction : bool = False):
+                 isConditionalAction : bool = False ):
         self.IsTank = IsTank
         self.MainStatPercentageBonus = MainStatPercentageBonus
         #self.HasPotionEffect = HasPotionEffect
         self.buffList = buffList # This holds all buff that are not raid buffs, since those can be affected by f_SPD. So RaidBuffs are in PercentageBonus
         self.TraitBonus = TraitBonus
         self.type = type
+        self.timeStamp = timeStamp
         self.Potency = Potency
         self.gcdLockTimer = gcdLockTimer
 
