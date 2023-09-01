@@ -165,6 +165,7 @@ def ApplyLeyLines(Player, Enemy):
 
     Player.Haste += 15
     Player.hasteHasChanged = True
+    Player.hasteChangeValue = 15
 
 def ApplyTripleCast(Player, Enemy):
     #Check if we need to add stack check
@@ -334,6 +335,7 @@ def LeyLinesCheck(Player, Enemy):
     if Player.LeyLinesTimer <= 0:
         Player.EffectList.remove(LeyLinesEffect)
         Player.Haste -= 15
+        Player.hasteChangeValue = -15
         Player.hasteHasChanged = True
         Player.EffectToRemove.append(LeyLinesCheck)
 

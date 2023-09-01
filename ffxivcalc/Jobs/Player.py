@@ -145,9 +145,10 @@ class Player:
                           job of the player.
         """
                              # Do not worry about CastingLockTimer since it will be 0 at this point.
-        self.GCDLockTimer = floor(floor(int(self.GCDLockTimer * 1000 ) * (100 - self.Haste)/100)/10)/100
+        self.GCDLockTimer = floor(floor(int(self.GCDLockTimer * 1000 ) * (100 - self.hasteChangeValue)/100)/10)/100
         player_logging.debug("Haste change has been detected. New GCDLockTimer : " + str(self.GCDLockTimer))
         self.hasteHasChanged = False
+        self.hasteChangeValue = 0
 
 
     def AddHealingBuff(self, buff : HealingBuff, GivenHealBuff = True, stackable = False):
@@ -375,6 +376,7 @@ class Player:
         self.Delay = 3 # Default time difference between AAs
         self.Haste = 0 # Total Haste value of the player.
         self.hasteHasChanged = False # Flag to know if haste has changed. This is needed to recompute recast time.
+        self.hasteChangeValue = 0 # Value for which haste has changed. Can be negative or positive.
 
         self.Mana = 10000 # Current mana. Max is 10'000
         self.HP = 2000  # Current HP
