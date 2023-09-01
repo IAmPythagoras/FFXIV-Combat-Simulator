@@ -359,6 +359,7 @@ class Player:
         self.GCDLockTimer = 0 # How long we have to wait until next GCD
         self.PotionTimer = 0 # Timer on the effect of potion
         self.Delay = 3 # Default time difference between AAs
+        self.hasteAmount = 0 # Total Haste value of the player.
 
         self.Mana = 10000 # Current mana. Max is 10'000
         self.HP = 2000  # Current HP
@@ -1577,6 +1578,9 @@ class Player:
         self.RiddleOfEarthCD = 0
         self.RiddleOfFireCD = 0
         self.RiddleOfWindCD = 0
+
+        # Haste given from trait
+        self.Haste = 20
 
         #DOT
         self.DemolishDOT = None

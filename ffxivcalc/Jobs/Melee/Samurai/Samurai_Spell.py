@@ -234,7 +234,9 @@ def HakazeEffect(Player, Spell):
     elif Spell.id == Shifu.id:
         Spell.Potency += 160
         if not (FukaEffect in Player.EffectList) : Player.EffectList.append(FukaEffect)
-        if not (FukaCheck in Player.EffectCDList) : Player.EffectCDList.append(FukaCheck)
+        if not (FukaCheck in Player.EffectCDList) : 
+            Player.Haste += 13
+            Player.EffectCDList.append(FukaCheck)
         Player.FukaTimer = 40
         AddKenki(Player, 5)
         Player.EffectToRemove.append(HakazeEffect)
@@ -261,8 +263,9 @@ def JinpuEffect(Player, Spell):
         Player.EffectToRemove.append(JinpuEffect)
 
 def FukaEffect(Player, Spell):
-    Spell.CastTime *= 0.87
-    Spell.RecastTime *= 0.87
+    pass
+    #Spell.CastTime *= 0.87
+    #Spell.RecastTime *= 0.87
 
 def MeikyoEffect(Player, Spell):
     if Spell.id == Gekko.id: 
@@ -287,7 +290,9 @@ def MeikyoEffect(Player, Spell):
     elif Spell.id == Shifu.id:
         Spell.Potency += 160
         if not (FukaEffect in Player.EffectList) : Player.EffectList.append(FukaEffect)
-        if not (FukaCheck in Player.EffectCDList) : Player.EffectCDList.append(FukaCheck)
+        if not (FukaCheck in Player.EffectCDList) : 
+            Player.Haste += 13
+            Player.EffectCDList.append(FukaCheck)
         Player.FukaTimer = 40
         AddKenki(Player, 5)
         Player.Meikyo -= 1
@@ -327,6 +332,7 @@ def FukaCheck(Player, Enemy):
     if Player.FukaTimer <= 0:
         Player.EffectList.remove(FukaEffect)
         Player.EffectToRemove.append(FukaCheck)
+        Player.Haste -= 13
 
 def FugetsuCheck(Player, Enemy):
     if Player.FugetsuTimer <= 0:

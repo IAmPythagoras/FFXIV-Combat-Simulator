@@ -163,6 +163,8 @@ def ApplyLeyLines(Player, Enemy):
     Player.EffectList.append(LeyLinesEffect)
     Player.EffectCDList.append(LeyLinesCheck)
 
+    Player.Haste += 15
+
 def ApplyTripleCast(Player, Enemy):
     #Check if we need to add stack check
     if Player.TripleCastUseStack == 2:
@@ -221,8 +223,9 @@ def TripleCastEffect(Player, Spell):
 
 def LeyLinesEffect(Player, Spell):
     if Spell.GCD:
-        Spell.CastTime = (Spell.CastTime * 0.85)
-        Spell.RecastTime = (Spell.RecastTime * 0.85)
+        pass
+        #Spell.CastTime = (Spell.CastTime * 0.85)
+        #Spell.RecastTime = (Spell.RecastTime * 0.85)
 
 def EnochianEffect(Player, Spell):
     if Player.ElementalGauge != 0:
@@ -329,6 +332,7 @@ def TripleCastCheck(Player, Enemy):
 def LeyLinesCheck(Player, Enemy):
     if Player.LeyLinesTimer <= 0:
         Player.EffectList.remove(LeyLinesEffect)
+        Player.Haste -= 15
         Player.EffectToRemove.append(LeyLinesCheck)
 
 def Thunder3DOTCheck(Player, Enemy):

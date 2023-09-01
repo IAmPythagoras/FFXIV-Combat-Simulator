@@ -590,12 +590,12 @@ def GCDReductionEffect(Player, Spell) -> None:
                              # as the increment is so small.
 
     if Spell.type == 1: # Spell
-        Spell.CastTime = Player.SpellReduction * Spell.CastTime + 0.00000001 if Spell.CastTime > 0 else 0
-        Spell.RecastTime = Player.SpellReduction * Spell.RecastTime + 0.00000001
+        Spell.CastTime = math.floor(math.floor(math.floor((int(Spell.RecastTime * 1000 ) * Player.SpellReduction)) * (100 - Player.Haste)/100)/10)/100  if Spell.CastTime > 0 else 0
+        Spell.RecastTime = math.floor(math.floor(math.floor((int(Spell.RecastTime * 1000 ) * Player.SpellReduction)) * (100 - Player.Haste)/100)/10)/100
         if Spell.RecastTime < 1.5 and Spell.RecastTime > 0 : Spell.RecastTime = 1.5 # A GCD cannot go under 1.5 sec
     elif Spell.type == 2: # Weaponskill
-        Spell.CastTime = Player.WeaponskillReduction * Spell.CastTime + 0.00000001 if Spell.CastTime > 0 else 0
-        Spell.RecastTime = Player.WeaponskillReduction * Spell.RecastTime + 0.00000001
+        Spell.CastTime = math.floor(math.floor(math.floor((int(Spell.CastTIme * 1000 ) * Player.WeaponskillReduction)) * (100 - Player.Haste)/100)/10)/100 if Spell.CastTime > 0 else 0
+        Spell.RecastTime = math.floor(math.floor(math.floor((int(Spell.RecastTime * 1000 ) * Player.WeaponskillReduction)) * (100 - Player.Haste)/100)/10)/100
         if Spell.RecastTime < 1.5 and Spell.RecastTime > 0 : Spell.RecastTime = 1.5 # A GCD cannot go under 1.5 sec
 
 # Compute Damage

@@ -349,6 +349,10 @@ class Spell:
         
         for Effect in self.Effect:
             Effect(player, Enemy)#Put effects on Player and/or Enemy
+
+                             # Recomputing recastTime since new Haste might have been added.
+                             
+
         #This will include substracting the mana (it has been verified before that the mana was enough)
         minDamage, Damage, Heal = 0,0,0
         if self.AOEHeal or self.TargetHeal:

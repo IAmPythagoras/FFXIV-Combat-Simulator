@@ -1,5 +1,6 @@
 from ffxivcalc.Jobs.Base_Spell import DOTSpell, buff, empty, buffHistory, buffPercentHistory
 from ffxivcalc.Jobs.Ranged.Ranged_Spell import BardSpell
+from ffxivcalc.helperCode.helper_math import roundDown
 import copy
 Lock = 0.5
 
@@ -330,7 +331,10 @@ def WandererEffect(Player, Spell):
 
 def ArmyPaeonEffect(Player, Spell):
     if Spell.GCD: #This if is after since a spell can affect its own GCD
-        Spell.RecastTime *= (1 - 0.04 * Player.Repertoire) #Making GCD faster
+                             # There is no other source of haste for Bard. So to keep it simpler
+                             # we will simply always set the value to whatever this is.
+        Player.Haste = 4 * Player.Repertoire
+        #Spell.RecastTime *= (1 - 0.04 * Player.Repertoire) #Making GCD faster
         #Since CastTime is always Lock for Bard, only affecting RecastTime
 
 #Check
@@ -385,6 +389,7 @@ def ArmyPaeonCheck(Player, Enemy):
         Player.ArmyPaeon = False
         Player.EffectToRemove.append(ArmyPaeonCheck)
         Player.EffectList.remove(ArmyPaeonEffect)
+        Player.Haste = 0 # Reseting Haste value since there is no other haste buff from Bard
 
 def MageBalladCheck(Player, Enemy):
 

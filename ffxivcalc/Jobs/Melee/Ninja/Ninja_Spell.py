@@ -178,6 +178,7 @@ def ApplyHuton(Player, Enemy):
     if not (HutonEffect in Player.EffectList):
         Player.EffectList.append(HutonEffect)
     if not (HutonCheck in Player.EffectCDList):
+        Player.Haste += 15
         Player.EffectCDList.append(HutonCheck)
     Player.ResetRitual() #Even if in TenChiJin, does not matter
 
@@ -314,7 +315,9 @@ def TenChiJinEffect(Player, Spell):
 
 
 def HutonEffect(Player, Spell):
-    if isinstance(Spell, NinjaSpell) and Spell.Weaponskill and Spell.GCD : Spell.RecastTime *= 0.85
+    pass
+        # Why did I do that? Left for future me to figure out
+    #if isinstance(Spell, NinjaSpell) and Spell.Weaponskill and Spell.GCD : Spell.RecastTime *= 0.85
 
 def BunshinEffect(Player, Spell):
     if isinstance(Spell, NinjaSpell) and Spell.Weaponskill and Spell.id != PhantomKamaitachi.id: #We don't want Kamataichi to have bunshin effect
@@ -371,6 +374,7 @@ def HutonCheck(Player, Enemy):
     if Player.HutonTimer <= 0:
         Player.EffectList.remove(HutonEffect)
         Player.EffectToRemove.append(HutonCheck)
+        Player.Haste -= 15
 
 def PhantomKamaitachiCheck(Player, Enemy):
     if not Player.PhantomKamaitachiReady or Player.PhantomKamaitachiReadyTimer <= 0:
