@@ -334,6 +334,7 @@ def ArmyPaeonEffect(Player, Spell):
                              # There is no other source of haste for Bard. So to keep it simpler
                              # we will simply always set the value to whatever this is.
         Player.Haste = 4 * Player.Repertoire
+        Player.hasteHasChanged = True # Should maybe remove that?
         #Spell.RecastTime *= (1 - 0.04 * Player.Repertoire) #Making GCD faster
         #Since CastTime is always Lock for Bard, only affecting RecastTime
 
@@ -390,6 +391,7 @@ def ArmyPaeonCheck(Player, Enemy):
         Player.EffectToRemove.append(ArmyPaeonCheck)
         Player.EffectList.remove(ArmyPaeonEffect)
         Player.Haste = 0 # Reseting Haste value since there is no other haste buff from Bard
+        Player.hasteHasChanged = True
 
 def MageBalladCheck(Player, Enemy):
 

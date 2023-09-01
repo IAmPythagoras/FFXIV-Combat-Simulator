@@ -179,6 +179,7 @@ def ApplyHuton(Player, Enemy):
         Player.EffectList.append(HutonEffect)
     if not (HutonCheck in Player.EffectCDList):
         Player.Haste += 15
+        Player.hasteHasChanged = True
         Player.EffectCDList.append(HutonCheck)
     Player.ResetRitual() #Even if in TenChiJin, does not matter
 
@@ -375,6 +376,7 @@ def HutonCheck(Player, Enemy):
         Player.EffectList.remove(HutonEffect)
         Player.EffectToRemove.append(HutonCheck)
         Player.Haste -= 15
+        Player.hasteHasChanged = True
 
 def PhantomKamaitachiCheck(Player, Enemy):
     if not Player.PhantomKamaitachiReady or Player.PhantomKamaitachiReadyTimer <= 0:

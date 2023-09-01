@@ -236,6 +236,7 @@ def HakazeEffect(Player, Spell):
         if not (FukaEffect in Player.EffectList) : Player.EffectList.append(FukaEffect)
         if not (FukaCheck in Player.EffectCDList) : 
             Player.Haste += 13
+            Player.hasteHasChanged = True
             Player.EffectCDList.append(FukaCheck)
         Player.FukaTimer = 40
         AddKenki(Player, 5)
@@ -292,6 +293,7 @@ def MeikyoEffect(Player, Spell):
         if not (FukaEffect in Player.EffectList) : Player.EffectList.append(FukaEffect)
         if not (FukaCheck in Player.EffectCDList) : 
             Player.Haste += 13
+            Player.hasteHasChanged = True
             Player.EffectCDList.append(FukaCheck)
         Player.FukaTimer = 40
         AddKenki(Player, 5)
@@ -332,6 +334,7 @@ def FukaCheck(Player, Enemy):
     if Player.FukaTimer <= 0:
         Player.EffectList.remove(FukaEffect)
         Player.EffectToRemove.append(FukaCheck)
+        Player.hasteHasChanged = True
         Player.Haste -= 13
 
 def FugetsuCheck(Player, Enemy):

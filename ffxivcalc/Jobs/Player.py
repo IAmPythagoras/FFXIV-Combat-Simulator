@@ -11,6 +11,7 @@ from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
 from ffxivcalc.helperCode.exceptions import InvalidMitigation
 from ffxivcalc.helperCode.helper_math import roundDown
+from math import floor
 import logging
 
 main_logging = logging.getLogger("ffxivcalc")
@@ -135,6 +136,19 @@ class Player:
         Stat : Dict -> Stats of the player as a dictionnary
         Job : JobEnum -> Specific job of the player
     """
+
+    def recomputeRecastLock(self, isSpell : bool):
+        """
+        This function is called if a Haste change has been detected. This will recompute the gcdLock of the player.
+        We only recompute the GCD Lock.
+        isSpell : bool -> True if the value to use is SpellReduction. For simplicity, this value will be figured out based on the 
+                          job of the player.
+        """
+                             # Do not worry about CastingLockTimer since it will be 0 at this point.
+        self.GCDLockTimer = floor(floor(int(self.GCDLockTimer * 1000 ) * (100 - self.Haste)/100)/10)/100
+        player_logging.debug("Haste change has been detected. New GCDLockTimer : " + str(self.GCDLockTimer))
+        self.hasteHasChanged = False
+
 
     def AddHealingBuff(self, buff : HealingBuff, GivenHealBuff = True, stackable = False):
         """
@@ -359,7 +373,8 @@ class Player:
         self.GCDLockTimer = 0 # How long we have to wait until next GCD
         self.PotionTimer = 0 # Timer on the effect of potion
         self.Delay = 3 # Default time difference between AAs
-        self.hasteAmount = 0 # Total Haste value of the player.
+        self.Haste = 0 # Total Haste value of the player.
+        self.hasteHasChanged = False # Flag to know if haste has changed. This is needed to recompute recast time.
 
         self.Mana = 10000 # Current mana. Max is 10'000
         self.HP = 2000  # Current HP

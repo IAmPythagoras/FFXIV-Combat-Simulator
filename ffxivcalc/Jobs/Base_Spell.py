@@ -350,8 +350,8 @@ class Spell:
         for Effect in self.Effect:
             Effect(player, Enemy)#Put effects on Player and/or Enemy
 
-                             # Recomputing recastTime since new Haste might have been added.
-                             
+                             # Recomputing recastTime if new Haste has been added.
+        if player.hasteHasChanged: player.recomputeRecastLock(isSpell=(player.RoleEnum == RoleEnum.Caster))
 
         #This will include substracting the mana (it has been verified before that the mana was enough)
         minDamage, Damage, Heal = 0,0,0

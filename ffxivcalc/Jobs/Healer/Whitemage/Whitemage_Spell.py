@@ -108,6 +108,7 @@ def ApplyPresenceOfMind(Player, Enemy):
     Player.PresenceOfMindTimer = 15
     Player.EffectList.append(PresenceOfMindEffect)
     Player.Haste += 20
+    Player.hasteHasChanged = True
     Player.EffectCDList.append(CheckPresenceOfMind)
 
 #Effect
@@ -133,6 +134,7 @@ def CheckPresenceOfMind(Player, Enemy):
     if Player.PresenceOfMindTimer <= 0:
         Player.EffectList.remove(PresenceOfMindEffect)
         Player.Haste -= 20
+        Player.hasteHasChanged = True
         Player.EffectToRemove.append(CheckPresenceOfMind)
 
 
