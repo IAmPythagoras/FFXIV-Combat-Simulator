@@ -172,12 +172,16 @@ def ApplyBrotherhood(Player, Enemy):
             Target.EffectList.append(MonkMeditativeEffect)
             Target.EffectCDList.append(MonkMeditativeCheck)
             Target.buffList.append(BrotherhoodBuff)
+            if not Player.CurrentFight.SavePreBakedAction:
+                Target.MeditativeBrotherhoodTimer = 15 #Adding buff
         else:
             #Applying MeditativeBrotherhood to every other player
+            Target.MeditativeBrotherhoodTimer = 15
             Target.EffectList.append(MeditativeBrotherhoodEffect)
             Target.EffectCDList.append(MeditativeBrotherhoodCheck)
+            Target.buffList.append(BrotherhoodBuff)
             if not Player.CurrentFight.SavePreBakedAction:
-                Target.buffList.append(BrotherhoodBuff) #Adding buff
+                Target.MeditativeBrotherhoodTimer = 15 #Adding buff
 
                                  # Only doing this if SavePreBakedAction is true
     if Player.CurrentFight.SavePreBakedAction:

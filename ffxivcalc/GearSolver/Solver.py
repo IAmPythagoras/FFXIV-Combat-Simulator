@@ -54,14 +54,14 @@ def getGearDPSValue(Fight, gearSet : GearSet, PlayerIndex : int, n : int =10000)
     JobMod = player.JobMod # Level 90 jobmod value, specific to each job
 
     player.Stat = getBaseStat(IsTank=IsTank)
+    GearStat = gearSet.GetGearSetStat(IsTank=IsTank)
+    #GearStat = {'MainStat': 3378, 'WD': 132, 'Det': 1613, 'Ten': 400, 'SS': 400, 'SkS': 771, 'Crit': 2647, 'DH': 1202, 'Piety': 390}
+    player.Stat["SS" if IsCaster else "SkS"] = GearStat["SS" if IsCaster else "SkS"]
     Fight.SavePreBakedAction = True
     Fight.PlayerIDSavePreBakedAction = PlayerIndex
     Fight.SimulateFight(0.01, 500, False, n=0,PPSGraph=False)
 
     #gearSet, x , y = materiaBisSolverV3(gearSet, MateriaGenerator(18,36), [0,1,2], Fight, JobMod, IsTank, IsCaster, 0, "exp", 0, mendSpellSpeed=False, minSPDValue=400, maxSPDValue=500, oversaturationIterationsPostGear=1, findOptMateriaGearBF=True,swapDHDetBeforeSpeed=False)
-
-    GearStat = gearSet.GetGearSetStat(IsTank=IsTank)
-    #GearStat = {'MainStat': 3378, 'WD': 132, 'Det': 1587, 'Ten': 400, 'SS': 400, 'SkS': 479, 'Crit': 2644, 'DH': 1504, 'Piety': 390}
 
     f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
     ExpectedDamage, randomDamageDict, duration, potency = Fight.SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=n,getInfo = True)
