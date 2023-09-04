@@ -263,7 +263,7 @@ class Fight:
         fight_logging.debug("counted GCD  : " + str(countGCD))
         fight_logging.debug("previous GCD : " + str(player.GCDCounter))
         if getInfo : return round(ExpectedDamage/timeStamp,2), percentileRuns, timeStamp, totalPotency
-        return round(ExpectedDamage/timeStamp,2), percentileRuns
+        return round(ExpectedDamage/timeStamp if True else ExpectedDamage,2), percentileRuns
 
         
 
