@@ -140,7 +140,13 @@ class SummonerActions(ActionEnum):
     Physick = 16230
     Resurrection = 173
     Summon = 7427
+
+    # Pet action
     SummonEnkindle = -17
+    ApplySummonAuto = -115
+    BahamutAuto = -14
+    PhoinixAuto = -15
+
 
 # Healer
 

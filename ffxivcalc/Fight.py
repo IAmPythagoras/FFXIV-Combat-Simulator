@@ -124,10 +124,10 @@ class Fight:
         timeStamp = 0
         totalPotency = 0
 
-        amountToRemoveEveryGCD = 0
+        #amountToRemoveEveryGCD = 0
         trialFinishTime = player.PreBakedActionSet[-1].timeStamp
 
-        gcdReductionRatio = round(2 - f_SPD,8)
+        #gcdReductionRatio = round(2 - f_SPD,8)
 
                              # Find this set's finish time so we can cut off autos if they do not hit in the end.
         #for PreBakedAction in player.PreBakedActionSet:
@@ -137,9 +137,11 @@ class Fight:
         #    trialFinishTime = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(gcdReductionRatio,3)) - (amountToRemoveEveryGCD)),2)
         
         countGCD = 0
-        amountToRemoveEveryGCD = 0
+        #amountToRemoveEveryGCD = 0
         #amountToRemoveFailCondition = 0
         #actionFailsCondition = False
+        for history in player.PercentBuffHistory:
+            fight_logging.warning(str(history))
 
                              # Will compute DPS
         for PreBakedAction in player.PreBakedActionSet:
@@ -150,7 +152,7 @@ class Fight:
                                                      # Count every GCD
             if PreBakedAction.isGCD : countGCD += 1
                              # Have to round PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3) as it sometime has repeating 9s when it should be the value above.
-            amountToRemoveEveryGCD += round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10) - roundDown(round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10),2)
+            #amountToRemoveEveryGCD += round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10) - roundDown(round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10),2)
 
             #timeStamp = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(gcdReductionRatio,3)) - (amountToRemoveEveryGCD)),2)# - roundDown(amountToRemoveFailCondition,2)
             timeStamp = PreBakedAction.timeStamp
@@ -173,14 +175,14 @@ class Fight:
             curMainStat = MainStat * (PreBakedAction.MainStatPercentageBonus if not PreBakedAction.isFromPet else 1)
 
             fight_logging.debug("TimeStamp : " + str(timeStamp))
-            fight_logging.debug("Finish : " + str(trialFinishTime))
-            fight_logging.debug("f_SPD : " + str(f_SPD))
-            fight_logging.debug("Non rounded : " + str(gcdReductionRatio))
-            fight_logging.debug("Non Reducable : " + str(PreBakedAction.nonReducableStamp) + " Reducable : " + str(PreBakedAction.reducableStamp) + " SPD : " + str(roundDown(gcdReductionRatio,3)))
-            fight_logging.debug("GCDLock : " + str(PreBakedAction.gcdLockTimer))
-            fight_logging.debug("Amount not rounded : " + str(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3)))
-            fight_logging.debug("Amount rounded : " + str(roundDown(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),2)))
-            fight_logging.debug("amountToRemoveEveryGCD : " + str(amountToRemoveEveryGCD))
+            #fight_logging.debug("Finish : " + str(trialFinishTime))
+            #fight_logging.debug("f_SPD : " + str(f_SPD))
+            #fight_logging.debug("Non rounded : " + str(gcdReductionRatio))
+            #fight_logging.debug("Non Reducable : " + str(PreBakedAction.nonReducableStamp) + " Reducable : " + str(PreBakedAction.reducableStamp) + " SPD : " + str(roundDown(gcdReductionRatio,3)))
+            #fight_logging.debug("GCDLock : " + str(PreBakedAction.gcdLockTimer))
+            #fight_logging.debug("Amount not rounded : " + str(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3)))
+            #fight_logging.debug("Amount rounded : " + str(roundDown(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),2)))
+            #fight_logging.debug("amountToRemoveEveryGCD : " + str(amountToRemoveEveryGCD))
                                          # Will check what buffs the action falls under.
                                          # Chain Stratagem
             for history in player.ChainStratagemHistory:
@@ -589,11 +591,6 @@ def GCDReductionEffect(Player, Spell) -> None:
     Player : player -> Player object
     Spell : Spell -> Spell object affected by the effect
     """
-    
-                             # The added 0.00000001 seemed necessary to fix rounding errors occuring
-                             # that would make the predicted GCD timer be 0.01 second less than it should
-                             # have been. This also should not tip the balance in regular situations
-                             # as the increment is so small.
 
     if Spell.type == 1: # Spell
         Spell.CastTime = math.floor(math.floor(math.floor((int(Spell.CastTime * 1000 ) * Player.SpellReduction)) * (100 - Player.Haste)/100)/10)/100  if Spell.CastTime > 0 else 0

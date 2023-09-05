@@ -33,6 +33,9 @@ class buffHistory:
         self.StartTime = StartTime
         self.EndTime = EndTime
 
+    def __str__(self) -> str:
+        return "Buff start : " + str(self.StartTime) + " end : " + str(self.EndTime)
+
     def isUp(self, timeStamp : float) -> bool:
         """
         This function returns weither the buff was active under the given timeStamp
@@ -49,6 +52,9 @@ class buffPercentHistory(buffHistory):
     def __init__(self, StartTime : float, EndTime : float, PercentBonus : float):
         super().__init__(StartTime, EndTime)
         self.PercentBonus = PercentBonus
+
+    def __str__(self) -> str:
+        return super().__str__() + " percentBonus : " + str(self.PercentBonus)
 
     def getPercentBonus(self) -> float:
         """
@@ -175,7 +181,7 @@ class PreBakedAction:
         elif self.type == 1: # Type 1 is magical DOT
             Damage = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(self.Potency * f_WD) * f_MAIN_DMG) * f_SPD) * f_DET) * f_TEN) * self.TraitBonus) + 1
         elif self.type == 2: # Type 2 is physical DOT
-            Damage = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG) * f_DET) * f_TEN) * f_SPD) * f_WD) * self.TraitBonus) +1
+            Damage = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG) * f_DET) * f_TEN) * f_SPD) * f_WD) * self.TraitBonus) + 1
         elif self.type == 3: # Auto-attacks
             Damage = math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG * f_DET) * f_TEN) * f_SPD)
             Damage = math.floor(math.floor(Damage * math.floor(f_WD * (3/3) *100 )/100) * self.TraitBonus) # Player.Delay is assumed to be 3 for simplicity for now
@@ -466,7 +472,7 @@ class Spell:
             
         if self.GCD: player.GCDCounter += 1 # If action was a GCD, increase the counter
 
-        if self.id > 0: # Only logs if is a player action and not a DOT
+        if self.id > 0 or player.RoleEnum == RoleEnum.Pet: # Only logs if is a player action and not a DOT
             log_str = ( "Timestamp : " + str(player.CurrentFight.TimeStamp)
             + " , Event : end_cast"
             + (" , playerID : " + str(player.playerID) if player.JobEnum != JobEnum.Pet else " , MasterID : " + str(player.Master.playerID))
