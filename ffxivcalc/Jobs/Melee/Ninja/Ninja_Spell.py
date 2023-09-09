@@ -227,6 +227,7 @@ def ApplyTrickAttack(Player, Enemy):
     if Player.CurrentFight.SavePreBakedAction and Player == Player.CurrentFight.PlayerList[Player.CurrentFight.PlayerIDSavePreBakedAction]:
         fight = Player.CurrentFight
         history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 15, TrickAttackBuff.MultDPS)
+        history.isTrickAttack = True
         fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
 
 def ApplyMug(Player, Enemy):

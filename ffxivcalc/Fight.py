@@ -211,6 +211,7 @@ class Fight:
                     curMainStat = min(math.floor(curMainStat * 1.1), curMainStat + 262) #Grade 8 HQ tincture
                                          # Any other percent bonus. Might have to remake dragoon tether since pet not affected by this buff
             for history in player.PercentBuffHistory:
+                if PreBakedAction.isFromPet and history.isTrickAttack : continue
                 if history.isUp(timeStamp):
                     PreBakedAction.PercentageBonus.append(history.getPercentBonus())
 
@@ -221,6 +222,7 @@ class Fight:
             else: f_MAIN_DMG = (100+math.floor((curMainStat-baseMain)*195/baseMain))/100
             ActionExpected, Damage = PreBakedAction.ComputeExpectedDamage(f_MAIN_DMG,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto) #if not actionFailsCondition else (0,0)
             ExpectedDamage += ActionExpected
+            player.DamageInstanceList.append(ActionExpected)
             damageHistory.append(Damage)
             #actionFailsCondition = False
 

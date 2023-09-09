@@ -391,6 +391,7 @@ class Player:
         self.TotalPotency = 0 # Keeps track of total potency done
         self.TotalDamage = 0 # Keeps track of total damage done
         self.TotalMinDamage = 0 # Minimum expected damage (no crit or diret hit) 
+        self.DamageInstanceList = [] # Used to remember damage instance for debugging. Usually unused
 
         self.Stat = deepcopy(Stat) # Stats of the player
 
@@ -2135,7 +2136,7 @@ class Player:
         #self.GoringDOTTimer = 0
         self.CircleScornTimer = 0
         #self.ValorDOTTimer = 0
-        self.FightOrFlighTimer = 0
+        self.FightOrFlightTimer = 0
         self.HolySheltronTimer = 0
         self.PassageOfArmsTimer = 0
         self.DivineVeilTimer = 0
@@ -2185,7 +2186,7 @@ class Player:
             
             #if (self.GoringDOTTimer > 0) : self.GoringDOTTimer = max(0,self.GoringDOTTimer - time)
             if (self.CircleScornTimer > 0) : self.CircleScornTimer = max(0,self.CircleScornTimer - time)
-            if (self.FightOrFlighTimer > 0) : self.FightOrFlighTimer = max(0,self.FightOrFlighTimer - time)
+            if (self.FightOrFlightTimer > 0) : self.FightOrFlightTimer = max(0,self.FightOrFlightTimer - time)
             #if (self.ValorDOTTimer > 0) : self.ValorDOTTimer = max(0,self.ValorDOTTimer - time)
             if (self.HolySheltronTimer > 0) : self.HolySheltronTimer = max(0,self.HolySheltronTimer - time)
             if (self.PassageOfArmsTimer > 0) : self.PassageOfArmsTimer = max(0,self.PassageOfArmsTimer - time)
@@ -2363,7 +2364,8 @@ class Pet(Player):
         self.JobMod = 100
 
         #Giving already computed values for stats
-        self.f_WD = Master.f_WD
+                             # Recomputing f_WD since it is affected by JobMod
+        self.f_WD = (Master.Stat["WD"]+floor(390*self.JobMod/1000))/100
         self.f_DET = Master.f_DET
         self.f_TEN = Master.f_TEN
         self.f_SPD = Master.f_SPD
@@ -2380,7 +2382,7 @@ class Pet(Player):
 
                              # Pets do not have the 5% comp bonus, so we remove the comp bonus from this fight.
         
-        self.Stat["MainStat"] /= Master.CurrentFight.TeamCompositionBonus
+        self.Stat["MainStat"] = int(self.Stat["MainStat"]/Master.CurrentFight.TeamCompositionBonus)
 
         player_logging.debug("New Pet Created : " + str(self.Stat))
 

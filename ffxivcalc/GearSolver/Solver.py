@@ -55,11 +55,12 @@ def getGearDPSValue(Fight, gearSet : GearSet, PlayerIndex : int, n : int =10000)
 
     player.Stat = getBaseStat(IsTank=IsTank)
     GearStat = gearSet.GetGearSetStat(IsTank=IsTank)
-    #GearStat = {'MainStat': 3378, 'WD': 132, 'Det': 1289, 'Ten': 400, 'SS': 400, 'SkS': 858, 'Crit': 2628, 'DH': 1458, 'Piety': 390}
+    GearStat = {'MainStat': 3378, 'WD': 132, 'Det': 1666, 'Ten': 400, 'SS': 400, 'SkS': 714, 'Crit': 2595, 'DH': 1258, 'Piety': 390}
     player.Stat["SS" if IsCaster else "SkS"] = GearStat["SS" if IsCaster else "SkS"]
     Fight.SavePreBakedAction = True
     Fight.PlayerIDSavePreBakedAction = PlayerIndex
     Fight.SimulateFight(0.01, 500, False, n=0,PPSGraph=False)
+    player.DamageInstanceList = []
 
     #gearSet, x , y = materiaBisSolverV3(gearSet, MateriaGenerator(18,36), [0,1,2], Fight, JobMod, IsTank, IsCaster, 0, "exp", 0, mendSpellSpeed=False, minSPDValue=400, maxSPDValue=500, oversaturationIterationsPostGear=1, findOptMateriaGearBF=True,swapDHDetBeforeSpeed=False)
 

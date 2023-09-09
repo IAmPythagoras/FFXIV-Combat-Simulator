@@ -51,7 +51,9 @@ class buffPercentHistory(buffHistory):
 
     def __init__(self, StartTime : float, EndTime : float, PercentBonus : float):
         super().__init__(StartTime, EndTime)
-        self.PercentBonus = PercentBonus
+        self.PercentBonus = PercentBonus    
+                             # Used by Shadow to know if buff is trick attack
+        self.isTrickAttack = False
 
     def __str__(self) -> str:
         return super().__str__() + " percentBonus : " + str(self.PercentBonus)
@@ -175,6 +177,11 @@ class PreBakedAction:
 
         f_DET_DH = math.floor((f_DET + DHAuto) * 1000 ) / 1000
 
+
+        # Hardcoded for now
+
+        if self.isFromPet : f_WD = (132+math.floor(390*100/1000))/100
+
         Damage = 0
         if self.type == 0: # Type 0 is direct damage
             Damage = math.floor(math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG) * (f_DET_DH if (self.AutoCrit and self.AutoDH) else f_DET)) * f_TEN ) *f_WD) * self.TraitBonus) # Player.Trait is trait DPS bonus
@@ -183,13 +190,14 @@ class PreBakedAction:
         elif self.type == 2: # Type 2 is physical DOT
             Damage = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG) * f_DET) * f_TEN) * f_SPD) * f_WD) * self.TraitBonus) + 1
         elif self.type == 3: # Auto-attacks
-            Damage = math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG * f_DET) * f_TEN) * f_SPD)
+            Damage = math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG) * f_DET) * f_TEN) * f_SPD)
             Damage = math.floor(math.floor(Damage * math.floor(f_WD * (3/3) *100 )/100) * self.TraitBonus) # Player.Delay is assumed to be 3 for simplicity for now
         
+        Damage = math.floor(Damage * self.spellDPSBuff)
+
         for buff in self.PercentageBonus:
             Damage = math.floor(Damage * buff)
 
-        Damage = math.floor(Damage * self.spellDPSBuff)
         
         auto_crit_bonus = (1 + self.CritBonus * f_CritMult) if self.AutoCrit else 1# Auto_crit bonus if buffed
         auto_dh_bonus = (1 + (self.DHBonus) * 0.25) if self.AutoDH else 1# Auto_DH bonus if buffed
@@ -472,7 +480,7 @@ class Spell:
             
         if self.GCD: player.GCDCounter += 1 # If action was a GCD, increase the counter
 
-        if self.id > 0 or player.RoleEnum == RoleEnum.Pet: # Only logs if is a player action and not a DOT
+        if self.id > 0 or player.RoleEnum == RoleEnum.Pet or type==3: # Only logs if is a player action and not a DOT
             log_str = ( "Timestamp : " + str(player.CurrentFight.TimeStamp)
             + " , Event : end_cast"
             + (" , playerID : " + str(player.playerID) if player.JobEnum != JobEnum.Pet else " , MasterID : " + str(player.Master.playerID))
@@ -483,6 +491,9 @@ class Spell:
             + (" , Damage : " + str(Damage) if not (self.AOEHeal or self.TargetHeal) else " , Healing : " + str(Heal)))
             
             base_spell_logging.debug(log_str)
+
+        if self.Potency > 0: player.DamageInstanceList.append(Damage)
+        if player.RoleEnum == RoleEnum.Pet and self.Potency > 0 : player.Master.DamageInstanceList.append(Damage)
 
         return self # Return the spell object. Might not be needed.
 
