@@ -657,7 +657,7 @@ class BardActions(ActionEnum):
     RainOfDeath = 117
     BattleVoice = 118
     EmpyrealArrow = 3558
-    WandererMinuet = 3559
+    WanderingMinuet = 3559
     IronJaws = 3560
     WardenPaean = 3561
     Sidewinder = 3562

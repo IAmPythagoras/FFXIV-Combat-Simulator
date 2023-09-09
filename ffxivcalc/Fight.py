@@ -736,7 +736,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         if spellObj.GCD and (Player.RoleEnum == RoleEnum.Melee or Player.RoleEnum == RoleEnum.Tank) and spellObj.type == 1 : gcdLockTimer = 0
         elif spellObj.GCD and (Player.RoleEnum == RoleEnum.Caster) and spellObj.type == 2 : gcdLockTimer = 0
 
-        (Player if not isPet else Player.Master).PreBakedActionSet.append(PreBakedAction(isTank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type,Player.CurrentFight.TimeStamp, nonReducableStamp + (0 if type == 0 else reducableStamp), 
+        (Player if not isPet else Player.Master).PreBakedActionSet.append(PreBakedAction(isTank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type,Player.CurrentFight.TimeStamp if Player.CurrentFight.FightStart else 0, nonReducableStamp + (0 if type == 0 else reducableStamp), 
                                                        reducableStamp if type == 0 else 0 ,AutoCrit=auto_crit, AutoDH=auto_DH, isFromPet=isPet, isGCD=spellObj.GCD,gcdLockTimer=gcdLockTimer,spellDPSBuff=SpellBonus, isConditionalAction=spellObj.conditionalAction))
         
         return Potency, Potency        # Exit the function since we are not interested in the immediate damage value. Still return potency as to not break the fight's duration.

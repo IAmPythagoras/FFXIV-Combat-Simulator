@@ -35,7 +35,7 @@ def PitchPerfectRequirement(Player, Spell):
         Spell.Potency += 260
     else:
         input("lol, somehting went wrong in bard")
-    return Player.WandererMinuet
+    return Player.WanderingMinuet
 """
 def PitchPerfect1Requirement(Player, Spell):
     if Player.MaximumRepertoire < 1:#It will not be possible to cast in any case
@@ -44,7 +44,7 @@ def PitchPerfect1Requirement(Player, Spell):
         #We can cast it, and we have to check the chances
         need = max(0, 1 - Player.ExpectedRepertoire)#This represents how much we would be missing, compared to the expected value
         Player.UsedRepertoireAdd += need#This represents the total number of repertoire procs we have used through out the simulation
-        return Player.WandererMinuet, -1
+        return Player.WanderingMinuet, -1
 
 def PitchPerfect2Requirement(Player, Spell):
     if Player.MaximumRepertoire < 2:#It will not be possible to cast in any case
@@ -53,7 +53,7 @@ def PitchPerfect2Requirement(Player, Spell):
         #We can cast it, and we have to check the chances
         need = max(0, 2 - Player.ExpectedRepertoire)#This represents how much we would be missing, compared to the expected value
         Player.UsedRepertoireAdd += need#This represents the total number of repertoire procs we have used through out the simulation
-        return Player.WandererMinuet, -1
+        return Player.WanderingMinuet, -1
 
 def PitchPerfect3Requirement(Player, Spell):
     if Player.MaximumRepertoire < 3:#It will not be possible to cast in any case
@@ -62,10 +62,10 @@ def PitchPerfect3Requirement(Player, Spell):
         #We can cast it, and we have to check the chances
         need = max(0, 3 - Player.ExpectedRepertoire) #This represents how much we would be missing, compared to the expected value
         Player.UsedRepertoireAdd += need #This represents the total number of repertoire procs we have used through out the simulation
-        return Player.WandererMinuet, -1
+        return Player.WanderingMinuet, -1
 
-def WandererMinuetRequirement(Player, Spell):
-    return Player.WandererMinuetCD <= 0, Player.WandererMinuetCD
+def WanderingMinuetRequirement(Player, Spell):
+    return Player.WanderingMinuetCD <= 0, Player.WanderingMinuetCD
 
 def BattleVoiceRequirement(Player, Spell):
     return Player.BattleVoiceCD <= 0, Player.BattleVoiceCD
@@ -215,16 +215,16 @@ def ApplyBloodLetter(Player, Enemy):
         Player.BloodLetterCD = 15
     Player.BloodLetterStack -= 1
 
-def ApplyWandererMinuet(Player, Enemy):
+def ApplyWanderingMinuet(Player, Enemy):
     Player.WandererCoda = True #Adding Coda
-    Player.WandererMinuetCD = 120
+    Player.WanderingMinuetCD = 120
     Player.SongTimer = 45
-    Enemy.WandererMinuet = True
+    Enemy.WanderingMinuet = True
     Player.EffectCDList.append(WandererCheck)
     #Removing Current song
     Player.MageBallad = False
     Player.ArmyPaeon = False
-    Player.WandererMinuet = True
+    Player.WanderingMinuet = True
 
                                      # Only doing this if SavePreBakedAction is true
     if Player.CurrentFight.SavePreBakedAction:
@@ -242,7 +242,7 @@ def ApplyArmyPaeon(Player, Enemy):
     #Have to remove current song
     Player.MageBallad = False
     Player.ArmyPaeon = True
-    Player.WandererMinuet = False
+    Player.WanderingMinuet = False
 
 def ApplyMageBallad(Player, Enemy):
     Player.MageCoda = True #Adding Coda
@@ -253,7 +253,7 @@ def ApplyMageBallad(Player, Enemy):
     #Have to remove current song
     Player.MageBallad = True
     Player.ArmyPaeon = False
-    Player.WandererMinuet = False
+    Player.WanderingMinuet = False
 
 def ApplyBarrage(Player, Enemy):
     Player.EffectList.append(BarrageEffect)
@@ -370,9 +370,9 @@ def WandererCheck(Player, Enemy):
         Player.ExpectedRepertoire = min(3, Player.ExpectedRepertoire + 0.8)
         Player.ExpectedTotalWandererRepertoire += 0.8
 
-    if Player.SongTimer <= 0 or not (Player.WandererMinuet): #We check if timer, or if it becomes false because another song has begun
-        Enemy.WandererMinuet = False
-        Player.WandererMinuet = True
+    if Player.SongTimer <= 0 or not (Player.WanderingMinuet): #We check if timer, or if it becomes false because another song has begun
+        Enemy.WanderingMinuet = False
+        Player.WanderingMinuet = True
         Player.EffectToRemove.append(WandererCheck)
 
 def ArmyPaeonCheck(Player, Enemy):
@@ -446,7 +446,7 @@ Shadowbite = BardSpell(16494, True, 2.5, 170, ApplyShadowbite, [ShadowbiteRequir
 
 
 #Song
-WandererMinuet = BardSpell(3559, False, 0, 100, ApplyWandererMinuet, [WandererMinuetRequirement], False)
+WanderingMinuet = BardSpell(3559, False, 0, 100, ApplyWanderingMinuet, [WanderingMinuetRequirement], False)
 ArmyPaeon = BardSpell(116, False, 0, 100, ApplyArmyPaeon, [ArmyPaeonRequirement],False)
 MageBallad = BardSpell(114, False, 0, 100, ApplyMageBallad, [MageBalladRequirement],False)
 #oGCD
@@ -484,7 +484,7 @@ BardAbility = {
 117 : RainOfDeath, 
 118 : BattleVoice, 
 3558 : EmpyrealArrow, 
-3559 : WandererMinuet, 
+3559 : WanderingMinuet, 
 3560 : IronJaws, 
 3561 : WardenPaean, 
 3562 : Sidewinder ,

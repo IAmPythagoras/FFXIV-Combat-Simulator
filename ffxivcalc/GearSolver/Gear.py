@@ -208,6 +208,16 @@ class Gear:
         This private function returns weither the given StatType has non zero value for this gear.
         """
         return (StatType.name_for_id(type) in self.Stat.keys()) and self.hasStatMeld(type)
+    
+    def setStatLimit(self, newLimit : int):
+        """
+        This function sets the gear stats' limit to the given newLimit value.
+
+        Args:
+            newLimit (int): new stat limit.
+        """
+
+        self.StatLimit = newLimit
 
     def AddMateria(self, newMateria : Materia):
         """
@@ -570,81 +580,12 @@ def ImportGear(fileName : str) -> dict:
         type = GearType.name_for_id(GearPiece["GearType"])
         StatList = [Stat(StatType.id_for_name(S[0]), S[1]) for S in GearPiece["StatList"]]
         ImportedGear = Gear(GearPiece["GearType"], StatList, MateriaLimit = GearPiece["MateriaLimit"], Name = GearPiece["Name"])
+
+        if "customStatLimit" in GearPiece.keys(): ImportedGear.setStatLimit(GearPiece["customStatLimit"])
+
         if type in GearDict.keys():
             GearDict[type].append(ImportedGear)
         else:
             GearDict[type] = [ImportedGear]
 
     return GearDict
-
-if __name__ == "__main__":
-    from ffxivcalc.GearSolver.Solver import computeDamageValue, getGearDPSValue
-    matGen = MateriaGenerator(18, 36)
-    foodDict = {"Crit" : [63, 0.1], "Det" : [103, 0.1]}
-    raidFood = Food(foodDict, "Baked Eggplant")
-
-    data = ImportGear("DRKGear.json")
-    Crit = 0
-    DH = 1
-    Det = 2
-    SS = 3
-    SkS = 4
-    Weapon = data["WEAPON"][0]
-    Weapon.AddMateria(matGen.GenerateMateria(4))
-    Weapon.AddMateria(matGen.GenerateMateria(4))
-
-    Head = data["HEAD"][0]
-    Head.AddMateria(matGen.GenerateMateria(4))
-    Head.AddMateria(matGen.GenerateMateria(4))
-
-    Body = data["BODY"][1]
-    Body.AddMateria(matGen.GenerateMateria(4))
-    Body.AddMateria(matGen.GenerateMateria(4))
-
-    Hand = data["HANDS"][0]
-    Hand.AddMateria(matGen.GenerateMateria(1))
-    Hand.AddMateria(matGen.GenerateMateria(1))
-
-    Leg = data["LEGS"][0]
-    Leg.AddMateria(matGen.GenerateMateria(1))
-    Leg.AddMateria(matGen.GenerateMateria(1))
-
-    Feet = data["FEET"][1]
-    Feet.AddMateria(matGen.GenerateMateria(1))
-    Feet.AddMateria(matGen.GenerateMateria(1))
-
-    Ear = data["EARRINGS"][1]
-    Ear.AddMateria(matGen.GenerateMateria(1))
-    Ear.AddMateria(matGen.GenerateMateria(1))
-
-    Neck = data["NECKLACE"][0]
-    Neck.AddMateria(matGen.GenerateMateria(1))
-    Neck.AddMateria(matGen.GenerateMateria(1))
-
-    Bracelet = data["BRACELETS"][1]
-    Bracelet.AddMateria(matGen.GenerateMateria(1))
-    Bracelet.AddMateria(matGen.GenerateMateria(1))
-
-    Lring = data["LRING"][0]
-    Lring.AddMateria(matGen.GenerateMateria(1))
-    Lring.AddMateria(matGen.GenerateMateria(1))
-
-    ring = data["RING"][0]
-    ring.AddMateria(matGen.GenerateMateria(1))
-    ring.AddMateria(matGen.GenerateMateria(1))
-
-    gSet = GearSet()
-    gSet.AddGear(Weapon)
-    gSet.AddGear(Head)
-    gSet.AddGear(Body)
-    gSet.AddGear(Hand)
-    gSet.AddGear(Leg)
-    gSet.AddGear(Feet)
-    gSet.AddGear(Ear)
-    gSet.AddGear(Neck)
-    gSet.AddGear(Bracelet)
-    gSet.AddGear(Lring)
-    gSet.AddGear(ring)
-    gSet.addFood(raidFood)
-
-    print(gSet)

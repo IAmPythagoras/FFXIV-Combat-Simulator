@@ -1491,7 +1491,7 @@ class Player:
         #Song
         self.MageBallad = False
         self.ArmyPaeon = False
-        self.WandererMinuet = False
+        self.WanderingMinuet = False
 
         #Coda
         self.MageCoda = False
@@ -1502,7 +1502,7 @@ class Player:
         #CD
         self.SidewinderCD = 0
         self.EmpyrealArrowCD = 0
-        self.WandererMinuetCD = 0
+        self.WanderingMinuetCD = 0
         self.ArmyPaeonCD = 0
         self.MageBalladCD = 0
         self.BattleVoiceCD = 0
@@ -1536,7 +1536,7 @@ class Player:
             
             if (self.SidewinderCD > 0) : self.SidewinderCD = max(0,self.SidewinderCD - time)
             if (self.EmpyrealArrowCD > 0) : self.EmpyrealArrowCD = max(0,self.EmpyrealArrowCD - time)
-            if (self.WandererMinuetCD > 0) : self.WandererMinuetCD = max(0,self.WandererMinuetCD - time)
+            if (self.WanderingMinuetCD > 0) : self.WanderingMinuetCD = max(0,self.WanderingMinuetCD - time)
             if (self.ArmyPaeonCD > 0) : self.ArmyPaeonCD = max(0,self.ArmyPaeonCD - time)
             if (self.MageBalladCD > 0) : self.MageBalladCD = max(0,self.MageBalladCD - time)
             if (self.BattleVoiceCD > 0) : self.BattleVoiceCD = max(0,self.BattleVoiceCD - time)
