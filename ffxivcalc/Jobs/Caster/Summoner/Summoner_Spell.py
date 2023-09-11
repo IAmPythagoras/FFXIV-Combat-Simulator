@@ -174,7 +174,7 @@ def ApplySearingLight(Player, Enemy):
                                      # Only doing this if SavePreBakedAction is true
     if Player.CurrentFight.SavePreBakedAction:
         fight = Player.CurrentFight
-        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , SearingLightbuff.MultDPS)
+        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 30 , SearingLightbuff.MultDPS)
         fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
 
 
@@ -244,7 +244,7 @@ RubyCatastrophe = SummonerSpell(25832, True, 2.8, 2.5, 210, 300, ApplyRuby, [Rub
 Emerald = SummonerSpell(25825, True, Lock, 1.5, 230, 300, ApplyEmerald, [EmeraldRequirement, ManaRequirement], type = 1)
 EmeraldCatastrophe = SummonerSpell(25834, True, 0, 1.5, 100, 300, ApplyEmerald, [ManaRequirement, EmeraldRequirement], type = 1)
 Slipstream = SummonerSpell(25837, True, 3, 3.5, 430, 0, ApplySlipstream, [SlipstreamRequirement], type = 1)
-SlipstreamDOT = DOTSpell(-13, 30, False)
+SlipstreamDOT = DOTSpell(100, 30, False)
 
 #Summon
 Summon = SummonerSpell(7427, True, Lock, 2.5, 0, 0, ApplySummon, [SummonRequirement], type = 1)

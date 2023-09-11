@@ -140,7 +140,13 @@ class SummonerActions(ActionEnum):
     Physick = 16230
     Resurrection = 173
     Summon = 7427
+
+    # Pet action
     SummonEnkindle = -17
+    ApplySummonAuto = -115
+    BahamutAuto = -14
+    PhoinixAuto = -15
+
 
 # Healer
 
@@ -331,6 +337,14 @@ class DarkKnightActions(ActionEnum):
     Oblation = 25754
     SaltAndDarkness = 25755
     Shadowbringer = 25757
+                             # Living Shadow actions
+    PAbyssalDrain = 22
+    PPlunge = 23
+    PShadowbringer = 25
+    PEdgeShadow = 26
+    PBloodspiller = 27
+    PCarveSpit = 28
+    PDelay = 29
 
 
 # Gunbreaker
@@ -552,6 +566,11 @@ class NinjaActions(ActionEnum):
     Kassatsu = 2264
     Meisui = 16489
 
+    # Shadow Actions
+
+    BunshinPhantom = 8
+    ShadowAuto = 35
+
 
 # Monk
 
@@ -638,7 +657,7 @@ class BardActions(ActionEnum):
     RainOfDeath = 117
     BattleVoice = 118
     EmpyrealArrow = 3558
-    WandererMinuet = 3559
+    WanderingMinuet = 3559
     IronJaws = 3560
     WardenPaean = 3561
     Sidewinder = 3562
@@ -681,6 +700,10 @@ class MachinistActions(ActionEnum):
     GaussRound = 2874
     Ricochet = 2890
     Reassemble = 2876
+
+    # Queen actions
+    Bunker = 15
+    Collider = 16
 
 # Dancer
 

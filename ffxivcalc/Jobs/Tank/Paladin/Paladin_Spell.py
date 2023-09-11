@@ -278,7 +278,7 @@ def RequestACatCheck(Player, Enemy):
 
 
 def FightOrFlightCheck(Player, Enemy):
-    if Player.FightOrFlighTimer <= 0:
+    if Player.FightOrFlightTimer <= 0:
         Player.buffList.remove(FightOrFlightBuff)
         Player.EffectToRemove.append(FightOrFlightCheck)
 

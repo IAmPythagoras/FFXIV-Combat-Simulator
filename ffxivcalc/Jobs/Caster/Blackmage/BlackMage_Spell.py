@@ -1,5 +1,6 @@
 from ffxivcalc.Jobs.Base_Spell import DOTSpell, ManaRequirement, buff, empty
 from ffxivcalc.Jobs.Caster.Caster_Spell import BLMSpell, SwiftcastEffect
+from ffxivcalc.helperCode.helper_math import roundDown
 import copy
 import math
 Lock = 0
@@ -162,6 +163,10 @@ def ApplyLeyLines(Player, Enemy):
     Player.EffectList.append(LeyLinesEffect)
     Player.EffectCDList.append(LeyLinesCheck)
 
+    Player.Haste += 15
+    Player.hasteHasChanged = True
+    Player.hasteChangeValue = 15
+
 def ApplyTripleCast(Player, Enemy):
     #Check if we need to add stack check
     if Player.TripleCastUseStack == 2:
@@ -214,14 +219,15 @@ def Thunder3ProcEffect(Player, Spell):
         Player.EffectToRemove.append(Thunder3ProcEffect)
 
 def TripleCastEffect(Player, Spell): 
-    if not (SwiftcastEffect in Player.EffectList) and Spell.GCD and Spell.CastTime > Lock: #If GCD and not already insta cast, also Swift will go before
+    if not (SwiftcastEffect in Player.EffectList) and Spell.GCD and Spell.CastTime > 0 : #If GCD and not already insta cast, also Swift will go before
         Spell.CastTime = Lock
         Player.TripleCastStack -= 1
 
 def LeyLinesEffect(Player, Spell):
     if Spell.GCD:
-        Spell.CastTime *= 0.85
-        Spell.RecastTime *= 0.85
+        pass
+        #Spell.CastTime = (Spell.CastTime * 0.85)
+        #Spell.RecastTime = (Spell.RecastTime * 0.85)
 
 def EnochianEffect(Player, Spell):
     if Player.ElementalGauge != 0:
@@ -328,6 +334,9 @@ def TripleCastCheck(Player, Enemy):
 def LeyLinesCheck(Player, Enemy):
     if Player.LeyLinesTimer <= 0:
         Player.EffectList.remove(LeyLinesEffect)
+        Player.Haste -= 15
+        Player.hasteChangeValue = -15
+        Player.hasteHasChanged = True
         Player.EffectToRemove.append(LeyLinesCheck)
 
 def Thunder3DOTCheck(Player, Enemy):

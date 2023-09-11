@@ -107,6 +107,9 @@ def ApplyPresenceOfMind(Player, Enemy):
     Player.PresenceOfMindCD = 120
     Player.PresenceOfMindTimer = 15
     Player.EffectList.append(PresenceOfMindEffect)
+    Player.Haste += 20
+    Player.hasteChangeValue = 20
+    Player.hasteHasChanged = True
     Player.EffectCDList.append(CheckPresenceOfMind)
 
 #Effect
@@ -116,8 +119,9 @@ def ThinAirEffect(Player, Spell):
     Player.EffectList.remove(ThinAirEffect)
 
 def PresenceOfMindEffect(Player, Spell):
-    Spell.CastTime *= 0.8
-    Spell.RecastTime *= 0.8
+    pass
+    #Spell.CastTime *= 0.8
+    #Spell.RecastTime *= 0.8
 
 #Check
 
@@ -130,6 +134,9 @@ def CheckDia(Player, Enemy):
 def CheckPresenceOfMind(Player, Enemy):
     if Player.PresenceOfMindTimer <= 0:
         Player.EffectList.remove(PresenceOfMindEffect)
+        Player.Haste -= 20
+        Player.hasteHasChanged = True
+        Player.hasteChangeValue = -20
         Player.EffectToRemove.append(CheckPresenceOfMind)
 
 

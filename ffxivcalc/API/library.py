@@ -165,8 +165,8 @@ def SimulateFightAPIHelper(FightDict : dict) -> dict:
 
         playerDict = {
             "JobName" : JobEnum.name_for_id(player.JobEnum),
-            "ExpectedDPS" : 0 if Event.TimeStamp == 0 else roundDown(player.TotalDamage/Event.TimeStamp,2),
-            "PotencyPerSecond" :  0 if Event.TimeStamp == 0 else roundDown(player.TotalPotency/Event.TimeStamp,2),
+            "ExpectedDPS" : 0 if Event.TimeStamp == 0 else round(player.TotalDamage/Event.TimeStamp,2),
+            "PotencyPerSecond" :  0 if Event.TimeStamp == 0 else round(player.TotalPotency/Event.TimeStamp,2),
             "TotalDamage" : player.TotalDamage,
             "TotalPotency" : player.TotalPotency,
             "numberOfGCD" : player.GCDCounter,

@@ -33,6 +33,9 @@ class buffHistory:
         self.StartTime = StartTime
         self.EndTime = EndTime
 
+    def __str__(self) -> str:
+        return "Buff start : " + str(self.StartTime) + " end : " + str(self.EndTime)
+
     def isUp(self, timeStamp : float) -> bool:
         """
         This function returns weither the buff was active under the given timeStamp
@@ -48,7 +51,12 @@ class buffPercentHistory(buffHistory):
 
     def __init__(self, StartTime : float, EndTime : float, PercentBonus : float):
         super().__init__(StartTime, EndTime)
-        self.PercentBonus = PercentBonus
+        self.PercentBonus = PercentBonus    
+                             # Used by Shadow to know if buff is trick attack
+        self.isTrickAttack = False
+
+    def __str__(self) -> str:
+        return super().__str__() + " percentBonus : " + str(self.PercentBonus)
 
     def getPercentBonus(self) -> float:
         """
@@ -104,20 +112,30 @@ class PreBakedAction:
     CritBonus : float -> Crit bonus of the action
     DHBonus : float -> DH Bonus of the action
     type : int -> type of the damage
+    timeStamp : float -> Timestamp of the action
     AutoCrit : bool -> If is an auto crit (true)
     AutoDH : bool -> if is an auto DH (true)
+    isFromPet : bool -> True if a Pet PreBakedAction
+    isGCD : bool -> True if the action is a GCD
+    gcdLockTimer : float -> Time value for which the player cannot take another GCD action.
+    spellDPSBuff : float -> Flat bonus applied on this action
+    isConditionalAction : bool -> True if this action is a conditional Action.
     """
 
     def __init__(self, IsTank : bool, MainStatPercentageBonus : float, buffList : list,
-                 TraitBonus : float, Potency : int, type : int, 
-                 nonReducableStamp : float, reducableStamp : float, AutoCrit : bool = False, AutoDH : bool = False):
+                 TraitBonus : float, Potency : int, type : int, timeStamp : float, 
+                 nonReducableStamp : float, reducableStamp : float, AutoCrit : bool = False, AutoDH : bool = False,
+                 isFromPet : bool = False, isGCD : bool = False,gcdLockTimer : float = 0, spellDPSBuff : float = 1,
+                 isConditionalAction : bool = False ):
         self.IsTank = IsTank
         self.MainStatPercentageBonus = MainStatPercentageBonus
         #self.HasPotionEffect = HasPotionEffect
         self.buffList = buffList # This holds all buff that are not raid buffs, since those can be affected by f_SPD. So RaidBuffs are in PercentageBonus
         self.TraitBonus = TraitBonus
         self.type = type
+        self.timeStamp = timeStamp
         self.Potency = Potency
+        self.gcdLockTimer = gcdLockTimer
 
         self.nonReducableStamp = nonReducableStamp
         self.reducableStamp = reducableStamp
@@ -126,13 +144,18 @@ class PreBakedAction:
         self.AutoDH = AutoDH
         self.AutoCritBonus = 1
         self.AutoDHBonus = 1
-
+        
+        self.isFromPet = isFromPet
+        self.isGCD = isGCD
+        self.spellDPSBuff = spellDPSBuff
 
                              # These values are computed once the PreBakedAction is being looped
                              # through in SimulatePreBakedFight.
         self.CritBonus = 0
         self.DHBonus = 0
         self.PercentageBonus = []
+
+        self.isConditionalAction = isConditionalAction
 
     def resetTimeSensibleBuff(self):
         """
@@ -142,7 +165,7 @@ class PreBakedAction:
         self.DHBonus = 0
         self.PercentageBonus = []
 
-    def ComputeExpectedDamage(self, f_MAIN_DMG : float, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float):
+    def ComputeExpectedDamage(self, f_MAIN_DMG : float, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float, DHAuto : float):
         """
         This function is called to compute the damage of the action.
         This function requires all the values computed from the stat of the player
@@ -152,28 +175,39 @@ class PreBakedAction:
         n : int -> number of time for which the PreBakedAction will compute the random damage.
         """
 
+        f_DET_DH = math.floor((f_DET + DHAuto) * 1000 ) / 1000
+
+
+        # Hardcoded for now
+
+        if self.isFromPet : f_WD = (132+math.floor(390*100/1000))/100
+
         Damage = 0
         if self.type == 0: # Type 0 is direct damage
-            Damage = math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG * f_DET) * f_TEN ) *f_WD) * self.TraitBonus) # Player.Trait is trait DPS bonus
+            Damage = math.floor(math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG) * (f_DET_DH if (self.AutoCrit and self.AutoDH) else f_DET)) * f_TEN ) *f_WD) * self.TraitBonus) # Player.Trait is trait DPS bonus
         elif self.type == 1: # Type 1 is magical DOT
             Damage = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(self.Potency * f_WD) * f_MAIN_DMG) * f_SPD) * f_DET) * f_TEN) * self.TraitBonus) + 1
         elif self.type == 2: # Type 2 is physical DOT
-            Damage = math.floor(math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG * f_DET) * f_TEN) * f_SPD) * f_WD) * self.TraitBonus) +1
+            Damage = math.floor(math.floor(math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG) * f_DET) * f_TEN) * f_SPD) * f_WD) * self.TraitBonus) + 1
         elif self.type == 3: # Auto-attacks
-            Damage = math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG * f_DET) * f_TEN) * f_SPD)
+            Damage = math.floor(math.floor(math.floor(math.floor(self.Potency * f_MAIN_DMG) * f_DET) * f_TEN) * f_SPD)
             Damage = math.floor(math.floor(Damage * math.floor(f_WD * (3/3) *100 )/100) * self.TraitBonus) # Player.Delay is assumed to be 3 for simplicity for now
         
+        Damage = math.floor(Damage * self.spellDPSBuff)
+
         for buff in self.PercentageBonus:
             Damage = math.floor(Damage * buff)
-        
-        auto_crit_bonus = (1 + roundDown(self.CritBonus * f_CritMult, 3)) if self.AutoCrit else 1# Auto_crit bonus if buffed
-        auto_dh_bonus = (1 + roundDown(self.DHBonus * 0.25, 2)) if self.AutoDH else 1# Auto_DH bonus if buffed
 
-        ExpectedDamage = math.floor(math.floor(Damage * (1 + roundDown(((f_CritRate + self.CritBonus) * f_CritMult), 3)) ) * (1 + roundDown(((f_DH + self.DHBonus) * 0.25), 2)))
+        
+        auto_crit_bonus = (1 + self.CritBonus * f_CritMult) if self.AutoCrit else 1# Auto_crit bonus if buffed
+        auto_dh_bonus = (1 + (self.DHBonus) * 0.25) if self.AutoDH else 1# Auto_DH bonus if buffed
+
+        ExpectedDamage = math.floor(Damage *         (1 + ( (f_CritRate + self.CritBonus) if not self.AutoCrit else 1)  * f_CritMult))
+        ExpectedDamage = math.floor(ExpectedDamage * (1 + ((f_DH + self.DHBonus) if not self.AutoDH else 1) * 0.25))
         ExpectedDamage = math.floor(ExpectedDamage * auto_crit_bonus)
         ExpectedDamage = math.floor(ExpectedDamage * auto_dh_bonus)
 
-        base_spell_logging.debug("PreBakedAction has expected damage of " + str(ExpectedDamage) + " Potency :" + str(self.Potency) +" Trait : " + str(self.TraitBonus))
+        base_spell_logging.debug("PreBakedAction has expected damage of " + str(ExpectedDamage) + " Potency :" + str(self.Potency) +" Trait : " + str(self.TraitBonus) + " critBonus : " + str(self.CritBonus) + " DHBonus : " + str(self.DHBonus))
         base_spell_logging.debug(str((f_MAIN_DMG, f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)))
 
         return ExpectedDamage, Damage
@@ -189,8 +223,8 @@ class PreBakedAction:
         CritHit = (random() <= (f_CritRate + self.CritBonus)) or self.AutoCrit
         DirectHit = ((random() <= (f_DH + self.DHBonus))) or self.AutoDH
 
-        auto_crit_bonus = (1 + roundDown(self.CritBonus * f_CritMult, 3)) if self.AutoCrit else 1# Auto_crit bonus if buffed
-        auto_dh_bonus = (1 + roundDown(self.DHBonus * 0.25, 2)) if self.AutoDH else 1# Auto_DH bonus if buffed
+        auto_crit_bonus = (1 + (self.CritBonus * f_CritMult)) if self.AutoCrit else 1# Auto_crit bonus if buffed
+        auto_dh_bonus = (1 + (self.DHBonus * 0.25)) if self.AutoDH else 1# Auto_DH bonus if buffed
 
         UniformDamage = math.floor(Damage * uniform(0.95, 1.05))
         CritDamage = math.floor(UniformDamage * (1 + f_CritMult if CritHit else 1) * (self.AutoCritBonus if self.AutoCrit else 1))
@@ -239,6 +273,7 @@ class Spell:
         self.type = type 
         self.AOEHeal = AOEHeal
         self.TargetHeal = TargetHeal
+        self.conditionalAction = False
 
     def Cast(self, player, Enemy):
         """
@@ -259,6 +294,16 @@ class Spell:
                 Effect(player, tempSpell)#Changes tempSpell
         #Checks if we meet the spell requirement
 
+        # Round casting and recasting time :
+
+        tempSpell.notRoundCastTime = tempSpell.CastTime
+        tempSpell.notRoundRecastTime = tempSpell.RecastTime
+
+        tempSpell.CastTime = roundDown(tempSpell.CastTime, 3)
+        tempSpell.RecastTime = roundDown(tempSpell.RecastTime, 3)
+
+
+
         #Remove all effects that have to be removed
 
         for remove in player.EffectToRemove:
@@ -271,6 +316,12 @@ class Spell:
 
         for Requirement in tempSpell.Requirement:
             ableToCast, timeLeft = Requirement(player, tempSpell)
+
+                             # I just realized that this logic has an issue. If a time based requirement fails, then the simulator checks
+                             # if we can just wait. If it can it omits to check all other requirements. Effectively ignoring other requirements
+                             # that could result in a simulation crash. Leaving this here so I don't forget to look deeper into it
+                             # at a later point.
+
             if(not ableToCast): #Requirements return both whether it can be casted and will take away whatever value needs to be reduced to cast
                 #Will check if timeLeft is within a margin, so we will just wait for it to come
                 #timeLeft is the remaining time before the spell is available
@@ -314,6 +365,10 @@ class Spell:
         
         for Effect in self.Effect:
             Effect(player, Enemy)#Put effects on Player and/or Enemy
+
+                             # Recomputing recastTime if new Haste has been added.
+        if player.hasteHasChanged: player.recomputeRecastLock(isSpell=(player.RoleEnum == RoleEnum.Caster))
+
         #This will include substracting the mana (it has been verified before that the mana was enough)
         minDamage, Damage, Heal = 0,0,0
         if self.AOEHeal or self.TargetHeal:
@@ -335,20 +390,33 @@ class Spell:
                 if self.isPhysical: type = 2
                 else: type = 1   
 
-                                # If the action has 0 potency we skip the computation
-                                # Note that this also means the action won't be added as a ZIPAction for the player.
-            if self.Potency != 0 : minDamage,Damage= player.CurrentFight.ComputeDamageFunction(player, self.Potency, Enemy, self.DPSBonus, type, self, SavePreBakedAction = player.CurrentFight.SavePreBakedAction, PlayerIDSavePreBakedAction = player.playerID)    #Damage computation
-            
+
             if player.CurrentFight.SavePreBakedAction:
                                 # Adding to totalTimeNoFaster
                 if self.GCD and self.RecastTime <= 1.5: # We check that the spellObj has recastTime lower than 1.5 and that it is not the last spell (since all those are insta cast)
                     if  player.isLastGCD(player.NextSpell): # if last GCD, add CastTime
-                        player.totalTimeNoFaster += self.CastTime
+                        player.totalTimeNoFaster += self.notRoundCastTime
                     else:        # Else adding recastTime. 
-                        player.totalTimeNoFaster += self.RecastTime
+                        player.totalTimeNoFaster += self.notRoundRecastTime
                 elif not self.GCD and player.isLastGCD(player.NextSpell) : 
                                 # Is an oGCD
-                    player.totalTimeNoFaster += self.CastTime
+                    player.totalTimeNoFaster += self.notRoundCastTime
+                elif self.GCD and (player.RoleEnum == RoleEnum.Caster) and self.type == 2: # If is a weaponskill and has Spell speed. Only needed for RDM now
+                    if  player.isLastGCD(player.NextSpell): # if last GCD, add CastTime
+                        player.totalTimeNoFaster += self.CnotRoundastTime
+                    else:        # Else adding recastTime. 
+                        player.totalTimeNoFaster += self.notRoundRecastTime
+                elif self.GCD and (player.RoleEnum == RoleEnum.Melee or player.RoleEnum == RoleEnum.Tank) and self.type == 1: # If is a spell and has skill speed
+                    if  player.isLastGCD(player.NextSpell): # if last GCD, add CastTime
+                        player.totalTimeNoFaster += self.notRoundCastTime
+                    else:        # Else adding recastTime. 
+                        player.totalTimeNoFaster += self.notRoundRecastTime
+
+                                # If the action has 0 potency we skip the computation
+                                # Note that this also means the action won't be added as a ZIPAction for the player.
+            if self.Potency != 0 : minDamage,Damage= player.CurrentFight.ComputeDamageFunction(player, self.Potency, Enemy, self.DPSBonus, type, self, SavePreBakedAction = player.CurrentFight.SavePreBakedAction, PlayerIDSavePreBakedAction = player.playerID)    #Damage computation
+            
+            # move this before damage??????
             if player.JobEnum == JobEnum.Pet and self.Potency != 0: # Is a pet and action does damage
 
                 # Updating damage and potency
@@ -411,16 +479,21 @@ class Spell:
                 player.NoMoreAction = True
             
         if self.GCD: player.GCDCounter += 1 # If action was a GCD, increase the counter
-        
-        if self.id > 0 and (player.JobEnum != JobEnum.Pet) : # Only logs if is a player action and not a DOT
+
+        if self.id > 0 or player.RoleEnum == RoleEnum.Pet or type==3: # Only logs if is a player action and not a DOT
             log_str = ( "Timestamp : " + str(player.CurrentFight.TimeStamp)
             + " , Event : end_cast"
-            + " , playerID : " + str(player.playerID)
+            + (" , playerID : " + str(player.playerID) if player.JobEnum != JobEnum.Pet else " , MasterID : " + str(player.Master.playerID))
+            + " , CastTime : " + str(self.CastTime) + " RecastTime : " + str(self.RecastTime)
             + " , Ability : " + name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction)
+            + " , SpellBonus : " + str(self.DPSBonus)
             + " , Potency : " + str(self.Potency)
             + (" , Damage : " + str(Damage) if not (self.AOEHeal or self.TargetHeal) else " , Healing : " + str(Heal)))
             
             base_spell_logging.debug(log_str)
+
+        if self.Potency > 0: player.DamageInstanceList.append(Damage)
+        if player.RoleEnum == RoleEnum.Pet and self.Potency > 0 : player.Master.DamageInstanceList.append(Damage)
 
         return self # Return the spell object. Might not be needed.
 
@@ -460,7 +533,9 @@ def ApplyPotion(Player, Enemy):
                                      # Only relevant to PreBakedAction and only does that code if true
     if Player.CurrentFight.SavePreBakedAction:
         fight = Player.CurrentFight
-        history = buffHistory(fight.TimeStamp, fight.TimeStamp + 30)
+                                     # If prepull, make it start at 0.05
+        startTime = fight.TimeStamp if fight.FightStart else -0.05
+        history = buffHistory(startTime, startTime + 30)
         Player.PotionHistory.append(history)
 
 def PrepullPotion(Player, Enemy): #If potion is prepull
@@ -608,6 +683,36 @@ Melee_AADOT = Melee_Auto(-22, False)
 Ranged_AADOT = Ranged_Auto(-23, True)
 Queen_AADOT = Queen_Auto(-24, False)
 Potion = Spell(-2, False, 1, 1, 0, 0, ApplyPotion, [])
+
+def conditionalAction(action : Spell, conditionFn) -> Spell:
+    """
+    This function returns an Spell object that will only be used if a certain condition is met. If
+    the condition is not met the action is equivalent to WaitAbility(0).
+    Note that the use of this will add 0.01 seconds to the end time if the condition evaluates to false
+    action : Spell -> Action to perform if the condition evaluates to True
+    conditionFn : function -> Function to evaluate. This function must return a boolean value. 
+                              This function will be given the Player object as input when evaluated.
+    """
+
+    def __requirement(Player, Spell):
+                             # The conditionFn will be evaluated in the requirement checking phase.
+                             # If the conditionFn evaluates to false and we do not always allow conditional 
+                             # action we effectively make this action WaitAbility(0).
+        if not conditionFn(Player) and (not Player.CurrentFight.alwaysAllowConditionalAction) :
+            Spell.CastTime = 0
+            Spell.RecastTime = 0
+            Spell.Potency = 0
+            Spell.Effect = [] 
+        return True, 0
+    
+    newAction = copy.deepcopy(action)
+    newAction.Requirement.append(__requirement)
+    newAction.conditionalAction = True
+    return newAction
+
+        
+
+        
 
 
 

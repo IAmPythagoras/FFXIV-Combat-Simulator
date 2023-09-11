@@ -234,7 +234,11 @@ def HakazeEffect(Player, Spell):
     elif Spell.id == Shifu.id:
         Spell.Potency += 160
         if not (FukaEffect in Player.EffectList) : Player.EffectList.append(FukaEffect)
-        if not (FukaCheck in Player.EffectCDList) : Player.EffectCDList.append(FukaCheck)
+        if not (FukaCheck in Player.EffectCDList) : 
+            Player.Haste += 13
+            Player.hasteHasChanged = True
+            Player.hasteChangeValue = 13
+            Player.EffectCDList.append(FukaCheck)
         Player.FukaTimer = 40
         AddKenki(Player, 5)
         Player.EffectToRemove.append(HakazeEffect)
@@ -261,8 +265,9 @@ def JinpuEffect(Player, Spell):
         Player.EffectToRemove.append(JinpuEffect)
 
 def FukaEffect(Player, Spell):
-    Spell.CastTime *= 0.87
-    Spell.RecastTime *= 0.87
+    pass
+    #Spell.CastTime *= 0.87
+    #Spell.RecastTime *= 0.87
 
 def MeikyoEffect(Player, Spell):
     if Spell.id == Gekko.id: 
@@ -287,7 +292,11 @@ def MeikyoEffect(Player, Spell):
     elif Spell.id == Shifu.id:
         Spell.Potency += 160
         if not (FukaEffect in Player.EffectList) : Player.EffectList.append(FukaEffect)
-        if not (FukaCheck in Player.EffectCDList) : Player.EffectCDList.append(FukaCheck)
+        if not (FukaCheck in Player.EffectCDList) : 
+            Player.Haste += 13
+            Player.hasteHasChanged = True
+            Player.hasteChangeValue = 13
+            Player.EffectCDList.append(FukaCheck)
         Player.FukaTimer = 40
         AddKenki(Player, 5)
         Player.Meikyo -= 1
@@ -327,6 +336,9 @@ def FukaCheck(Player, Enemy):
     if Player.FukaTimer <= 0:
         Player.EffectList.remove(FukaEffect)
         Player.EffectToRemove.append(FukaCheck)
+        Player.hasteHasChanged = True
+        Player.Haste -= 13
+        Player.hasteChangeValue = -13
 
 def FugetsuCheck(Player, Enemy):
     if Player.FugetsuTimer <= 0:
@@ -376,9 +388,9 @@ TenkaGoken = SamuraiSpell(7488, True, 1.3, 2.5, 280, ApplyTenkaGoken, [TenkaGoke
 Midare = SamuraiSpell(7487, True, 1.3, 2.5, 640, ApplyMidare, [MidareRequirement], 0, type = 2)
 
 #Kaeshi
-KaeshiHiganbana = SamuraiSpell(16484, True, 0, 2.5, 200, ApplyKaeshiHiganbana, [KaeshiHiganbanaRequirement,TsubamegaeshiRequirement], 0)
-KaeshiGoken = SamuraiSpell(16485, True, 0, 2.5, 280, ApplyKaeshiGoken, [KaeshiGokenRequirement,TsubamegaeshiRequirement], 0)
-KaeshiSetsugekka = SamuraiSpell(16486, True, 0, 2.5, 640, ApplyKaeshi, [KaeshiSetsugekkaRequirement,TsubamegaeshiRequirement], 0)
+KaeshiHiganbana = SamuraiSpell(16484, True, 0, 2.5, 200, ApplyKaeshiHiganbana, [KaeshiHiganbanaRequirement,TsubamegaeshiRequirement], 0, type = 2)
+KaeshiGoken = SamuraiSpell(16485, True, 0, 2.5, 280, ApplyKaeshiGoken, [KaeshiGokenRequirement,TsubamegaeshiRequirement], 0, type = 2)
+KaeshiSetsugekka = SamuraiSpell(16486, True, 0, 2.5, 640, ApplyKaeshi, [KaeshiSetsugekkaRequirement,TsubamegaeshiRequirement], 0, type = 2)
 
 #Combo Actions
 Hakaze = SamuraiSpell(7477, True, Lock, 2.5, 200, ApplyHakaze, [], 0 , type = 2)

@@ -11,6 +11,7 @@ from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
 from ffxivcalc.helperCode.exceptions import InvalidMitigation
 from ffxivcalc.helperCode.helper_math import roundDown
+from math import floor
 import logging
 
 main_logging = logging.getLogger("ffxivcalc")
@@ -135,6 +136,20 @@ class Player:
         Stat : Dict -> Stats of the player as a dictionnary
         Job : JobEnum -> Specific job of the player
     """
+
+    def recomputeRecastLock(self, isSpell : bool):
+        """
+        This function is called if a Haste change has been detected. This will recompute the gcdLock of the player.
+        We only recompute the GCD Lock.
+        isSpell : bool -> True if the value to use is SpellReduction. For simplicity, this value will be figured out based on the 
+                          job of the player.
+        """
+                             # Do not worry about CastingLockTimer since it will be 0 at this point.
+        self.GCDLockTimer = floor(floor(int(self.GCDLockTimer * 1000 ) * (100 - self.hasteChangeValue)/100)/10)/100
+        player_logging.debug("Haste change has been detected. New GCDLockTimer : " + str(self.GCDLockTimer))
+        self.hasteHasChanged = False
+        self.hasteChangeValue = 0
+
 
     def AddHealingBuff(self, buff : HealingBuff, GivenHealBuff = True, stackable = False):
         """
@@ -317,6 +332,7 @@ class Player:
         self.ActionSet = ActionSet # Known Action List
         self.ZIPActionSet = [] # List of ZIPActions of the player
         self.ZIPDPSRun = [] # List containing all ZIP runs' DPS
+        self.ZIPRunPercentile = {} # Percentiles of ZIPRuns
         self.PreBakedActionSet = [] # Contains all PreBakedActions of the player
         self.DPSBar = {} # Dict containing the count of DPS occurence of the ZIPActions
         self.EffectList = EffectList # Normally Empty, can has some effects initially
@@ -358,6 +374,9 @@ class Player:
         self.GCDLockTimer = 0 # How long we have to wait until next GCD
         self.PotionTimer = 0 # Timer on the effect of potion
         self.Delay = 3 # Default time difference between AAs
+        self.Haste = 0 # Total Haste value of the player.
+        self.hasteHasChanged = False # Flag to know if haste has changed. This is needed to recompute recast time.
+        self.hasteChangeValue = 0 # Value for which haste has changed. Can be negative or positive.
 
         self.Mana = 10000 # Current mana. Max is 10'000
         self.HP = 2000  # Current HP
@@ -372,6 +391,7 @@ class Player:
         self.TotalPotency = 0 # Keeps track of total potency done
         self.TotalDamage = 0 # Keeps track of total damage done
         self.TotalMinDamage = 0 # Minimum expected damage (no crit or diret hit) 
+        self.DamageInstanceList = [] # Used to remember damage instance for debugging. Usually unused
 
         self.Stat = deepcopy(Stat) # Stats of the player
 
@@ -417,6 +437,7 @@ class Player:
             self.CritRate = 0
             self.CritMult = 0
             self.DHRate = 0
+            self.DHAuto = 0
             self.GCDReduction = 1 # Mult GCD reduction based on Spell Speed or Skill Speed (computed before fight)
             self.CritRateBonus = 0  # CritRateBonus
             self.DHRateBonus = 0 # DHRate Bonus Very usefull for dancer personnal and dance partner crit/DH rate bonus
@@ -544,18 +565,18 @@ class Player:
         self.updateRoleCD(self, time)
 
     def updateLock(self):
-        if (self.GCDLockTimer <= 0):
+        if (self.GCDLockTimer < self.CurrentFight.TimeUnit):
             self.GCDLockTimer = 0
             self.GCDLock = False
         
-        if (self.oGCDLockTimer <= 0):
+        if (self.oGCDLockTimer < self.CurrentFight.TimeUnit):
             self.oGCDLockTimer = 0
             self.oGCDLock = False
         
-        if(self.Casting and self.CastingLockTimer <=0):
+        if(self.Casting and self.CastingLockTimer < self.CurrentFight.TimeUnit):
             self.CastingSpell.CastFinal(self, self.CastingTarget)
 
-        if (self.CastingLockTimer <= 0):
+        if (self.CastingLockTimer < self.CurrentFight.TimeUnit):
             self.CastingLockTimer = 0
             self.Casting = False
 
@@ -1471,7 +1492,7 @@ class Player:
         #Song
         self.MageBallad = False
         self.ArmyPaeon = False
-        self.WandererMinuet = False
+        self.WanderingMinuet = False
 
         #Coda
         self.MageCoda = False
@@ -1482,7 +1503,7 @@ class Player:
         #CD
         self.SidewinderCD = 0
         self.EmpyrealArrowCD = 0
-        self.WandererMinuetCD = 0
+        self.WanderingMinuetCD = 0
         self.ArmyPaeonCD = 0
         self.MageBalladCD = 0
         self.BattleVoiceCD = 0
@@ -1516,7 +1537,7 @@ class Player:
             
             if (self.SidewinderCD > 0) : self.SidewinderCD = max(0,self.SidewinderCD - time)
             if (self.EmpyrealArrowCD > 0) : self.EmpyrealArrowCD = max(0,self.EmpyrealArrowCD - time)
-            if (self.WandererMinuetCD > 0) : self.WandererMinuetCD = max(0,self.WandererMinuetCD - time)
+            if (self.WanderingMinuetCD > 0) : self.WanderingMinuetCD = max(0,self.WanderingMinuetCD - time)
             if (self.ArmyPaeonCD > 0) : self.ArmyPaeonCD = max(0,self.ArmyPaeonCD - time)
             if (self.MageBalladCD > 0) : self.MageBalladCD = max(0,self.MageBalladCD - time)
             if (self.BattleVoiceCD > 0) : self.BattleVoiceCD = max(0,self.BattleVoiceCD - time)
@@ -1575,6 +1596,9 @@ class Player:
         self.RiddleOfEarthCD = 0
         self.RiddleOfFireCD = 0
         self.RiddleOfWindCD = 0
+
+        # Haste given from trait
+        self.Haste = 20
 
         #DOT
         self.DemolishDOT = None
@@ -2112,7 +2136,7 @@ class Player:
         #self.GoringDOTTimer = 0
         self.CircleScornTimer = 0
         #self.ValorDOTTimer = 0
-        self.FightOrFlighTimer = 0
+        self.FightOrFlightTimer = 0
         self.HolySheltronTimer = 0
         self.PassageOfArmsTimer = 0
         self.DivineVeilTimer = 0
@@ -2162,7 +2186,7 @@ class Player:
             
             #if (self.GoringDOTTimer > 0) : self.GoringDOTTimer = max(0,self.GoringDOTTimer - time)
             if (self.CircleScornTimer > 0) : self.CircleScornTimer = max(0,self.CircleScornTimer - time)
-            if (self.FightOrFlighTimer > 0) : self.FightOrFlighTimer = max(0,self.FightOrFlighTimer - time)
+            if (self.FightOrFlightTimer > 0) : self.FightOrFlightTimer = max(0,self.FightOrFlightTimer - time)
             #if (self.ValorDOTTimer > 0) : self.ValorDOTTimer = max(0,self.ValorDOTTimer - time)
             if (self.HolySheltronTimer > 0) : self.HolySheltronTimer = max(0,self.HolySheltronTimer - time)
             if (self.PassageOfArmsTimer > 0) : self.PassageOfArmsTimer = max(0,self.PassageOfArmsTimer - time)
@@ -2333,26 +2357,34 @@ class Pet(Player):
         """
         self.Master = Master
         Master.Pet = self
-        self.ClassAction = CasterActions # Just a default
-        self.JobAction = SummonerActions # Won't be used
+        self.ClassAction = Master.ClassAction 
+        self.JobAction = Master.JobAction 
 
         # Jobmod
         self.JobMod = 100
 
         #Giving already computed values for stats
-        self.f_WD = Master.f_WD
+                             # Recomputing f_WD since it is affected by JobMod
+        self.f_WD = (Master.Stat["WD"]+floor(390*self.JobMod/1000))/100
         self.f_DET = Master.f_DET
         self.f_TEN = Master.f_TEN
         self.f_SPD = Master.f_SPD
         self.CritRate = Master.CritRate
         self.CritMult = Master.CritMult
         self.DHRate = Master.DHRate
+        self.DHAuto = 0
         self.GCDReduction = Master.GCDReduction
         self.CritRateBonus = self.Master.CritRateBonus  # CritRateBonus
         self.DHRateBonus = self.Master.DHRateBonus # DHRate Bonus Very usefull for dancer personnal and dance partner crit/DH rate bonus
         self.Stat = deepcopy(self.Master.Stat)
         self.ArcanumTimer = self.Master.ArcanumTimer # ArcanumTimer
         self.MeditativeBrotherhoodTimer = self.Master.MeditativeBrotherhoodTimer # Meditative Brotherhood Timer
+
+                             # Pets do not have the 5% comp bonus, so we remove the comp bonus from this fight.
+        
+        self.Stat["MainStat"] = int(self.Stat["MainStat"]/Master.CurrentFight.TeamCompositionBonus)
+
+        player_logging.debug("New Pet Created : " + str(self.Stat))
 
         super().__init__([], [], deepcopy(Master.Stat), JobEnum.Pet)
 
