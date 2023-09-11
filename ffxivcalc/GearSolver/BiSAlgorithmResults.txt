@@ -1,0 +1,2122 @@
+BiS result using algorithm compared to the Balance BiS. All the shown result are according to FFXIVCALC.
+All runs were done with only the given player and no 5% team comp bonus.
+
+The rotation executed by the player is given at the start of each sections.
+
+Note that most etro gear set have slightly different mainstat, which results in a slightly off damage/100p value.
+However all the sets are compared with the same main stat value of 3378 (except if the gear set uses a 650 item level piece, in which case it is 3368)
+and 3338 for tanks.
+
+I realized that some of the rotations wouldn't be possible at high Spell Speed given that the burst phase
+is usually at a set time. So it is important to include a couple of 1-2-3 GCD at the end that could buffer the
+burst phase.
+
+I have also added the swapDHDetBeforeSpeed option at reaper. This sometime leads to less optimal BiS, so it would be a good idea to try for both value
+of this parameter.
+
+It is also important to note that even if faster Speed valued gear set end up having a higher expected DPS, the real important thing
+is to figure out how many more actions can you do given a fight. If having higher spell speed does not make you able to do more actions then
+it is probably not the best BiS (given no DoT). 
+
+The value of the parameter swapDHDetBeforeSpeed seems to affect (sometime) the final result. However it is not clear if having it set to True
+will result in a better or equal to if it was false (and vice versa). I recommend just trying with both value and see the result. At first I assumed this value
+should always be set to True since we want the highest DPS before swapping for Speed materias, but it doesn't seem to always agree. Note that having swapDHDetBeforeSpeed
+set to True generally makes the solver output higher Speed valued gear set.
+
+The value of oversaturationIterationPost and Pre do have a notable effect at higher speed max value. I recommend having always oversaturationIterationPre set to 1, as so far this has always
+resulted in higher DPS gear set for me. But having oversaturationIterationPost to 0 or 1 is a good practice. Having it set to 0 should make Crit less prominent and favor Dh/Det more, but having it set to
+1 will most likely favor Crit as it is quite abundant in most gear sets. In my experience, having it set to 0 for high Speed gear sets was the best and it usually didn't have much of an impact for gear sets with
+low max speed values. I would still recommend trying it out with different arrangements of such values. However, I have observed that as oversaturationIterationPost and oversaturationIterationPre get higher and higher
+the final DPS converges to a value that is usually not the maximum. As explained above, having these values too high will make the solver favor Crit over the others and could result in suboptimal gear sets once you have to
+remove all the crit to make it legal.
+
+If swapDHDetBeforeSpeed is not specified it is because both values of True or False resulted in the same gearset.
+
+These are the acrynyms used for the different foods.
+Food List : 
+	HD = Food({"DH" : [103, 0.1], "Det" : [62, 0.1]}, "Honeyed Dragonfruit")
+    DB = Food({"SkS" : [103, 0.1], "DH" : [62, 0.1]}, "Dragonfruit Blend")
+    BG = Food({"Crit" : [103, 0.1], "SkS" : [62, 0.1]}, "Baba Ghanoush")
+    BE = Food({"Det" : [103, 0.1], "Crit" : [62, 0.1]}, "Baked Eggplant")
+    CW = Food({"SS" : [103, 0.1], "DH" : [62, 0.1]}, "Caviar Sandwich")
+    CC = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")
+    MB = Food({"Ten" : [103, 0.1], "Det" : [62, 0.1]}, "Marinated Broccoflower")
+    BS =  Food({"Det" : [103, 0.1], "Ten" : [62, 0.1]}, "Broccoflower Stew")
+
+
+BlackMage :
+[
+Rotation : [SharpCast, Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, SharpCast, Swiftcast, Despair, 
+             Manafront, Triplecast, Fire4, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose, Fire3, Fire4, Fire4, Fire4, Despair, 
+             Blizzard3, Blizzard4,Paradox, Fire3, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Despair,
+             Blizzard3, Blizzard4,Paradox, Fire3, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Despair]
+
+
+	The Balance gives three different BiS depending on the needed Spell Speed.
+
+	Balance BiS 1 (2521) - https://etro.gg/gearset/1d113f03-16e3-4a47-83a9-c3366a0fff84
+		
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) : 
+		
+			The Fight finishes at: 84.92
+			========================
+			Results for BlackMage ID - 1 :
+			DPS : 13591.24 PPS : 242.37 TP : 20582.0 GCD : 41
+			DPS Percentile{'10': '13140', '25': '13340', '50': '13580', '75': '13820', '90': '14080', '95': '14220', '99': '14520'}
+			
+			This set has (without potion and enochian) an average 4399.62 damage per 100 potency while etro predicts 4395.96 damage per 100 potency.
+			
+	Balance BiS 2 (1292) - https://etro.gg/gearset/29cc921f-570a-4069-926f-427fc95b3acb
+		
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :  
+		
+			The Fight finishes at: 93.94
+			========================
+			Results for BlackMage ID - 1 :
+			DPS : 13315.7 PPS : 219.47 TP : 20617.0 GCD : 41
+			DPS Percentile{'10': '12620', '25': '12940', '50': '13300', '75': '13680', '90': '14040', '95': '14260', '99': '14660'}
+			
+			This set has (without potion and enochian) an average 4785.38 damage per 100 potency while etro predicts 4781.62 damage per 100 potency.
+			
+	Balance BiS 3 (824) - https://etro.gg/gearset/46e5dde8-3d11-418f-948b-f6452fb0c7e3
+		
+		
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) : 
+
+			The Fight finishes at: 97.34
+			========================
+			Results for BlackMage ID - 1 :
+			DPS : 13247.53 PPS : 211.8 TP : 20617.0 GCD : 41
+			DPS Percentile{'10': '12540', '25': '12860', '50': '13220', '75': '13620', '90': '13980', '95': '14200', '99': '14600'}
+			
+			This set has (without potion and enochian) an average 4941.53 damage per 100 potency while etro predicts 4937.48 damage per 100 potency.
+			
+			
+	Finding BiS using solver :
+	
+	Solver BiS 1 - 
+	
+	
+		Parameters : minSPDValue=2000,maxSPDValue=2600, useNewAlgo=True, oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=True
+		Food Space : [HD, BE, CC, CW]
+		
+		Result : 
+			This results in the same gear set as Balance BiS 1.
+		
+		
+	Solver BiS 2 -
+	
+		This one to consider
+			
+		Parameters : minSPDValue=2000,maxSPDValue=2600, useNewAlgo=True, oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0,findOptMateriaGearBF=False,swapDHDetBeforeSpeed=False
+		Food Space : [HD, BE, CC, CW]
+		
+		Result : 
+			WEAPON : Crit : 306 | SS : 214 | MainStat : 416 | WD : 132 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+			HEAD : SS : 184 | Det : 129 | MainStat : 248 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+			BODY : SS : 292 | DH : 204 | MainStat : 394 |  Materias : Det : 36 | Det : 36 |  Name : Raid
+			HANDS : SS : 184 | DH : 129 | MainStat : 248 |  Materias : Det : 36 | Det : 36 |  Name : Tome
+			LEGS : Det : 292 | SS : 204 | MainStat : 394 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+			FEET : Det : 184 | SS : 129 | MainStat : 248 |  Materias : DH : 36 | SS : 36 |  Name : Raid
+			EARRINGS : DH : 102 | SS : 145 | MainStat : 196 |  Materias : Det : 36 | Det : 36 |  Name : Tome
+			NECKLACE : SS : 102 | DH : 145 | MainStat : 196 |  Materias : Det : 36 | SS : 36 |  Name : Raid
+			BRACELETS : Det : 145 | SS : 102 | MainStat : 196 |  Materias : DH : 36 | SS : 36 |  Name : Tome
+			LRING : Det : 102 | Crit : 145 | MainStat : 196 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+			RING : SS : 102 | DH : 145 | MainStat : 196 |  Materias : Det : 36 | SS : 36 |  Name : Raid
+			Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1530, 'Ten': 400, 'SS': 2521, 'SkS': 400, 'Crit': 851, 'DH': 1331, 'Piety': 390}
+			Materia numbers : SS 10x |DH 4x |Det 8x |
+			Food Caviar Sandwich gives -> SS 10% max of 103 |DH 10% max of 62 |
+			The Fight finishes at: 84.92
+			
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) : 
+
+			The Fight finishes at: 84.92
+			========================
+			Results for BlackMage ID - 1 :
+			DPS : 13594.44 PPS : 242.37 TP : 20582.0 GCD : 41
+			DPS Percentile{'10': '13140', '25': '13340', '50': '13580', '75': '13820', '90': '14080', '95': '14220', '99': '14520'}
+
+			This set has (without potion) an average 4,400.38 damage per 100 potency.
+
+		
+	Solver BiS 3 -
+	
+		Note :
+			This run will try to find a BiS close to the Balance BiS 2 Spell Speed.
+			
+		Parameters : minSPDValue=1000,maxSPDValue=1300, useNewAlgo=True, oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0 and 1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, CC, CW]
+		
+		Results :
+			Both values of the parameter oversaturationIterationsPostGear found the exact same BiS as the Balance BiS 2.
+			
+	Solver BiS 4 -
+
+			
+		Parameters : minSPDValue=400,maxSPDValue=900, useNewAlgo=True, oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0 and 1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, CC, CW]
+		
+		Results :
+		
+			WEAPON : Crit : 306 | SS : 214 | MainStat : 416 | WD : 132 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			HEAD : Crit : 184 | DH : 129 | MainStat : 248 |  Materias : Det : 36 | DH : 36 |  Name : Tome
+			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : Det : 36 | Det : 36 |  Name : Tome
+			HANDS : Det : 129 | Crit : 184 | MainStat : 248 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			LEGS : Crit : 204 | DH : 292 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			FEET : Crit : 129 | DH : 184 | MainStat : 248 |  Materias : Crit : 36 | Det : 36 |  Name : Tome
+			EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			NECKLACE : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | DH : 36 |  Name : Tome
+			BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			LRING : Det : 102 | Crit : 145 | MainStat : 196 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			RING : SS : 102 | DH : 145 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 716, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+			Materia numbers : Det 9x |DH 7x |Crit 6x |
+			Food Baked Eggplant gives -> Det 10% max of 103 |Crit 10% max of 62 |
+			
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) : 
+
+			The Fight finishes at: 98.01
+			========================
+			Results for BlackMage ID - 1 :
+			DPS : 13251.06 PPS : 210.36 TP : 20617.0 GCD : 41
+			DPS Percentile{'10': '12540', '25': '12860', '50': '13240', '75': '13620', '90': '13980', '95': '14200', '99': '14620'}
+
+			This set has (without potion) an average 4,978.46 damage per 100 potency.
+			
+	Solver BiS 5 -
+	
+		Parameters : minSPDValue=800,maxSPDValue=900, useNewAlgo=True, oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0 and 1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, CC, CW]
+		
+		Results :
+			Both values of the parameter oversaturationIterationsPostGear found the exact same BiS as the Balance BiS 3.
+			
+			
+BlackMage section's results:
+	
+	Most BiS found by the algorithm seem to agree with the Balance's BiS, at the exception of the highest Spell Speed BiS. 
+	In fact using Solver BiS 2 we would gain ~3 expected DPS over the balance 2521 Balance BiS.
+]
+	
+	
+	
+RedMage :
+[
+
+Rotation : [Verthunder, Verareo, Swiftcast,Acceleration, Verthunder, Potion, Verthunder, Embolden, Manafication, EnchantedRiposte, Fleche, EnchantedZwerchhau, 
+            Contre, EnchantedRedoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verstone, Verareo, Verfire, Verthunder, 
+            Acceleration, Verareo, Verstone, Verthunder, Fleche, Jolt, Verthunder, Verfire, Verareo, Contre, Jolt, Verareo, Engagement, Corps, Verstone, 
+            Verthunder, EnchantedRiposte, EnchantedZwerchhau, EnchantedRedoublement, Fleche, Verflare, Scorch, Resolution]
+			
+	Balance BiS :
+	
+	Balance BiS 1 (502) - https://etro.gg/gearset/6d7a091d-52f5-49ec-9b2e-d7b1d4c45733
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+			
+			The Fight finishes at: 67.4
+			========================
+			Results for RedMage ID - 1 :
+			DPS : 12843.61 PPS : 239.17 TP : 16120 GCD : 31
+			DPS Percentile{'10': '12120', '25': '12440', '50': '12820', '75': '13220', '90': '13580', '95': '13800', '99': '14220'}
+			
+			This set has (without potion) an average 5,051.05 damage per 100 potency while etro predicts 5052.24 damage per 100 potency.
+	
+	Finding BiS using solver :
+	
+	Solver BiS 1 -
+	
+		Parameters : minSPDValue=400,maxSPDValue=2500, useNewAlgo=True, oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, CC, CW]
+		
+		Results :
+		
+		WEAPON : Crit : 306 | DH : 214 | MainStat : 416 | WD : 132 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+		HEAD : SS : 184 | Det : 129 | MainStat : 248 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+		BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+		HANDS : Det : 129 | Crit : 184 | MainStat : 248 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+		LEGS : Crit : 204 | DH : 292 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+		FEET : Det : 184 | SS : 129 | MainStat : 248 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+		EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+		NECKLACE : SS : 102 | DH : 145 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+		BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+		LRING : Det : 102 | Crit : 145 | MainStat : 196 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+		RING : SS : 102 | DH : 145 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+		Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1342, 'Ten': 400, 'SS': 1411, 'SkS': 400, 'Crit': 2284, 'DH': 1196, 'Piety': 390}
+		Materia numbers : SS 12x |Crit 10x |
+		Food Caviar Canapes gives -> Crit 10% max of 103 |SS 10% max of 62 |
+
+			
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) : 
+		
+			The Fight finishes at: 63.49
+			========================
+			Results for RedMage ID - 1 :
+			DPS : 12860.01 PPS : 253.9 TP : 16120 GCD : 31
+			DPS Percentile{'10': '12180', '25': '12480', '50': '12840', '75': '13220', '90': '13560', '95': '13780', '99': '14180'}
+			
+			This set has (without potion) an average 4,737.11 damage per 100 potency.
+			
+		Note :
+			
+			RedMage usually doesn't do that well with high Spell Speed because of risks of overcapping.
+					
+		
+	Solver BiS 2 - 
+	
+		Parameters : minSPDValue=400,maxSPDValue=600, useNewAlgo=True, oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0 and 1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, CC, CW]
+		
+		Result : 
+		
+			WEAPON : Crit : 306 | DH : 214 | MainStat : 416 | WD : 132 |  Materias : Det : 36 | SS : 36 |  Name : Raid
+			HEAD : Crit : 184 | DH : 129 | MainStat : 248 |  Materias : Det : 36 | DH : 36 |  Name : Tome
+			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : Det : 36 | Det : 36 |  Name : Tome
+			HANDS : Det : 129 | Crit : 184 | MainStat : 248 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			LEGS : Crit : 204 | DH : 292 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			FEET : Crit : 129 | DH : 184 | MainStat : 248 |  Materias : Crit : 36 | Det : 36 |  Name : Tome
+			EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			NECKLACE : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | DH : 36 |  Name : Tome
+			BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			LRING : Det : 102 | Crit : 145 | MainStat : 196 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			RING : SS : 102 | DH : 145 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 538, 'SkS': 400, 'Crit': 2514, 'DH': 1580, 'Piety': 390}
+			Materia numbers : Det 9x |SS 1x |DH 6x |Crit 6x |
+			Food Baked Eggplant gives -> Det 10% max of 103 |Crit 10% max of 62 |
+				
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) : 
+	
+				The Fight finishes at: 67.17
+				========================
+				Results for RedMage ID - 1 :
+				DPS : 12854.92 PPS : 239.99 TP : 16120 GCD : 31
+				DPS Percentile{'10': '12140', '25': '12460', '50': '12840', '75': '13220', '90': '13600', '95': '13820', '99': '14240'}
+			
+			This set has (without potion) an average 5,038.16 damage per 100 potency.
+			
+	Solver BiS 3 - 
+	
+		Parameters : minSPDValue=400,maxSPDValue=510, useNewAlgo=True, oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0 and 1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, CC, CW]
+		
+		Result : 
+			This results in the same gear set as Balance BiS 1.
+			
+			
+RedMage section's result:
+	
+	Solver BiS 1 might have higher expected DPS over Balance BiS 1 and Solver BiS 2/3, but its higher Spell Speed value will probably be too much for Redmage's rotation and will end up
+	wasting mana. Furthermore, the gain in expected DPS of ~6 is too low if you loose mana in the end.
+	
+	Solver BiS 2 might be one to consider with very similar SPell Speed which could make easier the triple melee combo pot window at the 2 minute mark (pot before burst).
+	
+	Solver BiS 2 also has ~11 expected more DPS against Balance BiS 1 and finishes 0.23 seconds faster.
+	
+	It is important to note that 502 Spell Speed might be a better value for oGCD allignment, which the solver cannot figure out (for now).
+	
+	
+]
+
+Summoner :
+
+[
+
+Rotation : [Ruin3, Summon, SearingLight, AstralImpulse, AstralImpulse, AstralImpulse, EnergyDrainSMN, Enkindle, AstralImpulse, Deathflare, Fester, AstralImpulse, 
+            Fester, AstralImpulse, Garuda, Swiftcast, Slipstream, Emerald, Emerald, Emerald, Emerald, Titan, Topaz, Mountain, Topaz, Mountain, Topaz, Mountain, 
+            Topaz, Mountain, Ifrit, Cyclone, Strike, Ruby, Ruby, Ruin4, Ruin3]
+			
+			
+			
+	Balance BiS:
+	
+	Balance BiS 1 (591) - https://etro.gg/gearset/b42339b3-8fca-4a4f-ad67-85343e84a4f3
+	
+	Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+	
+		The Fight finishes at: 59.6
+		========================
+		Results for Summoner ID - 1 :
+		DPS : 12264.92 PPS : 248.66 TP : 14820 GCD : 26
+		DPS Percentile{'10': '11520', '25': '11860', '50': '12240', '75': '12660', '90': '13040', '95': '13280', '99': '13720'}
+		
+		This set has (without potion) an average 5,015.49 damage per 100 potency while etro predicts 5016.57 damage per 100 potency.
+		
+		
+	Balance BiS 2 (538) - https://etro.gg/gearset/53a01c1e-a167-481b-bcfd-1428815d4b55
+	
+		The Fight finishes at: 59.81
+		========================
+		Results for Summoner ID - 1 :
+		DPS : 12272.36 PPS : 247.78 TP : 14820 GCD : 26
+		DPS Percentile{'10': '11540', '25': '11860', '50': '12240', '75': '12660', '90': '13040', '95': '13280', '99': '13720'}
+		
+		This set has (without potion) an average 5,036.13 damage per 100 potency while etro predicts 5038.32 damage per 100 potency.
+		
+		
+	Balance BiS 3 (502) - https://etro.gg/gearset/66f5ec54-c062-467f-811f-5e77a90c7aba
+
+		The Fight finishes at: 60.02
+		========================
+		Results for Summoner ID - 1 :
+		DPS : 12260.93 PPS : 246.92 TP : 14820 GCD : 26
+		DPS Percentile{'10': '11520', '25': '11860', '50': '12240', '75': '12640', '90': '13040', '95': '13260', '99': '13720'}
+
+		This set has (without potion) an average 5,050.32 damage per 100 potency while etro predicts 5052.24 damage per 100 potency.
+		
+	Finding BiS using solver : 
+	
+	Solver BiS 1 :
+	
+		Parameters : minSPDValue=400,maxSPDValue=600, useNewAlgo=True, oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, CC, CW]
+		
+		Results :
+		
+			WEAPON : Crit : 306 | DH : 214 | MainStat : 416 | WD : 132 |  Materias : DH : 36 | SS : 36 |  Name : Raid
+			HEAD : Crit : 184 | DH : 129 | MainStat : 248 |  Materias : Det : 36 | Det : 36 |  Name : Tome
+			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : Det : 36 | Det : 36 |  Name : Tome
+			HANDS : Det : 129 | Crit : 184 | MainStat : 248 |  Materias : DH : 36 | Det : 36 |  Name : Raid
+			LEGS : Crit : 204 | DH : 292 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			FEET : Crit : 129 | DH : 184 | MainStat : 248 |  Materias : Crit : 36 | Det : 36 |  Name : Tome
+			EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | Det : 36 |  Name : Raid
+			NECKLACE : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | DH : 36 |  Name : Tome
+			BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | Det : 36 |  Name : Raid
+			LRING : Det : 102 | Crit : 145 | MainStat : 196 |  Materias : DH : 36 | Det : 36 |  Name : Raid
+			RING : SS : 102 | DH : 145 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 538, 'SkS': 400, 'Crit': 2514, 'DH': 1580, 'Piety': 390}
+			Materia numbers : DH 6x |SS 1x |Det 9x |Crit 6x |
+			Food Baked Eggplant gives -> Det 10% max of 103 |Crit 10% max of 62 |
+			
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 59.81
+			========================
+			Results for Summoner ID - 1 :
+			DPS : 12275.17 PPS : 247.78 TP : 14820 GCD : 26
+			DPS Percentile{'10': '11540', '25': '11860', '50': '12260', '75': '12660', '90': '13040', '95': '13280', '99': '13720'}
+			
+			This set has (without potion) an average 5,037.42 damage per 100 potency
+		
+	Solver BiS 2 :
+	
+		Parameters : minSPDValue=400,maxSPDValue=700, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=False
+		Food Space : [HD, BE, CC, CW]
+		
+		
+		Results : 
+		
+			WEAPON : Crit : 306 | DH : 214 | MainStat : 416 | WD : 132 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			HEAD : Crit : 184 | DH : 129 | MainStat : 248 |  Materias : Det : 36 | DH : 36 |  Name : Tome
+			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : Det : 36 | Det : 36 |  Name : Tome
+			HANDS : Det : 129 | Crit : 184 | MainStat : 248 |  Materias : Det : 36 | SS : 36 |  Name : Raid
+			LEGS : Crit : 204 | DH : 292 | MainStat : 394 |  Materias : Crit : 36 | Det : 36 |  Name : Raid
+			FEET : Crit : 129 | DH : 184 | MainStat : 248 |  Materias : Crit : 36 | Det : 36 |  Name : Tome
+			EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | Det : 36 |  Name : Raid
+			NECKLACE : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | DH : 36 |  Name : Tome
+			BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | Det : 36 |  Name : Raid
+			LRING : Det : 102 | Crit : 145 | MainStat : 196 |  Materias : DH : 36 | Det : 36 |  Name : Raid
+			RING : SS : 102 | DH : 145 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1534, 'Ten': 400, 'SS': 591, 'SkS': 400, 'Crit': 2519, 'DH': 1580, 'Piety': 390}
+			Materia numbers : Det 10x |DH 6x |SS 1x |Crit 5x |
+			Food Caviar Canapes gives -> Crit 10% max of 103 |SS 10% max of 62 |
+					
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 59.6
+			========================
+			Results for Summoner ID - 1 :
+			DPS : 12273.67 PPS : 248.66 TP : 14820 GCD : 26
+			DPS Percentile{'10': '11540', '25': '11860', '50': '12260', '75': '12660', '90': '13040', '95': '13280', '99': '13720'}
+			
+			This set has (without potion) an average 5,018.71 damage per 100 potency.
+			
+			
+	Solver BiS 3 :
+	
+		Since having too high spell speed is detrimental to Summoner, I try to find one with lower spell speed.
+	
+		Parameters : minSPDValue=400,maxSPDValue=2500, useNewAlgo=True, oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0,findOptMateriaGearBF=True
+		Food Space : [HD, BE, CC, CW]
+		
+		Results :
+		
+			WEAPON : Crit : 306 | DH : 214 | MainStat : 416 | WD : 132 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+			HEAD : SS : 184 | Det : 129 | MainStat : 248 |  Materias : Crit : 36 | DH : 36 |  Name : Raid
+			BODY : SS : 292 | DH : 204 | MainStat : 394 |  Materias : Det : 36 | Det : 36 |  Name : Raid
+			HANDS : SS : 184 | DH : 129 | MainStat : 248 |  Materias : Det : 36 | Det : 36 |  Name : Tome
+			LEGS : Det : 292 | SS : 204 | MainStat : 394 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+			FEET : Det : 184 | SS : 129 | MainStat : 248 |  Materias : DH : 36 | SS : 36 |  Name : Raid
+			EARRINGS : DH : 102 | SS : 145 | MainStat : 196 |  Materias : Det : 36 | Det : 36 |  Name : Tome
+			NECKLACE : SS : 102 | DH : 145 | MainStat : 196 |  Materias : Det : 36 | SS : 36 |  Name : Raid
+			BRACELETS : Det : 145 | SS : 102 | MainStat : 196 |  Materias : DH : 36 | SS : 36 |  Name : Tome
+			LRING : Det : 102 | Crit : 145 | MainStat : 196 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+			RING : SS : 102 | DH : 145 | MainStat : 196 |  Materias : Det : 36 | SS : 36 |  Name : Raid
+			Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1530, 'Ten': 400, 'SS': 2307, 'SkS': 400, 'Crit': 887, 'DH': 1509, 'Piety': 390}
+			Materia numbers : SS 10x |Crit 1x |DH 3x |Det 8x |
+			Food Caviar Sandwich gives -> SS 10% max of 103 |DH 10% max of 62 |
+
+			
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 53.27
+			========================
+			Results for Summoner ID - 1 :
+			DPS : 12319.5 PPS : 278.21 TP : 14820 GCD : 26
+			DPS Percentile{'10': '11840', '25': '12060', '50': '12300', '75': '12560', '90': '12820', '95': '12980', '99': '13300'}
+			
+			This set has (without potion) an average 4,464.19 damage per 100 potency.
+			
+			
+	Solver BiS 4 :
+	
+		Parameters : minSPDValue=400,maxSPDValue=2500, useNewAlgo=True, oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, CC, CW]
+		
+	Results :
+	
+		WEAPON : Crit : 306 | DH : 214 | MainStat : 416 | WD : 132 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+		HEAD : SS : 184 | Det : 129 | MainStat : 248 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+		BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+		HANDS : Det : 129 | Crit : 184 | MainStat : 248 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+		LEGS : Crit : 204 | DH : 292 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+		FEET : Det : 184 | SS : 129 | MainStat : 248 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+		EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+		NECKLACE : SS : 102 | DH : 145 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+		BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+		LRING : Det : 102 | Crit : 145 | MainStat : 196 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+		RING : SS : 102 | DH : 145 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+		Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1342, 'Ten': 400, 'SS': 1411, 'SkS': 400, 'Crit': 2284, 'DH': 1196, 'Piety': 390}
+		Materia numbers : SS 12x |Crit 10x |
+		Food Caviar Canapes gives -> Crit 10% max of 103 |SS 10% max of 62 |
+		
+	Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+
+		The Fight finishes at: 56.36
+		========================
+		Results for Summoner ID - 1 :
+		DPS : 12304.88 PPS : 262.95 TP : 14820 GCD : 26
+		DPS Percentile{'10': '11620', '25': '11920', '50': '12280', '75': '12660', '90': '13040', '95': '13260', '99': '13680'}
+	
+		This set has (without potion) an average 4,736.77 damage per 100 potency.
+	
+		
+Summoner section's results :
+
+	Solver BiS 1 and 2 seem the most promising results that would stay in the allowed limits of spell speed on summoner. They are very similar to Balance BiS 1 and 2 respectively,
+	but differ in DH/Det amount by some meld. Solver BiS 1 results in ~3 expected DPS gain over Balance BiS 2, and Solver BiS 2 is a gain of ~9 expected DPS over Balance BiS 1.
+	
+	Even though Solver BiS 3 and 4 are an expected DPS gain over the others, they are most likely not viable due to drift caused by to high spell Speed.
+		
+]
+	
+
+Scholar : 
+[
+Note : We will only look into minimum Piety Set.
+	
+	
+Rotation : [Broil, Biolysis, Aetherflow, Broil, Swiftcast, Broil, WaitAbility(1), ChainStratagem, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, 
+            Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Biolysis, Broil, Broil,
+			Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil]
+	
+	Balance BiS :
+	
+	Balance BiS 1 (1479) - https://etro.gg/gearset/4c241674-2c6e-42aa-a390-5e5ac29b9ab5
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 80.84
+			========================
+			Results for Scholar ID - 1 :
+			DPS : 7118.86 PPS : 148.81 TP : 12030 GCD : 36
+			DPS Percentile{'10': '6820', '25': '6960', '50': '7120', '75': '7280', '90': '7420', '95': '7520', '99': '7700'}
+		
+			This set has (without potion) an average 4,689.49 damage per 100 potency while etro predicts 4691.06 damage per 100 potency.
+		
+	Balance BiS 2 (954) - https://etro.gg/gearset/d7b63d98-5c7f-4b3a-bc0c-f99eb049a8d4
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+			The Fight finishes at: 83.99
+			========================
+			Results for Scholar ID - 1 :
+			DPS : 7094.55 PPS : 143.23 TP : 12030 GCD : 36
+			DPS Percentile{'10': '6760', '25': '6920', '50': '7080', '75': '7260', '90': '7440', '95': '7540', '99': '7720'}
+		
+			This set has (without potion) an average 4,874.58 damage per 100 potency while etro predicts 4876.47 damage per 100 potency.
+			
+	Finding BiS using solver : 
+	
+	Solver BiS 1 :
+	
+		Parameters : minSPDValue=400,maxSPDValue=2500, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, CC, CW]
+		
+		
+		Results : 
+
+			WEAPON : Crit : 306 | Det : 214 | MainStat : 416 | WD : 132 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+			HEAD : Det : 184 | SS : 129 | MainStat : 248 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+			HANDS : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+			LEGS : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+			FEET : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+			EARRINGS : Det : 145 | SS : 102 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Tome
+			NECKLACE : Det : 145 | SS : 102 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+			LRING : Crit : 142 | Det : 99 | MainStat : 186 |  Materias : SS : 36 | SS : 36 |  Name : Tome650
+			RING : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+			Final Stats : {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 1412, 'SkS': 400, 'Crit': 2306, 'DH': 440, 'Piety': 390}
+			Materia numbers : SS 16x |Crit 6x |
+			Food Caviar Sandwich gives -> SS 10% max of 103 |DH 10% max of 62 |
+			
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 80.84
+			========================
+			Results for Scholar ID - 1 :
+			DPS : 7134.78 PPS : 148.81 TP : 12030 GCD : 36
+			DPS Percentile{'10': '6840', '25': '6960', '50': '7120', '75': '7300', '90': '7440', '95': '7540', '99': '7720'}
+			
+			This set has (without potion) an average 4,702.37 damage per 100 potency.
+		
+	Solver BiS 2 :
+	
+		Parameters : minSPDValue=400,maxSPDValue=960, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, CC, CW]
+		
+		Results : 
+			This resulted in the same set as the Balance BiS 2
+	
+	
+Scholar section's results : 
+
+	Solver BiS 1 has a ~16 expected DPS increase over Balance BiS 1 and has lower Spell Speed. 
+	Solver BiS 2 resulted in the same gear set as Balance BiS 2.
+
+
+]
+
+WhiteMage : 
+
+[
+Note : We will only look into minimum Piety Set.
+	
+Rotation : WHMOpener = [Glare, ThinAir, Dia, Glare, WaitAbility(1), PresenceOfMind, Glare, Glare, Glare, Glare, Glare, ThinAir,
+					    Glare, Glare, Glare, Glare, Glare, Glare, Dia, Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,
+						Glare,Glare,Glare,Glare,Glare,Glare14729]
+			
+	Balance BiS :
+	
+	Balance BiS 1 (1299) - https://etro.gg/gearset/020093de-e69a-458f-8278-c3406eaa8eb7
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 66.07
+			========================
+			Results for WhiteMage ID - 1 :
+			DPS : 7415.35 PPS : 155.14 TP : 10250 GCD : 31
+			DPS Percentile{'10': '7060', '25': '7220', '50': '7400', '75': '7600', '90': '7800', '95': '7900', '99': '8120'}
+	
+			This set has (without potion) an average 4,751.29 damage per 100 potency while etro predicts 4747.36 damage per 100 potency.
+	
+	Balance BiS 2 (1062) - https://etro.gg/gearset/aee5c1f4-5e59-47fb-88ff-3eeffbef6231
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+	
+			The Fight finishes at: 67.74
+			========================
+			Results for WhiteMage ID - 1 :
+			DPS : 7395.69 PPS : 152.2 TP : 10310 GCD : 31
+			DPS Percentile{'10': '7020', '25': '7180', '50': '7380', '75': '7600', '90': '7780', '95': '7900', '99': '8120'}
+		
+			This set has (without potion) an average 4,837.41 damage per 100 potency while etro predicts 4833.44 damage per 100 potency.
+	
+	Balance BiS 3 (664) - https://etro.gg/gearset/a581634a-6def-4150-903f-2d91026471b6
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+	
+			The Fight finishes at: 69.87
+			========================
+			Results for WhiteMage ID - 1 :
+			DPS : 7350.69 PPS : 147.56 TP : 10310 GCD : 31
+			DPS Percentile{'10': '6960', '25': '7140', '50': '7340', '75': '7560', '90': '7760', '95': '7880', '99': '8100'}
+		
+			This set has (without potion) an average 4,974.51 damage per 100 potency while etro predicts 4970.29 damage per 100 potency.
+		
+		
+	Note :
+		According to the balance, Balance Bis 2 should be the highest DPS, it however is not according to my results.
+		
+	Finding BiS using solver : 
+	
+	Solver BiS 1 : 
+	
+		Parameters : minSPDValue=400,maxSPDValue=2500, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, CC, CW]
+		
+		Results :
+		
+			WEAPON : Crit : 306 | Det : 214 | MainStat : 416 | WD : 132 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+			HEAD : Det : 184 | Crit : 129 | MainStat : 248 |  Materias : Crit : 36 | SS : 36 |  Name : Tome
+			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+			HANDS : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+			LEGS : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+			FEET : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+			EARRINGS : Det : 145 | SS : 102 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Tome
+			NECKLACE : Det : 145 | SS : 102 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+			LRING : Crit : 142 | Det : 99 | MainStat : 186 |  Materias : SS : 36 | SS : 36 |  Name : Tome650
+			RING : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | SS : 36 |  Name : Tome
+			Final Stats : {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 1242, 'SkS': 400, 'Crit': 2502, 'DH': 436, 'Piety': 390}
+			Materia numbers : SS 16x |Crit 5x |DH 1x |
+			Food Caviar Canapes gives -> Crit 10% max of 103 |SS 10% max of 62 |
+			
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+
+			The Fight finishes at: 66.37
+			========================
+			Results for WhiteMage ID - 1 :
+			DPS : 7416.77 PPS : 154.44 TP : 10250 GCD : 31
+			DPS Percentile{'10': '7040', '25': '7220', '50': '7400', '75': '7600', '90': '7800', '95': '7920', '99': '8140'}
+			
+			This set has (without potion) an average 4,775.48 damage per 100 potency.
+			
+	Solver BiS 2 :
+
+		Parameters : minSPDValue=400,maxSPDValue=1100, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0 and 1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, CC, CW]
+		
+		Results : 
+			This results in the same gear as Balance BiS 2.
+			
+	Solver BiS 3 :
+	
+		Parameters : minSPDValue=600,maxSPDValue=700, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0 and 1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, CC, CW]
+		
+		Results : 
+	
+			This results in the same gear set as Balance BiS 3
+			
+WhiteMage section's results :
+
+	Solver BiS 1 has a gain of ~1.4 expected DPS over a similar Speed to Balance BiS 1 and it has a slower GCD timer.
+	Solver BiS 2 and 3 are the same to Balance BiS 2 and 3 respectively.
+	
+]
+
+Sage : 
+
+[
+Note : We will only look into minimum Piety Set.
+
+Rotation : [Dosis, Eukrasia, EukrasianDosis, Dosis, Dosis, Phlegma, Phlegma, Dosis, Dosis, Dosis, Dosis, Dosis, 
+            Dosis, Dosis, Dosis, Eukrasia, EukrasianDosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, 
+			Dosis, Dosis, Dosis, Dosis, Dosis, Dosis]
+
+	Balance BiS :
+	
+	Balance BiS 1 (664) - https://etro.gg/gearset/efc239cb-6371-4d1e-b645-8dd7600575b5
+		
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 79.45
+			========================
+			Results for Sage ID - 1 :
+			DPS : 7561.28 PPS : 151.67 TP : 12050 GCD : 35
+			DPS Percentile{'10': '7160', '25': '7340', '50': '7560', '75': '7760', '90': '7960', '95': '8080', '99': '8320'}
+		
+			This set has (without potion) an average 4,974.55 damage per 100 potency while etro predicts 4976.55 damage per 100 potency.
+			
+	Finding BiS using solver : 
+	
+	Solver BiS 1 : 
+	
+		Parameters : minSPDValue=400,maxSPDValue=3000, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0 and 1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, CC, CW]
+		
+		Results : 
+		
+			WEAPON : Crit : 306 | Det : 214 | MainStat : 416 | WD : 132 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+			HEAD : Det : 184 | SS : 129 | MainStat : 248 |  Materias : Crit : 36 | SS : 36 |  Name : Raid
+			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+			HANDS : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+			LEGS : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+			FEET : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+			EARRINGS : Det : 145 | SS : 102 | MainStat : 196 |  Materias : Crit : 36 | SS : 36 |  Name : Tome
+			NECKLACE : Det : 145 | SS : 102 | MainStat : 196 |  Materias : Crit : 36 | SS : 36 |  Name : Raid
+			BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+			LRING : Crit : 142 | Det : 99 | MainStat : 186 |  Materias : DH : 36 | SS : 36 |  Name : Tome650
+			RING : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			Final Stats : {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 1412, 'SkS': 400, 'Crit': 2198, 'DH': 558, 'Piety': 390}
+			Materia numbers : SS 16x |Crit 3x |DH 3x |
+			Food Caviar Sandwich gives -> SS 10% max of 103 |DH 10% max of 62 |
+			
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 75.25
+			========================
+			Results for Sage ID - 1 :
+			DPS : 7596.98 PPS : 160.13 TP : 12050 GCD : 35
+			DPS Percentile{'10': '7240', '25': '7400', '50': '7580', '75': '7780', '90': '7960', '95': '8080', '99': '8280'}
+			
+			This set has (without potion) an average 4,703.94 damage per 100 potency
+			
+	Solver BiS 2 : 
+	
+		Parameters : minSPDValue=400,maxSPDValue=1000, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0 and 1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, CC, CW]
+		
+		Results : 
+		
+			WEAPON : Crit : 306 | Det : 214 | MainStat : 416 | WD : 132 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+			HEAD : Det : 184 | Crit : 129 | MainStat : 248 |  Materias : Crit : 36 | SS : 36 |  Name : Tome
+			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+			HANDS : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+			LEGS : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+			FEET : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SS : 36 | DH : 36 |  Name : Raid
+			EARRINGS : Det : 145 | SS : 102 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Tome
+			NECKLACE : Det : 145 | SS : 102 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+			LRING : Crit : 142 | Det : 99 | MainStat : 186 |  Materias : DH : 36 | DH : 36 |  Name : Tome650
+			RING : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			Final Stats : {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 954, 'SkS': 400, 'Crit': 2502, 'DH': 724, 'Piety': 390}
+			Materia numbers : DH 9x |Crit 5x |SS 8x |
+			Food Caviar Canapes gives -> Crit 10% max of 103 |SS 10% max of 62 |
+		
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 77.95
+			========================
+			Results for Sage ID - 1 :
+			DPS : 7569.88 PPS : 154.59 TP : 12050 GCD : 35
+			DPS Percentile{'10': '7180', '25': '7360', '50': '7560', '75': '7760', '90': '7960', '95': '8080', '99': '8320'}
+			
+			This set has (without potion) an average 4,874.55 damage per 100 potency
+			
+	Solver BiS 3 : 
+	
+		Parameters : minSPDValue=400,maxSPDValue=700, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0 and 1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, CC, CW]
+		
+		Results : 
+			This results in the same gear set as Balance BiS 1.
+			
+Sage section's results :
+	Searching over the whole Spell Speed space has made it possible to find a gear set that has ~35 more expected DPS. This however could be bad for mana as the gear set is minimum piety.
+	Solver BiS 2 is a more closer BiS in terms of Spell Speed and has ~8 expected more DPS over Balance BiS 1
+	When searching for a BiS in the same Spell Speed range as the Balance BiS 1 we found the same gear set.
+
+]
+
+Astrologian : 
+
+[
+Note : We will only look into minimum Piety Set.
+	
+Rotation : [Malefic, Lightspeed, Combust, Malefic, Malefic, Divination, Malefic, MinorArcana, Astrodyne, Malefic, LordOfCrown, Malefic, Malefic, Malefic, Malefic, 
+		    Malefic, Malefic,Combust, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic
+			Malefic, Malefic, Malefic]
+
+
+	Balance BiS :
+	
+	Balance BiS 1 (774) - https://etro.gg/gearset/60d1fcc9-8a2e-4e68-8205-f8b25a9de39a
+	
+	Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+	
+		The Fight finishes at: 71.95
+		========================
+		Results for Astrologian ID - 1 :
+		DPS : 5419.94 PPS : 108.41 TP : 7800 GCD : 31
+		DPS Percentile{'10': '5120', '25': '5260', '50': '5420', '75': '5580', '90': '5740', '95': '5820', '99': '6000'}
+	
+		This set has (without potion) an average 4,936.00 damage per 100 potency while etro predicts 4935.32 damage per 100 potency.
+		
+	Balance BiS 2 (1299) - https://etro.gg/gearset/83845599-bb32-4539-b829-971501856d7e
+	
+	Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+	
+		The Fight finishes at: 69.34
+		========================
+		Results for Astrologian ID - 1 :
+		DPS : 5437.61 PPS : 112.49 TP : 7800 GCD : 31
+		DPS Percentile{'10': '5160', '25': '5280', '50': '5440', '75': '5580', '90': '5720', '95': '5820', '99': '5980'}
+	
+		This set has (without potion) an average 4,751.2 damage per 100 potency while etro predicts 4753.34 damage per 100 potency.
+		
+	Finding BiS using solver :
+	
+	Solver BiS 1 - 
+	
+		Parameters : minSPDValue=400,maxSPDValue=3000, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0 and 1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, CC, CW]
+		
+	Results : 
+	
+		WEAPON : Crit : 306 | Det : 214 | MainStat : 416 | WD : 132 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+		HEAD : Det : 184 | SS : 129 | MainStat : 248 |  Materias : Crit : 36 | SS : 36 |  Name : Raid
+		BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+		HANDS : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+		LEGS : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+		FEET : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+		EARRINGS : Det : 145 | SS : 102 | MainStat : 196 |  Materias : Crit : 36 | SS : 36 |  Name : Tome
+		NECKLACE : Det : 145 | SS : 102 | MainStat : 196 |  Materias : Crit : 36 | SS : 36 |  Name : Raid
+		BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+		LRING : Crit : 142 | Det : 99 | MainStat : 186 |  Materias : DH : 36 | SS : 36 |  Name : Tome650
+		RING : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+		Final Stats : {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 1412, 'SkS': 400, 'Crit': 2198, 'DH': 558, 'Piety': 390}
+		Materia numbers : SS 16x |Crit 3x |DH 3x |
+		Food Caviar Sandwich gives -> SS 10% max of 103 |DH 10% max of 62 |
+		
+	Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+	
+		The Fight finishes at: 68.47
+		========================
+		Results for Astrologian ID - 1 :
+		DPS : 5454.52 PPS : 113.92 TP : 7800 GCD : 31
+		DPS Percentile{'10': '5180', '25': '5300', '50': '5440', '75': '5600', '90': '5740', '95': '5820', '99': '5980'}
+	
+		This set has (without potion) an average 4,703.6 damage per 100 potency
+		
+	Solver BiS 2 - 
+	
+		Parameters : minSPDValue=400,maxSPDValue=1300, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0 and 1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, CC, CW]
+		
+	Results : 
+	
+		WEAPON : Crit : 306 | Det : 214 | MainStat : 416 | WD : 132 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+		HEAD : Det : 184 | Crit : 129 | MainStat : 248 |  Materias : Crit : 36 | SS : 36 |  Name : Tome
+		BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+		HANDS : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+		LEGS : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SS : 36 | SS : 36 |  Name : Tome
+		FEET : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+		EARRINGS : Det : 145 | SS : 102 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Tome
+		NECKLACE : Det : 145 | SS : 102 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+		BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SS : 36 | SS : 36 |  Name : Raid
+		LRING : Crit : 142 | Det : 99 | MainStat : 186 |  Materias : SS : 36 | SS : 36 |  Name : Tome650
+		RING : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | SS : 36 |  Name : Tome
+		Final Stats : {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 1242, 'SkS': 400, 'Crit': 2502, 'DH': 436, 'Piety': 390}
+		Materia numbers : SS 16x |Crit 5x |DH 1x |
+		Food Caviar Canapes gives -> Crit 10% max of 103 |SS 10% max of 62 |
+	
+	Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+	
+		The Fight finishes at: 69.63
+		========================
+		Results for Astrologian ID - 1 :
+		DPS : 5440.73 PPS : 112.02 TP : 7800 GCD : 31
+		DPS Percentile{'10': '5160', '25': '5280', '50': '5440', '75': '5600', '90': '5740', '95': '5820', '99': '6000'}
+	
+		This set has (without potion) an average 4,775.2 damage per 100 potency
+		
+	Solver BiS 3 - 
+	
+		Parameters : minSPDValue=600,maxSPDValue=800, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0 and 1,findOptMateriaGearBF=True, swapDHDetBeforeSpeed=False
+		Food Space : [HD, BE, CC, CW]
+		
+	Results : 
+		This results in the same gear set as the Balance BiS 1.
+		
+Astrologian section's results :
+	Solver BiS 1 has a gain of around ~17 expected DPS over Balance BiS 2, but it has more SPell SPeed. Solver BiS 2 has a gain of ~3 expected DPS over Balance BiS 2, but it has very similar Spell speed.
+	Solver BiS 3 and Balance BiS 1 are the exact same.
+
+]
+
+
+Dancer 
+
+[
+
+Rotation : [StandardStep, Pirouette, Jete, WaitAbility(15), StandardFinish, TechnicalStep, Pirouette, Jete, Entrechat, Emboite, TechnicalFinish, Devilment, 
+			StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Jete, Pirouette, StandardFinish, Cascade, 
+			SaberDance, ReverseCascade, Fountain, FountainFall, Cascade, SaberDance, ReverseCascade, Fountain, FountainFall, Cascade, ReverseCascade, StandardStep, 
+			Emboite, Jete, StandardFinish, SaberDance, Fountain, Cascade, Fountain, FountainFall, Flourish, FanDance3, SaberDance, FanDance4, FountainFall, ReverseCascade, 
+			FanDance1, FanDance3, Cascade, ReverseCascade, Fountain, FountainFall]
+
+			
+	Balance BiS : 
+	
+	Balance BiS 1 - https://etro.gg/gearset/50746158-5be1-4972-82f4-84a577f4bcce
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 82.08
+			========================
+			Results for Dancer ID - 1 :
+			DPS : 11370.44 PPS : 199.81 TP : 16400 GCD : 45
+			DPS Percentile{'10': '10800', '25': '11060', '50': '11360', '75': '11660', '90': '11960', '95': '12140', '99': '12460'}
+	
+			This set has (without potion) an average 4,687.7 damage per 100 potency while etro predicts 4688.67 damage per 100 potency.
+			
+	Finding BiS using solver :
+	
+	Solver BiS 1 :
+
+		Parameters : minSPDValue=400,maxSPDValue=3000, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=1,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=True
+		Food Space : [HD, BE, DB, BG]
+		
+		Results :
+			This results in the same gear set as Balance BiS 1.
+			
+	Solver BiS 2 :
+
+		Parameters : minSPDValue=400,maxSPDValue=3000, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=True
+		Food Space : [HD, BE, DB, BG]
+	
+		Results :
+		
+			WEAPON : Crit : 306 | DH : 214 | MainStat : 416 | WD : 132 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			HEAD : Crit : 184 | DH : 129 | MainStat : 248 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			BODY : Det : 292 | Crit : 204 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Tome
+			HANDS : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SkS : 36 | DH : 36 |  Name : Raid
+			LEGS : Det : 292 | Crit : 204 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			FEET : DH : 184 | Crit : 129 | MainStat : 248 |  Materias : Crit : 36 | Det : 36 |  Name : Tome
+			EARRINGS : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | DH : 36 |  Name : Tome
+			NECKLACE : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+			BRACELETS : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | DH : 36 |  Name : Tome
+			LRING : DH : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | Det : 36 |  Name : Raid
+			RING : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1844, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2557, 'DH': 1396, 'Piety': 390}
+			Materia numbers : Det 4x |DH 9x |Crit 8x |SkS 1x |
+			Food Baked Eggplant gives -> Det 10% max of 103 |Crit 10% max of 62 |
+			
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 82.08
+			========================
+			Results for Dancer ID - 1 :
+			DPS : 11370.75 PPS : 199.81 TP : 16400 GCD : 45
+			DPS Percentile{'10': '10800', '25': '11060', '50': '11360', '75': '11660', '90': '11960', '95': '12140', '99': '12480'}
+			
+			This set has (without potion) an average 4,687.96 damage per 100 potency
+			
+Dancer section's results :
+	Solver BiS 1 and Balance BiS 1 are the exact same.
+	
+	Solver BiS 2 is very similar in DPS, with only a gain of ~0.3 expected DPS over Balance BiS 1. Furthermore, it seems to offer higher damage if DH rate is high given that it has more DH.
+			
+
+]
+
+Bard : 
+
+[
+
+Rotation :[Stormbite, WandererMinuet, RagingStrike, Causticbite, EmpyrealArrow, BloodLetter, RefulgentArrow, RadiantFinale, BattleVoice, BurstShot, 
+		   Barrage, RefulgentArrow, Sidewinder, BurstShot, RefulgentArrow, BurstShot, EmpyrealArrow, BurstShot, PitchPerfect3, BurstShot, RefulgentArrow, 
+		   BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, 
+		   RefulgentArrow, BurstShot, RefulgentArrow]
+
+	Balance BiS :
+	
+	Balance BiS 1 - https://etro.gg/gearset/f2426d1e-2da8-4151-bf52-74ca67b5f4a2
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 59.51
+			========================
+			Results for Bard ID - 1 :
+			DPS : 8780.36 PPS : 170.31 TP : 10135 GCD : 25
+			DPS Percentile{'10': '8300', '25': '8500', '50': '8760', '75': '9040', '90': '9280', '95': '9440', '99': '9720'}
+	
+			This set has (without potion) an average 4667.00 damage per 100 potency while etro predicts 4669.99 damage per 100 potency.
+			
+	Finding BiS using solver :
+	
+	Solver BiS 1 :
+	
+		Parameters : minSPDValue=400,maxSPDValue=3000, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0 and 1,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=False
+		Food Space : [HD, BE, DB, BG]
+		
+		Results : 
+		
+			WEAPON : Crit : 306 | DH : 214 | MainStat : 416 | WD : 132 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			HEAD : SkS : 184 | Crit : 129 | MainStat : 248 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			BODY : Det : 292 | Crit : 204 | MainStat : 394 |  Materias : SkS : 36 | SkS : 36 |  Name : Tome
+			HANDS : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			LEGS : Det : 292 | Crit : 204 | MainStat : 394 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			FEET : SkS : 184 | DH : 129 | MainStat : 248 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			EARRINGS : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : SkS : 36 | SkS : 36 |  Name : Tome
+			NECKLACE : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			BRACELETS : DH : 145 | SkS : 102 | MainStat : 196 |  Materias : Crit : 36 | SkS : 36 |  Name : Raid
+			LRING : DH : 145 | Crit : 102 | MainStat : 196 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			RING : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SkS : 36 | SkS : 36 |  Name : Tome
+			Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1452, 'Ten': 400, 'SS': 400, 'SkS': 1544, 'Crit': 2132, 'DH': 1105, 'Piety': 390}
+			Materia numbers : SkS 17x |DH 2x |Crit 3x |
+			Food Baba Ghanoush gives -> Crit 10% max of 103 |SkS 10% max of 62 |
+			
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 54.95
+			========================
+			Results for Bard ID - 1 :
+			DPS : 8925.62 PPS : 182.98 TP : 10055 GCD : 25
+			DPS Percentile{'10': '8480', '25': '8660', '50': '8900', '75': '9160', '90': '9400', '95': '9540', '99': '9780'}
+		
+			This set has (without potion) an average 4325.00 damage per 100 potency
+			
+	Solver BiS 2 :
+	
+		Parameters : minSPDValue=400,maxSPDValue=500, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0 and 1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, DB, BG]
+		
+		Results :
+		
+		
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 59.51
+			========================
+			Results for Bard ID - 1 :
+			DPS : 8780.93 PPS : 170.31 TP : 10135 GCD : 25
+			DPS Percentile{'10': '8300', '25': '8500', '50': '8760', '75': '9040', '90': '9280', '95': '9440', '99': '9720'}
+		
+			This set has (without potion) an average 4667 damage per 100 potency
+			
+			
+Bard section's results : 
+
+	According to the solver, Bard would gain a lot from having higher Spell Speed. However this might make allignments bad and could result in overall lower damage.
+
+	However, when looking for a gear set under 500 Skill Speed, we get the same Skill Speed as Balance BiS 1, with however different DH and Det stats. This creates a 
+	predicted ~0.3 more expected DPS.
+
+]
+
+Machinist : 
+
+[
+
+Rotation : [Reassemble, WaitAbility(5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, 
+			Reassemble, WaitAbility(2.2), Wildfire, ChainSaw, Automaton,Hypercharge, HeatBlast, Ricochet, HeatBlast, GaussRound, HeatBlast, Ricochet, 
+			HeatBlast, GaussRound, HeatBlast, Ricochet, Drill, GaussRound, Ricochet, SplitShot, Ricochet, SlugShot, CleanShot, SplitShot, SlugShot, 
+			CleanShot, SplitShot,  AirAnchor, Drill, SlugShot, CleanShot, SplitShot, GaussRound, Ricochet, SlugShot, CleanShot, SplitShot, SlugShot, 
+			Automaton, CleanShot, SplitShot, SlugShot, CleanShot, Drill, SplitShot, Hypercharge, HeatBlast, GaussRound, HeatBlast, Ricochet, HeatBlast, 
+			GaussRound, HeatBlast, Ricochet, HeatBlast, Reassemble, ChainSaw, GaussRound, Ricochet, SlugShot, CleanShot, SplitShot, SlugShot, CleanShot]
+			
+Note : 
+	I did not include the Queen summon since that was doing some issues with finishing time.
+	It also might have been more accurate to simulate and find the BiS for a 2 min burst of Machinist.
+
+
+
+	Balance BiS : 
+	
+	Balance BiS 1 - https://etro.gg/gearset/0001cd0d-ee54-4b85-8bb6-8ed79e9e7745
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 99.89
+			========================
+			Results for Machinist ID - 1 :
+			DPS : 12271.45 PPS : 254.38 TP : 25410 GCD : 45
+			DPS Percentile{'10': '11800', '25': '12000', '50': '12260', '75': '12520', '90': '12760', '95': '12920', '99': '13200'}
+			
+			This set has (without potion) an average 4,699.5 damage per 100 potency while etro predicts 4696.92 damage per 100 potency.
+			
+	Finding BiS using solver : 
+	
+	Solver BiS 1 -
+	
+		
+		Parameters : minSPDValue=400,maxSPDValue=3000, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, DB, BG]
+		
+		Results : 
+		
+			WEAPON : Crit : 306 | DH : 214 | MainStat : 416 | WD : 132 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			HEAD : Crit : 184 | DH : 129 | MainStat : 248 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			BODY : Det : 292 | Crit : 204 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Tome
+			HANDS : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SkS : 36 | DH : 36 |  Name : Raid
+			LEGS : Det : 292 | Crit : 204 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			FEET : DH : 184 | Crit : 129 | MainStat : 248 |  Materias : Crit : 36 | Det : 36 |  Name : Tome
+			EARRINGS : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | DH : 36 |  Name : Tome
+			NECKLACE : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+			BRACELETS : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | DH : 36 |  Name : Tome
+			LRING : DH : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | Det : 36 |  Name : Raid
+			RING : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1844, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2557, 'DH': 1396, 'Piety': 390}
+			Materia numbers : Det 4x |DH 9x |Crit 8x |SkS 1x |
+			Food Baked Eggplant gives -> Det 10% max of 103 |Crit 10% max of 62 |
+			
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+			
+			The Fight finishes at: 99.55
+			========================
+			Results for Machinist ID - 1 :
+			DPS : 12288.06 PPS : 255.25 TP : 25410 GCD : 45
+			DPS Percentile{'10': '11820', '25': '12020', '50': '12280', '75': '12540', '90': '12780', '95': '12920', '99': '13220'}
+			
+			This set has (without potion) an average 4,685.38 damage per 100 potency
+			
+
+			
+	Solver BiS 2 -
+	
+		
+		Parameters : minSPDValue=400,maxSPDValue=400, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, DB, BG]
+		
+		Results : 
+		
+			This resulted in the exact same gear set as Balance BiS 1.
+	
+
+
+Machinist section's results : 
+
+	Solver BiS 1 has an expected gain of ~17 DPS over balance BiS 1, but it has higher Skill Speed of 436.
+	Solver BiS 2 gave the same result as Balance BiS.
+
+]
+	
+DarkKnight 
+
+[
+Rotation : [BloodWeapon,WaitAbility(5),TBN(DRKPlayer), HardSlash, EdgeShadow, Delirium, SyphonStrike, WaitAbility(1), Potion, Souleater, LivingShadow, SaltedEarth, 
+            HardSlash, Shadowbringer, EdgeShadow, Bloodspiller, EdgeShadow, CarveSpit, Bloodspiller, Plunge, EdgeShadow, Bloodspiller, SaltDarkness, Shadowbringer, 
+			SyphonStrike, EdgeShadow, Plunge,Souleater, HardSlash, SyphonStrike, Souleater, Bloodspiller, HardSlash, SyphonStrike, Souleater, HardSlash, SyphonStrike, 
+			Plunge, Souleater, Bloodspiller, HardSlash, SyphonStrike, Souleater, HardSlash, BloodWeapon, SyphonStrike, Delirium, Bloodspiller, Bloodspiller, EdgeShadow, 
+			Bloodspiller, Bloodspiller, CarveSpit, Souleater, EdgeShadow, HardSlash ]
+			
+	Balance BiS :
+	
+	Balance BiS 1 (671) - https://etro.gg/gearset/7bf649c3-9cca-4c9d-8050-84ab406a9088
+	
+	Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+	
+		The Fight finishes at: 73.49
+		========================
+		Results for DarkKnight ID - 1 :
+		DPS : 9891.11 PPS : 288.47 TP : 21200 GCD : 31
+		DPS Percentile{'10': '10080', '25': '10280', '50': '9500', '75': '9780', '90': '9900', '95': '9940', '99': '9980'}	
+	
+		This set has (without potion) an average 3,004.12 damage per 100 potency while etro predicts 3004.27 damage per 100 potency.
+		
+	Balance BiS 2 (400) - https://etro.gg/gearset/dcd2eb34-7c43-4840-a17b-2eb790f19cf4
+	
+	Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+	
+		The Fight finishes at: 74.99
+		========================
+		Results for DarkKnight ID - 1 :
+		DPS : 9805.44 PPS : 282.7 TP : 21200 GCD : 31
+		DPS Percentile{'10': '10100', '25': '10440', '50': '9540', '75': '9760', '90': '9900', '95': '9940', '99': '9980'}
+	
+		This set has (without potion) an average 3,047.65 damage per 100 potency while etro predicts 3052.52 damage per 100 potency.
+		
+		Note : etro gear set has 3330 Str while the gear set has 3328 in simulation.
+		
+	Finding BiS using solver :
+	
+	Solver BiS 1 -
+	
+		
+		Parameters : minSPDValue=400,maxSPDValue=2000, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		
+			WEAPON : Det : 306 | Crit : 214 | MainStat : 416 | WD : 132 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			HEAD : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SkS : 36 | SkS : 36 |  Name : Tome
+			HANDS : SkS : 184 | Ten : 129 | MainStat : 248 |  Materias : Crit : 36 | Crit : 36 |  Name : Tome
+			LEGS : Det : 292 | Crit : 204 | MainStat : 394 |  Materias : Crit : 36 | SkS : 36 |  Name : Raid
+			FEET : SkS : 184 | Det : 129 | MainStat : 248 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SkS : 36 | SkS : 36 |  Name : Tome
+			NECKLACE : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SkS : 36 | SkS : 36 |  Name : Tome
+			LRING : Crit : 145 | SkS : 102 | MainStat : 196 |  Materias : DH : 36 | SkS : 36 |  Name : Raid
+			RING : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | SkS : 36 |  Name : Tome
+			Final Stats : {'MainStat': 3338, 'WD': 132, 'Det': 2004, 'Ten': 529, 'SS': 400, 'SkS': 1410, 'Crit': 2254, 'DH': 436, 'Piety': 390}
+			Materia numbers : SkS 15x |Crit 6x |DH 1x |
+			Food Baked Eggplant gives -> Det 10% max of 103 |Crit 10% max of 62 |
+			
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 69.29
+			========================
+			Results for DarkKnight ID - 1 :
+			DPS : 9931.95 PPS : 304.66 TP : 21110 GCD : 31
+			DPS Percentile{'10': '10080', '25': '10220', '50': '9540', '75': '9800', '90': '9920', '95': '9960', '99': '9980'}
+			
+			This set has (without potion) an average 2,839.41 damage per 100 potency
+			
+		Note :
+			At this Skill Speed Delirium will come back right before the end of the GCD but it should all be doable.
+			
+	Solver BiS 2 -
+	
+		
+		Parameters : minSPDValue=400,maxSPDValue=700, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, DB, BG]
+		
+		Results : 
+
+			WEAPON : Det : 306 | Crit : 214 | MainStat : 416 | WD : 132 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			HEAD : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : DH : 36 | SkS : 36 |  Name : Raid
+			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			HANDS : Crit : 184 | Ten : 129 | MainStat : 248 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+			LEGS : Det : 292 | Crit : 204 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			FEET : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			NECKLACE : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+			BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			LRING : Crit : 145 | SkS : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+			RING : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | DH : 36 |  Name : Tome
+			Final Stats : {'MainStat': 3338, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 591, 'Crit': 2627, 'DH': 976, 'Piety': 390}
+			Materia numbers : Crit 5x |DH 16x |SkS 1x |
+			Food Baba Ghanoush gives -> Crit 10% max of 103 |SkS 10% max of 62 |
+			
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+			
+			The Fight finishes at: 73.79
+			========================
+			Results for DarkKnight ID - 1 :
+			DPS : 9894.8 PPS : 287.3 TP : 21200 GCD : 31
+			DPS Percentile{'10': '10080', '25': '10280', '50': '9500', '75': '9780', '90': '9900', '95': '9940', '99': '9980'}
+
+			This set has (without potion) an average 3,019.41 damage per 100 potency
+			
+	Solver BiS 3 -
+	
+		
+		Parameters : minSPDValue=400,maxSPDValue=400, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, DB, BG]
+		
+		Results : 
+			This results in the same gear set as Balance BiS 2
+			
+	Solver BiS 4 -
+	
+		Parameters : minSPDValue=640,maxSPDValue=700, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, DB, BG]
+		
+		Results : 
+			This results in the same gear set as Balance BiS 1
+	
+			
+DarkKnight section's results : 
+
+	Solver BiS 1 seems to have ~30 more expected DPS over Balance BiS 1, but has a higher SkS value.
+	
+	SOlver BiS 2 looks to be a better candidate in that regard. It was ~3 more expected DPS than balance BiS 1 and it has similar Skill Speed (Solver BiS 2 has a GCD timer of 2.46).
+	
+	Note that looking for SkS values specific to the balance BiS we found the exact same gear sets.
+]
+
+Warrior : 
+
+[
+
+Rotation : [Tomahawk, Infuriate, HeavySwing, Upheaval ,Maim, WaitAbility(1), Potion, StormEye, InnerRelease, Onslaught, InnerChaos, Onslaught, PrimalRend,Onslaught, 
+		    FellCleave, FellCleave, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath, FellCleave, Infuriate, Upheaval, InnerChaos, HeavySwing, Maim, StormEye, 
+			HeavySwing, Maim, StormPath, FellCleave, HeavySwing, Maim, Onslaught, StormEye , HeavySwing, Upheaval, Maim, StormPath, InnerRelease, PrimalRend, FellCleave, FellCleave, 
+			Onslaught, FellCleave, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath]
+			
+	Balance BiS :
+	
+	Balance BiS 1 (400) - https://etro.gg/gearset/1103c082-1c80-4bf3-bb56-83734971d5ea
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 90.21
+			========================
+			Results for Warrior ID - 1 :
+			DPS : 9276.65 PPS : 222.81 TP : 20100 GCD : 37
+			DPS Percentile{'10': '9080', '25': '9160', '50': '9280', '75': '9380', '90': '9480', '95': '9560', '99': '9680'}
+	
+			This set has (without potion) an average 3,058 damage per 100 potency while etro predicts 3052.52 damage per 100 potency.
+	
+	Balance BiS 2 (671) - https://etro.gg/gearset/ccabf244-3ea0-4a33-a817-da4cebe6efc6
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 88.19
+			========================
+			Results for Warrior ID - 1 :
+			DPS : 9345.99 PPS : 227.92 TP : 20100 GCD : 37
+			DPS Percentile{'10': '9140', '25': '9240', '50': '9340', '75': '9460', '90': '9560', '95': '9620', '99': '9760'}
+
+			This set has (without potion) an average 3,002.66 damage per 100 potency while etro predicts 3008.97 damage per 100 potency.
+			
+	Balance BiS 3 (960) - https://etro.gg/gearset/9343cf54-e21f-4343-ba9d-c4030eb25dd0
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 86.39
+			========================
+			Results for Warrior ID - 1 :
+			DPS : 9345.42 PPS : 231.62 TP : 20010 GCD : 37
+			DPS Percentile{'10': '9140', '25': '9240', '50': '9340', '75': '9460', '90': '9560', '95': '9620', '99': '9740'}
+
+			This set has (without potion) an average 2,942.67 damage per 100 potency while etro predicts 2948.72 damage per 100 potency.
+			
+	Finding BiS using solver : 
+	
+	Solver BiS 1 - 
+	
+		Parameters : minSPDValue=400,maxSPDValue=2000, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=False
+		Food Space : [HD, BE, DB, BG]
+		
+		Results :
+		
+			WEAPON : Det : 306 | Crit : 214 | MainStat : 416 | WD : 132 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			HEAD : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SkS : 36 | SkS : 36 |  Name : Tome
+			HANDS : SkS : 184 | Ten : 129 | MainStat : 248 |  Materias : Crit : 36 | Crit : 36 |  Name : Tome
+			LEGS : Det : 292 | Crit : 204 | MainStat : 394 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			FEET : SkS : 184 | Det : 129 | MainStat : 248 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SkS : 36 | DH : 36 |  Name : Tome
+			NECKLACE : Det : 145 | SkS : 102 | MainStat : 196 |  Materias : Crit : 36 | SkS : 36 |  Name : Tome
+			BRACELETS : Det : 145 | SkS : 102 | MainStat : 196 |  Materias : Crit : 36 | SkS : 36 |  Name : Raid
+			LRING : Crit : 145 | SkS : 102 | MainStat : 196 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			RING : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : SkS : 36 | SkS : 36 |  Name : Tome
+			Final Stats : {'MainStat': 3338, 'WD': 132, 'Det': 2023, 'Ten': 529, 'SS': 400, 'SkS': 1645, 'Crit': 1902, 'DH': 519, 'Piety': 390}
+			Materia numbers : SkS 13x |Crit 6x |DH 2x |Det 1x |
+			Food Dragonfruit Blend gives -> SkS 10% max of 103 |DH 10% max of 62 |
+		
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 81.71
+			========================
+			Results for Warrior ID - 1 :
+			DPS : 9422.21 PPS : 243.79 TP : 19920 GCD : 37
+			DPS Percentile{'10': '9260', '25': '9320', '50': '9420', '75': '9520', '90': '9600', '95': '9660', '99': '9760'}
+		
+			This set has (without potion) an average 2,785.67 damage per 100 potency
+	
+	Solver BiS 2 - 
+	
+		Parameters : minSPDValue=400,maxSPDValue=2000, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=True
+		Food Space : [HD, BE, DB, BG]
+		
+		Results :
+		
+			WEAPON : Det : 306 | Crit : 214 | MainStat : 416 | WD : 132 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			HEAD : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SkS : 36 | SkS : 36 |  Name : Tome
+			HANDS : SkS : 184 | Ten : 129 | MainStat : 248 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			LEGS : Det : 292 | Crit : 204 | MainStat : 394 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			FEET : SkS : 184 | Det : 129 | MainStat : 248 |  Materias : Crit : 36 | DH : 36 |  Name : Raid
+			EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SkS : 36 | SkS : 36 |  Name : Tome
+			NECKLACE : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			BRACELETS : Det : 145 | SkS : 102 | MainStat : 196 |  Materias : Crit : 36 | SkS : 36 |  Name : Raid
+			LRING : Crit : 145 | SkS : 102 | MainStat : 196 |  Materias : SkS : 36 | DH : 36 |  Name : Raid
+			RING : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : SkS : 36 | SkS : 36 |  Name : Tome
+			Final Stats : {'MainStat': 3338, 'WD': 132, 'Det': 1944, 'Ten': 529, 'SS': 400, 'SkS': 1651, 'Crit': 1903, 'DH': 598, 'Piety': 390}
+			Materia numbers : SkS 16x |DH 4x |Crit 2x |
+			Food Dragonfruit Blend gives -> SkS 10% max of 103 |DH 10% max of 62 |
+		
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 81.71
+			========================
+			Results for Warrior ID - 1 :
+			DPS : 9423.13 PPS : 243.79 TP : 19920 GCD : 37
+			DPS Percentile{'10': '9240', '25': '9320', '50': '9420', '75': '9520', '90': '9600', '95': '9660', '99': '9760'}
+		
+			This set has (without potion) an average 2,786.67 damage per 100 potency
+			
+	Solver BiS 2 - 
+	
+		Parameters : minSPDValue=400,maxSPDValue=1000, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, DB, BG]
+		
+		Results :
+		
+			WEAPON : Det : 306 | Crit : 214 | MainStat : 416 | WD : 132 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			HEAD : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SkS : 36 | SkS : 36 |  Name : Tome
+			HANDS : Crit : 184 | Ten : 129 | MainStat : 248 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+			LEGS : Det : 292 | Crit : 204 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			FEET : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			NECKLACE : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+			BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			LRING : Crit : 145 | SkS : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+			RING : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | DH : 36 |  Name : Tome
+			Final Stats : {'MainStat': 3338, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 708, 'Crit': 2627, 'DH': 868, 'Piety': 390}
+			Materia numbers : Crit 5x |SkS 4x |DH 13x |
+			Food Baba Ghanoush gives -> Crit 10% max of 103 |SkS 10% max of 62 |
+
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :	
+
+			The Fight finishes at: 87.83
+			========================
+			Results for Warrior ID - 1 :
+			DPS : 9367.32 PPS : 228.85 TP : 20100 GCD : 37
+			DPS Percentile{'10': '9160', '25': '9260', '50': '9360', '75': '9480', '90': '9580', '95': '9640', '99': '9760'}
+			
+			This set has (without potion) an average 2,995.33 damage per 100 potency
+			
+	Solver BiS 3 - 
+	
+		Parameters : minSPDValue=400,maxSPDValue=700, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, DB, BG]
+		
+		Results :
+		
+			WEAPON : Det : 306 | Crit : 214 | MainStat : 416 | WD : 132 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			HEAD : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : DH : 36 | SkS : 36 |  Name : Raid
+			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			HANDS : Crit : 184 | Ten : 129 | MainStat : 248 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+			LEGS : Det : 292 | Crit : 204 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			FEET : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			NECKLACE : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+			BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			LRING : Crit : 145 | SkS : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+			RING : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | DH : 36 |  Name : Tome
+			Final Stats : {'MainStat': 3338, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 591, 'Crit': 2627, 'DH': 976, 'Piety': 390}
+			Materia numbers : Crit 5x |DH 16x |SkS 1x |
+			Food Baba Ghanoush gives -> Crit 10% max of 103 |SkS 10% max of 62 |
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :	
+
+			The Fight finishes at: 88.55
+			========================
+			Results for Warrior ID - 1 :
+			DPS : 9351.16 PPS : 226.99 TP : 20100 GCD : 37
+			DPS Percentile{'10': '9140', '25': '9240', '50': '9340', '75': '9460', '90': '9560', '95': '9640', '99': '9760'}
+			
+			This set has (without potion) an average 3,018 damage per 100 potency
+			
+	Solver BiS 4 - 
+	
+		Parameters : minSPDValue=400,maxSPDValue=400, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, DB, BG]
+		
+		Results :
+			This results in the same gear set as Balance BiS 1.
+			
+	Solver BiS 5 - 
+	
+		Parameters : minSPDValue=600,maxSPDValue=700, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, DB, BG]
+		
+		Results :
+			This results in the same gear set as Balance BiS 2.
+
+	Solver BiS 6 - 
+	
+		Parameters : minSPDValue=900,maxSPDValue=970, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, DB, BG]
+		
+		Results :
+		
+			WEAPON : Det : 306 | Crit : 214 | MainStat : 416 | WD : 132 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			HEAD : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : DH : 36 | SkS : 36 |  Name : Tome
+			HANDS : Crit : 184 | Ten : 129 | MainStat : 248 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			LEGS : Det : 292 | Crit : 204 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			FEET : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			NECKLACE : Det : 145 | SkS : 102 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Tome
+			BRACELETS : Det : 145 | SkS : 102 | MainStat : 196 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			LRING : Crit : 145 | SkS : 102 | MainStat : 196 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			RING : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | DH : 36 |  Name : Tome
+			Final Stats : {'MainStat': 3338, 'WD': 132, 'Det': 2023, 'Ten': 529, 'SS': 400, 'SkS': 948, 'Crit': 2481, 'DH': 652, 'Piety': 390}
+			Materia numbers : Crit 9x |SkS 5x |DH 7x |Det 1x |
+			Food Baba Ghanoush gives -> Crit 10% max of 103 |SkS 10% max of 62 |
+			
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :	
+
+			The Fight finishes at: 86.39
+			========================
+			Results for Warrior ID - 1 :
+			DPS : 9348.74 PPS : 231.62 TP : 20010 GCD : 37
+			DPS Percentile{'10': '9160', '25': '9240', '50': '9340', '75': '9460', '90': '9560', '95': '9620', '99': '9740'}
+
+			This set has (without potion) an average 2,940 damage per 100 potency
+		
+Warrior section's results :
+
+	Solver BiS 1 and 2 are an expected gain of around 70 DPS over Balance BiS 3, but they have quite higher Skill Speed.
+	
+	Solver BiS 3 has similar Skill Speed to Balance BiS 2, and it has ~6 more expected DPS.
+	
+	Solver BiS 4 and 5 are the same as Balance BiS 1 and 2 respectively.
+	
+	Solver BiS 6 has the same GCD timer as Balance BiS 3, but is a gain of ~3 expected DPS over it.
+		
+]
+		
+		
+Paladin :
+
+[
+
+Rotation : [HolySpirit, FastBlade, RiotBlade, WaitAbility(1), Potion, RoyalAuthority, FightOrFlight, RequestACat, GoringBlade, CircleScorn,
+            Expiacion, Confetti, Intervene, BladeFaith, Intervene, BladeTruth, BladeValor, HolySpirit, Atonement, Atonement, Atonement, FastBlade, 
+			RiotBlade, RoyalAuthority, Atonement, CircleScorn, Expiacion, Atonement, Atonement, FastBlade, RiotBlade, HolySpirit, RoyalAuthority, Atonement, 
+			Atonement, Atonement, FastBlade, RiotBlade, FightOrFlight, RequestACat, GoringBlade, Expiacion, Confetti, BladeFaith, Intervene, BladeTruth, Intervene, 
+			BladeValor, HolySpirit, RoyalAuthority, HolySpirit, Atonement ]
+			
+	Balance BiS :
+	
+	Balance BiS 1 (400) - https://etro.gg/gearset/3a2d77ff-57e1-434d-b1da-72a7d4f44944
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :	
+
+			The Fight finishes at: 88.51
+			========================
+			Results for Paladin ID - 1 :
+			DPS : 9672.04 PPS : 265.96 TP : 23540 GCD : 37
+			DPS Percentile{'10': '10180', '25': '9120', '50': '9480', '75': '9720', '90': '9860', '95': '9920', '99': '9980'}
+
+			This set has (without potion) an average 3,028.57 damage per 100 potency while etro predicts 3013.7 damage per 100 potency.
+			
+	Finding BiS using solver :
+	
+	Solver BiS 1 -
+
+		Parameters : minSPDValue=400,maxSPDValue=2000, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, DB, BG]
+		
+		Results : 
+		
+			WEAPON : Det : 306 | Crit : 214 | MainStat : 416 | WD : 132 |  Materias : Crit : 36 | DH : 36 |  Name : Raid
+			HEAD : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			HANDS : Crit : 184 | Ten : 129 | MainStat : 248 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			LEGS : Det : 292 | Crit : 204 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			FEET : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			NECKLACE : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+			BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			LRING : Det : 142 | Crit : 99 | MainStat : 186 |  Materias : Crit : 36 | DH : 36 |  Name : Tome650
+			RING : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | DH : 36 |  Name : Tome
+			Final Stats : {'MainStat': 3328, 'WD': 132, 'Det': 2182, 'Ten': 529, 'SS': 400, 'SkS': 400, 'Crit': 2540, 'DH': 976, 'Piety': 390}
+			Materia numbers : Crit 5x |DH 16x |Det 1x |
+			Food Baked Eggplant gives -> Det 10% max of 103 |Crit 10% max of 62 |
+
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 88.23
+			========================
+			Results for Paladin ID - 1 :
+			DPS : 9685.4 PPS : 266.8 TP : 23540 GCD : 37
+			DPS Percentile{'10': '10160', '25': '9100', '50': '9480', '75': '9720', '90': '9860', '95': '9920', '99': '9980'}
+			
+			This set has (without potion) an average 3,019.43 damage per 100 potency
+			
+	Solver BiS 2 -
+
+		Parameters : minSPDValue=400,maxSPDValue=400, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, DB, BG]
+		
+		Results : 
+			This results in the same gear set as Balance BiS 1
+					
+Paladin section's results :
+
+Solver BiS 1 has an expected DPS gain of ~13, but it has higher Skill Speed.
+Solver BiS 2 is the same as Balance BiS 1
+
+]
+
+Gunbreaker :
+
+[
+
+Rotation : [KeenEdge, Potion, BrutalShell, NoMercy, Bloodfest, GnashingFang, JugularRip, SonicBreak, BowShock, BlastingZone, DoubleDown, RoughDivide, SavageClaw, AbdomenTear, WickedTalon, EyeGouge, RoughDivide, 
+            SolidBarrel, BurstStrike, Hypervelocity, KeenEdge, BrutalShell, SolidBarrel, KeenEdge, BrutalShell, GnashingFang, JugularRip,SavageClaw, AbdomenTear, BlastingZone, WickedTalon, EyeGouge, SolidBarrel, 
+			KeenEdge, BrutalShell, SolidBarrel, KeenEdge, BrutalShell, SolidBarrel,KeenEdge, BrutalShell, NoMercy, RoughDivide, GnashingFang, JugularRip, DoubleDown, BlastingZone, RoughDivide, SavageClaw, AbdomenTear, 
+			WickedTalon, EyeGouge, SolidBarrel, BurstStrike, Hypervelocity, KeenEdge, BrutalShell, SolidBarrel]
+			
+	Balance BiS :
+	
+	Balance BiS 1 (400) - https://etro.gg/gearset/1dee5389-9906-4690-88b7-55419a342932
+	
+	Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+	
+		The Fight finishes at: 84.99
+		========================
+		Results for Gunbreaker ID - 1 :
+		DPS : 9296.16 PPS : 265.44 TP : 22560 GCD : 35
+		DPS Percentile{'10': '8820', '25': '9040', '50': '9260', '75': '9500', '90': '9700', '95': '9800', '99': '9940'}
+	
+		This set has (without potion) an average 3,031 damage per 100 potency while etro predicts 3015.75 damage per 100 potency.
+	
+	Balance BiS 2 (708) - https://etro.gg/gearset/b3847bc9-2fda-4b7b-a8a1-e1720b51a46e
+	
+	Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+	
+		The Fight finishes at: 82.95
+		========================
+		Results for Gunbreaker ID - 1 :
+		DPS : 9368.11 PPS : 270.89 TP : 22470 GCD : 35
+		DPS Percentile{'10': '8860', '25': '9080', '50': '9320', '75': '9540', '90': '9740', '95': '9840', '99': '9960'}
+
+		This set has (without potion) an average 2,980 damage per 100 potency while etro predicts 2965.61 damage per 100 potency.
+		
+	Finding BiS using solver : 
+	
+	Solver BiS 1 -
+	
+		Parameters : minSPDValue=400,maxSPDValue=800, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, DB, BG]
+		
+		Results : 
+			This results in the same gear set as Balance BiS 2
+			   		
+	Solver BiS 2 -
+	
+		Parameters : minSPDValue=400,maxSPDValue=400, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, DB, BG]
+		
+		Results : 
+			This results in the same gear set as Balance BiS 1
+			
+Gunbreaker section's results :
+
+The solver was not able to find a better BiS than what the Balance already has at Skill speed that work.
+]
+
+
+Ninja :
+
+[
+
+Rotation : [Jin, Chi, Ten, Huton, Hide, Ten, Chi, Jin, WaitAbility(5), Suiton, Kassatsu, SpinningEdge, Potion, GustSlash, Mug, Bunshin, PhantomKamaitachi, TrickAttack, AeolianEdge,
+			DreamWithinADream, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, TenChiJin, Ten2, Chi2, Jin2, Meisui, FleetingRaiju, Bhavacakra, FleetingRaiju, Bhavacakra, Ten, Chi, Raiton,
+			FleetingRaiju, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, GustSlash, ArmorCrush, Bhavacakra, SpinningEdge, GustSlash, AeolianEdge,
+			SpinningEdge, Ten, Chi, Jin, Suiton, GustSlash, AeolianEdge, Kassatsu, SpinningEdge, GustSlash, AeolianEdge, TrickAttack, SpinningEdge, DreamWithinADream, Bhavacakra,
+			Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, Ten, Chi, Raiton, FleetingRaiju, FleetingRaiju, GustSlash, ArmorCrush, SpinningEdge, GustSlash, AeolianEdge]
+			
+	Balance BiS : 
+	
+	Balance BiS 1 (400) - https://etro.gg/gearset/6556da3a-4514-439e-b4f4-07e0ccc85e93
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+	
+			The Fight finishes at: 90.57
+			========================
+			Results for Ninja ID - 1 :
+			DPS : 13261.82 PPS : 301.09 TP : 27270 GCD : 67
+			DPS Percentile{'10': '12620', '25': '12900', '50': '13240', '75': '13600', '90': '13940', '95': '14140', '99': '14540'}
+		
+			This set has (without potion) an average 3,868.18 damage per 100 potency while etro predicts 3847.99 damage per 100 potency.
+			
+	Finding BiS using solver :
+	
+	Solver BiS 2 - 
+
+		Parameters : minSPDValue=400,maxSPDValue=2000, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, DB, BG]
+
+		Results :
+			
+			WEAPON : Crit : 306 | Det : 214 | MainStat : 416 | WD : 132 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			HEAD : Det : 184 | Crit : 129 | MainStat : 248 |  Materias : Crit : 36 | SkS : 36 |  Name : Tome
+			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			HANDS : Crit : 184 | DH : 129 | MainStat : 248 |  Materias : Det : 36 | DH : 36 |  Name : Tome
+			LEGS : DH : 292 | Crit : 204 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Tome
+			FEET : DH : 184 | Crit : 129 | MainStat : 248 |  Materias : Crit : 36 | Det : 36 |  Name : Raid
+			EARRINGS : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | SkS : 36 |  Name : Tome
+			NECKLACE : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SkS : 36 | DH : 36 |  Name : Raid
+			BRACELETS : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | SkS : 36 |  Name : Tome
+			LRING : DH : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | Det : 36 |  Name : Raid
+			RING : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : Det : 36 | SkS : 36 |  Name : Tome
+			Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1666, 'Ten': 400, 'SS': 400, 'SkS': 714, 'Crit': 2595, 'DH': 1258, 'Piety': 390}
+			Materia numbers : SkS 7x |Crit 7x |Det 5x |DH 3x |
+			Food Baba Ghanoush gives -> Crit 10% max of 103 |SkS 10% max of 62 |
+			
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+	
+			The Fight finishes at: 88.33
+			========================
+			Results for Ninja ID - 1 :
+			DPS : 13317.48 PPS : 307.71 TP : 27180 GCD : 67
+			DPS Percentile{'10': '12680', '25': '12960', '50': '13300', '75': '13660', '90': '14000', '95': '14200', '99': '14600'}
+
+			This set has (without potion) an average of 3,869.2 damage per 100 potency
+
+	
+	Solver BiS 2 - 
+	
+		Parameters : minSPDValue=400,maxSPDValue=700, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, DB, BG]
+		
+		Results :
+		
+			This results in the exact same gear set as Balance BiS 1.
+		
+Ninja section's results :
+
+	Solver BiS 1 has an expected gain of ~45 DPS over Balance BiS 1, but it has higher SKill Speed (for a GCD timer of 2.07).
+	Solver BiS 2 is the exact same as Balance Bis 1.
+		
+
+]
+
+Reaper : 
+
+[
+
+Rotation : [Soulsow, Harpe, ShadowOfDeath, ArcaneCircle, SoulSlice, SoulSlice, Potion, PlentifulHarvest, Enshroud, CrossReaping, VoidReaping, LemureSlice, CrossReaping,
+			VoidReaping, LemureSlice, Communio, Gluttony, Gibbet, Gallows, UnveiledGibbet, Gibbet, ShadowOfDeath, Slice, WaxingSlice, InfernalSlice, Slice, WaxingSlice, InfernalSlice,
+			UnveiledGallows, Gallows, SoulSlice, UnveiledGibbet, Gibbet, Enshroud, CrossReaping, VoidReaping, LemureSlice, CrossReaping, VoidReaping, LemureSlice, Communio, HarvestMoon ]
+			
+	Balance BiS :
+	
+	Balance BiS 1 (400) - https://etro.gg/gearset/dbedcbfc-21d0-420c-9c91-ed2e946adbe4
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 60.63
+			========================
+			Results for Reaper ID - 1 :
+			DPS : 14266.39 PPS : 315.52 TP : 19130 GCD : 30
+			DPS Percentile{'10': '13500', '25': '13840', '50': '14240', '75': '14680', '90': '15060', '95': '15320', '99': '15780'}
+		
+			This set has (without potion) an average 3,917 damage per 100 potency while etro predicts 3917.52 damage per 100 potency.
+	
+	Balance Bis 2 (436) - https://etro.gg/gearset/3c8ec7ad-ccfc-42ce-a129-13bd032e2220
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 60.46
+			========================
+			Results for Reaper ID - 1 :
+			DPS : 14275.17 PPS : 316.41 TP : 19130 GCD : 30
+			DPS Percentile{'10': '13500', '25': '13840', '50': '14260', '75': '14680', '90': '15080', '95': '15320', '99': '15800'}
+		
+			This set has (without potion) an average 3,907 damage per 100 potency while etro predicts 3908.31 damage per 100 potency.
+			
+	Finding BiS using solver :
+	
+	Solver BiS 1 - 
+	
+	Parameters : minSPDValue=400,maxSPDValue=2000, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=False
+	Food Space : [HD, BE, DB, BG]
+	
+	Results :
+		This results in the same gear set as Balance BiS 2
+		
+	Solver BiS 2 - 
+	
+	Parameters : minSPDValue=400,maxSPDValue=400, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=False
+	Food Space : [HD, BE, DB, BG]
+	
+	Results :
+		This results in the same gear set as Balance BiS 1
+		
+Reaper section's results :
+
+	We found the same BiS as The Balance for both Speed values.
+	
+]
+
+Dragoon :
+
+[
+
+Rotation : [TrueThrust, Disembowel, LanceCharge, DragonSight(NINPlayer), ChaoticSpring, BattleLitany, Geirskogul, WheelingThrust, HighJump,
+			LifeSurge, FangAndClaw, DragonFireDive, SpineshafterDive, RaidenThrust, MirageDive, SpineshafterDive, VorpalThrust, LifeSurge,
+			HeavenThrust, FangAndClaw, WheelingThrust, RaidenThrust, WyrmwindThrust, Disembowel, ChaoticSpring, WheelingThrust, FangAndClaw,
+			Geirskogul, RaidenThrust, HighJump, MirageDive, VorpalThrust, HeavenThrust, FangAndClaw, WheelingThrust, RaidenThrust, WyrmwindThrust,
+			Disembowel, ChaoticSpring, WheelingThrust, FangAndClaw, RaidenThrust, LanceCharge, VorpalThrust, LifeSurge, Geirskogul, HeavenThrust,
+			Nastrond, HighJump, FangAndClaw, Stardiver, WheelingThrust, MirageDive, RaidenThrust, WyrmwindThrust, VorpalThrust, Nastrond, HeavenThrust,
+			FangAndClaw, WheelingThrust]
+			
+	Note : Doing dragon sight on ninja doesn't affect anything for these results.
+			
+			
+	Balance BiS :
+	
+	Balance BiS 1 (400) - https://etro.gg/gearset/8a907f52-75a4-4085-9deb-6a63ffa2abd8
+
+			Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+			
+				The Fight finishes at: 84.99
+				========================
+				Results for Dragoon ID - 1 :
+				DPS : 11963.76 PPS : 247.68 TP : 21050 GCD : 35
+				DPS Percentile{'10': '11500', '25': '11720', '50': '11960', '75': '12200', '90': '12420', '95': '12560', '99': '12820'}
+			
+				This set has (without potion) an average 3,915.65 damage per 100 potency while etro predicts 3917.52 damage per 100 potency.
+				
+	Balance BiS 2 (598) - https://etro.gg/gearset/ba65b9ee-ec73-4b80-86c1-66a71849a5c8
+
+			Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+			
+				The Fight finishes at: 83.63
+				========================
+				Results for Dragoon ID - 1 :
+				DPS : 12001.64 PPS : 250.63 TP : 20960 GCD : 35
+				DPS Percentile{'10': '11540', '25': '11760', '50': '12000', '75': '12240', '90': '12480', '95': '12600', '99': '12880'}
+			
+				This set has (without potion) an average 3,865.22 damage per 100 potency while etro predicts 3867.54 damage per 100 potency.
+				
+				
+	Finding BiS using solver : 
+	
+	Solver BiS 1 -
+	
+		Parameters : minSPDValue=400,maxSPDValue=1000, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=False
+		Food Space : [HD, BE, DB, BG]
+		
+		Results :
+		
+			WEAPON : Crit : 306 | Det : 214 | MainStat : 416 | WD : 132 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			HEAD : Crit : 184 | DH : 129 | MainStat : 248 |  Materias : SkS : 36 | SkS : 36 |  Name : Tome
+			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			HANDS : Det : 184 | Crit : 129 | MainStat : 248 |  Materias : Crit : 36 | SkS : 36 |  Name : Tome
+			LEGS : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : SkS : 36 | SkS : 36 |  Name : Tome
+			FEET : Crit : 184 | DH : 129 | MainStat : 248 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+			NECKLACE : Crit : 145 | DH : 102 | MainStat : 196 |  Materias : Det : 36 | DH : 36 |  Name : Tome
+			BRACELETS : Crit : 145 | DH : 102 | MainStat : 196 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			LRING : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | SkS : 36 |  Name : Raid
+			RING : Crit : 145 | DH : 102 | MainStat : 196 |  Materias : Det : 36 | Det : 36 |  Name : Tome
+			Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1587, 'Ten': 400, 'SS': 400, 'SkS': 966, 'Crit': 2644, 'DH': 1036, 'Piety': 390}
+			Materia numbers : SkS 14x |Crit 2x |Det 4x |DH 2x |
+			Food Baba Ghanoush gives -> Crit 10% max of 103 |SkS 10% max of 62 |
+			
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 81.59
+			========================
+			Results for Dragoon ID - 1 :
+			DPS : 12047.21 PPS : 256.89 TP : 20960 GCD : 35
+			DPS Percentile{'10': '11600', '25': '11800', '50': '12040', '75': '12280', '90': '12500', '95': '12640', '99': '12900'}
+			
+			This set has (without potion) an average 3,771.74 damage per 100 potency
+			
+			
+	Solver BiS 2 -
+	
+		Parameters : minSPDValue=400,maxSPDValue=600, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=01,findOptMateriaGearBF=True
+		Food Space : [HD, BE, DB, BG]
+		
+		Results :
+	
+			WEAPON : Crit : 306 | Det : 214 | MainStat : 416 | WD : 132 |  Materias : Det : 36 | SkS : 36 |  Name : Raid
+			HEAD : Crit : 184 | DH : 129 | MainStat : 248 |  Materias : Det : 36 | DH : 36 |  Name : Tome
+			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			HANDS : Det : 184 | Crit : 129 | MainStat : 248 |  Materias : Crit : 36 | DH : 36 |  Name : Tome
+			LEGS : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : Det : 36 | DH : 36 |  Name : Tome
+			FEET : Crit : 184 | DH : 129 | MainStat : 248 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+			NECKLACE : Crit : 145 | DH : 102 | MainStat : 196 |  Materias : Det : 36 | DH : 36 |  Name : Tome
+			BRACELETS : Crit : 145 | DH : 102 | MainStat : 196 |  Materias : Det : 36 | Det : 36 |  Name : Raid
+			LRING : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | DH : 36 |  Name : Raid
+			RING : Crit : 145 | DH : 102 | MainStat : 196 |  Materias : Det : 36 | Det : 36 |  Name : Tome
+			Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1803, 'Ten': 400, 'SS': 400, 'SkS': 479, 'Crit': 2644, 'DH': 1288, 'Piety': 390}
+			Materia numbers : Det 10x |SkS 1x |DH 9x |Crit 2x |
+			Food Baba Ghanoush gives -> Crit 10% max of 103 |SkS 10% max of 62 |
+
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 84.31
+			========================
+			Results for Dragoon ID - 1 :
+			DPS : 12016.38 PPS : 249.67 TP : 21050 GCD : 35
+			DPS Percentile{'10': '11560', '25': '11760', '50': '12000', '75': '12260', '90': '12480', '95': '12620', '99': '12880'}
+		
+			This set has (without potion) an average 3,894.35 damage per 100 potency
+			
+			
+	Solver BiS 4 -
+	
+		Parameters : minSPDValue=500,maxSPDValue=600, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=False
+		Food Space : [HD, BE, DB, BG]
+		
+		Results :
+		
+			This results in the exact same BiS as Balance BiS 2.			
+			
+	Solver BiS 3 -
+	
+		Parameters : minSPDValue=400,maxSPDValue=400, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, DB, BG]
+		
+		Results :
+		
+			This results in the exact same BiS as Balance BiS 1.
+			
+Dragoon section's results:
+
+	Solver BiS 1 and Solver BiS 2 seem like decent upgade over Balance BiS 1 and 2. Even though Solver biS 1 has 894 SkS, the rotation above seem doable without clipping. Although, to stay within a 
+	more similar Skill Speed, Solver BiS 2 with 479 SkS still gives ~15 more expected DPS over Balance BiS 2.
+]
+
+
+Samurai :
+
+[
+
+Rotation :  [Meikyo, Gekko, WaitAbility(1), Potion, Kasha, Ikishoten, Yukikaze, Midare, KaeshiSetsugekka, Senei, Meikyo, Gekko, Shinten, Higanbana,
+             Shinten, Gekko, Shinten, OgiNamikiri, Shoha, KaeshiNamikiri, Kasha, Shinten, Hakaze, Yukikaze, Midare, KaeshiSetsugekka, Shinten, Hakaze, Jinpu, Gekko,
+			 Shinten, Hakaze, Shifu, Kasha, Hakaze, Shinten, Yukikaze, Midare, Hakaze, Jinpu, Gekko, Hakaze, Shifu, Kasha, Shinten, Hakaze, Yukikaze, Shinten,
+			 Meikyo, Kasha, Kasha, Shinten, Shoha, Gekko, Shinten, Hakaze, Yukikaze, Shinten, Midare, KaeshiSetsugekka, Hakaze, Yukikaze, Hakaze, Shinten, Shifu,
+			 Kasha]
+			 
+Note : This rotation might have some gauge issues that would be fixed with some Third Eyes.
+
+	Balance BiS :
+	
+	Balance BiS 1 (508) - https://etro.gg/gearset/d4b6bfc6-a82f-4732-8e55-7c13e094fc1d
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 97.22
+			========================
+			Results for Samurai ID - 1 :
+			DPS : 13157.89 PPS : 263.73 TP : 25640 GCD : 44
+			DPS Percentile{'10': '12800', '25': '12960', '50': '13160', '75': '13340', '90': '13520', '95': '13640', '99': '13860'}
+
+			This set has (without potion) an average 3,867.63 damage per 100 potency while etro predicts 3853.65 damage per 100 potency.
+			
+	Balance BiS 2 (987) - https://etro.gg/gearset/b25e8d82-3dcc-4656-aa62-07dce32f2976
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 94.09
+			========================
+			Results for Samurai ID - 1 :
+			DPS : 13220.38 PPS : 271.52 TP : 25550 GCD : 44
+			DPS Percentile{'10': '12860', '25': '13020', '50': '13220', '75': '13400', '90': '13600', '95': '13700', '99': '13920'}
+
+			This set has (without potion) an average 3,745.53 damage per 100 potency while etro predicts 3732.14 damage per 100 potency.
+			
+	Balance BiS 3 (1513) - https://etro.gg/gearset/b0db96d2-564d-4850-971e-54a4436d63bd
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 90.33
+			========================
+			Results for Samurai ID - 1 :
+			DPS : 13335.14 PPS : 281.89 TP : 25460 GCD : 44
+			DPS Percentile{'10': '13000', '25': '13140', '50': '13320', '75': '13520', '90': '13680', '95': '13800', '99': '14000'}
+		
+			This set has (without potion) an average  damage per 100 potency while etro predicts 3586.38 damage per 100 potency.
+			
+	Finding BiS using solver : 
+	
+		Solver BiS 1 -
+		
+			Parameters : minSPDValue=1200,maxSPDValue=1600, useNewAlgo=True, oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+			Food Space : [HD, BE, DB, BG]
+			
+			Results :
+
+				This results in the same gear set as Balance BiS 3
+				
+		Solver BiS 2 -
+		
+			Parameters : minSPDValue=700,maxSPDValue=1000, useNewAlgo=True, oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=False
+			Food Space : [HD, BE, DB, BG]
+			
+			Results :
+
+				WEAPON : Crit : 306 | Det : 214 | MainStat : 416 | WD : 132 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+				HEAD : DH : 184 | Crit : 129 | MainStat : 248 |  Materias : Crit : 36 | SkS : 36 |  Name : Tome
+				BODY : DH : 292 | Crit : 204 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+				HANDS : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SkS : 36 | SkS : 36 |  Name : Tome
+				LEGS : Crit : 292 | DH : 204 | MainStat : 394 |  Materias : SkS : 36 | SkS : 36 |  Name : Tome
+				FEET : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+				EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+				NECKLACE : Crit : 145 | DH : 102 | MainStat : 196 |  Materias : SkS : 36 | SkS : 36 |  Name : Tome
+				BRACELETS : Crit : 145 | DH : 102 | MainStat : 196 |  Materias : SkS : 36 | SkS : 36 |  Name : Raid
+				LRING : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | SkS : 36 |  Name : Raid
+				RING : Crit : 145 | DH : 102 | MainStat : 196 |  Materias : Det : 36 | DH : 36 |  Name : Tome
+				Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1248, 'Ten': 400, 'SS': 400, 'SkS': 976, 'Crit': 2587, 'DH': 1422, 'Piety': 390}
+				Materia numbers : SkS 16x |Crit 4x |Det 1x |DH 1x |
+				Food Baked Eggplant gives -> Det 10% max of 103 |Crit 10% max of 62 |
+				
+			Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+
+				The Fight finishes at: 94.09
+				========================
+				Results for Samurai ID - 1 :
+				DPS : 13226.41 PPS : 271.55 TP : 25550 GCD : 44
+				DPS Percentile{'10': '12860', '25': '13020', '50': '13220', '75': '13420', '90': '13600', '95': '13700', '99': '13920'}
+
+				This set has (without potion) an average 3,744.74 damage per 100 potency
+				
+		Solver BiS 3 -
+		
+			Parameters : minSPDValue=400,maxSPDValue=510, useNewAlgo=True, oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+			Food Space : [HD, BE, DB, BG]
+			
+			Results :
+			
+				This results in the same gear set as Balance BiS 1.
+
+				
+Samurai section's results :
+
+Solver BiS 1 and 3 were the same as Balance BiS 3 and 1 respectively.
+Solver BiS 2 has the same GCD timer as Balance BiS 2, but with less Skill Speed. THis results in an increase of ~5 expected DPS.
+
+]
+		
+Monk :
+
+[
+
+Rotation :  [DragonKick, PerfectBalance, TwinSnakes, RiddleOfFire, Demolish, WaitAbility(1), Potion, Bootshine, Brotherhood, TheForbiddenChakra, RisingPhoenix, RiddleOfWind,
+			 DragonKick, TheForbiddenChakra, PerfectBalance, Bootshine, SnapPunch, TheForbiddenChakra, TwinSnakes, RisingPhoenix, TheForbiddenChakra, DragonKick, TrueStrike,
+			 TheForbiddenChakra, Demolish, Bootshine, TwinSnakes, SnapPunch, DragonKick, TrueStrike, SnapPunch, Bootshine, TwinSnakes, Demolish, DragonKick, TrueStrike, SnapPunch,
+			 TheForbiddenChakra, Bootshine, TwinSnakes, SnapPunch, DragonKick, TrueStrike, Demolish, Bootshine, TwinSnakes, RiddleOfFire, DragonKick, Bootshine, TheForbiddenChakra,
+			 DragonKick, ElixirField, Bootshine, TwinSnakes, DragonKick, DragonKick, DragonKick, DragonKick ]
+			 
+	Balance BiS : 
+	
+	Balance BiS 1 (771) - https://etro.gg/gearset/cc22e1aa-6d78-4ffe-bc53-e8466373b6bc
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+		
+			The Fight finishes at: 81.11
+			========================
+			Results for Monk ID - 1 :
+			DPS : 13424.07 PPS : 260.26 TP : 21110 GCD : 43
+			DPS Percentile{'10': '12920', '25': '13160', '50': '13420', '75': '13680', '90': '13940', '95': '14080', '99': '14380'}
+		
+			This set has (without potion) an average 3,779.06 damage per 100 potency while etro predicts 3754.24 damage per 100 potency.
+			
+	Balance BiS 2 (858) - https://etro.gg/gearset/aacac26e-56b3-4341-95ff-2ae0cc97e233
+	
+		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
+			
+			The Fight finishes at: 80.7
+			========================
+			Results for Monk ID - 1 :
+			DPS : 13230.04 PPS : 261.59 TP : 21110 GCD : 43
+			DPS Percentile{'10': '12740', '25': '12960', '50': '13220', '75': '13480', '90': '13740', '95': '13880', '99': '14180'}
+
+			This set has (without potion) an average 3,754.06 damage per 100 potency while etro predicts 3729.96 damage per 100 potency.
+			
+	Finding BiS using Solver :
+	
+	Solver BiS 1 -
+	
+		Parameters : minSPDValue=730,maxSPDValue=800, useNewAlgo=True, oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Food Space : [HD, BE, DB, BG]
+		
+		
+		Results :
+		
+			This results in the same gear set as Balance BiS 1.
+			
+	Solver BiS 2 -
+	
+		Parameters : minSPDValue=830,maxSPDValue=880, useNewAlgo=True, oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=False
+		Food Space : [HD, BE, DB, BG]
+		
+		Results :
+		
+			This results in the same gear set as Balance BiS 2
+			
+			
+			
+Monk section's result:
+
+	Both Solver BiS are the exact same as Balance BiS.
+	
+]
+		
+	
