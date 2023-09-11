@@ -5,7 +5,7 @@
                 "TestName": "blackmage",
                 "Fight": "blackmage_test.json",
                 "ExpectedResult": {
-                    "EndTime": "85.74",
+                    "EndTime": "85.34",
                     "1": {
                         "ExpectedTotalPotency": "9349"
                     }
@@ -65,7 +65,7 @@
                 "TestName": "whitemage",
                 "Fight": "whitemage_test.json",
                 "ExpectedResult": {
-                    "EndTime": "37.21",
+                    "EndTime": "37.15",
                     "1": {
                         "ExpectedTotalPotency": "6330"
                     }
@@ -115,7 +115,7 @@
                 "TestName": "samurai",
                 "Fight": "samurai_test.json",
                 "ExpectedResult": {
-                    "EndTime": "83.24",
+                    "EndTime": "83.22",
                     "1": {
                         "ExpectedTotalPotency": "13120"
                     }
@@ -155,7 +155,7 @@
                 "TestName": "monk",
                 "Fight": "monk_test.json",
                 "ExpectedResult": {
-                    "EndTime": "53.26",
+                    "EndTime": "53.14",
                     "1": {
                         "ExpectedTotalPotency": "8030"
                     }

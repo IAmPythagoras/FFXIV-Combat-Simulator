@@ -299,8 +299,8 @@ class Spell:
         tempSpell.notRoundCastTime = tempSpell.CastTime
         tempSpell.notRoundRecastTime = tempSpell.RecastTime
 
-        tempSpell.CastTime = roundDown(tempSpell.CastTime, 2)
-        tempSpell.RecastTime = roundDown(tempSpell.RecastTime, 2)
+        tempSpell.CastTime = roundDown(tempSpell.CastTime, 3)
+        tempSpell.RecastTime = roundDown(tempSpell.RecastTime, 3)
 
 
 

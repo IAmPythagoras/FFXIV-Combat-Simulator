@@ -77,13 +77,13 @@ class Tester:
             Event.RequirementOn = False
             Event.IgnoreMana = True
             
-            Event.SimulateFight(0.01,500, vocal=False) # Simulate the fight with no requirements
+            Event.SimulateFight(0.01,500, vocal=False,PPSGraph=False, showProgress=False,computeGraph=False) # Simulate the fight with no requirements
 
             Event_Req.ShowGraph = False
             Event_Req.RequirementOn = True
             Event_Req.IgnoreMana = True
 
-            Event_Req.SimulateFight(0.01,500, vocal=False) # Simulates the fight with requirements
+            Event_Req.SimulateFight(0.01,500, vocal=False,PPSGraph=False, showProgress=False,computeGraph=False) # Simulates the fight with requirements
 
             failedReq = 0
             for event in Event_Req.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
