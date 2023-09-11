@@ -55,6 +55,12 @@ This library also has a built-in BiS (best in slot) solver. The advantage of usi
 
 Learn more about the simulator and how to use it by going to the official documentation website : https://iampythagoras.github.io/index.html
 
+# Rotation BiS Solver 
+
+As of ffxivcalc version 0.8.00, this library now has a built in rotation BiS solver. You can use the ffxivcalclayout.py in order to experiment with it.
+
+You can read this PDF [BiS_Solver_Algorithm_Documentation.pdf](https://github.com/IAmPythagoras/FFXIV-Combat-Simulator/files/12580553/BiS_Solver_Algorithm_Documentation.pdf) if you are interested in its
+functionning. 
 
 # Discord bot): 
 DISCORD BOT IS CURRENTLY OFFLINE. WILL UPDATE HERE WHEN IT IS AVAILABLE
@@ -68,8 +74,6 @@ Use this link to install the bot on your server :
 ```
 https://discord.com/oauth2/authorize?client_id=1071922835011932290&permissions=274878024704&scope=bot
 ```
-
-
 
 # Currently Working On
 
