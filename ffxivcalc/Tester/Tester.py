@@ -62,6 +62,8 @@ class Tester:
         #input(self.filename)
         data = json.load(f)
 
+        print("Launching opener tests")
+
         for test in data["data"]["FightList"]:
             # Will iterate through every fight in the saved file and test them.
             file = self.filename / test["Fight"]
