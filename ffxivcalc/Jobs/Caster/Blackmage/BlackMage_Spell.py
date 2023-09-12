@@ -58,14 +58,15 @@ def ApplyFlare(Player, Enemy):
 
 def ApplyHighFire(Player, Enemy):
     ApplyFire3(Player, Enemy)
-    Player.EffectList.append(HighFireEffect)
-    Player.EffectCDList.append(HighFireCheck)
+    if not HighFireEffect in Player.EffectList:
+        Player.EffectList.insert(0,HighFireEffect)
+        Player.EffectCDList.append(HighFireCheck)
 
 def ApplyThunder4(Player, Enemy):
     if Player.Thunder4DOT == None:
         Player.Thunder4DOT = copy.deepcopy(Thunder4DOT)
         Player.DOTList.append(Player.Thunder4DOT)
-        Player.EffectList.append(Thunder4DOTCheck)
+        Player.EffectCDList.append(Thunder4DOTCheck)
     Player.Thunder4DOTTimer = 18
 
     if Player.SharpCast: #If we have SharpCast
@@ -297,6 +298,9 @@ def HighFireCheck(Player, Enemy):
         Player.EffectToRemove.append(HighFireCheck)
 
 def EnochianEffectCheck(Player, Enemy):
+
+    if Player.EnochianTimer <= 0 : Player.ElementalGauge = 0
+
     if Player.ElementalGauge == 0: #If we loose Enochian
         Player.Enochian = False
         Player.buffList.remove(Enochian)
