@@ -90,7 +90,7 @@ class test:
         """This function executes the test. The results of the test are written in the log file.
             It also returns a boolean relating to weither the test was successful
         """
-        test_logging.debug("Executing test " + self.testName)
+        test_logging.debug("Executing test -> " + self.testName)
 
         testResults = self.testFunction()
 
@@ -117,12 +117,12 @@ class testSuite:
         self.testList.append(newTest)
 
     def executeTestSuite(self):
-        test_logging.debug("Executing test suite" + self.testSuiteName)
+        test_logging.debug("Executing test suite -> " + self.testSuiteName)
         success = True
         for test in self.testList: success = success and test.executeTest()
 
         if not success : test_logging.error("Testsuite " + self.testSuiteName + " had at least one fail test. See above.")
-        else : test_logging.debug("Testsuite " + self.testSuiteName + " completed without errors.")
+        else : test_logging.debug(self.testSuiteName + " completed without errors.")
 
 
 ######################################
@@ -541,6 +541,39 @@ def blmTest11ValidationFunction(testResults) -> (bool, list):
 blmtest11 = test("Loosing UI after 15 seconds",blmTest11TestFunction,blmTest11ValidationFunction)
 blmTestSuite.addTest(blmtest11)
 
+# Loosing UI after 15 seconds
+
+def blmTest15TestFunction() -> None:
+    """This tests that AF is lost after 15 seconds of doing nothing
+    """
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = base_stat
+    actionSet = [Fire3,WaitAbility(15.02)]
+    player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = False
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.ElementalGauge]
+
+def blmTest15ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0]
+
+    passed = expected[0] == testResults[0]
+
+    return passed, expected
+
+blmtest15 = test("Loosing AF after 15 seconds",blmTest15TestFunction,blmTest15ValidationFunction)
+blmTestSuite.addTest(blmtest15)
+
 # Checking enochian timer resets
 
 def blmTest12TestFunction() -> None:
@@ -583,7 +616,7 @@ def blmTest13TestFunction() -> None:
     Event = Fight(Dummy, False)
 
     Stat = base_stat
-    actionSet = [Blizzard3,WaitAbility(10), UmbralSoul, WaitAbility(10)]#, UmbralSoul, WaitAbility(10)]
+    actionSet = [Blizzard3,WaitAbility(10), UmbralSoul, WaitAbility(10), UmbralSoul,UmbralSoul, WaitAbility(10)]
     player = Player(actionSet, [], Stat, JobEnum.BlackMage)
 
     Event.AddPlayer([player])
@@ -594,9 +627,207 @@ def blmTest13TestFunction() -> None:
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-    return [player.PolyglotStack]
+    return [player.PolyglotStack, player.ElementalGauge, player.UmbralHearts]
 
 def blmTest13ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1, -3, 3]
+
+    passed = expected[0] == testResults[0] and expected[1] == testResults[1] and expected[2] == testResults[2]
+
+    return passed, expected
+
+blmtest13 = test("Gaining PolyglotStack after 30 seconds in enochian and testing umbral soul",blmTest13TestFunction,blmTest13ValidationFunction)
+blmTestSuite.addTest(blmtest13)
+
+# Testing mana usage 1
+
+def blmTest14TestFunction() -> None:
+    """This tests the final mana at the end of a rotation
+    """
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = base_stat
+    actionSet = [Blizzard3,Blizzard4, Fire3]
+    player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = False
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Mana]
+
+def blmTest14ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [10000]
+
+    passed = expected[0] == testResults[0]
+
+    return passed, expected
+
+blmtest14 = test("Mana usage test 1",blmTest14TestFunction,blmTest14ValidationFunction)
+blmTestSuite.addTest(blmtest14)
+
+# Testing mana usage 2
+
+def blmTest16TestFunction() -> None:
+    """This tests the final mana at the end of a rotation
+    """
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = base_stat
+    actionSet = [Blizzard3,Blizzard4, Fire3, Fire4, Fire4, Fire4]
+    player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = False
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Mana]
+
+def blmTest16ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [7600]
+
+    passed = expected[0] == testResults[0]
+
+    return passed, expected
+
+blmtest16 = test("Mana usage test 2",blmTest16TestFunction,blmTest16ValidationFunction)
+blmTestSuite.addTest(blmtest16)
+
+# Testing mana usage 3
+
+def blmTest17TestFunction() -> None:
+    """This tests the final mana at the end of a rotation
+    """
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = base_stat
+    actionSet = [Blizzard3,Blizzard4, Fire3, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4]
+    player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = False
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Mana]
+
+def blmTest17ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [2800]
+
+    passed = expected[0] == testResults[0]
+
+    return passed, expected
+
+blmtest17 = test("Mana usage test 3",blmTest17TestFunction,blmTest17ValidationFunction)
+blmTestSuite.addTest(blmtest17)
+
+# Testing mana usage 4
+
+def blmTest18TestFunction() -> None:
+    """This tests the final mana at the end of a rotation
+    """
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = base_stat
+    actionSet = [Blizzard3,Blizzard4, Fire3, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Despair]
+    player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = False
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Mana, player.EnochianTimer]
+
+def blmTest18ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0,15]
+
+    passed = expected[0] == testResults[0] and expected[1] == testResults[1]
+
+    return passed, expected
+
+blmtest18 = test("Mana usage test 4",blmTest18TestFunction,blmTest18ValidationFunction)
+blmTestSuite.addTest(blmtest18)
+
+# Testing mana usage 5
+
+def blmTest19TestFunction() -> None:
+    """This tests the final mana at the end of a rotation
+    """
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = base_stat
+    actionSet = [HighBlizzard, Freeze, HighFire, HighFire, HighFire]
+    player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = False
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Mana]
+
+def blmTest19ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [7000]
+
+    passed = expected[0] == testResults[0]
+
+    return passed, expected
+
+blmtest19 = test("Mana usage test 5",blmTest19TestFunction,blmTest19ValidationFunction)
+blmTestSuite.addTest(blmtest19)
+
+# Testing mana usage 6
+
+def blmTest20TestFunction() -> None:
+    """This tests the final mana at the end of a rotation
+    """
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = base_stat
+    actionSet = [HighBlizzard, Freeze, HighFire, HighFire, HighFire, Flare, Flare]
+    player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = False
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Mana]
+
+def blmTest20ValidationFunction(testResults) -> (bool, list):
     passed = True
     expected = [0]
 
@@ -604,8 +835,107 @@ def blmTest13ValidationFunction(testResults) -> (bool, list):
 
     return passed, expected
 
-blmtest13 = test("Gaining PolyglotStack after 30 seconds in enochian and testing umbral soul",blmTest13TestFunction,blmTest13ValidationFunction)
-blmTestSuite.addTest(blmtest13)
+blmtest20 = test("Mana usage test 6",blmTest20TestFunction,blmTest20ValidationFunction)
+blmTestSuite.addTest(blmtest20)
+
+# Triplecast/swiftcast test and interaction with insta cast spell 1
+
+def blmTest21TestFunction() -> None:
+    """This tests the final mana at the end of a rotation
+    """
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = base_stat
+    actionSet = [Blizzard3, Fire3, Triplecast, Fire4, Fire4, Swiftcast, Fire4]
+    player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = False
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.TripleCastStack]
+
+def blmTest21ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1]
+
+    passed = expected[0] == testResults[0]
+
+    return passed, expected
+
+blmtest21 = test("Triplecast/swiftcast test and interaction with insta cast spell 1",blmTest21TestFunction,blmTest21ValidationFunction)
+blmTestSuite.addTest(blmtest21)
+
+# Triplecast/swiftcast test and interaction with insta cast spell 2
+
+def blmTest22TestFunction() -> None:
+    """This tests the final mana at the end of a rotation
+    """
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = base_stat
+    actionSet = [Blizzard3, Fire3, Triplecast, Fire4, Fire4, Triplecast, Fire4]
+    player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = False
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.TripleCastStack]
+
+def blmTest22ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [2]
+
+    passed = expected[0] == testResults[0]
+
+    return passed, expected
+
+blmtest22 = test("Triplecast/swiftcast test and interaction with insta cast spell 2",blmTest22TestFunction,blmTest22ValidationFunction)
+blmTestSuite.addTest(blmtest22)
+
+# Triplecast/swiftcast test and interaction with insta cast spell 3
+
+def blmTest23TestFunction() -> None:
+    """This tests the final mana at the end of a rotation
+    """
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = base_stat
+    actionSet = [Blizzard3, Fire3, SharpCast, Amplifier, Fire1, Triplecast, Fire4, Xenoglossy, Fire4, Fire3]
+    player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = False
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.TripleCastStack]
+
+def blmTest23ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1]
+
+    passed = expected[0] == testResults[0]
+
+    return passed, expected
+
+blmtest23 = test("Triplecast/swiftcast test and interaction with insta cast spell 3",blmTest23TestFunction,blmTest23ValidationFunction)
+blmTestSuite.addTest(blmtest23)
 
 blmTestSuite.executeTestSuite()
 

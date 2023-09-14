@@ -70,7 +70,7 @@ def ApplyThunder4(Player, Enemy):
     Player.Thunder4DOTTimer = 18
 
     if Player.SharpCast: #If we have SharpCast
-        Player.EffectList.append(Thunder3ProcEffect)
+        Player.EffectList.insert(0,Thunder3ProcEffect)
         Player.SharpCast = False
 
     #We now have to check if Thunder 3 is already applied, in which case we will remove it
@@ -88,6 +88,7 @@ def ApplyFire1(Player, Enemy):
     if Player.SharpCast: #If sharpcast
         Player.Fire3Proc = True
         Player.SharpCast = False
+        Player.EffectList.insert(0,Fire3ProcEffect)
 
 def ApplyFire3(Player, Enemy):
     #Will check if we unlock paradox
@@ -116,6 +117,7 @@ def ApplyParadox(Player, Enemy):
         if Player.SharpCast: #If sharpcast
             Player.Fire3Proc = True
             Player.SharpCast = False
+            Player.EffectList.insert(0,Fire3ProcEffect)
     elif Player.ElementalGauge < 0:
         Player.AddIce()
 
@@ -136,7 +138,7 @@ def ApplyThunder3(Player, Spell):
     Player.Thunder3DOTTimer = 30
 
     if Player.SharpCast: #If we have SharpCast
-        Player.EffectList.append(Thunder3ProcEffect)
+        Player.EffectList.insert(0,Thunder3ProcEffect)
         Player.SharpCast = False
 
     #We now have to check if Thunder 4 is already applied, in which case we will remove it
