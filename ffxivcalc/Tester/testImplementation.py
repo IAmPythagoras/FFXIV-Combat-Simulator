@@ -937,11 +937,85 @@ def blmTest23ValidationFunction(testResults) -> (bool, list):
 blmtest23 = test("Triplecast/swiftcast test and interaction with insta cast spell 3",blmTest23TestFunction,blmTest23ValidationFunction)
 blmTestSuite.addTest(blmtest23)
 
-blmTestSuite.executeTestSuite()
+# Triplecast/swiftcast test and interaction with insta cast spell 4
+
+def blmTest24TestFunction() -> None:
+    """This tests the final mana at the end of a rotation
+    """
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = base_stat
+    actionSet = [Blizzard3, Fire3, SharpCast, Amplifier, Thunder3, Triplecast, Fire4, Xenoglossy, Fire4, Thunder3]
+    player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = False
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.TripleCastStack]
+
+def blmTest24ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1]
+
+    passed = expected[0] == testResults[0]
+
+    return passed, expected
+
+blmtest24 = test("Triplecast/swiftcast test and interaction with insta cast spell 4",blmTest24TestFunction,blmTest24ValidationFunction)
+blmTestSuite.addTest(blmtest24)
 
 
 
+######################################
+#         Redmage testSuite          #
+######################################
 
+rdmTestSuite = testSuite("Redmage test suite")
+
+# Opener requirement, end time and potency test 1
+
+def rdmTest1TestFunction() -> None:
+    """This test will try the opener of a redmage. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 502, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [SharpCast, Fire3, Thunder3, Fire4, Triplecast, Fire4, Fire4, Amplifier, LeyLines, Fire4, Swiftcast, Despair, Triplecast, Manafront,
+                 Fire4, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose, Fire3, Fire4, Fire4, Fire4, Despair, WaitAbility(50)]
+    player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    failedReq = 0
+    for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+        if event.fatal : failedReq += 1
+
+    return [failedReq, Event.TimeStamp, player.TotalPotency]
+
+def rdmTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 32.47, 8660]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rdmtest1 = test("Opener requirement, end time and potency 1", blmTest1TestFunction, blmTest1ValidationFunction)
+rdmTestSuite.addTest(rdmtest1)
 
 
 
