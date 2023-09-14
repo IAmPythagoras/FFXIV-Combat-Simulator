@@ -4,7 +4,7 @@ from ffxivcalc.Jobs.PlayerEnum import JobEnum, RoleEnum
 from ffxivcalc.Jobs.ActionEnum import *
 from ffxivcalc.Request.etro_request import get_gearset_data
 
-from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import EnochianEffect, ElementalEffect
+from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import EnochianEffectCheck, ElementalEffect
 from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
 from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import SongEffect
 from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
@@ -767,7 +767,8 @@ class Player:
 
     def init_blackmage(self):
 
-        self.EffectList = [EnochianEffect, ElementalEffect] # Adding effects
+        self.EffectList = [ElementalEffect] # Adding effects
+        self.EffectCDList = [EnochianEffectCheck]
 
         #Gauge
         self.ElementalGauge = 0 #3 represents 3 astral fire and -3 represents 3 Umbral Ice

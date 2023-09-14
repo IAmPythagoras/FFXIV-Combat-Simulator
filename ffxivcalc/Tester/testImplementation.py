@@ -517,7 +517,7 @@ def blmTest11TestFunction() -> None:
     Event = Fight(Dummy, False)
 
     Stat = base_stat
-    actionSet = [Blizzard3, Blizzard3,WaitAbility(16.01)]
+    actionSet = [Blizzard3,WaitAbility(15.02)]
     player = Player(actionSet, [], Stat, JobEnum.BlackMage)
 
     Event.AddPlayer([player])
@@ -540,6 +540,72 @@ def blmTest11ValidationFunction(testResults) -> (bool, list):
 
 blmtest11 = test("Loosing UI after 15 seconds",blmTest11TestFunction,blmTest11ValidationFunction)
 blmTestSuite.addTest(blmtest11)
+
+# Checking enochian timer resets
+
+def blmTest12TestFunction() -> None:
+    """This tests that enochian is reset
+    """
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = base_stat
+    actionSet = [Blizzard3,WaitAbility(12.00), Blizzard1]
+    player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = False
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.EnochianTimer]
+
+def blmTest12ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [15]
+
+    passed = expected[0] == testResults[0]
+
+    return passed, expected
+
+blmtest12 = test("Enochian timer reset",blmTest12TestFunction,blmTest12ValidationFunction)
+blmTestSuite.addTest(blmtest12)
+
+# Gaining PolyglotStack after 30 seconds under enochian and testing umbral soul
+
+def blmTest13TestFunction() -> None:
+    """This tests that polyglot stacks are gained after 30 seconds of enochian and testing umbral soul
+    """
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = base_stat
+    actionSet = [Blizzard3,WaitAbility(10), UmbralSoul, WaitAbility(10)]#, UmbralSoul, WaitAbility(10)]
+    player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = False
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.PolyglotStack]
+
+def blmTest13ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0]
+
+    passed = expected[0] == testResults[0]
+
+    return passed, expected
+
+blmtest13 = test("Gaining PolyglotStack after 30 seconds in enochian and testing umbral soul",blmTest13TestFunction,blmTest13ValidationFunction)
+blmTestSuite.addTest(blmtest13)
 
 blmTestSuite.executeTestSuite()
 

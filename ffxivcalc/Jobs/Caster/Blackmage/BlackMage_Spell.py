@@ -111,8 +111,6 @@ def ApplyBlizzard4(Player, Enemy):
 def ApplyParadox(Player, Enemy):
     Player.Paradox = False
 
-    Player.EnochianTimer = 15 #Reset Timer
-
     if Player.ElementalGauge > 0:
         Player.AddFire()
         if Player.SharpCast: #If sharpcast
@@ -230,13 +228,13 @@ def LeyLinesEffect(Player, Spell):
         #Spell.CastTime = (Spell.CastTime * 0.85)
         #Spell.RecastTime = (Spell.RecastTime * 0.85)
 
-def EnochianEffect(Player, Spell):
-    if Player.ElementalGauge != 0:
-        #If elementalGauge is not 0
-        Player.buffList.append(Enochian)
-        Player.EffectToRemove.append(EnochianEffect)
-        Player.EffectCDList.append(EnochianEffectCheck)
-        Player.Enochian = True
+#def EnochianEffect(Player, Spell):
+#    if Player.ElementalGauge != 0:
+#        #If elementalGauge is not 0
+#        Player.buffList.append(Enochian)
+#        Player.EffectToRemove.append(EnochianEffect)
+#        Player.EffectCDList.append(EnochianEffectCheck)
+#        Player.Enochian = True
 
 def ElementalEffect(Player, Spell):
     #Will affect Spell depending on fire and ice
@@ -301,14 +299,18 @@ def EnochianEffectCheck(Player, Enemy):
 
     if Player.EnochianTimer <= 0 : Player.ElementalGauge = 0
 
-    if Player.ElementalGauge == 0: #If we loose Enochian
-        Player.Enochian = False
-        Player.buffList.remove(Enochian)
-        Player.EffectList.append(EnochianEffect)
-        Player.EffectToRemove.append(EnochianEffectCheck)
+    if Player.ElementalGauge != 0 and not Player.Enochian:
+        # Receive enochian
+        Player.Enochian = True
+        Player.buffList.append(Enochian)
         Player.PolyglotTimer = 30
 
-    if Player.PolyglotTimer <= 0:
+    if Player.ElementalGauge == 0 and Player.Enochian : #If we loose Enochian
+        Player.Enochian = False
+        Player.buffList.remove(Enochian)
+        Player.PolyglotTimer = 30
+
+    if Player.PolyglotTimer <= 0 and Player.Enochian:
         #Add new stack
         Player.PolyglotStack = min(2, Player.PolyglotStack + 1)
         Player.PolyglotTimer = 30
