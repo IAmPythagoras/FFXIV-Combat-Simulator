@@ -62,13 +62,6 @@ As of ffxivcalc version 0.8.00, this library now has a built in rotation BiS sol
 You can read this PDF [BiS_Solver_Algorithm_Documentation.pdf](https://github.com/IAmPythagoras/FFXIV-Combat-Simulator/files/12580553/BiS_Solver_Algorithm_Documentation.pdf) if you are interested in its
 functionning. 
 
-# Rotation BiS Solver 
-
-As of ffxivcalc version 0.8.00, this library now has a built in rotation BiS solver. You can use the ffxivcalclayout.py in order to experiment with it.
-
-You can read this PDF [BiS_Solver_Algorithm_Documentation.pdf](https://github.com/IAmPythagoras/FFXIV-Combat-Simulator/files/12580553/BiS_Solver_Algorithm_Documentation.pdf) if you are interested in its
-functionning. 
-
 You can read about the experimental results of this solver here : https://github.com/IAmPythagoras/FFXIV-Combat-Simulator/blob/main/ffxivcalc/GearSolver/BiSAlgorithmResults.txt 
 
 # Discord bot): 
