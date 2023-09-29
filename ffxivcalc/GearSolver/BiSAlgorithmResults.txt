@@ -126,7 +126,6 @@ Rotation : [SharpCast, Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4,
 			Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1530, 'Ten': 400, 'SS': 2521, 'SkS': 400, 'Crit': 851, 'DH': 1331, 'Piety': 390}
 			Materia numbers : SS 10x |DH 4x |Det 8x |
 			Food Caviar Sandwich gives -> SS 10% max of 103 |DH 10% max of 62 |
-			The Fight finishes at: 84.92
 			
 		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) : 
 
@@ -195,7 +194,7 @@ Rotation : [SharpCast, Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4,
 BlackMage section's results:
 	
 	Most BiS found by the algorithm seem to agree with the Balance's BiS, at the exception of the highest Spell Speed BiS. 
-	In fact using Solver BiS 2 we would gain ~3 expected DPS over the balance 2521 Balance BiS.
+	In fact using Solver BiS 2 we would gain ~3 expected DPS over the balance 2521 Balance BiS. 
 ]
 	
 	
@@ -515,7 +514,7 @@ Scholar :
 Note : We will only look into minimum Piety Set.
 	
 	
-Rotation : [Broil, Biolysis, Aetherflow, Broil, Swiftcast, Broil, WaitAbility(1), ChainStratagem, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, 
+Rotation : [Broil, Biolysis, Aetherflow, Broil, Swiftcast, Broil, ChainStratagem, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, 
             Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Biolysis, Broil, Broil,
 			Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil]
 	
@@ -1065,6 +1064,21 @@ Rotation :[Stormbite, WandererMinuet, RagingStrike, Causticbite, EmpyrealArrow, 
 		
 		Results :
 		
+			WEAPON : Crit : 306 | DH : 214 | MainStat : 416 | WD : 132 |  Materias : Det : 36 | SkS : 36 |  Name : Raid
+			HEAD : Crit : 184 | DH : 129 | MainStat : 248 |  Materias : Det : 36 | DH : 36 |  Name : Raid
+			BODY : Det : 292 | Crit : 204 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Tome
+			HANDS : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+			LEGS : Det : 292 | Crit : 204 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
+			FEET : DH : 184 | Crit : 129 | MainStat : 248 |  Materias : Crit : 36 | Det : 36 |  Name : Tome
+			EARRINGS : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | DH : 36 |  Name : Tome
+			NECKLACE : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
+			BRACELETS : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | DH : 36 |  Name : Tome
+			LRING : DH : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | Det : 36 |  Name : Raid
+			RING : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : Det : 36 | DH : 36 |  Name : Tome
+			Final Stats : {'MainStat': 3378, 'WD': 132, 'Det': 1777, 'Ten': 400, 'SS': 400, 'SkS': 479, 'Crit': 2598, 'DH': 1360, 'Piety': 390}
+			Materia numbers : Det 5x |SkS 1x |DH 8x |Crit 8x |
+			Food Baba Ghanoush gives -> Crit 10% max of 103 |SkS 10% max of 62 |
+		
 		
 		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
 		
@@ -1273,7 +1287,7 @@ Rotation : [BloodWeapon,WaitAbility(5),TBN(DRKPlayer), HardSlash, EdgeShadow, De
 			The Fight finishes at: 73.79
 			========================
 			Results for DarkKnight ID - 1 :
-			DPS : 9894.8 PPS : 287.3 TP : 21200 GCD : 31
+			DPS : 9894.80 PPS : 287.3 TP : 21200 GCD : 31
 			DPS Percentile{'10': '10080', '25': '10280', '50': '9500', '75': '9780', '90': '9900', '95': '9940', '99': '9980'}
 
 			This set has (without potion) an average 3,019.41 damage per 100 potency
@@ -1576,19 +1590,19 @@ Rotation : [HolySpirit, FastBlade, RiotBlade, WaitAbility(1), Potion, RoyalAutho
 		
 		Results : 
 		
-			WEAPON : Det : 306 | Crit : 214 | MainStat : 416 | WD : 132 |  Materias : Crit : 36 | DH : 36 |  Name : Raid
+			WEAPON : Det : 306 | Crit : 214 | MainStat : 416 | WD : 132 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
 			HEAD : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : DH : 36 | DH : 36 |  Name : Raid
-			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : DH : 36 | DH : 36 |  Name : Tome
+			BODY : Crit : 292 | Det : 204 | MainStat : 394 |  Materias : Det : 36 | DH : 36 |  Name : Tome
 			HANDS : Crit : 184 | Ten : 129 | MainStat : 248 |  Materias : Det : 36 | DH : 36 |  Name : Raid
 			LEGS : Det : 292 | Crit : 204 | MainStat : 394 |  Materias : Crit : 36 | Crit : 36 |  Name : Raid
 			FEET : Crit : 184 | Det : 129 | MainStat : 248 |  Materias : DH : 36 | DH : 36 |  Name : Tome
 			EARRINGS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Tome
 			NECKLACE : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
 			BRACELETS : Crit : 145 | Det : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Tome
-			LRING : Det : 142 | Crit : 99 | MainStat : 186 |  Materias : Crit : 36 | DH : 36 |  Name : Tome650
+			LRING : Crit : 145 | SkS : 102 | MainStat : 196 |  Materias : DH : 36 | DH : 36 |  Name : Raid
 			RING : Det : 145 | Crit : 102 | MainStat : 196 |  Materias : Crit : 36 | DH : 36 |  Name : Tome
-			Final Stats : {'MainStat': 3328, 'WD': 132, 'Det': 2182, 'Ten': 529, 'SS': 400, 'SkS': 400, 'Crit': 2540, 'DH': 976, 'Piety': 390}
-			Materia numbers : Crit 5x |DH 16x |Det 1x |
+			Final Stats : {'MainStat': 3338, 'WD': 132, 'Det': 2076, 'Ten': 529, 'SS': 400, 'SkS': 502, 'Crit': 2586, 'DH': 940, 'Piety': 390}
+			Materia numbers : Crit 5x |DH 15x |Det 2x |
 			Food Baked Eggplant gives -> Det 10% max of 103 |Crit 10% max of 62 |
 
 		Predicted Expected Damage percentile damage with 500'000 iterations (no 5% comp bonus) :
@@ -1596,14 +1610,14 @@ Rotation : [HolySpirit, FastBlade, RiotBlade, WaitAbility(1), Potion, RoyalAutho
 			The Fight finishes at: 88.23
 			========================
 			Results for Paladin ID - 1 :
-			DPS : 9685.4 PPS : 266.8 TP : 23540 GCD : 37
+			DPS : 9692.13 PPS : 266.8 TP : 23540 GCD : 37
 			DPS Percentile{'10': '10160', '25': '9100', '50': '9480', '75': '9720', '90': '9860', '95': '9920', '99': '9980'}
 			
-			This set has (without potion) an average 3,019.43 damage per 100 potency
+			This set has (without potion) an average 3,022.00 damage per 100 potency
 			
 	Solver BiS 2 -
 
-		Parameters : minSPDValue=400,maxSPDValue=400, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True
+		Parameters : minSPDValue=400,maxSPDValue=400, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0,findOptMateriaGearBF=True
 		Food Space : [HD, BE, DB, BG]
 		
 		Results : 
@@ -1611,7 +1625,7 @@ Rotation : [HolySpirit, FastBlade, RiotBlade, WaitAbility(1), Potion, RoyalAutho
 					
 Paladin section's results :
 
-Solver BiS 1 has an expected DPS gain of ~13, but it has higher Skill Speed.
+Solver BiS 1 has an expected DPS gain of ~20, but it has higher Skill Speed.
 Solver BiS 2 is the same as Balance BiS 1
 
 ]
@@ -1918,15 +1932,7 @@ Rotation : [TrueThrust, Disembowel, LanceCharge, DragonSight(NINPlayer), Chaotic
 		
 			This set has (without potion) an average 3,894.35 damage per 100 potency
 			
-			
-	Solver BiS 4 -
-	
-		Parameters : minSPDValue=500,maxSPDValue=600, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=False
-		Food Space : [HD, BE, DB, BG]
-		
-		Results :
-		
-			This results in the exact same BiS as Balance BiS 2.			
+					
 			
 	Solver BiS 3 -
 	
@@ -1936,6 +1942,15 @@ Rotation : [TrueThrust, Disembowel, LanceCharge, DragonSight(NINPlayer), Chaotic
 		Results :
 		
 			This results in the exact same BiS as Balance BiS 1.
+			
+	Solver BiS 4 -
+	
+		Parameters : minSPDValue=500,maxSPDValue=600, useNewAlgo=True,oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0and1,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=False
+		Food Space : [HD, BE, DB, BG]
+		
+		Results :
+		
+			This results in the exact same BiS as Balance BiS 2.
 			
 Dragoon section's results:
 
