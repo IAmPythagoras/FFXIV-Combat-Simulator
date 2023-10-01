@@ -72,7 +72,10 @@ def ApplyLucidDreaming(Player, Enemy):
 
     # The order of insta cast usage for blackmage is SwiftCast -> TripleCast
     # The order for redmage is Acceleration -> Dualcast -> Swiftcast.
-    # For purpose of simplicity, the order of this sim for redmage will be Swiftcast -> Acceleration -> DualCast
+    # For purpose of simplicity, the order of these for RDM might not always be like that in sim. For example,
+    # if execute Jolt -> Acc -> Swift : The usage will be Acc -> Swift -> Dual.
+    # That is because Acc is insert(0), Swift is insert(1) and dual is index 0 at the start.
+    # However if execute Jolt -> Swift -> Acc, then the correct use of Acc -> Dual -> Swift will happen.
 
 def ApplySwiftcast(Player, Enemy):
     Player.SwiftcastCD = 60

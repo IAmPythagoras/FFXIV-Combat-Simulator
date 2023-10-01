@@ -1427,6 +1427,41 @@ def rdmTest12ValidationFunction(testResults) -> (bool, list):
 rdmtest12 = test("Black/White mana generation/usage test 5", rdmTest12TestFunction, rdmTest12ValidationFunction)
 rdmTestSuite.addTest(rdmtest12)
 
+# Black/White mana generation/usage test 6
+
+def rdmTest13TestFunction() -> None:
+    """This test will make sure dual cast works as intented. With acceleration and swiftcast
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 502, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Manafication, Manafication, Verthunder, Verareo]
+    player = Player(actionSet, [], Stat, JobEnum.RedMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.WhiteMana, player.BlackMana]
+
+def rdmTest13ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [100,100]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rdmtest13 = test("Black/White mana generation/usage test 6", rdmTest13TestFunction, rdmTest13ValidationFunction)
+rdmTestSuite.addTest(rdmtest13)
+
+blmTestSuite.executeTestSuite()
 rdmTestSuite.executeTestSuite()
 
 
