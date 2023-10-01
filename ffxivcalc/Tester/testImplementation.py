@@ -96,7 +96,7 @@ class test:
 
         validation, expected = self.validationFunction(testResults)
 
-        if not validation: test_logging.error("This " + self.testName + " failed. testResults : " + str(testResults) + " expected results : " + str(expected))    
+        if not validation: test_logging.error(self.testName + " failed. testResults : " + str(testResults) + " expected results : " + str(expected))    
         return validation
     
 class testSuite:
@@ -119,7 +119,8 @@ class testSuite:
     def executeTestSuite(self):
         test_logging.debug("Executing test suite -> " + self.testSuiteName)
         success = True
-        for test in self.testList: success = success and test.executeTest()
+        x = len(self.testList)
+        for test in self.testList: success = test.executeTest() and success
 
         if not success : test_logging.error("Testsuite " + self.testSuiteName + " had at least one fail test. See above.")
         else : test_logging.debug(self.testSuiteName + " completed without errors.")
@@ -230,7 +231,6 @@ def blmTest3TestFunction() -> None:
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
     return [player.Mana,player.ElementalGauge]
-
 
 def blmTest3ValidationFunction(testResults) -> (bool, list):
     passed = True
@@ -841,7 +841,7 @@ blmTestSuite.addTest(blmtest20)
 # Triplecast/swiftcast test and interaction with insta cast spell 1
 
 def blmTest21TestFunction() -> None:
-    """This tests the final mana at the end of a rotation
+    """Triplecast/swiftcast test and interaction with insta cast spell 1
     """
     Dummy = Enemy()
     Event = Fight(Dummy, False)
@@ -874,7 +874,7 @@ blmTestSuite.addTest(blmtest21)
 # Triplecast/swiftcast test and interaction with insta cast spell 2
 
 def blmTest22TestFunction() -> None:
-    """This tests the final mana at the end of a rotation
+    """Triplecast/swiftcast test and interaction with insta cast spell 2
     """
     Dummy = Enemy()
     Event = Fight(Dummy, False)
@@ -907,7 +907,7 @@ blmTestSuite.addTest(blmtest22)
 # Triplecast/swiftcast test and interaction with insta cast spell 3
 
 def blmTest23TestFunction() -> None:
-    """This tests the final mana at the end of a rotation
+    """Triplecast/swiftcast test and interaction with insta cast spell 3
     """
     Dummy = Enemy()
     Event = Fight(Dummy, False)
@@ -940,7 +940,7 @@ blmTestSuite.addTest(blmtest23)
 # Triplecast/swiftcast test and interaction with insta cast spell 4
 
 def blmTest24TestFunction() -> None:
-    """This tests the final mana at the end of a rotation
+    """Triplecast/swiftcast test and interaction with insta cast spell 4
     """
     Dummy = Enemy()
     Event = Fight(Dummy, False)
@@ -970,6 +970,41 @@ def blmTest24ValidationFunction(testResults) -> (bool, list):
 blmtest24 = test("Triplecast/swiftcast test and interaction with insta cast spell 4",blmTest24TestFunction,blmTest24ValidationFunction)
 blmTestSuite.addTest(blmtest24)
 
+# Triplecast/swiftcast test and interaction with insta cast spell 4
+
+def blmTest25TestFunction() -> None:
+    """Triplecast/swiftcast test and interaction with insta cast spell 4
+    """
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = base_stat
+    actionSet = [Fire3, Blizzard3, Swiftcast, Paradox]
+    player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = False
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [SwiftcastEffect in player.EffectList]
+
+def blmTest25ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True]
+
+    passed = expected[0] == testResults[0]
+
+    return passed, expected
+
+blmtest25 = test("Triplecast/swiftcast test and interaction with insta cast spell 5",blmTest25TestFunction,blmTest25ValidationFunction)
+blmTestSuite.addTest(blmtest25)
+
+blmTestSuite.executeTestSuite()
+
 
 
 ######################################
@@ -988,9 +1023,10 @@ def rdmTest1TestFunction() -> None:
     Event = Fight(Dummy, False)
 
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 502, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
-    actionSet = [SharpCast, Fire3, Thunder3, Fire4, Triplecast, Fire4, Fire4, Amplifier, LeyLines, Fire4, Swiftcast, Despair, Triplecast, Manafront,
-                 Fire4, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose, Fire3, Fire4, Fire4, Fire4, Despair, WaitAbility(50)]
-    player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+    actionSet = [Verthunder, Verareo, Swiftcast, Acceleration, Verthunder, Verthunder, Embolden, Manafication, EnchantedRiposte, Fleche, EnchantedZwerchhau, 
+                 Contre, EnchantedRedoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verfire, Verthunder, Verstone, Verareo, Jolt, 
+                 Verthunder, Fleche]
+    player = Player(actionSet, [], Stat, JobEnum.RedMage)
 
     Event.AddPlayer([player])
 
@@ -1014,8 +1050,112 @@ def rdmTest1ValidationFunction(testResults) -> (bool, list):
 
     return passed , expected
 
-rdmtest1 = test("Opener requirement, end time and potency 1", blmTest1TestFunction, blmTest1ValidationFunction)
+rdmtest1 = test("Opener requirement, end time and potency 1", rdmTest1TestFunction, rdmTest1ValidationFunction)
 rdmTestSuite.addTest(rdmtest1)
+
+# Dual cast test 1
+
+def rdmTest2TestFunction() -> None:
+    """This test will make sure dual cast works as intented
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 502, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Jolt, Verthunder, Jolt, Swiftcast, Verthunder]
+    player = Player(actionSet, [], Stat, JobEnum.RedMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.DualCast]
+
+def rdmTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rdmtest2 = test("Dual cast test 1", rdmTest2TestFunction, rdmTest2ValidationFunction)
+rdmTestSuite.addTest(rdmtest2)
+
+# Dual cast test 2
+
+def rdmTest3TestFunction() -> None:
+    """This test will make sure dual cast works as intented. WIth swiftcast
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 502, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Jolt, Verthunder, Jolt, Swiftcast, Verthunder, Verthunder]
+    player = Player(actionSet, [], Stat, JobEnum.RedMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.DualCast]
+
+def rdmTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rdmtest3 = test("Dual cast test 2", rdmTest3TestFunction, rdmTest3ValidationFunction)
+rdmTestSuite.addTest(rdmtest3)
+
+# Dual cast test 3
+
+def rdmTest4TestFunction() -> None:
+    """This test will make sure dual cast works as intented. With acceleration and swiftcast
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 502, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Swiftcast, Acceleration, Verthunder]
+    player = Player(actionSet, [], Stat, JobEnum.RedMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.DualCast, SwiftcastEffect in player.EffectList, AccelerationEffect in player.EffectList]
+
+def rdmTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False, True, False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rdmtest4 = test("Dual cast test 3", rdmTest4TestFunction, rdmTest4ValidationFunction)
+rdmTestSuite.addTest(rdmtest4)
+
+#rdmTestSuite.executeTestSuite()
 
 
 

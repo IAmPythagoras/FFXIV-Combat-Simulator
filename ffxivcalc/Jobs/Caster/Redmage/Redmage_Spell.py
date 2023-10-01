@@ -1,6 +1,7 @@
 #########################################
 ########## REDMAGE PLAYER ###############
 #########################################
+# Acc -> Dual -> Swift
 from ffxivcalc.Jobs.Base_Spell import ManaRequirement, buff, empty, buffPercentHistory
 from ffxivcalc.Jobs.Caster.Caster_Spell import RedmageSpell, SwiftcastEffect
 Lock = 0.75

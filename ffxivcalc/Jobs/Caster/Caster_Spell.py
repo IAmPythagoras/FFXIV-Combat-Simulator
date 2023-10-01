@@ -69,9 +69,15 @@ def ApplyLucidDreaming(Player, Enemy):
     Player.LucidDreamingTimer = 21
     Player.EffectCDList.append(LucidDreamingCheck)
 
+
+    # The order of insta cast usage for blackmage is SwiftCast -> TripleCast
+    # The order for redmage is Acceleration -> Dualcast -> Swiftcast.
+    # For purpose of simplicity, the order of this sim for redmage will be Swiftcast -> Acceleration -> DualCast
+
 def ApplySwiftcast(Player, Enemy):
     Player.SwiftcastCD = 60
-    Player.EffectList.insert(0,SwiftcastEffect)
+                             # Inserting in index 1 in order to have it go after ElementalEffect for blm and dualcast effect for rdm.
+    Player.EffectList.insert(1,SwiftcastEffect)
 
 def ApplySurecast(Player, Enemy):
     Player.SurecastCD = 120
