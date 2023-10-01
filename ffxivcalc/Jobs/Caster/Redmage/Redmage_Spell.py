@@ -236,7 +236,7 @@ def ManaficationEffect(Player, Spell):
         Spell.DPSBonus *= 1.05 #5% boost on magic damage
 
 def AccelerationEffect(Player, Spell):
-    if (Spell.id == Verthunder.id or Spell.id == Verareo.id or Spell.id == Impact.id) and not (SwiftcastEffect in Player.EffectList):
+    if (Spell.id == Verthunder.id or Spell.id == Verareo.id or Spell.id == Impact.id):
         Spell.CastTime = 0 
         Player.EffectToRemove.append(AccelerationEffect)
         if Spell.id == Impact.id : Spell.Potency += 50 #Impact has high potency when used with Acceleration

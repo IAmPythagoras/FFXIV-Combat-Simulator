@@ -1003,7 +1003,7 @@ def blmTest25ValidationFunction(testResults) -> (bool, list):
 blmtest25 = test("Triplecast/swiftcast test and interaction with insta cast spell 5",blmTest25TestFunction,blmTest25ValidationFunction)
 blmTestSuite.addTest(blmtest25)
 
-blmTestSuite.executeTestSuite()
+#blmTestSuite.executeTestSuite()
 
 
 
@@ -1078,7 +1078,7 @@ def rdmTest2TestFunction() -> None:
 
 def rdmTest2ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [True]    
+    expected = [False]    
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -1108,11 +1108,11 @@ def rdmTest3TestFunction() -> None:
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-    return [player.DualCast]
+    return [player.DualCast, SwiftcastEffect in player.EffectList]
 
 def rdmTest3ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [False]    
+    expected = [False, False]    
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -1155,7 +1155,7 @@ def rdmTest4ValidationFunction(testResults) -> (bool, list):
 rdmtest4 = test("Dual cast test 3", rdmTest4TestFunction, rdmTest4ValidationFunction)
 rdmTestSuite.addTest(rdmtest4)
 
-#rdmTestSuite.executeTestSuite()
+rdmTestSuite.executeTestSuite()
 
 
 
