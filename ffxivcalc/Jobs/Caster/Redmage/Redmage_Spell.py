@@ -228,8 +228,8 @@ def DualCastEffect(Player, Spell):
         if Player.DualCast:
             Spell.CastTime = 0 #Insta cast half of the spells, will be put by default for RedMage
             Player.DualCast = False #Remove Dualcast
-        else: Player.DualCast = True    #Give Dual cast
-
+        elif not (SwiftcastEffect in Player.EffectList): Player.DualCast = True    #Give Dual cast only if not insta from swift (Acc.'s case should be taken care off before that time since its insert(0))
+        
 def ManaficationEffect(Player, Spell):
     if Spell.GCD : #Only affect if GCD
         Player.ManaficationStack -= 1
