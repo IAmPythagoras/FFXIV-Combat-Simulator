@@ -17,7 +17,8 @@ def Removemana(Player, WhiteMana, BlackMana):
 
 #Requirement
 def RDMManaRequirement(Player, Spell):
-    return Spell.ManaCost <= Player.Mana and Spell.BlackCost <= Player.BlackMana and Spell.WhiteCost <= Player.WhiteMana, -1
+    Removemana(Player, Spell.WhiteCost, Spell.BlackCost)
+    return Spell.ManaCost <= Player.Mana and Player.BlackMana >= 0 and Player.WhiteMana >= 0, -1
 
 def ManaficationRequirement(Player, Spell):
     return Player.ManaficationCD <= 0, Player.ManaficationCD
@@ -72,7 +73,7 @@ def ApplyImpact(Player, Enemy):
     Addmana(Player, 3, 3) #Add mana
 
 def ApplyMoulinet(Player, Enemy):
-    Removemana(Player, 20, 20)
+    #Removemana(Player, 20, 20)
     Player.ManaStack = min(3, Player.ManaStack + 1) #Max of 3 stacks
 
 def ApplyJolt(Player, Enemy):
@@ -148,20 +149,20 @@ def ApplyRiposte(Player, Enemy):
     if not (Riposte in Player.EffectList) : Player.EffectList.append(RiposteCombo)
 
 def ApplyEnchantedRiposte(Player, Enemy):
-    Removemana(Player, 20, 20)
+    #Removemana(Player, 20, 20)
     Player.ManaStack = min(3, Player.ManaStack + 1) #Max of 3 stacks
     if not (Riposte in Player.EffectList) : Player.EffectList.append(RiposteCombo)
     if not (ManaStackEffect in Player.EffectList) : Player.EffectList.append(ManaStackEffect)
     #This effect is to make sure we only do melee actions, since otherwise we loose mana stacks
 
 def ApplyZwerchhau(Player, Enemy):
-    Removemana(Player, 15, 15)
+    #Removemana(Player, 15, 15)
     Player.ManaStack = min(3, Player.ManaStack + 1) #Max of 3 stacks
     if not (ManaStackEffect in Player.EffectList) : Player.EffectList.append(ManaStackEffect)
     #This effect is to make sure we only do melee actions, since otherwise we loose mana stacks
 
 def ApplyRedoublement(Player, Enemy):
-    Removemana(Player, 15, 15)
+    #Removemana(Player, 15, 15)
     Player.ManaStack = min(3, Player.ManaStack + 1) #Max of 3 stacks
     if not (ManaStackEffect in Player.EffectList) : Player.EffectList.append(ManaStackEffect)
     #This effect is to make sure we only do melee actions, since otherwise we loose mana stacks
@@ -229,7 +230,7 @@ def DualCastEffect(Player, Spell):
             Spell.CastTime = 0 #Insta cast half of the spells, will be put by default for RedMage
             Player.DualCast = False #Remove Dualcast
         elif not (SwiftcastEffect in Player.EffectList): Player.DualCast = True    #Give Dual cast only if not insta from swift (Acc.'s case should be taken care off before that time since its insert(0))
-        
+
 def ManaficationEffect(Player, Spell):
     if Spell.GCD : #Only affect if GCD
         Player.ManaficationStack -= 1
