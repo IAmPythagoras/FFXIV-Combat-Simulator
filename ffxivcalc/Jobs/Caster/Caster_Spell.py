@@ -69,9 +69,18 @@ def ApplyLucidDreaming(Player, Enemy):
     Player.LucidDreamingTimer = 21
     Player.EffectCDList.append(LucidDreamingCheck)
 
+
+    # The order of insta cast usage for blackmage is SwiftCast -> TripleCast
+    # The order for redmage is Acceleration -> Dualcast -> Swiftcast.
+    # For purpose of simplicity, the order of these for RDM might not always be like that in sim. For example,
+    # if execute Jolt -> Acc -> Swift : The usage will be Acc -> Swift -> Dual.
+    # That is because Acc is insert(0), Swift is insert(1) and dual is index 0 at the start.
+    # However if execute Jolt -> Swift -> Acc, then the correct use of Acc -> Dual -> Swift will happen.
+
 def ApplySwiftcast(Player, Enemy):
     Player.SwiftcastCD = 60
-    Player.EffectList.insert(0,SwiftcastEffect)
+                             # Inserting in index 1 in order to have it go after ElementalEffect for blm and dualcast effect for rdm.
+    Player.EffectList.insert(1,SwiftcastEffect)
 
 def ApplySurecast(Player, Enemy):
     Player.SurecastCD = 120
@@ -85,7 +94,7 @@ def ApplyAddle(Player, Enemy):
 #Effect
 
 def SwiftcastEffect(Player, Spell):
-    if Spell.GCD and Spell.CastTime > Lock:  #If GCD and not already insta cast
+    if Spell.GCD and Spell.CastTime > Lock and not (Player.JobEnum == JobEnum.BlackMage and Spell.id == 152 and Player.F3Proc):  #If GCD and not already insta cast and not F3 Proc when casting F3
         Spell.CastTime = Lock
         Player.EffectToRemove.append(SwiftcastEffect)
 

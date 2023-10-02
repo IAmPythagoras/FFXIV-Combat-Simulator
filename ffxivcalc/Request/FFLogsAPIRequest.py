@@ -52,7 +52,7 @@ import http.client, json, logging
 main_logging = logging.getLogger("ffxivcalc")
 fflogsapi_logging = main_logging.getChild("FFLogsAPI")
 
-from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, EnochianEffect
+from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect
 from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
 from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import SongEffect
@@ -218,7 +218,7 @@ def getAbilityList(fightID, fightNumber):
             elif job_name == "Paladin" : job_object = Player([], [],{}, JobEnum.Paladin)
             elif job_name == "Gunbreaker" : job_object = Player([], [],{}, JobEnum.Gunbreaker)
             #Caster
-            elif job_name == "BlackMage" : job_object = Player([], [EnochianEffect, ElementalEffect],{}, JobEnum.BlackMage)
+            elif job_name == "BlackMage" : job_object = Player([], [],{}, JobEnum.BlackMage)
             elif job_name == "RedMage" : job_object = Player([], [DualCastEffect],{}, JobEnum.RedMage)
             elif job_name == "Summoner" : job_object = Player([], [],{}, JobEnum.Summoner)
             #Ranged

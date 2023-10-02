@@ -68,6 +68,8 @@ class BlackMageActions(ActionEnum):
     Xenoglossy = 16507
     Amplifier = 25796
 
+    Thunder4Dot = -40
+
 
 # RedMage
 

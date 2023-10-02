@@ -58,18 +58,19 @@ def ApplyFlare(Player, Enemy):
 
 def ApplyHighFire(Player, Enemy):
     ApplyFire3(Player, Enemy)
-    Player.EffectList.append(HighFireEffect)
-    Player.EffectCDList.append(HighFireCheck)
+    if not HighFireEffect in Player.EffectList:
+        Player.EffectList.insert(0,HighFireEffect)
+        Player.EffectCDList.append(HighFireCheck)
 
 def ApplyThunder4(Player, Enemy):
     if Player.Thunder4DOT == None:
         Player.Thunder4DOT = copy.deepcopy(Thunder4DOT)
         Player.DOTList.append(Player.Thunder4DOT)
-        Player.EffectList.append(Thunder4DOTCheck)
+        Player.EffectCDList.append(Thunder4DOTCheck)
     Player.Thunder4DOTTimer = 18
 
     if Player.SharpCast: #If we have SharpCast
-        Player.EffectList.append(Thunder3ProcEffect)
+        Player.EffectList.insert(0,Thunder3ProcEffect)
         Player.SharpCast = False
 
     #We now have to check if Thunder 3 is already applied, in which case we will remove it
@@ -87,6 +88,7 @@ def ApplyFire1(Player, Enemy):
     if Player.SharpCast: #If sharpcast
         Player.Fire3Proc = True
         Player.SharpCast = False
+        Player.EffectList.insert(0,Fire3ProcEffect)
 
 def ApplyFire3(Player, Enemy):
     #Will check if we unlock paradox
@@ -110,13 +112,12 @@ def ApplyBlizzard4(Player, Enemy):
 def ApplyParadox(Player, Enemy):
     Player.Paradox = False
 
-    Player.EnochianTimer = 15 #Reset Timer
-
     if Player.ElementalGauge > 0:
         Player.AddFire()
         if Player.SharpCast: #If sharpcast
             Player.Fire3Proc = True
             Player.SharpCast = False
+            Player.EffectList.insert(0,Fire3ProcEffect)
     elif Player.ElementalGauge < 0:
         Player.AddIce()
 
@@ -137,7 +138,7 @@ def ApplyThunder3(Player, Spell):
     Player.Thunder3DOTTimer = 30
 
     if Player.SharpCast: #If we have SharpCast
-        Player.EffectList.append(Thunder3ProcEffect)
+        Player.EffectList.insert(0,Thunder3ProcEffect)
         Player.SharpCast = False
 
     #We now have to check if Thunder 4 is already applied, in which case we will remove it
@@ -229,13 +230,13 @@ def LeyLinesEffect(Player, Spell):
         #Spell.CastTime = (Spell.CastTime * 0.85)
         #Spell.RecastTime = (Spell.RecastTime * 0.85)
 
-def EnochianEffect(Player, Spell):
-    if Player.ElementalGauge != 0:
-        #If elementalGauge is not 0
-        Player.buffList.append(Enochian)
-        Player.EffectToRemove.append(EnochianEffect)
-        Player.EffectCDList.append(EnochianEffectCheck)
-        Player.Enochian = True
+#def EnochianEffect(Player, Spell):
+#    if Player.ElementalGauge != 0:
+#        #If elementalGauge is not 0
+#        Player.buffList.append(Enochian)
+#        Player.EffectToRemove.append(EnochianEffect)
+#        Player.EffectCDList.append(EnochianEffectCheck)
+#        Player.Enochian = True
 
 def ElementalEffect(Player, Spell):
     #Will affect Spell depending on fire and ice
@@ -297,14 +298,21 @@ def HighFireCheck(Player, Enemy):
         Player.EffectToRemove.append(HighFireCheck)
 
 def EnochianEffectCheck(Player, Enemy):
-    if Player.ElementalGauge == 0: #If we loose Enochian
-        Player.Enochian = False
-        Player.buffList.remove(Enochian)
-        Player.EffectList.append(EnochianEffect)
-        Player.EffectToRemove.append(EnochianEffectCheck)
+
+    if Player.EnochianTimer <= 0 : Player.ElementalGauge = 0
+
+    if Player.ElementalGauge != 0 and not Player.Enochian:
+        # Receive enochian
+        Player.Enochian = True
+        Player.buffList.append(Enochian)
         Player.PolyglotTimer = 30
 
-    if Player.PolyglotTimer <= 0:
+    if Player.ElementalGauge == 0 and Player.Enochian : #If we loose Enochian
+        Player.Enochian = False
+        Player.buffList.remove(Enochian)
+        Player.PolyglotTimer = 30
+
+    if Player.PolyglotTimer <= 0 and Player.Enochian:
         #Add new stack
         Player.PolyglotStack = min(2, Player.PolyglotStack + 1)
         Player.PolyglotTimer = 30

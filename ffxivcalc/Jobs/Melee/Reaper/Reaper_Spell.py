@@ -352,9 +352,9 @@ Communio = ReaperSpell(24398, True, 1.3, 2.5, 1100, ApplyCommunio, [CommunioRequ
 
 #oGCD
 ArcaneCircle = ReaperSpell(24405, False, Lock, 0, 0, ApplyArcaneCircle, [ArcaneCircleRequirement], False)
-Gluttony = ReaperSpell(24393, False, Lock, 0, 500, ApplyGluttony, [GluttonyRequirement], False)
+Gluttony = ReaperSpell(24393, False, Lock, 0, 520, ApplyGluttony, [GluttonyRequirement], False)
 Enshroud = ReaperSpell(24394, False, Lock, 0, 0, ApplyEnshroud, [EnshroudRequirement], False)
-LemureSlice = ReaperSpell(24399, False, Lock, 0, 220, ApplyLemureSlice, [LemureSliceRequirement], False)
+LemureSlice = ReaperSpell(24399, False, Lock, 0, 240, ApplyLemureSlice, [LemureSliceRequirement], False)
 BloodStalk = ReaperSpell(24389, False, Lock, 0, 340, ApplyBloodStalk, [BloodStalkRequirement], False)
 UnveiledGibbet = ReaperSpell(24390, False, Lock, 0, 400, ApplyUnveiledGibbet, [UnveiledGibbetRequirement], False)
 UnveiledGallows = ReaperSpell(24391, False, Lock, 0, 400, ApplyUnveiledGibbet, [UnveiledGallowsRequirement], False) #Shares effect with Gibbet

@@ -1,6 +1,7 @@
 #########################################
 ########## REDMAGE PLAYER ###############
 #########################################
+# Acc -> Dual -> Swift
 from ffxivcalc.Jobs.Base_Spell import ManaRequirement, buff, empty, buffPercentHistory
 from ffxivcalc.Jobs.Caster.Caster_Spell import RedmageSpell, SwiftcastEffect
 Lock = 0.75
@@ -16,7 +17,8 @@ def Removemana(Player, WhiteMana, BlackMana):
 
 #Requirement
 def RDMManaRequirement(Player, Spell):
-    return Spell.ManaCost <= Player.Mana and Spell.BlackCost <= Player.BlackMana and Spell.WhiteCost <= Player.WhiteMana, -1
+    Removemana(Player, Spell.WhiteCost, Spell.BlackCost)
+    return Spell.ManaCost <= Player.Mana and Player.BlackMana >= 0 and Player.WhiteMana >= 0, -1
 
 def ManaficationRequirement(Player, Spell):
     return Player.ManaficationCD <= 0, Player.ManaficationCD
@@ -71,7 +73,7 @@ def ApplyImpact(Player, Enemy):
     Addmana(Player, 3, 3) #Add mana
 
 def ApplyMoulinet(Player, Enemy):
-    Removemana(Player, 20, 20)
+    #Removemana(Player, 20, 20)
     Player.ManaStack = min(3, Player.ManaStack + 1) #Max of 3 stacks
 
 def ApplyJolt(Player, Enemy):
@@ -147,20 +149,20 @@ def ApplyRiposte(Player, Enemy):
     if not (Riposte in Player.EffectList) : Player.EffectList.append(RiposteCombo)
 
 def ApplyEnchantedRiposte(Player, Enemy):
-    Removemana(Player, 20, 20)
+    #Removemana(Player, 20, 20)
     Player.ManaStack = min(3, Player.ManaStack + 1) #Max of 3 stacks
     if not (Riposte in Player.EffectList) : Player.EffectList.append(RiposteCombo)
     if not (ManaStackEffect in Player.EffectList) : Player.EffectList.append(ManaStackEffect)
     #This effect is to make sure we only do melee actions, since otherwise we loose mana stacks
 
 def ApplyZwerchhau(Player, Enemy):
-    Removemana(Player, 15, 15)
+    #Removemana(Player, 15, 15)
     Player.ManaStack = min(3, Player.ManaStack + 1) #Max of 3 stacks
     if not (ManaStackEffect in Player.EffectList) : Player.EffectList.append(ManaStackEffect)
     #This effect is to make sure we only do melee actions, since otherwise we loose mana stacks
 
 def ApplyRedoublement(Player, Enemy):
-    Removemana(Player, 15, 15)
+    #Removemana(Player, 15, 15)
     Player.ManaStack = min(3, Player.ManaStack + 1) #Max of 3 stacks
     if not (ManaStackEffect in Player.EffectList) : Player.EffectList.append(ManaStackEffect)
     #This effect is to make sure we only do melee actions, since otherwise we loose mana stacks
@@ -227,7 +229,7 @@ def DualCastEffect(Player, Spell):
         if Player.DualCast:
             Spell.CastTime = 0 #Insta cast half of the spells, will be put by default for RedMage
             Player.DualCast = False #Remove Dualcast
-        else: Player.DualCast = True    #Give Dual cast
+        elif not (SwiftcastEffect in Player.EffectList): Player.DualCast = True    #Give Dual cast only if not insta from swift (Acc.'s case should be taken care off before that time since its insert(0))
 
 def ManaficationEffect(Player, Spell):
     if Spell.GCD : #Only affect if GCD
@@ -235,7 +237,7 @@ def ManaficationEffect(Player, Spell):
         Spell.DPSBonus *= 1.05 #5% boost on magic damage
 
 def AccelerationEffect(Player, Spell):
-    if (Spell.id == Verthunder.id or Spell.id == Verareo.id or Spell.id == Impact.id) and not (SwiftcastEffect in Player.EffectList):
+    if (Spell.id == Verthunder.id or Spell.id == Verareo.id or Spell.id == Impact.id):
         Spell.CastTime = 0 
         Player.EffectToRemove.append(AccelerationEffect)
         if Spell.id == Impact.id : Spell.Potency += 50 #Impact has high potency when used with Acceleration
@@ -290,9 +292,9 @@ def CorpsStackCheck(Player, Enemy):
 
 #GCD    
 
-Jolt = RedmageSpell(7524, True, 2, 2.5,310, 200, ApplyJolt, [ManaRequirement], 0, 0, type = 1)
-Verfire = RedmageSpell(7510, True, 2, 2.5, 330, 200, ApplyVerfire, [ManaRequirement], 0, 0, type = 1)
-Verstone = RedmageSpell(7511, True, 2, 2.5, 330, 200, ApplyVerstone, [ManaRequirement], 0, 0, type = 1)
+Jolt = RedmageSpell(7524, True, 2, 2.5,320, 200, ApplyJolt, [ManaRequirement], 0, 0, type = 1)
+Verfire = RedmageSpell(7510, True, 2, 2.5, 340, 200, ApplyVerfire, [ManaRequirement], 0, 0, type = 1)
+Verstone = RedmageSpell(7511, True, 2, 2.5, 340, 200, ApplyVerstone, [ManaRequirement], 0, 0, type = 1)
 Verthunder = RedmageSpell(25855, True, 5, 2.5, 380, 300, ApplyVerthunder, [ManaRequirement], 0, 0, type = 1)
 Verareo = RedmageSpell(25856, True, 5, 2.5, 380, 300, ApplyVerareao, [ManaRequirement], 0, 0, type = 1)
 #AoEs
@@ -307,9 +309,9 @@ Reprise = RedmageSpell(16529, True, 0, 2.5, 100, 0, empty, [], 0, 0, type = 2)
 EnchantedRiposte = RedmageSpell(7527, True, 0, 1.5, 280, 0, ApplyEnchantedRiposte, [RDMManaRequirement], 20,20, type = 2)
 EnchantedZwerchhau = RedmageSpell(7528, True, 0, 1.5, 150, 0, ApplyZwerchhau, [RDMManaRequirement], 15, 15, type = 2)
 EnchantedRedoublement = RedmageSpell(7529, True, 0, 2.2, 130, 0, ApplyRedoublement, [RDMManaRequirement], 15, 15, type = 2)
-EnchantedReprise = RedmageSpell(16528, True, 0, 2.5, 330, 0, empty, [RDMManaRequirement], 5, 5, type = 2)
-Verholy = RedmageSpell(7526, True, 0, 2.5, 580, 400, ApplyVerholy, [ManaRequirement, VerholyRequirement], 0, 0, type = 1)
-Verflare = RedmageSpell(7525, True, 0, 2.5, 580, 400, ApplyVerflare, [ManaRequirement, VerholyRequirement], 0, 0, type = 1) #Same Requirement as Verholy, just need 3 Mana stacks
+EnchantedReprise = RedmageSpell(16528, True, 0, 2.5, 340, 0, empty, [RDMManaRequirement], 5, 5, type = 2)
+Verholy = RedmageSpell(7526, True, 0, 2.5, 600, 400, ApplyVerholy, [ManaRequirement, VerholyRequirement], 0, 0, type = 1)
+Verflare = RedmageSpell(7525, True, 0, 2.5, 600, 400, ApplyVerflare, [ManaRequirement, VerholyRequirement], 0, 0, type = 1) #Same Requirement as Verholy, just need 3 Mana stacks
 Scorch = RedmageSpell(16530, True, 0, 2.5, 680, 400, ApplyScorch, [ManaRequirement, ScorchRequirement], 0, 0, type = 1)
 Resolution = RedmageSpell(25858, True, 0, 2.5, 750, 400, ApplyResolution, [ManaRequirement, ResolutionRequirement], 0, 0, type = 1)
 #AOE Melee Action
@@ -320,7 +322,7 @@ Manafication = RedmageSpell(7521, False, 0, Lock, 0, 0, ApplyManafication, [Mana
 Embolden = RedmageSpell(7520, False, 0, Lock, 0, 0, ApplyEmbolden, [EmboldenRequirement], 0, 0)
 Acceleration = RedmageSpell(7518, False, 0, Lock, 0, 0, ApplyAcceleration, [AccelerationRequirement], 0, 0)
 Fleche = RedmageSpell(7517, False, 0, Lock, 460, 0, ApplyFleche, [FlecheRequirement], 0, 0)
-Contre = RedmageSpell(7519, False, 0, Lock, 360, 0, ApplyContre, [ContreRequirement], 0, 0)
+Contre = RedmageSpell(7519, False, 0, Lock, 380, 0, ApplyContre, [ContreRequirement], 0, 0)
 Engagement = RedmageSpell(16527, False, 0, Lock, 180, 0, ApplyEngagement, [EngagementRequirement], 0, 0)
 Corps = RedmageSpell(7506, False, 0, Lock, 130, 0, ApplyCorps, [CorpsRequirement], 0, 0)
 

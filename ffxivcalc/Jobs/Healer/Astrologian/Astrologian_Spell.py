@@ -123,6 +123,9 @@ def ApplyAstrodyne(Player, Enemy):
     #Will only consider Body and Mind
     if check >= 2:
         Player.EffectList.append(BodyEffect)
+        Player.Haste += 10
+        Player.hasteHasChanged = True
+        Player.hasteChangeValue = 10
         Player.EffectCDList.append(BodyCheck)#Only 1 check for both Body and Mind since same Timer
         Player.BodyTimer = 15
     if check == 3:
@@ -186,9 +189,7 @@ def ApplyCombust(Player, Enemy):
 #Effect
 
 def BodyEffect(Player, Spell):
-    if Spell.id == Malefic.id or Spell.id == Combust.id : #Only two affected spells for now
-        Spell.CastTime *= 0.9
-        Spell.RecastTime *= 0.9
+    pass
 
 def LightspeedEffect(Player, Spell):
     if Spell.GCD: Spell.CastTime = max(Lock, Spell.CastTime - 2.5)
@@ -205,6 +206,9 @@ def EssentialDignityStackCheck(Player, Enemy):
 
 def BodyCheck(Player, Enemy):
     if Player.BodyTimer <= 0:
+        Player.Haste -= 10
+        Player.hasteHasChanged = True
+        Player.hasteChangeValue = -10
         Player.EffectList.remove(BodyEffect)
         Player.EffectToRemove.append(BodyCheck)
 

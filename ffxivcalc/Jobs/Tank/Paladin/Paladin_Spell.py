@@ -323,10 +323,10 @@ GoringDOT = DOTSpell(-5, 65, True)
 """
 #Confiteor Combo Action
 
-Confetti = PaladinSpell(16459, True, Lock, 2.5, 400, 1000, ApplyConfetti, [ManaRequirement, ConfettiRequirement], False, type = 1) # >.>
-BladeFaith = PaladinSpell(25748, True, Lock, 2.5, 200, 0, ApplyBladeFaith, [BladeFaithRequirement], False, type = 1)
-BladeTruth = PaladinSpell(25749, True, Lock, 2.5, 300, 0, ApplyBladeTruth, [BladeTruthRequirement], False, type = 1)
-BladeValor = PaladinSpell(25750, True, Lock, 2.5, 400, 0, ApplyBladeValor, [BladeValorRequirement], False, type = 1)
+Confetti = PaladinSpell(16459, True, Lock, 2.5, 420, 1000, ApplyConfetti, [ManaRequirement, ConfettiRequirement], False, type = 1) # >.>
+BladeFaith = PaladinSpell(25748, True, Lock, 2.5, 220, 0, ApplyBladeFaith, [BladeFaithRequirement], False, type = 1)
+BladeTruth = PaladinSpell(25749, True, Lock, 2.5, 320, 0, ApplyBladeTruth, [BladeTruthRequirement], False, type = 1)
+BladeValor = PaladinSpell(25750, True, Lock, 2.5, 420, 0, ApplyBladeValor, [BladeValorRequirement], False, type = 1)
 """
 Post 6.3
 BladeValorDOT = DOTSpell(-11, 80, True)
@@ -342,8 +342,8 @@ TotalEclipse = PaladinSpell(7381, True, 0, 2.5, 100, 0, ApplyTotalEclipse, [], T
 Prominence = PaladinSpell(16457, True, 0, 2.5, 100, 0, empty, [], True, type = 2)
 
 #oGCD
-RequestACat = PaladinSpell(7383, False, 0, Lock, 300, 0, ApplyRequestACat, [RequestACatRequirement], True) #I NEED ONE RIGHT NOW :x
-CircleScorn = PaladinSpell(23, False, 0, Lock, 120, 0, ApplyCircleScorn, [CircleScornRequirement], True)
+RequestACat = PaladinSpell(7383, False, 0, Lock, 320, 0, ApplyRequestACat, [RequestACatRequirement], True) #I NEED ONE RIGHT NOW :x
+CircleScorn = PaladinSpell(23, False, 0, Lock, 140, 0, ApplyCircleScorn, [CircleScornRequirement], True)
 CircleScornDOT = DOTSpell(-6, 30, True)
 Intervene = PaladinSpell(16461, False, 0, Lock, 150, 0, ApplyIntervene, [InterveneRequirement], True)
 Expiacion = PaladinSpell(25747, False, 0, Lock, 450, 0, ApplyExpiacion, [ExpiacionRequirement], True)

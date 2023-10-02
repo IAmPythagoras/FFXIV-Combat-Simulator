@@ -14,7 +14,7 @@ from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import SongEffect
 from ffxivcalc.Jobs.Tank.DarkKnight.DarkKnight_Spell import BloodWeaponCheck, BloodWeaponEffect
 from ffxivcalc.Jobs.Tank.Warrior.Warrior_Spell import SurgingTempestEffect
 from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
-from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, EnochianEffect
+from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect
 
 from ffxivcalc.Fight import Fight
 from ffxivcalc.Enemy import Enemy
@@ -95,7 +95,6 @@ def ImportFightBackend(fightID,fightNumber):
         #Caster
         elif job_name == "BlackMage" : 
             player_dict[playerID]["job_object"].Stat = copy.deepcopy(BLMStat)
-            player_dict[playerID]["job_object"].EffectList = [EnochianEffect, ElementalEffect]
         elif job_name == "RedMage" : 
             player_dict[playerID]["job_object"].Stat = copy.deepcopy(RDMStat)
             player_dict[playerID]["job_object"].EffectList = [DualCastEffect]
