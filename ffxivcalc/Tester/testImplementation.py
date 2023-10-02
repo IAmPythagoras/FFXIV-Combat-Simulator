@@ -1003,10 +1003,6 @@ def blmTest25ValidationFunction(testResults) -> (bool, list):
 blmtest25 = test("Triplecast/swiftcast test and interaction with insta cast spell 5",blmTest25TestFunction,blmTest25ValidationFunction)
 blmTestSuite.addTest(blmtest25)
 
-#blmTestSuite.executeTestSuite()
-
-
-
 ######################################
 #         Redmage testSuite          #
 ######################################
@@ -1461,8 +1457,96 @@ def rdmTest13ValidationFunction(testResults) -> (bool, list):
 rdmtest13 = test("Black/White mana generation/usage test 6", rdmTest13TestFunction, rdmTest13ValidationFunction)
 rdmTestSuite.addTest(rdmtest13)
 
-blmTestSuite.executeTestSuite()
-rdmTestSuite.executeTestSuite()
 
+######################################
+#         Summoner testSuite         #
+######################################
+
+smnTestSuite = testSuite("Summoner test suite")
+
+# Opener requirement, end time and potency test 1
+
+def smnTest1TestFunction() -> None:
+    """This test will try the opener of a redmage. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 544, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Ruin3, Summon, SearingLight, AstralImpulse, AstralImpulse, AstralImpulse, EnergyDrainSMN, Enkindle, AstralImpulse, Deathflare, Fester, 
+                 AstralImpulse, Fester, AstralImpulse, Garuda, Swiftcast, Slipstream, Emerald, Emerald, Emerald, Emerald, Titan, WaitAbility(50)]
+    player = Player(actionSet, [], Stat, JobEnum.Summoner)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    failedReq = 0
+    for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+        if event.fatal : failedReq += 1
+
+    return [failedReq, Event.TimeStamp, player.TotalPotency]
+
+def smnTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 80.18, 9530]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+smntest1 = test("Opener requirement, end time and potency 1", smnTest1TestFunction, smnTest1ValidationFunction)
+smnTestSuite.addTest(smntest1)
+
+# Opener requirement, end time and potency test 2
+
+def smnTest2TestFunction() -> None:
+    """This test will try the opener of a redmage. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 544, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Ruin3, Summon, SearingLight, AstralImpulse, AstralImpulse, AstralImpulse, EnergyDrainSMN, Enkindle, AstralImpulse, Deathflare, Fester, 
+                 AstralImpulse, Fester, AstralImpulse, Garuda, Swiftcast, Slipstream, Emerald, Emerald, Emerald, Emerald, Titan, Topaz, Mountain, Topaz, Mountain, Topaz, Mountain, Topaz, Mountain, 
+                 Ifrit, Ruby, Ruby, Cyclone, Strike, Ruin4, WaitAbility(50)]
+    player = Player(actionSet, [], Stat, JobEnum.Summoner)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    failedReq = 0
+    for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+        if event.fatal : failedReq += 1
+
+    return [failedReq, Event.TimeStamp, player.TotalPotency]
+
+def smnTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 105.88, 14510]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+smntest2 = test("Opener requirement, end time and potency 1", smnTest2TestFunction, smnTest2ValidationFunction)
+smnTestSuite.addTest(smntest2)
+
+
+
+#blmTestSuite.executeTestSuite()
+#rdmTestSuite.executeTestSuite()
+smnTestSuite.executeTestSuite()
 
 
