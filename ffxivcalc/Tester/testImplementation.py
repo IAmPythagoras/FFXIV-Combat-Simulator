@@ -2363,7 +2363,7 @@ def whmTest7TestFunction() -> None:
     Event = Fight(Dummy, False)
 
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
-    actionSet = [Glare,WaitAbility(40),Glare]
+    actionSet = [Glare,WaitAbility(40)]
     player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
 
     Event.AddPlayer([player])
@@ -2374,11 +2374,11 @@ def whmTest7TestFunction() -> None:
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-    return [player.LilyStack, player.UsedLily]
+    return [player.LilyStack, player.UsedLily, player.BloomLily]
 
 def whmTest7ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [2, 0]    
+    expected = [2, 0, False]    
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -2387,11 +2387,147 @@ def whmTest7ValidationFunction(testResults) -> (bool, list):
 whmtest7 = test("Lily generation/usage test 1", whmTest7TestFunction, whmTest7ValidationFunction)
 whmTestSuite.addTest(whmtest7)
 
+# Lily Test
+
+def whmTest8TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Glare,WaitAbility(60)]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.LilyStack, player.UsedLily, player.BloomLily]
+
+def whmTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [3, 0, False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest8 = test("Lily generation/usage test 2", whmTest8TestFunction, whmTest8ValidationFunction)
+whmTestSuite.addTest(whmtest8)
+
+# Lily Test 3
+
+def whmTest9TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Glare,WaitAbility(60), AfflatusRapture, AfflatusSolace, WaitAbility(20)]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.LilyStack, player.UsedLily, player.BloomLily]
+
+def whmTest9ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [2, 2, False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest9 = test("Lily generation/usage test 3", whmTest9TestFunction, whmTest9ValidationFunction)
+whmTestSuite.addTest(whmtest9)
+
+# Lily Test 4
+
+def whmTest10TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Glare,WaitAbility(60), AfflatusRapture, AfflatusSolace, WaitAbility(20), AfflatusRapture]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.LilyStack, player.UsedLily, player.BloomLily]
+
+def whmTest10ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1, 3, True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest10 = test("Lily generation/usage test 4", whmTest10TestFunction, whmTest10ValidationFunction)
+whmTestSuite.addTest(whmtest10)
+
+# Lily Test 5
+
+def whmTest11TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Glare,WaitAbility(60), AfflatusRapture, AfflatusSolace, WaitAbility(20), AfflatusRapture, AfflatusMisery, AfflatusSolace]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.LilyStack, player.UsedLily, player.BloomLily]
+
+def whmTest11ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 1, False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest11 = test("Lily generation/usage test 5", whmTest11TestFunction, whmTest11ValidationFunction)
+whmTestSuite.addTest(whmtest11)
 
 
-#blmTestSuite.executeTestSuite()
-#rdmTestSuite.executeTestSuite()
-#smnTestSuite.executeTestSuite()
+
+blmTestSuite.executeTestSuite()
+rdmTestSuite.executeTestSuite()
+smnTestSuite.executeTestSuite()
 whmTestSuite.executeTestSuite()
 
 
