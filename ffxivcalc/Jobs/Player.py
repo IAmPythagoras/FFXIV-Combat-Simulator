@@ -990,6 +990,18 @@ class Player:
         self.updateJobTimer = updateTimer
         self.updateJobCD = updateCD
 
+        def resetPrimalEffect(self) -> None:
+            """This function resets the effects gained from summoning a primal.
+                This function is called before summoning a new primal.
+            """
+            self.TitanStack = 0
+            self.TitanSpecial = False
+            self.IfritStack = 0
+            self.IfritSpecial = False
+            self.IfritSpecialCombo = False
+            self.GarudaStack = 0
+            self.GarudaSpecial = False
+
     def init_whitemage(self):
         #Stack
         self.LilyStack = 0

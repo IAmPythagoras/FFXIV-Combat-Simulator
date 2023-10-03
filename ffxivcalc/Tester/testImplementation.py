@@ -1540,8 +1540,148 @@ def smnTest2ValidationFunction(testResults) -> (bool, list):
 
     return passed , expected
 
-smntest2 = test("Opener requirement, end time and potency 1", smnTest2TestFunction, smnTest2ValidationFunction)
+smntest2 = test("Opener requirement, end time and potency 2", smnTest2TestFunction, smnTest2ValidationFunction)
 smnTestSuite.addTest(smntest2)
+
+# Summon test 1
+
+def smnTest3TestFunction() -> None:
+    """This test checks the total potency done by Bahamut when summoned and makes sure he dissapears after the given time duration.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 544, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Ruin3, Summon, Enkindle, Deathflare, WaitAbility(15), Ruin3]
+    player = Player(actionSet, [], Stat, JobEnum.Summoner)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    pet = player.Pet
+    return [player.TotalPotency, pet.TrueLock]
+
+def smnTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [3320, True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+smntest3 = test("Summon test 1 - Bahamut", smnTest3TestFunction, smnTest3ValidationFunction)
+smnTestSuite.addTest(smntest3)
+
+# Summon test 2
+
+def smnTest4TestFunction() -> None:
+    """This test checks the total potency done by Phoenix when summoned and makes sure he dissapears after the given time duration.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 544, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Ruin3, Summon, Enkindle, Deathflare, WaitAbility(15), Ruin3, WaitAbility(60), Summon, Enkindle, WaitAbility(15)]
+    player = Player(actionSet, [], Stat, JobEnum.Summoner)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    pet = player.Pet
+    return [player.TotalPotency, pet.TrueLock]
+
+def smnTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [3320 + 1300 + 240*5, True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+smntest4 = test("Summon test 2 - Phoenix", smnTest4TestFunction, smnTest4ValidationFunction)
+smnTestSuite.addTest(smntest4)
+
+# Searing Light Test
+
+def smnTest5TestFunction() -> None:
+    """This tests if Searing light works correctly.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 544, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [SearingLight, WaitAbility(15)]
+    player = Player(actionSet, [], Stat, JobEnum.Summoner)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [SearingLightbuff in Dummy.buffList]
+
+def smnTest5ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+smntest5 = test("Searing Light test 1", smnTest5TestFunction, smnTest5ValidationFunction)
+smnTestSuite.addTest(smntest5)
+
+# Searing Light Test 2
+
+def smnTest6TestFunction() -> None:
+    """This tests if Searing light works correctly.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 544, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [SearingLight, WaitAbility(30.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Summoner)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [SearingLightbuff in Dummy.buffList]
+
+def smnTest6ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+smntest6 = test("Searing Light test 2", smnTest6TestFunction, smnTest6ValidationFunction)
+smnTestSuite.addTest(smntest6)
+
+
 
 
 
