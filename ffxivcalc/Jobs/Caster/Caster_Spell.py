@@ -94,7 +94,7 @@ def ApplyAddle(Player, Enemy):
 #Effect
 
 def SwiftcastEffect(Player, Spell):
-    if Spell.GCD and Spell.CastTime >= Lock and not (Player.JobEnum == JobEnum.BlackMage and Spell.id == 152 and Player.F3Proc):  #If GCD and not already insta cast and not F3 Proc when casting F3
+    if Spell.GCD and Spell.CastTime > Lock and not (Player.JobEnum == JobEnum.BlackMage and Spell.id == 152 and Player.F3Proc):  #If GCD and not already insta cast and not F3 Proc when casting F3
         Spell.CastTime = Lock
         Player.EffectToRemove.append(SwiftcastEffect)
 
