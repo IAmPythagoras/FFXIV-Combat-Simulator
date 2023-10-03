@@ -1681,6 +1681,40 @@ def smnTest6ValidationFunction(testResults) -> (bool, list):
 smntest6 = test("Searing Light test 2", smnTest6TestFunction, smnTest6ValidationFunction)
 smnTestSuite.addTest(smntest6)
 
+# Testing summoning Garuda
+
+def smnTest7TestFunction() -> None:
+    """Testing Garuda
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 544, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Summon, WaitAbility(15), Garuda, Emerald, Swiftcast, Emerald, Slipstream]
+    player = Player(actionSet, [], Stat, JobEnum.Summoner)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.GarudaStack, player.GarudaSpecial, player.CastingSpell.CastTime]
+
+def smnTest7ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [2, False, 0]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+smntest7 = test("Searing Light test 2", smnTest7TestFunction, smnTest7ValidationFunction)
+smnTestSuite.addTest(smntest7)
+
 
 
 
