@@ -207,7 +207,7 @@ def blmTest2ValidationFunction(testResults) -> (bool, list):
 
     return passed , expected
 
-blmtest2 = test("Opener requirement, end time and potency 2", blmTest1TestFunction, blmTest1ValidationFunction)
+blmtest2 = test("Opener requirement, end time and potency 2", blmTest2TestFunction, blmTest2ValidationFunction)
 blmTestSuite.addTest(blmtest2)
 
 # Mana test 1
@@ -1040,7 +1040,7 @@ def rdmTest1TestFunction() -> None:
 
 def rdmTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 32.47, 8660]    
+    expected = [0, 32.47, 8730]    
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -1712,15 +1712,429 @@ def smnTest7ValidationFunction(testResults) -> (bool, list):
 
     return passed , expected
 
-smntest7 = test("Searing Light test 2", smnTest7TestFunction, smnTest7ValidationFunction)
+smntest7 = test("Primal test 1 - Garuda", smnTest7TestFunction, smnTest7ValidationFunction)
 smnTestSuite.addTest(smntest7)
 
+# Testing summoning Garuda interupted by ifrit
 
+def smnTest8TestFunction() -> None:
+    """Testing Garuda interupted by ifrit
+    """
 
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
 
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 544, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Summon, WaitAbility(15), Garuda, Emerald, Swiftcast, Emerald, Ifrit, Ruby, Cyclone]
+    player = Player(actionSet, [], Stat, JobEnum.Summoner)
 
-#blmTestSuite.executeTestSuite()
-#rdmTestSuite.executeTestSuite()
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.GarudaStack, player.GarudaSpecial, player.IfritStack, player.IfritSpecial, player.IfritSpecialCombo]
+
+def smnTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, False, 1, False, True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+smntest8 = test("Primal test 2 - Garuda/Ifrit", smnTest8TestFunction, smnTest8ValidationFunction)
+smnTestSuite.addTest(smntest8)
+
+# Testing summoning Garuda interupted by ifrit
+
+def smnTest9TestFunction() -> None:
+    """Testing Ifrit interupted by Titan
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 544, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Summon, WaitAbility(15), Ifrit, Cyclone, Ruby, Ruby, Titan, Topaz, Mountain, Topaz]
+    player = Player(actionSet, [], Stat, JobEnum.Summoner)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.IfritStack, player.IfritSpecial, player.IfritSpecialCombo, player.IfritGem, player.TitanGem, player.TitanStack, player.TitanSpecial ]
+
+def smnTest9ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0,False, False, False, False, 2, True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+smntest9 = test("Primal test 3 - Ifrit/Titan", smnTest9TestFunction, smnTest9ValidationFunction)
+smnTestSuite.addTest(smntest9)
+
+# RuinIV test
+
+def smnTest10TestFunction() -> None:
+    """Making sure RuinIV is used up
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 544, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [EnergyDrainSMN]
+    player = Player(actionSet, [], Stat, JobEnum.Summoner)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.FurtherRuin]
+
+def smnTest10ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+smntest10 = test("FurtherRuin test 1", smnTest10TestFunction, smnTest10ValidationFunction)
+smnTestSuite.addTest(smntest10)
+
+# RuinIV test 2
+
+def smnTest11TestFunction() -> None:
+    """Making sure RuinIV is used up
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 544, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [EnergyDrainSMN, Ruin4]
+    player = Player(actionSet, [], Stat, JobEnum.Summoner)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.FurtherRuin]
+
+def smnTest11ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+smntest11 = test("FurtherRuin test 2", smnTest11TestFunction, smnTest11ValidationFunction)
+smnTestSuite.addTest(smntest11)
+
+######################################
+#          Scholar testSuite         #
+######################################
+
+schTestSuite = testSuite("Scholar test suite")
+
+# Opener requirement, end time and potency test 1
+
+def schTest1TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Broil, Biolysis, Aetherflow, Broil, Swiftcast, Broil, ChainStratagem, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Dissipation, Broil, EnergyDrain, 
+                 Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Broil, Broil, Broil, Broil]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    failedReq = 0
+    for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+        if event.fatal : failedReq += 1
+
+    return [failedReq, Event.TimeStamp, player.TotalPotency]
+
+def schTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 36.95, 6020]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+schtest1 = test("Opener requirement, end time and potency 1", schTest1TestFunction, schTest1ValidationFunction)
+schTestSuite.addTest(schtest1)
+
+# AetherStack test 1
+
+def schTest2TestFunction() -> None:
+    """Testing Aetherstack
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Aetherflow, EnergyDrain, EnergyDrain]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.AetherFlowStack]
+
+def schTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+schtest2 = test("Aetherstack test 1", schTest2TestFunction, schTest2ValidationFunction)
+schTestSuite.addTest(schtest2)
+
+# AetherStack test 2
+
+def schTest3TestFunction() -> None:
+    """Testing Aetherstack 2
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Aetherflow, EnergyDrain, EnergyDrain, Dissipation]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.AetherFlowStack]
+
+def schTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [3]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+schtest3 = test("Aetherstack test 2", schTest3TestFunction, schTest3ValidationFunction)
+schTestSuite.addTest(schtest3)
+
+# AetherStack test 3
+
+def schTest4TestFunction() -> None:
+    """Testing Aetherstack 3
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Aetherflow, EnergyDrain, EnergyDrain, Dissipation, EnergyDrain, EnergyDrain, EnergyDrain]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.AetherFlowStack]
+
+def schTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+schtest4 = test("Aetherstack test 3", schTest4TestFunction, schTest4ValidationFunction)
+schTestSuite.addTest(schtest4)
+
+# AetherStack test 4
+
+def schTest5TestFunction() -> None:
+    """Testing Aetherstack 4
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Aetherflow, EnergyDrain, EnergyDrain, Dissipation, EnergyDrain, EnergyDrain, EnergyDrain]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.AetherFlowStack]
+
+def schTest5ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+schtest5 = test("Aetherstack test 4", schTest5TestFunction, schTest5ValidationFunction)
+schTestSuite.addTest(schtest5)
+
+# AetherStack test 5
+
+def schTest6TestFunction() -> None:
+    """Testing Aetherstack 5
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Dissipation, EnergyDrain, EnergyDrain]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.AetherFlowStack]
+
+def schTest6ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+schtest6 = test("Aetherstack test 6", schTest6TestFunction, schTest6ValidationFunction)
+schTestSuite.addTest(schtest6)
+
+# Chain Stratagem test
+def schTest7TestFunction() -> None:
+    """Testing Chain Stratagem
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [ChainStratagem, WaitAbility(5)]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [Dummy.ChainStratagem]
+
+def schTest7ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+schtest7 = test("Chain Stratagem test 1", schTest7TestFunction, schTest7ValidationFunction)
+schTestSuite.addTest(schtest7)
+
+# Chain Stratagem test
+def schTest8TestFunction() -> None:
+    """Testing Chain Stratagem
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [ChainStratagem, WaitAbility(15.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [Dummy.ChainStratagem]
+
+def schTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+schtest8 = test("Chain Stratagem test 2", schTest8TestFunction, schTest8ValidationFunction)
+schTestSuite.addTest(schtest8)
+
+blmTestSuite.executeTestSuite()
+rdmTestSuite.executeTestSuite()
 smnTestSuite.executeTestSuite()
+schTestSuite.executeTestSuite()
 
 

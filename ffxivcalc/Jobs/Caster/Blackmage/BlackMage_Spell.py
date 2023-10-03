@@ -250,7 +250,7 @@ def ElementalEffect(Player, Spell):
             elif Player.ElementalGauge == 2 : Spell.Potency *= 1.6
             elif Player.ElementalGauge == 3 : Spell.Potency *= 1.8
 
-            if (Player.UmbralHearts > 0) and Spell.id!= Flare.id: #If we have UmbralHearts, then no mana cost increase. We also have to make sure
+            if (Player.UmbralHearts < 0) and Spell.id!= Flare.id: #If we have UmbralHearts, then no mana cost increase. We also have to make sure
                 #it isn't Flare, since Flare has its own way of dealing with UmbrealHearts
                 Player.UmbralHearts -= 1
             else : 
