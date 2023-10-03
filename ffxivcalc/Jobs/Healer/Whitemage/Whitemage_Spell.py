@@ -115,8 +115,9 @@ def ApplyPresenceOfMind(Player, Enemy):
 #Effect
 
 def ThinAirEffect(Player, Spell):
-    Spell.ManaCost = 0
-    Player.EffectList.remove(ThinAirEffect)
+    if Spell.GCD:
+        Spell.ManaCost = 0
+        Player.EffectList.remove(ThinAirEffect)
 
 def PresenceOfMindEffect(Player, Spell):
     pass

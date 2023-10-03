@@ -2132,9 +2132,164 @@ def schTest8ValidationFunction(testResults) -> (bool, list):
 schtest8 = test("Chain Stratagem test 2", schTest8TestFunction, schTest8ValidationFunction)
 schTestSuite.addTest(schtest8)
 
-blmTestSuite.executeTestSuite()
-rdmTestSuite.executeTestSuite()
-smnTestSuite.executeTestSuite()
-schTestSuite.executeTestSuite()
+######################################
+#          Whitemage testSuite       #
+######################################
+
+whmTestSuite = testSuite("Scholar test suite")
+
+######################################
+#          Scholar testSuite         #
+######################################
+
+whmTestSuite = testSuite("Whitemage test suite")
+
+# Opener requirement, end time and potency test 1
+
+def whmTest1TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Glare, Dia, Glare, Glare, PresenceOfMind, Glare, Assize, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare
+                 , Glare, Glare, Glare, Glare, Glare ]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    failedReq = 0
+    for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+        if event.fatal : failedReq += 1
+
+    return [failedReq, Event.TimeStamp, player.TotalPotency]
+
+def whmTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 37.15, 6330]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest1 = test("Opener requirement, end time and potency 1", whmTest1TestFunction, whmTest1ValidationFunction)
+whmTestSuite.addTest(whmtest1)
+
+# Thin air test
+
+def whmTest2TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [ThinAir,Glare]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.ManaCost]
+
+def whmTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest2 = test("Thin air test 1", whmTest2TestFunction, whmTest2ValidationFunction)
+whmTestSuite.addTest(whmtest2)
+
+# Thin air test 2
+
+def whmTest3TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [ThinAir,Glare, Glare]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.ManaCost]
+
+def whmTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [400]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest3 = test("Thin air test 2", whmTest3TestFunction, whmTest3ValidationFunction)
+whmTestSuite.addTest(whmtest3)
+
+# Thin air test 3
+
+def whmTest4TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [ThinAir,Assize, Glare]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.ManaCost]
+
+def whmTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest4 = test("Thin air test 3", whmTest4TestFunction, whmTest4ValidationFunction)
+whmTestSuite.addTest(whmtest4)
+
+
+
+#blmTestSuite.executeTestSuite()
+#rdmTestSuite.executeTestSuite()
+#smnTestSuite.executeTestSuite()
+whmTestSuite.executeTestSuite()
 
 
