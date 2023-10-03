@@ -1015,7 +1015,7 @@ class Player:
         self.DiaTimer = 0
         self.LucidDreamingTimer = 0
         self.PresenceOfMindTimer = 0
-        self.LilyTimer = 40 #Initiated at 40 sec since we have 20 sec CD
+        self.LilyTimer = 20 #Initiated at 40 sec since we have 20 sec CD
 
         #DOT
         self.Dia = None
@@ -1050,12 +1050,17 @@ class Player:
         self.updateJobTimer = updateTimer
         self.updateJobCD = updateCD
 
+        def LilyTimerStartCheck(Player, Enemy):
+            if Player.CurrentFight.FightStart:
+                Player.EffectCDList.append(LilyCheck)
+                Player.EffectToRemove.append(LilyTimerStartCheck)
+
         def LilyCheck(Player, Enemy):
             if Player.LilyTimer <= 0:
                 Player.LilyStack = min(3, Player.LilyStack + 1)
                 Player.LilyTimer = 20 #Reset Timer
                 
-        self.EffectCDList.append(LilyCheck) #Starting with this check
+        self.EffectCDList.append(LilyTimerStartCheck) #Starting with this check
 
     def init_scholar(self):
         #Stack

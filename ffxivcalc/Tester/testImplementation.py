@@ -2285,6 +2285,108 @@ def whmTest4ValidationFunction(testResults) -> (bool, list):
 whmtest4 = test("Thin air test 3", whmTest4TestFunction, whmTest4ValidationFunction)
 whmTestSuite.addTest(whmtest4)
 
+# PoM test
+
+def whmTest5TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [PresenceOfMind, Glare]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Haste, PresenceOfMindEffect in player.EffectList ]
+
+def whmTest5ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [20, True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest5 = test("Presence of Mind test 1", whmTest5TestFunction, whmTest5ValidationFunction)
+whmTestSuite.addTest(whmtest5)\
+
+# PoM test 2
+
+def whmTest6TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [PresenceOfMind, WaitAbility(15.02)]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Haste, PresenceOfMindEffect in player.EffectList ]
+
+def whmTest6ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest6 = test("Presence of Mind test 2", whmTest6TestFunction, whmTest6ValidationFunction)
+whmTestSuite.addTest(whmtest6)
+
+# Lily Test
+
+def whmTest7TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Glare,WaitAbility(40),Glare]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.LilyStack, player.UsedLily]
+
+def whmTest7ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [2, 0]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest7 = test("Lily generation/usage test 1", whmTest7TestFunction, whmTest7ValidationFunction)
+whmTestSuite.addTest(whmtest7)
+
 
 
 #blmTestSuite.executeTestSuite()
