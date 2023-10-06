@@ -2136,12 +2136,6 @@ schTestSuite.addTest(schtest8)
 #          Whitemage testSuite       #
 ######################################
 
-whmTestSuite = testSuite("Scholar test suite")
-
-######################################
-#          Scholar testSuite         #
-######################################
-
 whmTestSuite = testSuite("Whitemage test suite")
 
 # Opener requirement, end time and potency test 1
@@ -2523,11 +2517,588 @@ def whmTest11ValidationFunction(testResults) -> (bool, list):
 whmtest11 = test("Lily generation/usage test 5", whmTest11TestFunction, whmTest11ValidationFunction)
 whmTestSuite.addTest(whmtest11)
 
+######################################
+#          Astrologian testSuite     #
+######################################
 
+astTestSuite = testSuite("Astrologian test suite")
+
+# Opener requirement, end time and potency test 1
+
+def astTest1TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Draw, WaitAbility(30),Malefic, Lightspeed, Combust, Arcanum(NINPlayer, "Lunar", True), Draw, Malefic,Arcanum(NINPlayer, "Solar", True), Draw, Malefic,Arcanum(NINPlayer, "Celestial", True), 
+			    Divination, Malefic, MinorArcana, Astrodyne, Malefic, LordOfCrown, Malefic, Malefic, Malefic, Malefic, 
+                Malefic, Malefic,Combust, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, 
+			    Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    failedReq = 0
+    for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+        if event.fatal : failedReq += 1
+
+    return [failedReq, Event.TimeStamp, player.TotalPotency]
+
+def astTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 66.92, 7800]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest1 = test("Opener requirement, end time and potency 1", astTest1TestFunction, astTest1ValidationFunction)
+astTestSuite.addTest(asttest1)
+
+# Arcana test
+
+def astTest2TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Draw,Arcanum(NINPlayer, "Solar", True), Arcanum(NINPlayer, "Lunar", True),Draw]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Solar, player.Lunar, player.Celestial, len(NINPlayer.buffList), player.HasCard]
+
+def astTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, True, False, 1, True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest2 = test("Arcana test 1", astTest2TestFunction, astTest2ValidationFunction)
+astTestSuite.addTest(asttest2)
+
+# Arcana test 2
+
+def astTest3TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Arcanum(NINPlayer, "Solar", True), Arcanum(NINPlayer, "Lunar", True), Arcanum(NINPlayer, "Lunar", True)]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Solar, player.Lunar, player.Celestial, len(NINPlayer.buffList), ]
+
+def astTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, True, False,1]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest3 = test("Arcana test 2", astTest3TestFunction, astTest3ValidationFunction)
+astTestSuite.addTest(asttest3)
+
+# Arcana test 3
+
+def astTest4TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Arcanum(NINPlayer, "Solar", True), Arcanum(NINPlayer, "Lunar", True), Arcanum(NINPlayer, "Celestial", True), WaitAbility(15.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Solar, player.Lunar, player.Celestial, len(NINPlayer.buffList)]
+
+def astTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, True, True,0]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest4 = test("Arcana test 3", astTest4TestFunction, astTest4ValidationFunction)
+astTestSuite.addTest(asttest4)
+
+# Arcana test 4
+
+def astTest5TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Astrodyne]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Solar, player.Lunar, player.Celestial, BodyEffect in player.EffectList]
+
+def astTest5ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False, False, False, False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest5 = test("Arcana test 4 - Astrodyne", astTest5TestFunction, astTest5ValidationFunction)
+astTestSuite.addTest(asttest5)
+
+# Arcana test 5
+
+def astTest6TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Arcanum(NINPlayer, "Solar", True),Arcanum(NINPlayer, "Solar", True),Astrodyne]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Solar, player.Lunar, player.Celestial, BodyEffect in player.EffectList, len(NINPlayer.buffList)]
+
+def astTest6ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False, False, False, False,1]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest6 = test("Arcana test 5 - Astrodyne", astTest6TestFunction, astTest6ValidationFunction)
+astTestSuite.addTest(asttest6)
+
+# Arcana test 6
+
+def astTest7TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Arcanum(NINPlayer, "Solar", True),Arcanum(NINPlayer, "Lunar", True),Astrodyne]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Solar, player.Lunar, player.Celestial, BodyEffect in player.EffectList]
+
+def astTest7ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False, False, False, True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest7 = test("Arcana test 6 - Astrodyne", astTest7TestFunction, astTest7ValidationFunction)
+astTestSuite.addTest(asttest7)
+
+# Arcana test 7
+
+def astTest8TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Arcanum(NINPlayer, "Solar", True),Arcanum(NINPlayer, "Lunar", True),Arcanum(NINPlayer, "Celestial", True),Astrodyne]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Solar, player.Lunar, player.Celestial, BodyEffect in player.EffectList,AstrodyneBuff in player.buffList]
+
+def astTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False, False, False, True, True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest8 = test("Arcana test 7 - Astrodyne", astTest8TestFunction, astTest8ValidationFunction)
+astTestSuite.addTest(asttest8)
+
+# Arcana test 8
+
+def astTest9TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Arcanum(NINPlayer, "Solar", True),Arcanum(NINPlayer, "Lunar", True),Arcanum(NINPlayer, "Celestial", True),Astrodyne,
+                 Arcanum(NINPlayer, "Solar", True), WaitAbility(15.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Solar, player.Lunar, player.Celestial, BodyEffect in player.EffectList,AstrodyneBuff in player.buffList]
+
+def astTest9ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, False, False, False, False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest9 = test("Arcana test 8 - Astrodyne", astTest9TestFunction, astTest9ValidationFunction)
+astTestSuite.addTest(asttest9)
+
+# Lightspeed
+
+def astTest10TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Lightspeed, Malefic, Malefic]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.CastTime]
+
+def astTest10ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest10 = test("Lightspeed test 1", astTest10TestFunction, astTest10ValidationFunction)
+astTestSuite.addTest(asttest10)
+
+# Lightspeed 2
+
+def astTest11TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Lightspeed, Malefic, Malefic, WaitAbility(12.52), Malefic]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.CastTime]
+
+def astTest11ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1.5]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest11 = test("Lightspeed test 2", astTest11TestFunction, astTest11ValidationFunction)
+astTestSuite.addTest(asttest11)
+
+# Draw/Redrawtest
+
+def astTest12TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Draw]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.HasCard, player.Redraw, player.DrawStack]
+
+def astTest12ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, True, 1]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest12 = test("Draw/Redraw test 1", astTest12TestFunction, astTest12ValidationFunction)
+astTestSuite.addTest(asttest12)
+
+# Draw/Redrawtest 2
+
+def astTest13TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Draw, Redraw]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.HasCard, player.Redraw, player.DrawStack]
+
+def astTest13ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, False, 1]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest13 = test("Draw/Redraw test 2", astTest13TestFunction, astTest13ValidationFunction)
+astTestSuite.addTest(asttest13)
+
+# Draw/Redrawtest 3
+
+def astTest14TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Draw, Redraw, Arcanum("Solar", NINPlayer, True)]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.HasCard, player.Redraw, player.DrawStack]
+
+def astTest14ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False, True, 0]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest14 = test("Draw/Redraw test 3", astTest14TestFunction, astTest14ValidationFunction)
+astTestSuite.addTest(asttest14)
+
+# Draw/Redrawtest 4
+
+def astTest15TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Draw, Redraw, Arcanum("Solar", NINPlayer, True), Draw]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.HasCard, player.Redraw, player.DrawStack]
+
+def astTest15ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, True, 0]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest15 = test("Draw/Redraw test 4", astTest15TestFunction, astTest15ValidationFunction)
+astTestSuite.addTest(asttest15)
+
+# Draw/Redrawtest 5
+
+def astTest16TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Draw, Redraw, Arcanum("Solar", NINPlayer, True), Draw, Arcanum("Lunar", NINPlayer, True), WaitAbility(30)]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.HasCard, player.Redraw, player.DrawStack]
+
+def astTest16ValidationFunction(testResults) -> (bool, list):
+    passed = True
+                             # Note that Redraw is still true. However this won't affect anything
+                             # since Redraw does not do anything since the solver does not check
+                             # if a specific card was drawn. It simply checks if a card was drawn
+                             # for arcanum requirement. So redraw effectively does nothing here.
+    expected = [False, True, 0, 1]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest16 = test("Draw/Redraw test 5", astTest16TestFunction, astTest16ValidationFunction)
+astTestSuite.addTest(asttest16)
 
 blmTestSuite.executeTestSuite()
 rdmTestSuite.executeTestSuite()
 smnTestSuite.executeTestSuite()
 whmTestSuite.executeTestSuite()
+astTestSuite.executeTestSuite()
 
 
