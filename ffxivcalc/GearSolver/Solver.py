@@ -135,8 +135,8 @@ def findGCDTimerRange(minSPDValue : int, maxSPDValue : int, subGCDHasteAmount : 
     gcdTierList = {}
     gcdTimerDone = []
 
-                             # Finding all values assuming the gear set can full of meld (36*22)
-    trialSPDValue = max(400, minSPDValue - 792)
+                             # Finding all values assuming the gear set can full of meld (36*22)=792
+    trialSPDValue = max(400, minSPDValue - (792+103))
 
     while trialSPDValue <= maxSPDValue:
         gcdTimerTuple = computeGCDTimer(trialSPDValue, subGCDHasteAmount)
@@ -293,19 +293,28 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
                                                                         # from food to see if this affects the final results.
                                                 for food in FoodSpace:
                                                     trialSet = deepcopy(newGearSet)
-                                                    trialSet.addFood(food)
+                                                    foodPercentBuff = food.getPercentStatBonus("SS" if mendSpellSpeed else "SkS")
+                                                    foodMaxBuff = food.getLimitStatBonus("SS" if mendSpellSpeed else "SkS")
                                                     GearStat = trialSet.GetGearSetStat(IsTank=IsTank)
-                                                    if GearStat["SS" if mendSpellSpeed else "SkS"] > maxSPDValue : continue
+                                                    spdStat = GearStat["SS" if mendSpellSpeed else "SkS"] 
+                                                    trialSetMinSPDValue = min(int(spdStat * foodPercentBuff),foodMaxBuff) + spdStat
+                                                    if trialSetMinSPDValue > maxSPDValue : continue
                                                                          # Will test for SpS/SkS to see if it can fall within the accepted minSPDValue.
                                                                          # Checking if 0 before so we can speedup if it will work for sure.
 
+                                                    
                                                     gearSetMaxSPDValue = ((GearStat["SS"] if mendSpellSpeed else GearStat["SkS"]) + trialSet.getMateriaTypeLimit((StatType.SS if mendSpellSpeed else StatType.SkS), matGen) * matGen.EvenValue)
-                                                    gearSetMaxSPDValueFood = min(int(gearSetMaxSPDValue * 0.1) + gearSetMaxSPDValue, gearSetMaxSPDValue + 103)
-                                                    canReachMinSPD = (minSPDValue == 0) or gearSetMaxSPDValueFood >= minSPDValue
+                                                    gearSetMaxSPDValueFood = min(int(foodPercentBuff * gearSetMaxSPDValue),foodMaxBuff) + gearSetMaxSPDValue
+                                                    canReachMinSPD = (minSPDValue == 400) or gearSetMaxSPDValueFood >= minSPDValue
+
+                                                    solver_logging.warning("foodMaxBuff : " + str(foodMaxBuff) + "foodPercentBuff : " + str(foodPercentBuff) + "gearSetMaxSPDValue : " + str(gearSetMaxSPDValue) + " gearSetMaxSPDValueFood : " + str(gearSetMaxSPDValueFood) + " canReachMinSPD :" + str(canReachMinSPD))
+
 
                                                     if not canReachMinSPD:
                                                         continue
                                                                          # Will find optimal meld with food
+                                                    trialSet.addFood(food)
+                                                    solver_logging.warning(trialSet)
                                                     if findOptMateriaGearBF: 
                                                         trialSet, exp, ra = materiaBisSolverV3(trialSet, matGen, MateriaSpace, preBakedFightGCDTierList, hasteAmount, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex,
                                                                                                "exp",0,mendSpellSpeed,minSPDValue=minSPDValue,maxSPDValue=maxSPDValue,oversaturationIterationsPostGear=oversaturationIterationsPostGear,
