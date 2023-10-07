@@ -2997,7 +2997,7 @@ def astTest14TestFunction() -> None:
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
     NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
 
-    actionSet = [Draw, Redraw, Arcanum("Solar", NINPlayer, True)]
+    actionSet = [Draw, Redraw, Arcanum(NINPlayer, "Solar", True)]
     player = Player(actionSet, [], Stat, JobEnum.Astrologian)
 
     Event.AddPlayer([player, NINPlayer])
@@ -3012,7 +3012,7 @@ def astTest14TestFunction() -> None:
 
 def astTest14ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [False, True, 0]    
+    expected = [False, False, 1]    
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -3032,7 +3032,7 @@ def astTest15TestFunction() -> None:
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
     NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
 
-    actionSet = [Draw, Redraw, Arcanum("Solar", NINPlayer, True), Draw]
+    actionSet = [Draw, Redraw, Arcanum( NINPlayer,"Solar", True), Draw]
     player = Player(actionSet, [], Stat, JobEnum.Astrologian)
 
     Event.AddPlayer([player, NINPlayer])
@@ -3067,7 +3067,7 @@ def astTest16TestFunction() -> None:
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
     NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
 
-    actionSet = [Draw, Redraw, Arcanum("Solar", NINPlayer, True), Draw, Arcanum("Lunar", NINPlayer, True), WaitAbility(30)]
+    actionSet = [Draw, Redraw, Arcanum( NINPlayer,"Solar", True), Draw, Arcanum( NINPlayer,"Lunar", True), WaitAbility(30)]
     player = Player(actionSet, [], Stat, JobEnum.Astrologian)
 
     Event.AddPlayer([player, NINPlayer])
@@ -3086,7 +3086,7 @@ def astTest16ValidationFunction(testResults) -> (bool, list):
                              # since Redraw does not do anything since the solver does not check
                              # if a specific card was drawn. It simply checks if a card was drawn
                              # for arcanum requirement. So redraw effectively does nothing here.
-    expected = [False, True, 0, 1]    
+    expected = [False, True, 1]    
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -3094,6 +3094,123 @@ def astTest16ValidationFunction(testResults) -> (bool, list):
 
 asttest16 = test("Draw/Redraw test 5", astTest16TestFunction, astTest16ValidationFunction)
 astTestSuite.addTest(asttest16)
+
+# Divination test 1
+
+def astTest17TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Divination, Malefic]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [DivinationBuff in Dummy.buffList]
+
+def astTest17ValidationFunction(testResults) -> (bool, list):
+    passed = True
+                             # Note that Redraw is still true. However this won't affect anything
+                             # since Redraw does not do anything since the solver does not check
+                             # if a specific card was drawn. It simply checks if a card was drawn
+                             # for arcanum requirement. So redraw effectively does nothing here.
+    expected = [True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest17 = test("Divination test 1", astTest17TestFunction, astTest17ValidationFunction)
+astTestSuite.addTest(asttest17)
+
+# Divination test 1
+
+def astTest17TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Divination, Malefic]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [DivinationBuff in Dummy.buffList]
+
+def astTest17ValidationFunction(testResults) -> (bool, list):
+    passed = True
+                             # Note that Redraw is still true. However this won't affect anything
+                             # since Redraw does not do anything since the solver does not check
+                             # if a specific card was drawn. It simply checks if a card was drawn
+                             # for arcanum requirement. So redraw effectively does nothing here.
+    expected = [True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest17 = test("Divination test 1", astTest17TestFunction, astTest17ValidationFunction)
+astTestSuite.addTest(asttest17)
+
+# Divination test 2
+
+def astTest18TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Divination, Malefic, WaitAbility(15)]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [DivinationBuff in Dummy.buffList]
+
+def astTest18ValidationFunction(testResults) -> (bool, list):
+    passed = True
+                             # Note that Redraw is still true. However this won't affect anything
+                             # since Redraw does not do anything since the solver does not check
+                             # if a specific card was drawn. It simply checks if a card was drawn
+                             # for arcanum requirement. So redraw effectively does nothing here.
+    expected = [False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest18 = test("Divination test 2", astTest18TestFunction, astTest18ValidationFunction)
+astTestSuite.addTest(asttest18)
 
 blmTestSuite.executeTestSuite()
 rdmTestSuite.executeTestSuite()
