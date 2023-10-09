@@ -319,7 +319,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
                                                     if findOptMateriaGearBF: 
                                                         trialSet, exp, ra = materiaBisSolverV3(trialSet, matGen, MateriaSpace, preBakedFightGCDTierList, hasteAmount, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex,
                                                                                                "exp",0,mendSpellSpeed,minSPDValue=minSPDValue,maxSPDValue=maxSPDValue,oversaturationIterationsPostGear=oversaturationIterationsPostGear,
-                                                                                               findOptMateriaGearBF=findOptMateriaGearBF,swapDHDetBeforeSpeed=swapDHDetBeforeSpeed)
+                                                                                               findOptMateriaGearBF=findOptMateriaGearBF,swapDHDetBeforeSpeed=swapDHDetBeforeSpeed,minPiety=minPiety)
 
                                                     GearStat = trialSet.GetGearSetStat(IsTank=IsTank)
 
@@ -363,14 +363,14 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
             print("Using BF up-down")
             if "exp" in PercentileToOpt : 
                 print("Optimizing Best Expected BiS materia")
-                optimalGearSet, curMax, curRandom = materiaBisSolverV3(optimalGearSet, matGen, MateriaSpace, preBakedFightGCDTierList, hasteAmount, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, "exp",0,mendSpellSpeed,minSPDValue=minSPDValue,maxSPDValue=maxSPDValue,oversaturationIterationsPostGear=oversaturationIterationsPostGear,findOptMateriaGearBF=findOptMateriaGearBF, swapDHDetBeforeSpeed=swapDHDetBeforeSpeed)
+                optimalGearSet, curMax, curRandom = materiaBisSolverV3(optimalGearSet, matGen, MateriaSpace, preBakedFightGCDTierList, hasteAmount, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, "exp",0,mendSpellSpeed,minSPDValue=minSPDValue,maxSPDValue=maxSPDValue,oversaturationIterationsPostGear=oversaturationIterationsPostGear,findOptMateriaGearBF=findOptMateriaGearBF, swapDHDetBeforeSpeed=swapDHDetBeforeSpeed,minPiety=minPiety)
                                     # Will now optimize the random BiS. Every percentile's gearset is optimized by using
                                     # the value of the DPS as their percentile. So the 90th percentile BiS is chosen using the
                                     # materia arrangement that maximizes the 90th percentile DPS.
             for percentile in optimalRandomGearSet:
                 if percentile != "exp" : 
                     print("Optimizing " + percentile + "th percentile BiS")
-                    optimalRandomGearSetMateria[percentile][1], optimalRandomGearSetMateria[percentile][0], curRandom = materiaBisSolverV3(optimalRandomGearSet[percentile][1], matGen, MateriaSpace, preBakedFightGCDTierList, hasteAmount, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, percentile,randomIteration,mendSpellSpeed,minSPDValue=minSPDValue,maxSPDValue=maxSPDValue, oversaturationIterationsPostGear=oversaturationIterationsPostGear,swapDHDetBeforeSpeed=swapDHDetBeforeSpeed)
+                    optimalRandomGearSetMateria[percentile][1], optimalRandomGearSetMateria[percentile][0], curRandom = materiaBisSolverV3(optimalRandomGearSet[percentile][1], matGen, MateriaSpace, preBakedFightGCDTierList, hasteAmount, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, percentile,randomIteration,mendSpellSpeed,minSPDValue=minSPDValue,maxSPDValue=maxSPDValue, oversaturationIterationsPostGear=oversaturationIterationsPostGear,swapDHDetBeforeSpeed=swapDHDetBeforeSpeed,minPiety=minPiety)
                     optimalRandomGearSetMateria[percentile][2] = deepcopy(curRandom)
         else:
             print("Using BF down-up")
@@ -814,7 +814,6 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
 
     if not swapDHDetBeforeSpeed:
         optimalSet, curMaxDPS = materiaDHAndDetSolver(curMaxDPS,optimalSet, matGen, hasteAmount, IsTank=IsTank, IsCaster=IsCaster, JobMod=JobMod, gcdTimerTierFight=gcdTimerTierFight,PlayerIndex=PlayerIndex, randomIteration=randomIteration)
-    
     if minPiety > 390:
                              # Adding piety until min requirement are met.
         optimalSet = pietySolver(minPiety, curMaxDPS, optimalSet, matGen, hasteAmount, IsTank, IsCaster, 
@@ -1060,15 +1059,15 @@ def pietySolver(minPiety : int, curMaxDPS : float, Set : GearSet, matGen : Mater
 
     solver_logging.warning("Replacing materias with Piety to meet minimum piety requirement.")
 
-    optimalSet = deepcopy(GearSet)
-    GearStat = trialSet.GetGearSetStat(IsTank=IsTank)
+    optimalSet = deepcopy(Set)
+    GearStat = optimalSet.GetGearSetStat(IsTank=IsTank)
     mat = matGen.GenerateMateria(StatType.Piety)
 
     while GearStat["Piety"] < minPiety:
 
         trialBestDPS = 0
-        curTypeToRemove = None
-        curPieceToSwapMateria = None
+        curTypeToReplace = None
+        curGearPieceToReplace = None
 
         for type in optimalSet.getMateriaTypeList():
 
@@ -1087,14 +1086,14 @@ def pietySolver(minPiety : int, curMaxDPS : float, Set : GearSet, matGen : Mater
                     gcdTimer = computeGCDTimer(GearStat["SS" if IsCaster else "SkS"],hasteAmount)
                     ExpectedDamage, randomDamageDict = gcdTimerTierFight[gcdTimer].SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=randomIteration)
 
-                    solver_logging.warning("Trial be replacing " + StatType.name_for_id(type) + " from " + gear.getGearTypeName() + " : " + (str(ExpectedDamage) if percentile == "exp" else str(randomDamageDict[percentile])) + (" Expected : " + str(ExpectedDamage) if percentile != "exp" else ""))
+                    solver_logging.warning("Trial be replacing " + StatType.name_for_id(type) + " from " + gear.getGearTypeName() + " : " + (str(ExpectedDamage)) + (" Expected : " + str(ExpectedDamage)))
 
                     if ExpectedDamage > trialBestDPS:
                         trialBestDPS = ExpectedDamage
-                        curTypeToRemove = type
-                        curPieceToSwapMateria = gear.getGearTypeName()
+                        curTypeToReplace = type
+                        curGearPieceToReplace = gear.getGearTypeName()
 
-        if curTypeToRemove == None :
+        if curTypeToReplace == None :
             solver_logging.warning("Could not find another materia to replace with Piety")
             return optimalSet
 
