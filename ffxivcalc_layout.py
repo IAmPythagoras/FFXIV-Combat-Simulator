@@ -57,7 +57,6 @@ Event = Fight(Dummy, False)
 # Caster
 BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 716, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390} # Stats for BlackMage
 RDMStat = {"MainStat": 3378, "WD": 132, "Det": 1601, "Ten": 400, "SS": 502, "SkS": 400, "Crit": 2514, "DH": 1616} # Stats for RedMage
-RDMStat =  {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 538, 'SkS': 400, 'Crit': 2514, 'DH': 1580, 'Piety': 390}
 SMNStat =  {'MainStat': 3378, 'WD': 132, 'Det': 1342, 'Ten': 400, 'SS': 1411, 'SkS': 400, 'Crit': 2284, 'DH': 1196, 'Piety': 390} # Stats for Summoner
 
 # Healer
@@ -132,10 +131,9 @@ GNBPlayer = Player([], [], GNBStat, JobEnum.Gunbreaker)
 
 # Caster
 BLMOpener = [SharpCast, Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, Swiftcast, Despair, 
-             Manafront, WaitAbility(1),Triplecast, Fire4, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose, Fire3, Fire4, Fire4, Fire4, Despair, 
+             Manafront,Triplecast, Fire4, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose, Fire3, Fire4, Fire4, Fire4, Despair, 
              Blizzard3, Blizzard4,Paradox, Fire3, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Despair,
              Blizzard3, Blizzard4,Paradox, Fire3, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Despair]
-BLMOpener = [Blizzard3,WaitAbility(10), UmbralSoul, WaitAbility(10)]
 SMNOpener = [Ruin3, Summon, SearingLight, AstralImpulse, AstralImpulse, AstralImpulse, EnergyDrainSMN, Enkindle, AstralImpulse, Deathflare, Fester, AstralImpulse, Fester, AstralImpulse, Garuda, Swiftcast, Slipstream, Emerald, Emerald, Emerald, Emerald, Titan, Topaz, Mountain, Topaz, Mountain, Topaz, Mountain, Topaz, Mountain, Ifrit, Cyclone, Strike, Ruby, Ruby, Ruin4, Ruin3]
 RDMOpener = [Verthunder, Verareo, Swiftcast,Acceleration, Verthunder, Potion,Verthunder, Embolden, Manafication, EnchantedRiposte, Fleche, EnchantedZwerchhau, 
              Contre, EnchantedRedoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verstone, Verareo, Verfire, Verthunder, 
@@ -143,17 +141,17 @@ RDMOpener = [Verthunder, Verareo, Swiftcast,Acceleration, Verthunder, Potion,Ver
              Verthunder, EnchantedRiposte, EnchantedZwerchhau, EnchantedRedoublement, Fleche, Verflare, Scorch, Resolution]
 
 # Healer
-SCHOpener = [Broil, Biolysis, Aetherflow, Broil, Swiftcast, Broil, WaitAbility(1), ChainStratagem, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, 
+SCHOpener = [Broil, Biolysis, Aetherflow, Broil, Swiftcast, Broil, ChainStratagem, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, 
             Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Biolysis, Broil, Broil,
 			Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil]
 WHMOpener = [Glare, ThinAir, Dia, Glare, WaitAbility(1), PresenceOfMind, Glare, Glare, Glare, Glare, Glare, ThinAir, Glare, Glare, Glare, Glare, Glare, Glare, Dia, Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare]
+WHMOpener = [Glare, Glare]
 ASTOpener = [Malefic, Lightspeed, Combust, Malefic, Malefic, Divination, Malefic, MinorArcana, Astrodyne, Malefic, LordOfCrown, Malefic, Malefic, Malefic, Malefic, 
             Malefic, Malefic,Combust, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic,
             Malefic, Malefic, Malefic]
 SGEOpener = [Dosis, Eukrasia, EukrasianDosis, Dosis, Dosis, Phlegma, Phlegma, Dosis, Dosis, Dosis, Dosis, Dosis, 
             Dosis, Dosis, Dosis, Eukrasia, EukrasianDosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, 
             Dosis, Dosis, Dosis, Dosis, Dosis, Dosis]
-
 
 # Physical Ranged 
 BRDOpener = [Stormbite, WanderingMinuet, RagingStrike, Causticbite, EmpyrealArrow, BloodLetter, RefulgentArrow, RadiantFinale, BattleVoice, BurstShot, Barrage, RefulgentArrow, Sidewinder, BurstShot, RefulgentArrow, BurstShot, EmpyrealArrow, BurstShot, PitchPerfect3, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow]#,MageBallad, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, ArmyPaeon, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow]
@@ -231,7 +229,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [BLMPlayer]
+PlayerList = [WHMPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -250,12 +248,12 @@ Event.RequirementOn = RequirementOn
 Event.ShowGraph = ShowGraph
 Event.IgnoreMana = IgnoreMana
 
-findBiS = False # Set to True if want to find BiS instead.
+findBiS = True # Set to True if want to find BiS instead.
 
 __logger__ = logging.getLogger("ffxivcalc") # root logger
 level = logging.DEBUG if not findBiS else logging.WARNING
 logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
-__logger__.setLevel(level=level) # __logger__ = logging.getLogger("ffxivcalc") 
+__logger__.setLevel(level=level) 
 
 if not findBiS:
     Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False, MaxTeamBonus=False) # Simulating fight
@@ -278,94 +276,13 @@ if findBiS:
     CC = Food({"Crit" : [103, 0.1], "SS" : [62, 0.1]}, "Caviar Canapes")
     MB = Food({"Ten" : [103, 0.1], "Det" : [62, 0.1]}, "Marinated Broccoflower")
     BS =  Food({"Det" : [103, 0.1], "Ten" : [62, 0.1]}, "Broccoflower Stew")
-    foodSpace = [HD,BE, CW, CC]
+    foodSpace = [CC]
+    #foodSpace = [HD, BE]
 
     Crit = 0
     DH = 1
     Det = 2
     Ten = 5
     materiaSpace = [Crit, DH, Det]
-    optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=True,minSPDValue=400,maxSPDValue=700, useNewAlgo=True, 
-                                oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=1,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=True)
-
-
-        # Leave this false
-
-if False:
-    from ffxivcalc.GearSolver.Solver import computeDamageValue, getGearDPSValue, materiaBisSolverV3
-    from ffxivcalc.GearSolver.Gear import MateriaGenerator, GearSet, Food, ImportGear
-    matGen = MateriaGenerator(18, 36)
-
-    raidFood = Food({"Crit" : [103, 0.1], "SkS" : [62, 0.1]}, "Baba Ghanoush")
-
-    #data = ImportGear("StrikingGear.json")
-    Crit = 0
-    DH = 1
-    Det = 2
-    SS = 3
-    SkS = 4
-    """
-    Weapon = data["WEAPON"][0]
-    Weapon.AddMateria(matGen.GenerateMateria(4))
-    Weapon.AddMateria(matGen.GenerateMateria(4))
-
-    Head = data["HEAD"][0]
-    Head.AddMateria(matGen.GenerateMateria(4))
-    Head.AddMateria(matGen.GenerateMateria(1))
-
-    Body = data["BODY"][0]
-    Body.AddMateria(matGen.GenerateMateria(4))
-    Body.AddMateria(matGen.GenerateMateria(4))
-
-    Hand = data["HANDS"][0]
-    Hand.AddMateria(matGen.GenerateMateria(4))
-    Hand.AddMateria(matGen.GenerateMateria(1))
-
-    Leg = data["LEGS"][1]
-    Leg.AddMateria(matGen.GenerateMateria(4))
-    Leg.AddMateria(matGen.GenerateMateria(4))
-
-    Feet = data["FEET"][0]
-    Feet.AddMateria(matGen.GenerateMateria(4))
-    Feet.AddMateria(matGen.GenerateMateria(4))
-
-    Ear = data["EARRINGS"][1]
-    Ear.AddMateria(matGen.GenerateMateria(0))
-    Ear.AddMateria(matGen.GenerateMateria(0))
-
-    Neck = data["NECKLACE"][1]
-    Neck.AddMateria(matGen.GenerateMateria(4))
-    Neck.AddMateria(matGen.GenerateMateria(4))
-
-    Bracelet = data["BRACELETS"][0]
-    Bracelet.AddMateria(matGen.GenerateMateria(4))
-    Bracelet.AddMateria(matGen.GenerateMateria(4))
-
-    Lring = data["LRING"][0]
-    Lring.AddMateria(matGen.GenerateMateria(4))
-    Lring.AddMateria(matGen.GenerateMateria(4))
-
-    ring = data["RING"][0]
-    ring.AddMateria(matGen.GenerateMateria(4))
-    ring.AddMateria(matGen.GenerateMateria(4))
-    """
-
-    gSet = GearSet()
-    gSet.IsTank = False
-    """
-    gSet.AddGear(Weapon)
-    gSet.AddGear(Head)
-    gSet.AddGear(Body)
-    gSet.AddGear(Hand)
-    gSet.AddGear(Leg)
-    gSet.AddGear(Feet)
-    gSet.AddGear(Ear)
-    gSet.AddGear(Neck)
-    gSet.AddGear(Bracelet)
-    gSet.AddGear(Lring)
-    gSet.AddGear(ring)
-    gSet.addFood(raidFood)
-    """
-
-    getGearDPSValue(Event, gSet, 0, n=0)
-    print(Event.PlayerList[0].DamageInstanceList)
+    optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=True,minSPDValue=1000,maxSPDValue=1100, useNewAlgo=True, 
+                                oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=0,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=False, minPiety=1300)
