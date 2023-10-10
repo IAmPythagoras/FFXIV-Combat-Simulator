@@ -480,7 +480,7 @@ class Spell:
             
         if self.GCD: player.GCDCounter += 1 # If action was a GCD, increase the counter
 
-        if True:#self.id > 0 or player.RoleEnum == RoleEnum.Pet or type==3: # Only logs if is a player action and not a DOT
+        if self.id > 0 or player.RoleEnum == RoleEnum.Pet or type==3: # Only logs if is a player action and not a DOT
             log_str = ( "Timestamp : " + str(player.CurrentFight.TimeStamp)
             + " , Event : end_cast"
             + (" , playerID : " + str(player.playerID) if player.JobEnum != JobEnum.Pet else " , MasterID : " + str(player.Master.playerID))

@@ -35,7 +35,7 @@ def getBaseStat(IsTank=False):
         "SkS" : 400,
         "Crit" : 400,
         "DH" : 400,
-        "Piety" : 400
+        "Piety" : 390
     }  
 
 def getGearDPSValue(Fight, gearSet : GearSet, PlayerIndex : int, n : int =10000):
@@ -135,8 +135,8 @@ def findGCDTimerRange(minSPDValue : int, maxSPDValue : int, subGCDHasteAmount : 
     gcdTierList = {}
     gcdTimerDone = []
 
-                             # Finding all values assuming the gear set can full of meld (36*22)
-    trialSPDValue = max(400, minSPDValue - 792)
+                             # Finding all values assuming the gear set can full of meld (36*22)=792
+    trialSPDValue = max(400, minSPDValue - (792+103))
 
     while trialSPDValue <= maxSPDValue:
         gcdTimerTuple = computeGCDTimer(trialSPDValue, subGCDHasteAmount)
@@ -149,7 +149,7 @@ def findGCDTimerRange(minSPDValue : int, maxSPDValue : int, subGCDHasteAmount : 
 def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, PercentileToOpt : list = ["exp", "99", "90", "75", "50"],
               materiaDepthSearchIterator : int = 1, randomIteration : int = 10000, oddMateriaValue : int = 18, evenMateriaValue : int = 36,
               PlayerIndex : int = 0, mendSpellSpeed : bool = False, maxSPDValue : int = 5000, minSPDValue : int = 0, useNewAlgo : bool = False, oversaturationIterationsPreGear : int = 0,
-              oversaturationIterationsPostGear : int = 0, findOptMateriaGearBF : bool = False, swapDHDetBeforeSpeed : bool = True):
+              oversaturationIterationsPostGear : int = 0, findOptMateriaGearBF : bool = False, swapDHDetBeforeSpeed : bool = True, minPiety : int = 390):
     """
     Finds the BiS of the player given a Gear search space and a Fight. The Solver will output to a file named
     bisSolver[Job]Result[number].txt with all the relevant information and returns the gearSets. The solver outputs the best Expected Damage GearSet as well as
@@ -181,6 +181,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     oversaturationIterationsPostGear : int -> Number of times the algorithm will oversaturate gear before looking for best materias
     findOptMateriaGearBF : bool -> If true solver will find best gearset/food/melding using given algorithm. Only recommended for Expected.
     swapDHDetBeforeSpeed : bool -> If True, the solver will swap DH and Det before swapping melds with Speed materias. If False it swaps after.
+    minPiety : int -> Minimum required Piety value for the set. By default set to 400.
     """
 
                              # Checking the validity of the given search space and some other parameters.
@@ -293,25 +294,39 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
                                                                         # from food to see if this affects the final results.
                                                 for food in FoodSpace:
                                                     trialSet = deepcopy(newGearSet)
-                                                    trialSet.addFood(food)
+                                                    foodPercentBuff = food.getPercentStatBonus("SS" if mendSpellSpeed else "SkS")
+                                                    foodMaxBuff = food.getLimitStatBonus("SS" if mendSpellSpeed else "SkS")
                                                     GearStat = trialSet.GetGearSetStat(IsTank=IsTank)
-                                                    if GearStat["SS" if mendSpellSpeed else "SkS"] > maxSPDValue : continue
+                                                    spdStat = GearStat["SS" if mendSpellSpeed else "SkS"] 
+                                                    trialSetMinSPDValue = min(int(spdStat * foodPercentBuff),foodMaxBuff) + spdStat
+                                                    if trialSetMinSPDValue > maxSPDValue : continue
                                                                          # Will test for SpS/SkS to see if it can fall within the accepted minSPDValue.
                                                                          # Checking if 0 before so we can speedup if it will work for sure.
 
+                                                    
                                                     gearSetMaxSPDValue = ((GearStat["SS"] if mendSpellSpeed else GearStat["SkS"]) + trialSet.getMateriaTypeLimit((StatType.SS if mendSpellSpeed else StatType.SkS), matGen) * matGen.EvenValue)
-                                                    gearSetMaxSPDValueFood = min(int(gearSetMaxSPDValue * 0.1) + gearSetMaxSPDValue, gearSetMaxSPDValue + 103)
-                                                    canReachMinSPD = (minSPDValue == 0) or gearSetMaxSPDValueFood >= minSPDValue
+                                                    gearSetMaxSPDValueFood = min(int(foodPercentBuff * gearSetMaxSPDValue),foodMaxBuff) + gearSetMaxSPDValue
+                                                    canReachMinSPD = (minSPDValue == 400) or gearSetMaxSPDValueFood >= minSPDValue
+
+                                                    solver_logging.warning("foodMaxBuff : " + str(foodMaxBuff) + "foodPercentBuff : " + str(foodPercentBuff) + "gearSetMaxSPDValue : " + str(gearSetMaxSPDValue) + " gearSetMaxSPDValueFood : " + str(gearSetMaxSPDValueFood) + " canReachMinSPD :" + str(canReachMinSPD))
+
 
                                                     if not canReachMinSPD:
                                                         continue
                                                                          # Will find optimal meld with food
+                                                    trialSet.addFood(food)
+                                                    solver_logging.warning(trialSet)
                                                     if findOptMateriaGearBF: 
                                                         trialSet, exp, ra = materiaBisSolverV3(trialSet, matGen, MateriaSpace, preBakedFightGCDTierList, hasteAmount, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex,
                                                                                                "exp",0,mendSpellSpeed,minSPDValue=minSPDValue,maxSPDValue=maxSPDValue,oversaturationIterationsPostGear=oversaturationIterationsPostGear,
-                                                                                               findOptMateriaGearBF=findOptMateriaGearBF,swapDHDetBeforeSpeed=swapDHDetBeforeSpeed)
+                                                                                               findOptMateriaGearBF=findOptMateriaGearBF,swapDHDetBeforeSpeed=swapDHDetBeforeSpeed,minPiety=minPiety)
 
                                                     GearStat = trialSet.GetGearSetStat(IsTank=IsTank)
+
+                                                                    # This is a lazy attempt at fixing the issue, but it might work
+                                                                    # Note that is issue only really comes when minPiety and
+                                                                    # minSPDValue are both high.
+                                                    if minPiety > 390 and GearStat["Piety"] < minPiety : continue
 
                                                     if not ((mendSpellSpeed and GearStat["SS"] > maxSPDValue) or (not mendSpellSpeed and GearStat["SkS"] > maxSPDValue)):
 
@@ -353,14 +368,14 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
             print("Using BF up-down")
             if "exp" in PercentileToOpt : 
                 print("Optimizing Best Expected BiS materia")
-                optimalGearSet, curMax, curRandom = materiaBisSolverV3(optimalGearSet, matGen, MateriaSpace, preBakedFightGCDTierList, hasteAmount, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, "exp",0,mendSpellSpeed,minSPDValue=minSPDValue,maxSPDValue=maxSPDValue,oversaturationIterationsPostGear=oversaturationIterationsPostGear,findOptMateriaGearBF=findOptMateriaGearBF, swapDHDetBeforeSpeed=swapDHDetBeforeSpeed)
+                optimalGearSet, curMax, curRandom = materiaBisSolverV3(optimalGearSet, matGen, MateriaSpace, preBakedFightGCDTierList, hasteAmount, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, "exp",0,mendSpellSpeed,minSPDValue=minSPDValue,maxSPDValue=maxSPDValue,oversaturationIterationsPostGear=oversaturationIterationsPostGear,findOptMateriaGearBF=findOptMateriaGearBF, swapDHDetBeforeSpeed=swapDHDetBeforeSpeed,minPiety=minPiety)
                                     # Will now optimize the random BiS. Every percentile's gearset is optimized by using
                                     # the value of the DPS as their percentile. So the 90th percentile BiS is chosen using the
                                     # materia arrangement that maximizes the 90th percentile DPS.
             for percentile in optimalRandomGearSet:
                 if percentile != "exp" : 
                     print("Optimizing " + percentile + "th percentile BiS")
-                    optimalRandomGearSetMateria[percentile][1], optimalRandomGearSetMateria[percentile][0], curRandom = materiaBisSolverV3(optimalRandomGearSet[percentile][1], matGen, MateriaSpace, preBakedFightGCDTierList, hasteAmount, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, percentile,randomIteration,mendSpellSpeed,minSPDValue=minSPDValue,maxSPDValue=maxSPDValue, oversaturationIterationsPostGear=oversaturationIterationsPostGear,swapDHDetBeforeSpeed=swapDHDetBeforeSpeed)
+                    optimalRandomGearSetMateria[percentile][1], optimalRandomGearSetMateria[percentile][0], curRandom = materiaBisSolverV3(optimalRandomGearSet[percentile][1], matGen, MateriaSpace, preBakedFightGCDTierList, hasteAmount, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, percentile,randomIteration,mendSpellSpeed,minSPDValue=minSPDValue,maxSPDValue=maxSPDValue, oversaturationIterationsPostGear=oversaturationIterationsPostGear,swapDHDetBeforeSpeed=swapDHDetBeforeSpeed,minPiety=minPiety)
                     optimalRandomGearSetMateria[percentile][2] = deepcopy(curRandom)
         else:
             print("Using BF down-up")
@@ -451,7 +466,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
 def materiaBisSolver(Set : GearSet, matGen : MateriaGenerator, matSpace : list[int], maxDepth : int, Fight, JobMod : int, IsTank : bool, IsCaster : bool,PlayerIndex : int, percentile : str, randomIteration : int,mendSpellSpeed : bool,maxSPDValue : int = 5000):
     """
 
-    NOT RECOMMENDED TO USE SINCE SLOW.
+    NOT RECOMMENDED TO USE SINCE SLOW AND DEPRECATED
 
     This functions solves the materia BiS for a given gearset.
     trialSet : GearSet -> GearSet for which to optimize Materias
@@ -653,7 +668,7 @@ def materiaBisSolverV2(Set : GearSet, matGen : MateriaGenerator, matSpace : list
 
 def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list[int], gcdTimerTierFight, hasteAmount : int,  JobMod : int, IsTank : bool, IsCaster : bool,PlayerIndex : int, 
                        percentile : str, randomIteration : int, mendSpellSpeed : bool,minSPDValue : int = 0, maxSPDValue : int = 5000, oversaturationIterationsPostGear : int = 0, 
-                       findOptMateriaGearBF : bool = False, swapDHDetBeforeSpeed : bool = False):   
+                       findOptMateriaGearBF : bool = False, swapDHDetBeforeSpeed : bool = False, minPiety : int = 390):   
     """
     This function finds the best melds for the given Gear Set.
 
@@ -679,6 +694,7 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
     oversaturationIterationsPostGear : int -> Number of times the algorithm will oversaturate the gear set.
     findOptMateriaGearBF : bool -> If true means we are solving materias for every possible gear set/food. So this simply mutes the ProgressBar usually present.
     swapDHDetBeforeSpeed : bool -> If True, the solver will swap DH and Det before swapping melds with Speed materias. If False it swaps after.
+    minPiety : int -> Minimum Piety value for the gear set. Default to 390
     """
     optimalSet = deepcopy(Set)
                                  # This first loop will forceAddMateria to the whole set until no more can be
@@ -803,6 +819,10 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
 
     if not swapDHDetBeforeSpeed:
         optimalSet, curMaxDPS = materiaDHAndDetSolver(curMaxDPS,optimalSet, matGen, hasteAmount, IsTank=IsTank, IsCaster=IsCaster, JobMod=JobMod, gcdTimerTierFight=gcdTimerTierFight,PlayerIndex=PlayerIndex, randomIteration=randomIteration)
+    if minPiety > 390:
+                             # Adding piety until min requirement are met.
+        optimalSet = pietySolver(minPiety, curMaxDPS, optimalSet, matGen, hasteAmount, IsTank, IsCaster, 
+                                JobMod, gcdTimerTierFight, PlayerIndex, randomIteration)
 
     return optimalSet, 0, {}
 
@@ -955,7 +975,8 @@ def materiaBisSolverV4(Set : GearSet, matGen : MateriaGenerator, matSpace : list
     return optimalSpeedSet, 0, {}
                 
 
-def materiaDHAndDetSolver(curMaxDPS : float, Set : GearSet, matGen : MateriaGenerator, hasteAmount : int, IsTank : bool, IsCaster : bool, JobMod, gcdTimerTierFight, PlayerIndex : int, randomIteration : int):
+def materiaDHAndDetSolver(curMaxDPS : float, Set : GearSet, matGen : MateriaGenerator, hasteAmount : int, IsTank : bool, IsCaster : bool, 
+                          JobMod, gcdTimerTierFight, PlayerIndex : int, randomIteration : int):
     """
     This function swapes DH and Det melds to see if an improvement to DPS can be made.
 
@@ -1032,6 +1053,67 @@ def materiaDHAndDetSolver(curMaxDPS : float, Set : GearSet, matGen : MateriaGene
 
 
     ############
+
+
+def pietySolver(minPiety : int, curMaxDPS : float, Set : GearSet, matGen : MateriaGenerator, hasteAmount : int, IsTank : bool, IsCaster : bool, 
+                JobMod, gcdTimerTierFight, PlayerIndex : int, randomIteration : int):
+    """
+    This works the same way as replacing SkS/SpS materia for min Speed value. It will look for the materia that when removed results
+    in the lowest DPS loss and will change this one for a Piety Materia.
+    """
+
+    solver_logging.warning("Replacing materias with Piety to meet minimum piety requirement.")
+
+    optimalSet = deepcopy(Set)
+    GearStat = optimalSet.GetGearSetStat(IsTank=IsTank)
+    mat = matGen.GenerateMateria(StatType.Piety)
+
+    while GearStat["Piety"] < minPiety:
+
+        trialBestDPS = 0
+        curTypeToReplacez = None
+        curGearPieceToReplace = None
+
+        for type in optimalSet.getMateriaTypeList():
+
+            trialSet = deepcopy(optimalSet)
+
+                             # Will now look for the least DPS loss materia to replace.
+            for gear in trialSet:
+
+                if gear.hasStatMeld(type) and gear.canReplaceMateriaNoLoss(mat):
+                    gear.removeMateriaType(type)
+                    gear.AddMateria(mat)
+
+                    GearStat = trialSet.GetGearSetStat(IsTank=IsTank)
+
+                    f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(GearStat, JobMod, IsTank, IsCaster)
+                    gcdTimer = computeGCDTimer(GearStat["SS" if IsCaster else "SkS"],hasteAmount)
+                    ExpectedDamage, randomDamageDict = gcdTimerTierFight[gcdTimer].SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=randomIteration)
+
+                    solver_logging.warning("Trial be replacing " + StatType.name_for_id(type) + " from " + gear.getGearTypeName() + " : " + (str(ExpectedDamage)) + (" Expected : " + str(ExpectedDamage)))
+
+                    if ExpectedDamage > trialBestDPS:
+                        trialBestDPS = ExpectedDamage
+                        curTypeToReplace = type
+                        curGearPieceToReplace = gear.getGearTypeName()
+
+        if curTypeToReplace == None or curGearPieceToReplace == None:
+            solver_logging.warning("Could not find another materia to replace with Piety")
+            return optimalSet
+
+                            # Replacing found materia to replace with Piety
+        try:
+            optimalSet.removeMateriaSpecGear(curGearPieceToReplace, curTypeToReplace)
+            optimalSet.GearSet[curGearPieceToReplace].AddMateria(mat)
+            GearStat = optimalSet.GetGearSetStat(IsTank=IsTank)
+        except:
+            input(str(curTypeToReplace))
+            print(curGearPieceToReplace)
+
+    
+    return optimalSet
+
 
 
 

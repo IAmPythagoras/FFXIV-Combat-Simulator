@@ -207,7 +207,7 @@ def blmTest2ValidationFunction(testResults) -> (bool, list):
 
     return passed , expected
 
-blmtest2 = test("Opener requirement, end time and potency 2", blmTest1TestFunction, blmTest1ValidationFunction)
+blmtest2 = test("Opener requirement, end time and potency 2", blmTest2TestFunction, blmTest2ValidationFunction)
 blmTestSuite.addTest(blmtest2)
 
 # Mana test 1
@@ -1040,7 +1040,7 @@ def rdmTest1TestFunction() -> None:
 
 def rdmTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 32.47, 8660]    
+    expected = [0, 32.47, 8730]    
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -1540,13 +1540,1682 @@ def smnTest2ValidationFunction(testResults) -> (bool, list):
 
     return passed , expected
 
-smntest2 = test("Opener requirement, end time and potency 1", smnTest2TestFunction, smnTest2ValidationFunction)
+smntest2 = test("Opener requirement, end time and potency 2", smnTest2TestFunction, smnTest2ValidationFunction)
 smnTestSuite.addTest(smntest2)
 
+# Summon test 1
 
+def smnTest3TestFunction() -> None:
+    """This test checks the total potency done by Bahamut when summoned and makes sure he dissapears after the given time duration.
+    """
 
-#blmTestSuite.executeTestSuite()
-#rdmTestSuite.executeTestSuite()
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 544, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Ruin3, Summon, Enkindle, Deathflare, WaitAbility(15), Ruin3]
+    player = Player(actionSet, [], Stat, JobEnum.Summoner)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    pet = player.Pet
+    return [player.TotalPotency, pet.TrueLock]
+
+def smnTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [3320, True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+smntest3 = test("Summon test 1 - Bahamut", smnTest3TestFunction, smnTest3ValidationFunction)
+smnTestSuite.addTest(smntest3)
+
+# Summon test 2
+
+def smnTest4TestFunction() -> None:
+    """This test checks the total potency done by Phoenix when summoned and makes sure he dissapears after the given time duration.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 544, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Ruin3, Summon, Enkindle, Deathflare, WaitAbility(15), Ruin3, WaitAbility(60), Summon, Enkindle, WaitAbility(15)]
+    player = Player(actionSet, [], Stat, JobEnum.Summoner)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    pet = player.Pet
+    return [player.TotalPotency, pet.TrueLock]
+
+def smnTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [3320 + 1300 + 240*5, True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+smntest4 = test("Summon test 2 - Phoenix", smnTest4TestFunction, smnTest4ValidationFunction)
+smnTestSuite.addTest(smntest4)
+
+# Searing Light Test
+
+def smnTest5TestFunction() -> None:
+    """This tests if Searing light works correctly.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 544, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [SearingLight, WaitAbility(15)]
+    player = Player(actionSet, [], Stat, JobEnum.Summoner)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [SearingLightbuff in Dummy.buffList]
+
+def smnTest5ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+smntest5 = test("Searing Light test 1", smnTest5TestFunction, smnTest5ValidationFunction)
+smnTestSuite.addTest(smntest5)
+
+# Searing Light Test 2
+
+def smnTest6TestFunction() -> None:
+    """This tests if Searing light works correctly.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 544, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [SearingLight, WaitAbility(30.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Summoner)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [SearingLightbuff in Dummy.buffList]
+
+def smnTest6ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+smntest6 = test("Searing Light test 2", smnTest6TestFunction, smnTest6ValidationFunction)
+smnTestSuite.addTest(smntest6)
+
+# Testing summoning Garuda
+
+def smnTest7TestFunction() -> None:
+    """Testing Garuda
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 544, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Summon, WaitAbility(15), Garuda, Emerald, Swiftcast, Emerald, Slipstream]
+    player = Player(actionSet, [], Stat, JobEnum.Summoner)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.GarudaStack, player.GarudaSpecial, player.CastingSpell.CastTime]
+
+def smnTest7ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [2, False, 0]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+smntest7 = test("Primal test 1 - Garuda", smnTest7TestFunction, smnTest7ValidationFunction)
+smnTestSuite.addTest(smntest7)
+
+# Testing summoning Garuda interupted by ifrit
+
+def smnTest8TestFunction() -> None:
+    """Testing Garuda interupted by ifrit
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 544, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Summon, WaitAbility(15), Garuda, Emerald, Swiftcast, Emerald, Ifrit, Ruby, Cyclone]
+    player = Player(actionSet, [], Stat, JobEnum.Summoner)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.GarudaStack, player.GarudaSpecial, player.IfritStack, player.IfritSpecial, player.IfritSpecialCombo]
+
+def smnTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, False, 1, False, True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+smntest8 = test("Primal test 2 - Garuda/Ifrit", smnTest8TestFunction, smnTest8ValidationFunction)
+smnTestSuite.addTest(smntest8)
+
+# Testing summoning Garuda interupted by ifrit
+
+def smnTest9TestFunction() -> None:
+    """Testing Ifrit interupted by Titan
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 544, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Summon, WaitAbility(15), Ifrit, Cyclone, Ruby, Ruby, Titan, Topaz, Mountain, Topaz]
+    player = Player(actionSet, [], Stat, JobEnum.Summoner)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.IfritStack, player.IfritSpecial, player.IfritSpecialCombo, player.IfritGem, player.TitanGem, player.TitanStack, player.TitanSpecial ]
+
+def smnTest9ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0,False, False, False, False, 2, True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+smntest9 = test("Primal test 3 - Ifrit/Titan", smnTest9TestFunction, smnTest9ValidationFunction)
+smnTestSuite.addTest(smntest9)
+
+# RuinIV test
+
+def smnTest10TestFunction() -> None:
+    """Making sure RuinIV is used up
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 544, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [EnergyDrainSMN]
+    player = Player(actionSet, [], Stat, JobEnum.Summoner)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.FurtherRuin]
+
+def smnTest10ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+smntest10 = test("FurtherRuin test 1", smnTest10TestFunction, smnTest10ValidationFunction)
+smnTestSuite.addTest(smntest10)
+
+# RuinIV test 2
+
+def smnTest11TestFunction() -> None:
+    """Making sure RuinIV is used up
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 544, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [EnergyDrainSMN, Ruin4]
+    player = Player(actionSet, [], Stat, JobEnum.Summoner)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.FurtherRuin]
+
+def smnTest11ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+smntest11 = test("FurtherRuin test 2", smnTest11TestFunction, smnTest11ValidationFunction)
+smnTestSuite.addTest(smntest11)
+
+######################################
+#          Scholar testSuite         #
+######################################
+
+schTestSuite = testSuite("Scholar test suite")
+
+# Opener requirement, end time and potency test 1
+
+def schTest1TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Broil, Biolysis, Aetherflow, Broil, Swiftcast, Broil, ChainStratagem, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Dissipation, Broil, EnergyDrain, 
+                 Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Broil, Broil, Broil, Broil]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    failedReq = 0
+    for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+        if event.fatal : failedReq += 1
+
+    return [failedReq, Event.TimeStamp, player.TotalPotency]
+
+def schTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 36.95, 6020]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+schtest1 = test("Opener requirement, end time and potency 1", schTest1TestFunction, schTest1ValidationFunction)
+schTestSuite.addTest(schtest1)
+
+# AetherStack test 1
+
+def schTest2TestFunction() -> None:
+    """Testing Aetherstack
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Aetherflow, EnergyDrain, EnergyDrain]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.AetherFlowStack]
+
+def schTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+schtest2 = test("Aetherstack test 1", schTest2TestFunction, schTest2ValidationFunction)
+schTestSuite.addTest(schtest2)
+
+# AetherStack test 2
+
+def schTest3TestFunction() -> None:
+    """Testing Aetherstack 2
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Aetherflow, EnergyDrain, EnergyDrain, Dissipation]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.AetherFlowStack]
+
+def schTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [3]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+schtest3 = test("Aetherstack test 2", schTest3TestFunction, schTest3ValidationFunction)
+schTestSuite.addTest(schtest3)
+
+# AetherStack test 3
+
+def schTest4TestFunction() -> None:
+    """Testing Aetherstack 3
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Aetherflow, EnergyDrain, EnergyDrain, Dissipation, EnergyDrain, EnergyDrain, EnergyDrain]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.AetherFlowStack]
+
+def schTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+schtest4 = test("Aetherstack test 3", schTest4TestFunction, schTest4ValidationFunction)
+schTestSuite.addTest(schtest4)
+
+# AetherStack test 4
+
+def schTest5TestFunction() -> None:
+    """Testing Aetherstack 4
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Aetherflow, EnergyDrain, EnergyDrain, Dissipation, EnergyDrain, EnergyDrain, EnergyDrain]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.AetherFlowStack]
+
+def schTest5ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+schtest5 = test("Aetherstack test 4", schTest5TestFunction, schTest5ValidationFunction)
+schTestSuite.addTest(schtest5)
+
+# AetherStack test 5
+
+def schTest6TestFunction() -> None:
+    """Testing Aetherstack 5
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Dissipation, EnergyDrain, EnergyDrain]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.AetherFlowStack]
+
+def schTest6ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+schtest6 = test("Aetherstack test 6", schTest6TestFunction, schTest6ValidationFunction)
+schTestSuite.addTest(schtest6)
+
+# Chain Stratagem test
+def schTest7TestFunction() -> None:
+    """Testing Chain Stratagem
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [ChainStratagem, WaitAbility(5)]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [Dummy.ChainStratagem]
+
+def schTest7ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+schtest7 = test("Chain Stratagem test 1", schTest7TestFunction, schTest7ValidationFunction)
+schTestSuite.addTest(schtest7)
+
+# Chain Stratagem test
+def schTest8TestFunction() -> None:
+    """Testing Chain Stratagem
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [ChainStratagem, WaitAbility(15.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [Dummy.ChainStratagem]
+
+def schTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+schtest8 = test("Chain Stratagem test 2", schTest8TestFunction, schTest8ValidationFunction)
+schTestSuite.addTest(schtest8)
+
+######################################
+#          Whitemage testSuite       #
+######################################
+
+whmTestSuite = testSuite("Whitemage test suite")
+
+# Opener requirement, end time and potency test 1
+
+def whmTest1TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Glare, Dia, Glare, Glare, PresenceOfMind, Glare, Assize, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare
+                 , Glare, Glare, Glare, Glare, Glare ]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    failedReq = 0
+    for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+        if event.fatal : failedReq += 1
+
+    return [failedReq, Event.TimeStamp, player.TotalPotency]
+
+def whmTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 37.15, 6330]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest1 = test("Opener requirement, end time and potency 1", whmTest1TestFunction, whmTest1ValidationFunction)
+whmTestSuite.addTest(whmtest1)
+
+# Thin air test
+
+def whmTest2TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [ThinAir,Glare]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.ManaCost]
+
+def whmTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest2 = test("Thin air test 1", whmTest2TestFunction, whmTest2ValidationFunction)
+whmTestSuite.addTest(whmtest2)
+
+# Thin air test 2
+
+def whmTest3TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [ThinAir,Glare, Glare]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.ManaCost]
+
+def whmTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [400]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest3 = test("Thin air test 2", whmTest3TestFunction, whmTest3ValidationFunction)
+whmTestSuite.addTest(whmtest3)
+
+# Thin air test 3
+
+def whmTest4TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [ThinAir,Assize, Glare]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.ManaCost]
+
+def whmTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest4 = test("Thin air test 3", whmTest4TestFunction, whmTest4ValidationFunction)
+whmTestSuite.addTest(whmtest4)
+
+# PoM test
+
+def whmTest5TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [PresenceOfMind, Glare]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Haste, PresenceOfMindEffect in player.EffectList ]
+
+def whmTest5ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [20, True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest5 = test("Presence of Mind test 1", whmTest5TestFunction, whmTest5ValidationFunction)
+whmTestSuite.addTest(whmtest5)\
+
+# PoM test 2
+
+def whmTest6TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [PresenceOfMind, WaitAbility(15.02)]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Haste, PresenceOfMindEffect in player.EffectList ]
+
+def whmTest6ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest6 = test("Presence of Mind test 2", whmTest6TestFunction, whmTest6ValidationFunction)
+whmTestSuite.addTest(whmtest6)
+
+# Lily Test
+
+def whmTest7TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Glare,WaitAbility(40)]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.LilyStack, player.UsedLily, player.BloomLily]
+
+def whmTest7ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [2, 0, False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest7 = test("Lily generation/usage test 1", whmTest7TestFunction, whmTest7ValidationFunction)
+whmTestSuite.addTest(whmtest7)
+
+# Lily Test
+
+def whmTest8TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Glare,WaitAbility(60)]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.LilyStack, player.UsedLily, player.BloomLily]
+
+def whmTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [3, 0, False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest8 = test("Lily generation/usage test 2", whmTest8TestFunction, whmTest8ValidationFunction)
+whmTestSuite.addTest(whmtest8)
+
+# Lily Test 3
+
+def whmTest9TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Glare,WaitAbility(60), AfflatusRapture, AfflatusSolace, WaitAbility(20)]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.LilyStack, player.UsedLily, player.BloomLily]
+
+def whmTest9ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [2, 2, False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest9 = test("Lily generation/usage test 3", whmTest9TestFunction, whmTest9ValidationFunction)
+whmTestSuite.addTest(whmtest9)
+
+# Lily Test 4
+
+def whmTest10TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Glare,WaitAbility(60), AfflatusRapture, AfflatusSolace, WaitAbility(20), AfflatusRapture]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.LilyStack, player.UsedLily, player.BloomLily]
+
+def whmTest10ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1, 3, True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest10 = test("Lily generation/usage test 4", whmTest10TestFunction, whmTest10ValidationFunction)
+whmTestSuite.addTest(whmtest10)
+
+# Lily Test 5
+
+def whmTest11TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    actionSet = [Glare,WaitAbility(60), AfflatusRapture, AfflatusSolace, WaitAbility(20), AfflatusRapture, AfflatusMisery, AfflatusSolace]
+    player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.LilyStack, player.UsedLily, player.BloomLily]
+
+def whmTest11ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 1, False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+whmtest11 = test("Lily generation/usage test 5", whmTest11TestFunction, whmTest11ValidationFunction)
+whmTestSuite.addTest(whmtest11)
+
+######################################
+#          Astrologian testSuite     #
+######################################
+
+astTestSuite = testSuite("Astrologian test suite")
+
+# Opener requirement, end time and potency test 1
+
+def astTest1TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Draw, WaitAbility(30),Malefic, Lightspeed, Combust, Arcanum(NINPlayer, "Lunar", True), Draw, Malefic,Arcanum(NINPlayer, "Solar", True), Draw, Malefic,Arcanum(NINPlayer, "Celestial", True), 
+			    Divination, Malefic, MinorArcana, Astrodyne, Malefic, LordOfCrown, Malefic, Malefic, Malefic, Malefic, 
+                Malefic, Malefic,Combust, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, 
+			    Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    failedReq = 0
+    for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+        if event.fatal : failedReq += 1
+
+    return [failedReq, Event.TimeStamp, player.TotalPotency]
+
+def astTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 66.92, 7800]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest1 = test("Opener requirement, end time and potency 1", astTest1TestFunction, astTest1ValidationFunction)
+astTestSuite.addTest(asttest1)
+
+# Arcana test
+
+def astTest2TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Draw,Arcanum(NINPlayer, "Solar", True), Arcanum(NINPlayer, "Lunar", True),Draw]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Solar, player.Lunar, player.Celestial, len(NINPlayer.buffList), player.HasCard]
+
+def astTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, True, False, 1, True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest2 = test("Arcana test 1", astTest2TestFunction, astTest2ValidationFunction)
+astTestSuite.addTest(asttest2)
+
+# Arcana test 2
+
+def astTest3TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Arcanum(NINPlayer, "Solar", True), Arcanum(NINPlayer, "Lunar", True), Arcanum(NINPlayer, "Lunar", True)]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Solar, player.Lunar, player.Celestial, len(NINPlayer.buffList), ]
+
+def astTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, True, False,1]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest3 = test("Arcana test 2", astTest3TestFunction, astTest3ValidationFunction)
+astTestSuite.addTest(asttest3)
+
+# Arcana test 3
+
+def astTest4TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Arcanum(NINPlayer, "Solar", True), Arcanum(NINPlayer, "Lunar", True), Arcanum(NINPlayer, "Celestial", True), WaitAbility(15.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Solar, player.Lunar, player.Celestial, len(NINPlayer.buffList)]
+
+def astTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, True, True,0]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest4 = test("Arcana test 3", astTest4TestFunction, astTest4ValidationFunction)
+astTestSuite.addTest(asttest4)
+
+# Arcana test 4
+
+def astTest5TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Astrodyne]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Solar, player.Lunar, player.Celestial, BodyEffect in player.EffectList]
+
+def astTest5ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False, False, False, False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest5 = test("Arcana test 4 - Astrodyne", astTest5TestFunction, astTest5ValidationFunction)
+astTestSuite.addTest(asttest5)
+
+# Arcana test 5
+
+def astTest6TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Arcanum(NINPlayer, "Solar", True),Arcanum(NINPlayer, "Solar", True),Astrodyne]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Solar, player.Lunar, player.Celestial, BodyEffect in player.EffectList, len(NINPlayer.buffList)]
+
+def astTest6ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False, False, False, False,1]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest6 = test("Arcana test 5 - Astrodyne", astTest6TestFunction, astTest6ValidationFunction)
+astTestSuite.addTest(asttest6)
+
+# Arcana test 6
+
+def astTest7TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Arcanum(NINPlayer, "Solar", True),Arcanum(NINPlayer, "Lunar", True),Astrodyne]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Solar, player.Lunar, player.Celestial, BodyEffect in player.EffectList]
+
+def astTest7ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False, False, False, True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest7 = test("Arcana test 6 - Astrodyne", astTest7TestFunction, astTest7ValidationFunction)
+astTestSuite.addTest(asttest7)
+
+# Arcana test 7
+
+def astTest8TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Arcanum(NINPlayer, "Solar", True),Arcanum(NINPlayer, "Lunar", True),Arcanum(NINPlayer, "Celestial", True),Astrodyne]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Solar, player.Lunar, player.Celestial, BodyEffect in player.EffectList,AstrodyneBuff in player.buffList]
+
+def astTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False, False, False, True, True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest8 = test("Arcana test 7 - Astrodyne", astTest8TestFunction, astTest8ValidationFunction)
+astTestSuite.addTest(asttest8)
+
+# Arcana test 8
+
+def astTest9TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Arcanum(NINPlayer, "Solar", True),Arcanum(NINPlayer, "Lunar", True),Arcanum(NINPlayer, "Celestial", True),Astrodyne,
+                 Arcanum(NINPlayer, "Solar", True), WaitAbility(15.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Solar, player.Lunar, player.Celestial, BodyEffect in player.EffectList,AstrodyneBuff in player.buffList]
+
+def astTest9ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, False, False, False, False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest9 = test("Arcana test 8 - Astrodyne", astTest9TestFunction, astTest9ValidationFunction)
+astTestSuite.addTest(asttest9)
+
+# Lightspeed
+
+def astTest10TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1473, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Lightspeed, Malefic, Malefic]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.CastTime]
+
+def astTest10ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest10 = test("Lightspeed test 1", astTest10TestFunction, astTest10ValidationFunction)
+astTestSuite.addTest(asttest10)
+
+# Lightspeed 2
+
+def astTest11TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Lightspeed, Malefic, Malefic, WaitAbility(12.52), Malefic]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.CastTime]
+
+def astTest11ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1.5]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest11 = test("Lightspeed test 2", astTest11TestFunction, astTest11ValidationFunction)
+astTestSuite.addTest(asttest11)
+
+# Draw/Redrawtest
+
+def astTest12TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Draw]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.HasCard, player.Redraw, player.DrawStack]
+
+def astTest12ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, True, 1]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest12 = test("Draw/Redraw test 1", astTest12TestFunction, astTest12ValidationFunction)
+astTestSuite.addTest(asttest12)
+
+# Draw/Redrawtest 2
+
+def astTest13TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Draw, Redraw]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.HasCard, player.Redraw, player.DrawStack]
+
+def astTest13ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, False, 1]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest13 = test("Draw/Redraw test 2", astTest13TestFunction, astTest13ValidationFunction)
+astTestSuite.addTest(asttest13)
+
+# Draw/Redrawtest 3
+
+def astTest14TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Draw, Redraw, Arcanum(NINPlayer, "Solar", True)]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.HasCard, player.Redraw, player.DrawStack]
+
+def astTest14ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False, False, 1]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest14 = test("Draw/Redraw test 3", astTest14TestFunction, astTest14ValidationFunction)
+astTestSuite.addTest(asttest14)
+
+# Draw/Redrawtest 4
+
+def astTest15TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Draw, Redraw, Arcanum( NINPlayer,"Solar", True), Draw]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.HasCard, player.Redraw, player.DrawStack]
+
+def astTest15ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, True, 0]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest15 = test("Draw/Redraw test 4", astTest15TestFunction, astTest15ValidationFunction)
+astTestSuite.addTest(asttest15)
+
+# Draw/Redrawtest 5
+
+def astTest16TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Draw, Redraw, Arcanum( NINPlayer,"Solar", True), Draw, Arcanum( NINPlayer,"Lunar", True), WaitAbility(30)]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.HasCard, player.Redraw, player.DrawStack]
+
+def astTest16ValidationFunction(testResults) -> (bool, list):
+    passed = True
+                             # Note that Redraw is still true. However this won't affect anything
+                             # since Redraw does not do anything since the solver does not check
+                             # if a specific card was drawn. It simply checks if a card was drawn
+                             # for arcanum requirement. So redraw effectively does nothing here.
+    expected = [False, True, 1]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest16 = test("Draw/Redraw test 5", astTest16TestFunction, astTest16ValidationFunction)
+astTestSuite.addTest(asttest16)
+
+# Divination test 1
+
+def astTest17TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Divination, Malefic]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [DivinationBuff in Dummy.buffList]
+
+def astTest17ValidationFunction(testResults) -> (bool, list):
+    passed = True
+                             # Note that Redraw is still true. However this won't affect anything
+                             # since Redraw does not do anything since the solver does not check
+                             # if a specific card was drawn. It simply checks if a card was drawn
+                             # for arcanum requirement. So redraw effectively does nothing here.
+    expected = [True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest17 = test("Divination test 1", astTest17TestFunction, astTest17ValidationFunction)
+astTestSuite.addTest(asttest17)
+
+# Divination test 1
+
+def astTest17TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Divination, Malefic]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [DivinationBuff in Dummy.buffList]
+
+def astTest17ValidationFunction(testResults) -> (bool, list):
+    passed = True
+                             # Note that Redraw is still true. However this won't affect anything
+                             # since Redraw does not do anything since the solver does not check
+                             # if a specific card was drawn. It simply checks if a card was drawn
+                             # for arcanum requirement. So redraw effectively does nothing here.
+    expected = [True]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest17 = test("Divination test 1", astTest17TestFunction, astTest17ValidationFunction)
+astTestSuite.addTest(asttest17)
+
+# Divination test 2
+
+def astTest18TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([WaitAbility(1)], [], Stat, JobEnum.Ninja)
+
+    actionSet = [Divination, Malefic, WaitAbility(15)]
+    player = Player(actionSet, [], Stat, JobEnum.Astrologian)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [DivinationBuff in Dummy.buffList]
+
+def astTest18ValidationFunction(testResults) -> (bool, list):
+    passed = True
+                             # Note that Redraw is still true. However this won't affect anything
+                             # since Redraw does not do anything since the solver does not check
+                             # if a specific card was drawn. It simply checks if a card was drawn
+                             # for arcanum requirement. So redraw effectively does nothing here.
+    expected = [False]    
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+asttest18 = test("Divination test 2", astTest18TestFunction, astTest18ValidationFunction)
+astTestSuite.addTest(asttest18)
+
+blmTestSuite.executeTestSuite()
+rdmTestSuite.executeTestSuite()
 smnTestSuite.executeTestSuite()
+whmTestSuite.executeTestSuite()
+astTestSuite.executeTestSuite()
 
 

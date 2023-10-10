@@ -4,7 +4,7 @@ import copy
 
 from ffxivcalc.Jobs.Player import Pet
 
-Lock = 0.75
+Lock = 0
 
 #Requirement
 
@@ -71,15 +71,18 @@ def ApplyRuin4(Player, Enemy):
     Player.FurtherRuin = False
 
 def ApplyTitan(Player, Enemy):
+    Player.resetPrimalEffect()
     Player.TitanGem = False
     Player.TitanStack = 4
 
 def ApplyIfrit(Player, Enemy):
+    Player.resetPrimalEffect()
     Player.IfritGem = False
     Player.IfritStack = 2
     Player.IfritSpecial = True
 
 def ApplyGaruda(Player, Enemy):
+    Player.resetPrimalEffect()
     Player.GarudaGem = False
     Player.GarudaStack = 4
     Player.GarudaSpecial = True

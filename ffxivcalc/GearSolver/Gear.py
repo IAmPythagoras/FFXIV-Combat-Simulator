@@ -353,13 +353,13 @@ class Gear:
         """
         return GearType.name_for_id(self.GearType)
     
-    def getMateriaTypeList(self, IgnoreSpeedMateria : bool = True) -> list[StatType]:
+    def getMateriaTypeList(self, IgnoreSpeedMateria : bool = True,IgnorePietyMateria : bool = True) -> list[StatType]:
         """
         This function returns a list of all present materia's stattype on the gear.
         """
         statTypeList = []
         for mat in self.Materias:
-            if not (mat.StatType in statTypeList) and not ((mat.StatType == StatType.SS or mat.StatType == StatType.SkS) and IgnoreSpeedMateria): 
+            if not (mat.StatType in statTypeList) and not ((mat.StatType == StatType.SS or mat.StatType == StatType.SkS) and IgnoreSpeedMateria) and not ((mat.StatType == StatType.Piety) and IgnorePietyMateria): 
                 statTypeList.append(mat.StatType)
         return statTypeList
     
@@ -552,15 +552,16 @@ class GearSet:
             valid = valid and gear.hasValidMelding()
         return valid
     
-    def getMateriaTypeList(self, IgnoreSpeedMateria : bool = True, ignoreValidMeld : bool = False) -> list[StatType]:
+    def getMateriaTypeList(self, IgnoreSpeedMateria : bool = True,IgnorePietyMateria : bool = True, ignoreValidMeld : bool = False) -> list[StatType]:
         """
         This function returns a list of type of the materias present in the gear set
-        IgnoreSpeedMateria : bool -> If true the function will only return non Speed related stattype.
-        ignoreValidMeld : bool -> If true, function only returns materias type that are on at least one gear with invalidMelding.
+        IgnoreSpeedMateria : bool -> If true the function will only return non Speed related stattype. Default True
+        IgnorePietyMateria : bool -> If true this function ignores Piety Materia. Default True
+        ignoreValidMeld : bool -> If true, function only returns materias type that are on at least one gear with invalidMelding. Default False.
         """
         statTypeList = []
         for gear in self:
-            if not (gear.hasValidMelding() and ignoreValidMeld) : statTypeList += [type for type in gear.getMateriaTypeList(IgnoreSpeedMateria=IgnoreSpeedMateria) if not (type in statTypeList)]
+            if not (gear.hasValidMelding() and ignoreValidMeld) : statTypeList += [type for type in gear.getMateriaTypeList(IgnoreSpeedMateria=IgnoreSpeedMateria,IgnorePietyMateria=IgnorePietyMateria) if not (type in statTypeList)]
         return statTypeList    
 
 def ImportGear(fileName : str) -> dict:
