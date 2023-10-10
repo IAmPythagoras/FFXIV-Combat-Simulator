@@ -250,7 +250,7 @@ def RestoreFightObject(data : dict, name : str = ""):
         elif job_name == "Paladin" : job_object = Player([], [], {}, JobEnum.Paladin)
         elif job_name == "Gunbreaker" : job_object = Player([], [],  {}, JobEnum.Gunbreaker)
         #Caster
-        elif job_name == "BlackMage" : job_object = Player([], [EnochianEffect, ElementalEffect],  {}, JobEnum.BlackMage)
+        elif job_name == "BlackMage" : job_object = Player([], [ElementalEffect],  {}, JobEnum.BlackMage)
         elif job_name == "RedMage" : job_object = Player([], [DualCastEffect],  {}, JobEnum.RedMage)
         elif job_name == "Summoner" : job_object = Player([], [],  {}, JobEnum.Summoner)
         #Ranged
