@@ -783,6 +783,7 @@ class Player:
 
         #buff
         self.Thunder3Proc = False
+        self.Fire3Proc = False
         self.TripleCastStack = 0
         self.SharpCast = False
 

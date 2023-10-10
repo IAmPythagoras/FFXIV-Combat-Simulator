@@ -323,6 +323,11 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
 
                                                     GearStat = trialSet.GetGearSetStat(IsTank=IsTank)
 
+                                                                    # This is a lazy attempt at fixing the issue, but it might work
+                                                                    # Note that is issue only really comes when minPiety and
+                                                                    # minSPDValue are both high.
+                                                    if minPiety > 390 and GearStat["Piety"] < minPiety : continue
+
                                                     if not ((mendSpellSpeed and GearStat["SS"] > maxSPDValue) or (not mendSpellSpeed and GearStat["SkS"] > maxSPDValue)):
 
                                                         JobMod = Fight.PlayerList[PlayerIndex].JobMod # Level 90 jobmod value, specific to each job
@@ -1066,7 +1071,7 @@ def pietySolver(minPiety : int, curMaxDPS : float, Set : GearSet, matGen : Mater
     while GearStat["Piety"] < minPiety:
 
         trialBestDPS = 0
-        curTypeToReplace = None
+        curTypeToReplacez = None
         curGearPieceToReplace = None
 
         for type in optimalSet.getMateriaTypeList():
@@ -1093,14 +1098,18 @@ def pietySolver(minPiety : int, curMaxDPS : float, Set : GearSet, matGen : Mater
                         curTypeToReplace = type
                         curGearPieceToReplace = gear.getGearTypeName()
 
-        if curTypeToReplace == None :
+        if curTypeToReplace == None or curGearPieceToReplace == None:
             solver_logging.warning("Could not find another materia to replace with Piety")
             return optimalSet
 
                             # Replacing found materia to replace with Piety
-        optimalSet.removeMateriaSpecGear(curGearPieceToReplace, curTypeToReplace)
-        optimalSet.GearSet[curGearPieceToReplace].AddMateria(mat)
-        GearStat = optimalSet.GetGearSetStat(IsTank=IsTank)
+        try:
+            optimalSet.removeMateriaSpecGear(curGearPieceToReplace, curTypeToReplace)
+            optimalSet.GearSet[curGearPieceToReplace].AddMateria(mat)
+            GearStat = optimalSet.GetGearSetStat(IsTank=IsTank)
+        except:
+            input(str(curTypeToReplace))
+            print(curGearPieceToReplace)
 
     
     return optimalSet
