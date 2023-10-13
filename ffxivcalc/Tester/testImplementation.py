@@ -3714,6 +3714,346 @@ def mchTest4ValidationFunction(testResults) -> (bool, list):
 mchtest4 = test("Hypercharge test 3 - Heat blast", mchTest4TestFunction, mchTest4ValidationFunction)
 mchTestSuite.addTest(mchtest4)
 
+# Heat blast test
+
+def mchTest5TestFunction() -> None:
+    """Heat blast test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Ricochet, Ricochet, Hypercharge, HeatBlast, Ricochet, HeatBlast, Ricochet, HeatBlast, GaussRound, HeatBlast, WaitAbility(0.01)]
+    player = Player(actionSet, [], Stat, JobEnum.Machinist)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.RicochetStack, round(player.RicochetCD,2), player.GaussRoundStack, round(player.GaussRoundCD,2)]
+
+def mchTest5ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1, 25.49, 2, 13.51]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+mchtest5 = test("Hypercharge test 4 - Heat blast", mchTest5TestFunction, mchTest5ValidationFunction)
+mchTestSuite.addTest(mchtest5)
+
+# Wildfire test
+
+def mchTest6TestFunction() -> None:
+    """Wildfire test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Wildfire, HeatBlast, HeatBlast, HeatBlast, HeatBlast, HeatBlast, HeatBlast]
+    player = Player(actionSet, [], Stat, JobEnum.Machinist)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.WildFireStack]
+
+def mchTest6ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [6]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+mchtest6 = test("Wildfire test 1", mchTest6TestFunction, mchTest6ValidationFunction)
+mchTestSuite.addTest(mchtest6)
+
+# Wildfire test
+
+def mchTest7TestFunction() -> None:
+    """Wildfire test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Wildfire, HeatBlast, HeatBlast, HeatBlast, HeatBlast, HeatBlast, HeatBlast, HeatBlast, HeatBlast]
+    player = Player(actionSet, [], Stat, JobEnum.Machinist)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.WildFireStack]
+
+def mchTest7ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+mchtest7 = test("Wildfire test 2", mchTest7TestFunction, mchTest7ValidationFunction)
+mchTestSuite.addTest(mchtest7)
+
+# Wildfire test
+
+def mchTest8TestFunction() -> None:
+    """Wildfire test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Wildfire]
+    player = Player(actionSet, [], Stat, JobEnum.Machinist)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.WildFireStack]
+
+def mchTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+mchtest8 = test("Wildfire test 3", mchTest8TestFunction, mchTest8ValidationFunction)
+mchTestSuite.addTest(mchtest8)
+
+# Wildfire test
+
+def mchTest9TestFunction() -> None:
+    """Wildfire test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Wildfire, GaussRound, GaussRound, GaussRound, GaussRound, GaussRound, GaussRound, GaussRound, GaussRound, GaussRound, SplitShot]
+    player = Player(actionSet, [], Stat, JobEnum.Machinist)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.WildFireStack]
+
+def mchTest9ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+mchtest9 = test("Wildfire test 4", mchTest9TestFunction, mchTest9ValidationFunction)
+mchTestSuite.addTest(mchtest9)
+
+# Combo test
+
+def mchTest10TestFunction() -> None:
+    """Combo test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [SplitShot, SplitShot]
+    player = Player(actionSet, [], Stat, JobEnum.Machinist)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def mchTest10ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [200]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+mchtest10 = test("Combo action potency test 1", mchTest10TestFunction, mchTest10ValidationFunction)
+mchTestSuite.addTest(mchtest10)
+
+# Combo test
+
+def mchTest11TestFunction() -> None:
+    """Combo test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [CleanShot, SlugShot]
+    player = Player(actionSet, [], Stat, JobEnum.Machinist)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def mchTest11ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [120]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+mchtest11 = test("Combo action potency test 2", mchTest11TestFunction, mchTest11ValidationFunction)
+mchTestSuite.addTest(mchtest11)
+
+# Combo test
+
+def mchTest12TestFunction() -> None:
+    """Combo test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [SplitShot, CleanShot]
+    player = Player(actionSet, [], Stat, JobEnum.Machinist)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def mchTest12ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [120]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+mchtest12 = test("Combo action potency test 3", mchTest12TestFunction, mchTest12ValidationFunction)
+mchTestSuite.addTest(mchtest12)
+
+# Combo test
+
+def mchTest13TestFunction() -> None:
+    """Combo test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [SplitShot, SlugShot]
+    player = Player(actionSet, [], Stat, JobEnum.Machinist)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def mchTest13ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [300]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+mchtest13 = test("Combo action potency test 4", mchTest13TestFunction, mchTest13ValidationFunction)
+mchTestSuite.addTest(mchtest13)
+
+# Combo test
+
+def mchTest14TestFunction() -> None:
+    """Combo test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [SplitShot, SlugShot, SplitShot, CleanShot]
+    player = Player(actionSet, [], Stat, JobEnum.Machinist)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def mchTest14ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [120]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+mchtest14 = test("Combo action potency test 5", mchTest14TestFunction, mchTest14ValidationFunction)
+mchTestSuite.addTest(mchtest14)
+
 #blmTestSuite.executeTestSuite()
 #rdmTestSuite.executeTestSuite()
 #smnTestSuite.executeTestSuite()
