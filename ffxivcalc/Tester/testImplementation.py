@@ -56,7 +56,7 @@ test_logging = main_logging.getChild("Testing")
 
 level = logging.DEBUG 
 logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
-#main_logging.setLevel(level=logging.ERROR) 
+main_logging.setLevel(level=logging.ERROR) 
 test_logging.setLevel(level=logging.DEBUG)
 base_stat = {
         "MainStat" : 450,
@@ -3611,6 +3611,108 @@ def mchTest1ValidationFunction(testResults) -> (bool, list):
 
 mchtest1 = test("Opener requirement, end time and potency 1", mchTest1TestFunction, mchTest1ValidationFunction)
 mchTestSuite.addTest(mchtest1)
+
+# Heat blast test
+
+def mchTest2TestFunction() -> None:
+    """Heat blast test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Ricochet, Ricochet, Hypercharge, HeatBlast]
+    player = Player(actionSet, [], Stat, JobEnum.Machinist)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.RicochetStack, round(player.RicochetCD,2)]
+
+def mchTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1, 14.97]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+mchtest2 = test("Hypercharge test 1 - Heat blast", mchTest2TestFunction, mchTest2ValidationFunction)
+mchTestSuite.addTest(mchtest2)
+
+# Heat blast test
+
+def mchTest3TestFunction() -> None:
+    """Heat blast test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Ricochet, Ricochet, Hypercharge, HeatBlast, HeatBlast, WaitAbility(0.01)]
+    player = Player(actionSet, [], Stat, JobEnum.Machinist)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.RicochetStack, round(player.RicochetCD,2)]
+
+def mchTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [2, 29.99]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+mchtest3 = test("Hypercharge test 2 - Heat blast", mchTest3TestFunction, mchTest3ValidationFunction)
+mchTestSuite.addTest(mchtest3)
+
+# Heat blast test
+
+def mchTest4TestFunction() -> None:
+    """Heat blast test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Ricochet, Ricochet, Hypercharge, HeatBlast, Ricochet, HeatBlast, Ricochet, HeatBlast]
+    player = Player(actionSet, [], Stat, JobEnum.Machinist)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.RicochetStack, round(player.RicochetCD,2)]
+
+def mchTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 13.51]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+mchtest4 = test("Hypercharge test 3 - Heat blast", mchTest4TestFunction, mchTest4ValidationFunction)
+mchTestSuite.addTest(mchtest4)
 
 #blmTestSuite.executeTestSuite()
 #rdmTestSuite.executeTestSuite()

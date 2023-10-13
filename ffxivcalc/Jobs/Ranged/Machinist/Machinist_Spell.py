@@ -105,8 +105,8 @@ def ApplyBarrelStabilizer(Player, Enemy):
     Player.BarrelStabilizerCD = 120
 
 def ApplyHeatBlast(Player, Enemy):
-    Player.GaussRoundCD = max(0, Player.GaussRoundCD - 15)
-    Player.RicochetCD = max(0, Player.RicochetCD - 15)
+    Player.GaussRoundCD -= 15
+    Player.RicochetCD -= 15
 
 def ApplyHypercharge(Player, Enemy):
     Player.HyperchargeStack = 5
@@ -261,16 +261,36 @@ def GaussRoundStackCheck(Player, Enemy):
     if Player.GaussRoundCD <= 0:
         if Player.GaussRoundStack == 2:
             Player.EffectToRemove.append(GaussRoundStackCheck)
+            Player.GaussRoundCD = 0
         else:
-            Player.GaussRoundCD = 30
+                             # Since Heatblast removes 15 seconds from the CD, it must be able to carry
+                             # over to the next stack.
+                             # I had a little wiggle game to account for rounding/small errors
+                             # and otherwise I simply add 30 seconds to the reduced CD.
+                             # The reason it can be negative is because heatblast removes a flat
+                             # 15 seconds to the timer.
+            if Player.GaussRoundCD < -0.05 :
+                Player.GaussRoundCD += 30
+            else : 
+                Player.GaussRoundCD = 30
         Player.GaussRoundStack +=1
 
 def RicochetStackCheck(Player, Enemy):
     if Player.RicochetCD <= 0:
         if Player.RicochetStack == 2:
             Player.EffectToRemove.append(RicochetStackCheck)
+            Player.RicochetCD = 0
         else:
-            Player.RicochetCD = 30
+                             # Since Heatblast removes 15 seconds from the CD, it must be able to carry
+                             # over to the next stack.
+                             # I had a little wiggle game to account for rounding/small errors
+                             # and otherwise I simply add 30 seconds to the reduced CD.
+                             # The reason it can be negative is because heatblast removes a flat
+                             # 15 seconds to the timer.
+            if Player.RicochetCD < -0.05 :
+                Player.RicochetCD += 30
+            else : 
+                Player.RicochetCD = 30
         Player.RicochetStack +=1
 
 def QueenCheck(Player, Enemy): # This will turn the queen off and make her perform the finisher moves
