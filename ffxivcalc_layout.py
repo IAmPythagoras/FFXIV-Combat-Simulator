@@ -229,7 +229,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [WHMPlayer]
+PlayerList = [MCHPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -248,7 +248,7 @@ Event.RequirementOn = RequirementOn
 Event.ShowGraph = ShowGraph
 Event.IgnoreMana = IgnoreMana
 
-findBiS = True # Set to True if want to find BiS instead.
+findBiS = False # Set to True if want to find BiS instead.
 
 __logger__ = logging.getLogger("ffxivcalc") # root logger
 level = logging.DEBUG if not findBiS else logging.WARNING

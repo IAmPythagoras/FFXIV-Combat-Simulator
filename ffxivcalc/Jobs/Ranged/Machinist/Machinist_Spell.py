@@ -47,10 +47,10 @@ def ReassembleRequirement(Player, Spell):
     return Player.ReassembleStack > 0, -1
 
 def GaussRoundRequirement(Player, Spell):
-    return Player.GaussRoundStack > 0, -1
+    return Player.GaussRoundStack > 0, Player.GaussRoundCD
 
 def RicochetRequirement(Player, Spell):
-    return Player.RicochetStack > 0, -1
+    return Player.RicochetStack > 0, Player.RicochetCD
 
 def DrillRequirement(Player, Spell):
     return Player.DrillCD <= 0, Player.DrillCD

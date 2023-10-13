@@ -56,7 +56,7 @@ test_logging = main_logging.getChild("Testing")
 
 level = logging.DEBUG 
 logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
-main_logging.setLevel(level=logging.ERROR) 
+#main_logging.setLevel(level=logging.ERROR) 
 test_logging.setLevel(level=logging.DEBUG)
 base_stat = {
         "MainStat" : 450,
@@ -3563,12 +3563,61 @@ def sgeTest10ValidationFunction(testResults) -> (bool, list):
 sgetest10 = test("Addersting test 4", sgeTest10TestFunction, sgeTest10ValidationFunction)
 sgeTestSuite.addTest(sgetest10)
 
+######################################
+#        Machinist testSuite         #
+######################################
 
-blmTestSuite.executeTestSuite()
-rdmTestSuite.executeTestSuite()
-smnTestSuite.executeTestSuite()
-whmTestSuite.executeTestSuite()
-astTestSuite.executeTestSuite()
-sgeTestSuite.executeTestSuite()
+mchTestSuite = testSuite("Machinist test suite")
+
+# Opener requirement, end time and potency test 1
+
+def mchTest1TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Reassemble, WaitAbility(5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, 
+			     Reassemble, WaitAbility(2.2), Wildfire, ChainSaw, Automaton,Hypercharge, HeatBlast, Ricochet, HeatBlast, GaussRound, HeatBlast, Ricochet, 
+			     HeatBlast, GaussRound, HeatBlast, Ricochet, Drill, GaussRound, Ricochet, SplitShot, Ricochet, SlugShot, CleanShot, SplitShot, SlugShot, 
+			     CleanShot, SplitShot,  AirAnchor, Drill, SlugShot, CleanShot, SplitShot, GaussRound, Ricochet, SlugShot, CleanShot, SplitShot, SlugShot, 
+			     Automaton, CleanShot, SplitShot, SlugShot, CleanShot, Drill, SplitShot, Hypercharge, HeatBlast, GaussRound, HeatBlast, Ricochet, HeatBlast, 
+			     GaussRound, HeatBlast, Ricochet, HeatBlast, Reassemble, ChainSaw, GaussRound, Ricochet, SlugShot, CleanShot, SplitShot, SlugShot, CleanShot]
+    player = Player(actionSet, [], Stat, JobEnum.Machinist)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    failedReq = 0
+    for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+        if event.fatal : failedReq += 1
+
+    return [failedReq, Event.TimeStamp, player.TotalPotency]
+
+def mchTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 99.89, 25410]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+mchtest1 = test("Opener requirement, end time and potency 1", mchTest1TestFunction, mchTest1ValidationFunction)
+mchTestSuite.addTest(mchtest1)
+
+#blmTestSuite.executeTestSuite()
+#rdmTestSuite.executeTestSuite()
+#smnTestSuite.executeTestSuite()
+#whmTestSuite.executeTestSuite()
+#astTestSuite.executeTestSuite()
+#sgeTestSuite.executeTestSuite()
+mchTestSuite.executeTestSuite()
 
 
