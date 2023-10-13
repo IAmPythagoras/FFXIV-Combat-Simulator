@@ -3579,7 +3579,9 @@ def mchTest1TestFunction() -> None:
     Event = Fight(Dummy, False)
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
 
-    actionSet = [SplitShot, SplitShot]
+    actionSet = [Reassemble,WaitAbility(5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, 
+                 SlugShot, GaussRound, Ricochet,CleanShot, Reassemble, WaitAbility(2.2), Wildfire, ChainSaw, Automaton, Hypercharge, HeatBlast, Ricochet, 
+                 HeatBlast, GaussRound, HeatBlast, Ricochet, HeatBlast, GaussRound, HeatBlast, Ricochet, Drill, WaitAbility(60)]
     player = Player(actionSet, [], Stat, JobEnum.Machinist)
 
     Event.AddPlayer([player])
@@ -3598,7 +3600,7 @@ def mchTest1TestFunction() -> None:
 
 def mchTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 99.89, 25410]   
+    expected = [0, 82.51, 11050]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -4246,7 +4248,7 @@ def mchTest20TestFunction() -> None:
 
 def mchTest20ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [True, 2350 + 680 + 780]   
+    expected = [True, 4140]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -4255,12 +4257,12 @@ def mchTest20ValidationFunction(testResults) -> (bool, list):
 mchtest20 = test("Automaton test 2", mchTest20TestFunction, mchTest20ValidationFunction)
 mchTestSuite.addTest(mchtest20)
 
-#blmTestSuite.executeTestSuite()
-#rdmTestSuite.executeTestSuite()
-#smnTestSuite.executeTestSuite()
-#whmTestSuite.executeTestSuite()
-#astTestSuite.executeTestSuite()
-#sgeTestSuite.executeTestSuite()
+blmTestSuite.executeTestSuite()
+rdmTestSuite.executeTestSuite()
+smnTestSuite.executeTestSuite()
+whmTestSuite.executeTestSuite()
+astTestSuite.executeTestSuite()
+sgeTestSuite.executeTestSuite()
 mchTestSuite.executeTestSuite()
 
 
