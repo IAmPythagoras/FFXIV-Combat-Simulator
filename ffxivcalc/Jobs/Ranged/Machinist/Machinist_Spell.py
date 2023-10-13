@@ -139,8 +139,7 @@ def ApplyDrill(Player, Enemy):
 
 def ApplyOverdrive(Player, Enemy):
     Player.Overdrive = False
-    Player.Queen.ActionSet.insert(0,Collider)
-    Player.Queen.ActionSet.insert(0,Bunker)
+    Player.QueenTimer = 0
 
 def ApplyChainSaw(Player, Enemy):
     AddGauge(Player, 20, 0)
@@ -298,7 +297,7 @@ def RicochetStackCheck(Player, Enemy):
         Player.RicochetStack +=1
 
 def QueenCheck(Player, Enemy): # This will turn the queen off and make her perform the finisher moves
-    if Player.QueenTimer <= 0 or not (Player.QueenOnField): 
+    if Player.QueenTimer <= 0: 
         Player.Overdrive = False
         Player.QueenOnField = False
         Player.QueenTimer = 0
