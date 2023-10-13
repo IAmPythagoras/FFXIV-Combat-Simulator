@@ -1267,10 +1267,16 @@ class Player:
             if (self.AddersgallTimer > 0) : self.AddersgallTimer = max(0,self.AddersgallTimer - time)
             if (self.PhlegmaTimer > 0) : self.PhlegmaTimer = max(0,self.PhlegmaTimer - time)
 
+
+        def applyAddersgallCheck(Player, Enemy):
+            if Player.CurrentFight.FightStart:
+                Player.EffectToRemove.append(applyAddersgallCheck)
+                Player.EffectCDList.append(AddersgallCheck)
+
         def AddersgallCheck(Player, Enemy):
             if Player.AddersgallTimer <= 0:
                 Player.AddersgallStack = min(3, Player.AddersgallStack + 1)
-                Player.AddersgallTimer = 0
+                Player.AddersgallTimer = 20
 
         self.EffectCDList.append(AddersgallCheck)
 

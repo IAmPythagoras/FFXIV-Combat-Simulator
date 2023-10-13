@@ -3212,10 +3212,90 @@ def astTest18ValidationFunction(testResults) -> (bool, list):
 asttest18 = test("Divination test 2", astTest18TestFunction, astTest18ValidationFunction)
 astTestSuite.addTest(asttest18)
 
-blmTestSuite.executeTestSuite()
-rdmTestSuite.executeTestSuite()
-smnTestSuite.executeTestSuite()
-whmTestSuite.executeTestSuite()
-astTestSuite.executeTestSuite()
+######################################
+#            Sage testSuite          #
+######################################
+
+sgeTestSuite = testSuite("Sage test suite")
+
+# Opener requirement, end time and potency test 1
+
+def sgeTest1TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 827, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Dosis, Eukrasia, EukrasianDosis, Dosis,Dosis, Phlegma, Phlegma, Dosis, Pneuma, Dosis, Dosis,
+                 Dosis,Dosis,Dosis,Dosis,Dosis,Dosis,Dosis,Dosis,Dosis,Dosis,Dosis,Dosis]
+    player = Player(actionSet, [], Stat, JobEnum.Sage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    failedReq = 0
+    for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+        if event.fatal : failedReq += 1
+
+    return [failedReq, Event.TimeStamp, player.TotalPotency]
+
+def sgeTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 52.37, 8000]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+sgetest1 = test("Opener requirement, end time and potency 1", sgeTest1TestFunction, sgeTest1ValidationFunction)
+sgeTestSuite.addTest(sgetest1)
+
+# Addersting test
+
+def sgeTest2TestFunction() -> None:
+    """Tests Addersting
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 827, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Dosis, WaitAbility(20)]
+    player = Player(actionSet, [], Stat, JobEnum.Sage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.AddersgallStack]
+
+def sgeTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+sgetest1 = test("Opener requirement, end time and potency 1", sgeTest1TestFunction, sgeTest1ValidationFunction)
+sgeTestSuite.addTest(sgetest1)
+
+#blmTestSuite.executeTestSuite()
+#rdmTestSuite.executeTestSuite()
+#smnTestSuite.executeTestSuite()
+#whmTestSuite.executeTestSuite()
+#astTestSuite.executeTestSuite()
+sgeTestSuite.executeTestSuite()
 
 
