@@ -4196,6 +4196,8 @@ mchTestSuite.addTest(mchtest18)
 #whmTestSuite.executeTestSuite()
 #astTestSuite.executeTestSuite()
 #sgeTestSuite.executeTestSuite()
-mchTestSuite.executeTestSuite()
+#mchTestSuite.executeTestSuite()
+
+mchtest18.executeTest()
 
 
