@@ -162,6 +162,7 @@ def SummonQueen(Player, Enemy):
     Player.QueenTimer = QueenTimer - 3 # Setting Queen Timer, gives last 3 seconds to perform finisher moves
     #Will have to depend on battery Gauge
     #Timer is set at 10 so we can have 2 GCD to do finisher move if reaches before
+    Player.Queen.QueenOnField = True
     Player.EffectCDList.append(QueenCheck)
     Player.Queen.ActionSet.append(Queen_AA)
     Player.Queen.ActionSet.append(WaitAbility(QueenTimer - 3)) #Gives 3 last sec to do finishing move
@@ -297,7 +298,7 @@ def RicochetStackCheck(Player, Enemy):
         Player.RicochetStack +=1
 
 def QueenCheck(Player, Enemy): # This will turn the queen off and make her perform the finisher moves
-    if Player.QueenTimer <= 0: 
+    if Player.QueenTimer <= 0 or not (Player.Pet.QueenOnField): 
         Player.Overdrive = False
         Player.Queen.TrueLock = False #Delocking the Queen so she can perform these two abilities
         Player.Queen.ActionSet.insert(Player.NextSpell+1,Bunker)
@@ -365,7 +366,7 @@ def Flamethrower(time):
 Automaton = MachinistSpell(16501, False, 0, Lock, 0, 0, ApplyAutomaton, [], False)
 Overdrive = MachinistSpell(16502, False, 0, Lock, 0, 0, ApplyOverdrive, [], False)
 #These will be casted by the machinist, so they have no damage. Their only effect is to add into Queen's Queue
-Bunker = MachinistSpell(15, True, 0, 2.5, 680, 0, ApplyCollider, [], False)   #Triggered by Overdrive
+Bunker = MachinistSpell(15, True, 0, 2.5, 680, 0, empty, [], False)   #Triggered by Overdrive
 Collider = MachinistSpell(16, True, 0 , 2.5, 780, 0, ApplyCollider, [], False)  #Spell Queen will cast
 
 MachinistAbility = {

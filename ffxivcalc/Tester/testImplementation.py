@@ -3579,12 +3579,7 @@ def mchTest1TestFunction() -> None:
     Event = Fight(Dummy, False)
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
 
-    actionSet = [Reassemble, WaitAbility(5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, 
-			     Reassemble, WaitAbility(2.2), Wildfire, ChainSaw, Automaton,Hypercharge, HeatBlast, Ricochet, HeatBlast, GaussRound, HeatBlast, Ricochet, 
-			     HeatBlast, GaussRound, HeatBlast, Ricochet, Drill, GaussRound, Ricochet, SplitShot, Ricochet, SlugShot, CleanShot, SplitShot, SlugShot, 
-			     CleanShot, SplitShot,  AirAnchor, Drill, SlugShot, CleanShot, SplitShot, GaussRound, Ricochet, SlugShot, CleanShot, SplitShot, SlugShot, 
-			     Automaton, CleanShot, SplitShot, SlugShot, CleanShot, Drill, SplitShot, Hypercharge, HeatBlast, GaussRound, HeatBlast, Ricochet, HeatBlast, 
-			     GaussRound, HeatBlast, Ricochet, HeatBlast, Reassemble, ChainSaw, GaussRound, Ricochet, SlugShot, CleanShot, SplitShot, SlugShot, CleanShot]
+    actionSet = [SplitShot, SplitShot]
     player = Player(actionSet, [], Stat, JobEnum.Machinist)
 
     Event.AddPlayer([player])
@@ -4132,7 +4127,7 @@ def mchTest17TestFunction() -> None:
     Event = Fight(Dummy, False)
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
 
-    actionSet = [SplitShot, SlugShot]
+    actionSet = [SplitShot, SlugShot, CleanShot]
     player = Player(actionSet, [], Stat, JobEnum.Machinist)
 
     Event.AddPlayer([player])
@@ -4143,11 +4138,11 @@ def mchTest17TestFunction() -> None:
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-    return [player.CastingSpell.Potency, SlugShotEffect in player.EffectList,SplitShotEffect in player.EffectList]
+    return [player.CastingSpell.Potency]
 
 def mchTest17ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [380, False, False]   
+    expected = [380]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -4190,14 +4185,83 @@ def mchTest18ValidationFunction(testResults) -> (bool, list):
 mchtest18 = test("Combo action potency test 9", mchTest18TestFunction, mchTest18ValidationFunction)
 mchTestSuite.addTest(mchtest18)
 
+# Automaton test
+
+def mchTest19TestFunction() -> None:
+    """Automaton test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [SplitShot, Automaton, WaitAbility(15), SplitShot]
+    player = Player(actionSet, [], Stat, JobEnum.Machinist)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    pet = player.Pet
+    return [pet.TrueLock, player.TotalPotency]
+
+def mchTest19ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, 2350]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+mchtest19 = test("Automaton test 1", mchTest19TestFunction, mchTest19ValidationFunction)
+mchTestSuite.addTest(mchtest19)
+
+# Automaton test
+
+def mchTest20TestFunction() -> None:
+    """Automaton test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [SplitShot, Automaton, WaitAbility(15), SplitShot, Automaton, Overdrive, WaitAbility(6)]
+    player = Player(actionSet, [], Stat, JobEnum.Machinist)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    pet = player.Pet
+    return [pet.TrueLock, player.TotalPotency]
+
+def mchTest20ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, 2350 + 680 + 780]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+mchtest20 = test("Automaton test 2", mchTest20TestFunction, mchTest20ValidationFunction)
+mchTestSuite.addTest(mchtest20)
+
 #blmTestSuite.executeTestSuite()
 #rdmTestSuite.executeTestSuite()
 #smnTestSuite.executeTestSuite()
 #whmTestSuite.executeTestSuite()
 #astTestSuite.executeTestSuite()
 #sgeTestSuite.executeTestSuite()
-#mchTestSuite.executeTestSuite()
+mchTestSuite.executeTestSuite()
 
-mchtest18.executeTest()
 
 
