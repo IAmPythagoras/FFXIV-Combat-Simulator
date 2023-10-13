@@ -201,7 +201,7 @@ def SplitShotEffect(Player, Spell):
         Player.EffectToRemove.append(SplitShotEffect)
         if not (SlugShotEffect in Player.EffectList) : Player.EffectList.append(SlugShotEffect)
         AddGauge(Player, 0, 5)
-    if Spell.id == SplitShot.id or Spell.id == CleanShot.id:
+    elif Spell.id == SplitShot.id or Spell.id == CleanShot.id:
         Player.EffectToRemove.append(SplitShotEffect)
 
 def SlugShotEffect(Player, Spell):
@@ -210,7 +210,7 @@ def SlugShotEffect(Player, Spell):
         Spell.Potency += 260
         Player.EffectToRemove.append(SlugShotEffect)
         AddGauge(Player, 10, 5)
-    if Spell.id == SplitShot.id or Spell.id == SlugShot.id:
+    elif Spell.id == SplitShot.id or Spell.id == SlugShot.id:
         Player.EffectToRemove.append(SlugShotEffect)
 
 
