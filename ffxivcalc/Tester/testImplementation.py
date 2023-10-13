@@ -3622,7 +3622,7 @@ def mchTest2TestFunction() -> None:
     Event = Fight(Dummy, False)
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
 
-    actionSet = [Ricochet, Ricochet, Hypercharge, HeatBlast]
+    actionSet = [Ricochet, Ricochet, Hypercharge, HeatBlast, GaussRound, GaussRound]
     player = Player(actionSet, [], Stat, JobEnum.Machinist)
 
     Event.AddPlayer([player])
@@ -3633,11 +3633,11 @@ def mchTest2TestFunction() -> None:
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-    return [player.RicochetStack, round(player.RicochetCD,2)]
+    return [player.RicochetStack, round(player.RicochetCD,2), player.GaussRoundStack, round(player.GaussRoundCD,2)]
 
 def mchTest2ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [1, 14.97]   
+    expected = [1, 14.95, 1, 29.99]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -3656,7 +3656,7 @@ def mchTest3TestFunction() -> None:
     Event = Fight(Dummy, False)
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
 
-    actionSet = [Ricochet, Ricochet, Hypercharge, HeatBlast, HeatBlast, WaitAbility(0.01)]
+    actionSet = [Ricochet, Ricochet, GaussRound, Hypercharge, HeatBlast, HeatBlast,GaussRound]
     player = Player(actionSet, [], Stat, JobEnum.Machinist)
 
     Event.AddPlayer([player])
@@ -3667,11 +3667,11 @@ def mchTest3TestFunction() -> None:
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-    return [player.RicochetStack, round(player.RicochetCD,2)]
+    return [player.RicochetStack, round(player.RicochetCD,2), player.GaussRoundStack, round(player.GaussRoundCD,2)]
 
 def mchTest3ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [2, 29.99]   
+    expected = [2, 28.46,2, 30]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -3701,11 +3701,11 @@ def mchTest4TestFunction() -> None:
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-    return [player.RicochetStack, round(player.RicochetCD,2)]
+    return [player.RicochetStack, round(player.RicochetCD,2), player.GaussRoundStack, round(player.GaussRoundCD,2)]
 
 def mchTest4ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 13.51]   
+    expected = [0, 11.99, 3, 0]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 

@@ -105,8 +105,8 @@ def ApplyBarrelStabilizer(Player, Enemy):
     Player.BarrelStabilizerCD = 120
 
 def ApplyHeatBlast(Player, Enemy):
-    Player.GaussRoundCD -= 15
-    Player.RicochetCD -= 15
+    if Player.GaussRoundStack < 3 : Player.GaussRoundCD -= 15
+    if Player.RicochetStack < 3 : Player.RicochetCD -= 15
 
 def ApplyHypercharge(Player, Enemy):
     Player.HyperchargeStack = 5
