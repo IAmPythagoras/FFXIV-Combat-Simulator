@@ -2357,7 +2357,7 @@ def whmTest7TestFunction() -> None:
     Event = Fight(Dummy, False)
 
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
-    actionSet = [Glare,WaitAbility(40)]
+    actionSet = [Glare,WaitAbility(40.02)]
     player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
 
     Event.AddPlayer([player])
@@ -2391,7 +2391,7 @@ def whmTest8TestFunction() -> None:
     Event = Fight(Dummy, False)
 
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 839, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
-    actionSet = [Glare,WaitAbility(60)]
+    actionSet = [Glare,WaitAbility(60.06)]
     player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
 
     Event.AddPlayer([player])
@@ -3257,17 +3257,17 @@ def sgeTest1ValidationFunction(testResults) -> (bool, list):
 sgetest1 = test("Opener requirement, end time and potency 1", sgeTest1TestFunction, sgeTest1ValidationFunction)
 sgeTestSuite.addTest(sgetest1)
 
-# Addersting test 1
+# Addersgall test 1
 
 def sgeTest2TestFunction() -> None:
-    """Tests Addersting
+    """Tests Addersgall
     """
 
     Dummy = Enemy()
     Event = Fight(Dummy, False)
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 827, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
 
-    actionSet = [Dosis, WaitAbility(20)]
+    actionSet = [Dosis, WaitAbility(20.02)]
     player = Player(actionSet, [], Stat, JobEnum.Sage)
 
     Event.AddPlayer([player])
@@ -3291,17 +3291,17 @@ def sgeTest2ValidationFunction(testResults) -> (bool, list):
 sgetest2 = test("Addersgall test 1", sgeTest2TestFunction, sgeTest2ValidationFunction)
 sgeTestSuite.addTest(sgetest2)
 
-# Addersting test 2
+# Addersgall test 2
 
 def sgeTest3TestFunction() -> None:
-    """Tests Addersting
+    """Tests Addersgall
     """
 
     Dummy = Enemy()
     Event = Fight(Dummy, False)
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 827, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
 
-    actionSet = [Dosis, WaitAbility(20), WaitAbility(20), Rhizomata]
+    actionSet = [Dosis, WaitAbility(20.02), WaitAbility(20.02), Rhizomata]
     player = Player(actionSet, [], Stat, JobEnum.Sage)
 
     Event.AddPlayer([player])
@@ -3325,17 +3325,17 @@ def sgeTest3ValidationFunction(testResults) -> (bool, list):
 sgetest3 = test("Addersgall test 2", sgeTest3TestFunction, sgeTest3ValidationFunction)
 sgeTestSuite.addTest(sgetest3)
 
-# Addersting test 3
+# Addersgall test 3
 
 def sgeTest4TestFunction() -> None:
-    """Tests Addersting
+    """Tests Addersgall
     """
 
     Dummy = Enemy()
     Event = Fight(Dummy, False)
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 827, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
 
-    actionSet = [Dosis, WaitAbility(20), WaitAbility(20), Rhizomata,WaitAbility(20)]
+    actionSet = [Dosis, WaitAbility(20.02), WaitAbility(20.02), Rhizomata,WaitAbility(20.02)]
     player = Player(actionSet, [], Stat, JobEnum.Sage)
 
     Event.AddPlayer([player])
@@ -3359,17 +3359,17 @@ def sgeTest4ValidationFunction(testResults) -> (bool, list):
 sgetest4 = test("Addersgall test 3", sgeTest4TestFunction, sgeTest4ValidationFunction)
 sgeTestSuite.addTest(sgetest4)
 
-# Addersting test 4
+# Addersgall test 4
 
 def sgeTest5TestFunction() -> None:
-    """Tests Addersting
+    """Tests Addersgall
     """
 
     Dummy = Enemy()
     Event = Fight(Dummy, False)
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 827, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
 
-    actionSet = [Dosis, WaitAbility(20), WaitAbility(20), Rhizomata,WaitAbility(20), Taurochole, Ixochole]
+    actionSet = [Dosis, WaitAbility(20.02), WaitAbility(20.02), Rhizomata,WaitAbility(20.02), Taurochole, Ixochole]
     player = Player(actionSet, [], Stat, JobEnum.Sage)
 
     Event.AddPlayer([player])
@@ -3393,17 +3393,17 @@ def sgeTest5ValidationFunction(testResults) -> (bool, list):
 sgetest5 = test("Addersgall test 4", sgeTest5TestFunction, sgeTest5ValidationFunction)
 sgeTestSuite.addTest(sgetest5)
 
-# Addersting test 4
+# Addersgall test 5
 
 def sgeTest6TestFunction() -> None:
-    """Tests Addersting
+    """Tests Addersgall
     """
 
     Dummy = Enemy()
     Event = Fight(Dummy, False)
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 827, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
 
-    actionSet = [Dosis, WaitAbility(20), WaitAbility(20), Rhizomata,WaitAbility(20), Taurochole, Ixochole, WaitAbility(20)]
+    actionSet = [Dosis, WaitAbility(20.02), WaitAbility(20.02), Rhizomata,WaitAbility(20.02), Taurochole, Ixochole, WaitAbility(20.02)]
     player = Player(actionSet, [], Stat, JobEnum.Sage)
 
     Event.AddPlayer([player])
@@ -3427,13 +3427,148 @@ def sgeTest6ValidationFunction(testResults) -> (bool, list):
 sgetest6 = test("Addersgall test 5", sgeTest6TestFunction, sgeTest6ValidationFunction)
 sgeTestSuite.addTest(sgetest6)
 
+# Addersting test 1
+
+def sgeTest7TestFunction() -> None:
+    """Tests Addersting
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 827, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Dosis, Dosis]
+    player = Player(actionSet, [], Stat, JobEnum.Sage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.AdderstingStack]
+
+def sgeTest7ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+sgetest7 = test("Addersting test 1", sgeTest7TestFunction, sgeTest7ValidationFunction)
+sgeTestSuite.addTest(sgetest7)
+
+# Addersting test 2
+
+def sgeTest8TestFunction() -> None:
+    """Tests Addersting
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 827, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Dosis, Dosis, Eukrasia, EukrasianDiagnosis, Diagnosis]
+    player = Player(actionSet, [], Stat, JobEnum.Sage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.AdderstingStack]
+
+def sgeTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [2]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+sgetest8 = test("Addersting test 2", sgeTest8TestFunction, sgeTest8ValidationFunction)
+sgeTestSuite.addTest(sgetest8)
+
+# Addersting test 3
+
+def sgeTest9TestFunction() -> None:
+    """Tests Addersting
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 827, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Dosis, Dosis, Eukrasia, EukrasianDiagnosis, Diagnosis, Haima, Toxikon]
+    player = Player(actionSet, [], Stat, JobEnum.Sage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.AdderstingStack]
+
+def sgeTest9ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [2]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+sgetest9 = test("Addersting test 3", sgeTest9TestFunction, sgeTest9ValidationFunction)
+sgeTestSuite.addTest(sgetest9)
+
+# Addersting test 4
+
+def sgeTest10TestFunction() -> None:
+    """Tests Addersting
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 827, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Dosis, Dosis, Eukrasia, EukrasianDiagnosis, Diagnosis, Haima, Diagnosis, Diagnosis, Toxikon]
+    player = Player(actionSet, [], Stat, JobEnum.Sage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.AdderstingStack]
+
+def sgeTest10ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [2]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+sgetest10 = test("Addersting test 4", sgeTest10TestFunction, sgeTest10ValidationFunction)
+sgeTestSuite.addTest(sgetest10)
 
 
-#blmTestSuite.executeTestSuite()
-#rdmTestSuite.executeTestSuite()
-#smnTestSuite.executeTestSuite()
-#whmTestSuite.executeTestSuite()
-#astTestSuite.executeTestSuite()
+blmTestSuite.executeTestSuite()
+rdmTestSuite.executeTestSuite()
+smnTestSuite.executeTestSuite()
+whmTestSuite.executeTestSuite()
+astTestSuite.executeTestSuite()
 sgeTestSuite.executeTestSuite()
 
 
