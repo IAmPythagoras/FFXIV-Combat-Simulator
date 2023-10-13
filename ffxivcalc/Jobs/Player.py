@@ -1231,7 +1231,7 @@ class Player:
         self.PhysisCD = 0
         #Timer
         self.EukrasianTimer = 0
-        self.AddersgallTimer = 0 #Starting at 40 since 20 sec countdown
+        self.AddersgallTimer = 0 
         self.PhlegmaTimer = 0
         #DOT
         self.Eukrasian = None
@@ -1280,7 +1280,7 @@ class Player:
                 Player.AddersgallStack = min(3, Player.AddersgallStack + 1)
                 Player.AddersgallTimer = 20
 
-        self.EffectCDList.append(AddersgallCheck)
+        self.EffectCDList.append(applyAddersgallCheck)
 
         # update functions
         self.updateJobTimer = updateTimer

@@ -3335,7 +3335,7 @@ def sgeTest4TestFunction() -> None:
     Event = Fight(Dummy, False)
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 827, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
 
-    actionSet = [Dosis, WaitAbility(20), WaitAbility(20), Rhizomata]
+    actionSet = [Dosis, WaitAbility(20), WaitAbility(20), Rhizomata,WaitAbility(20)]
     player = Player(actionSet, [], Stat, JobEnum.Sage)
 
     Event.AddPlayer([player])
@@ -3358,6 +3358,76 @@ def sgeTest4ValidationFunction(testResults) -> (bool, list):
 
 sgetest4 = test("Addersgall test 3", sgeTest4TestFunction, sgeTest4ValidationFunction)
 sgeTestSuite.addTest(sgetest4)
+
+# Addersting test 4
+
+def sgeTest5TestFunction() -> None:
+    """Tests Addersting
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 827, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Dosis, WaitAbility(20), WaitAbility(20), Rhizomata,WaitAbility(20), Taurochole, Ixochole]
+    player = Player(actionSet, [], Stat, JobEnum.Sage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.AddersgallStack]
+
+def sgeTest5ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+sgetest5 = test("Addersgall test 4", sgeTest5TestFunction, sgeTest5ValidationFunction)
+sgeTestSuite.addTest(sgetest5)
+
+# Addersting test 4
+
+def sgeTest6TestFunction() -> None:
+    """Tests Addersting
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 827, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Dosis, WaitAbility(20), WaitAbility(20), Rhizomata,WaitAbility(20), Taurochole, Ixochole, WaitAbility(20)]
+    player = Player(actionSet, [], Stat, JobEnum.Sage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.AddersgallStack]
+
+def sgeTest6ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [2]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+sgetest6 = test("Addersgall test 5", sgeTest6TestFunction, sgeTest6ValidationFunction)
+sgeTestSuite.addTest(sgetest6)
+
+
 
 #blmTestSuite.executeTestSuite()
 #rdmTestSuite.executeTestSuite()
