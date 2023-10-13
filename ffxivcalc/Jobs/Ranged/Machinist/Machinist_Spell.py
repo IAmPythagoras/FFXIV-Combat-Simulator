@@ -298,8 +298,10 @@ def RicochetStackCheck(Player, Enemy):
         Player.RicochetStack +=1
 
 def QueenCheck(Player, Enemy): # This will turn the queen off and make her perform the finisher moves
-    if Player.QueenTimer <= 0 or not (Player.Pet.QueenOnField): 
+    if Player.QueenTimer <= 0 or not (Player.QueenOnField): 
         Player.Overdrive = False
+        Player.QueenOnField = False
+        Player.QueenTimer = 0
         Player.Queen.TrueLock = False #Delocking the Queen so she can perform these two abilities
         Player.Queen.ActionSet.insert(Player.NextSpell+1,Bunker)
         Player.Queen.ActionSet.insert(Player.NextSpell+2,Collider)
