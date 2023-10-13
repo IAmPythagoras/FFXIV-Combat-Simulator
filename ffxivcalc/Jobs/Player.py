@@ -1016,7 +1016,7 @@ class Player:
         self.DiaTimer = 0
         self.LucidDreamingTimer = 0
         self.PresenceOfMindTimer = 0
-        self.LilyTimer = 20 #Initiated at 40 sec since we have 20 sec CD
+        self.LilyTimer = 0
 
         #DOT
         self.Dia = None
@@ -1055,6 +1055,7 @@ class Player:
             if Player.CurrentFight.FightStart:
                 Player.EffectCDList.append(LilyCheck)
                 Player.EffectToRemove.append(LilyTimerStartCheck)
+                Player.LilyTimer = 20
 
         def LilyCheck(Player, Enemy):
             if Player.LilyTimer <= 0:
@@ -1272,6 +1273,7 @@ class Player:
             if Player.CurrentFight.FightStart:
                 Player.EffectToRemove.append(applyAddersgallCheck)
                 Player.EffectCDList.append(AddersgallCheck)
+                Player.AddersgallTimer = 20
 
         def AddersgallCheck(Player, Enemy):
             if Player.AddersgallTimer <= 0:

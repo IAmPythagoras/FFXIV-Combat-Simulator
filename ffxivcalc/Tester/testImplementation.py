@@ -3248,7 +3248,7 @@ def sgeTest1TestFunction() -> None:
 
 def sgeTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 52.37, 8000]   
+    expected = [0, 51.37, 8000]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -3257,7 +3257,7 @@ def sgeTest1ValidationFunction(testResults) -> (bool, list):
 sgetest1 = test("Opener requirement, end time and potency 1", sgeTest1TestFunction, sgeTest1ValidationFunction)
 sgeTestSuite.addTest(sgetest1)
 
-# Addersting test
+# Addersting test 1
 
 def sgeTest2TestFunction() -> None:
     """Tests Addersting
@@ -3280,7 +3280,7 @@ def sgeTest2TestFunction() -> None:
 
     return [player.AddersgallStack]
 
-def sgeTest1ValidationFunction(testResults) -> (bool, list):
+def sgeTest2ValidationFunction(testResults) -> (bool, list):
     passed = True
     expected = [1]   
 
@@ -3288,8 +3288,76 @@ def sgeTest1ValidationFunction(testResults) -> (bool, list):
 
     return passed , expected
 
-sgetest1 = test("Opener requirement, end time and potency 1", sgeTest1TestFunction, sgeTest1ValidationFunction)
-sgeTestSuite.addTest(sgetest1)
+sgetest2 = test("Addersgall test 1", sgeTest2TestFunction, sgeTest2ValidationFunction)
+sgeTestSuite.addTest(sgetest2)
+
+# Addersting test 2
+
+def sgeTest3TestFunction() -> None:
+    """Tests Addersting
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 827, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Dosis, WaitAbility(20), WaitAbility(20), Rhizomata]
+    player = Player(actionSet, [], Stat, JobEnum.Sage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.AddersgallStack]
+
+def sgeTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [3]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+sgetest3 = test("Addersgall test 2", sgeTest3TestFunction, sgeTest3ValidationFunction)
+sgeTestSuite.addTest(sgetest3)
+
+# Addersting test 3
+
+def sgeTest4TestFunction() -> None:
+    """Tests Addersting
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 827, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Dosis, WaitAbility(20), WaitAbility(20), Rhizomata]
+    player = Player(actionSet, [], Stat, JobEnum.Sage)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.AddersgallStack]
+
+def sgeTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [3]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+sgetest4 = test("Addersgall test 3", sgeTest4TestFunction, sgeTest4ValidationFunction)
+sgeTestSuite.addTest(sgetest4)
 
 #blmTestSuite.executeTestSuite()
 #rdmTestSuite.executeTestSuite()
