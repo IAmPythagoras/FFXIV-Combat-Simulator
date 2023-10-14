@@ -75,6 +75,38 @@ class parser:
             commandListCompiled.append({commandComponent[0] : deepcopy(commandListFormat)})
 
         return commandListCompiled
+    
+
+mainParser = parser()
+
+def executeCode(sourceCode : str, targetObject):
+    """
+    This function receives as input sourceCode in the style defined above and
+    applies the code to the targetobject.
+    """
+
+    commandList = mainParser.parseString(sourceCode)
+
+    possibleFieldName = targetObject.__dict__.keys()
+
+    for command in commandList:
+
+        commandName = list(command.keys())[0]
+
+        match commandName:
+            case "FORCESET":
+                fieldName = command["FORCESET"][0]
+                if fieldName in possibleFieldName: 
+                    targetObject.__dict__[fieldName] = command["FORCESET"][1]
+            case "SET":
+                fieldName = command["SET"][0]
+                if fieldName in possibleFieldName: 
+                    match targetObject.__dict__[fieldName]:
+                        case int() : targetObject.__dict__[fieldName] = int(command["SET"][1])
+                        case float() : targetObject.__dict__[fieldName] = float(command["SET"][1])
+                        case str() : targetObject.__dict__[fieldName] = str(command["SET"][1])
+                        case bool() : targetObject.__dict__[fieldName] = bool(command["SET"][1])
+
 
 
 
