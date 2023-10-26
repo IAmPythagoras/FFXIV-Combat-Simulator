@@ -581,7 +581,7 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
         for type in optimalSet.getMateriaTypeList():
             trialSet = deepcopy(optimalSet)
             for gear in trialSet:
-                if gear.getIgnoreOptimize: continue
+                if gear.getIgnoreOptimize(): continue
                              # Will look for first piece of gear that
                              # can have the desired type replaced by SpS or SkS
                 if gear.hasStatMeld(type) and gear.canReplaceMateriaNoLoss(mat):
@@ -733,7 +733,7 @@ def pietySolver(minPiety : int, curMaxDPS : float, Set : GearSet, matGen : Mater
     while GearStat["Piety"] < minPiety:
 
         trialBestDPS = 0
-        curTypeToReplacez = None
+        curTypeToReplace = None
         curGearPieceToReplace = None
 
         for type in optimalSet.getMateriaTypeList():
