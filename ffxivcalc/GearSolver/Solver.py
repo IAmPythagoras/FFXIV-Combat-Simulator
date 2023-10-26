@@ -149,7 +149,7 @@ def findGCDTimerRange(minSPDValue : int, maxSPDValue : int, subGCDHasteAmount : 
 def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, PercentileToOpt : list = ["exp", "99", "90", "75", "50"],
               materiaDepthSearchIterator : int = 1, randomIteration : int = 10000, oddMateriaValue : int = 18, evenMateriaValue : int = 36,
               PlayerIndex : int = 0, mendSpellSpeed : bool = False, maxSPDValue : int = 5000, minSPDValue : int = 0, useNewAlgo : bool = False, oversaturationIterationsPreGear : int = 0,
-              oversaturationIterationsPostGear : int = 0, findOptMateriaGearBF : bool = False, swapDHDetBeforeSpeed : bool = True, minPiety : int = 390):
+              oversaturationIterationsPostGear : int = 0, findOptMateriaGearBF : bool = False, swapDHDetBeforeSpeed : bool = True, minPiety : int = 390, gcdTimerSpecificActionList : dict = None):
     """
     Finds the BiS of the player given a Gear search space and a Fight. The Solver will output to a file named
     bisSolver[Job]Result[number].txt with all the relevant information and returns the gearSets. The solver outputs the best Expected Damage GearSet as well as
@@ -182,6 +182,11 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     findOptMateriaGearBF : bool -> If true solver will find best gearset/food/melding using given algorithm. Only recommended for Expected.
     swapDHDetBeforeSpeed : bool -> If True, the solver will swap DH and Det before swapping melds with Speed materias. If False it swaps after.
     minPiety : int -> Minimum required Piety value for the set. By default set to 400.
+    gcdTimerSpecificActionList : dict -> Dictionary with key (gcdTimer, hastedGCDTimer) where the key maps to a list of actions
+                                         to perform for the given gcdTimer and hastedGCDTimer. If is empty we ignore and only use
+                                         the action list present in the fight object. Recommended to use the findGCDTimerRange() function
+                                         with required minSPDValue and maxSPDValue in order to get an accurate dictionary. The mapping of gcd Tier
+                                         does not have to be exhaustive. If no key is found it will use the rotation of the Fight object instead.
     """
 
                              # Checking the validity of the given search space and some other parameters.
@@ -211,11 +216,13 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
                              # Finding haste amount if any.
     hasteAmount = 0
     match Fight.PlayerList[PlayerIndex].JobEnum:
+                             # Assume max haste amount in order to find sub GCD tier.
         case JobEnum.BlackMage : hasteAmount = 15
         case JobEnum.WhiteMage : hasteAmount = 20
         case JobEnum.Samurai : hasteAmount = 13
         case JobEnum.Monk : hasteAmount = 20
-        case JobEnum.Bard : hasteAmount = 20 # Assume max haste amount.
+        case JobEnum.Bard : hasteAmount = 20
+        case JobEnum.Astrologian : hasteAmount = 10
 
                              # Getting all possible gcdTimers from the given range of speed value. Will simulate prebakedsimulation for all of them.
     gcdTimerDict = findGCDTimerRange(minSPDValue, maxSPDValue,subGCDHasteAmount=hasteAmount)
@@ -228,6 +235,11 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     for key in gcdTimerDict:
         Fight.PlayerList[PlayerIndex].Stat['SS' if IsCaster else "SkS"] = gcdTimerDict[key]
         preBakedFightGCDTierList[key] = deepcopy(Fight)
+        
+                             # If a specific gcd timer rotation is given then we swap the ActionSet for the gccd specific one.
+        if gcdTimerSpecificActionList != None and (key in gcdTimerSpecificActionList.keys()): 
+            preBakedFightGCDTierList[key].PlayerList[PlayerIndex].ActionSet = deepcopy(gcdTimerSpecificActionList[key])
+
         preBakedFightGCDTierList[key].SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
         next(gcdTimerProgress)
 
