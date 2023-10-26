@@ -235,7 +235,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     for key in gcdTimerDict:
         Fight.PlayerList[PlayerIndex].Stat['SS' if IsCaster else "SkS"] = gcdTimerDict[key]
         preBakedFightGCDTierList[key] = deepcopy(Fight)
-        
+
                              # If a specific gcd timer rotation is given then we swap the ActionSet for the gccd specific one.
         if gcdTimerSpecificActionList != None and (key in gcdTimerSpecificActionList.keys()): 
             preBakedFightGCDTierList[key].PlayerList[PlayerIndex].ActionSet = deepcopy(gcdTimerSpecificActionList[key])
@@ -256,6 +256,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
 
     for key in GearSpace.keys():
         for gear in GearSpace[key]:
+            if gear.getIgnoreOptimize() : continue
             for type in MateriaSpace:
                 for j in range(oversaturationIterationsPreGear):
                     if type != 3: 
@@ -509,6 +510,7 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
     optimalSet = deepcopy(Set)
                                  # This first loop will forceAddMateria to the whole set until no more can be
     for gear in optimalSet:
+        if gear.getIgnoreOptimize() : continue
         for type in matSpace:
             for j in range(oversaturationIterationsPostGear):
                 if type != 3: 
@@ -579,6 +581,7 @@ def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list
         for type in optimalSet.getMateriaTypeList():
             trialSet = deepcopy(optimalSet)
             for gear in trialSet:
+                if gear.getIgnoreOptimize: continue
                              # Will look for first piece of gear that
                              # can have the desired type replaced by SpS or SkS
                 if gear.hasStatMeld(type) and gear.canReplaceMateriaNoLoss(mat):
@@ -669,6 +672,7 @@ def materiaDHAndDetSolver(curMaxDPS : float, Set : GearSet, matGen : MateriaGene
         hasChangedMeld = False
 
         for gear in trialSetDH:
+            if gear.getIgnoreOptimize: continue
             if gear.hasStatMeld(StatType.Det) and gear.canReplaceMateriaNoLoss(matGen.GenerateMateria(StatType.DH)):
                 hasChangedMeld = True
                 gear.removeMateriaType(StatType.Det)
@@ -692,6 +696,7 @@ def materiaDHAndDetSolver(curMaxDPS : float, Set : GearSet, matGen : MateriaGene
         hasChangedMeld = False
 
         for gear in trialSetDet:
+            if gear.getIgnoreOptimize: continue
             if gear.hasStatMeld(StatType.DH) and gear.canReplaceMateriaNoLoss(matGen.GenerateMateria(StatType.Det)):
                 hasChangedMeld = True
                 gear.removeMateriaType(StatType.DH)
@@ -737,7 +742,7 @@ def pietySolver(minPiety : int, curMaxDPS : float, Set : GearSet, matGen : Mater
 
                              # Will now look for the least DPS loss materia to replace.
             for gear in trialSet:
-
+                if gear.getIgnoreOptimize: continue
                 if gear.hasStatMeld(type) and gear.canReplaceMateriaNoLoss(mat):
                     gear.removeMateriaType(type)
                     gear.AddMateria(mat)

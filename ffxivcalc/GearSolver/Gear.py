@@ -160,6 +160,10 @@ class Gear:
     StatList : list(Stat) -> List of all stat of the gear piece.
     MateriaLimit : int -> Limit of materia the gear can receive.
     Name : str -> Used to differentiate same type gear
+
+    __ignoreOptimize : bool -> If true, solver will not attempt to optimize the materias on this gear piece.
+
+
     """
     def __init__(self, GearType : GearType, StatList : list, MateriaLimit : int = 2, Name : str = ""):
         self.GearType = GearType
@@ -167,6 +171,8 @@ class Gear:
         self.Name = Name
         self.StatLimit = 0   # StatLimit of a gear is always equal to the highest stat of it.
         self.illegalMeld = False # This is set to true when this piece of gear is illegaly Overmelded
+
+        self.__ignoreOptimize = False 
 
         for Stats in StatList:
             self.Stat[StatType.name_for_id(Stats.StatType)] = Stats
@@ -188,6 +194,19 @@ class Gear:
             strReturn += mat
 
         return strReturn + " Name : " + self.Name
+    
+    def setIgnoreOptimize(self, newVal : bool) -> None:
+        """
+        This function sets the value of self.__ignoreOptimize to the given newVal.
+        newVal : bool -> New value to set the field too.
+        """
+        self.__ignoreOptimize = newVal
+
+    def getIgnoreOptimize(self) -> bool:
+        """
+        This returns the value of the gear for self.__ignoreOptimize
+        """
+        return self.__ignoreOptimize
 
     def __addMateria(self, newMateria : Materia):
         """
@@ -578,15 +597,29 @@ def ImportGear(fileName : str) -> dict:
     GearDict = {}
 
     for GearPiece in data:
-        type = GearType.name_for_id(GearPiece["GearType"])
-        StatList = [Stat(StatType.id_for_name(S[0]), S[1]) for S in GearPiece["StatList"]]
-        ImportedGear = Gear(GearPiece["GearType"], StatList, MateriaLimit = GearPiece["MateriaLimit"], Name = GearPiece["Name"])
+        try:
+            type = GearType.name_for_id(GearPiece["GearType"])
+            StatList = [Stat(StatType.id_for_name(S[0]), S[1]) for S in GearPiece["StatList"]]
+            ImportedGear = Gear(GearPiece["GearType"], StatList, MateriaLimit = GearPiece["MateriaLimit"], Name = GearPiece["Name"])
 
-        if "customStatLimit" in GearPiece.keys(): ImportedGear.setStatLimit(GearPiece["customStatLimit"])
+            if "customStatLimit" in GearPiece.keys(): ImportedGear.setStatLimit(GearPiece["customStatLimit"])
 
-        if type in GearDict.keys():
-            GearDict[type].append(ImportedGear)
-        else:
-            GearDict[type] = [ImportedGear]
+            if type in GearDict.keys():
+                GearDict[type].append(ImportedGear)
+            else:
+                GearDict[type] = [ImportedGear]
+
+                                # Checking if ignoreOptimize
+            if "ignoreOptimize" in GearPiece.keys():
+                                # if true, then we also check for materias to put on.
+                ImportedGear.setIgnoreOptimize(True)
+                if "defaultMateriaList" in GearPiece.keys():
+
+                    for materia in GearPiece["defaultMateriaList"]:
+                                # materia will contain the type and the value. It will be assumed to be even.
+                        matGen = MateriaGenerator(0,materia["value"])
+                        ImportedGear.AddMateria(matGen.GenerateMateria(StatType(materia["type"])))
+        except:
+            print("An error occurent when trying to import the gear set with file name : " + fileName + "\n")
 
     return GearDict
