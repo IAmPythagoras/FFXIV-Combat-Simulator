@@ -613,7 +613,7 @@ class Auto_Attack(DOTSpell):
         Ranged : bool -> True if the auto is ranged.
         """
         if Ranged : super().__init__(id, 80, True) # Ranged AA, 80 potency
-        else: super().__init__(id, 90, True) # Melee AA, 90 potency
+        else: super().__init__(id, 0, True) # Melee AA, 90 potency
 
         self.DOTTimer = 0 
 
