@@ -109,62 +109,118 @@ class SimulationRecord:
         This function saves the record as a plot.
         """
 
-        colName = ["Name", "Potency", "Damage", "Buff", "DH Buff", "Crit Buff", "Hit Type"]
+        colName = ["Name", "Potency", "Damage", "TimeStamp", "Buff", "DH Buff", "Crit Buff", "Hit Type"]
+        haList = ["left","right","right","right","left","center","center","left"]
+
+        posOffSet = [1.3,0.7,1,0.1,2.9,1,0.5]
+                             # Generating pos list
+        curPos = 0
+        pos = [0]
+        for offset in posOffSet:
+            curPos += offset
+            pos.append(curPos)
         nrows = len(self.pageList)
         ncols = len(colName)
 
-        fig = plt.figure(figsize=(3,100), dpi=200)
+        fig = plt.figure(figsize=(10,80), dpi=300)
         ax = plt.subplot(111)
         ax.set_xlim(0, ncols)
-        ax.set_ylim(0, nrows)
+        ax.set_ylim(0, 3*(nrows+1))
         ax.set_axis_off()
+        offset = 0
+        size = 6
 
-        for y in range(nrows):
+        for y in range(nrows-1,-1,-1):
+            curPercentCount = 0
             percentBuffStr = ""
             dhBuffStr = ""
             critBuffStr = ""
-            for buffs in self.pageList[y].PercentBuffList:
-                percentBuffStr += str(buffs) + "\n"
-            for buffs in self.pageList[y].DHBuffList:
+
+            for buffs in self.pageList[nrows-y-1].PercentBuffList:
+                curPercentCount += 1
+                percentBuffStr += str(buffs) + ("\n" if curPercentCount%4 == 0 else " ")
+            for buffs in self.pageList[nrows-y-1].DHBuffList:
                 dhBuffStr += buffs[0] + "(" + str(int(buffs[1]*100)) + "%)\n"
-            for buffs in self.pageList[y].CritBuffList:
+            for buffs in self.pageList[nrows-y-1].CritBuffList:
                 critBuffStr += buffs[0] + "(" + str(int(buffs[1]*100)) + "%)\n"
+
+                             # Removing last character which is a \n
+            percentBuffStr = percentBuffStr[:-1]
+            dhBuffStr = dhBuffStr[:-1]
+            critBuffStr = critBuffStr[:-1]
+            yPos = 3*(y+1)
+            
             ax.annotate(
-                xy=(0.5,y),
-                text=self.pageList[y].Potency,
-                ha='center'
+                xy=(pos[0],yPos),
+                text=self.pageList[nrows-y-1].Name,
+                ha=haList[0],
+                fontsize=size
             )
             ax.annotate(
-                xy=(1,y),
-                text=self.pageList[y].Damage,
-                ha='center'
+                xy=(pos[1],yPos),
+                text=self.pageList[nrows-y-1].Potency,
+                ha=haList[1],
+                fontsize=size
             )
             ax.annotate(
-                xy=(1.5,y),
+                xy=(pos[2],yPos),
+                text=self.pageList[nrows-y-1].Damage,
+                ha=haList[2],
+                fontsize=size
+            )
+            ax.annotate(
+                xy=(pos[3],yPos),
+                text=self.pageList[nrows-y-1].TimeStamp,
+                ha=haList[3],
+                fontsize=size
+            )
+            ax.annotate(
+                xy=(pos[4],yPos),
                 text=percentBuffStr,
-                ha='center'
+                ha=haList[4],
+                fontsize=int(size/(curPercentCount//4 + 1))
             )
             ax.annotate(
-                xy=(2,y),
+                xy=(pos[5],yPos),
                 text=dhBuffStr,
-                ha='center'
+                ha=haList[5],
+                fontsize=size
             )
             ax.annotate(
-                xy=(2.5,y),
+                xy=(pos[6],yPos),
                 text=critBuffStr,
-                ha='center'
+                ha=haList[6],
+                fontsize=size
             )
             crititalDH = ""
             if self.pageList[y].autoCrit : crititalDH += "!"
             if self.pageList[y].autoDH : crititalDH += "!"
             ax.annotate(
-                xy=(3,y),
+                xy=(pos[7],yPos),
                 text=crititalDH,
-                ha='center'
+                ha=haList[7],
+                fontsize=size,
+                weight="bold"
             )
 
-        fig.show()
-        input()
+        for j, name in enumerate(colName):
+            ax.annotate(
+                xy=(pos[j], 3*(nrows+1)),
+                text=name,
+                weight='bold',
+                ha=haList[j]
+            )
+
+        ax.plot([ax.get_xlim()[0], ax.get_xlim()[1]], [3*(nrows+1)-1, 3*(nrows+1)-1], lw=1.5, color='black', marker='', zorder=4)
+        ax.plot([ax.get_xlim()[0], ax.get_xlim()[1]], [0, 0], lw=1.5, color='black', marker='', zorder=4)
+        for x in range(1, 3*(nrows),3):
+            ax.plot([ax.get_xlim()[0], ax.get_xlim()[1]], [x+1, x+1], lw=1.15, color='gray', ls=':', zorder=3 , marker='')
+
+        plt.savefig(
+        'test.png',
+        dpi=300,
+        bbox_inches='tight'
+)
 
 
 

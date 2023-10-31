@@ -659,8 +659,8 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     CritRate = (Player.CritRate)
     CritMult = Player.CritMult
     DHRate = Player.DHRate
-    if Player.CritRateBonus != 0 : thisPage.addCritBuffList(("Other", Player.CritRateBonus))
-    if Player.DHRateBonus != 0 : thisPage.addDHBuffList(("Other", Player.DHRateBonus))
+    if round(Player.CritRateBonus,2) > 0 : thisPage.addCritBuffList(("Other", Player.CritRateBonus))
+    if round(Player.DHRateBonus,2) > 0 : thisPage.addDHBuffList(("Other", Player.DHRateBonus))
     CritRateBonus = Player.CritRateBonus
     DHRateBonus = Player.DHRateBonus # Saving value for later use if necessary
     f_DET_DH = math.floor((f_DET + Player.DHAuto) * 1000 ) / 1000
