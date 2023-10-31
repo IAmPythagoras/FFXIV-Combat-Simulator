@@ -26,7 +26,7 @@ class buff:
         self.name = name
 
     def __str__(self) -> str:
-        return self.name + " ()" + str(int((self.MultDPS-1)*100)) + "%) " 
+        return self.name + " (" + str(int(round(self.MultDPS-1,2)*100)) + "%) " 
 
 class buffHistory:
     """

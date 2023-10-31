@@ -92,6 +92,8 @@ class SimulationRecord:
         for pages in self.pageList:
             rString += str(pages) + "\n"
 
+        return rString
+
     def saveRecord(self):
         f = open("SimulationRecord.txt", "w")
         f.write(str(self))

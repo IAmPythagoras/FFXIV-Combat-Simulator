@@ -4,7 +4,7 @@ from ffxivcalc.Jobs.PlayerEnum import *
 from ffxivcalc.Jobs.ActionEnum import name_for_id
 from ffxivcalc.Jobs.Base_Spell import ZIPAction, PreBakedAction
 from ffxivcalc.helperCode.Progress import ProgressBar
-from ffxivcalc.SimulationRecord import page, SimulationRecord
+from ffxivcalc.SimulationRecord.record import SimulationRecord, page
 import matplotlib.pyplot as plt
 import logging
 from ffxivcalc.helperCode.helper_math import roundDown, isclose, roundUp
@@ -658,8 +658,8 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     CritRate = (Player.CritRate)
     CritMult = Player.CritMult
     DHRate = Player.DHRate
-    thisPage.addCritBuffList(("Other", Player.CritRateBonus))
-    thisPage.addDHBuffList(("Other", Player.DHRateBonus))
+    if Player.CritRateBonus != 0 : thisPage.addCritBuffList(("Other", Player.CritRateBonus))
+    if Player.DHRateBonus != 0 : thisPage.addDHBuffList(("Other", Player.DHRateBonus))
     CritRateBonus = Player.CritRateBonus
     DHRateBonus = Player.DHRateBonus # Saving value for later use if necessary
     f_DET_DH = math.floor((f_DET + Player.DHAuto) * 1000 ) / 1000
