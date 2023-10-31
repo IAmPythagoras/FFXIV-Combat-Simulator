@@ -752,6 +752,8 @@ class DancerActions(ActionEnum):
     Jete = 16001
     Pirouette = 16002
 
+    AA = -22 # Dancer has Melee autos for some reason. I think that is correct.
+
 
 # These are the functions we will call since they check for both cls and job_class
 def name_for_id(id : int, cls : RoleEnum, job_cls : JobEnum):

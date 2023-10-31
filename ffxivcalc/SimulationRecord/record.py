@@ -9,6 +9,8 @@ event. maybe not? have to think. Ima keep it simple for now
 This is supposed to be an alternative to logs. Making something that has still a good amount of information but is easier to read.
 """
 
+import matplotlib.pyplot as plt
+
 class page:
     """
     This contains the information of one individual event.
@@ -94,10 +96,75 @@ class SimulationRecord:
 
         return rString
 
-    def saveRecord(self):
+    def saveRecordText(self):
+        """
+        This function saves the record as a text file.
+        """
         f = open("SimulationRecord.txt", "w")
         f.write(str(self))
         f.close()
+
+    def saveRecord(self):
+        """
+        This function saves the record as a plot.
+        """
+
+        colName = ["Name", "Potency", "Damage", "Buff", "DH Buff", "Crit Buff", "Hit Type"]
+        nrows = len(self.pageList)
+        ncols = len(colName)
+
+        fig = plt.figure(figsize=(3,100), dpi=200)
+        ax = plt.subplot(111)
+        ax.set_xlim(0, ncols)
+        ax.set_ylim(0, nrows)
+        ax.set_axis_off()
+
+        for y in range(nrows):
+            percentBuffStr = ""
+            dhBuffStr = ""
+            critBuffStr = ""
+            for buffs in self.pageList[y].PercentBuffList:
+                percentBuffStr += str(buffs) + "\n"
+            for buffs in self.pageList[y].DHBuffList:
+                dhBuffStr += buffs[0] + "(" + str(int(buffs[1]*100)) + "%)\n"
+            for buffs in self.pageList[y].CritBuffList:
+                critBuffStr += buffs[0] + "(" + str(int(buffs[1]*100)) + "%)\n"
+            ax.annotate(
+                xy=(0.5,y),
+                text=self.pageList[y].Potency,
+                ha='center'
+            )
+            ax.annotate(
+                xy=(1,y),
+                text=self.pageList[y].Damage,
+                ha='center'
+            )
+            ax.annotate(
+                xy=(1.5,y),
+                text=percentBuffStr,
+                ha='center'
+            )
+            ax.annotate(
+                xy=(2,y),
+                text=dhBuffStr,
+                ha='center'
+            )
+            ax.annotate(
+                xy=(2.5,y),
+                text=critBuffStr,
+                ha='center'
+            )
+            crititalDH = ""
+            if self.pageList[y].autoCrit : crititalDH += "!"
+            if self.pageList[y].autoDH : crititalDH += "!"
+            ax.annotate(
+                xy=(3,y),
+                text=crititalDH,
+                ha='center'
+            )
+
+        fig.show()
+        input()
 
 
 
