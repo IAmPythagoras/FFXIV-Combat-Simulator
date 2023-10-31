@@ -25,6 +25,9 @@ class buff:
         self.MultDPS = MultDPS #DPS multiplier of the buff
         self.name = name
 
+    def __str__(self) -> str:
+        return self.name + " ()" + str(int((self.MultDPS-1)*100)) + "%) " 
+
 class buffHistory:
     """
     This class represents an interval of time in which a buff was present.
