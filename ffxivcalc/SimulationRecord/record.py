@@ -112,7 +112,7 @@ class SimulationRecord:
         colName = ["Name", "Potency", "Damage", "TimeStamp", "Buff", "DH Buff", "Crit Buff", "Hit Type"]
         haList = ["left","right","right","right","left","center","center","left"]
 
-        posOffSet = [1.3,0.7,1,0.1,2.9,1,0.5]
+        posOffSet = [1.3,0.7,1,0.1,2.9,2,1.5]
                              # Generating pos list
         curPos = 0
         pos = [0]
@@ -122,10 +122,10 @@ class SimulationRecord:
         nrows = len(self.pageList)
         ncols = len(colName)
 
-        fig = plt.figure(figsize=(10,80), dpi=300)
+        fig = plt.figure(figsize=(14,80), dpi=300)
         ax = plt.subplot(111)
-        ax.set_xlim(0, ncols)
-        ax.set_ylim(0, 3*(nrows+1))
+        ax.set_xlim(0, int(1.5*ncols))
+        ax.set_ylim(0, 5*(nrows+1))
         ax.set_axis_off()
         offset = 0
         size = 6
@@ -148,7 +148,7 @@ class SimulationRecord:
             percentBuffStr = percentBuffStr[:-1]
             dhBuffStr = dhBuffStr[:-1]
             critBuffStr = critBuffStr[:-1]
-            yPos = 3*(y+1)
+            yPos = 5*(y+1)-2
             
             ax.annotate(
                 xy=(pos[0],yPos),
@@ -184,17 +184,17 @@ class SimulationRecord:
                 xy=(pos[5],yPos),
                 text=dhBuffStr,
                 ha=haList[5],
-                fontsize=size
+                fontsize=3
             )
             ax.annotate(
                 xy=(pos[6],yPos),
                 text=critBuffStr,
                 ha=haList[6],
-                fontsize=size
+                fontsize=3
             )
             crititalDH = ""
-            if self.pageList[y].autoCrit : crititalDH += "!"
-            if self.pageList[y].autoDH : crititalDH += "!"
+            if self.pageList[nrows-y-1].autoCrit : crititalDH += "!"
+            if self.pageList[nrows-y-1].autoDH : crititalDH += "!"
             ax.annotate(
                 xy=(pos[7],yPos),
                 text=crititalDH,
@@ -205,15 +205,15 @@ class SimulationRecord:
 
         for j, name in enumerate(colName):
             ax.annotate(
-                xy=(pos[j], 3*(nrows+1)),
+                xy=(pos[j], 5*(nrows+1)),
                 text=name,
                 weight='bold',
                 ha=haList[j]
             )
 
-        ax.plot([ax.get_xlim()[0], ax.get_xlim()[1]], [3*(nrows+1)-1, 3*(nrows+1)-1], lw=1.5, color='black', marker='', zorder=4)
+        ax.plot([ax.get_xlim()[0], ax.get_xlim()[1]], [5*(nrows+1)-1, 5*(nrows+1)-1], lw=1.5, color='black', marker='', zorder=4)
         ax.plot([ax.get_xlim()[0], ax.get_xlim()[1]], [0, 0], lw=1.5, color='black', marker='', zorder=4)
-        for x in range(1, 3*(nrows),3):
+        for x in range(1, 5*(nrows),5):
             ax.plot([ax.get_xlim()[0], ax.get_xlim()[1]], [x+1, x+1], lw=1.15, color='gray', ls=':', zorder=3 , marker='')
 
         plt.savefig(
