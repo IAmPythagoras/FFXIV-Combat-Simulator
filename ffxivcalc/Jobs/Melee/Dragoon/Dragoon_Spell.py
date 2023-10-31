@@ -317,10 +317,10 @@ ElusiveJump = DragoonSpell(94, False, 0, 0, empty, [], 0) #No requirement, I wil
 
 
 #buff
-RightEyeBuff = buff(1.1)
-LeftEyeBuff = buff(1.05)
-LanceChargeBuff = buff(1.1)
-PowerSurgeBuff = buff(1.1)
+RightEyeBuff = buff(1.1,name="Right Eye")
+LeftEyeBuff = buff(1.05,name="Left Eye")
+LanceChargeBuff = buff(1.1,name="Lance Charge")
+PowerSurgeBuff = buff(1.1,name="Power Surge")
 
 def DragonSight(Target):
 

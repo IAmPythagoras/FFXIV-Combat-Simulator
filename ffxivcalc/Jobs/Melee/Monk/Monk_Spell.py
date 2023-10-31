@@ -371,9 +371,9 @@ Anatman = MonkSpell(16475, False, 0, 0, empty, [], False, False)
 Thunderclap = MonkSpell(25762, False, 0, 0, ApplyThunderclap, [ThunderclapRequirement],False, False)
 Mantra = MonkSpell(65, False, 0, 0, ApplyMantra, [MantraRequirement], False, False)
 #Buff
-DisciplinedFistBuff = buff(1.15)
-BrotherhoodBuff = buff(1.05)
-RiddleOfFireBuff = buff(1.15)
+DisciplinedFistBuff = buff(1.15,name="Disciplined Fist")
+BrotherhoodBuff = buff(1.05,name="Brotherhood")
+RiddleOfFireBuff = buff(1.15,name="Riddle Of Fire")
 
 
 

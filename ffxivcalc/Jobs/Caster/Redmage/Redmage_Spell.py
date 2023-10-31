@@ -334,7 +334,7 @@ Vercure = RedmageSpell(7514, True, 2, 2.5, 0, 500, empty, [RDMManaRequirement], 
 
 
 #buff
-EmboldenBuff = buff(1.05)
+EmboldenBuff = buff(1.05,name="Enochian")
 
 #ActionList
 RedMageAbility = {

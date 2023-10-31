@@ -719,10 +719,6 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         We will check if the action is a GCD with recast time of lesser or equal to 1.5s since the GCD
         cannot go lower. The total time will be remembered and substracted from the total time that is reduceable from more SpS.
         """
-
-        #if (Player.JobEnum == JobEnum.Pet and Player.Master.playerID == PlayerIDSavePreBakedAction): fight_logging.warning("Added Living Shadow ACtion")
-
-
                              # BuffList only contains personnal buff (I think? Have to check)
         buffList = []
         for buff in Player.buffList:

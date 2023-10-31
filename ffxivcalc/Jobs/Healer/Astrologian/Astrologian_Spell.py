@@ -287,10 +287,10 @@ Synastry = AstrologianSpell(3612, False, 0, 0, 0, 0, ApplySynastry, [SynastryReq
 
 #Arcanum require a target within the team, so it will be a function that will return a spell that
 #will target the given player. It is also assumed that the bonus is 6%
-ArcanumBuffMax = buff(1.06)
-ArcanumBuffMin = buff(1.03)
-AstrodyneBuff = buff(1.05)
-DivinationBuff = buff(1.06)
+ArcanumBuffMax = buff(1.06,name="Arcanum (Max)")
+ArcanumBuffMin = buff(1.03,name="Arcanum (Min)")
+AstrodyneBuff = buff(1.05,name="Astrodyne")
+DivinationBuff = buff(1.06,name="Divination")
 
 
 def Arcanum(Target, Type, Melee):

@@ -324,7 +324,7 @@ def NascentFlash(Target):
 
 
 #buff
-SurgingTempestBuff = buff(1.1)
+SurgingTempestBuff = buff(1.1,name="Surging Tempest")
 
 WarriorAbility = {
 43 : Holmgang,

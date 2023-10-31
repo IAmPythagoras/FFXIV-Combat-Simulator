@@ -21,8 +21,9 @@ class buff:
     """
     This class is any buff given to a player. It contains the buff's value
     """
-    def __init__(self, MultDPS):
+    def __init__(self, MultDPS : float, name : str = "Unnamed"):
         self.MultDPS = MultDPS #DPS multiplier of the buff
+        self.name = name
 
 class buffHistory:
     """
