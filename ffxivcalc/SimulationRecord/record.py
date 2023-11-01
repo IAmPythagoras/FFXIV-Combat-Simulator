@@ -106,13 +106,13 @@ class SimulationRecord:
 
     def saveRecord(self):
         """
-        This function saves the record as a plot.
+        This function saves the record as a plot (pdf).
         """
 
-        colName = ["Name", "Potency", "Damage", "TimeStamp", "Buff", "DH Buff", "Crit Buff", "Hit Type"]
-        haList = ["left","right","right","right","left","center","center","left"]
+        colName = ["Name", "Potency", "Damage", "", "Time","Buff", "DH Buff", "Crit Buff"]
+        haList = ["left","right","right","center","right","left","center","center"]
 
-        posOffSet = [1.3,0.7,1,0.1,2.9,2,1.5]
+        posOffSet = [1.3,0.8,0.1,0.5,0.2,4.8,2]
                              # Generating pos list
         curPos = 0
         pos = [0]
@@ -121,8 +121,11 @@ class SimulationRecord:
             pos.append(curPos)
         nrows = len(self.pageList)
         ncols = len(colName)
+                             # This works well. Found by just using a configuration that looked good
+                             # and using the ratio of nrows to height.
+        height = max((160/538) * nrows,30)
 
-        fig = plt.figure(figsize=(14,80), dpi=300)
+        fig = plt.figure(figsize=(14,height), dpi=300)
         ax = plt.subplot(111)
         ax.set_xlim(0, int(1.5*ncols))
         ax.set_ylim(0, 5*(nrows+1))
@@ -140,9 +143,9 @@ class SimulationRecord:
                 curPercentCount += 1
                 percentBuffStr += str(buffs) + ("\n" if curPercentCount%4 == 0 else " ")
             for buffs in self.pageList[nrows-y-1].DHBuffList:
-                dhBuffStr += buffs[0] + "(" + str(int(buffs[1]*100)) + "%)\n"
+                dhBuffStr += buffs[0] + "(" + str(int(buffs[1]*100)) + "%) "
             for buffs in self.pageList[nrows-y-1].CritBuffList:
-                critBuffStr += buffs[0] + "(" + str(int(buffs[1]*100)) + "%)\n"
+                critBuffStr += buffs[0] + "(" + str(int(buffs[1]*100)) + "%) "
 
                              # Removing last character which is a \n
             percentBuffStr = percentBuffStr[:-1]
@@ -154,53 +157,53 @@ class SimulationRecord:
                 xy=(pos[0],yPos),
                 text=self.pageList[nrows-y-1].Name,
                 ha=haList[0],
-                fontsize=size
+                fontsize=size+1
             )
             ax.annotate(
                 xy=(pos[1],yPos),
                 text=self.pageList[nrows-y-1].Potency,
                 ha=haList[1],
-                fontsize=size
+                fontsize=size+1
             )
             ax.annotate(
                 xy=(pos[2],yPos),
                 text=self.pageList[nrows-y-1].Damage,
                 ha=haList[2],
-                fontsize=size
-            )
-            ax.annotate(
-                xy=(pos[3],yPos),
-                text=self.pageList[nrows-y-1].TimeStamp,
-                ha=haList[3],
-                fontsize=size
-            )
-            ax.annotate(
-                xy=(pos[4],yPos),
-                text=percentBuffStr,
-                ha=haList[4],
-                fontsize=int(size/(curPercentCount//4 + 1))
-            )
-            ax.annotate(
-                xy=(pos[5],yPos),
-                text=dhBuffStr,
-                ha=haList[5],
-                fontsize=3
-            )
-            ax.annotate(
-                xy=(pos[6],yPos),
-                text=critBuffStr,
-                ha=haList[6],
-                fontsize=3
+                fontsize=size+1
             )
             crititalDH = ""
             if self.pageList[nrows-y-1].autoCrit : crititalDH += "!"
             if self.pageList[nrows-y-1].autoDH : crititalDH += "!"
             ax.annotate(
-                xy=(pos[7],yPos),
+                xy=(pos[3],yPos),
                 text=crititalDH,
-                ha=haList[7],
-                fontsize=size,
+                ha=haList[3],
+                fontsize=8,
                 weight="bold"
+            )
+            ax.annotate(
+                xy=(pos[4],yPos),
+                text=self.pageList[nrows-y-1].TimeStamp,
+                ha=haList[4],
+                fontsize=size
+            )
+            ax.annotate(
+                xy=(pos[5],yPos),
+                text=percentBuffStr,
+                ha=haList[5],
+                fontsize=size if curPercentCount <= 4 else 5
+            )
+            ax.annotate(
+                xy=(pos[6],yPos),
+                text=dhBuffStr,
+                ha=haList[6],
+                fontsize=6
+            )
+            ax.annotate(
+                xy=(pos[7],yPos),
+                text=critBuffStr,
+                ha=haList[7],
+                fontsize=6
             )
 
         for j, name in enumerate(colName):
@@ -217,10 +220,10 @@ class SimulationRecord:
             ax.plot([ax.get_xlim()[0], ax.get_xlim()[1]], [x+1, x+1], lw=1.15, color='gray', ls=':', zorder=3 , marker='')
 
         plt.savefig(
-        'test.png',
-        dpi=300,
+        'SimulationRecord.pdf',
+        dpi=700,
         bbox_inches='tight'
-)
+        )
 
 
 
