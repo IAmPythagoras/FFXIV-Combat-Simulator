@@ -277,7 +277,7 @@ def HeartOfCorundum(Target):
 
 
 #buff
-NoMercyBuff = buff(1.2)
+NoMercyBuff = buff(1.2,name="No Mercy")
 
 GunbreakerAbility = {
 16152 : Superbolide,

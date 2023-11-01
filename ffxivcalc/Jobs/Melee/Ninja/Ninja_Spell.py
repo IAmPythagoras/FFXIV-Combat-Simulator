@@ -480,8 +480,8 @@ Hide = NinjaSpell(2245, True, 0, 0, 0, ApplyHide, [], False, False)
 ShadeShift = NinjaSpell(2241, False, Lock, 0, 0, ApplyShadeShift, [ShadeShiftRequirement], False, False)
 HellfrogMedium = NinjaSpell(7401, False, Lock, 0, 160, ApplyBhavacakra, [BhavacakraRequirement], False, False)
 #buff
-MugBuff = buff(1.05)
-TrickAttackBuff = buff(1.1)
+MugBuff = buff(1.05,name="Mug")
+TrickAttackBuff = buff(1.1,name="Trick Attack")
 
 
 NinjaAbility = {

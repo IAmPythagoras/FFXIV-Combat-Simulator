@@ -467,9 +467,9 @@ PitchPerfect2 = BardSpell(25, False, 0, 220, ApplyPitchPerfect2, [PitchPerfect2R
 PitchPerfect3 = BardSpell(7404, False, 0, 360, ApplyPitchPerfect3, [PitchPerfect3Requirement],False)
 
 #buff
-RadiantFinaleBuff = buff(1.02)
-RagingStrikeBuff = buff(1.15)
-MageBalladBuff = buff(1.01)
+RadiantFinaleBuff = buff(1.02,name="Radian Finale")
+RagingStrikeBuff = buff(1.15,name="Raging Strike")
+MageBalladBuff = buff(1.01,name="Mage Ballad")
 
 def NatureMinne(target):
     Nature = BardSpell(7408, False, 0, 0, ApplyNatureMinne, [NatureMinneRequirement], False)

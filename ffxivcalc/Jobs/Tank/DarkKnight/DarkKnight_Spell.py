@@ -357,7 +357,7 @@ def Oblation(Target):
 
 
 #buff
-EdgeShadowBuff = buff(1.1)
+EdgeShadowBuff = buff(1.1,name="Edge Of Shadow")
 
 # Maps Ability IDs from FFlogs to Skill objects
 # Not exhaustive: If an ability is missing, check log for id and add it into the mapping.

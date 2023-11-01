@@ -310,6 +310,8 @@ class TankActions(ActionEnum):
     WaitAbility = 212
     Interject = 10101010
 
+    AA = -22
+
 
 # DarkKnight
 
@@ -452,6 +454,8 @@ class MeleeActions(ActionEnum):
     ArmLength = 7548
     Potion = -2
     WaitAbility = 212
+
+    AA = -22
 
 # Samurai
 
@@ -604,6 +608,8 @@ class MonkActions(ActionEnum):
     Anatman = 16475
     Mantra = 65
 
+    AA = -5
+
 
 # Dragoon
 
@@ -647,6 +653,8 @@ class RangedActions(ActionEnum):
     ArmLength = 7548
     Potion = -2
     WaitAbility = 212
+
+    AA = -23
 
 
 # Bard
@@ -706,6 +714,7 @@ class MachinistActions(ActionEnum):
     # Queen actions
     Bunker = 15
     Collider = 16
+    QueenAA = -24
 
 # Dancer
 
@@ -742,6 +751,8 @@ class DancerActions(ActionEnum):
     Entrechat = 16000
     Jete = 16001
     Pirouette = 16002
+
+    AA = -22 # Dancer has Melee autos for some reason. I think that is correct.
 
 
 # These are the functions we will call since they check for both cls and job_class

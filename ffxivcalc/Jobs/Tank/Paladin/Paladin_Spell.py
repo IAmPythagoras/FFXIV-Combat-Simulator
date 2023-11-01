@@ -415,7 +415,7 @@ def PassageOfArms(time):
 
     return PaladinSpell(7385, False, time, time, 0, 0, ApplyPassageOfArms, [PassageOfArmsRequirement], False)
 #buff
-FightOrFlightBuff = buff(1.25)
+FightOrFlightBuff = buff(1.25,name="Fight or Flight")
 
 PaladinAbility = {
 30 : HallowedGround,

@@ -47,10 +47,10 @@ def ReassembleRequirement(Player, Spell):
     return Player.ReassembleStack > 0, -1
 
 def GaussRoundRequirement(Player, Spell):
-    return Player.GaussRoundStack > 0, -1
+    return Player.GaussRoundStack > 0, Player.GaussRoundCD
 
 def RicochetRequirement(Player, Spell):
-    return Player.RicochetStack > 0, -1
+    return Player.RicochetStack > 0, Player.RicochetCD
 
 def DrillRequirement(Player, Spell):
     return Player.DrillCD <= 0, Player.DrillCD
@@ -105,8 +105,8 @@ def ApplyBarrelStabilizer(Player, Enemy):
     Player.BarrelStabilizerCD = 120
 
 def ApplyHeatBlast(Player, Enemy):
-    Player.GaussRoundCD = max(0, Player.GaussRoundCD - 15)
-    Player.RicochetCD = max(0, Player.RicochetCD - 15)
+    if Player.GaussRoundStack < 3 : Player.GaussRoundCD -= 15
+    if Player.RicochetStack < 3 : Player.RicochetCD -= 15
 
 def ApplyHypercharge(Player, Enemy):
     Player.HyperchargeStack = 5
@@ -139,8 +139,7 @@ def ApplyDrill(Player, Enemy):
 
 def ApplyOverdrive(Player, Enemy):
     Player.Overdrive = False
-    Player.Queen.ActionSet.insert(0,Collider)
-    Player.Queen.ActionSet.insert(0,Bunker)
+    Player.QueenTimer = 0
 
 def ApplyChainSaw(Player, Enemy):
     AddGauge(Player, 20, 0)
@@ -162,6 +161,7 @@ def SummonQueen(Player, Enemy):
     Player.QueenTimer = QueenTimer - 3 # Setting Queen Timer, gives last 3 seconds to perform finisher moves
     #Will have to depend on battery Gauge
     #Timer is set at 10 so we can have 2 GCD to do finisher move if reaches before
+    Player.Queen.QueenOnField = True
     Player.EffectCDList.append(QueenCheck)
     Player.Queen.ActionSet.append(Queen_AA)
     Player.Queen.ActionSet.append(WaitAbility(QueenTimer - 3)) #Gives 3 last sec to do finishing move
@@ -199,15 +199,18 @@ def SplitShotEffect(Player, Spell):
 
         Spell.Potency += 180
         Player.EffectToRemove.append(SplitShotEffect)
-        if not (SlugShotEffect in Player.EffectList) : Player.EffectList.append(SlugShotEffect)
+        if not (SlugShotEffect in Player.EffectList) : Player.EffectToAdd.append(SlugShotEffect)
         AddGauge(Player, 0, 5)
+    elif Spell.id == SplitShot.id or Spell.id == CleanShot.id:
+        Player.EffectToRemove.append(SplitShotEffect)
 
 def SlugShotEffect(Player, Spell):
     if Spell.id == CleanShot.id:
-
         Spell.Potency += 260
         Player.EffectToRemove.append(SlugShotEffect)
         AddGauge(Player, 10, 5)
+    elif Spell.id == SplitShot.id or Spell.id == SlugShot.id:
+        Player.EffectToRemove.append(SlugShotEffect)
 
 
 #Check
@@ -261,21 +264,43 @@ def GaussRoundStackCheck(Player, Enemy):
     if Player.GaussRoundCD <= 0:
         if Player.GaussRoundStack == 2:
             Player.EffectToRemove.append(GaussRoundStackCheck)
+            Player.GaussRoundCD = 0
         else:
-            Player.GaussRoundCD = 30
+                             # Since Heatblast removes 15 seconds from the CD, it must be able to carry
+                             # over to the next stack.
+                             # I had a little wiggle game to account for rounding/small errors
+                             # and otherwise I simply add 30 seconds to the reduced CD.
+                             # The reason it can be negative is because heatblast removes a flat
+                             # 15 seconds to the timer.
+            if Player.GaussRoundCD < -0.05 :
+                Player.GaussRoundCD += 30
+            else : 
+                Player.GaussRoundCD = 30
         Player.GaussRoundStack +=1
 
 def RicochetStackCheck(Player, Enemy):
     if Player.RicochetCD <= 0:
         if Player.RicochetStack == 2:
             Player.EffectToRemove.append(RicochetStackCheck)
+            Player.RicochetCD = 0
         else:
-            Player.RicochetCD = 30
+                             # Since Heatblast removes 15 seconds from the CD, it must be able to carry
+                             # over to the next stack.
+                             # I had a little wiggle game to account for rounding/small errors
+                             # and otherwise I simply add 30 seconds to the reduced CD.
+                             # The reason it can be negative is because heatblast removes a flat
+                             # 15 seconds to the timer.
+            if Player.RicochetCD < -0.05 :
+                Player.RicochetCD += 30
+            else : 
+                Player.RicochetCD = 30
         Player.RicochetStack +=1
 
 def QueenCheck(Player, Enemy): # This will turn the queen off and make her perform the finisher moves
     if Player.QueenTimer <= 0: 
         Player.Overdrive = False
+        Player.QueenOnField = False
+        Player.QueenTimer = 0
         Player.Queen.TrueLock = False #Delocking the Queen so she can perform these two abilities
         Player.Queen.ActionSet.insert(Player.NextSpell+1,Bunker)
         Player.Queen.ActionSet.insert(Player.NextSpell+2,Collider)
@@ -342,7 +367,7 @@ def Flamethrower(time):
 Automaton = MachinistSpell(16501, False, 0, Lock, 0, 0, ApplyAutomaton, [], False)
 Overdrive = MachinistSpell(16502, False, 0, Lock, 0, 0, ApplyOverdrive, [], False)
 #These will be casted by the machinist, so they have no damage. Their only effect is to add into Queen's Queue
-Bunker = MachinistSpell(15, True, 0, 2.5, 680, 0, ApplyCollider, [], False)   #Triggered by Overdrive
+Bunker = MachinistSpell(15, True, 0, 2.5, 680, 0, empty, [], False)   #Triggered by Overdrive
 Collider = MachinistSpell(16, True, 0 , 2.5, 780, 0, ApplyCollider, [], False)  #Spell Queen will cast
 
 MachinistAbility = {

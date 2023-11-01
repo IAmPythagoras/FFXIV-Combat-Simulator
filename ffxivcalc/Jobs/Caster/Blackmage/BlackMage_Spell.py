@@ -405,7 +405,7 @@ AetherialManipulation = BLMSpell(155, False, 0, 0, 0, 0, False, False, empty, []
 Manaward = BLMSpell(157, False, 0, 0, 0, 0, False, False, ApplyManaward, [ManawardRequirement])
 
 #buff
-Enochian = buff(1.23)
+Enochian = buff(1.23, name="Enochian")
 
 
 #All BlackMage abilities with their id in a dictionnary

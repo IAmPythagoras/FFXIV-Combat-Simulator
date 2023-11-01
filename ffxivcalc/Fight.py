@@ -4,6 +4,7 @@ from ffxivcalc.Jobs.PlayerEnum import *
 from ffxivcalc.Jobs.ActionEnum import name_for_id
 from ffxivcalc.Jobs.Base_Spell import ZIPAction, PreBakedAction
 from ffxivcalc.helperCode.Progress import ProgressBar
+from ffxivcalc.SimulationRecord.record import SimulationRecord, page
 import matplotlib.pyplot as plt
 import logging
 from ffxivcalc.helperCode.helper_math import roundDown, isclose, roundUp
@@ -54,6 +55,8 @@ class Fight:
         self.PlayerList = [] # Empty player list
         self.MaxPotencyPlentifulHarvest = False # True will make Plentiful Harvest do max potency regardless of player.
         self.TimeUnit = 0
+
+        self.simulationRecord = SimulationRecord() # Creating SimulationRecord object
 
                              # These values can only be eddited by manually changing the values by accessing the Fight object.
         self.SavePreBakedAction = False
@@ -618,6 +621,13 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     PlayerIDSavePreBakedAction : int -> ID of the player for which we want to record the PreBakedActions.
     """
 
+                             # Creating page object to record action
+    thisPage = page()
+    Player.CurrentFight.simulationRecord.addPage(thisPage)
+    thisPage.setName(name_for_id(spellObj.id, Player.ClassAction, Player.JobAction))
+    thisPage.setPotency(Potency)
+    thisPage.setTimeStamp(Player.CurrentFight.TimeStamp)
+
     # The type input signifies what type of damage we are dealing with, since the computation will chance according to what
     # type of damage it is
 
@@ -649,15 +659,23 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     CritRate = (Player.CritRate)
     CritMult = Player.CritMult
     DHRate = Player.DHRate
+    if round(Player.CritRateBonus,2) > 0 : thisPage.addCritBuffList(("Other", Player.CritRateBonus))
+    if round(Player.DHRateBonus,2) > 0 : thisPage.addDHBuffList(("Other", Player.DHRateBonus))
     CritRateBonus = Player.CritRateBonus
     DHRateBonus = Player.DHRateBonus # Saving value for later use if necessary
     f_DET_DH = math.floor((f_DET + Player.DHAuto) * 1000 ) / 1000
 
-    if Enemy.ChainStratagem: CritRateBonus += 0.1    # If ChainStratagem is active, increase crit rate
+    if Enemy.ChainStratagem: 
+        CritRateBonus += 0.1    # If ChainStratagem is active, increase crit rate
+        thisPage.addCritBuffList(("Chain Stratagem", 0.1))
 
-    if Enemy.WanderingMinuet: CritRateBonus += 0.02 # If WanderingMinuet is active, increase crit rate
+    if Enemy.WanderingMinuet: 
+        CritRateBonus += 0.02 # If WanderingMinuet is active, increase crit rate
+        thisPage.addDHBuffList(("Wandering Minuet", 0.02))
 
-    if Enemy.BattleVoice: DHRateBonus += 0.2 # If BattleVoice is active, increase DHRate
+    if Enemy.BattleVoice: 
+        DHRateBonus += 0.2 # If BattleVoice is active, increase DHRate
+        thisPage.addDHBuffList(("Battle Voice", 0.1))
 
     DHRate += DHRateBonus# Adding Bonus
     CritRate += CritRateBonus# Adding bonus
@@ -719,10 +737,6 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         We will check if the action is a GCD with recast time of lesser or equal to 1.5s since the GCD
         cannot go lower. The total time will be remembered and substracted from the total time that is reduceable from more SpS.
         """
-
-        #if (Player.JobEnum == JobEnum.Pet and Player.Master.playerID == PlayerIDSavePreBakedAction): fight_logging.warning("Added Living Shadow ACtion")
-
-
                              # BuffList only contains personnal buff (I think? Have to check)
         buffList = []
         for buff in Player.buffList:
@@ -799,15 +813,19 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     if type == 0 or type == 3: # If Action or AA, then we apply the current buffs
         for buffs in Player.buffList: 
             Damage = math.floor(Damage * buffs.MultDPS) # Multiplying all buffs
+            thisPage.addPercentBuff(buffs)
         for buffs in Enemy.buffList:
             Damage = math.floor(Damage * buffs.MultDPS) # Multiplying all buffs
+            thisPage.addPercentBuff(buffs)
     else: # if type is 1 or 2, then its a DOT, so we have to use the snapshotted buffs
         for buffs in spellObj.MultBonus:
             Damage = math.floor(Damage * buffs.MultDPS)
+            thisPage.addPercentBuff(buffs)
 
     if spellObj.id == -2878: #If wildfire it cannot crit or DH, so we remove it
         non_crit_dh_expected, dh_crit_expected = Damage, Damage # Non crit expected damage, expected damage with crit
         (Player if Player.JobEnum != JobEnum.Pet else Player.Master).ZIPActionSet.append(ZIPAction(Damage, 0, CritMult, 0))
+        thisPage.setDamage(dh_crit_expected)
         return non_crit_dh_expected , dh_crit_expected
 
     
@@ -819,18 +837,27 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         fight_logging.debug("DHRateBonus : " + str(DHRateBonus) + " autodhbonus : " + str(auto_dh_bonus))
         non_crit_dh_expected, dh_crit_expected =  0, math.floor(math.floor(Damage * (1 + CritMult) ) * (1.25)) 
         (Player if Player.JobEnum != JobEnum.Pet else Player.Master).ZIPActionSet.append(ZIPAction(Damage, 1, CritMult, 1, auto_crit=True, auto_dh=True, AutoCritBonus=auto_crit_bonus, AutoDHBonus=auto_dh_bonus))
-        return 0, math.floor(math.floor(dh_crit_expected * auto_crit_bonus) * auto_dh_bonus)
+        Damage = math.floor(math.floor(dh_crit_expected * auto_crit_bonus) * auto_dh_bonus)
+        thisPage.setDamage(Damage)
+        thisPage.setAutoCrit(True)
+        thisPage.setAutoDH(True)
+        return 0, Damage
     elif auto_crit: # If sure to crit, add crit to min expected damage
         fight_logging.debug("Auto Crit")
         auto_crit_bonus = (1 + CritRateBonus * CritMult) # Auto_crit bonus if buffed
         non_crit_dh_expected, dh_crit_expected = ( 0, 
                                                    math.floor(math.floor(Damage * (1 + CritMult) ) * (1 + (DHRate * 0.25))) )# If we have auto crit, we return full damage
         (Player if Player.JobEnum != JobEnum.Pet else Player.Master).ZIPActionSet.append(ZIPAction(Damage, 1, CritMult, DHRate, auto_crit=True, AutoCritBonus=auto_crit_bonus ))
-        return 0, math.floor(dh_crit_expected * auto_crit_bonus) 
+        Damage = math.floor(dh_crit_expected * auto_crit_bonus) 
+        thisPage.setDamage(Damage)
+        thisPage.setAutoCrit(True)
+        return 0, Damage
     else:# No auto_crit or auto_DH
         non_crit_dh_expected, dh_crit_expected = 0, math.floor(math.floor(Damage * (1 + (CritRate * CritMult)) ) * (1 + (DHRate * 0.25))) # Non crit expected damage, expected damage with crit
         (Player if Player.JobEnum != JobEnum.Pet else Player.Master).ZIPActionSet.append(ZIPAction(Damage, CritRate, CritMult, DHRate))
-        return 0 , dh_crit_expected
+        Damage = dh_crit_expected
+        thisPage.setDamage(Damage)
+        return 0 , Damage
 
 # Compute Healing
 def ComputeHeal(Player, Potency, Target, SpellBonus, type, spellObj) -> float:

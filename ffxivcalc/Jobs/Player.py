@@ -1016,7 +1016,7 @@ class Player:
         self.DiaTimer = 0
         self.LucidDreamingTimer = 0
         self.PresenceOfMindTimer = 0
-        self.LilyTimer = 20 #Initiated at 40 sec since we have 20 sec CD
+        self.LilyTimer = 0
 
         #DOT
         self.Dia = None
@@ -1055,6 +1055,7 @@ class Player:
             if Player.CurrentFight.FightStart:
                 Player.EffectCDList.append(LilyCheck)
                 Player.EffectToRemove.append(LilyTimerStartCheck)
+                Player.LilyTimer = 20
 
         def LilyCheck(Player, Enemy):
             if Player.LilyTimer <= 0:
@@ -1230,7 +1231,7 @@ class Player:
         self.PhysisCD = 0
         #Timer
         self.EukrasianTimer = 0
-        self.AddersgallTimer = 0 #Starting at 40 since 20 sec countdown
+        self.AddersgallTimer = 0 
         self.PhlegmaTimer = 0
         #DOT
         self.Eukrasian = None
@@ -1267,12 +1268,19 @@ class Player:
             if (self.AddersgallTimer > 0) : self.AddersgallTimer = max(0,self.AddersgallTimer - time)
             if (self.PhlegmaTimer > 0) : self.PhlegmaTimer = max(0,self.PhlegmaTimer - time)
 
+
+        def applyAddersgallCheck(Player, Enemy):
+            if Player.CurrentFight.FightStart:
+                Player.EffectToRemove.append(applyAddersgallCheck)
+                Player.EffectCDList.append(AddersgallCheck)
+                Player.AddersgallTimer = 20
+
         def AddersgallCheck(Player, Enemy):
             if Player.AddersgallTimer <= 0:
                 Player.AddersgallStack = min(3, Player.AddersgallStack + 1)
-                Player.AddersgallTimer = 0
+                Player.AddersgallTimer = 20
 
-        self.EffectCDList.append(AddersgallCheck)
+        self.EffectCDList.append(applyAddersgallCheck)
 
         # update functions
         self.updateJobTimer = updateTimer

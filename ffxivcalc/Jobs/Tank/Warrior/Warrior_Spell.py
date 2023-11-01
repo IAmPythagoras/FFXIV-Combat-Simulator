@@ -209,6 +209,9 @@ def HeavySwingEffect(Player, Spell):
 def MaimEffect(Player, Spell):
     if Spell.id == StormEye.id:
         Spell.Potency += 280
+        if Player.SurgingTempestTimer <= 0:
+            Player.EffectCDList.append(SurgingTempestCheck)
+            Player.buffList.append(SurgingTempestBuff)
         Player.SurgingTempestTimer = min(60, Player.SurgingTempestTimer + 30)
         AddBeast(Player, 10)
         Player.EffectToRemove.append(MaimEffect)
@@ -324,7 +327,7 @@ def NascentFlash(Target):
 
 
 #buff
-SurgingTempestBuff = buff(1.1)
+SurgingTempestBuff = buff(1.1,name="Surging Tempest")
 
 WarriorAbility = {
 43 : Holmgang,

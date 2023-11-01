@@ -133,10 +133,12 @@ def ApplyStandardFinish(Player, Enemy):
     #and the dance partner
 
     #The check will be done on the dancer only
-    if Player.StandardFinishTimer == 0: Player.EffectCDList.append(StandardFinishCheck)
+    if Player.StandardFinishTimer <= 0: 
+        Player.EffectCDList.append(StandardFinishCheck)
+        Player.buffList.append(Player.StandardFinishBuff) #Bonus DPS
+        if Player.DancePartner != None : Player.DancePartner.buffList.append(Player.StandardFinishBuff) #Dance Partner Bonus
+    
     Player.StandardFinishTimer = 60
-    Player.buffList.append(Player.StandardFinishBuff) #Bonus DPS
-    if Player.DancePartner != None : Player.DancePartner.buffList.append(Player.StandardFinishBuff) #Dance Partner Bonus
 
     Player.Emboite = False
     Player.Entrechat = False
@@ -216,6 +218,9 @@ def ApplyTillana(Player, Enemy):
     
     if Player.StandardFinishBuff == None : Player.StandardFinishBuff = copy.deepcopy(StandardFinishBuff)
     Player.StandardFinishBuff.MultDPS = 1.05
+
+    Player.StandardFinishTimer = 0 # Have to set to 0 so ApplyStandardFinish appends the buff to player buff list.
+
     ApplyStandardFinish(Player, Enemy) #Will give StandardFinish with a bonus of 5%
 
 def ApplyStarfallDance(Player, Enemy):
@@ -371,8 +376,8 @@ EnAvant = DancerSpell(16010, False, 0, 0, empty, [], False) #No requirement, spa
 CuringWaltz = DancerSpell(16015, False, 0, 0, ApplyCuringWaltz, [CuringWaltzRequirement], False)
 Samba = DancerSpell(16012, False, 0, 0, ApplySamba, [SambaRequirement], False)
 #buff
-TechnicalFinishBuff = buff(1) #We will adapt the buff depending on number of steps at casting
-StandardFinishBuff = buff(1) #We will adapt the buff depending on number of steps at casting
+TechnicalFinishBuff = buff(1,name="Technical Finish") #We will adapt the buff depending on number of steps at casting
+StandardFinishBuff = buff(1,name="Standard Finish") #We will adapt the buff depending on number of steps at casting
 
 #Dance Partner
 Ending = DancerSpell(18073, False, 0, 0, ApplyEnding, [], False)
