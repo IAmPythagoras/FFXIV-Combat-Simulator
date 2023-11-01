@@ -60,7 +60,7 @@ With version 0.8.10 you can now output a "Simulation record" as a pdf file that 
 ![image](https://github.com/IAmPythagoras/FFXIV-Combat-Simulator/assets/62820030/88069e5d-8ffa-4783-acc3-b1b02c3ce33e)
 
 This record's goal is to act as a sort of log, but which is more easily understood and contains only the most useful information on the running of the simulation.
-
+You can also export a text only version of this record.
 # Rotation BiS Solver 
 
 As of ffxivcalc version 0.8.00, this library now has a built in rotation BiS solver. You can use the ffxivcalclayout.py in order to experiment with it.
