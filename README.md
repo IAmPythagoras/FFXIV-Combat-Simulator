@@ -55,6 +55,12 @@ This library also has a built-in BiS (best in slot) solver. The advantage of usi
 
 Learn more about the simulator and how to use it by going to the official documentation website : https://iampythagoras.github.io/index.html
 
+With version 0.8.10 you can now output a "Simulation record" as a pdf file that shows information about the simulation :
+
+![image](https://github.com/IAmPythagoras/FFXIV-Combat-Simulator/assets/62820030/88069e5d-8ffa-4783-acc3-b1b02c3ce33e)
+
+This record's goal is to act as a sort of log, but which is more easily understood and contains only the most useful information on the running of the simulation.
+
 # Rotation BiS Solver 
 
 As of ffxivcalc version 0.8.00, this library now has a built in rotation BiS solver. You can use the ffxivcalclayout.py in order to experiment with it.
