@@ -178,7 +178,6 @@ def InnerReleaseEffect(Player, Spell):
     if Spell.id == FellCleave.id:
         Player.NoBeastCostStack -= 1
         Spell.Cost = 0
-        Player.InnerReleaseStack += 1
         if Player.NoBeastCostStack == 0: 
             Player.EffectToRemove.append(InnerReleaseEffect)
 
