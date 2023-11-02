@@ -145,7 +145,8 @@ def PrintResult(self, time : float, TimeStamp, PPSGraph : bool = True) -> str:
             "DPS : " + str(round(DPS,2)) + 
             " PPS : " + str(round(PPS,2)) + 
             " TP : " + str(round(player.TotalPotency,2)) + 
-            " GCD : " + str(player.GCDCounter) + "\n"
+            " GCD : " + str(player.GCDCounter) + 
+            " TD : " + str(player.TotalDamage) + "\n"
         )
 
         # DPS Percentile if applies

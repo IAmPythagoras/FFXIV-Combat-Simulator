@@ -166,11 +166,9 @@ def ApplyInnerRelease(Player, Enemy):
     Player.InnerReleaseCD = 60
 
 def ApplyPrimalRend(Player, Enemy):
-    Player.InnerReleaseStack += 1 #To allow for Direct Crit
     Player.PrimalRendTimer = 0
 
 def ApplyInnerChaos(Player, Enemy):
-    Player.InnerReleaseStack += 1
     Player.InfuriateCD = max(0, Player.InfuriateCD - 5)
     Player.NascentChaosTimer = 0
 

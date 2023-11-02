@@ -574,7 +574,9 @@ class Fight:
             Player.CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000 # Crit rate in decimal
             Player.CritMult = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000 # Crit Damage multiplier
             Player.DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000 # DH rate in decimal
-            Player.DHAuto = math.floor(140*(Player.Stat["DH"]-baseMain)/levelMod)/1000 # DH bonus when auto crit/DH
+            Player.DHAuto = math.floor(140*(Player.Stat["DH"]-baseSub)/levelMod)/1000 # DH bonus when auto crit/DH
+                             # I was using baseMain for DHAuto, but I think that might be wrong based on what
+                             # is in the tankcalc gear sheet. I have not yet confirmed which is the correct one to use.
             
             log_str = ("ID : " + str(Player.playerID) + " , Job : " + JobEnum.name_for_id(Player.JobEnum) 
             + " , f_WD : " + str(Player.f_WD) 
@@ -583,7 +585,8 @@ class Fight:
             + " , f_SPD : " + str(Player.f_SPD) 
             + " , f_CritRate : " + str(Player.CritRate) 
             + " , f_CritMult : " + str(Player.CritMult)
-            + " , f_DHRate : " + str(Player.DHRate)  )
+            + " , f_DHRate : " + str(Player.DHRate)  
+            + ", f_DHAuto : " + str(Player.DHAuto))
 
             fight_logging.debug(log_str)
 
@@ -699,10 +702,11 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
                 auto_DH = True   
         elif Player.JobEnum == JobEnum.Warrior:
             fight_logging.debug("Inner Release Stack : " + str(Player.InnerReleaseStack))        # Primal Rend                                     # Fell Cleave                                    # Inner Chaos
-            if Player.InnerReleaseStack >= 1 and (Player.NextSpell < len(Player.ActionSet)) and (Player.ActionSet[Player.NextSpell].id == 25753 or Player.ActionSet[Player.NextSpell].id == 3549 or Player.ActionSet[Player.NextSpell].id == 16465):
+            if (Player.NextSpell < len(Player.ActionSet)) and (Player.ActionSet[Player.NextSpell].id == 25753 or (Player.ActionSet[Player.NextSpell].id == 3549 and Player.InnerReleaseStack > 0) or Player.ActionSet[Player.NextSpell].id == 16465):
                 CritRate = 1# If inner release weaponskill
                 DHRate = 1
-                Player.InnerReleaseStack -= 1
+                             # Remove stack if fell cleave
+                if Player.ActionSet[Player.NextSpell].id == 3549 : Player.InnerReleaseStack -= 1
                 auto_crit = True
                 auto_DH = True
         elif Player.JobEnum == JobEnum.Samurai:
