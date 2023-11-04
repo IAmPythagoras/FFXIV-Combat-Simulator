@@ -32,6 +32,10 @@ class page:
         self.PercentBuffList = []
         self.DHBuffList = []
         self.CritBuffList = []
+        self.playerID = 0
+
+    def setPlayerID(self,newID : int ):
+        self.playerID = newID
 
     def setName(self, name : str):
         self.Name = name
@@ -78,33 +82,38 @@ class page:
         if self.autoCrit : crititalDH += "!"
         if self.autoDH : crititalDH += "!"
 
-        return self.Name + " ; " + str(self.Potency) + " ; " + str(self.Damage) + " ; " + " ; " + str(self.TimeStamp) + " ; " + percentBuffStr + " ; " + dhBuffStr + " ; " + critBuffStr + " ; " + crititalDH
+        return self.Name + " ; " + str(self.Potency) + " ; " + str(self.Damage) + " " + crititalDH + " ; " + " ; " + str(self.TimeStamp) + " ; " + percentBuffStr + " ; " + dhBuffStr + " ; " + critBuffStr
 
 class SimulationRecord:
 
     def __init__(self):
         self.pageList = []
+        self.idList = []
 
     def addPage(self, newPage : page):
         self.pageList.append(newPage)
 
     def __str__(self):
         rString = ""
+        specId = len(self.idList) == 0
 
         for pages in self.pageList:
-            rString += str(pages) + "\n"
+            if specId or (pages.playerID in self.idList) : rString += str(pages) + "\n"
 
         return rString
 
-    def saveRecordText(self):
+    def saveRecordText(self, idList : list = []):
         """
         This function saves the record as a text file.
         """
+
+        self.idList = idList
+
         f = open("SimulationRecord.txt", "w")
         f.write(str(self))
         f.close()
 
-    def saveRecord(self):
+    def saveRecord(self,idList : list = []):
         """
         This function saves the record as a plot (pdf).
         """

@@ -85,10 +85,12 @@ class Fight:
         self.ExtractInfo = DefaultExtractInfo
 
     def AddPlayer(self, Players):
-
+        nextID = 0
         for player in Players:
             player.CurrentFight = self
             self.PlayerList.append(player)
+            player.playerID = nextID
+            nextID += 1
 
     def SimulateZIPFight(self):
         """
@@ -178,14 +180,6 @@ class Fight:
             curMainStat = MainStat * (PreBakedAction.MainStatPercentageBonus if not PreBakedAction.isFromPet else 1)
 
             fight_logging.debug("TimeStamp : " + str(timeStamp))
-            #fight_logging.debug("Finish : " + str(trialFinishTime))
-            #fight_logging.debug("f_SPD : " + str(f_SPD))
-            #fight_logging.debug("Non rounded : " + str(gcdReductionRatio))
-            #fight_logging.debug("Non Reducable : " + str(PreBakedAction.nonReducableStamp) + " Reducable : " + str(PreBakedAction.reducableStamp) + " SPD : " + str(roundDown(gcdReductionRatio,3)))
-            #fight_logging.debug("GCDLock : " + str(PreBakedAction.gcdLockTimer))
-            #fight_logging.debug("Amount not rounded : " + str(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3)))
-            #fight_logging.debug("Amount rounded : " + str(roundDown(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),2)))
-            #fight_logging.debug("amountToRemoveEveryGCD : " + str(amountToRemoveEveryGCD))
                                          # Will check what buffs the action falls under.
                                          # Chain Stratagem
             for history in player.ChainStratagemHistory:
@@ -254,15 +248,6 @@ class Fight:
             "90" : 0 if n < 100 else sum(randomDPSRuns[(90*Percent+1):(99*Percent-1)])/(len(randomDPSRuns[(90*Percent+1):(99*Percent-1)])),
             "99" : 0 if n < 100 else sum(randomDPSRuns[(99*Percent):])/(len(randomDPSRuns[(99*Percent):]))
         }
-        #percentileRuns = {
-        #    "1" :  0 if n < 100 else randomDPSRuns[Percent],
-        #    "10" : 0 if n < 100 else randomDPSRuns[10 * Percent],
-        #    "25" : 0 if n < 100 else randomDPSRuns[25 * Percent],
-        #    "50" : 0 if n < 100 else randomDPSRuns[50 * Percent],
-        #    "75" : 0 if n < 100 else randomDPSRuns[75 * Percent],
-        #    "90" : 0 if n < 100 else randomDPSRuns[90 * Percent],
-        #    "99" : 0 if n < 100 else randomDPSRuns[n - Percent]
-        #}
                              # Reseting all bonus value for PreBakedActions
         for PreBakedAction in player.PreBakedActionSet:
             PreBakedAction.resetTimeSensibleBuff()
@@ -626,6 +611,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
                              # Creating page object to record action
     thisPage = page()
+    thisPage.setPlayerID(Player.playerID)
     Player.CurrentFight.simulationRecord.addPage(thisPage)
     thisPage.setName(name_for_id(spellObj.id, Player.ClassAction, Player.JobAction))
     thisPage.setPotency(Potency)

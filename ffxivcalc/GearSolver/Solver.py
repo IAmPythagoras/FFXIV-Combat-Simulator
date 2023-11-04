@@ -55,7 +55,7 @@ def getGearDPSValue(Fight, gearSet : GearSet, PlayerIndex : int, n : int =10000)
 
     player.Stat = getBaseStat(IsTank=IsTank)
     GearStat = gearSet.GetGearSetStat(IsTank=IsTank)
-    GearStat = {'MainStat': 3378, 'WD': 132, 'Det': 1666, 'Ten': 400, 'SS': 400, 'SkS': 714, 'Crit': 2595, 'DH': 1258, 'Piety': 390}
+    GearStat = {'MainStat': 3338, 'WD': 132, 'Det': 2076, 'Ten': 529, 'SS': 400, 'SkS': 934, 'Crit': 2586, 'DH': 508, 'Piety': 390}
     player.Stat["SS" if IsCaster else "SkS"] = GearStat["SS" if IsCaster else "SkS"]
     Fight.SavePreBakedAction = True
     Fight.PlayerIDSavePreBakedAction = PlayerIndex
@@ -97,7 +97,7 @@ def computeDamageValue(GearStat : dict, JobMod : int, IsTank : bool, IsCaster : 
     f_CritRate = floor((200*(GearStat["Crit"]-baseSub)/levelMod+50))/1000 # Crit rate in decimal
     f_CritMult = (floor(200*(GearStat["Crit"]-baseSub)/levelMod+400))/1000 # Crit Damage multiplier
     f_DH = floor(550*(GearStat["DH"]-baseSub)/levelMod)/1000 # DH rate in decimal
-    DHAuto = floor(140*(GearStat["DH"]-baseMain)/levelMod)/1000 # DH bonus when auto crit/DH
+    DHAuto = floor(140*(GearStat["DH"]-baseSub)/levelMod)/1000 # DH bonus when auto crit/DH
     return f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto
 
 def computeGCDTimer(speedStatValue : int, subGCDHasteAmount : int) -> (str, str):
