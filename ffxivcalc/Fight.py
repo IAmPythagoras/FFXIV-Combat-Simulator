@@ -319,6 +319,9 @@ class Fight:
                 if hasTank: self.TeamCompositionBonus += 0.01
                 if hasHealer: self.TeamCompositionBonus += 0.01
 
+        for Player in self.PlayerList:
+            Player.Stat["MainStat"] = math.floor(Player.Stat["MainStat"] * self.TeamCompositionBonus) # Scaling %bonus on mainstat
+
         # Will first compute each player's GCD reduction value based on their Spell Speed and Skill Speed Value
         for Player in self.PlayerList:
             Player.SpellReduction = (1000 - math.floor(130 * (Player.Stat["SS"]-400) / 1900))/1000
@@ -635,12 +638,13 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     Enemy = Player.CurrentFight.Enemy # Enemy targetted
     isPet = (Player.JobEnum == JobEnum.Pet)
     isTank = Player.RoleEnum == RoleEnum.Tank or (isPet and Player.Master.RoleEnum == RoleEnum.Tank)
-    if Player.JobEnum == JobEnum.Pet: MainStat = Player.Stat["MainStat"] # Summons do not receive bonus
-    else: MainStat = math.floor(Player.Stat["MainStat"] * Player.CurrentFight.TeamCompositionBonus) # Scaling %bonus on mainstat
+    MainStat = Player.Stat["MainStat"]
     # Computing values used throughout all computations
     if isTank : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
     else: f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100
     # These values are all already computed since they do not change
+    if Player.playerID == 0 : 
+        fight_logging.warning("MainStat actual : " + str(MainStat))
     f_WD = Player.f_WD
     f_DET = Player.f_DET
     f_TEN = Player.f_TEN

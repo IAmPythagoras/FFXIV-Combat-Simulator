@@ -2416,6 +2416,9 @@ class Pet(Player):
         player_logging.debug("New Pet Created : " + str(self.Stat))
 
         super().__init__([], [], deepcopy(Master.Stat), JobEnum.Pet)
+        
+                             # Giving same playerID as Master
+        self.playerID = Master.playerID
 
         # Adding itself to the fight object
         Master.CurrentFight.AddPlayer([self])
