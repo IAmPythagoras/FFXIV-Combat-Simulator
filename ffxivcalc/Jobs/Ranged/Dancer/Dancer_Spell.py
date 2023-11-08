@@ -384,10 +384,10 @@ StandardFinishBuff = buff(1,name="Standard Finish") #We will adapt the buff depe
 Ending = DancerSpell(18073, False, 0, 0, ApplyEnding, [], False)
 
 def ClosedPosition(Partner, InFight="True"):
-
     def ApplyClosedPosition(Player, Enemy):
+
         if InFight : Player.ClosedPositionCD = 30 #Only update CD if in Fight, since we can dance partner before begins
-        
+
         Player.DancePartner = Partner #New Partner
         if Player.StandardFinishTimer > 0: #Add StandardFinish
             Player.DancePartner.buffList.append(Player.StandardFinishBuff)
@@ -397,6 +397,7 @@ def ClosedPosition(Partner, InFight="True"):
 
 
         #Will have to switch buff
+        # If change this ID make sure to change in deepCopyFight too.
     ClosedPositionSpell = DancerSpell(16006, False, 0, 0, ApplyClosedPosition, [ClosedPositionRequirement], False)
     ClosedPositionSpell.TargetID = Partner.playerID
     return ClosedPositionSpell

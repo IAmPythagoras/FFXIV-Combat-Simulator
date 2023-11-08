@@ -1,10 +1,13 @@
 import math
+from copy import deepcopy
 from ffxivcalc.helperCode.Vocal import PrintResult, SimulateRuns
 from ffxivcalc.Jobs.PlayerEnum import *
 from ffxivcalc.Jobs.ActionEnum import name_for_id
 from ffxivcalc.Jobs.Base_Spell import ZIPAction, PreBakedAction
 from ffxivcalc.helperCode.Progress import ProgressBar
 from ffxivcalc.SimulationRecord.record import SimulationRecord, page
+from ffxivcalc.helperCode.exceptions import playerIDNotFound
+
 import matplotlib.pyplot as plt
 import logging
 from ffxivcalc.helperCode.helper_math import roundDown, isclose, roundUp
@@ -37,6 +40,69 @@ class Fight:
         # This could be optimized. But for now we will reocompute this sorted list every time.
 
         return sorted_list[0:range] # Returns the number of targets we are interested in
+
+    def playerForID(self, id):
+        """This function returns a reference to the player object that has the given ID in the fight.
+
+        Args:
+            id (int): id of the player we want.
+        """
+
+        for player in self.PlayerList:
+            if player.playerID == id : return player
+
+        raise playerIDNotFound
+    
+    def deepCopy(self):
+        """This function returns a deepcopy of itself.
+        We cannot use the deepcopy function alone since some issues arise.
+        One such issue is that any action that targets a player will not have their target
+        updated and will still target the player from the original fight (the one that is being deepcopied).
+        To fix this we will look for the actions with target, get the targetID and replace these actions with the appropriate
+        action that now targets the correct player.
+        """
+        from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import ClosedPosition
+        from ffxivcalc.Jobs.Melee.Dragoon.Dragoon_Spell import DragonSight
+        from ffxivcalc.Jobs.Healer.Astrologian.Astrologian_Spell import Balance, Arrow, Spear, Bole, Ewer, Spire
+
+        dcFight = deepcopy(self)
+
+        for player in dcFight.PlayerList:
+            match player.JobEnum:
+                case JobEnum.Dancer:
+                    changeIndex = []
+                    
+                    for index,action in enumerate(player.ActionSet):
+                        if action.id == 16006: # Closed Position
+                            changeIndex.append((index,action.TargetID))
+                    for change in changeIndex:
+                        player.ActionSet[change[0]] = ClosedPosition(self.playerForID(change[1]))
+
+                case JobEnum.Dragoon:
+                    changeIndex = []
+                    
+                    for index,action in enumerate(player.ActionSet):
+                        if action.id == 7398: # Dragoon Sight
+                            changeIndex.append((index,action.TargetID))
+                    for change in changeIndex:
+                        player.ActionSet[change[0]] = DragonSight(self.playerForID(change[1]))
+                case JobEnum.Astrologian:
+                    changeIndex = []
+                    
+                    for index,action in enumerate(player.ActionSet):
+                        if action.id >=4401 and action.id <=4406: # Arcanum
+                            match action.id :
+                                case 4401 : changeIndex.append((index,Balance(self.playerForID(action.TargetID))))
+                                case 4402 : changeIndex.append((index,Arrow(self.playerForID(action.TargetID))))
+                                case 4403 : changeIndex.append((index,Spear(self.playerForID(action.TargetID))))
+                                case 4404 : changeIndex.append((index,Bole(self.playerForID(action.TargetID))))
+                                case 4405 : changeIndex.append((index,Ewer(self.playerForID(action.TargetID))))
+                                case 4406 : changeIndex.append((index,Spire(self.playerForID(action.TargetID))))
+
+                    for change in changeIndex:
+                        player.ActionSet[change[0]] = change[1]
+
+        return dcFight
 
     def __init__(self, Enemy, ShowGraph):
         self.Enemy = Enemy
