@@ -88,31 +88,29 @@ def ApplyFangAndClaw(Player, Enemy):
 def ApplyLanceCharge(Player, Enemy):
     Player.LanceChargeCD = 60
     Player.LanceChargeTimer = 20
-    if not Player.CurrentFight.SavePreBakedAction:
-        Player.EffectCDList.append(LanceChargeCheck)
-        Player.buffList.append(LanceChargeBuff)
+    Player.EffectCDList.append(LanceChargeCheck)
+    Player.buffList.append(LanceChargeBuff)
 
                                      # Only doing this if SavePreBakedAction is true
-    if Player.CurrentFight.SavePreBakedAction:
-        fight = Player.CurrentFight
-        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , LanceChargeBuff.MultDPS)
-        Player.PercentBuffHistory.append(history)
+    #if Player.CurrentFight.SavePreBakedAction:
+    #    fight = Player.CurrentFight
+    #    history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , LanceChargeBuff.MultDPS)
+    #    Player.PercentBuffHistory.append(history)
 
 def ApplyBattleLitany(Player, Enemy):
     Player.BattleLitanyCD = 120
     Player.BattleLitanyTimer = 15
 
     #Will give each person in the fight the buff
-    if not Player.CurrentFight.SavePreBakedAction:
-        for player in Player.CurrentFight.PlayerList:  
-            player.CritRateBonus += 0.1
-        Player.EffectCDList.append(BattleLitanyCheck)
+    for player in Player.CurrentFight.PlayerList:  
+        player.CritRateBonus += 0.1
+    Player.EffectCDList.append(BattleLitanyCheck)
 
                                      # Only doing this if SavePreBakedAction is true
-    if Player.CurrentFight.SavePreBakedAction:
-        fight = Player.CurrentFight
-        history = buffHistory(fight.TimeStamp, fight.TimeStamp + 15)
-        fight.PlayerList[fight.PlayerIDSavePreBakedAction].BattleLitanyHistory.append(history)
+    #if Player.CurrentFight.SavePreBakedAction:
+    #    fight = Player.CurrentFight
+    #    history = buffHistory(fight.TimeStamp, fight.TimeStamp + 15)
+    #    fight.PlayerList[fight.PlayerIDSavePreBakedAction].BattleLitanyHistory.append(history)
 
 def ApplyGeirskogul(Player, Enemy):
     Player.GeirskogulCD = 30
@@ -334,18 +332,17 @@ def DragonSight(Target):
         Player.DragonSightCD = 120
         Player.DragonSightTimer = 20
 
-        if not Player.CurrentFight.SavePreBakedAction:
-            Player.buffList.append(RightEyeBuff)
-            Target.buffList.append(LeftEyeBuff)
-            Player.EffectCDList.append(DragonSightCheck)
+        Player.buffList.append(RightEyeBuff)
+        Target.buffList.append(LeftEyeBuff)
+        Player.EffectCDList.append(DragonSightCheck)
 
                                          # Only doing this if SavePreBakedAction is true
-        if Player.CurrentFight.SavePreBakedAction:
-            fight = Player.CurrentFight
-            history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , LeftEyeBuff.MultDPS)
-            drgHistory = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20, RightEyeBuff.MultDPS) # Adding to DRG instead of chcking
-            Target.PercentBuffHistory.append(history)
-            Player.PercentBuffHistory.append(drgHistory)
+        #if Player.CurrentFight.SavePreBakedAction:
+        #    fight = Player.CurrentFight
+        #    history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , LeftEyeBuff.MultDPS)
+        #    drgHistory = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20, RightEyeBuff.MultDPS) # Adding to DRG instead of chcking
+        #    Target.PercentBuffHistory.append(history)
+        #    Player.PercentBuffHistory.append(drgHistory)
 
     DragonSightSpell = DragoonSpell(7398, False, 0, 0, ApplyDragonSight, [DragonSightRequirement], False)
     DragonSightSpell.TargetID = Target.playerID

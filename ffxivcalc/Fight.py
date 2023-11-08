@@ -117,103 +117,31 @@ class Fight:
 
         damageHistory = []   # This list will contain the damage of all PreBakedAction ComputeExpectedDamage used to
                              # faster compute RandomDamage
-        self.ChainStratagemHistory = []
-        self.BattleLitanyHistory = []
-        self.WanderingMinuetHistory = []
-        self.BattleVoiceHistory = []
-        self.DevilmentHistory = []
-        self.PotionHistory = []
-        self.PercentBuffHistory = []
 
         countGCD = 0
         timeStamp = 0
         totalPotency = 0
-
-        #amountToRemoveEveryGCD = 0
         trialFinishTime = player.PreBakedActionSet[-1].timeStamp
-
-        #gcdReductionRatio = round(2 - f_SPD,8)
-
-                             # Find this set's finish time so we can cut off autos if they do not hit in the end.
-        #for PreBakedAction in player.PreBakedActionSet:
-        #    amountToRemoveEveryGCD += round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10) - roundDown(round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10),2)
-        #    if PreBakedAction.isGCD : countGCD += 1
-        #
-        #    trialFinishTime = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(gcdReductionRatio,3)) - (amountToRemoveEveryGCD)),2)
-        
         countGCD = 0
-        #amountToRemoveEveryGCD = 0
-        #amountToRemoveFailCondition = 0
-        #actionFailsCondition = False
-        for history in player.PercentBuffHistory:
-            fight_logging.warning(str(history))
+        #for history in player.PercentBuffHistory:
+        #    fight_logging.warning(str(history))
 
                              # Will compute DPS
         for PreBakedAction in player.PreBakedActionSet:
-                             # The timestamp of the PreBakedAction. We are substracting 0.01 seconds for every previously done GCD
-                             # since round(PreBakedAction.reducableStamp / f_SPD, 2) computes the GCD timer, but the simulator
-                             # starts counting at 0.00, so we have to substract for every GCD as otherwise we will gain 0.01 every GCD.
-
                                                      # Count every GCD
-            if PreBakedAction.isGCD : countGCD += 1
-                             # Have to round PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3) as it sometime has repeating 9s when it should be the value above.
-            #amountToRemoveEveryGCD += round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10) - roundDown(round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10),2)
-
-            #timeStamp = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(gcdReductionRatio,3)) - (amountToRemoveEveryGCD)),2)# - roundDown(amountToRemoveFailCondition,2)
+            if PreBakedAction.isGCD : countGCD += 1                        
             timeStamp = PreBakedAction.timeStamp
-
-                             # Checking if action is conditional. If it is we check for requirment.
-            #if PreBakedAction.isConditionalAction:
-
-            #    if timeStamp >= 8:
-            #                 # Do not meet the requirement
-            #        actionFailsCondition = True
-            #        amountToRemoveFailCondition += max(PreBakedAction.gcdLockTimer,1.5)
-            #        amountToRemoveEveryGCD -= round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10) - roundDown(round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10),2)
-
-                             # If an auto doesn't land in this trial we simply continue
-            if PreBakedAction.type == 3 and timeStamp > trialFinishTime:
-                continue
-
                                          # Computing base MainStat for this action. If from pet do not get teamcomp bonus
             totalPotency += PreBakedAction.Potency
             curMainStat = MainStat * (PreBakedAction.MainStatPercentageBonus if not PreBakedAction.isFromPet else 1)
 
             fight_logging.debug("TimeStamp : " + str(timeStamp))
-                                         # Will check what buffs the action falls under.
-                                         # Chain Stratagem
-            for history in player.ChainStratagemHistory:
-                if history.isUp(timeStamp):
-                    PreBakedAction.CritBonus += 0.1
-                                         # Devilment
-            for history in player.DevilmentHistory:
-                if history.isUp(timeStamp):
-                    PreBakedAction.CritBonus += 0.2
-                    PreBakedAction.DHBonus += 0.2
-                                         # Battle Litany
-            for history in player.BattleLitanyHistory:
-                if history.isUp(timeStamp):
-                    PreBakedAction.CritBonus += 0.1
-                                         # Wandering Minuet
-            for history in player.WanderingMinuetHistory:
-                if history.isUp(timeStamp):
-                    PreBakedAction.CritBonus += 0.02
-                                         # Battle Voice
-            for history in player.BattleVoiceHistory:
-                if history.isUp(timeStamp):
-                    PreBakedAction.DHBonus += 0.2
                                          # Potion
-            for history in player.PotionHistory:
-                if history.isUp(timeStamp):
-                    curMainStat = min(math.floor(curMainStat * 1.1), curMainStat + 262) #Grade 8 HQ tincture
+            if PreBakedAction.potionIsActive : curMainStat = min(math.floor(curMainStat * 1.1), curMainStat + 262) #Grade 8 HQ tincture
                                          # Any other percent bonus. Might have to remake dragoon tether since pet not affected by this buff
-            for history in player.PercentBuffHistory:
-                if PreBakedAction.isFromPet and history.isTrickAttack : continue
-                if history.isUp(timeStamp):
-                    PreBakedAction.PercentageBonus.append(history.getPercentBonus())
 
             for buff in PreBakedAction.buffList:
-                PreBakedAction.PercentageBonus.append(buff)
+                PreBakedAction.PercentageBonus.append(buff.MultDPS)
 
             if PreBakedAction.IsTank : f_MAIN_DMG = (100+math.floor((curMainStat-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
             else: f_MAIN_DMG = (100+math.floor((curMainStat-baseMain)*195/baseMain))/100
@@ -221,7 +149,6 @@ class Fight:
             ExpectedDamage += ActionExpected
             player.DamageInstanceList.append(ActionExpected)
             damageHistory.append(Damage)
-            #actionFailsCondition = False
 
                              # Will compute Random DPS
         randomDPSRuns = []   # This list will contain all the DPS of the random runs
@@ -643,8 +570,6 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     if isTank : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
     else: f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100
     # These values are all already computed since they do not change
-    if Player.playerID == 0 : 
-        fight_logging.warning("MainStat actual : " + str(MainStat))
     f_WD = Player.f_WD
     f_DET = Player.f_DET
     f_TEN = Player.f_TEN
@@ -731,10 +656,12 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         We will check if the action is a GCD with recast time of lesser or equal to 1.5s since the GCD
         cannot go lower. The total time will be remembered and substracted from the total time that is reduceable from more SpS.
         """
-                             # BuffList only contains personnal buff (I think? Have to check)
+                             # Snapshotting all buff on that action.
         buffList = []
         for buff in Player.buffList:
-            buffList.append(buff.MultDPS)
+            buffList.append(buff)
+        for buff in Enemy.buffList:
+            buffList.append(buff)
 
         if auto_crit and auto_DH : fight_logging.debug("Auto Crit/DH prebaked")
         elif auto_crit : fight_logging.debug("Auto Crit prebaked")
@@ -745,9 +672,14 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         gcdLockTimer = max(spellObj.notRoundRecastTime, spellObj.notRoundCastTime) if spellObj.GCD  and (Player.RoleEnum != RoleEnum.Pet) and max(spellObj.notRoundRecastTime, spellObj.notRoundCastTime) > 1.5 else 0
         if spellObj.GCD and (Player.RoleEnum == RoleEnum.Melee or Player.RoleEnum == RoleEnum.Tank) and spellObj.type == 1 : gcdLockTimer = 0
         elif spellObj.GCD and (Player.RoleEnum == RoleEnum.Caster) and spellObj.type == 2 : gcdLockTimer = 0
-
-        (Player if not isPet else Player.Master).PreBakedActionSet.append(PreBakedAction(isTank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type,Player.CurrentFight.TimeStamp if Player.CurrentFight.FightStart else 0, nonReducableStamp + (0 if type == 0 else reducableStamp), 
-                                                       reducableStamp if type == 0 else 0 ,AutoCrit=auto_crit, AutoDH=auto_DH, isFromPet=isPet, isGCD=spellObj.GCD,gcdLockTimer=gcdLockTimer,spellDPSBuff=SpellBonus, isConditionalAction=spellObj.conditionalAction))
+        
+        newPreBaked = PreBakedAction(isTank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type,Player.CurrentFight.TimeStamp if Player.CurrentFight.FightStart else 0, nonReducableStamp + (0 if type == 0 else reducableStamp), 
+                                     reducableStamp if type == 0 else 0 ,AutoCrit=auto_crit, AutoDH=auto_DH, isFromPet=isPet, isGCD=spellObj.GCD,gcdLockTimer=gcdLockTimer,spellDPSBuff=SpellBonus, isConditionalAction=spellObj.conditionalAction)
+                             # Giving dh and crit bonus
+        newPreBaked.CritBonus = CritRateBonus
+        newPreBaked.DHBonus = DHRateBonus
+        newPreBaked.potionIsActive =  Player.PotionTimer > 0 or (isPet and Player.Master.PotionTimer > 0)
+        (Player if not isPet else Player.Master).PreBakedActionSet.append(newPreBaked)
         
         return Potency, Potency        # Exit the function since we are not interested in the immediate damage value. Still return potency as to not break the fight's duration.
 

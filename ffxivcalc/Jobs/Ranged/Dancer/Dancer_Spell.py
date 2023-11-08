@@ -156,9 +156,8 @@ def ApplyTechnicalFinish(Player, Enemy):
     #and the dance partner
 
     #The check will be done on the dancer only
-    if not Player.CurrentFight.SavePreBakedAction:
-        Player.EffectCDList.append(TechnicalFinishCheck)
-        Enemy.buffList.append(Player.TechnicalFinishBuff) #Since party wide, applies on enemy
+    Player.EffectCDList.append(TechnicalFinishCheck)
+    Enemy.buffList.append(Player.TechnicalFinishBuff) #Since party wide, applies on enemy
 
 
     Player.TechnicalFinishTimer = 20
@@ -171,10 +170,10 @@ def ApplyTechnicalFinish(Player, Enemy):
     Player.FlourishingFinish = True #Enables Tillana
 
                                      # Only doing this if SavePreBakedAction is true
-    if Player.CurrentFight.SavePreBakedAction:
-        fight = Player.CurrentFight
-        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , Player.TechnicalFinishBuff.MultDPS)
-        fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
+    #if Player.CurrentFight.SavePreBakedAction:
+    #    fight = Player.CurrentFight
+    #    history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , Player.TechnicalFinishBuff.MultDPS)
+    #    fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
 
 def ApplyEmboite(Player, Enemy):
     Player.Emboite = True

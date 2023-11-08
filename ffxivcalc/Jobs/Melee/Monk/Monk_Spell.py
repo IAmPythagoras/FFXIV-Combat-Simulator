@@ -63,15 +63,14 @@ def ApplyRiddleOfWind(Player, Enemy):
 def ApplyRiddleOfFire(Player, Enemy):
     Player.RiddleOfFireCD = 60
     Player.RiddleOfFireTimer = 20
-    if not Player.CurrentFight.SavePreBakedAction:
-        Player.EffectCDList.append(RiddleOfFireCheck)
-        Player.buffList.append(RiddleOfFireBuff)
+    Player.EffectCDList.append(RiddleOfFireCheck)
+    Player.buffList.append(RiddleOfFireBuff)
 
                                      # Only doing this if SavePreBakedAction is true and if the PreBaked player is the monk
-    if Player.CurrentFight.SavePreBakedAction and Player == Player.CurrentFight.PlayerList[Player.CurrentFight.PlayerIDSavePreBakedAction]:
-        fight = Player.CurrentFight
-        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , RiddleOfFireBuff.MultDPS)
-        fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
+    #if Player.CurrentFight.SavePreBakedAction and Player == Player.CurrentFight.PlayerList[Player.CurrentFight.PlayerIDSavePreBakedAction]:
+    #    fight = Player.CurrentFight
+    #    history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , RiddleOfFireBuff.MultDPS)
+    #    fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
 
 def ApplyRiddleOfEarth(Player, Enemy):
     Player.RiddleOfEarthCD = 120
@@ -149,7 +148,7 @@ def ApplyBrotherhood(Player, Enemy):
         if Target.MeditativeBrotherhoodTimer <= 0:
             Target.EffectList.remove(MeditativeBrotherhoodEffect)
             Target.EffectToRemove.append(MeditativeBrotherhoodCheck)
-            if not Player.CurrentFight.SavePreBakedAction: Target.buffList.remove(BrotherhoodBuff)
+            Target.buffList.remove(BrotherhoodBuff)
 
 
     def MonkMeditativeEffect(Target, Spell):
@@ -172,22 +171,20 @@ def ApplyBrotherhood(Player, Enemy):
             Target.EffectList.append(MonkMeditativeEffect)
             Target.EffectCDList.append(MonkMeditativeCheck)
             Target.buffList.append(BrotherhoodBuff)
-            if not Player.CurrentFight.SavePreBakedAction:
-                Target.MeditativeBrotherhoodTimer = 15 #Adding buff
+            Target.MeditativeBrotherhoodTimer = 15 #Adding buff
         else:
             #Applying MeditativeBrotherhood to every other player
             Target.MeditativeBrotherhoodTimer = 15
             Target.EffectList.append(MeditativeBrotherhoodEffect)
             Target.EffectCDList.append(MeditativeBrotherhoodCheck)
-            if not Player.CurrentFight.SavePreBakedAction: Target.buffList.append(BrotherhoodBuff)
-            if not Target.CurrentFight.SavePreBakedAction:
-                Target.MeditativeBrotherhoodTimer = 15 #Adding buff
+            Target.buffList.append(BrotherhoodBuff)
+            Target.MeditativeBrotherhoodTimer = 15 #Adding buff
 
                                  # Only doing this if SavePreBakedAction is true
-    if Player.CurrentFight.SavePreBakedAction:
-        fight = Player.CurrentFight
-        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 15 , BrotherhoodBuff.MultDPS)
-        fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
+    #if Player.CurrentFight.SavePreBakedAction:
+    #    fight = Player.CurrentFight
+    #    history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 15 , BrotherhoodBuff.MultDPS)
+    #    fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
 #Effect
 
 def LeadenFistEffect(Player, Spell):
