@@ -342,6 +342,7 @@ def Arcanum(Target, Type, Melee):
 
     ArcanumSpell = AstrologianSpell(0, False, Lock, 0, 0, 0, ApplyArcanum, [ArcanumRequirement])
     ArcanumSpell.TargetID = Target.playerID 
+    ArcanumSpell.TargetPlayerObject = Target
     return ArcanumSpell
 
 def Balance(target):

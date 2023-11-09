@@ -346,6 +346,7 @@ def DragonSight(Target):
 
     DragonSightSpell = DragoonSpell(7398, False, 0, 0, ApplyDragonSight, [DragonSightRequirement], False)
     DragonSightSpell.TargetID = Target.playerID
+    DragonSightSpell.TargetPlayerObject = Target
     return DragonSightSpell
 
 

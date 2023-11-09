@@ -278,6 +278,7 @@ class Spell:
         self.Requirement = Requirement
         self.DPSBonus = 1
         self.TargetID = 0 #By default 0
+        self.TargetPlayerObject = None # This is usually None, but will be set for actions that target.
         self.type = type 
         self.AOEHeal = AOEHeal
         self.TargetHeal = TargetHeal

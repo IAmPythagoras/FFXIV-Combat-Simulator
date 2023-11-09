@@ -74,30 +74,30 @@ class Fight:
                     
                     for index,action in enumerate(player.ActionSet):
                         if action.id == 16006: # Closed Position
-                            changeIndex.append((index,action.TargetID))
+                            changeIndex.append((index,action.TargetPlayerObject.playerID))
                     for change in changeIndex:
-                        player.ActionSet[change[0]] = ClosedPosition(self.playerForID(change[1]))
+                        player.ActionSet[change[0]] = ClosedPosition(dcFight.playerForID(change[1]))
 
                 case JobEnum.Dragoon:
                     changeIndex = []
                     
                     for index,action in enumerate(player.ActionSet):
                         if action.id == 7398: # Dragoon Sight
-                            changeIndex.append((index,action.TargetID))
+                            changeIndex.append((index,action.TargetPlayerObject.playerID))
                     for change in changeIndex:
-                        player.ActionSet[change[0]] = DragonSight(self.playerForID(change[1]))
+                        player.ActionSet[change[0]] = DragonSight(dcFight.playerForID(change[1]))
                 case JobEnum.Astrologian:
                     changeIndex = []
                     
                     for index,action in enumerate(player.ActionSet):
                         if action.id >=4401 and action.id <=4406: # Arcanum
                             match action.id :
-                                case 4401 : changeIndex.append((index,Balance(self.playerForID(action.TargetID))))
-                                case 4402 : changeIndex.append((index,Arrow(self.playerForID(action.TargetID))))
-                                case 4403 : changeIndex.append((index,Spear(self.playerForID(action.TargetID))))
-                                case 4404 : changeIndex.append((index,Bole(self.playerForID(action.TargetID))))
-                                case 4405 : changeIndex.append((index,Ewer(self.playerForID(action.TargetID))))
-                                case 4406 : changeIndex.append((index,Spire(self.playerForID(action.TargetID))))
+                                case 4401 : changeIndex.append((index,Balance(dcFight.playerForID(action.TargetPlayerObject.playerID))))
+                                case 4402 : changeIndex.append((index,Arrow(dcFight.playerForID(action.TargetPlayerObject.playerID))))
+                                case 4403 : changeIndex.append((index,Spear(dcFight.playerForID(action.TargetPlayerObject.playerID))))
+                                case 4404 : changeIndex.append((index,Bole(dcFight.playerForID(action.TargetPlayerObject.playerID))))
+                                case 4405 : changeIndex.append((index,Ewer(dcFight.playerForID(action.TargetPlayerObject.playerID))))
+                                case 4406 : changeIndex.append((index,Spire(dcFight.playerForID(action.TargetPlayerObject.playerID))))
 
                     for change in changeIndex:
                         player.ActionSet[change[0]] = change[1]

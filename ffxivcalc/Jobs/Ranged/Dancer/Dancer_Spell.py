@@ -400,6 +400,7 @@ def ClosedPosition(Partner, InFight="True"):
         # If change this ID make sure to change in deepCopyFight too.
     ClosedPositionSpell = DancerSpell(16006, False, 0, 0, ApplyClosedPosition, [ClosedPositionRequirement], False)
     ClosedPositionSpell.TargetID = Partner.playerID
+    ClosedPositionSpell.TargetPlayerObject = Partner
     return ClosedPositionSpell
 
 DancerAbility = {
