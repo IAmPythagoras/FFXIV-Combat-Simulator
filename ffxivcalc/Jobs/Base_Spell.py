@@ -160,12 +160,7 @@ class PreBakedAction:
 
         self.isConditionalAction = isConditionalAction
 
-    def resetTimeSensibleBuff(self):
-        """
-        This function resets the value for CritBonus, DHBonus and PercentageBonus.
-        """
-        self.CritBonus = 0
-        self.DHBonus = 0
+    def resetPercentageBonus(self):
         self.PercentageBonus = []
 
     def ComputeExpectedDamage(self, f_MAIN_DMG : float, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float, DHAuto : float):
@@ -423,7 +418,7 @@ class Spell:
 
                                 # If the action has 0 potency we skip the computation
                                 # Note that this also means the action won't be added as a ZIPAction for the player.
-            if self.Potency != 0 : minDamage,Damage= player.CurrentFight.ComputeDamageFunction(player, self.Potency, Enemy, self.DPSBonus, type, self, SavePreBakedAction = player.CurrentFight.SavePreBakedAction, PlayerIDSavePreBakedAction = player.playerID)    #Damage computation
+            if self.Potency != 0 : minDamage,Damage= player.CurrentFight.ComputeDamageFunction(player, self.Potency, Enemy, self.DPSBonus, type, self, SavePreBakedAction = player.CurrentFight.SavePreBakedAction, PlayerIDSavePreBakedAction = player.CurrentFight.PlayerIDSavePreBakedAction)    #Damage computation
             
             # move this before damage??????
             if player.JobEnum == JobEnum.Pet and self.Potency != 0: # Is a pet and action does damage

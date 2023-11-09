@@ -55,9 +55,10 @@ def getGearDPSValue(Fight, gearSet : GearSet, PlayerIndex : int, n : int =10000)
 
     player.Stat = getBaseStat(IsTank=IsTank)
     GearStat = gearSet.GetGearSetStat(IsTank=IsTank)
-    GearStat = {'MainStat': 3378, 'WD': 132, 'Det': 1666, 'Ten': 400, 'SS': 400, 'SkS': 714, 'Crit': 2595, 'DH': 1258, 'Piety': 390}
+    GearStat = {'MainStat': 3378, 'WD': 132, 'Det': 1697, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2554, 'DH': 1582, 'Piety': 390}
     player.Stat["SS" if IsCaster else "SkS"] = GearStat["SS" if IsCaster else "SkS"]
     Fight.SavePreBakedAction = True
+                             # The playerIndex value is the ID value here.
     Fight.PlayerIDSavePreBakedAction = PlayerIndex
     Fight.SimulateFight(0.01, 500, False, n=0,PPSGraph=False)
     player.DamageInstanceList = []
@@ -211,6 +212,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     JobMod = Fight.PlayerList[PlayerIndex].JobMod # Level 90 jobmod value, specific to each job
     Fight.PlayerList[PlayerIndex].Stat = getBaseStat(IsTank=IsTank)
     Fight.SavePreBakedAction = True
+                             # The playerIndex value is the ID value here.
     Fight.PlayerIDSavePreBakedAction = PlayerIndex
 
                              # Finding haste amount if any.

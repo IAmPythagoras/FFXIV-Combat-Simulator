@@ -170,7 +170,7 @@ class Fight:
                 player_current_damage += ZIPAction.ComputeRandomDamage()
             player.ZIPDPSRun.append(round(player_current_damage/self.TimeStamp/20)*20)
 
-    def SimulatePreBakedFight(self, Index : int, MainStat : int, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float, DHAuto : float, n : int = 1000, getInfo : bool = False):
+    def SimulatePreBakedFight(self, Index : int, MainStat : int, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float, DHAuto : float, n : int = 1, getInfo : bool = False):
         """
         This function is called when the user wants to simulate the damage done by the pre baked actions. The player ID with
         the pre baked actions must be given. The user must also specify all the damage values computed from the stats.
@@ -187,7 +187,6 @@ class Fight:
         countGCD = 0
         timeStamp = 0
         totalPotency = 0
-        trialFinishTime = player.PreBakedActionSet[-1].timeStamp
         countGCD = 0
         #for history in player.PercentBuffHistory:
         #    fight_logging.warning(str(history))
@@ -203,7 +202,7 @@ class Fight:
 
             fight_logging.debug("TimeStamp : " + str(timeStamp))
                                          # Potion
-            if PreBakedAction.potionIsActive : curMainStat = min(math.floor(curMainStat * 1.1), curMainStat + 262) #Grade 8 HQ tincture
+            if PreBakedAction.potionIsActive : curMainStat = math.floor(min(math.floor(curMainStat * 1.1), curMainStat + 262)) #Grade 8 HQ tincture
                                          # Any other percent bonus. Might have to remake dragoon tether since pet not affected by this buff
 
             for buff in PreBakedAction.buffList:
@@ -217,38 +216,38 @@ class Fight:
             damageHistory.append(Damage)
 
                              # Will compute Random DPS
-        randomDPSRuns = []   # This list will contain all the DPS of the random runs
-        for run in range(n):
-            CurrentDamage = 0
-            index = 0
-            for PreBakedAction in player.PreBakedActionSet:
-                CurrentDamage += PreBakedAction.ComputeRandomDamage(damageHistory[index], f_CritRate,f_CritMult, f_DH)
-                index += 1 
-                
-                if index == len(damageHistory) : break # Might have to break if we ommit some autos.
+        #randomDPSRuns = []   # This list will contain all the DPS of the random runs
+        #for run in range(n):
+        #    CurrentDamage = 0
+        #    index = 0
+        #    for PreBakedAction in player.PreBakedActionSet:
+        #        CurrentDamage += PreBakedAction.ComputeRandomDamage(damageHistory[index], f_CritRate,f_CritMult, f_DH)
+        #        index += 1 
+        #        
+        #        if index == len(damageHistory) : break # Might have to break if we ommit some autos.
 
-            randomDPSRuns.append(CurrentDamage/timeStamp)
+        #    randomDPSRuns.append(CurrentDamage/timeStamp)
                              # Sorting array so we can find the percentiles.
-        randomDPSRuns.sort()
+        #randomDPSRuns.sort()
 
-        Percent = int(n/100)
-        percentileRuns = {
-            "1" :  0 if n < 100 else sum(randomDPSRuns[(Percent):(10*Percent-1)])/(len(randomDPSRuns[(Percent+1):(10*Percent-1)])),
-            "10" : 0 if n < 100 else sum(randomDPSRuns[(10*Percent+1):(25*Percent-1)])/(len(randomDPSRuns[(10*Percent+1):(25*Percent-1)])),
-            "25" : 0 if n < 100 else sum(randomDPSRuns[(25*Percent+1):(50*Percent-1)])/(len(randomDPSRuns[(25*Percent+1):(50*Percent-1)])),
-            "50" : 0 if n < 100 else sum(randomDPSRuns[(50*Percent+1):(75*Percent-1)])/(len(randomDPSRuns[(50*Percent+1):(75*Percent-1)])),
-            "75" : 0 if n < 100 else sum(randomDPSRuns[(75*Percent+1):(90*Percent-1)])/(len(randomDPSRuns[(75*Percent+1):(90*Percent-1)])),
-            "90" : 0 if n < 100 else sum(randomDPSRuns[(90*Percent+1):(99*Percent-1)])/(len(randomDPSRuns[(90*Percent+1):(99*Percent-1)])),
-            "99" : 0 if n < 100 else sum(randomDPSRuns[(99*Percent):])/(len(randomDPSRuns[(99*Percent):]))
-        }
-                             # Reseting all bonus value for PreBakedActions
-        for PreBakedAction in player.PreBakedActionSet:
-            PreBakedAction.resetTimeSensibleBuff()
+        #Percent = int(n/100)
+        #percentileRuns = {
+        #    "1" :  0 if n < 100 else sum(randomDPSRuns[(Percent):(10*Percent-1)])/(len(randomDPSRuns[(Percent+1):(10*Percent-1)])),
+        #    "10" : 0 if n < 100 else sum(randomDPSRuns[(10*Percent+1):(25*Percent-1)])/(len(randomDPSRuns[(10*Percent+1):(25*Percent-1)])),
+        #    "25" : 0 if n < 100 else sum(randomDPSRuns[(25*Percent+1):(50*Percent-1)])/(len(randomDPSRuns[(25*Percent+1):(50*Percent-1)])),
+        #    "50" : 0 if n < 100 else sum(randomDPSRuns[(50*Percent+1):(75*Percent-1)])/(len(randomDPSRuns[(50*Percent+1):(75*Percent-1)])),
+        #    "75" : 0 if n < 100 else sum(randomDPSRuns[(75*Percent+1):(90*Percent-1)])/(len(randomDPSRuns[(75*Percent+1):(90*Percent-1)])),
+        #    "90" : 0 if n < 100 else sum(randomDPSRuns[(90*Percent+1):(99*Percent-1)])/(len(randomDPSRuns[(90*Percent+1):(99*Percent-1)])),
+        #    "99" : 0 if n < 100 else sum(randomDPSRuns[(99*Percent):])/(len(randomDPSRuns[(99*Percent):]))
+        #}
+
+        for preBakedAction in player.PreBakedActionSet: preBakedAction.resetPercentageBonus()
+
 
         fight_logging.debug("counted GCD  : " + str(countGCD))
         fight_logging.debug("previous GCD : " + str(player.GCDCounter))
-        if getInfo : return round(ExpectedDamage/timeStamp,2), percentileRuns, timeStamp, totalPotency
-        return round(ExpectedDamage/timeStamp if True else ExpectedDamage,2), percentileRuns
+        if getInfo : return round(ExpectedDamage/timeStamp,2), {}, timeStamp, totalPotency
+        return round(ExpectedDamage/timeStamp if True else ExpectedDamage,2), {}
 
         
 

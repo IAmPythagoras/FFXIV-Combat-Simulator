@@ -206,10 +206,10 @@ def ApplyDevilment(Player, Enemy):
     dancePartnerIsSavePreBaked = False if Player.DancePartner == None else Player.CurrentFight.PlayerIDSavePreBakedAction == Player.DancePartner.playerID
 
                                      # Only doing this if SavePreBakedAction is true
-    if Player.CurrentFight.SavePreBakedAction and (Player.CurrentFight.PlayerIDSavePreBakedAction == Player.playerID or dancePartnerIsSavePreBaked):
-        fight = Player.CurrentFight
-        history = buffHistory(fight.TimeStamp, fight.TimeStamp + 20)
-        fight.PlayerList[fight.PlayerIDSavePreBakedAction].DevilmentHistory.append(history)
+    #if Player.CurrentFight.SavePreBakedAction and (Player.CurrentFight.PlayerIDSavePreBakedAction == Player.playerID or dancePartnerIsSavePreBaked):
+    #    fight = Player.CurrentFight
+    #    history = buffHistory(fight.TimeStamp, fight.TimeStamp + 20)
+    #    fight.PlayerList[fight.PlayerIDSavePreBakedAction].DevilmentHistory.append(history)
 
 def ApplyTillana(Player, Enemy):
     Player.FlourishingFinish = False 
