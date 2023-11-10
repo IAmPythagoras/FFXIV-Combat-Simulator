@@ -234,7 +234,7 @@ def ApplyWanderingMinuet(Player, Enemy):
 
 def ApplyArmyPaeon(Player, Enemy):
     Player.ArmyCoda = True #Adding Coda
-    Enemy.ArmyPaeon = True
+    Enemy.ArmyPaeon = True # 3% DH
     Player.ArmyPaeonCD = 120
     Player.SongTimer = 45
     Player.EffectCDList.append(ArmyPaeonCheck)
@@ -278,11 +278,11 @@ def ApplyRadiantFinale(Player, Enemy):
     if Player.MageCoda: coda += 1
     if Player.ArmyCoda: coda += 1
     if Player.WandererCoda: coda += 1
-    Player.RadiantFinalBuff = copy.deepcopy(RadiantFinaleBuff)
-    Player.RadiantFinalBuff.MultDPS *= coda
-    Player.RadiantFinalBuff.MultDPS = round(1 + Player.RadiantFinalBuff.MultDPS%1, 2)
+    Player.RadiantFinaleBuff = copy.deepcopy(RadiantFinaleBuff)
+    Player.RadiantFinaleBuff.MultDPS *= coda
+    Player.RadiantFinaleBuff.MultDPS = round(1 + Player.RadiantFinaleBuff.MultDPS%1, 2)
     Player.RadiantFinaleTimer = 15
-    Enemy.buffList.append(Player.RadiantFinalBuff)
+    Enemy.buffList.append(Player.RadiantFinaleBuff)
     Player.EffectCDList.append(RadiantFinaleCheck)
     Player.MageCoda = False
     Player.ArmyCoda = False
@@ -339,7 +339,7 @@ def ArmyPaeonEffect(Player, Spell):
 
 def RadiantFinaleCheck(Player, Enemy):
     if Player.RadiantFinaleTimer <= 0:
-        Enemy.buffList.remove(Player.RadiantFinalBuff)
+        Enemy.buffList.remove(Player.RadiantFinaleBuff)
         Player.EffectToRemove.append(RadiantFinaleCheck)
 
 def RagingStrikeCheck(Player, Enemy):
@@ -350,7 +350,7 @@ def RagingStrikeCheck(Player, Enemy):
 def StormbiteDOTCheck(Player, Enemy):
     if Player.StormbiteDOTTimer <= 0:
         Player.DOTList.remove(Player.StormbiteDOT)
-        Player.StormbitDOT = None
+        Player.StormbiteDOT = None
         Player.EffectToRemove.append(StormbiteDOTCheck)
 
 def CausticbiteDOTCheck(Player, Enemy):
