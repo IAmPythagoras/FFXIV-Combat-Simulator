@@ -350,7 +350,7 @@ def RagingStrikeCheck(Player, Enemy):
 def StormbiteDOTCheck(Player, Enemy):
     if Player.StormbiteDOTTimer <= 0:
         Player.DOTList.remove(Player.StormbiteDOT)
-        Player.StormbitDOT = None
+        Player.StormbiteDOT = None
         Player.EffectToRemove.append(StormbiteDOTCheck)
 
 def CausticbiteDOTCheck(Player, Enemy):
