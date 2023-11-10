@@ -1544,7 +1544,7 @@ class Player:
 
 
         #DPSBonus
-        self.RadiantFinalBuff = None
+        self.RadiantFinaleBuff = None
 
         #ActionEnum
         self.JobAction = BardActions

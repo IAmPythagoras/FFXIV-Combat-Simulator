@@ -4897,7 +4897,7 @@ def brdTest18TestFunction() -> None:
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-    return [player.RadiantFinalBuff]
+    return [player.RadiantFinaleBuff]
 
 def brdTest18ValidationFunction(testResults) -> (bool, list):
     passed = True
