@@ -234,7 +234,7 @@ def ApplyWanderingMinuet(Player, Enemy):
 
 def ApplyArmyPaeon(Player, Enemy):
     Player.ArmyCoda = True #Adding Coda
-    Enemy.ArmyPaeon = True
+    Enemy.ArmyPaeon = True # 3% DH
     Player.ArmyPaeonCD = 120
     Player.SongTimer = 45
     Player.EffectCDList.append(ArmyPaeonCheck)

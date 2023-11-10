@@ -654,11 +654,15 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
     if Enemy.WanderingMinuet: 
         CritRateBonus += 0.02 # If WanderingMinuet is active, increase crit rate
-        thisPage.addDHBuffList(("Wandering Minuet", 0.02))
+        thisPage.addCritBuffList(("Wandering Minuet", 0.02))
+
+    if Enemy.ArmyPaeon: 
+        DHRateBonus += 0.03 # If WanderingMinuet is active, increase crit rate
+        thisPage.addDHBuffList(("ArmyPaeon", 0.03))
 
     if Enemy.BattleVoice: 
         DHRateBonus += 0.2 # If BattleVoice is active, increase DHRate
-        thisPage.addDHBuffList(("Battle Voice", 0.1))
+        thisPage.addDHBuffList(("Battle Voice", 0.2))
 
     DHRate += DHRateBonus# Adding Bonus
     CritRate += CritRateBonus# Adding bonus
