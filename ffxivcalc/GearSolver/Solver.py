@@ -55,9 +55,10 @@ def getGearDPSValue(Fight, gearSet : GearSet, PlayerIndex : int, n : int =10000)
 
     player.Stat = getBaseStat(IsTank=IsTank)
     GearStat = gearSet.GetGearSetStat(IsTank=IsTank)
-    GearStat = {'MainStat': 3378, 'WD': 132, 'Det': 1666, 'Ten': 400, 'SS': 400, 'SkS': 714, 'Crit': 2595, 'DH': 1258, 'Piety': 390}
+    GearStat = {'MainStat': 3378, 'WD': 132, 'Det': 1697, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2554, 'DH': 1582, 'Piety': 390}
     player.Stat["SS" if IsCaster else "SkS"] = GearStat["SS" if IsCaster else "SkS"]
     Fight.SavePreBakedAction = True
+                             # The playerIndex value is the ID value here.
     Fight.PlayerIDSavePreBakedAction = PlayerIndex
     Fight.SimulateFight(0.01, 500, False, n=0,PPSGraph=False)
     player.DamageInstanceList = []
@@ -97,7 +98,7 @@ def computeDamageValue(GearStat : dict, JobMod : int, IsTank : bool, IsCaster : 
     f_CritRate = floor((200*(GearStat["Crit"]-baseSub)/levelMod+50))/1000 # Crit rate in decimal
     f_CritMult = (floor(200*(GearStat["Crit"]-baseSub)/levelMod+400))/1000 # Crit Damage multiplier
     f_DH = floor(550*(GearStat["DH"]-baseSub)/levelMod)/1000 # DH rate in decimal
-    DHAuto = floor(140*(GearStat["DH"]-baseMain)/levelMod)/1000 # DH bonus when auto crit/DH
+    DHAuto = floor(140*(GearStat["DH"]-baseSub)/levelMod)/1000 # DH bonus when auto crit/DH
     return f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto
 
 def computeGCDTimer(speedStatValue : int, subGCDHasteAmount : int) -> (str, str):
@@ -211,6 +212,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     JobMod = Fight.PlayerList[PlayerIndex].JobMod # Level 90 jobmod value, specific to each job
     Fight.PlayerList[PlayerIndex].Stat = getBaseStat(IsTank=IsTank)
     Fight.SavePreBakedAction = True
+                             # The playerIndex value is the ID value here.
     Fight.PlayerIDSavePreBakedAction = PlayerIndex
 
                              # Finding haste amount if any.
@@ -223,6 +225,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
         case JobEnum.Monk : hasteAmount = 20
         case JobEnum.Bard : hasteAmount = 20
         case JobEnum.Astrologian : hasteAmount = 10
+        case JobEnum.Ninja : hasteAmount = 15
 
                              # Getting all possible gcdTimers from the given range of speed value. Will simulate prebakedsimulation for all of them.
     gcdTimerDict = findGCDTimerRange(minSPDValue, maxSPDValue,subGCDHasteAmount=hasteAmount)
@@ -231,10 +234,10 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
 
                              # This dictionnary contains all Fight object. The key is (gcdTimer, hastedGCDTimer)
     preBakedFightGCDTierList = {}
-
     for key in gcdTimerDict:
         Fight.PlayerList[PlayerIndex].Stat['SS' if IsCaster else "SkS"] = gcdTimerDict[key]
-        preBakedFightGCDTierList[key] = deepcopy(Fight)
+        preBakedFightGCDTierList[key] = Fight.deepCopy()
+        
 
                              # If a specific gcd timer rotation is given then we swap the ActionSet for the gccd specific one.
         if gcdTimerSpecificActionList != None and (key in gcdTimerSpecificActionList.keys()): 
@@ -407,7 +410,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
                     d = limit - counter
                 else:
                     d = materiaDepthSearchIterator
-                curBest, curMax, curRandom = materiaBisSolver(optimalGearSet, matGen, MateriaSpace, d, preBakedFightGCDTierList, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, "exp",0,mendSpellSpeed,maxSPDValue=maxSPDValue)
+                curBest, curMax, curRandom = materiaBisSolverV3(optimalGearSet, matGen, MateriaSpace, d, preBakedFightGCDTierList, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex, "exp",0,mendSpellSpeed,maxSPDValue=maxSPDValue)
                                     # Taking a copy of the found best and incrementing materia counter
                 optimalGearSet = deepcopy(curBest)
                 counter += materiaDepthSearchIterator
@@ -427,7 +430,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
                             d = limit - counter
                         else:
                             d = depth
-                        curBest, curMax, curRandom = materiaBisSolver(curBest, matGen, MateriaSpace, d, Fight, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex,percentile,randomIteration,mendSpellSpeed, maxSPDValue=maxSPDValue)
+                        curBest, curMax, curRandom = materiaBisSolverV3(curBest, matGen, MateriaSpace, d, Fight, Fight.PlayerList[PlayerIndex].JobMod, IsTank, IsCaster, PlayerIndex,percentile,randomIteration,mendSpellSpeed, maxSPDValue=maxSPDValue)
                         counter += depth
                         if counter >= limit : break
                     optimalRandomGearSetMateria[percentile][0] = curMax

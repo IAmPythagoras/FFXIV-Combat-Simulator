@@ -153,20 +153,14 @@ class PreBakedAction:
         self.isGCD = isGCD
         self.spellDPSBuff = spellDPSBuff
 
-                             # These values are computed once the PreBakedAction is being looped
-                             # through in SimulatePreBakedFight.
         self.CritBonus = 0
         self.DHBonus = 0
         self.PercentageBonus = []
+        self.potionIsActive = False  # True if this action has a potion applied to it.
 
         self.isConditionalAction = isConditionalAction
 
-    def resetTimeSensibleBuff(self):
-        """
-        This function resets the value for CritBonus, DHBonus and PercentageBonus.
-        """
-        self.CritBonus = 0
-        self.DHBonus = 0
+    def resetPercentageBonus(self):
         self.PercentageBonus = []
 
     def ComputeExpectedDamage(self, f_MAIN_DMG : float, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float, DHAuto : float):
@@ -212,7 +206,12 @@ class PreBakedAction:
         ExpectedDamage = math.floor(ExpectedDamage * auto_dh_bonus)
 
         base_spell_logging.debug("PreBakedAction has expected damage of " + str(ExpectedDamage) + " Potency :" + str(self.Potency) +" Trait : " + str(self.TraitBonus) + " critBonus : " + str(self.CritBonus) + " DHBonus : " + str(self.DHBonus))
-        base_spell_logging.debug(str((f_MAIN_DMG, f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)))
+        
+        buffName = ""
+        for buff in self.buffList:
+            buffName += buff.name + " " + str(buff.MultDPS) + " : "
+        base_spell_logging.debug("Active Buff : " + buffName + " PotionOn : " + str(self.potionIsActive))
+        #base_spell_logging.debug(str((f_MAIN_DMG, f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH)))
 
         return ExpectedDamage, Damage
     
@@ -274,6 +273,7 @@ class Spell:
         self.Requirement = Requirement
         self.DPSBonus = 1
         self.TargetID = 0 #By default 0
+        self.TargetPlayerObject = None # This is usually None, but will be set for actions that target.
         self.type = type 
         self.AOEHeal = AOEHeal
         self.TargetHeal = TargetHeal
@@ -395,30 +395,30 @@ class Spell:
                 else: type = 1   
 
 
-            if player.CurrentFight.SavePreBakedAction:
-                                # Adding to totalTimeNoFaster
-                if self.GCD and self.RecastTime <= 1.5: # We check that the spellObj has recastTime lower than 1.5 and that it is not the last spell (since all those are insta cast)
-                    if  player.isLastGCD(player.NextSpell): # if last GCD, add CastTime
-                        player.totalTimeNoFaster += self.notRoundCastTime
-                    else:        # Else adding recastTime. 
-                        player.totalTimeNoFaster += self.notRoundRecastTime
-                elif not self.GCD and player.isLastGCD(player.NextSpell) : 
-                                # Is an oGCD
-                    player.totalTimeNoFaster += self.notRoundCastTime
-                elif self.GCD and (player.RoleEnum == RoleEnum.Caster) and self.type == 2: # If is a weaponskill and has Spell speed. Only needed for RDM now
-                    if  player.isLastGCD(player.NextSpell): # if last GCD, add CastTime
-                        player.totalTimeNoFaster += self.CnotRoundastTime
-                    else:        # Else adding recastTime. 
-                        player.totalTimeNoFaster += self.notRoundRecastTime
-                elif self.GCD and (player.RoleEnum == RoleEnum.Melee or player.RoleEnum == RoleEnum.Tank) and self.type == 1: # If is a spell and has skill speed
-                    if  player.isLastGCD(player.NextSpell): # if last GCD, add CastTime
-                        player.totalTimeNoFaster += self.notRoundCastTime
-                    else:        # Else adding recastTime. 
-                        player.totalTimeNoFaster += self.notRoundRecastTime
+            #if player.CurrentFight.SavePreBakedAction:
+            #                    # Adding to totalTimeNoFaster
+            #    if self.GCD and self.RecastTime <= 1.5: # We check that the spellObj has recastTime lower than 1.5 and that it is not the last spell (since all those are insta cast)
+            #        if  player.isLastGCD(player.NextSpell): # if last GCD, add CastTime
+            #            player.totalTimeNoFaster += self.notRoundCastTime
+            #        else:        # Else adding recastTime. 
+            #            player.totalTimeNoFaster += self.notRoundRecastTime
+            #    elif not self.GCD and player.isLastGCD(player.NextSpell) : 
+            #                    # Is an oGCD
+            #        player.totalTimeNoFaster += self.notRoundCastTime
+            #    elif self.GCD and (player.RoleEnum == RoleEnum.Caster) and self.type == 2: # If is a weaponskill and has Spell speed. Only needed for RDM now
+            #        if  player.isLastGCD(player.NextSpell): # if last GCD, add CastTime
+            #            player.totalTimeNoFaster += self.CnotRoundastTime
+            #        else:        # Else adding recastTime. 
+            #            player.totalTimeNoFaster += self.notRoundRecastTime
+            #    elif self.GCD and (player.RoleEnum == RoleEnum.Melee or player.RoleEnum == RoleEnum.Tank) and self.type == 1: # If is a spell and has skill speed
+            #        if  player.isLastGCD(player.NextSpell): # if last GCD, add CastTime
+            #            player.totalTimeNoFaster += self.notRoundCastTime
+            #        else:        # Else adding recastTime. 
+            #            player.totalTimeNoFaster += self.notRoundRecastTime
 
                                 # If the action has 0 potency we skip the computation
                                 # Note that this also means the action won't be added as a ZIPAction for the player.
-            if self.Potency != 0 : minDamage,Damage= player.CurrentFight.ComputeDamageFunction(player, self.Potency, Enemy, self.DPSBonus, type, self, SavePreBakedAction = player.CurrentFight.SavePreBakedAction, PlayerIDSavePreBakedAction = player.playerID)    #Damage computation
+            if self.Potency != 0 : minDamage,Damage= player.CurrentFight.ComputeDamageFunction(player, self.Potency, Enemy, self.DPSBonus, type, self, SavePreBakedAction = player.CurrentFight.SavePreBakedAction, PlayerIDSavePreBakedAction = player.CurrentFight.PlayerIDSavePreBakedAction)    #Damage computation
             
             # move this before damage??????
             if player.JobEnum == JobEnum.Pet and self.Potency != 0: # Is a pet and action does damage
@@ -535,12 +535,12 @@ def ApplyPotion(Player, Enemy):
     Player.EffectCDList.append(PotionCheck)
 
                                      # Only relevant to PreBakedAction and only does that code if true
-    if Player.CurrentFight.SavePreBakedAction:
-        fight = Player.CurrentFight
-                                     # If prepull, make it start at 0.05
-        startTime = fight.TimeStamp if fight.FightStart else -0.05
-        history = buffHistory(startTime, startTime + 30)
-        Player.PotionHistory.append(history)
+    #if Player.CurrentFight.SavePreBakedAction:
+    #    fight = Player.CurrentFight
+    #                                 # If prepull, make it start at 0.05
+    #    startTime = fight.TimeStamp if fight.FightStart else -0.05
+    #    history = buffHistory(startTime, startTime + 30)
+    #    Player.PotionHistory.append(history)
 
 def PrepullPotion(Player, Enemy): #If potion is prepull
     """

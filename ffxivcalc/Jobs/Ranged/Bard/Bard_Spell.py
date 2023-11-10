@@ -204,10 +204,10 @@ def ApplyBattleVoice(Player, Enemy):
     Player.EffectCDList.append(BattleVoiceCheck)
 
                                      # Only doing this if SavePreBakedAction is true
-    if Player.CurrentFight.SavePreBakedAction:
-        fight = Player.CurrentFight
-        history = buffHistory(fight.TimeStamp, fight.TimeStamp + 15)
-        fight.PlayerList[fight.PlayerIDSavePreBakedAction].BattleVoiceHistory.append(history)
+    #if Player.CurrentFight.SavePreBakedAction:
+    #    fight = Player.CurrentFight
+    #    history = buffHistory(fight.TimeStamp, fight.TimeStamp + 15)
+    #    fight.PlayerList[fight.PlayerIDSavePreBakedAction].BattleVoiceHistory.append(history)
 
 def ApplyBloodLetter(Player, Enemy):
     if Player.BloodLetterStack == 3:
@@ -227,10 +227,10 @@ def ApplyWanderingMinuet(Player, Enemy):
     Player.WanderingMinuet = True
 
                                      # Only doing this if SavePreBakedAction is true
-    if Player.CurrentFight.SavePreBakedAction:
-        fight = Player.CurrentFight
-        history = buffHistory(fight.TimeStamp, fight.TimeStamp + 45)
-        fight.PlayerList[fight.PlayerIDSavePreBakedAction].WanderingMinuetHistory.append(history)
+    #if Player.CurrentFight.SavePreBakedAction:
+    #    fight = Player.CurrentFight
+    #    history = buffHistory(fight.TimeStamp, fight.TimeStamp + 45)
+    #    fight.PlayerList[fight.PlayerIDSavePreBakedAction].WanderingMinuetHistory.append(history)
 
 def ApplyArmyPaeon(Player, Enemy):
     Player.ArmyCoda = True #Adding Coda
@@ -263,15 +263,14 @@ def ApplyBarrage(Player, Enemy):
 
 def ApplyRagingStrike(Player, Enemy):
     Player.RagingStrikeTimer = 20
-    if not Player.CurrentFight.SavePreBakedAction:
-        Player.buffList.append(RagingStrikeBuff)
-        Player.EffectCDList.append(RagingStrikeCheck)
+    Player.buffList.append(RagingStrikeBuff)
+    Player.EffectCDList.append(RagingStrikeCheck)
 
                                      # Only doing this if SavePreBakedAction is true
-    if Player.CurrentFight.SavePreBakedAction:
-        fight = Player.CurrentFight
-        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , RagingStrikeBuff.MultDPS)
-        Player.PercentBuffHistory.append(history)
+    #if Player.CurrentFight.SavePreBakedAction:
+    #    fight = Player.CurrentFight
+    #    history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , RagingStrikeBuff.MultDPS)
+    #    Player.PercentBuffHistory.append(history)
 
 def ApplyRadiantFinale(Player, Enemy):
     #Will first have to find how many coda we have
@@ -283,19 +282,18 @@ def ApplyRadiantFinale(Player, Enemy):
     Player.RadiantFinalBuff.MultDPS *= coda
     Player.RadiantFinalBuff.MultDPS = round(1 + Player.RadiantFinalBuff.MultDPS%1, 2)
     Player.RadiantFinaleTimer = 15
-    if not Player.CurrentFight.SavePreBakedAction:
-        Enemy.buffList.append(Player.RadiantFinalBuff)
-        Player.EffectCDList.append(RadiantFinaleCheck)
+    Enemy.buffList.append(Player.RadiantFinalBuff)
+    Player.EffectCDList.append(RadiantFinaleCheck)
     Player.MageCoda = False
     Player.ArmyCoda = False
     Player.Wanderer = False
     #We used all coda
 
                                      # Only doing this if SavePreBakedAction is true
-    if Player.CurrentFight.SavePreBakedAction:
-        fight = Player.CurrentFight
-        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 15 , Player.RadiantFinalBuff.MultDPS)
-        fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
+    #if Player.CurrentFight.SavePreBakedAction:
+    #    fight = Player.CurrentFight
+    #    history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 15 , Player.RadiantFinalBuff.MultDPS)
+    #    fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
 
 def ApplyBlastArrow(Player, Enemy):
     Player.BlastArrowReady = False

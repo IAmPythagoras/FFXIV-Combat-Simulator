@@ -166,11 +166,9 @@ def ApplyInnerRelease(Player, Enemy):
     Player.InnerReleaseCD = 60
 
 def ApplyPrimalRend(Player, Enemy):
-    Player.InnerReleaseStack += 1 #To allow for Direct Crit
     Player.PrimalRendTimer = 0
 
 def ApplyInnerChaos(Player, Enemy):
-    Player.InnerReleaseStack += 1
     Player.InfuriateCD = max(0, Player.InfuriateCD - 5)
     Player.NascentChaosTimer = 0
 
@@ -180,7 +178,6 @@ def InnerReleaseEffect(Player, Spell):
     if Spell.id == FellCleave.id:
         Player.NoBeastCostStack -= 1
         Spell.Cost = 0
-        Player.InnerReleaseStack += 1
         if Player.NoBeastCostStack == 0: 
             Player.EffectToRemove.append(InnerReleaseEffect)
 

@@ -394,6 +394,7 @@ class Player:
         self.DamageInstanceList = [] # Used to remember damage instance for debugging. Usually unused
 
         self.Stat = deepcopy(Stat) # Stats of the player
+        self.baseMainStat = self.Stat["MainStat"] # copy of main stat base. used for pet
 
         self.auras = [] # List containing all Auras at the start of the fight
 
@@ -2416,6 +2417,9 @@ class Pet(Player):
         player_logging.debug("New Pet Created : " + str(self.Stat))
 
         super().__init__([], [], deepcopy(Master.Stat), JobEnum.Pet)
+        self.Stat["MainStat"] = Master.baseMainStat + (min(floor(Master.baseMainStat * 0.1),262) if Master.PotionTimer > 0 else 0)
+                             # Giving same playerID as Master
+        self.playerID = Master.playerID
 
         # Adding itself to the fight object
         Master.CurrentFight.AddPlayer([self])

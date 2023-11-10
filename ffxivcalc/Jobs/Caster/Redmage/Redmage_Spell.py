@@ -105,15 +105,14 @@ def ApplyManafication(Player, Enemy):
 def ApplyEmbolden(Player, Enemy):
     Player.EmboldenTimer = 20
     Player.EmboldenCD = 120
-    if not Player.CurrentFight.SavePreBakedAction:
-        Player.EffectCDList.append(EmboldenCheck)
-        Enemy.buffList.append(EmboldenBuff) #5% DPS boost for everyone. I put buff on Boss, but could put it on every other player
+    Player.EffectCDList.append(EmboldenCheck)
+    Enemy.buffList.append(EmboldenBuff) #5% DPS boost for everyone. I put buff on Boss, but could put it on every other player
         
                                      # Only doing this if SavePreBakedAction is true
-    if Player.CurrentFight.SavePreBakedAction:
-        fight = Player.CurrentFight
-        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , EmboldenBuff.MultDPS)
-        fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
+    #if Player.CurrentFight.SavePreBakedAction:
+    #    fight = Player.CurrentFight
+    #    history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , EmboldenBuff.MultDPS)
+    #    fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
 
 def ApplyAcceleration(Player, Enemy):
     if Player.AccelerationStack == 2:
@@ -334,7 +333,7 @@ Vercure = RedmageSpell(7514, True, 2, 2.5, 0, 500, empty, [RDMManaRequirement], 
 
 
 #buff
-EmboldenBuff = buff(1.05,name="Enochian")
+EmboldenBuff = buff(1.05,name="Embolden")
 
 #ActionList
 RedMageAbility = {

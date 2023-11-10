@@ -135,3 +135,6 @@ class ActionNotFound(Exception):#Exception called if an action isn't found in th
     pass
 class JobNotFound(Exception):#Exception called if a Job isn't found
     pass
+
+class playerIDNotFound(Exception):#Exception called if the player isn't found with the ID given by using the Fight.playerForID function.
+    pass

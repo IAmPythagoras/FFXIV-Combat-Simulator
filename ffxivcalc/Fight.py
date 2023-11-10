@@ -1,10 +1,13 @@
 import math
+from copy import deepcopy
 from ffxivcalc.helperCode.Vocal import PrintResult, SimulateRuns
 from ffxivcalc.Jobs.PlayerEnum import *
 from ffxivcalc.Jobs.ActionEnum import name_for_id
 from ffxivcalc.Jobs.Base_Spell import ZIPAction, PreBakedAction
 from ffxivcalc.helperCode.Progress import ProgressBar
 from ffxivcalc.SimulationRecord.record import SimulationRecord, page
+from ffxivcalc.helperCode.exceptions import playerIDNotFound
+
 import matplotlib.pyplot as plt
 import logging
 from ffxivcalc.helperCode.helper_math import roundDown, isclose, roundUp
@@ -37,6 +40,69 @@ class Fight:
         # This could be optimized. But for now we will reocompute this sorted list every time.
 
         return sorted_list[0:range] # Returns the number of targets we are interested in
+
+    def playerForID(self, id):
+        """This function returns a reference to the player object that has the given ID in the fight.
+
+        Args:
+            id (int): id of the player we want.
+        """
+
+        for player in self.PlayerList:
+            if player.playerID == id : return player
+
+        raise playerIDNotFound
+    
+    def deepCopy(self):
+        """This function returns a deepcopy of itself.
+        We cannot use the deepcopy function alone since some issues arise.
+        One such issue is that any action that targets a player will not have their target
+        updated and will still target the player from the original fight (the one that is being deepcopied).
+        To fix this we will look for the actions with target, get the targetID and replace these actions with the appropriate
+        action that now targets the correct player.
+        """
+        from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import ClosedPosition
+        from ffxivcalc.Jobs.Melee.Dragoon.Dragoon_Spell import DragonSight
+        from ffxivcalc.Jobs.Healer.Astrologian.Astrologian_Spell import Balance, Arrow, Spear, Bole, Ewer, Spire
+
+        dcFight = deepcopy(self)
+
+        for player in dcFight.PlayerList:
+            match player.JobEnum:
+                case JobEnum.Dancer:
+                    changeIndex = []
+                    
+                    for index,action in enumerate(player.ActionSet):
+                        if action.id == 16006: # Closed Position
+                            changeIndex.append((index,action.TargetPlayerObject.playerID))
+                    for change in changeIndex:
+                        player.ActionSet[change[0]] = ClosedPosition(dcFight.playerForID(change[1]))
+
+                case JobEnum.Dragoon:
+                    changeIndex = []
+                    
+                    for index,action in enumerate(player.ActionSet):
+                        if action.id == 7398: # Dragoon Sight
+                            changeIndex.append((index,action.TargetPlayerObject.playerID))
+                    for change in changeIndex:
+                        player.ActionSet[change[0]] = DragonSight(dcFight.playerForID(change[1]))
+                case JobEnum.Astrologian:
+                    changeIndex = []
+                    
+                    for index,action in enumerate(player.ActionSet):
+                        if action.id >=4401 and action.id <=4406: # Arcanum
+                            match action.id :
+                                case 4401 : changeIndex.append((index,Balance(dcFight.playerForID(action.TargetPlayerObject.playerID))))
+                                case 4402 : changeIndex.append((index,Arrow(dcFight.playerForID(action.TargetPlayerObject.playerID))))
+                                case 4403 : changeIndex.append((index,Spear(dcFight.playerForID(action.TargetPlayerObject.playerID))))
+                                case 4404 : changeIndex.append((index,Bole(dcFight.playerForID(action.TargetPlayerObject.playerID))))
+                                case 4405 : changeIndex.append((index,Ewer(dcFight.playerForID(action.TargetPlayerObject.playerID))))
+                                case 4406 : changeIndex.append((index,Spire(dcFight.playerForID(action.TargetPlayerObject.playerID))))
+
+                    for change in changeIndex:
+                        player.ActionSet[change[0]] = change[1]
+
+        return dcFight
 
     def __init__(self, Enemy, ShowGraph):
         self.Enemy = Enemy
@@ -85,10 +151,12 @@ class Fight:
         self.ExtractInfo = DefaultExtractInfo
 
     def AddPlayer(self, Players):
-
+        nextID = 0
         for player in Players:
             player.CurrentFight = self
             self.PlayerList.append(player)
+            player.playerID = nextID
+            nextID += 1
 
     def SimulateZIPFight(self):
         """
@@ -102,7 +170,7 @@ class Fight:
                 player_current_damage += ZIPAction.ComputeRandomDamage()
             player.ZIPDPSRun.append(round(player_current_damage/self.TimeStamp/20)*20)
 
-    def SimulatePreBakedFight(self, Index : int, MainStat : int, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float, DHAuto : float, n : int = 1000, getInfo : bool = False):
+    def SimulatePreBakedFight(self, Index : int, MainStat : int, f_WD : float, f_DET : float, f_TEN : float, f_SPD : float, f_CritRate : float, f_CritMult : float, f_DH : float, DHAuto : float, n : int = 1, getInfo : bool = False):
         """
         This function is called when the user wants to simulate the damage done by the pre baked actions. The player ID with
         the pre baked actions must be given. The user must also specify all the damage values computed from the stats.
@@ -115,111 +183,30 @@ class Fight:
 
         damageHistory = []   # This list will contain the damage of all PreBakedAction ComputeExpectedDamage used to
                              # faster compute RandomDamage
-        self.ChainStratagemHistory = []
-        self.BattleLitanyHistory = []
-        self.WanderingMinuetHistory = []
-        self.BattleVoiceHistory = []
-        self.DevilmentHistory = []
-        self.PotionHistory = []
-        self.PercentBuffHistory = []
 
         countGCD = 0
         timeStamp = 0
         totalPotency = 0
-
-        #amountToRemoveEveryGCD = 0
-        trialFinishTime = player.PreBakedActionSet[-1].timeStamp
-
-        #gcdReductionRatio = round(2 - f_SPD,8)
-
-                             # Find this set's finish time so we can cut off autos if they do not hit in the end.
-        #for PreBakedAction in player.PreBakedActionSet:
-        #    amountToRemoveEveryGCD += round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10) - roundDown(round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10),2)
-        #    if PreBakedAction.isGCD : countGCD += 1
-        #
-        #    trialFinishTime = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(gcdReductionRatio,3)) - (amountToRemoveEveryGCD)),2)
-        
         countGCD = 0
-        #amountToRemoveEveryGCD = 0
-        #amountToRemoveFailCondition = 0
-        #actionFailsCondition = False
-        for history in player.PercentBuffHistory:
-            fight_logging.warning(str(history))
+        #for history in player.PercentBuffHistory:
+        #    fight_logging.warning(str(history))
 
                              # Will compute DPS
         for PreBakedAction in player.PreBakedActionSet:
-                             # The timestamp of the PreBakedAction. We are substracting 0.01 seconds for every previously done GCD
-                             # since round(PreBakedAction.reducableStamp / f_SPD, 2) computes the GCD timer, but the simulator
-                             # starts counting at 0.00, so we have to substract for every GCD as otherwise we will gain 0.01 every GCD.
-
                                                      # Count every GCD
-            if PreBakedAction.isGCD : countGCD += 1
-                             # Have to round PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3) as it sometime has repeating 9s when it should be the value above.
-            #amountToRemoveEveryGCD += round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10) - roundDown(round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10),2)
-
-            #timeStamp = roundDown(PreBakedAction.nonReducableStamp + max(0,(PreBakedAction.reducableStamp * roundDown(gcdReductionRatio,3)) - (amountToRemoveEveryGCD)),2)# - roundDown(amountToRemoveFailCondition,2)
+            if PreBakedAction.isGCD : countGCD += 1                        
             timeStamp = PreBakedAction.timeStamp
-
-                             # Checking if action is conditional. If it is we check for requirment.
-            #if PreBakedAction.isConditionalAction:
-
-            #    if timeStamp >= 8:
-            #                 # Do not meet the requirement
-            #        actionFailsCondition = True
-            #        amountToRemoveFailCondition += max(PreBakedAction.gcdLockTimer,1.5)
-            #        amountToRemoveEveryGCD -= round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10) - roundDown(round(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),10),2)
-
-                             # If an auto doesn't land in this trial we simply continue
-            if PreBakedAction.type == 3 and timeStamp > trialFinishTime:
-                continue
-
                                          # Computing base MainStat for this action. If from pet do not get teamcomp bonus
             totalPotency += PreBakedAction.Potency
             curMainStat = MainStat * (PreBakedAction.MainStatPercentageBonus if not PreBakedAction.isFromPet else 1)
 
             fight_logging.debug("TimeStamp : " + str(timeStamp))
-            #fight_logging.debug("Finish : " + str(trialFinishTime))
-            #fight_logging.debug("f_SPD : " + str(f_SPD))
-            #fight_logging.debug("Non rounded : " + str(gcdReductionRatio))
-            #fight_logging.debug("Non Reducable : " + str(PreBakedAction.nonReducableStamp) + " Reducable : " + str(PreBakedAction.reducableStamp) + " SPD : " + str(roundDown(gcdReductionRatio,3)))
-            #fight_logging.debug("GCDLock : " + str(PreBakedAction.gcdLockTimer))
-            #fight_logging.debug("Amount not rounded : " + str(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3)))
-            #fight_logging.debug("Amount rounded : " + str(roundDown(PreBakedAction.gcdLockTimer * roundDown(gcdReductionRatio,3),2)))
-            #fight_logging.debug("amountToRemoveEveryGCD : " + str(amountToRemoveEveryGCD))
-                                         # Will check what buffs the action falls under.
-                                         # Chain Stratagem
-            for history in player.ChainStratagemHistory:
-                if history.isUp(timeStamp):
-                    PreBakedAction.CritBonus += 0.1
-                                         # Devilment
-            for history in player.DevilmentHistory:
-                if history.isUp(timeStamp):
-                    PreBakedAction.CritBonus += 0.2
-                    PreBakedAction.DHBonus += 0.2
-                                         # Battle Litany
-            for history in player.BattleLitanyHistory:
-                if history.isUp(timeStamp):
-                    PreBakedAction.CritBonus += 0.1
-                                         # Wandering Minuet
-            for history in player.WanderingMinuetHistory:
-                if history.isUp(timeStamp):
-                    PreBakedAction.CritBonus += 0.02
-                                         # Battle Voice
-            for history in player.BattleVoiceHistory:
-                if history.isUp(timeStamp):
-                    PreBakedAction.DHBonus += 0.2
                                          # Potion
-            for history in player.PotionHistory:
-                if history.isUp(timeStamp):
-                    curMainStat = min(math.floor(curMainStat * 1.1), curMainStat + 262) #Grade 8 HQ tincture
+            if PreBakedAction.potionIsActive : curMainStat = math.floor(min(math.floor(curMainStat * 1.1), curMainStat + 262)) #Grade 8 HQ tincture
                                          # Any other percent bonus. Might have to remake dragoon tether since pet not affected by this buff
-            for history in player.PercentBuffHistory:
-                if PreBakedAction.isFromPet and history.isTrickAttack : continue
-                if history.isUp(timeStamp):
-                    PreBakedAction.PercentageBonus.append(history.getPercentBonus())
 
             for buff in PreBakedAction.buffList:
-                PreBakedAction.PercentageBonus.append(buff)
+                PreBakedAction.PercentageBonus.append(buff.MultDPS)
 
             if PreBakedAction.IsTank : f_MAIN_DMG = (100+math.floor((curMainStat-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
             else: f_MAIN_DMG = (100+math.floor((curMainStat-baseMain)*195/baseMain))/100
@@ -227,50 +214,40 @@ class Fight:
             ExpectedDamage += ActionExpected
             player.DamageInstanceList.append(ActionExpected)
             damageHistory.append(Damage)
-            #actionFailsCondition = False
 
                              # Will compute Random DPS
-        randomDPSRuns = []   # This list will contain all the DPS of the random runs
-        for run in range(n):
-            CurrentDamage = 0
-            index = 0
-            for PreBakedAction in player.PreBakedActionSet:
-                CurrentDamage += PreBakedAction.ComputeRandomDamage(damageHistory[index], f_CritRate,f_CritMult, f_DH)
-                index += 1 
-                
-                if index == len(damageHistory) : break # Might have to break if we ommit some autos.
+        #randomDPSRuns = []   # This list will contain all the DPS of the random runs
+        #for run in range(n):
+        #    CurrentDamage = 0
+        #    index = 0
+        #    for PreBakedAction in player.PreBakedActionSet:
+        #        CurrentDamage += PreBakedAction.ComputeRandomDamage(damageHistory[index], f_CritRate,f_CritMult, f_DH)
+        #        index += 1 
+        #        
+        #        if index == len(damageHistory) : break # Might have to break if we ommit some autos.
 
-            randomDPSRuns.append(CurrentDamage/timeStamp)
+        #    randomDPSRuns.append(CurrentDamage/timeStamp)
                              # Sorting array so we can find the percentiles.
-        randomDPSRuns.sort()
+        #randomDPSRuns.sort()
 
-        Percent = int(n/100)
-        percentileRuns = {
-            "1" :  0 if n < 100 else sum(randomDPSRuns[(Percent):(10*Percent-1)])/(len(randomDPSRuns[(Percent+1):(10*Percent-1)])),
-            "10" : 0 if n < 100 else sum(randomDPSRuns[(10*Percent+1):(25*Percent-1)])/(len(randomDPSRuns[(10*Percent+1):(25*Percent-1)])),
-            "25" : 0 if n < 100 else sum(randomDPSRuns[(25*Percent+1):(50*Percent-1)])/(len(randomDPSRuns[(25*Percent+1):(50*Percent-1)])),
-            "50" : 0 if n < 100 else sum(randomDPSRuns[(50*Percent+1):(75*Percent-1)])/(len(randomDPSRuns[(50*Percent+1):(75*Percent-1)])),
-            "75" : 0 if n < 100 else sum(randomDPSRuns[(75*Percent+1):(90*Percent-1)])/(len(randomDPSRuns[(75*Percent+1):(90*Percent-1)])),
-            "90" : 0 if n < 100 else sum(randomDPSRuns[(90*Percent+1):(99*Percent-1)])/(len(randomDPSRuns[(90*Percent+1):(99*Percent-1)])),
-            "99" : 0 if n < 100 else sum(randomDPSRuns[(99*Percent):])/(len(randomDPSRuns[(99*Percent):]))
-        }
+        #Percent = int(n/100)
         #percentileRuns = {
-        #    "1" :  0 if n < 100 else randomDPSRuns[Percent],
-        #    "10" : 0 if n < 100 else randomDPSRuns[10 * Percent],
-        #    "25" : 0 if n < 100 else randomDPSRuns[25 * Percent],
-        #    "50" : 0 if n < 100 else randomDPSRuns[50 * Percent],
-        #    "75" : 0 if n < 100 else randomDPSRuns[75 * Percent],
-        #    "90" : 0 if n < 100 else randomDPSRuns[90 * Percent],
-        #    "99" : 0 if n < 100 else randomDPSRuns[n - Percent]
+        #    "1" :  0 if n < 100 else sum(randomDPSRuns[(Percent):(10*Percent-1)])/(len(randomDPSRuns[(Percent+1):(10*Percent-1)])),
+        #    "10" : 0 if n < 100 else sum(randomDPSRuns[(10*Percent+1):(25*Percent-1)])/(len(randomDPSRuns[(10*Percent+1):(25*Percent-1)])),
+        #    "25" : 0 if n < 100 else sum(randomDPSRuns[(25*Percent+1):(50*Percent-1)])/(len(randomDPSRuns[(25*Percent+1):(50*Percent-1)])),
+        #    "50" : 0 if n < 100 else sum(randomDPSRuns[(50*Percent+1):(75*Percent-1)])/(len(randomDPSRuns[(50*Percent+1):(75*Percent-1)])),
+        #    "75" : 0 if n < 100 else sum(randomDPSRuns[(75*Percent+1):(90*Percent-1)])/(len(randomDPSRuns[(75*Percent+1):(90*Percent-1)])),
+        #    "90" : 0 if n < 100 else sum(randomDPSRuns[(90*Percent+1):(99*Percent-1)])/(len(randomDPSRuns[(90*Percent+1):(99*Percent-1)])),
+        #    "99" : 0 if n < 100 else sum(randomDPSRuns[(99*Percent):])/(len(randomDPSRuns[(99*Percent):]))
         #}
-                             # Reseting all bonus value for PreBakedActions
-        for PreBakedAction in player.PreBakedActionSet:
-            PreBakedAction.resetTimeSensibleBuff()
+
+        for preBakedAction in player.PreBakedActionSet: preBakedAction.resetPercentageBonus()
+
 
         fight_logging.debug("counted GCD  : " + str(countGCD))
         fight_logging.debug("previous GCD : " + str(player.GCDCounter))
-        if getInfo : return round(ExpectedDamage/timeStamp,2), percentileRuns, timeStamp, totalPotency
-        return round(ExpectedDamage/timeStamp if True else ExpectedDamage,2), percentileRuns
+        if getInfo : return round(ExpectedDamage/timeStamp,2), {}, timeStamp, totalPotency
+        return round(ExpectedDamage/timeStamp if True else ExpectedDamage,2), {}
 
         
 
@@ -333,6 +310,9 @@ class Fight:
                 if hasRanged: self.TeamCompositionBonus += 0.01
                 if hasTank: self.TeamCompositionBonus += 0.01
                 if hasHealer: self.TeamCompositionBonus += 0.01
+
+        for Player in self.PlayerList:
+            Player.Stat["MainStat"] = math.floor(Player.Stat["MainStat"] * self.TeamCompositionBonus) # Scaling %bonus on mainstat
 
         # Will first compute each player's GCD reduction value based on their Spell Speed and Skill Speed Value
         for Player in self.PlayerList:
@@ -574,7 +554,9 @@ class Fight:
             Player.CritRate = math.floor((200*(Player.Stat["Crit"]-baseSub)/levelMod+50))/1000 # Crit rate in decimal
             Player.CritMult = (math.floor(200*(Player.Stat["Crit"]-baseSub)/levelMod+400))/1000 # Crit Damage multiplier
             Player.DHRate = math.floor(550*(Player.Stat["DH"]-baseSub)/levelMod)/1000 # DH rate in decimal
-            Player.DHAuto = math.floor(140*(Player.Stat["DH"]-baseMain)/levelMod)/1000 # DH bonus when auto crit/DH
+            Player.DHAuto = math.floor(140*(Player.Stat["DH"]-baseSub)/levelMod)/1000 # DH bonus when auto crit/DH
+                             # I was using baseMain for DHAuto, but I think that might be wrong based on what
+                             # is in the tankcalc gear sheet. I have not yet confirmed which is the correct one to use.
             
             log_str = ("ID : " + str(Player.playerID) + " , Job : " + JobEnum.name_for_id(Player.JobEnum) 
             + " , f_WD : " + str(Player.f_WD) 
@@ -583,7 +565,8 @@ class Fight:
             + " , f_SPD : " + str(Player.f_SPD) 
             + " , f_CritRate : " + str(Player.CritRate) 
             + " , f_CritMult : " + str(Player.CritMult)
-            + " , f_DHRate : " + str(Player.DHRate)  )
+            + " , f_DHRate : " + str(Player.DHRate)  
+            + ", f_DHAuto : " + str(Player.DHAuto))
 
             fight_logging.debug(log_str)
 
@@ -623,6 +606,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
                              # Creating page object to record action
     thisPage = page()
+    thisPage.setPlayerID(Player.playerID)
     Player.CurrentFight.simulationRecord.addPage(thisPage)
     thisPage.setName(name_for_id(spellObj.id, Player.ClassAction, Player.JobAction))
     thisPage.setPotency(Potency)
@@ -646,8 +630,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     Enemy = Player.CurrentFight.Enemy # Enemy targetted
     isPet = (Player.JobEnum == JobEnum.Pet)
     isTank = Player.RoleEnum == RoleEnum.Tank or (isPet and Player.Master.RoleEnum == RoleEnum.Tank)
-    if Player.JobEnum == JobEnum.Pet: MainStat = Player.Stat["MainStat"] # Summons do not receive bonus
-    else: MainStat = math.floor(Player.Stat["MainStat"] * Player.CurrentFight.TeamCompositionBonus) # Scaling %bonus on mainstat
+    MainStat = Player.Stat["MainStat"]
     # Computing values used throughout all computations
     if isTank : f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
     else: f_MAIN_DMG = (100+math.floor((MainStat-baseMain)*195/baseMain))/100
@@ -699,10 +682,11 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
                 auto_DH = True   
         elif Player.JobEnum == JobEnum.Warrior:
             fight_logging.debug("Inner Release Stack : " + str(Player.InnerReleaseStack))        # Primal Rend                                     # Fell Cleave                                    # Inner Chaos
-            if Player.InnerReleaseStack >= 1 and (Player.NextSpell < len(Player.ActionSet)) and (Player.ActionSet[Player.NextSpell].id == 25753 or Player.ActionSet[Player.NextSpell].id == 3549 or Player.ActionSet[Player.NextSpell].id == 16465):
+            if (Player.NextSpell < len(Player.ActionSet)) and (Player.ActionSet[Player.NextSpell].id == 25753 or (Player.ActionSet[Player.NextSpell].id == 3549 and Player.InnerReleaseStack > 0) or Player.ActionSet[Player.NextSpell].id == 16465):
                 CritRate = 1# If inner release weaponskill
                 DHRate = 1
-                Player.InnerReleaseStack -= 1
+                             # Remove stack if fell cleave
+                if Player.ActionSet[Player.NextSpell].id == 3549 : Player.InnerReleaseStack -= 1
                 auto_crit = True
                 auto_DH = True
         elif Player.JobEnum == JobEnum.Samurai:
@@ -737,10 +721,12 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         We will check if the action is a GCD with recast time of lesser or equal to 1.5s since the GCD
         cannot go lower. The total time will be remembered and substracted from the total time that is reduceable from more SpS.
         """
-                             # BuffList only contains personnal buff (I think? Have to check)
+                             # Snapshotting all buff on that action.
         buffList = []
         for buff in Player.buffList:
-            buffList.append(buff.MultDPS)
+            buffList.append(buff)
+        for buff in Enemy.buffList:
+            buffList.append(buff)
 
         if auto_crit and auto_DH : fight_logging.debug("Auto Crit/DH prebaked")
         elif auto_crit : fight_logging.debug("Auto Crit prebaked")
@@ -751,9 +737,14 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         gcdLockTimer = max(spellObj.notRoundRecastTime, spellObj.notRoundCastTime) if spellObj.GCD  and (Player.RoleEnum != RoleEnum.Pet) and max(spellObj.notRoundRecastTime, spellObj.notRoundCastTime) > 1.5 else 0
         if spellObj.GCD and (Player.RoleEnum == RoleEnum.Melee or Player.RoleEnum == RoleEnum.Tank) and spellObj.type == 1 : gcdLockTimer = 0
         elif spellObj.GCD and (Player.RoleEnum == RoleEnum.Caster) and spellObj.type == 2 : gcdLockTimer = 0
-
-        (Player if not isPet else Player.Master).PreBakedActionSet.append(PreBakedAction(isTank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type,Player.CurrentFight.TimeStamp if Player.CurrentFight.FightStart else 0, nonReducableStamp + (0 if type == 0 else reducableStamp), 
-                                                       reducableStamp if type == 0 else 0 ,AutoCrit=auto_crit, AutoDH=auto_DH, isFromPet=isPet, isGCD=spellObj.GCD,gcdLockTimer=gcdLockTimer,spellDPSBuff=SpellBonus, isConditionalAction=spellObj.conditionalAction))
+        
+        newPreBaked = PreBakedAction(isTank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type,Player.CurrentFight.TimeStamp if Player.CurrentFight.FightStart else 0, nonReducableStamp + (0 if type == 0 else reducableStamp), 
+                                     reducableStamp if type == 0 else 0 ,AutoCrit=auto_crit, AutoDH=auto_DH, isFromPet=isPet, isGCD=spellObj.GCD,gcdLockTimer=gcdLockTimer,spellDPSBuff=SpellBonus, isConditionalAction=spellObj.conditionalAction)
+                             # Giving dh and crit bonus
+        newPreBaked.CritBonus = CritRateBonus
+        newPreBaked.DHBonus = DHRateBonus
+        newPreBaked.potionIsActive =  Player.PotionTimer > 0 or (isPet and Player.Master.PotionTimer > 0)
+        (Player if not isPet else Player.Master).PreBakedActionSet.append(newPreBaked)
         
         return Potency, Potency        # Exit the function since we are not interested in the immediate damage value. Still return potency as to not break the fight's duration.
 

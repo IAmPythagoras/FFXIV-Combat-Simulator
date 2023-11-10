@@ -171,7 +171,7 @@ def ApplyGluttony(Player, Enemy):
 
 
 def ApplyArcaneCircle(Player, Enemy):
-    if not (ArcaneCircleBuff in Enemy.buffList) and not Player.CurrentFight.SavePreBakedAction: 
+    if not (ArcaneCircleBuff in Enemy.buffList):
         Enemy.buffList.append(ArcaneCircleBuff) #If not already in by another reaper
         Player.EffectCDList.append(ArcaneCircleCheck)
     #Will have to worry about if multiple reaper
@@ -199,10 +199,10 @@ def ApplyArcaneCircle(Player, Enemy):
         player.EffectCDList.append(CircleOfSacrificeCheck)
 
                              # Only doing this if SavePreBakedAction is true
-    if Player.CurrentFight.SavePreBakedAction:
-        fight = Player.CurrentFight
-        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , ArcaneCircleBuff.MultDPS)
-        fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
+    #if Player.CurrentFight.SavePreBakedAction:
+    #    fight = Player.CurrentFight
+    #    history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , ArcaneCircleBuff.MultDPS)
+    #    fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
 
 def ApplySoulSlice(Player, Enemy):
     Player.AddGauge(50) #Adding 50 SoulGauge

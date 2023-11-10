@@ -129,15 +129,14 @@ def ApplyAstrodyne(Player, Enemy):
         Player.EffectCDList.append(BodyCheck)#Only 1 check for both Body and Mind since same Timer
         Player.BodyTimer = 15
     if check == 3:
-        if not Player.CurrentFight.SavePreBakedAction:
-            Player.buffList.append(AstrodyneBuff)
-            Player.EffectCDList.append(MindCheck)
+        Player.buffList.append(AstrodyneBuff)
+        Player.EffectCDList.append(MindCheck)
 
                                         # Only relevant to PreBakedAction and only does that code if true
-        if Player.CurrentFight.SavePreBakedAction:
-            fight = Player.CurrentFight
-            history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 15, AstrodyneBuff.MultDPS)
-            Player.PercentBuffHistory.append(history)
+        #if Player.CurrentFight.SavePreBakedAction:
+        #    fight = Player.CurrentFight
+        #    history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 15, AstrodyneBuff.MultDPS)
+        #    Player.PercentBuffHistory.append(history)
 
 def ApplyDraw(Player, Enemy):
     Player.HasCard = True
@@ -161,16 +160,15 @@ def ApplyLordOfCrown(Player, Enemy):
 def ApplyDivination(Player, Enemy):
     Player.DivinationCD = 120
     Player.DivinationTimer = 15
-    if not Player.CurrentFight.SavePreBakedAction:
-        Player.EffectCDList.append(DivinationCheck)
-        Enemy.buffList.append(DivinationBuff) #Just give DPS bonus on Enemy instead of raid wide buff
+    Player.EffectCDList.append(DivinationCheck)
+    Enemy.buffList.append(DivinationBuff) #Just give DPS bonus on Enemy instead of raid wide buff
 
 
                              # Only relevant to PreBakedAction and only does that code if true
-    if Player.CurrentFight.SavePreBakedAction:
-        fight = Player.CurrentFight
-        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 15, DivinationBuff.MultDPS)
-        fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
+    #if Player.CurrentFight.SavePreBakedAction:
+    #    fight = Player.CurrentFight
+    #    history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 15, DivinationBuff.MultDPS)
+    #    fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
 
 def ApplyLightspeed(Player, Enemy):
     Player.LightspeedTimer = 15
@@ -325,11 +323,9 @@ def Arcanum(Target, Type, Melee):
         if Target.ArcanumBuff != None:
             Target.buffList.remove(Target.ArcanumBuff)
         else:                # If it already didn't have a card. We must give the target the Check
-            if not Player.CurrentFight.SavePreBakedAction:
-                Target.EffectCDList.append(ArcanumCheck)
+            Target.EffectCDList.append(ArcanumCheck)
 
                              # Given card buff to the target
-        if not Player.CurrentFight.SavePreBakedAction:
             Target.ArcanumBuff = deepcopy(buff)
             Target.buffList.append(Target.ArcanumBuff)
         Target.ArcanumTimer = 15
@@ -339,13 +335,14 @@ def Arcanum(Target, Type, Melee):
         elif Type == "Celestial" : Player.Celestial = True
 
                                             # Only doing this if SavePreBakedAction is true
-        if Player.CurrentFight.SavePreBakedAction:
-            fight = Player.CurrentFight
-            history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 15 , Target.ArcanumBuff.MultDPS)
-            Target.PercentBuffHistory.append(history)
+        #if Player.CurrentFight.SavePreBakedAction:
+        #    fight = Player.CurrentFight
+        #    history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 15 , Target.ArcanumBuff.MultDPS)
+        #    Target.PercentBuffHistory.append(history)
 
     ArcanumSpell = AstrologianSpell(0, False, Lock, 0, 0, 0, ApplyArcanum, [ArcanumRequirement])
     ArcanumSpell.TargetID = Target.playerID 
+    ArcanumSpell.TargetPlayerObject = Target
     return ArcanumSpell
 
 def Balance(target):

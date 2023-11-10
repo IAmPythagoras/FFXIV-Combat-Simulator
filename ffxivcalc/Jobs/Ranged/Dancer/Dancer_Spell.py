@@ -156,9 +156,8 @@ def ApplyTechnicalFinish(Player, Enemy):
     #and the dance partner
 
     #The check will be done on the dancer only
-    if not Player.CurrentFight.SavePreBakedAction:
-        Player.EffectCDList.append(TechnicalFinishCheck)
-        Enemy.buffList.append(Player.TechnicalFinishBuff) #Since party wide, applies on enemy
+    Player.EffectCDList.append(TechnicalFinishCheck)
+    Enemy.buffList.append(Player.TechnicalFinishBuff) #Since party wide, applies on enemy
 
 
     Player.TechnicalFinishTimer = 20
@@ -171,10 +170,10 @@ def ApplyTechnicalFinish(Player, Enemy):
     Player.FlourishingFinish = True #Enables Tillana
 
                                      # Only doing this if SavePreBakedAction is true
-    if Player.CurrentFight.SavePreBakedAction:
-        fight = Player.CurrentFight
-        history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , Player.TechnicalFinishBuff.MultDPS)
-        fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
+    #if Player.CurrentFight.SavePreBakedAction:
+    #    fight = Player.CurrentFight
+    #    history = buffPercentHistory(fight.TimeStamp, fight.TimeStamp + 20 , Player.TechnicalFinishBuff.MultDPS)
+    #    fight.PlayerList[fight.PlayerIDSavePreBakedAction].PercentBuffHistory.append(history)
 
 def ApplyEmboite(Player, Enemy):
     Player.Emboite = True
@@ -204,11 +203,13 @@ def ApplyDevilment(Player, Enemy):
 
     Player.EffectCDList.append(DevilmentCheck)
 
+    dancePartnerIsSavePreBaked = False if Player.DancePartner == None else Player.CurrentFight.PlayerIDSavePreBakedAction == Player.DancePartner.playerID
+
                                      # Only doing this if SavePreBakedAction is true
-    if Player.CurrentFight.SavePreBakedAction:
-        fight = Player.CurrentFight
-        history = buffHistory(fight.TimeStamp, fight.TimeStamp + 20)
-        fight.PlayerList[fight.PlayerIDSavePreBakedAction].DevilmentHistory.append(history)
+    #if Player.CurrentFight.SavePreBakedAction and (Player.CurrentFight.PlayerIDSavePreBakedAction == Player.playerID or dancePartnerIsSavePreBaked):
+    #    fight = Player.CurrentFight
+    #    history = buffHistory(fight.TimeStamp, fight.TimeStamp + 20)
+    #    fight.PlayerList[fight.PlayerIDSavePreBakedAction].DevilmentHistory.append(history)
 
 def ApplyTillana(Player, Enemy):
     Player.FlourishingFinish = False 
@@ -383,10 +384,10 @@ StandardFinishBuff = buff(1,name="Standard Finish") #We will adapt the buff depe
 Ending = DancerSpell(18073, False, 0, 0, ApplyEnding, [], False)
 
 def ClosedPosition(Partner, InFight="True"):
-
     def ApplyClosedPosition(Player, Enemy):
+
         if InFight : Player.ClosedPositionCD = 30 #Only update CD if in Fight, since we can dance partner before begins
-        
+
         Player.DancePartner = Partner #New Partner
         if Player.StandardFinishTimer > 0: #Add StandardFinish
             Player.DancePartner.buffList.append(Player.StandardFinishBuff)
@@ -396,8 +397,10 @@ def ClosedPosition(Partner, InFight="True"):
 
 
         #Will have to switch buff
+        # If change this ID make sure to change in deepCopyFight too.
     ClosedPositionSpell = DancerSpell(16006, False, 0, 0, ApplyClosedPosition, [ClosedPositionRequirement], False)
     ClosedPositionSpell.TargetID = Partner.playerID
+    ClosedPositionSpell.TargetPlayerObject = Partner
     return ClosedPositionSpell
 
 DancerAbility = {
