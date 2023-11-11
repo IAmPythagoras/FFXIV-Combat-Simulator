@@ -4258,7 +4258,7 @@ mchtest20 = test("Automaton test 2", mchTest20TestFunction, mchTest20ValidationF
 mchTestSuite.addTest(mchtest20)
 
 ######################################
-#        Machinist testSuite         #
+#           Bard testSuite           #
 ######################################
 
 brdTestSuite = testSuite("Bard test suite")
@@ -5230,17 +5230,203 @@ def brdTest26ValidationFunction(testResults) -> (bool, list):
 brdtest26 = test("Battle Voice test 2", brdTest26TestFunction, brdTest26ValidationFunction)
 brdTestSuite.addTest(brdtest26)
 
+######################################
+#           Dancer testSuite           #
+######################################
+
+dncTestSuite = testSuite("Dancer test suite")
+
+# Opener requirement, end time and potency test 1
+
+def dncTest1TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [StandardStep, Pirouette, Jete, WaitAbility(15), StandardFinish, TechnicalStep, Pirouette, Jete, Entrechat, Emboite, TechnicalFinish, Devilment,
+                 StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Jete, Pirouette, StandardFinish]
+    player = Player(actionSet, [], Stat, JobEnum.Dancer)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    failedReq = 0
+    for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+        if event.fatal : failedReq += 1
+
+    return [failedReq, Event.TimeStamp, player.TotalPotency]
+
+def dncTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 18.38, 5420]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+dnctest1 = test("Opener requirement, end time and potency 1", dncTest1TestFunction, dncTest1ValidationFunction)
+dncTestSuite.addTest(dnctest1)
+
+# Standard Step test
+
+def dncTest2TestFunction() -> None:
+    """Standard Step test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([], [],Stat, JobEnum.Ninja)
+    actionSet = [ClosedPosition(NINPlayer),StandardStep,StandardFinish]
+    player = Player(actionSet, [], Stat, JobEnum.Dancer)
+    
+    
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.StandardFinishBuff in NINPlayer.buffList, player.StandardFinishBuff.MultDPS]
+
+def dncTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [360, True, 1]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+dnctest2 = test("Standard Step test 1", dncTest2TestFunction, dncTest2ValidationFunction)
+dncTestSuite.addTest(dnctest2)
+
+# Standard Step test
+
+def dncTest3TestFunction() -> None:
+    """Standard Step test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([], [],Stat, JobEnum.Ninja)
+
+    actionSet = [ClosedPosition(NINPlayer),StandardStep, Jete,StandardFinish]
+    player = Player(actionSet, [], Stat, JobEnum.Dancer)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.StandardFinishBuff in NINPlayer.buffList, player.StandardFinishBuff.MultDPS]
+
+def dncTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [540, True, 1.02]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+dnctest3 = test("Standard Step test 2", dncTest3TestFunction, dncTest3ValidationFunction)
+dncTestSuite.addTest(dnctest3)
+
+# Standard Step test
+
+def dncTest4TestFunction() -> None:
+    """Standard Step test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([], [],Stat, JobEnum.Ninja)
+
+    actionSet = [StandardStep, Jete,Pirouette,StandardFinish]
+    player = Player(actionSet, [], Stat, JobEnum.Dancer)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.StandardFinishBuff in NINPlayer.buffList, player.StandardFinishBuff.MultDPS]
+
+def dncTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [720, True, 1.05]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+dnctest4 = test("Standard Step test 3", dncTest4TestFunction, dncTest4ValidationFunction)
+dncTestSuite.addTest(dnctest4)
+
+# Standard Step test
+
+def dncTest5TestFunction() -> None:
+    """Standard Step test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    NINPlayer = Player([], [],Stat, JobEnum.Ninja)
+    
+    actionSet = [StandardStep, Jete,Entrechat,Pirouette,StandardFinish]
+    player = Player(actionSet, [], Stat, JobEnum.Dancer)
+
+    Event.AddPlayer([player, NINPlayer])
 
 
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
 
-blmTestSuite.executeTestSuite()
-rdmTestSuite.executeTestSuite()
-smnTestSuite.executeTestSuite()
-whmTestSuite.executeTestSuite()
-astTestSuite.executeTestSuite()
-sgeTestSuite.executeTestSuite()
-mchTestSuite.executeTestSuite()
-brdTestSuite.executeTestSuite()
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.StandardFinishBuff in NINPlayer.buffList, player.StandardFinishBuff.MultDPS]
+
+def dncTest5ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [720, True, 1.05]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+dnctest5 = test("Standard Step test 4", dncTest5TestFunction, dncTest5ValidationFunction)
+dncTestSuite.addTest(dnctest5)
+
+
+#blmTestSuite.executeTestSuite()
+#rdmTestSuite.executeTestSuite()
+#smnTestSuite.executeTestSuite()
+#whmTestSuite.executeTestSuite()
+#astTestSuite.executeTestSuite()
+#sgeTestSuite.executeTestSuite()
+#mchTestSuite.executeTestSuite()
+#brdTestSuite.executeTestSuite()
+dncTestSuite.executeTestSuite()
 
 
 
