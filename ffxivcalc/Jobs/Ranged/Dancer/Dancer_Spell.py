@@ -203,7 +203,7 @@ def ApplyDevilment(Player, Enemy):
 
     Player.EffectCDList.append(DevilmentCheck)
 
-    dancePartnerIsSavePreBaked = False if Player.DancePartner == None else Player.CurrentFight.PlayerIDSavePreBakedAction == Player.DancePartner.playerID
+    #dancePartnerIsSavePreBaked = False if Player.DancePartner == None else Player.CurrentFight.PlayerIDSavePreBakedAction == Player.DancePartner.playerID
 
                                      # Only doing this if SavePreBakedAction is true
     #if Player.CurrentFight.SavePreBakedAction and (Player.CurrentFight.PlayerIDSavePreBakedAction == Player.playerID or dancePartnerIsSavePreBaked):
@@ -215,7 +215,7 @@ def ApplyTillana(Player, Enemy):
     Player.FlourishingFinish = False 
     #We have to apply or reapply StandardFinish with a bonus of 5%, so reset, set bonus to 5% and apply
     if Player.StandardFinishBuff != None : Player.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
-    if Player.DancePartner != None : Player.DancePartner.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
+    if Player.DancePartner != None and Player.StandardFinishBuff in Player.DancePartner.buffList : Player.DancePartner.buffList.remove(Player.StandardFinishBuff) #Reset DPSBonus
     
     if Player.StandardFinishBuff == None : Player.StandardFinishBuff = copy.deepcopy(StandardFinishBuff)
     Player.StandardFinishBuff.MultDPS = 1.05
