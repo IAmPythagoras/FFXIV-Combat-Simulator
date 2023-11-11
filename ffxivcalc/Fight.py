@@ -285,6 +285,11 @@ class Fight:
         self.ComputeFunctions() # Compute all damage functions for the players
 
 
+                             # Checks if every player has a least one action. If not
+                             # we put True Lock
+        for player in self.PlayerList:
+            if len(player.ActionSet) == 0 : player.TrueLock = True
+
         # The first thing we will do is compute the TEAM composition DPS bonus
         # each class will give 1%
         # Tank, Healer, Caster, Ranged, Melee
