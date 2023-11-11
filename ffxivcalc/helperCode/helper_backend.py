@@ -239,30 +239,48 @@ def RestoreFightObject(data : dict, name : str = ""):
         
         job_name = player["JobName"]
         job_object = None
+        stat = {}
+        #Giving player object the stat dictionnary
+        
+        # Will check if the player is given an etro url.
+
+        etro_url = player["etro_gearset_url"]
+        if "etro.gg/gearset/" in etro_url:
+            stat = get_gearset_data(etro_url)
+
+            # Since etro now returns only the weapon damage multiplier, we have to find the the original WD.
+            job_object.f_WD = PlayerActionList[str(job_object.playerID)]["job_object"].Stat["WD"]/100 # Mult bonus we already know.
+            
+            baseMain = 390
+            JobMod = job_object.JobMod # Level 90 jobmod value, specific to each job
+            stat["WD"] -= math.floor((baseMain * JobMod) /1000)
+        else :
+            stat = player["stat"]
+
         #Healer
-        if job_name == "Sage" : job_object = Player([], [],{}, JobEnum.Sage)
-        elif job_name == "Scholar" : job_object = Player([], [], {}, JobEnum.Scholar)
-        elif job_name == "WhiteMage" : job_object = Player([], [], {}, JobEnum.WhiteMage)
-        elif job_name == "Astrologian" : job_object = Player([], [], {}, JobEnum.Astrologian)
+        if job_name == "Sage" : job_object = Player([], [],stat, JobEnum.Sage)
+        elif job_name == "Scholar" : job_object = Player([], [], stat, JobEnum.Scholar)
+        elif job_name == "WhiteMage" : job_object = Player([], [], stat, JobEnum.WhiteMage)
+        elif job_name == "Astrologian" : job_object = Player([], [], stat, JobEnum.Astrologian)
         #Tank
-        elif job_name == "Warrior" : job_object = Player([], [SurgingTempestEffect],  {}, JobEnum.Warrior)
-        elif job_name == "DarkKnight" : job_object = Player([], [],  {}, JobEnum.DarkKnight)
-        elif job_name == "Paladin" : job_object = Player([], [], {}, JobEnum.Paladin)
-        elif job_name == "Gunbreaker" : job_object = Player([], [],  {}, JobEnum.Gunbreaker)
+        elif job_name == "Warrior" : job_object = Player([], [SurgingTempestEffect],  stat, JobEnum.Warrior)
+        elif job_name == "DarkKnight" : job_object = Player([], [],  stat, JobEnum.DarkKnight)
+        elif job_name == "Paladin" : job_object = Player([], [], stat, JobEnum.Paladin)
+        elif job_name == "Gunbreaker" : job_object = Player([], [],  stat, JobEnum.Gunbreaker)
         #Caster
-        elif job_name == "BlackMage" : job_object = Player([], [ElementalEffect],  {}, JobEnum.BlackMage)
-        elif job_name == "RedMage" : job_object = Player([], [DualCastEffect],  {}, JobEnum.RedMage)
-        elif job_name == "Summoner" : job_object = Player([], [],  {}, JobEnum.Summoner)
+        elif job_name == "BlackMage" : job_object = Player([], [ElementalEffect],  stat, JobEnum.BlackMage)
+        elif job_name == "RedMage" : job_object = Player([], [DualCastEffect],  stat, JobEnum.RedMage)
+        elif job_name == "Summoner" : job_object = Player([], [],  stat, JobEnum.Summoner)
         #Ranged
-        elif job_name == "Dancer" : job_object = Player([], [EspritEffect],  {}, JobEnum.Dancer)
-        elif job_name == "Machinist" : job_object = Player([], [],  {}, JobEnum.Machinist)
-        elif job_name == "Bard" : job_object = Player([], [SongEffect],  {}, JobEnum.Bard)
+        elif job_name == "Dancer" : job_object = Player([], [EspritEffect],  stat, JobEnum.Dancer)
+        elif job_name == "Machinist" : job_object = Player([], [],  stat, JobEnum.Machinist)
+        elif job_name == "Bard" : job_object = Player([], [SongEffect],  stat, JobEnum.Bard)
         #melee
-        elif job_name == "Reaper" : job_object = Player([], [],  {}, JobEnum.Reaper)
-        elif job_name == "Monk" : job_object = Player([], [ComboEffect],  {}, JobEnum.Monk)
-        elif job_name == "Dragoon" : job_object = Player([], [],  {}, JobEnum.Dragoon)
-        elif job_name == "Ninja" : job_object = Player([], [],  {}, JobEnum.Ninja)
-        elif job_name == "Samurai" : job_object = Player([], [],  {}, JobEnum.Samurai)
+        elif job_name == "Reaper" : job_object = Player([], [],  stat, JobEnum.Reaper)
+        elif job_name == "Monk" : job_object = Player([], [ComboEffect],  stat, JobEnum.Monk)
+        elif job_name == "Dragoon" : job_object = Player([], [],  stat, JobEnum.Dragoon)
+        elif job_name == "Ninja" : job_object = Player([], [],  stat, JobEnum.Ninja)
+        elif job_name == "Samurai" : job_object = Player([], [],  stat, JobEnum.Samurai)
         
 
         job_object.playerID = player["playerID"] #Giving the playerID
@@ -273,24 +291,6 @@ def RestoreFightObject(data : dict, name : str = ""):
 
         PlayerActionList[str(job_object.playerID)] = {"job" : job_name, "job_object" : job_object, "actionList" : player["actionList"], "actionObject" : []} #Adding new Key accessible by IDs
 
-        #Giving player object the stat dictionnary
-        
-        # Will check if the player is given an etro url.
-
-        etro_url = player["etro_gearset_url"]
-        if "etro.gg/gearset/" in etro_url:
-            job_object.Stat = get_gearset_data(etro_url)
-
-            # Since etro now returns only the weapon damage multiplier, we have to find the the original WD.
-            job_object.f_WD = PlayerActionList[str(job_object.playerID)]["job_object"].Stat["WD"]/100 # Mult bonus we already know.
-            
-            baseMain = 390
-            JobMod = job_object.JobMod # Level 90 jobmod value, specific to each job
-            job_object.Stat["WD"] -= math.floor((baseMain * JobMod) /1000)
-            
-
-        else :
-            PlayerActionList[str(job_object.playerID)]["job_object"].Stat = player["stat"]
         # If detects an etro url copies the stats. Otherwise takes the stats from the file
         #We can access the information using the player's id
         #We will then check for Auras and do the appropriate effect
