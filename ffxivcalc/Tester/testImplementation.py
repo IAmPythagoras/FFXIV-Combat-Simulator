@@ -5038,15 +5038,208 @@ def brdTest22ValidationFunction(testResults) -> (bool, list):
 brdtest22 = test("Radiant Final test 5", brdTest22TestFunction, brdTest22ValidationFunction)
 brdTestSuite.addTest(brdtest22)
 
+def brdTest21TestFunction() -> None:
+    """This tests the different song
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [MageBallad,WanderingMinuet,ArmyPaeon,BurstShot,RadiantFinale, WaitAbility(1)]
+    player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.RadiantFinaleBuff.MultDPS, player.RadiantFinaleBuff in Dummy.buffList]
+
+def brdTest21ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1.06, True]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+brdtest21 = test("Radiant Final test 4", brdTest21TestFunction, brdTest21ValidationFunction)
+brdTestSuite.addTest(brdtest21)
+
+def brdTest22TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [MageBallad,WanderingMinuet,ArmyPaeon,BurstShot,RadiantFinale, WaitAbility(15.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.RadiantFinaleBuff.MultDPS, player.RadiantFinaleBuff in Dummy.buffList]
+
+def brdTest22ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1.06, False]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+brdtest22 = test("Radiant Final test 5", brdTest22TestFunction, brdTest22ValidationFunction)
+brdTestSuite.addTest(brdtest22)
+
+def brdTest23TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [BurstShot, RagingStrike, WaitAbility(19)]
+    player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [RagingStrikeBuff in player.buffList]
+
+def brdTest23ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+brdtest23 = test("Raging Strike test 1", brdTest23TestFunction, brdTest23ValidationFunction)
+brdTestSuite.addTest(brdtest23)
+
+def brdTest24TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [BurstShot, RagingStrike, WaitAbility(20.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [RagingStrikeBuff in player.buffList]
+
+def brdTest24ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+brdtest24 = test("Raging Strike test 2", brdTest24TestFunction, brdTest24ValidationFunction)
+brdTestSuite.addTest(brdtest24)
+
+def brdTest25TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [BurstShot, BattleVoice, WaitAbility(10)]
+    player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [Dummy.BattleVoice]
+
+def brdTest25ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+brdtest25 = test("Battle Voice test 1", brdTest25TestFunction, brdTest25ValidationFunction)
+brdTestSuite.addTest(brdtest25)
+
+def brdTest26TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [BurstShot, BattleVoice, WaitAbility(15.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [Dummy.BattleVoice]
+
+def brdTest26ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+brdtest26 = test("Battle Voice test 2", brdTest26TestFunction, brdTest26ValidationFunction)
+brdTestSuite.addTest(brdtest26)
 
 
-#blmTestSuite.executeTestSuite()
-#rdmTestSuite.executeTestSuite()
-#smnTestSuite.executeTestSuite()
-#whmTestSuite.executeTestSuite()
-#astTestSuite.executeTestSuite()
-#sgeTestSuite.executeTestSuite()
-#mchTestSuite.executeTestSuite()
+
+
+blmTestSuite.executeTestSuite()
+rdmTestSuite.executeTestSuite()
+smnTestSuite.executeTestSuite()
+whmTestSuite.executeTestSuite()
+astTestSuite.executeTestSuite()
+sgeTestSuite.executeTestSuite()
+mchTestSuite.executeTestSuite()
 brdTestSuite.executeTestSuite()
 
 

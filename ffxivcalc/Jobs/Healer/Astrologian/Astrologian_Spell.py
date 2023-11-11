@@ -326,8 +326,8 @@ def Arcanum(Target, Type, Melee):
             Target.EffectCDList.append(ArcanumCheck)
 
                              # Given card buff to the target
-            Target.ArcanumBuff = deepcopy(buff)
-            Target.buffList.append(Target.ArcanumBuff)
+        Target.ArcanumBuff = deepcopy(buff)
+        Target.buffList.append(Target.ArcanumBuff)
         Target.ArcanumTimer = 15
 
         if Type == "Lunar" : Player.Lunar = True
