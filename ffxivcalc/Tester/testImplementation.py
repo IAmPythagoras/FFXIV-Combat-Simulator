@@ -12,6 +12,7 @@ from ffxivcalc.Fight import Fight
 from ffxivcalc.Jobs.Player import Player
 from ffxivcalc.Jobs.PlayerEnum import *
 from ffxivcalc.Enemy import Enemy
+from ffxivcalc.helperCode.Progress import ProgressBar
 
 from ffxivcalc.Jobs.Base_Spell import WaitAbility, Potion, conditionalAction
 from ffxivcalc.Jobs.Caster.Caster_Spell import *
@@ -6037,15 +6038,99 @@ def dncTest21ValidationFunction(testResults) -> (bool, list):
 dnctest21 = test("Tillana test 1", dncTest21TestFunction, dncTest21ValidationFunction)
 dncTestSuite.addTest(dnctest21)
 
-#blmTestSuite.executeTestSuite()
-#rdmTestSuite.executeTestSuite()
-#smnTestSuite.executeTestSuite()
-#whmTestSuite.executeTestSuite()
-#astTestSuite.executeTestSuite()
-#sgeTestSuite.executeTestSuite()
-#mchTestSuite.executeTestSuite()
-#brdTestSuite.executeTestSuite()
-dncTestSuite.executeTestSuite()
+# Combo potency test
 
+def dncTest22TestFunction() -> None:
+    """Combo potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    NINPlayer = Player([], [],Stat, JobEnum.Ninja)
+
+    actionSet = [Cascade, Cascade, Fountain]
+    player = Player(actionSet, [], Stat, JobEnum.Dancer)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def dncTest22ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [280]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+dnctest22 = test("Combo potency test 1", dncTest22TestFunction, dncTest22ValidationFunction)
+dncTestSuite.addTest(dnctest22)
+
+# Combo potency test
+
+def dncTest23TestFunction() -> None:
+    """Combo potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    NINPlayer = Player([], [],Stat, JobEnum.Ninja)
+
+    actionSet = [Fountain]
+    player = Player(actionSet, [], Stat, JobEnum.Dancer)
+
+    Event.AddPlayer([player, NINPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def dncTest23ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [100]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+dnctest23 = test("Combo potency test 2", dncTest23TestFunction, dncTest23ValidationFunction)
+dncTestSuite.addTest(dnctest23)
+
+
+pb = ProgressBar.init(9, "Executing test suite")
+
+blmTestSuite.executeTestSuite()
+next(pb)
+rdmTestSuite.executeTestSuite()
+next(pb)
+smnTestSuite.executeTestSuite()
+next(pb)
+whmTestSuite.executeTestSuite()
+next(pb)
+astTestSuite.executeTestSuite()
+next(pb)
+sgeTestSuite.executeTestSuite()
+next(pb)
+mchTestSuite.executeTestSuite()
+next(pb)
+brdTestSuite.executeTestSuite()
+next(pb)
+dncTestSuite.executeTestSuite()
+pb.complete()
+print("Comleted. See logs for info.")
 
 
