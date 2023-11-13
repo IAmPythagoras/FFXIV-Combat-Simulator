@@ -7831,11 +7831,144 @@ def samTest20ValidationFunction(testResults) -> (bool, list):
 samtest20 = test("Iajutsu test 4", samTest20TestFunction, samTest20ValidationFunction)
 samTestSuite.addTest(samtest20)
 
+# Iajutsu
+
+def samTest21TestFunction() -> None:
+    """Iajutsu test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Meikyo,Gekko, Kasha, Yukikaze, Midare, KaeshiSetsugekka]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Getsu, player.Ka, player.Setsu, player.MeditationGauge]
+
+def samTest21ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [640, False, False,False, 1]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest21 = test("Iajutsu test 5 - Tsubame", samTest21TestFunction, samTest21ValidationFunction)
+samTestSuite.addTest(samtest21)
+
+# Hagakure
+
+def samTest22TestFunction() -> None:
+    """Iajutsu test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Meikyo,Gekko, Kasha, Hagakure, Yukikaze]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.KenkiGauge, player.Ka, player.Setsu, player.Getsu]
+
+def samTest22ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [55, False, True, False]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest22 = test("Hagakure test 1", samTest22TestFunction, samTest22ValidationFunction)
+samTestSuite.addTest(samtest22)
+
+# Hagakure
+
+def samTest23TestFunction() -> None:
+    """Iajutsu test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Meikyo,Hagakure,Gekko, Kasha, Yukikaze]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.KenkiGauge, player.Ka, player.Setsu, player.Getsu]
+
+def samTest23ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [35, True, True, True]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest23 = test("Hagakure test 2", samTest23TestFunction, samTest23ValidationFunction)
+samTestSuite.addTest(samtest23)
+
+# Hagakure
+
+def samTest24TestFunction() -> None:
+    """Iajutsu test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Ikishoten]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.KenkiGauge, player.OgiNamikiriReady]
+
+def samTest24ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [50, True]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest24 = test("Ikishoten test", samTest24TestFunction, samTest24ValidationFunction)
+samTestSuite.addTest(samtest24)
 
 
-samTestSuite.executeTestSuite()
-
-if False:
+if True:
     pb = ProgressBar.init(12, "Executing test suite")
     blmTestSuite.executeTestSuite()
     next(pb)
@@ -7859,8 +7992,7 @@ if False:
     next(pb)
     ninTestSuite.executeTestSuite()
     next(pb)
-    print("Comleted. See logs for info.")
-
-# Combo Potency test
-
+    samTestSuite.executeTestSuite()
+    next(pb)
+    print("Completed. See logs for info.")
 
