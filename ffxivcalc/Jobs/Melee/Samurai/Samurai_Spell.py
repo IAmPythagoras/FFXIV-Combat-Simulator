@@ -397,7 +397,7 @@ Enpi = SamuraiSpell(7486, True, 0, 1.5, 100, Add10Kenki, [], 0, type = 2)
 #Iaijutsu
 Higanbana = SamuraiSpell(7489, True, 1.3, 2.5, 200, ApplyHiganbana, [HiganbanaRequirement], 0, type = 2)
 HiganbanaDOT = DOTSpell(-1, 60, True)
-TenkaGoken = SamuraiSpell(7488, True, 1.3, 2.5, 280, ApplyTenkaGoken, [TenkaGokenRequirement], 0, type = 2)
+TenkaGoken = SamuraiSpell(7488, True, 1.3, 2.5, 300, ApplyTenkaGoken, [TenkaGokenRequirement], 0, type = 2)
 Midare = SamuraiSpell(7487, True, 1.3, 2.5, 640, ApplyMidare, [MidareRequirement], 0, type = 2)
 
 #Kaeshi

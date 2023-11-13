@@ -7142,7 +7142,7 @@ def samTest1TestFunction() -> None:
 
 def samTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 83.22, 13120]   
+    expected = [0, 79.26, 13030]
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -7592,6 +7592,244 @@ def samTest13ValidationFunction(testResults) -> (bool, list):
 
 samtest13 = test("Meikyo Shisui test 1", samTest13TestFunction, samTest13ValidationFunction)
 samTestSuite.addTest(samtest13)
+
+# Meikyo
+
+def samTest14TestFunction() -> None:
+    """Meikyo test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Meikyo,Gekko, Kasha]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Ka, player.KenkiGauge, player.Haste]
+
+def samTest14ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [380, True, 20, 13]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest14 = test("Meikyo Shisui test 2", samTest14TestFunction, samTest14ValidationFunction)
+samTestSuite.addTest(samtest14)
+
+# Meikyo
+
+def samTest15TestFunction() -> None:
+    """Meikyo test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Meikyo,Gekko, Kasha, Yukikaze]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Setsu, player.KenkiGauge, player.Haste]
+
+def samTest15ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [300, True, 35, 13]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest15 = test("Meikyo Shisui test 3", samTest15TestFunction, samTest15ValidationFunction)
+samTestSuite.addTest(samtest15)
+
+# Meikyo
+
+def samTest16TestFunction() -> None:
+    """Meikyo test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Meikyo,Gekko, Kasha, Yukikaze, WaitAbility(40),Kasha]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.KenkiGauge, player.Haste]
+
+def samTest16ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [170, 35, 0]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest16 = test("Meikyo Shisui test 4", samTest16TestFunction, samTest16ValidationFunction)
+samTestSuite.addTest(samtest16)
+
+# Iajutsu
+
+def samTest17TestFunction() -> None:
+    """Iajutsu test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Meikyo,Gekko, Higanbana]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Getsu, player.Higanbana in player.DOTList, player.MeditationGauge]
+
+def samTest17ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [200, False, True,1]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest17 = test("Iajutsu test 1", samTest17TestFunction, samTest17ValidationFunction)
+samTestSuite.addTest(samtest17)
+
+# Iajutsu
+
+def samTest18TestFunction() -> None:
+    """Iajutsu test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Meikyo,Gekko, Higanbana, WaitAbility(60)]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Getsu, player.Higanbana in player.DOTList, player.MeditationGauge]
+
+def samTest18ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, False, False,1]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest18 = test("Iajutsu test 2", samTest18TestFunction, samTest18ValidationFunction)
+samTestSuite.addTest(samtest18)
+
+# Iajutsu
+
+def samTest19TestFunction() -> None:
+    """Iajutsu test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Meikyo,Gekko, Kasha, TenkaGoken]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Getsu, player.Ka, player.MeditationGauge]
+
+def samTest19ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [300, False, False,1]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest19 = test("Iajutsu test 3", samTest19TestFunction, samTest19ValidationFunction)
+samTestSuite.addTest(samtest19)
+
+# Iajutsu
+
+def samTest20TestFunction() -> None:
+    """Iajutsu test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Meikyo,Gekko, Kasha, Yukikaze, Midare]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Getsu, player.Ka, player.Setsu, player.MeditationGauge]
+
+def samTest20ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [640, False, False,False, 1]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest20 = test("Iajutsu test 4", samTest20TestFunction, samTest20ValidationFunction)
+samTestSuite.addTest(samtest20)
 
 
 
