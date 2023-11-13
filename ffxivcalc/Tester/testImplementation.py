@@ -7106,9 +7106,126 @@ def ninTest29ValidationFunction(testResults) -> (bool, list):
 nintest29 = test("Trick Attack test 2", ninTest29TestFunction, ninTest29ValidationFunction)
 ninTestSuite.addTest(nintest29)
 
-ninTestSuite.executeTestSuite()
+######################################
+#         Samurai testSuite          #
+######################################
+
+samTestSuite = testSuite("Samurai test suite")
+
+# Opener requirement, end time and potency test 1
+
+def samTest1TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Meikyo, WaitAbility(9), Gekko, Kasha, Ikishoten, Yukikaze, Midare, Senei, KaeshiSetsugekka, Meikyo, Gekko, Shinten, Higanbana, Shinten, OgiNamikiri, Shoha, 
+                 KaeshiNamikiri, Kasha, Shinten, Gekko, Gyoten, Hakaze, Yukikaze, Shinten, Midare, KaeshiSetsugekka, WaitAbility(50)]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    failedReq = 0
+    for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+        if event.fatal : failedReq += 1
+
+    return [failedReq, Event.TimeStamp, player.TotalPotency]
+
+def samTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 83.22, 13120]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest1 = test("Opener requirement, end time and potency 1", samTest1TestFunction, samTest1ValidationFunction)
+samTestSuite.addTest(samtest1)
+
+# Combo potency and gauge test
+
+def samTest2TestFunction() -> None:
+    """Combo potency and gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Hakaze, Jinpu, WaitAbility(0.01)]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, FugetsuBuff in player.buffList, player.KenkiGauge]
+
+def samTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [280, True, 10]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest2 = test("Combo potency and gauge test 1", samTest2TestFunction, samTest2ValidationFunction)
+samTestSuite.addTest(samtest2)
+
+# Combo potency and gauge test
+
+def samTest3TestFunction() -> None:
+    """Combo potency and gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Hakaze, Jinpu, WaitAbility(40.01)]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, FugetsuBuff in player.buffList, player.KenkiGauge]
+
+def samTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, False, 10]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest3 = test("Combo potency and gauge test 2", samTest3TestFunction, samTest3ValidationFunction)
+samTestSuite.addTest(samtest3)
+
+
+
+
+samTestSuite.executeTestSuite()
+
 if False:
-    pb = ProgressBar.init(11, "Executing test suite")
+    pb = ProgressBar.init(12, "Executing test suite")
     blmTestSuite.executeTestSuite()
     next(pb)
     rdmTestSuite.executeTestSuite()
@@ -7128,6 +7245,8 @@ if False:
     brdTestSuite.executeTestSuite()
     next(pb)
     dncTestSuite.executeTestSuite()
+    next(pb)
+    ninTestSuite.executeTestSuite()
     next(pb)
     print("Comleted. See logs for info.")
 

@@ -228,7 +228,7 @@ def HakazeEffect(Player, Spell):
         Spell.Potency += 160
         if not Player.Fugetsu:
             Player.Fugetsu = True
-            Player.buffList.append(HakazeBuff)
+            Player.buffList.append(FugetsuBuff)
             Player.EffectCDList.append(FugetsuCheck)
             Player.EffectToRemove.append(HakazeEffect)
     elif Spell.id == Shifu.id:
@@ -343,7 +343,7 @@ def FukaCheck(Player, Enemy):
 def FugetsuCheck(Player, Enemy):
     if Player.FugetsuTimer <= 0:
         Player.Fugetsu = False
-        Player.buffList.remove(HakazeBuff)
+        Player.buffList.remove(FugetsuBuff)
         Player.EffectToRemove.append(FugetsuCheck)
 
 def HiganbanaCheck(Player, Enemy):
@@ -421,7 +421,7 @@ Gyoten = SamuraiSpell(7492, False, 0, 0, 100, ApplyGyoten,[GyotenRequirement],10
 Yaten = SamuraiSpell(7493, False, 0, 0, 100, ApplyYaten, [YatenRequirement], 10)
 Kyuten = SamuraiSpell(7491, False, 0, 0, 110, empty, [], 25)
 #buff
-HakazeBuff = buff(1.13,name="Hakaze")
+FugetsuBuff = buff(1.13,name="Hakaze")
 
 def Meditate(time):
     #This function will return a Samurai Spell object that will correspond to a Meditate of the specified amount of time
