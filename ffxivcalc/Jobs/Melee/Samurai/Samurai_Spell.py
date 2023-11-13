@@ -130,7 +130,7 @@ def ApplyHakaze(Player, Enemy):
         #input("COMBO EFFECT")
 
 def ApplyJinpu(Player, Enemy):
-    if not (JinpuEffect in Player.EffectList) : Player.EffectList.append(JinpuEffect)
+    pass
 
 def ApplyShifu(Player, Enemy):
     if not (ShifuEffect in Player.EffectList) : Player.EffectList.append(ShifuEffect)
@@ -231,6 +231,7 @@ def HakazeEffect(Player, Spell):
             Player.buffList.append(FugetsuBuff)
             Player.EffectCDList.append(FugetsuCheck)
             Player.EffectToRemove.append(HakazeEffect)
+            if not (JinpuEffect in Player.EffectList) : Player.EffectList.append(JinpuEffect)
     elif Spell.id == Shifu.id:
         Spell.Potency += 160
         if not (FukaEffect in Player.EffectList) : Player.EffectList.append(FukaEffect)
@@ -394,7 +395,7 @@ KaeshiSetsugekka = SamuraiSpell(16486, True, 0, 2.5, 640, ApplyKaeshi, [KaeshiSe
 
 #Combo Actions
 Hakaze = SamuraiSpell(7477, True, Lock, 2.5, 200, ApplyHakaze, [], 0 , type = 2)
-Jinpu = SamuraiSpell(7478, True, Lock, 2.5, 120, ApplyJinpu, [], 0, type = 2)
+Jinpu = SamuraiSpell(7478, True, Lock, 2.5, 120, empty, [], 0, type = 2)
 Gekko = SamuraiSpell(7481, True, Lock, 2.5, 170, empty, [], 0, type = 2)
 Shifu = SamuraiSpell(7479, True, Lock, 2.5, 120, empty, [], 0, type = 2)
 Kasha = SamuraiSpell(7482, True, Lock, 2.5, 170, empty, [], 0, type = 2)
