@@ -221,6 +221,7 @@ def ApplyTrickAttack(Player, Enemy):
     Player.TrickAttackTimer = 15
     Player.EffectCDList.append(TrickAttackCheck)
     Player.buffList.append(TrickAttackBuff)
+    Player.Suiton = False
 
                              # Only relevant to PreBakedAction and only does that code if true. Also checking if the PreBakedAction player is this ninja
     #if Player.CurrentFight.SavePreBakedAction and Player == Player.CurrentFight.PlayerList[Player.CurrentFight.PlayerIDSavePreBakedAction]:

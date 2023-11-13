@@ -6651,7 +6651,7 @@ def ninTest16TestFunction() -> None:
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
                              # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
-    return [player.CastingSpell.Potency, round(player.TenchiJinTimer,2)]
+    return [player.CastingSpell.Potency, round(player.TenChiJinTimer,2)]
 
 def ninTest16ValidationFunction(testResults) -> (bool, list):
     passed = True
@@ -6685,7 +6685,7 @@ def ninTest17TestFunction() -> None:
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
                              # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
-    return [player.CastingSpell.Potency, round(player.TenchiJinTimer,2)]
+    return [player.CastingSpell.Potency, round(player.TenChiJinTimer,2)]
 
 def ninTest17ValidationFunction(testResults) -> (bool, list):
     passed = True
@@ -6719,7 +6719,7 @@ def ninTest18TestFunction() -> None:
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
                              # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
-    return [player.CastingSpell.Potency, round(player.TenchiJinTimer,2)]
+    return [player.CastingSpell.Potency, round(player.TenChiJinTimer,2)]
 
 def ninTest18ValidationFunction(testResults) -> (bool, list):
     passed = True
@@ -6753,7 +6753,7 @@ def ninTest19TestFunction() -> None:
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
                              # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
-    return [player.CastingSpell.Potency, round(player.TenchiJinTimer,2)]
+    return [player.CastingSpell.Potency, round(player.TenChiJinTimer,2)]
 
 def ninTest19ValidationFunction(testResults) -> (bool, list):
     passed = True
@@ -6787,7 +6787,7 @@ def ninTest20TestFunction() -> None:
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
                              # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
-    return [player.CastingSpell.Potency, round(player.TenchiJinTimer,2)]
+    return [player.CastingSpell.Potency, round(player.TenChiJinTimer,2)]
 
 def ninTest20ValidationFunction(testResults) -> (bool, list):
     passed = True
@@ -6821,7 +6821,7 @@ def ninTest21TestFunction() -> None:
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
                              # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
-    return [player.CastingSpell.Potency, round(player.TenchiJinTimer,2), player.Suiton]
+    return [player.CastingSpell.Potency, round(player.TenChiJinTimer,2), player.Suiton]
 
 def ninTest21ValidationFunction(testResults) -> (bool, list):
     passed = True
@@ -6855,7 +6855,7 @@ def ninTest22TestFunction() -> None:
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
                              # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
-    return [player.CastingSpell.Potency, round(player.TenchiJinTimer,2)]
+    return [player.CastingSpell.Potency, round(player.TenChiJinTimer,2)]
 
 def ninTest22ValidationFunction(testResults) -> (bool, list):
     passed = True
@@ -6889,7 +6889,7 @@ def ninTest23TestFunction() -> None:
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
                              # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
-    return [player.CastingSpell.Potency, round(player.TenchiJinTimer,2), player.DotonDOT in player.DOTList]
+    return [player.CastingSpell.Potency, round(player.TenChiJinTimer,2), player.DotonDOT in player.DOTList]
 
 def ninTest23ValidationFunction(testResults) -> (bool, list):
     passed = True
@@ -6900,7 +6900,211 @@ def ninTest23ValidationFunction(testResults) -> (bool, list):
     return passed , expected
 
 nintest23 = test("Ninjutsu test 10 - TenChiJin", ninTest23TestFunction, ninTest23ValidationFunction)
-ninTestSuite.addTest(nintest22)
+ninTestSuite.addTest(nintest23)
+
+# Ninjutsu test
+
+def ninTest24TestFunction() -> None:
+    """Combo potency and ninki gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [TenChiJin, Chi2, Jin2, Ten2]
+    player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+                             # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
+    return [player.CastingSpell.Potency, round(player.TenChiJinTimer,2), HutonEffect in player.EffectList, player.Haste]
+
+def ninTest24ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0,0, True, 15]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+nintest24 = test("Ninjutsu test 11 - TenChiJin", ninTest24TestFunction, ninTest24ValidationFunction)
+ninTestSuite.addTest(nintest24)
+
+# Mug test
+
+def ninTest25TestFunction() -> None:
+    """Mug test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Mug, SpinningEdge, WaitAbility(10)]
+    player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+                             # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
+    return [MugBuff in Dummy.buffList, player.NinkiGauge]
+
+def ninTest25ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, 45]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+nintest25 = test("Mug test 1", ninTest25TestFunction, ninTest25ValidationFunction)
+ninTestSuite.addTest(nintest25)
+
+# Mug test
+
+def ninTest26TestFunction() -> None:
+    """Mug test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Mug, SpinningEdge, WaitAbility(17.85)]
+    player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+                             # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
+    return [MugBuff in Dummy.buffList, player.NinkiGauge]
+
+def ninTest26ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, 45]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+nintest26 = test("Mug test 2", ninTest26TestFunction, ninTest26ValidationFunction)
+ninTestSuite.addTest(nintest26)
+
+# Mug test
+
+def ninTest27TestFunction() -> None:
+    """Mug test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Mug, SpinningEdge, WaitAbility(20.01)]
+    player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+                             # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
+    return [MugBuff in Dummy.buffList, player.NinkiGauge]
+
+def ninTest27ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False, 45]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+nintest27 = test("Mug test 3", ninTest27TestFunction, ninTest27ValidationFunction)
+ninTestSuite.addTest(nintest27)
+
+# Trick attack
+
+def ninTest28TestFunction() -> None:
+    """Trick attack test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Ten, Chi, Jin, Suiton, TrickAttack, WaitAbility(13)]
+    player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+                             # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
+    return [player.Suiton, TrickAttackBuff in player.buffList]
+
+def ninTest28ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False, True]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+nintest28 = test("Trick Attack test 1", ninTest28TestFunction, ninTest28ValidationFunction)
+ninTestSuite.addTest(nintest28)
+
+# Trick attack
+
+def ninTest29TestFunction() -> None:
+    """Trick attack test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Ten, Chi, Jin, Suiton, TrickAttack, WaitAbility(15.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+                             # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
+    return [player.Suiton, TrickAttackBuff in player.buffList]
+
+def ninTest29ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False, False]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+nintest29 = test("Trick Attack test 2", ninTest29TestFunction, ninTest29ValidationFunction)
+ninTestSuite.addTest(nintest29)
 
 ninTestSuite.executeTestSuite()
 if False:
