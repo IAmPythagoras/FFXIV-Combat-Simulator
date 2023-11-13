@@ -360,7 +360,7 @@ def GustSlashCombo(Player, Spell):
     elif Spell.id == ArmorCrush.id:
         Spell.Potency += 220
         Player.AddNinki(15)
-        Player.AddHuton(40)
+        Player.AddHuton(30)
         Player.EffectToRemove.append(GustSlashCombo)
 
 #Check

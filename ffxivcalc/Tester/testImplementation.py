@@ -6110,27 +6110,415 @@ def dncTest23ValidationFunction(testResults) -> (bool, list):
 dnctest23 = test("Combo potency test 2", dncTest23TestFunction, dncTest23ValidationFunction)
 dncTestSuite.addTest(dnctest23)
 
+######################################
+#           Ninja testSuite          #
+######################################
 
-pb = ProgressBar.init(9, "Executing test suite")
+ninTestSuite = testSuite("Ninja test suite")
 
-blmTestSuite.executeTestSuite()
-next(pb)
-rdmTestSuite.executeTestSuite()
-next(pb)
-smnTestSuite.executeTestSuite()
-next(pb)
-whmTestSuite.executeTestSuite()
-next(pb)
-astTestSuite.executeTestSuite()
-next(pb)
-sgeTestSuite.executeTestSuite()
-next(pb)
-mchTestSuite.executeTestSuite()
-next(pb)
-brdTestSuite.executeTestSuite()
-next(pb)
-dncTestSuite.executeTestSuite()
-pb.complete()
-print("Comleted. See logs for info.")
+# Opener requirement, end time and potency test 1
+
+def ninTest1TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Jin, Chi, Ten, Huton, Hide, Ten, Chi, Jin, WaitAbility(5), Suiton, Kassatsu, SpinningEdge, GustSlash, Mug, Bunshin, PhantomKamaitachi, TrickAttack,
+                 AeolianEdge, DreamWithinADream, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, TenChiJin, Ten2, Chi2, Jin2, Meisui, FleetingRaiju, Bhavacakra, FleetingRaiju, Bhavacakra,
+                  Ten, Chi, Raiton, FleetingRaiju ]
+    player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    failedReq = 0
+    for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+        if event.fatal : failedReq += 1
+
+    return [failedReq, Event.TimeStamp, player.TotalPotency]
+
+def ninTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 25.08, 11410]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+nintest1 = test("Opener requirement, end time and potency 1", ninTest1TestFunction, ninTest1ValidationFunction)
+ninTestSuite.addTest(nintest1)
+
+# Combo Potency test
+
+def ninTest2TestFunction() -> None:
+    """Combo potency and ninki gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [SpinningEdge, GustSlash]
+    player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.NinkiGauge]
+
+def ninTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [320, 10]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+nintest2 = test("Combo potency and Ninka Generation test 1", ninTest2TestFunction, ninTest2ValidationFunction)
+ninTestSuite.addTest(nintest2)
+
+# Combo Potency test
+
+def ninTest3TestFunction() -> None:
+    """Combo potency and ninki gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [SpinningEdge, GustSlash, GustSlash]
+    player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.NinkiGauge]
+
+def ninTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [160, 10]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+nintest3 = test("Combo potency and Ninka Generation test 2", ninTest3TestFunction, ninTest3ValidationFunction)
+ninTestSuite.addTest(nintest3)
+
+# Combo Potency test
+
+def ninTest4TestFunction() -> None:
+    """Combo potency and ninki gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [SpinningEdge, SpinningEdge, GustSlash]
+    player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.NinkiGauge]
+
+def ninTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [320, 15]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+nintest4 = test("Combo potency and Ninka Generation test 3", ninTest4TestFunction, ninTest4ValidationFunction)
+ninTestSuite.addTest(nintest4)
+
+# Combo Potency test
+
+def ninTest5TestFunction() -> None:
+    """Combo potency and ninki gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [GustSlash, SpinningEdge, GustSlash]
+    player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.NinkiGauge]
+
+def ninTest5ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [320, 10]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+nintest5 = test("Combo potency and Ninka Generation test 4", ninTest5TestFunction, ninTest5ValidationFunction)
+ninTestSuite.addTest(nintest5)
+
+# Combo Potency test
+
+def ninTest6TestFunction() -> None:
+    """Combo potency and ninki gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [SpinningEdge, GustSlash, AeolianEdge]
+    player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.NinkiGauge]
+
+def ninTest6ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [440, 25]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+nintest6 = test("Combo potency and Ninka Generation test 5", ninTest6TestFunction, ninTest6ValidationFunction)
+ninTestSuite.addTest(nintest6)
+
+# Combo Potency test
+
+def ninTest7TestFunction() -> None:
+    """Combo potency and ninki gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [SpinningEdge, GustSlash, AeolianEdge, AeolianEdge]
+    player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.NinkiGauge]
+
+def ninTest7ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [200, 25]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+nintest7 = test("Combo potency and Ninka Generation test 6", ninTest7TestFunction, ninTest7ValidationFunction)
+ninTestSuite.addTest(nintest7)
+
+# Combo Potency test
+
+def ninTest8TestFunction() -> None:
+    """Combo potency and ninki gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [GustSlash, AeolianEdge]
+    player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.NinkiGauge]
+
+def ninTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [200, 0]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+nintest8 = test("Combo potency and Ninka Generation test 7", ninTest8TestFunction, ninTest8ValidationFunction)
+ninTestSuite.addTest(nintest8)
+
+def ninTest9TestFunction() -> None:
+    """Combo potency and ninki gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Chi, Ten, Jin, Huton, WaitAbility(40),SpinningEdge, GustSlash, ArmorCrush]
+    player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.NinkiGauge, round(round(player.HutonTimer,2),2)]
+
+def ninTest9ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [420, 25, 45.75]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+nintest9 = test("Combo potency and Ninka Generation test 8 - Huton", ninTest9TestFunction, ninTest9ValidationFunction)
+ninTestSuite.addTest(nintest9)
+
+# Combo Potency test
+
+def ninTest10TestFunction() -> None:
+    """Combo potency and ninki gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Chi, Ten, Jin, Huton, WaitAbility(40),SpinningEdge, GustSlash, ArmorCrush, ArmorCrush]
+    player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.NinkiGauge, round(player.HutonTimer,2)]
+
+def ninTest10ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [200, 25, 43.64]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+nintest10 = test("Combo potency and Ninka Generation test 9 - Huton", ninTest10TestFunction, ninTest10ValidationFunction)
+ninTestSuite.addTest(nintest10)
+
+# Combo Potency test
+
+def ninTest11TestFunction() -> None:
+    """Combo potency and ninki gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Chi, Ten, Jin, Huton, WaitAbility(40),GustSlash, ArmorCrush]
+    player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.NinkiGauge, round(player.HutonTimer,2)]
+
+def ninTest11ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [200, 0,15.55]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+nintest11 = test("Combo potency and Ninka Generation test 10 - Huton", ninTest11TestFunction, ninTest11ValidationFunction)
+ninTestSuite.addTest(nintest11)
+
+ninTestSuite.executeTestSuite()
+if False:
+    pb = ProgressBar.init(11, "Executing test suite")
+    blmTestSuite.executeTestSuite()
+    next(pb)
+    rdmTestSuite.executeTestSuite()
+    next(pb)
+    smnTestSuite.executeTestSuite()
+    next(pb)
+    whmTestSuite.executeTestSuite()
+    next(pb)
+    astTestSuite.executeTestSuite()
+    next(pb)
+    sgeTestSuite.executeTestSuite()
+    next(pb)
+    schTestSuite.executeTestSuite()
+    next(pb)
+    mchTestSuite.executeTestSuite()
+    next(pb)
+    brdTestSuite.executeTestSuite()
+    next(pb)
+    dncTestSuite.executeTestSuite()
+    next(pb)
+    print("Comleted. See logs for info.")
+
+# Combo Potency test
 
 
