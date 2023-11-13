@@ -7244,7 +7244,7 @@ def samTest4TestFunction() -> None:
 
 def samTest4ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [380, False, 20]   
+    expected = [380, True, 20]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -7287,6 +7287,311 @@ def samTest5ValidationFunction(testResults) -> (bool, list):
 samtest5 = test("Combo potency and gauge test 4", samTest5TestFunction, samTest5ValidationFunction)
 samTestSuite.addTest(samtest5)
 
+# Combo potency and gauge test
+
+def samTest6TestFunction() -> None:
+    """Combo potency and gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Gekko, Jinpu]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, FugetsuBuff in player.buffList, player.KenkiGauge]
+
+def samTest6ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [120, False, 0]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest6 = test("Combo potency and gauge test 5", samTest6TestFunction, samTest6ValidationFunction)
+samTestSuite.addTest(samtest6)
+
+# Combo potency and gauge test
+
+def samTest7TestFunction() -> None:
+    """Combo potency and gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Hakaze, Shifu]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Haste, player.KenkiGauge]
+
+def samTest7ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [280, 13, 10]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest7 = test("Combo potency and gauge test 6", samTest7TestFunction, samTest7ValidationFunction)
+samTestSuite.addTest(samtest7)
+
+# Combo potency and gauge test
+
+def samTest8TestFunction() -> None:
+    """Combo potency and gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Shifu]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Haste, player.KenkiGauge]
+
+def samTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [120, 0, 0]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest8 = test("Combo potency and gauge test 7", samTest8TestFunction, samTest8ValidationFunction)
+samTestSuite.addTest(samtest8)
+
+# Combo potency and gauge test
+
+def samTest8TestFunction() -> None:
+    """Combo potency and gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Hakaze, Shifu, Kasha]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Ka, player.KenkiGauge, player.Haste]
+
+def samTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [380, True, 20, 13]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest8 = test("Combo potency and gauge test 7", samTest8TestFunction, samTest8ValidationFunction)
+samTestSuite.addTest(samtest8)
+
+# Combo potency and gauge test
+
+def samTest9TestFunction() -> None:
+    """Combo potency and gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Hakaze, Shifu, Kasha, WaitAbility(40)]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Ka, player.KenkiGauge, player.Haste]
+
+def samTest9ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, True, 20, 0]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest9 = test("Combo potency and gauge test 8", samTest9TestFunction, samTest9ValidationFunction)
+samTestSuite.addTest(samtest9)
+
+# Combo potency and gauge test
+
+def samTest10TestFunction() -> None:
+    """Combo potency and gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Shifu, Kasha]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Ka, player.KenkiGauge, player.Haste]
+
+def samTest10ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [170, False, 0, 0]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest10 = test("Combo potency and gauge test 9", samTest10TestFunction, samTest10ValidationFunction)
+samTestSuite.addTest(samtest10)
+
+# Combo potency and gauge test
+
+def samTest11TestFunction() -> None:
+    """Combo potency and gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Hakaze, Yukikaze]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Setsu, player.KenkiGauge]
+
+def samTest11ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [300, True, 20]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest11 = test("Combo potency and gauge test 10", samTest11TestFunction, samTest11ValidationFunction)
+samTestSuite.addTest(samtest11)
+
+# Combo potency and gauge test
+
+def samTest12TestFunction() -> None:
+    """Combo potency and gauge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Yukikaze]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Setsu, player.KenkiGauge]
+
+def samTest12ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [120, False, 0]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest12 = test("Combo potency and gauge test 11", samTest12TestFunction, samTest12ValidationFunction)
+samTestSuite.addTest(samtest12)
+
+# Meikyo
+
+def samTest13TestFunction() -> None:
+    """Meikyo test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Meikyo, Gekko]
+    player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Getsu, player.KenkiGauge, FugetsuBuff in player.buffList]
+
+def samTest13ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [380, True, 10, True]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+samtest13 = test("Meikyo Shisui test 1", samTest13TestFunction, samTest13ValidationFunction)
+samTestSuite.addTest(samtest13)
 
 
 

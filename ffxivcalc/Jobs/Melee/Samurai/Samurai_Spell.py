@@ -231,7 +231,7 @@ def HakazeEffect(Player, Spell):
             Player.buffList.append(FugetsuBuff)
             Player.EffectCDList.append(FugetsuCheck)
             Player.EffectToRemove.append(HakazeEffect)
-            if not (JinpuEffect in Player.EffectList) : Player.EffectList.append(JinpuEffect)
+        if not (JinpuEffect in Player.EffectList) : Player.EffectList.append(JinpuEffect)
     elif Spell.id == Shifu.id:
         Spell.Potency += 160
         if not (FukaEffect in Player.EffectList) : Player.EffectList.append(FukaEffect)
@@ -276,18 +276,30 @@ def MeikyoEffect(Player, Spell):
         AddKenki(Player, 10)
         Player.Getsu = True
         Player.Meikyo -= 1
+        Player.FugetsuTimer = 40
+        if not Player.Fugetsu:
+            Player.Fugetsu = True
+            Player.buffList.append(FugetsuBuff)
+            Player.EffectCDList.append(FugetsuCheck)
     elif Spell.id == Kasha.id:
         Spell.Potency += 210
         AddKenki(Player, 10)
         Player.Ka = True
         Player.Meikyo -= 1
+        if not (FukaEffect in Player.EffectList) : Player.EffectList.append(FukaEffect)
+        if not (FukaCheck in Player.EffectCDList) : 
+            Player.Haste += 13
+            Player.hasteHasChanged = True
+            Player.hasteChangeValue = 13
+            Player.EffectCDList.append(FukaCheck)
+        Player.FukaTimer = 40
     elif Spell.id == Jinpu.id:
         Player.FugetsuTimer = 40
         AddKenki(Player, 5)
         Spell.Potency += 160
         if not Player.Fugetsu:
             Player.Fugetsu = True
-            Player.MultDPSBonus *= 1.13
+            Player.buffList.append(FugetsuBuff)
             Player.EffectCDList.append(FugetsuCheck)
         Player.Meikyo -= 1
     elif Spell.id == Shifu.id:
