@@ -134,6 +134,7 @@ def ApplyPerfectBalance(Player, Enemy):
 def ApplyMeditation(Player, Enemy):
     if not Player.CurrentFight.FightStart:
         Player.MaxChakraGate = 5
+        Player.ExpectedChakraGate = 5
     else:
         Player.OpenChakra()
 
