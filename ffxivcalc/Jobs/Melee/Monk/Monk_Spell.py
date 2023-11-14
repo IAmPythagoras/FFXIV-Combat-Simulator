@@ -132,7 +132,10 @@ def ApplyPerfectBalance(Player, Enemy):
     Player.EffectList.append(PerfectBalanceEffect)
 
 def ApplyMeditation(Player, Enemy):
-    Player.MaxChakraGate += 1
+    if not Player.CurrentFight.FightStart:
+        Player.MaxChakraGate = 5
+    else:
+        Player.OpenChakra()
 
 def ApplyBrotherhood(Player, Enemy):
     # We will give everyone the 5% buff, and the effect that will

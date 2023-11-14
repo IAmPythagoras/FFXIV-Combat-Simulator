@@ -1593,7 +1593,7 @@ class Player:
         # For chakras , 0 -> Empty, 1 -> Opo-opo, 2-> Raptor, 3-> Coeurl
         self.FormlessFistStack = 0 #Number of formless actions the player can do
         self.ExpectedChakraGate = 5 #This is a random value, so we will keep track of Expected, used value and maximum value
-        self.MaxChakraGate = 5 #This is the one used to see if an action is even possible
+        self.MaxChakraGate = 0 #This is the one used to see if an action is even possible
         self.UsedChakraGate = 0 #Number of used Chakra Gates
 
         #Timer
@@ -2342,7 +2342,7 @@ class Player:
     # Monk helper functions
 
     def OpenChakra(self):
-        self.MaxChakraGate = min(5, self.MaxChakraGate)
+        self.MaxChakraGate = min(5, self.MaxChakraGate+1)
 
     def addBeastChakra(self, type):
         for i in range(1,4):
