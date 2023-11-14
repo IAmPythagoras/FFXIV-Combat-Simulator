@@ -333,9 +333,9 @@ def DeathDesignCheck(Player, Enemy):
 #GCD
 
 #Combo Actions
-Slice = ReaperSpell(24373, True, Lock, 2.5, 300, ApplySlice, [], True, type = 2)
-WaxingSlice = ReaperSpell(24374, True, Lock, 2.5, 140, empty, [], True, type = 2)
-InfernalSlice = ReaperSpell(24375, True, Lock, 2.5, 140, empty, [], True, type = 2)
+Slice = ReaperSpell(24373, True, Lock, 2.5, 320, ApplySlice, [], True, type = 2)
+WaxingSlice = ReaperSpell(24374, True, Lock, 2.5, 160, empty, [], True, type = 2)
+InfernalSlice = ReaperSpell(24375, True, Lock, 2.5, 180, empty, [], True, type = 2)
 
 #Other GCD
 Soulsow = ReaperSpell(24387, True, 5, 2.5, 0, ApplySoulsow, [SoulsowRequirement], False, type = 1)

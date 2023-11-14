@@ -7967,8 +7967,190 @@ def samTest24ValidationFunction(testResults) -> (bool, list):
 samtest24 = test("Ikishoten test", samTest24TestFunction, samTest24ValidationFunction)
 samTestSuite.addTest(samtest24)
 
+######################################
+#          Reaper testSuite          #
+######################################
 
-if True:
+rprTestSuite = testSuite("Reaper test suite")
+
+# Opener requirement, end time and potency test 1
+
+def rprTest1TestFunction() -> None:
+    """This test will try the opener of a scholar. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Soulsow, Harpe, ShadowOfDeath, ArcaneCircle, SoulSlice, SoulSlice, PlentifulHarvest, Enshroud, VoidReaping, CrossReaping,LemureSlice, VoidReaping, CrossReaping,
+                 LemureSlice, Communio, Gluttony, Gibbet, Gallows, UnveiledGibbet, Gibbet, HarvestMoon ]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    failedReq = 0
+    for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+        if event.fatal : failedReq += 1
+
+    return [failedReq, Event.TimeStamp, player.TotalPotency]
+
+def rprTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 27.17, 9760]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest1 = test("Opener requirement, end time and potency 1", rprTest1TestFunction, rprTest1ValidationFunction)
+rprTestSuite.addTest(rprtest1)
+
+# Combo Potency and Gauge generation test
+
+def rprTest2TestFunction() -> None:
+    """Combo Potency and Gauge generation test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Slice, WaxingSlice]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SoulGauge]
+
+def rprTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [400, 20]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest2 = test("Combo Potency and Gauge generation test 1", rprTest2TestFunction, rprTest2ValidationFunction)
+rprTestSuite.addTest(rprtest2)
+
+# Combo Potency and Gauge generation test
+
+def rprTest3TestFunction() -> None:
+    """Combo Potency and Gauge generation test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Slice, WaxingSlice, InfernalSlice]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SoulGauge]
+
+def rprTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [500, 30]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest3 = test("Combo Potency and Gauge generation test 2", rprTest3TestFunction, rprTest3ValidationFunction)
+rprTestSuite.addTest(rprtest3)
+
+# Combo Potency and Gauge generation test
+
+def rprTest4TestFunction() -> None:
+    """Combo Potency and Gauge generation test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [WaxingSlice]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SoulGauge]
+
+def rprTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [160,0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest4 = test("Combo Potency and Gauge generation test 3", rprTest4TestFunction, rprTest4ValidationFunction)
+rprTestSuite.addTest(rprtest4)
+
+# Combo Potency and Gauge generation test
+
+def rprTest5TestFunction() -> None:
+    """Combo Potency and Gauge generation test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [WaxingSlice, InfernalSlice]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SoulGauge]
+
+def rprTest5ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [180,0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest5 = test("Combo Potency and Gauge generation test 4", rprTest5TestFunction, rprTest5ValidationFunction)
+rprTestSuite.addTest(rprtest5)
+
+rprTestSuite.executeTestSuite()
+
+if False:
     pb = ProgressBar.init(12, "Executing test suite")
     blmTestSuite.executeTestSuite()
     next(pb)
