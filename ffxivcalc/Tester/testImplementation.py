@@ -8955,8 +8955,689 @@ def rprTest28ValidationFunction(testResults) -> (bool, list):
 rprtest28 = test("Death's Design test 4", rprTest28TestFunction, rprTest28ValidationFunction)
 rprTestSuite.addTest(rprtest28)
 
+######################################
+#          Reaper testSuite          #
+######################################
 
-if True:
+drgTestSuite = testSuite("Dragoon test suite")
+
+# Opener requirement, end time and potency test 1
+
+def drgTest1TestFunction() -> None:
+    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    NINPlayer = Player([], [], Stat, JobEnum.Ninja)
+    actionSet = [TrueThrust, Disembowel, LanceCharge, DragonSight(NINPlayer), ChaoticSpring, BattleLitany, WheelingThrust, Geirskogul, LifeSurge, FangAndClaw, HighJump, RaidenThrust,
+                 DragonFireDive, VorpalThrust, LifeSurge, MirageDive, HeavenThrust, SpineshafterDive, FangAndClaw, WheelingThrust, RaidenThrust, WyrmwindThrust, Disembowel, ChaoticSpring, 
+                 WheelingThrust, WaitAbility(50)]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    failedReq = 0
+    for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+        if event.fatal : failedReq += 1
+
+    return [failedReq, Event.TimeStamp, player.TotalPotency]
+
+def drgTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 82.49, 9420]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest1 = test("Opener requirement, end time and potency 1", drgTest1TestFunction, drgTest1ValidationFunction)
+drgTestSuite.addTest(drgtest1)
+
+# Combo Potency test
+
+def drgTest2TestFunction() -> None:
+    """Combo potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [TrueThrust, VorpalThrust]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def drgTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [280]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest2 = test("Combo potency test 1", drgTest2TestFunction, drgTest2ValidationFunction)
+drgTestSuite.addTest(drgtest2)
+
+# Combo Potency test
+
+def drgTest3TestFunction() -> None:
+    """Combo potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [TrueThrust,TrueThrust, VorpalThrust]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def drgTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [280]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest3 = test("Combo potency test 2", drgTest3TestFunction, drgTest3ValidationFunction)
+drgTestSuite.addTest(drgtest3)
+
+# Combo Potency test
+
+def drgTest4TestFunction() -> None:
+    """Combo potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [TrueThrust,TrueThrust, VorpalThrust, HeavenThrust]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.FangAndClaw]
+
+def drgTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [480, True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest4 = test("Combo potency test 3", drgTest4TestFunction, drgTest4ValidationFunction)
+drgTestSuite.addTest(drgtest4)
+
+# Combo Potency test
+
+def drgTest5TestFunction() -> None:
+    """Combo potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [VorpalThrust, HeavenThrust]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.FangAndClaw, player.TotalPotency]
+
+def drgTest5ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [100, False, 230 + 90]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest5 = test("Combo potency test 4", drgTest5TestFunction, drgTest5ValidationFunction)
+drgTestSuite.addTest(drgtest5)
+
+# Combo Potency test
+
+def drgTest6TestFunction() -> None:
+    """Combo potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [TrueThrust,TrueThrust, VorpalThrust, HeavenThrust, FangAndClaw]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.FangAndClaw, player.WheelInMotion, player.DraconianFire]
+
+def drgTest6ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [300, False, True, False]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest6 = test("Combo potency test 5", drgTest6TestFunction, drgTest6ValidationFunction)
+drgTestSuite.addTest(drgtest6)
+
+# Combo Potency test
+
+def drgTest7TestFunction() -> None:
+    """Combo potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [TrueThrust,TrueThrust, VorpalThrust, HeavenThrust, FangAndClaw, WheelingThrust]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.FangAndClaw, player.WheelInMotion, player.DraconianFire]
+
+def drgTest7ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [400, False, False, True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest7 = test("Combo potency test 6", drgTest7TestFunction, drgTest7ValidationFunction)
+drgTestSuite.addTest(drgtest7)
+
+# Combo Potency test
+
+def drgTest8TestFunction() -> None:
+    """Combo potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [TrueThrust, Disembowel]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, PowerSurgeBuff in player.buffList]
+
+def drgTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [250, True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest8 = test("Combo potency test 7", drgTest8TestFunction, drgTest8ValidationFunction)
+drgTestSuite.addTest(drgtest8)
+
+# Combo Potency test
+
+def drgTest9TestFunction() -> None:
+    """Combo potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [TrueThrust, Disembowel, WaitAbility(30.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, PowerSurgeBuff in player.buffList]
+
+def drgTest9ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, False]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest9 = test("Combo potency test 8", drgTest9TestFunction, drgTest9ValidationFunction)
+drgTestSuite.addTest(drgtest9)
+
+# Combo Potency test
+
+def drgTest10TestFunction() -> None:
+    """Combo potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [TrueThrust, TrueThrust, Disembowel]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, PowerSurgeBuff in player.buffList]
+
+def drgTest10ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [250, True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest10 = test("Combo potency test 9", drgTest10TestFunction, drgTest10ValidationFunction)
+drgTestSuite.addTest(drgtest10)
+
+# Combo Potency test
+
+def drgTest11TestFunction() -> None:
+    """Combo potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [TrueThrust, Disembowel, ChaoticSpring]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, PowerSurgeBuff in player.buffList, player.ChaoticSpringDOT in player.DOTList]
+
+def drgTest11ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [300, True, True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest11 = test("Combo potency test 10", drgTest11TestFunction, drgTest11ValidationFunction)
+drgTestSuite.addTest(drgtest11)
+
+# Combo Potency test
+
+def drgTest12TestFunction() -> None:
+    """Combo potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [TrueThrust, Disembowel, ChaoticSpring, WaitAbility(24.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, PowerSurgeBuff in player.buffList, player.ChaoticSpringDOT in player.DOTList, player.WheelInMotion]
+
+def drgTest12ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, True, False, True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest12 = test("Combo potency test 11", drgTest12TestFunction, drgTest12ValidationFunction)
+drgTestSuite.addTest(drgtest12)
+
+# Combo Potency test
+
+def drgTest13TestFunction() -> None:
+    """Combo potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [TrueThrust, Disembowel, ChaoticSpring, WheelingThrust]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.WheelInMotion, player.FangAndClaw, player.DraconianFire]
+
+def drgTest13ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [300, False, True, False]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest13 = test("Combo potency test 12", drgTest13TestFunction, drgTest13ValidationFunction)
+drgTestSuite.addTest(drgtest13)
+
+# Combo Potency test
+
+def drgTest14TestFunction() -> None:
+    """Combo potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [TrueThrust, Disembowel, ChaoticSpring, WheelingThrust, FangAndClaw]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.WheelInMotion, player.FangAndClaw, player.DraconianFire]
+
+def drgTest14ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [400, False, False, True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest14 = test("Combo potency test 13", drgTest14TestFunction, drgTest14ValidationFunction)
+drgTestSuite.addTest(drgtest14)
+
+# Combo Potency test
+
+def drgTest15TestFunction() -> None:
+    """Combo potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Disembowel]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, PowerSurgeBuff in player.buffList]
+
+def drgTest15ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [140, False]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest15 = test("Combo potency test 14", drgTest15TestFunction, drgTest15ValidationFunction)
+drgTestSuite.addTest(drgtest15)
+
+# Combo Potency test
+
+def drgTest16TestFunction() -> None:
+    """Combo potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Disembowel, ChaoticSpring]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, PowerSurgeBuff in player.buffList, player.ChaoticSpringDOT in player.DOTList, player.WheelInMotion]
+
+def drgTest16ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [140, False, False, False]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest16 = test("Combo potency test 15", drgTest16TestFunction, drgTest16ValidationFunction)
+drgTestSuite.addTest(drgtest16)
+
+# Life surge test
+
+def drgTest17TestFunction() -> None:
+    """Life surge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [LifeSurge]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.NextCrit]
+
+def drgTest17ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest17 = test("Life Surge test 1", drgTest17TestFunction, drgTest17ValidationFunction)
+drgTestSuite.addTest(drgtest17)
+
+# Life surge test
+
+def drgTest18TestFunction() -> None:
+    """Life surge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [LifeSurge, TrueThrust]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.NextCrit]
+
+def drgTest18ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest18 = test("Life Surge test 2", drgTest18TestFunction, drgTest18ValidationFunction)
+drgTestSuite.addTest(drgtest18)
+
+# Life surge test
+
+def drgTest19TestFunction() -> None:
+    """Life surge test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [LifeSurge, TrueThrust]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.NextCrit]
+
+def drgTest19ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest19 = test("Life Surge test 2", drgTest19TestFunction, drgTest19ValidationFunction)
+drgTestSuite.addTest(drgtest19)
+
+
+
+
+drgTestSuite.executeTestSuite()
+
+if False:
     pb = ProgressBar.init(13, "Executing test suite")
     blmTestSuite.executeTestSuite()
     next(pb)

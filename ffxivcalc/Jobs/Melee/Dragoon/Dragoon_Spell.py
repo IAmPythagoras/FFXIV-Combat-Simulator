@@ -70,7 +70,6 @@ def ApplyWheelingThrust(Player, Enemy):
         Player.FangAndClaw = True
         Player.LanceMastery = True
         Player.EffectList.append(LanceMasteryCombo)
-        Player.DraconianFire = True #Conditions met
     else: 
         Player.LanceMastery = False
 
@@ -82,7 +81,6 @@ def ApplyFangAndClaw(Player, Enemy):
         Player.WheelInMotion = True
         Player.LanceMastery = True
         Player.EffectList.append(LanceMasteryCombo)
-        Player.DraconianFire = True #Conditions met
     else:
         Player.LanceMastery = False
 def ApplyLanceCharge(Player, Enemy):
@@ -221,6 +219,7 @@ def LanceMasteryCombo(Player, Spell):
     if Spell.id == FangAndClaw.id or Spell.id == WheelingThrust.id:
         Spell.Potency += 100
         Player.EffectToRemove.append(LanceMasteryCombo)
+        Player.DraconianFire = True
     elif isinstance(Spell, DragoonSpell) and Spell.Weaponskill:
         Player.FangAndClaw = False
         Player.WheelInMotion = False
