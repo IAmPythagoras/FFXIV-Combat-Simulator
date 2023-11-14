@@ -9597,17 +9597,17 @@ def drgTest18ValidationFunction(testResults) -> (bool, list):
 drgtest18 = test("Life Surge test 2", drgTest18TestFunction, drgTest18ValidationFunction)
 drgTestSuite.addTest(drgtest18)
 
-# Life surge test
+# Raiden Thrust
 
 def drgTest19TestFunction() -> None:
-    """Life surge test
+    """Raiden Thrust
     """
 
     Dummy = Enemy()
     Event = Fight(Dummy, False)
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
 
-    actionSet = [LifeSurge, TrueThrust]
+    actionSet = [TrueThrust, Disembowel, ChaoticSpring, WheelingThrust, FangAndClaw, RaidenThrust]
     player = Player(actionSet, [], Stat, JobEnum.Dragoon)
     
 
@@ -9619,20 +9619,266 @@ def drgTest19TestFunction() -> None:
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-    return [player.NextCrit]
+    return [player.DraconianFire, player.CastingSpell.Potency, player.FirstmindGauge]
 
 def drgTest19ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [False]
+    expected = [False, 280, 1]
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
     return passed , expected
 
-drgtest19 = test("Life Surge test 2", drgTest19TestFunction, drgTest19ValidationFunction)
+drgtest19 = test("Firstmind's Focus test 1", drgTest19TestFunction, drgTest19ValidationFunction)
 drgTestSuite.addTest(drgtest19)
 
+# Raiden Thrust
 
+def drgTest20TestFunction() -> None:
+    """Raiden Thrust
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [TrueThrust, VorpalThrust, HeavenThrust, FangAndClaw, WheelingThrust, RaidenThrust]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.DraconianFire, player.CastingSpell.Potency, player.FirstmindGauge]
+
+def drgTest20ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False, 280, 1]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest20 = test("Firstmind's Focus test 2", drgTest20TestFunction, drgTest20ValidationFunction)
+drgTestSuite.addTest(drgtest20)
+
+# Raiden Thrust
+
+def drgTest21TestFunction() -> None:
+    """Raiden Thrust
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [TrueThrust, VorpalThrust, HeavenThrust, FangAndClaw, WheelingThrust, RaidenThrust,
+                 Disembowel, ChaoticSpring, WheelingThrust, FangAndClaw, RaidenThrust]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.DraconianFire, player.CastingSpell.Potency, player.FirstmindGauge]
+
+def drgTest21ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False, 280, 2]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest21 = test("Firstmind's Focus test 3", drgTest21TestFunction, drgTest21ValidationFunction)
+drgTestSuite.addTest(drgtest21)
+
+# Raiden Thrust
+
+def drgTest22TestFunction() -> None:
+    """Raiden Thrust
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [TrueThrust, VorpalThrust, HeavenThrust, FangAndClaw, WheelingThrust, RaidenThrust,
+                 Disembowel, ChaoticSpring, WheelingThrust, FangAndClaw, RaidenThrust]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.DraconianFire, player.CastingSpell.Potency, player.FirstmindGauge, PowerSurgeBuff in player.buffList, player.ChaoticSpringDOT in player.DOTList]
+
+def drgTest22ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False, 280, 2, True, True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest22 = test("Firstmind's Focus test 4", drgTest22TestFunction, drgTest22ValidationFunction)
+drgTestSuite.addTest(drgtest22)
+
+# Raiden Thrust
+
+def drgTest23TestFunction() -> None:
+    """Raiden Thrust
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [TrueThrust, VorpalThrust, HeavenThrust, FangAndClaw, WheelingThrust, RaidenThrust,
+                 Disembowel, ChaoticSpring, WheelingThrust, FangAndClaw, RaidenThrust, WyrmwindThrust]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.DraconianFire, player.CastingSpell.Potency, player.FirstmindGauge, PowerSurgeBuff in player.buffList, player.ChaoticSpringDOT in player.DOTList]
+
+def drgTest23ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False, 420, 0, True, True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest23 = test("Firstmind's Focus test 5", drgTest23TestFunction, drgTest23ValidationFunction)
+drgTestSuite.addTest(drgtest23)
+
+# Life Of the dragon
+
+def drgTest24TestFunction() -> None:
+    """Life of the dragon
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HighJump, MirageDive, HighJump, MirageDive]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.DragonGauge, player.LifeOfTheDragon]
+
+def drgTest24ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [2, False]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest24 = test("Life Of the Dragon test 1", drgTest24TestFunction, drgTest24ValidationFunction)
+drgTestSuite.addTest(drgtest24)
+
+# Life Of the dragon
+
+def drgTest25TestFunction() -> None:
+    """Life of the dragon
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HighJump, MirageDive, HighJump, MirageDive, Geirskogul]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.DragonGauge, player.LifeOfTheDragon]
+
+def drgTest25ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest25 = test("Life Of the Dragon test 2", drgTest25TestFunction, drgTest25ValidationFunction)
+drgTestSuite.addTest(drgtest25)
+
+# Life Of the dragon
+
+def drgTest26TestFunction() -> None:
+    """Life of the dragon
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HighJump, MirageDive, HighJump, MirageDive, Geirskogul, WaitAbility(30.02), Geirskogul]
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.DragonGauge, player.LifeOfTheDragon]
+
+def drgTest26ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, False]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest26 = test("Life Of the Dragon test 3", drgTest26TestFunction, drgTest26ValidationFunction)
+drgTestSuite.addTest(drgtest26)
 
 
 drgTestSuite.executeTestSuite()

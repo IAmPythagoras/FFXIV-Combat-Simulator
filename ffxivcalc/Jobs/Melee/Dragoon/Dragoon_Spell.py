@@ -117,6 +117,7 @@ def ApplyGeirskogul(Player, Enemy):
         Player.LifeOfTheDragon = True
         Player.LifeOfTheDragonTimer = 30
         Player.EffectCDList.append(LifeOfTheDragonCheck)
+        Player.DragonGauge = 0
 
 def ApplyHighJump(Player, Enemy):
     Player.HighJumpCD = 30
