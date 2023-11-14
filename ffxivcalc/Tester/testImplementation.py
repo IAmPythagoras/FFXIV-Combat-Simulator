@@ -8012,10 +8012,10 @@ def rprTest1ValidationFunction(testResults) -> (bool, list):
 rprtest1 = test("Opener requirement, end time and potency 1", rprTest1TestFunction, rprTest1ValidationFunction)
 rprTestSuite.addTest(rprtest1)
 
-# Combo Potency and Gauge generation test
+# Combo Potency and soul gauge generation test
 
 def rprTest2TestFunction() -> None:
-    """Combo Potency and Gauge generation test
+    """Combo Potency and soul gauge generation test
     """
 
     Dummy = Enemy()
@@ -8043,13 +8043,13 @@ def rprTest2ValidationFunction(testResults) -> (bool, list):
 
     return passed , expected
 
-rprtest2 = test("Combo Potency and Gauge generation test 1", rprTest2TestFunction, rprTest2ValidationFunction)
+rprtest2 = test("Combo Potency and soul gauge generation test 1", rprTest2TestFunction, rprTest2ValidationFunction)
 rprTestSuite.addTest(rprtest2)
 
-# Combo Potency and Gauge generation test
+# Combo Potency and soul gauge generation test
 
 def rprTest3TestFunction() -> None:
-    """Combo Potency and Gauge generation test
+    """Combo Potency and soul gauge generation test
     """
 
     Dummy = Enemy()
@@ -8077,13 +8077,13 @@ def rprTest3ValidationFunction(testResults) -> (bool, list):
 
     return passed , expected
 
-rprtest3 = test("Combo Potency and Gauge generation test 2", rprTest3TestFunction, rprTest3ValidationFunction)
+rprtest3 = test("Combo Potency and soul gauge generation test 2", rprTest3TestFunction, rprTest3ValidationFunction)
 rprTestSuite.addTest(rprtest3)
 
-# Combo Potency and Gauge generation test
+# Combo Potency and soul gauge generation test
 
 def rprTest4TestFunction() -> None:
-    """Combo Potency and Gauge generation test
+    """Combo Potency and soul gauge generation test
     """
 
     Dummy = Enemy()
@@ -8111,13 +8111,13 @@ def rprTest4ValidationFunction(testResults) -> (bool, list):
 
     return passed , expected
 
-rprtest4 = test("Combo Potency and Gauge generation test 3", rprTest4TestFunction, rprTest4ValidationFunction)
+rprtest4 = test("Combo Potency and soul gauge generation test 3", rprTest4TestFunction, rprTest4ValidationFunction)
 rprTestSuite.addTest(rprtest4)
 
-# Combo Potency and Gauge generation test
+# Combo Potency and soul gauge generation test
 
 def rprTest5TestFunction() -> None:
-    """Combo Potency and Gauge generation test
+    """Combo Potency and soul gauge generation test
     """
 
     Dummy = Enemy()
@@ -8145,13 +8145,819 @@ def rprTest5ValidationFunction(testResults) -> (bool, list):
 
     return passed , expected
 
-rprtest5 = test("Combo Potency and Gauge generation test 4", rprTest5TestFunction, rprTest5ValidationFunction)
+rprtest5 = test("Combo Potency and soul gauge generation test 4", rprTest5TestFunction, rprTest5ValidationFunction)
 rprTestSuite.addTest(rprtest5)
 
-rprTestSuite.executeTestSuite()
+# Combo Potency and soul gauge generation test
 
-if False:
-    pb = ProgressBar.init(12, "Executing test suite")
+def rprTest6TestFunction() -> None:
+    """Combo Potency and soul gauge generation test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Slice, InfernalSlice]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SoulGauge]
+
+def rprTest6ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [180,10]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest6 = test("Combo Potency and soul gauge generation test 5", rprTest6TestFunction, rprTest6ValidationFunction)
+rprTestSuite.addTest(rprtest6)
+
+# SoulSlice test
+
+def rprTest7TestFunction() -> None:
+    """SoulSlice test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Slice, SoulSlice, SoulSlice]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SoulGauge]
+
+def rprTest7ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [460,100]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest7 = test("Soulslice test 1", rprTest7TestFunction, rprTest7ValidationFunction)
+rprTestSuite.addTest(rprtest7)
+
+# Shroud gauge
+
+def rprTest8TestFunction() -> None:
+    """Shroud gauge
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Slice,SoulSlice, BloodStalk, Gibbet]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SoulGauge, player.ShroudGauge]
+
+def rprTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [460,10, 10]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest8 = test("Shroud Gauge Generation test 1", rprTest8TestFunction, rprTest8ValidationFunction)
+rprTestSuite.addTest(rprtest8)
+
+# Shroud gauge
+
+def rprTest9TestFunction() -> None:
+    """Shroud gauge
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Slice,SoulSlice, BloodStalk, Gibbet, SoulSlice, UnveiledGallows, Gallows]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SoulGauge, player.ShroudGauge]
+
+def rprTest9ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [520,10, 20]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest9 = test("Shroud Gauge Generation test 2", rprTest9TestFunction, rprTest9ValidationFunction)
+rprTestSuite.addTest(rprtest9)
+
+# Shroud gauge
+
+def rprTest10TestFunction() -> None:
+    """Shroud gauge
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Slice,SoulSlice, BloodStalk, Gibbet, SoulSlice, UnveiledGallows, Gallows, WaxingSlice, InfernalSlice, Slice,WaxingSlice, UnveiledGibbet, Gibbet]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SoulGauge, player.ShroudGauge]
+
+def rprTest10ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [520,0, 30]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest10 = test("Shroud Gauge Generation test 3", rprTest10TestFunction, rprTest10ValidationFunction)
+rprTestSuite.addTest(rprtest10)
+
+# Shroud gauge
+
+def rprTest11TestFunction() -> None:
+    """Shroud gauge
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Slice,SoulSlice, BloodStalk, Gibbet, SoulSlice, UnveiledGallows, Gallows, WaxingSlice, InfernalSlice, Slice,WaxingSlice, UnveiledGibbet, Gibbet,
+                 SoulSlice, SoulSlice, UnveiledGallows, Gallows, UnveiledGibbet, Gibbet]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SoulGauge, player.ShroudGauge]
+
+def rprTest11ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [520,0, 50]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest11 = test("Shroud Gauge Generation test 4", rprTest11TestFunction, rprTest11ValidationFunction)
+rprTestSuite.addTest(rprtest11)
+
+# Shroud gauge
+
+def rprTest12TestFunction() -> None:
+    """Shroud gauge
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Slice,SoulSlice, BloodStalk, Gibbet, SoulSlice, UnveiledGallows, Gallows, WaxingSlice, InfernalSlice, Slice,WaxingSlice, UnveiledGibbet, Gibbet,
+                 SoulSlice, SoulSlice, UnveiledGallows, Gallows, UnveiledGibbet, Gibbet, Enshroud]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SoulGauge, player.ShroudGauge]
+
+def rprTest12ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0,0,0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest12 = test("Shroud Gauge Generation test 5", rprTest12TestFunction, rprTest12ValidationFunction)
+rprTestSuite.addTest(rprtest12)
+
+# Arcane circle
+
+def rprTest13TestFunction() -> None:
+    """Arcane circle
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Slice, ArcaneCircle, WaxingSlice, PlentifulHarvest]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+    player2 = Player([], [], Stat, JobEnum.Reaper)
+    player3 = Player([], [], Stat, JobEnum.Reaper)
+    player4 = Player([], [], Stat, JobEnum.Reaper)
+    player5 = Player([], [], Stat, JobEnum.Reaper)
+    player6 = Player([], [], Stat, JobEnum.Reaper)
+    player7 = Player([], [], Stat, JobEnum.Reaper)
+    player8 = Player([], [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player, player2, player3, player4, player5, player6, player7, player8])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SoulGauge, player.ShroudGauge]
+
+def rprTest13ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [720,20,50]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest13 = test("Arcane Circle test 1", rprTest13TestFunction, rprTest13ValidationFunction)
+rprTestSuite.addTest(rprtest13)
+
+# Arcane circle
+
+def rprTest14TestFunction() -> None:
+    """Arcane circle
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Slice, ArcaneCircle, WaxingSlice, PlentifulHarvest]
+    actionSetOther = [Slice, WaxingSlice, Slice]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+    player2 = Player(actionSetOther, [], Stat, JobEnum.Reaper)
+    player3 = Player([], [], Stat, JobEnum.Reaper)
+    player4 = Player(actionSetOther, [], Stat, JobEnum.Reaper)
+    player5 = Player([], [], Stat, JobEnum.Reaper)
+    player6 = Player(actionSetOther, [], Stat, JobEnum.Reaper)
+    player7 = Player([], [], Stat, JobEnum.Reaper)
+    player8 = Player([], [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player, player2, player3, player4, player5, player6, player7, player8])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SoulGauge, player.ShroudGauge]
+
+def rprTest14ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [840,20,50]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest14 = test("Arcane Circle test 2", rprTest14TestFunction, rprTest14ValidationFunction)
+rprTestSuite.addTest(rprtest14)
+
+# Arcane circle
+
+def rprTest15TestFunction() -> None:
+    """Arcane circle
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Slice, ArcaneCircle, WaxingSlice, PlentifulHarvest]
+    actionSetOther = [Slice, WaxingSlice, Slice]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+    player2 = Player(actionSetOther, [], Stat, JobEnum.Reaper)
+    player3 = Player(actionSetOther, [], Stat, JobEnum.Reaper)
+    player4 = Player(actionSetOther, [], Stat, JobEnum.Reaper)
+    player5 = Player(actionSetOther, [], Stat, JobEnum.Reaper)
+    player6 = Player(actionSetOther, [], Stat, JobEnum.Reaper)
+    player7 = Player(actionSetOther, [], Stat, JobEnum.Reaper)
+    player8 = Player(actionSetOther, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player, player2, player3, player4, player5, player6, player7, player8])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SoulGauge, player.ShroudGauge]
+
+def rprTest15ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1000,20,50]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest15 = test("Arcane Circle test 3", rprTest15TestFunction, rprTest15ValidationFunction)
+rprTestSuite.addTest(rprtest15)
+
+# Arcane circle
+
+def rprTest16TestFunction() -> None:
+    """Arcane circle
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Slice, ArcaneCircle, WaitAbility(19.95)]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [ArcaneCircleBuff in Dummy.buffList]
+
+def rprTest16ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest16 = test("Arcane Circle test 4", rprTest16TestFunction, rprTest16ValidationFunction)
+rprTestSuite.addTest(rprtest16)
+
+# Arcane circle
+
+def rprTest17TestFunction() -> None:
+    """Arcane circle
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Slice, ArcaneCircle, WaitAbility(20.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [ArcaneCircleBuff in Dummy.buffList]
+
+def rprTest17ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest17 = test("Arcane Circle test 5", rprTest17TestFunction, rprTest17ValidationFunction)
+rprTestSuite.addTest(rprtest17)
+
+# Gluttony
+
+def rprTest18TestFunction() -> None:
+    """Gluttony test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [SoulSlice, Gluttony, Gibbet]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SoulGauge, player.ShroudGauge]
+
+def rprTest18ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [460,0,10]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest18 = test("Gluttony test 1", rprTest18TestFunction, rprTest18ValidationFunction)
+rprTestSuite.addTest(rprtest18)
+
+# Gluttony
+
+def rprTest19TestFunction() -> None:
+    """Gluttony test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [SoulSlice, Gluttony, Gibbet, Gallows]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SoulGauge, player.ShroudGauge]
+
+def rprTest19ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [520,0,20]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest19 = test("Gluttony test 2", rprTest19TestFunction, rprTest19ValidationFunction)
+rprTestSuite.addTest(rprtest19)
+
+# Enshroud
+
+def rprTest20TestFunction() -> None:
+    """Enshroud test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Enshroud, VoidReaping]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.LemureGauge, player.VoidShroudGauge]
+
+def rprTest20ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [460,4,1]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest20 = test("Enshroud test 1", rprTest20TestFunction, rprTest20ValidationFunction)
+rprTestSuite.addTest(rprtest20)
+
+# Enshroud
+
+def rprTest21TestFunction() -> None:
+    """Enshroud test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Enshroud, VoidReaping, CrossReaping]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.LemureGauge, player.VoidShroudGauge]
+
+def rprTest21ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [520, 3, 2]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest21 = test("Enshroud test 2", rprTest21TestFunction, rprTest21ValidationFunction)
+rprTestSuite.addTest(rprtest21)
+
+# Enshroud
+
+def rprTest22TestFunction() -> None:
+    """Enshroud test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Enshroud, VoidReaping, CrossReaping, LemureSlice]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.LemureGauge, player.VoidShroudGauge]
+
+def rprTest22ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [240, 3, 0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest22 = test("Enshroud test 3", rprTest22TestFunction, rprTest22ValidationFunction)
+rprTestSuite.addTest(rprtest22)
+
+# Enshroud
+
+def rprTest23TestFunction() -> None:
+    """Enshroud test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Enshroud, VoidReaping, CrossReaping, LemureSlice, VoidReaping]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.LemureGauge, player.VoidShroudGauge]
+
+def rprTest23ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [520, 2, 1]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest23 = test("Enshroud test 4", rprTest23TestFunction, rprTest23ValidationFunction)
+rprTestSuite.addTest(rprtest23)
+
+# Enshroud
+
+def rprTest24TestFunction() -> None:
+    """Enshroud test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Enshroud, VoidReaping, CrossReaping, LemureSlice, VoidReaping, Communio]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.LemureGauge, player.VoidShroudGauge]
+
+def rprTest24ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1100, 0,0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest24 = test("Enshroud test 5", rprTest24TestFunction, rprTest24ValidationFunction)
+rprTestSuite.addTest(rprtest24)
+
+# Death design 
+
+def rprTest25TestFunction() -> None:
+    """Death's design
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [ShadowOfDeath, WaitAbility(29.98)]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [DeathDesignBuff in player.buffList, round(player.DeathDesignTimer,2)]
+
+def rprTest25ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, 0.03]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest25 = test("Death's Design test 1", rprTest25TestFunction, rprTest25ValidationFunction)
+rprTestSuite.addTest(rprtest25)
+
+# Death design 
+
+def rprTest26TestFunction() -> None:
+    """Death's design
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [ShadowOfDeath, WaitAbility(29.98), ShadowOfDeath]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [DeathDesignBuff in player.buffList, round(player.DeathDesignTimer,2)]
+
+def rprTest26ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True,30.02]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest26 = test("Death's Design test 2", rprTest26TestFunction, rprTest26ValidationFunction)
+rprTestSuite.addTest(rprtest26)
+
+# Death design 
+
+def rprTest27TestFunction() -> None:
+    """Death's design
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [ShadowOfDeath, WaitAbility(30.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [DeathDesignBuff in player.buffList, round(player.DeathDesignTimer,2)]
+
+def rprTest27ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False,0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest27 = test("Death's Design test 3", rprTest27TestFunction, rprTest27ValidationFunction)
+rprTestSuite.addTest(rprtest27)
+
+# Death design 
+
+def rprTest28TestFunction() -> None:
+    """Death's design
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [ShadowOfDeath, WaitAbility(30.01), ShadowOfDeath, ShadowOfDeath, ShadowOfDeath]
+    player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [DeathDesignBuff in player.buffList, round(player.DeathDesignTimer,2)]
+
+def rprTest28ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True,60]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+rprtest28 = test("Death's Design test 4", rprTest28TestFunction, rprTest28ValidationFunction)
+rprTestSuite.addTest(rprtest28)
+
+
+if True:
+    pb = ProgressBar.init(13, "Executing test suite")
     blmTestSuite.executeTestSuite()
     next(pb)
     rdmTestSuite.executeTestSuite()
@@ -8175,6 +8981,8 @@ if False:
     ninTestSuite.executeTestSuite()
     next(pb)
     samTestSuite.executeTestSuite()
+    next(pb)
+    rprTestSuite.executeTestSuite()
     next(pb)
     print("Completed. See logs for info.")
 
