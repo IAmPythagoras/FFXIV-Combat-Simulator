@@ -9880,11 +9880,155 @@ def drgTest26ValidationFunction(testResults) -> (bool, list):
 drgtest26 = test("Life Of the Dragon test 3", drgTest26TestFunction, drgTest26ValidationFunction)
 drgTestSuite.addTest(drgtest26)
 
+# Battle Littany
 
-drgTestSuite.executeTestSuite()
+def drgTest27TestFunction() -> None:
+    """Battle Littany
+    """
 
-if False:
-    pb = ProgressBar.init(13, "Executing test suite")
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [BattleLitany, WaitAbility(14.99)]
+    ninplayer = Player([], [], Stat, JobEnum.Ninja)
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player,ninplayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CritRateBonus, ninplayer.CritRateBonus]
+
+def drgTest27ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0.1,0.1]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest27 = test("Battle Litany test 1", drgTest27TestFunction, drgTest27ValidationFunction)
+drgTestSuite.addTest(drgtest27)
+
+# Battle Littany
+
+def drgTest28TestFunction() -> None:
+    """Battle Littany
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [BattleLitany, WaitAbility(15.02)]
+    ninplayer = Player([], [], Stat, JobEnum.Ninja)
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player,ninplayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CritRateBonus, ninplayer.CritRateBonus]
+
+def drgTest28ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0,0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest28 = test("Battle Litany test 2", drgTest28TestFunction, drgTest28ValidationFunction)
+drgTestSuite.addTest(drgtest28)
+
+# Battle Littany
+
+def drgTest29TestFunction() -> None:
+    """Battle Littany
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    ninplayer = Player([], [], Stat, JobEnum.Ninja)
+    actionSet = [DragonSight(ninplayer), WaitAbility(19.99)]
+
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player,ninplayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [RightEyeBuff in player.buffList, LeftEyeBuff in ninplayer.buffList]
+
+def drgTest29ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest29 = test("Dragon Sight test 1", drgTest29TestFunction, drgTest29ValidationFunction)
+drgTestSuite.addTest(drgtest29)
+
+# Battle Littany
+
+def drgTest30TestFunction() -> None:
+    """Battle Littany
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    ninplayer = Player([], [], Stat, JobEnum.Ninja)
+    actionSet = [DragonSight(ninplayer), WaitAbility(20.02)]
+
+    player = Player(actionSet, [], Stat, JobEnum.Dragoon)
+    
+
+    Event.AddPlayer([player,ninplayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [RightEyeBuff in player.buffList, LeftEyeBuff in ninplayer.buffList]
+
+def drgTest30ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False, False]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drgtest30 = test("Dragon Sight test 2", drgTest30TestFunction, drgTest30ValidationFunction)
+drgTestSuite.addTest(drgtest30)
+
+
+
+
+if True:
+    pb = ProgressBar.init(14, "Executing test suite")
     blmTestSuite.executeTestSuite()
     next(pb)
     rdmTestSuite.executeTestSuite()
@@ -9910,6 +10054,8 @@ if False:
     samTestSuite.executeTestSuite()
     next(pb)
     rprTestSuite.executeTestSuite()
+    next(pb)
+    drgTestSuite.executeTestSuite()
     next(pb)
     print("Completed. See logs for info.")
 
