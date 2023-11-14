@@ -2343,7 +2343,6 @@ class Player:
 
     def OpenChakra(self):
         self.MaxChakraGate = min(5, self.MaxChakraGate+1)
-        self.ExpectedChakraGate += 1
 
     def addBeastChakra(self, type):
         for i in range(1,4):

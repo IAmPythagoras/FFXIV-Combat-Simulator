@@ -178,7 +178,6 @@ def ApplyBrotherhood(Player, Enemy):
             Target.MeditativeBrotherhoodTimer = 15 #Adding buff
         else:
             #Applying MeditativeBrotherhood to every other player
-            Target.MeditativeBrotherhoodTimer = 15
             Target.EffectList.append(MeditativeBrotherhoodEffect)
             Target.EffectCDList.append(MeditativeBrotherhoodCheck)
             Target.buffList.append(BrotherhoodBuff)
@@ -358,7 +357,7 @@ CelestialRevolution = MonkSpell(25765, True, 2.5, 450, ApplyCelestialRevolution,
 RisingPhoenix = MonkSpell(25768, True, 2.5, 700, ApplyRisingPhoenix, [RisingPhoenixRequirement], True, False, type = 2)
 PhantomRush = MonkSpell(25769, True, 2.5, 1150, ApplyPhantomRush, [RisingPhoenixRequirement, NadiRequirement], True, False, type = 2)
 #Other GCD
-Meditation = MonkSpell(3546, False, 0, 0, ApplyMeditation, [], False, False, type = 2)
+Meditation = MonkSpell(3546, True, 1, 0, ApplyMeditation, [], False, False, type = 2)
 FormShift = MonkSpell(4262, True, 2.5, 0, ApplyFormShift, [], False, False, type = 2)
 SixSidedStar = MonkSpell(16476, True, 4, 550, empty, [], True, False, type = 2)
 #oGCD

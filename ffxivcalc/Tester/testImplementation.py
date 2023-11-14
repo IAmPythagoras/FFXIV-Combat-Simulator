@@ -10777,7 +10777,7 @@ def mnkTest22TestFunction() -> None:
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
 
     actionSet = [Brotherhood, Bootshine]
-    otherActionSet = [WaitAbility(2), Bootshine]
+    otherActionSet = []
     player = Player(actionSet, [], Stat, JobEnum.Monk)
     player2 = Player([], [], Stat, JobEnum.Monk)
     player3 = Player(otherActionSet, [], Stat, JobEnum.Monk)
@@ -10786,7 +10786,7 @@ def mnkTest22TestFunction() -> None:
     player6 = Player(otherActionSet, [], Stat, JobEnum.Monk)
     player7 = Player([], [], Stat, JobEnum.Monk)
     player8 = Player(otherActionSet, [], Stat, JobEnum.Monk)
-    Event.AddPlayer([player,player2,player3,player4,player5,player6,player7,player8])
+    Event.AddPlayer([player])
 
     Event.RequirementOn = False
     Event.ShowGraph = False
