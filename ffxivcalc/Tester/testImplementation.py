@@ -92,9 +92,10 @@ class test:
             It also returns a boolean relating to weither the test was successful
         """
         test_logging.debug("Executing test -> " + self.testName)
-
-        testResults = self.testFunction()
-
+        try:
+            testResults = self.testFunction()
+        except Exception as Error:
+            test_logging.error("A '" + Error.__class__.__name__ + "' was catched when executing " + self.testName + ". Error message : (" + str(Error)+")")   
         validation, expected = self.validationFunction(testResults)
 
         if not validation: test_logging.error(self.testName + " failed. testResults : " + str(testResults) + " expected results : " + str(expected))    
@@ -10917,10 +10918,8 @@ mnktest25 = test("Riddle of Fire test 2", mnkTest25TestFunction, mnkTest25Valida
 mnkTestSuite.addTest(mnktest25)
 
 
-mnkTestSuite.executeTestSuite()
-
-if False:
-    pb = ProgressBar.init(14, "Executing test suite")
+if True:
+    pb = ProgressBar.init(15, "Executing test suite")
     blmTestSuite.executeTestSuite()
     next(pb)
     rdmTestSuite.executeTestSuite()
@@ -10948,6 +10947,8 @@ if False:
     rprTestSuite.executeTestSuite()
     next(pb)
     drgTestSuite.executeTestSuite()
+    next(pb)
+    mnkTestSuite.executeTestSuite()
     next(pb)
     print("Completed. See logs for info.")
 
