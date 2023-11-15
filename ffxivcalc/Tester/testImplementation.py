@@ -10040,7 +10040,7 @@ def mnkTest1TestFunction() -> None:
     Event = Fight(Dummy, False)
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
 
-    actionSet = [FormShift, DragonKick, TwinSnakes, RiddleOfFire, Demolish, TheForbiddenChakra, Bootshine, Brotherhood, PerfectBalance, DragonKick, RiddleOfWind, Bootshine, DragonKick,
+    actionSet = [Meditation,FormShift, DragonKick, TwinSnakes, RiddleOfFire, Demolish, TheForbiddenChakra, Bootshine, Brotherhood, PerfectBalance, DragonKick, RiddleOfWind, Bootshine, DragonKick,
                  ElixirField, Bootshine, PerfectBalance, TwinSnakes, DragonKick, Demolish, RisingPhoenix, WaitAbility(30)]
     player = Player(actionSet, [], Stat, JobEnum.Monk)
     
@@ -10777,7 +10777,7 @@ def mnkTest22TestFunction() -> None:
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
 
     actionSet = [Brotherhood, Bootshine]
-    otherActionSet = []
+    otherActionSet = [WaitAbility(2), Bootshine]
     player = Player(actionSet, [], Stat, JobEnum.Monk)
     player2 = Player([], [], Stat, JobEnum.Monk)
     player3 = Player(otherActionSet, [], Stat, JobEnum.Monk)
@@ -10786,7 +10786,7 @@ def mnkTest22TestFunction() -> None:
     player6 = Player(otherActionSet, [], Stat, JobEnum.Monk)
     player7 = Player([], [], Stat, JobEnum.Monk)
     player8 = Player(otherActionSet, [], Stat, JobEnum.Monk)
-    Event.AddPlayer([player])
+    Event.AddPlayer([player,player2,player3,player4,player5,player6,player7,player8])
 
     Event.RequirementOn = False
     Event.ShowGraph = False
@@ -10807,6 +10807,114 @@ def mnkTest22ValidationFunction(testResults) -> (bool, list):
 mnktest22 = test("Brotherhood test 3", mnkTest22TestFunction, mnkTest22ValidationFunction)
 mnkTestSuite.addTest(mnktest22)
 
+# 	Brotherhood test
+
+def mnkTest23TestFunction() -> None:
+    """	Brotherhood test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Brotherhood, Bootshine, WaitAbility(15.02), Bootshine]
+    otherActionSet = [WaitAbility(2), Bootshine, WaitAbility(15.02), Bootshine]
+    player = Player(actionSet, [], Stat, JobEnum.Monk)
+    player2 = Player([], [], Stat, JobEnum.Monk)
+    player3 = Player(otherActionSet, [], Stat, JobEnum.Monk)
+    player4 = Player([], [], Stat, JobEnum.Monk)
+    player5 = Player(otherActionSet, [], Stat, JobEnum.Monk)
+    player6 = Player(otherActionSet, [], Stat, JobEnum.Monk)
+    player7 = Player([], [], Stat, JobEnum.Monk)
+    player8 = Player(otherActionSet, [], Stat, JobEnum.Monk)
+    Event.AddPlayer([player,player2,player3,player4,player5,player6,player7,player8])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.MaxChakraGate, round(player.ExpectedChakraGate,2)]
+
+def mnkTest23ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [5, 1.8]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+mnktest23 = test("Brotherhood test 4", mnkTest23TestFunction, mnkTest23ValidationFunction)
+mnkTestSuite.addTest(mnktest23)
+
+# Riddle of Fire 
+
+def mnkTest24TestFunction() -> None:
+    """	Riddle of Fire
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [RiddleOfFire]
+    player = Player(actionSet, [], Stat, JobEnum.Monk)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [RiddleOfFireBuff in player.buffList]
+
+def mnkTest24ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+mnktest24 = test("Riddle of Fire test 1", mnkTest24TestFunction, mnkTest24ValidationFunction)
+mnkTestSuite.addTest(mnktest24)
+
+# Riddle of Fire 
+
+def mnkTest25TestFunction() -> None:
+    """	Riddle of Fire
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [RiddleOfFire, WaitAbility(20.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Monk)
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [RiddleOfFireBuff in player.buffList]
+
+def mnkTest25ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+mnktest25 = test("Riddle of Fire test 2", mnkTest25TestFunction, mnkTest25ValidationFunction)
+mnkTestSuite.addTest(mnktest25)
 
 
 mnkTestSuite.executeTestSuite()
