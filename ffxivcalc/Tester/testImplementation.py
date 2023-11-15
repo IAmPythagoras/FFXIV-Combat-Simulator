@@ -10917,9 +10917,597 @@ def mnkTest25ValidationFunction(testResults) -> (bool, list):
 mnktest25 = test("Riddle of Fire test 2", mnkTest25TestFunction, mnkTest25ValidationFunction)
 mnkTestSuite.addTest(mnktest25)
 
+######################################
+#          Warrior testSuite         #
+######################################
+
+warTestSuite = testSuite("Warrior test suite")
+
+# Opener requirement, end time and potency test 1
+
+def warTest1TestFunction() -> None:
+    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Tomahawk, Infuriate, HeavySwing, Maim, StormEye, InnerRelease, InnerChaos, Upheaval, Onslaught, PrimalRend, Infuriate, InnerChaos, Onslaught, FellCleave, Onslaught, FellCleave,
+                 FellCleave, HeavySwing, Maim, StormPath, FellCleave, Infuriate, InnerChaos]
+    player = Player(actionSet, [], Stat, JobEnum.Warrior)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    failedReq = 0
+    for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+        if event.fatal : failedReq += 1
+
+    return [failedReq, Event.TimeStamp, player.TotalPotency]
+
+def warTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 34.99, 8720]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+wartest1 = test("Opener requirement, end time and potency 1", warTest1TestFunction, warTest1ValidationFunction)
+warTestSuite.addTest(wartest1)
+
+# Combo Potency test
+
+def warTest2TestFunction() -> None:
+    """Combo Potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HeavySwing, Maim]
+    player = Player(actionSet, [], Stat, JobEnum.Warrior)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.BeastGauge]
+
+def warTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [300,10]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+wartest2 = test("Combo Potency test 1", warTest2TestFunction, warTest2ValidationFunction)
+warTestSuite.addTest(wartest2)
+
+# Combo Potency test
+
+def warTest3TestFunction() -> None:
+    """Combo Potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HeavySwing, Maim, Maim]
+    player = Player(actionSet, [], Stat, JobEnum.Warrior)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.BeastGauge]
+
+def warTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [150,10]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+wartest3 = test("Combo Potency test 2", warTest3TestFunction, warTest3ValidationFunction)
+warTestSuite.addTest(wartest3)
+
+# Combo Potency test
+
+def warTest4TestFunction() -> None:
+    """Combo Potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HeavySwing, HeavySwing,Maim, Maim]
+    player = Player(actionSet, [], Stat, JobEnum.Warrior)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.BeastGauge]
+
+def warTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [150,10]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+wartest4 = test("Combo Potency test 3", warTest4TestFunction, warTest4ValidationFunction)
+warTestSuite.addTest(wartest4)
+
+# Combo Potency test
+
+def warTest5TestFunction() -> None:
+    """Combo Potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HeavySwing, HeavySwing,Maim]
+    player = Player(actionSet, [], Stat, JobEnum.Warrior)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.BeastGauge]
+
+def warTest5ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [300,10]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+wartest5 = test("Combo Potency test 4", warTest5TestFunction, warTest5ValidationFunction)
+warTestSuite.addTest(wartest4)
+
+# Combo Potency test
+
+def warTest6TestFunction() -> None:
+    """Combo Potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HeavySwing, Maim,StormPath]
+    player = Player(actionSet, [], Stat, JobEnum.Warrior)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.BeastGauge, SurgingTempestBuff in player.buffList]
+
+def warTest6ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [440,30, False]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+wartest6 = test("Combo Potency test 5", warTest6TestFunction, warTest6ValidationFunction)
+warTestSuite.addTest(wartest6)
+
+# Combo Potency test
+
+def warTest7TestFunction() -> None:
+    """Combo Potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Maim,StormPath]
+    player = Player(actionSet, [], Stat, JobEnum.Warrior)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.BeastGauge]
+
+def warTest7ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [160,0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+wartest7 = test("Combo Potency test 6", warTest7TestFunction, warTest7ValidationFunction)
+warTestSuite.addTest(wartest7)
+
+# Combo Potency test
+
+def warTest8TestFunction() -> None:
+    """Combo Potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HeavySwing, StormPath]
+    player = Player(actionSet, [], Stat, JobEnum.Warrior)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.BeastGauge, SurgingTempestBuff in player.buffList]
+
+def warTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [160,0, False]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+wartest8 = test("Combo Potency test 7", warTest8TestFunction, warTest8ValidationFunction)
+warTestSuite.addTest(wartest8)
+
+# Combo Potency test
+
+def warTest9TestFunction() -> None:
+    """Combo Potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HeavySwing, Maim, StormEye]
+    player = Player(actionSet, [], Stat, JobEnum.Warrior)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.BeastGauge, SurgingTempestBuff in player.buffList]
+
+def warTest9ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [440,20, True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+wartest9 = test("Combo Potency test 8", warTest9TestFunction, warTest9ValidationFunction)
+warTestSuite.addTest(wartest9)
+
+# Combo Potency test
+
+def warTest10TestFunction() -> None:
+    """Combo Potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HeavySwing, Maim, StormEye, WaitAbility(30.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Warrior)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.BeastGauge, SurgingTempestBuff in player.buffList]
+
+def warTest10ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0,20, False]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+wartest10 = test("Combo Potency test 9", warTest10TestFunction, warTest10ValidationFunction)
+warTestSuite.addTest(wartest10)
+
+# Combo Potency test
+
+def warTest11TestFunction() -> None:
+    """Combo Potency test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Maim, StormEye]
+    player = Player(actionSet, [], Stat, JobEnum.Warrior)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.BeastGauge, SurgingTempestBuff in player.buffList]
+
+def warTest11ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [160,0, False]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+wartest11 = test("Combo Potency test 10", warTest11TestFunction, warTest11ValidationFunction)
+warTestSuite.addTest(wartest11)
+
+# Beast Gauge generation/usage
+
+def warTest12TestFunction() -> None:
+    """Beast Gauge generation/usage
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HeavySwing, Maim, StormPath,HeavySwing, Maim, StormPath, FellCleave]
+    player = Player(actionSet, [], Stat, JobEnum.Warrior)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.BeastGauge]
+
+def warTest12ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [520,10]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+wartest12 = test("Beast Gauge generation/usage test 1", warTest12TestFunction, warTest12ValidationFunction)
+warTestSuite.addTest(wartest12)
+
+# Beast Gauge generation/usage
+
+def warTest13TestFunction() -> None:
+    """Beast Gauge generation/usage
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HeavySwing, Maim, StormPath,HeavySwing, Maim, StormPath, FellCleave, Infuriate, InnerChaos]
+    player = Player(actionSet, [], Stat, JobEnum.Warrior)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.BeastGauge]
+
+def warTest13ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [660,10]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+wartest13 = test("Beast Gauge generation/usage test 2", warTest13TestFunction, warTest13ValidationFunction)
+warTestSuite.addTest(wartest13)
+
+# Beast Gauge generation/usage
+
+def warTest14TestFunction() -> None:
+    """Beast Gauge generation/usage
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Infuriate, Infuriate, HeavySwing, Maim]
+    player = Player(actionSet, [], Stat, JobEnum.Warrior)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.BeastGauge]
+
+def warTest14ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [300,100]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+wartest14 = test("Beast Gauge generation/usage test 3", warTest14TestFunction, warTest14ValidationFunction)
+warTestSuite.addTest(wartest14)
+
+# Beast Gauge generation/usage
+
+def warTest15TestFunction() -> None:
+    """Beast Gauge generation/usage
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Infuriate, Infuriate, HeavySwing, Maim, InnerRelease, FellCleave, FellCleave, FellCleave]
+    player = Player(actionSet, [], Stat, JobEnum.Warrior)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.BeastGauge]
+
+def warTest15ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [520,100]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+wartest15 = test("Beast Gauge generation/usage test 4 - Inner Release", warTest15TestFunction, warTest15ValidationFunction)
+warTestSuite.addTest(wartest15)
+
+# Beast Gauge generation/usage
+
+def warTest16TestFunction() -> None:
+    """Beast Gauge generation/usage
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Infuriate, Infuriate, HeavySwing, Maim, InnerRelease, FellCleave, InnerChaos, FellCleave, FellCleave]
+    player = Player(actionSet, [], Stat, JobEnum.Warrior)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.BeastGauge]
+
+def warTest16ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [520,50]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+wartest16 = test("Beast Gauge generation/usage test 5 - Inner Release", warTest16TestFunction, warTest16ValidationFunction)
+warTestSuite.addTest(wartest16)
+
+# Beast Gauge generation/usage
+
+def warTest17TestFunction() -> None:
+    """Beast Gauge generation/usage
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Infuriate, Infuriate, HeavySwing, Maim, InnerRelease, PrimalRend,FellCleave, InnerChaos, FellCleave, FellCleave]
+    player = Player(actionSet, [], Stat, JobEnum.Warrior)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.BeastGauge]
+
+def warTest17ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [520,50]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+wartest17 = test("Beast Gauge generation/usage test 6 - Inner Release", warTest17TestFunction, warTest17ValidationFunction)
+warTestSuite.addTest(wartest17)
 
 if True:
-    pb = ProgressBar.init(15, "Executing test suite")
+    pb = ProgressBar.init(16, "Executing test suite")
     blmTestSuite.executeTestSuite()
     next(pb)
     rdmTestSuite.executeTestSuite()
@@ -10949,6 +11537,8 @@ if True:
     drgTestSuite.executeTestSuite()
     next(pb)
     mnkTestSuite.executeTestSuite()
+    next(pb)
+    warTestSuite.executeTestSuite()
     next(pb)
     print("Completed. See logs for info.")
 
