@@ -228,7 +228,7 @@ def FastBladeCombo(Player, Spell):
     if Spell.id == RiotBlade.id:
         Spell.Potency += 160
         Player.EffectToRemove.append(FastBladeCombo)
-        if not (RiotBladeCombo in player.EffectList) : Player.EffectList.append(RiotBladeCombo)
+        if not (RiotBladeCombo in Player.EffectList) : Player.EffectList.append(RiotBladeCombo)
 
 def RiotBladeCombo(Player, Spell):
     if Spell.id == RoyalAuthority.id:
