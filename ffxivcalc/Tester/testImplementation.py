@@ -96,6 +96,7 @@ class test:
             testResults = self.testFunction()
         except Exception as Error:
             test_logging.error("A '" + Error.__class__.__name__ + "' was catched when executing " + self.testName + ". Error message : (" + str(Error)+")")   
+            return False
         validation, expected = self.validationFunction(testResults)
 
         if not validation: test_logging.error(self.testName + " failed. testResults : " + str(testResults) + " expected results : " + str(expected))    
