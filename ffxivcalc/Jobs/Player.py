@@ -2021,7 +2021,7 @@ class Player:
 
         #DOT
         self.SonicBreakDOT = None
-        self.BowShowDOT = None
+        self.BowShockDOT = None
 
         #JobMod
         self.JobMod = 100

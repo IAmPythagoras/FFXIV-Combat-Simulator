@@ -11506,8 +11506,812 @@ def warTest17ValidationFunction(testResults) -> (bool, list):
 wartest17 = test("Beast Gauge generation/usage test 6 - Inner Release", warTest17TestFunction, warTest17ValidationFunction)
 warTestSuite.addTest(wartest17)
 
-if True:
-    pb = ProgressBar.init(16, "Executing test suite")
+######################################
+#        Gunbreaker testSuite        #
+######################################
+
+gnbTestSuite = testSuite("Gunbreaker test suite")
+
+# Opener requirement, end time and potency test 1
+
+def gnbTest1TestFunction() -> None:
+    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [LightningShot, KeenEdge, BrutalShell, NoMercy, Bloodfest, GnashingFang, JugularRip, SonicBreak, BlastingZone, BowShock, DoubleDown, RoughDivide, SavageClaw, AbdomenTear,
+                 RoughDivide, WickedTalon, EyeGouge, SolidBarrel, BurstStrike, Hypervelocity, KeenEdge, WaitAbility(50)]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    failedReq = 0
+    for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+        if event.fatal : failedReq += 1
+
+    return [failedReq, Event.TimeStamp, player.TotalPotency]
+
+def gnbTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 74.49, 9690]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest1 = test("Opener requirement, end time and potency 1", gnbTest1TestFunction, gnbTest1ValidationFunction)
+gnbTestSuite.addTest(gnbtest1)
+
+# Combo Potency
+
+def gnbTest2TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [KeenEdge, BrutalShell]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.PowderGauge]
+
+def gnbTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [300,0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest2 = test("Combo Potency test 1", gnbTest2TestFunction, gnbTest2ValidationFunction)
+gnbTestSuite.addTest(gnbtest2)
+
+# Combo Potency
+
+def gnbTest3TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [KeenEdge, KeenEdge, BrutalShell]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.PowderGauge]
+
+def gnbTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [300,0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest3 = test("Combo Potency test 2", gnbTest3TestFunction, gnbTest3ValidationFunction)
+gnbTestSuite.addTest(gnbtest3)
+
+# Combo Potency
+
+def gnbTest4TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [KeenEdge, BrutalShell, BrutalShell]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.PowderGauge]
+
+def gnbTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [160,0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest4 = test("Combo Potency test 3", gnbTest4TestFunction, gnbTest4ValidationFunction)
+gnbTestSuite.addTest(gnbtest4)
+
+# Combo Potency
+
+def gnbTest5TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [KeenEdge, BrutalShell, SolidBarrel]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.PowderGauge]
+
+def gnbTest5ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [360,1]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest5 = test("Combo Potency test 4", gnbTest5TestFunction, gnbTest5ValidationFunction)
+gnbTestSuite.addTest(gnbtest5)
+
+# Combo Potency
+
+def gnbTest6TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [BrutalShell, SolidBarrel]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.PowderGauge]
+
+def gnbTest6ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [140,0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest6 = test("Combo Potency test 5", gnbTest6TestFunction, gnbTest6ValidationFunction)
+gnbTestSuite.addTest(gnbtest6)
+
+# Combo Potency
+
+def gnbTest7TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [BrutalShell, SolidBarrel, KeenEdge, BrutalShell, SolidBarrel]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.PowderGauge]
+
+def gnbTest7ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [360,1]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest7 = test("Combo Potency test 6", gnbTest7TestFunction, gnbTest7ValidationFunction)
+gnbTestSuite.addTest(gnbtest7)
+
+# Combo Potency
+
+def gnbTest8TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [KeenEdge, BrutalShell, SolidBarrel, SolidBarrel]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.PowderGauge]
+
+def gnbTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [140,1]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest8 = test("Combo Potency test 7", gnbTest8TestFunction, gnbTest8ValidationFunction)
+gnbTestSuite.addTest(gnbtest8)
+
+# Combo Potency
+
+def gnbTest9TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [KeenEdge, BrutalShell, SolidBarrel, KeenEdge,BrutalShell,SolidBarrel]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.PowderGauge]
+
+def gnbTest9ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [360,2]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest9 = test("Combo Potency test 8", gnbTest9TestFunction, gnbTest9ValidationFunction)
+gnbTestSuite.addTest(gnbtest9)
+
+# Combo Potency
+
+def gnbTest10TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [KeenEdge, BrutalShell, SolidBarrel, GnashingFang]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.PowderGauge]
+
+def gnbTest10ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [380,0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest10 = test("Combo Potency test 9 - Gauge usage/generation", gnbTest10TestFunction, gnbTest10ValidationFunction)
+gnbTestSuite.addTest(gnbtest10)
+
+# Combo Potency
+
+def gnbTest11TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [KeenEdge, BrutalShell, SolidBarrel, Bloodfest]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.PowderGauge]
+
+def gnbTest11ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0,3]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+# Combo Potency
+
+def gnbTest12TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [KeenEdge, BrutalShell, SolidBarrel, Bloodfest, GnashingFang, KeenEdge, BrutalShell, SolidBarrel]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.PowderGauge]
+
+def gnbTest12ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [360,3]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest12 = test("Combo Potency test 11 - Gauge usage/generation", gnbTest12TestFunction, gnbTest12ValidationFunction)
+gnbTestSuite.addTest(gnbtest12)
+
+# Combo Potency
+
+def gnbTest13TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [DemonSlice, DemonSlaughter]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.PowderGauge]
+
+def gnbTest13ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [160,1]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest13 = test("Combo Potency test 12 - Gauge usage/generation", gnbTest13TestFunction, gnbTest13ValidationFunction)
+gnbTestSuite.addTest(gnbtest13)
+
+# Combo Potency
+
+def gnbTest14TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [DemonSlice, DemonSlaughter,DemonSlice, DemonSlaughter]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.PowderGauge]
+
+def gnbTest14ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [160,2]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest14 = test("Combo Potency test 13 - Gauge usage/generation", gnbTest14TestFunction, gnbTest14ValidationFunction)
+gnbTestSuite.addTest(gnbtest14)
+
+# Combo Potency
+
+def gnbTest15TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [DemonSlice, DemonSlaughter,DemonSlice, DemonSlaughter, DemonSlaughter]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.PowderGauge]
+
+def gnbTest15ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [100,2]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest15 = test("Combo Potency test 14 - Gauge usage/generation", gnbTest15TestFunction, gnbTest15ValidationFunction)
+gnbTestSuite.addTest(gnbtest15)
+
+# Combo Potency
+
+def gnbTest16TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [DemonSlice, DemonSlice,DemonSlaughter, DemonSlaughter]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.PowderGauge]
+
+def gnbTest16ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [100,1]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest16 = test("Combo Potency test 15 - Gauge usage/generation", gnbTest16TestFunction, gnbTest16ValidationFunction)
+gnbTestSuite.addTest(gnbtest16)
+
+# Combo Potency
+
+def gnbTest17TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [DemonSlice, DemonSlaughter,DemonSlice, DemonSlaughter, DoubleDown]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.PowderGauge]
+
+def gnbTest17ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1200,0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest17 = test("Combo Potency test 16 - Gauge usage/generation", gnbTest17TestFunction, gnbTest17ValidationFunction)
+gnbTestSuite.addTest(gnbtest17)
+
+# Combo Potency
+
+def gnbTest18TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Bloodfest, DoubleDown]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.PowderGauge]
+
+def gnbTest18ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1200,1]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest18 = test("Combo Potency test 17 - Gauge usage/generation", gnbTest18TestFunction, gnbTest18ValidationFunction)
+gnbTestSuite.addTest(gnbtest18)
+
+# No Mercy
+def gnbTest19TestFunction() -> None:
+    """No Mercy
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [NoMercy, KeenEdge, BrutalShell, SolidBarrel]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.PowderGauge, NoMercyBuff in player.buffList]
+
+def gnbTest19ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [360,1, True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest19 = test("No Mercy test 1", gnbTest19TestFunction, gnbTest19ValidationFunction)
+gnbTestSuite.addTest(gnbtest19)
+
+# No Mercy
+def gnbTest20TestFunction() -> None:
+    """No Mercy
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [NoMercy,WaitAbility(20.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.PowderGauge, NoMercyBuff in player.buffList, NoMercyBuff.MultDPS]
+
+def gnbTest20ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0,0, False,1.2]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest20 = test("No Mercy test 2", gnbTest20TestFunction, gnbTest20ValidationFunction)
+gnbTestSuite.addTest(gnbtest20)
+
+# No Mercy
+def gnbTest21TestFunction() -> None:
+    """No Mercy
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [BowShock]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.BowShockDOT in player.DOTList]
+
+def gnbTest21ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest21 = test("Bow Shock dot test 1", gnbTest21TestFunction, gnbTest21ValidationFunction)
+gnbTestSuite.addTest(gnbtest21)
+
+# No Mercy
+def gnbTest22TestFunction() -> None:
+    """No Mercy
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [BowShock, WaitAbility(15.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.BowShockDOT in player.DOTList]
+
+def gnbTest22ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+gnbtest22 = test("Bow Shock dot test 2", gnbTest22TestFunction, gnbTest22ValidationFunction)
+gnbTestSuite.addTest(gnbtest22)
+
+######################################
+#          Paladin testSuite         #
+######################################
+
+pldTestSuite = testSuite("Paladin test suite")
+
+# Opener requirement, end time and potency test 1
+
+def pldTest1TestFunction() -> None:
+    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HolySpirit, FastBlade, RiotBlade, WaitAbility(1), Potion, RoyalAuthority, FightOrFlight, RequestACat, GoringBlade, CircleScorn, 
+                 Expiacion, Confetti, Intervene, BladeFaith, Intervene, BladeTruth, BladeValor, HolySpirit, Atonement, Atonement, Atonement, FastBlade, 
+                 RiotBlade, RoyalAuthority, Atonement, CircleScorn, Expiacion, Atonement, Atonement, FastBlade, RiotBlade, HolySpirit, RoyalAuthority, Atonement, 
+                 Atonement, Atonement, FastBlade, RiotBlade, FightOrFlight, RequestACat, GoringBlade, Expiacion, Confetti, BladeFaith, Intervene, BladeTruth, Intervene, 
+                 BladeValor, HolySpirit, RoyalAuthority, HolySpirit, Atonement ]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    failedReq = 0
+    for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+        if event.fatal : failedReq += 1
+
+    return [failedReq, Event.TimeStamp, player.TotalPotency]
+
+def pldTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 74.49, 9750]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest1 = test("Opener requirement, end time and potency 1", pldTest1TestFunction, pldTest1ValidationFunction)
+pldTestSuite.addTest(pldtest1)
+
+
+
+pldTestSuite.executeTestSuite()
+
+if False:
+    pb = ProgressBar.init(17, "Executing test suite")
     blmTestSuite.executeTestSuite()
     next(pb)
     rdmTestSuite.executeTestSuite()
@@ -11539,6 +12343,8 @@ if True:
     mnkTestSuite.executeTestSuite()
     next(pb)
     warTestSuite.executeTestSuite()
+    next(pb)
+    gnbTestSuite.executeTestSuite()
     next(pb)
     print("Completed. See logs for info.")
 
