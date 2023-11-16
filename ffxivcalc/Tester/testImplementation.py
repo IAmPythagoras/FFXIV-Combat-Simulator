@@ -12547,7 +12547,7 @@ pldTestSuite.addTest(pldtest8)
 
 # Combo Potency 
 
-def pldTest8TestFunction() -> None:
+def pldTest9TestFunction() -> None:
     """Combo Potency
     """
 
@@ -12555,7 +12555,7 @@ def pldTest8TestFunction() -> None:
     Event = Fight(Dummy, False)
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
 
-    actionSet = [FastBlade, RiotBlade, FastBlade, RiotBlade, RoyalAuthority, RoyalAuthority]
+    actionSet = [FastBlade, RiotBlade, FastBlade, RiotBlade, RoyalAuthority, Atonement,RoyalAuthority]
     player = Player(actionSet, [], Stat, JobEnum.Paladin)
     
     Event.AddPlayer([player])
@@ -12568,16 +12568,527 @@ def pldTest8TestFunction() -> None:
 
     return [player.CastingSpell.Potency, player.SwordOathStack, DivineMightEffect in player.EffectList]
 
-def pldTest8ValidationFunction(testResults) -> (bool, list):
+def pldTest9ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [140,3, True]
+    expected = [140,2, True]
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
     return passed , expected
 
-pldtest8 = test("Combo Potency test 7", pldTest8TestFunction, pldTest8ValidationFunction)
-pldTestSuite.addTest(pldtest8)
+pldtest9 = test("Combo Potency test 8", pldTest9TestFunction, pldTest9ValidationFunction)
+pldTestSuite.addTest(pldtest9)
+
+# Combo Potency 
+
+def pldTest10TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [FastBlade, RiotBlade, FastBlade, RiotBlade, RoyalAuthority, Atonement,RoyalAuthority, HolySpirit]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SwordOathStack, DivineMightEffect in player.EffectList, player.CastingSpell.CastTime]
+
+def pldTest10ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [450,2, False, 0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest10 = test("Combo Potency test 9", pldTest10TestFunction, pldTest10ValidationFunction)
+pldTestSuite.addTest(pldtest10)
+
+# Combo Potency 
+
+def pldTest11TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [FastBlade, RiotBlade, FastBlade, RiotBlade, RoyalAuthority, Atonement,RoyalAuthority, HolySpirit, HolySpirit]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SwordOathStack, DivineMightEffect in player.EffectList, player.CastingSpell.CastTime]
+
+def pldTest11ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [350,2, False, 1.5]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest11 = test("Combo Potency test 10", pldTest11TestFunction, pldTest11ValidationFunction)
+pldTestSuite.addTest(pldtest11)
+
+# Requiescat
+
+def pldTest12TestFunction() -> None:
+    """Requiescat
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [RequestACat, HolySpirit]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.CastingSpell.CastTime]
+
+def pldTest12ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [650,0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest12 = test("Requiescat test 1", pldTest12TestFunction, pldTest12ValidationFunction)
+pldTestSuite.addTest(pldtest12)
+
+# Requiescat
+
+def pldTest13TestFunction() -> None:
+    """Requiescat
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [RequestACat, HolySpirit, HolySpirit, HolySpirit, HolySpirit]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.CastingSpell.CastTime]
+
+def pldTest13ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [650,0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest13 = test("Requiescat test 2", pldTest13TestFunction, pldTest13ValidationFunction)
+pldTestSuite.addTest(pldtest13)
+
+# Requiescat
+
+def pldTest14TestFunction() -> None:
+    """Requiescat
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [RequestACat, HolySpirit, HolySpirit, HolySpirit, HolySpirit, HolySpirit]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.CastingSpell.CastTime]
+
+def pldTest14ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [350,1.5]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest14 = test("Requiescat test 3", pldTest14TestFunction, pldTest14ValidationFunction)
+pldTestSuite.addTest(pldtest14)
+
+# Requiescat
+
+def pldTest15TestFunction() -> None:
+    """Requiescat
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [RequestACat, HolySpirit, HolySpirit, HolySpirit, HolySpirit, HolySpirit, Confetti]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def pldTest15ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [420]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest15 = test("Requiescat test 4", pldTest15TestFunction, pldTest15ValidationFunction)
+pldTestSuite.addTest(pldtest15)
+
+# Requiescat
+
+def pldTest16TestFunction() -> None:
+    """Requiescat
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [RequestACat, Confetti]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def pldTest16ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [920]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest16 = test("Requiescat test 5", pldTest16TestFunction, pldTest16ValidationFunction)
+pldTestSuite.addTest(pldtest16)
+
+# Requiescat
+
+def pldTest17TestFunction() -> None:
+    """Requiescat
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [RequestACat, Confetti, BladeFaith]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def pldTest17ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [720]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest17 = test("Requiescat test 6", pldTest17TestFunction, pldTest17ValidationFunction)
+pldTestSuite.addTest(pldtest17)
+
+# Requiescat
+
+def pldTest18TestFunction() -> None:
+    """Requiescat
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [RequestACat, Confetti, HolySpirit, HolySpirit, HolySpirit, BladeFaith]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def pldTest18ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [220]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest18 = test("Requiescat test 7", pldTest18TestFunction, pldTest18ValidationFunction)
+pldTestSuite.addTest(pldtest18)
+
+# Requiescat
+
+def pldTest19TestFunction() -> None:
+    """Requiescat
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [RequestACat, Confetti, BladeFaith, BladeTruth]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def pldTest19ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [820]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest19 = test("Requiescat test 8", pldTest19TestFunction, pldTest19ValidationFunction)
+pldTestSuite.addTest(pldtest19)
+
+# Requiescat
+
+def pldTest20TestFunction() -> None:
+    """Requiescat
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [RequestACat, Confetti, BladeFaith, HolySpirit, HolySpirit,BladeTruth]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def pldTest20ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [320]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest20 = test("Requiescat test 9", pldTest20TestFunction, pldTest20ValidationFunction)
+pldTestSuite.addTest(pldtest20)
+
+# Requiescat
+
+def pldTest21TestFunction() -> None:
+    """Requiescat
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [RequestACat, Confetti, BladeFaith,BladeTruth, BladeValor]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def pldTest21ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [920]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest21 = test("Requiescat test 10", pldTest21TestFunction, pldTest21ValidationFunction)
+pldTestSuite.addTest(pldtest21)
+
+# Requiescat
+
+def pldTest22TestFunction() -> None:
+    """Requiescat
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [RequestACat, Confetti, BladeFaith,BladeTruth, HolySpirit, BladeValor]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def pldTest22ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [420]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest22 = test("Requiescat test 11", pldTest22TestFunction, pldTest22ValidationFunction)
+pldTestSuite.addTest(pldtest22)
+
+# Requiescat
+
+def pldTest23TestFunction() -> None:
+    """Requiescat
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [RequestACat, Confetti, BladeFaith,BladeTruth, BladeValor, HolySpirit]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def pldTest23ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [350]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest23 = test("Requiescat test 12", pldTest23TestFunction, pldTest23ValidationFunction)
+pldTestSuite.addTest(pldtest23)
+
+# Requiescat
+
+def pldTest24TestFunction() -> None:
+    """Requiescat
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [FastBlade, RiotBlade, RoyalAuthority,RequestACat, Confetti, BladeFaith, HolySpirit, HolySpirit,BladeTruth, BladeValor]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def pldTest24ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [920]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest24 = test("Requiescat test 14", pldTest24TestFunction, pldTest24ValidationFunction)
+pldTestSuite.addTest(pldtest24)
+
 
 
 pldTestSuite.executeTestSuite()

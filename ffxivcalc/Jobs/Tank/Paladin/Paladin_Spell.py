@@ -195,13 +195,17 @@ def RequestACatEffect(Player, Spell):
 
     match Spell.id:
         case HolySpirit.id:
-            Spell.Potency += 300
-            Spell.CastTime = 0
-            Player.RequestACatStack -= 1
+                             # Divine might has prio over this.
+            if not DivineMightEffect in Player.EffectList:
+                Spell.Potency += 300
+                Spell.CastTime = 0
+                Player.RequestACatStack -= 1
         case HolyCircle.id:
-            Spell.Potency += 170
-            Spell.CastTime = 0
-            Player.RequestACatStack -= 1
+                             # Divine might has prio over this.
+            if not DivineMightEffect in Player.EffectList:
+                Spell.Potency += 170
+                Spell.CastTime = 0
+                Player.RequestACatStack -= 1
         case Clemency.id:
             Spell.CastTime = 0
             Player.RequestACatStack -= 1
