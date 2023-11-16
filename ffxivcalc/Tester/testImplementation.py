@@ -13065,7 +13065,7 @@ def pldTest24TestFunction() -> None:
     Event = Fight(Dummy, False)
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
 
-    actionSet = [FastBlade, RiotBlade, RoyalAuthority,RequestACat, Confetti, BladeFaith, HolySpirit, HolySpirit,BladeTruth, BladeValor]
+    actionSet = [FastBlade, RiotBlade, RoyalAuthority,RequestACat, Confetti, BladeFaith, HolySpirit,BladeTruth, BladeValor]
     player = Player(actionSet, [], Stat, JobEnum.Paladin)
     
     Event.AddPlayer([player])
@@ -13086,8 +13086,76 @@ def pldTest24ValidationFunction(testResults) -> (bool, list):
 
     return passed , expected
 
-pldtest24 = test("Requiescat test 14", pldTest24TestFunction, pldTest24ValidationFunction)
+pldtest24 = test("Requiescat test 13", pldTest24TestFunction, pldTest24ValidationFunction)
 pldTestSuite.addTest(pldtest24)
+
+# Fight or Flight
+
+def pldTest25TestFunction() -> None:
+    """Fight or Flight
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [FightOrFlight]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [FightOrFlightBuff in player.buffList, FightOrFlightBuff.MultDPS]
+
+def pldTest25ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, 1.25]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest25 = test("Fight or Flight test 1", pldTest25TestFunction, pldTest25ValidationFunction)
+pldTestSuite.addTest(pldtest25)
+
+# Fight or Flight
+
+def pldTest26TestFunction() -> None:
+    """Fight or Flight
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [FightOrFlight, WaitAbility(20.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [FightOrFlightBuff in player.buffList, FightOrFlightBuff.MultDPS]
+
+def pldTest26ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False, 1.25]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest26 = test("Fight or Flight test 2", pldTest26TestFunction, pldTest26ValidationFunction)
+pldTestSuite.addTest(pldtest26)
 
 
 

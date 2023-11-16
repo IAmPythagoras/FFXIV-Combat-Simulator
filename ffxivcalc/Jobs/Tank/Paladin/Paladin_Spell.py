@@ -123,7 +123,7 @@ def ApplyTotalEclipse(Player, Enemy):
     if not (TotalEclipseCombo in Player.EffectList) : Player.EffectList.append(TotalEclipseCombo)
 
 def ApplyFightOrFlight(Player, Enemy):
-    Player.FightOrFlightTimer = 25
+    Player.FightOrFlightTimer = 20
     Player.FightOrFlightCD = 60
     Player.buffList.append(FightOrFlightBuff)
     Player.EffectCDList.append(FightOrFlightCheck)
