@@ -12279,7 +12279,7 @@ def pldTest1TestFunction() -> None:
                  RiotBlade, RoyalAuthority, Atonement, CircleScorn, Expiacion, Atonement, Atonement, FastBlade, RiotBlade, HolySpirit, RoyalAuthority, Atonement, 
                  Atonement, Atonement, FastBlade, RiotBlade, FightOrFlight, RequestACat, GoringBlade, Expiacion, Confetti, BladeFaith, Intervene, BladeTruth, Intervene, 
                  BladeValor, HolySpirit, RoyalAuthority, HolySpirit, Atonement ]
-    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
     
     Event.AddPlayer([player])
 
@@ -12297,7 +12297,7 @@ def pldTest1TestFunction() -> None:
 
 def pldTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 74.49, 9750]
+    expected = [0, 87.81, 23780]
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -12306,6 +12306,277 @@ def pldTest1ValidationFunction(testResults) -> (bool, list):
 pldtest1 = test("Opener requirement, end time and potency 1", pldTest1TestFunction, pldTest1ValidationFunction)
 pldTestSuite.addTest(pldtest1)
 
+# Combo Potency 
+
+def pldTest2TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [FastBlade, RiotBlade]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def pldTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [300]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest2 = test("Combo Potency test 1", pldTest2TestFunction, pldTest2ValidationFunction)
+pldTestSuite.addTest(pldtest2)
+
+# Combo Potency 
+
+def pldTest3TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [FastBlade, RiotBlade, RiotBlade]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def pldTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [140]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest3 = test("Combo Potency test 2", pldTest3TestFunction, pldTest3ValidationFunction)
+pldTestSuite.addTest(pldtest3)
+
+# Combo Potency 
+
+def pldTest4TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [FastBlade, FastBlade,RiotBlade, RiotBlade]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def pldTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [140]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest4 = test("Combo Potency test 3", pldTest4TestFunction, pldTest4ValidationFunction)
+pldTestSuite.addTest(pldtest4)
+
+# Combo Potency 
+
+def pldTest5TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [FastBlade, RiotBlade, FastBlade, RiotBlade]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def pldTest5ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [300]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest5 = test("Combo Potency test 4", pldTest5TestFunction, pldTest5ValidationFunction)
+pldTestSuite.addTest(pldtest5)
+
+# Combo Potency 
+
+def pldTest6TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [FastBlade, RiotBlade, RoyalAuthority]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SwordOathStack, DivineMightEffect in player.EffectList]
+
+def pldTest6ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [400,3, True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest6 = test("Combo Potency test 5", pldTest6TestFunction, pldTest6ValidationFunction)
+pldTestSuite.addTest(pldtest6)
+
+# Combo Potency 
+
+def pldTest7TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [RiotBlade, RoyalAuthority]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SwordOathStack, DivineMightEffect in player.EffectList]
+
+def pldTest7ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [140,0, False]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest7 = test("Combo Potency test 6", pldTest7TestFunction, pldTest7ValidationFunction)
+pldTestSuite.addTest(pldtest7)
+
+# Combo Potency 
+
+def pldTest8TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [FastBlade, RiotBlade, FastBlade, RiotBlade, RoyalAuthority]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SwordOathStack, DivineMightEffect in player.EffectList]
+
+def pldTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [400,3, True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest8 = test("Combo Potency test 7", pldTest8TestFunction, pldTest8ValidationFunction)
+pldTestSuite.addTest(pldtest8)
+
+# Combo Potency 
+
+def pldTest8TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [FastBlade, RiotBlade, FastBlade, RiotBlade, RoyalAuthority, RoyalAuthority]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.SwordOathStack, DivineMightEffect in player.EffectList]
+
+def pldTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [140,3, True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+pldtest8 = test("Combo Potency test 7", pldTest8TestFunction, pldTest8ValidationFunction)
+pldTestSuite.addTest(pldtest8)
 
 
 pldTestSuite.executeTestSuite()

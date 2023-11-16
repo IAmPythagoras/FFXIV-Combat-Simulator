@@ -179,16 +179,6 @@ def ApplyFastBlade(Player, Enemy):
 def ApplyGoringBlade(Player, Enemy):
     Player.GoringBladeCD = 60 * Player.WeaponskillReduction # Cuz is weaponskill
 
-
-
-
-"""
-post 6.3 effect
-def FightOrFlightEffect(Player, Spell):
-    if Spell.isPhysical or isinstance(Spell, DOTSpell):
-        Spell.DPSBonus *= FightOrFlightBuff.MultDPS #Giving bonus to the spell if it is physical
-"""
-
 def DivineMightEffect(Player, Spell):
     """Allows next holy spirit or holy circle to be cast immediately with increased potency.
     """
@@ -238,7 +228,7 @@ def FastBladeCombo(Player, Spell):
     if Spell.id == RiotBlade.id:
         Spell.Potency += 160
         Player.EffectToRemove.append(FastBladeCombo)
-        Player.EffectList.append(RiotBladeCombo)
+        if not (RiotBladeCombo in player.EffectList) : Player.EffectList.append(RiotBladeCombo)
 
 def RiotBladeCombo(Player, Spell):
     if Spell.id == RoyalAuthority.id:
