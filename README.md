@@ -70,6 +70,11 @@ functionning.
 
 You can read about the experimental results of this solver here : https://docs.google.com/spreadsheets/d/1yVl-F1tHARYIYvz4ZPxIY6MayakYug3OEqpGnpZllqU/edit?usp=sharing
 
+# Validitiy of simulator
+
+As of version 0.8.30 I have started adding in depth testing of the simulator. The simulator will still have some flaws, but it is currently being checked by around 430 individual tests. More tests
+will be added with time.
+
 # Discord bot): 
 DISCORD BOT IS CURRENTLY OFFLINE. WILL UPDATE HERE WHEN IT IS AVAILABLE
 I made a disbord bot that uses the python library ffxivcalc in order to simulate fights. Feel free to install it using the link below. As of now, the main bot commands are :
