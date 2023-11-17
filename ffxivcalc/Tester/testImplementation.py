@@ -13157,12 +13157,569 @@ def pldTest26ValidationFunction(testResults) -> (bool, list):
 pldtest26 = test("Fight or Flight test 2", pldTest26TestFunction, pldTest26ValidationFunction)
 pldTestSuite.addTest(pldtest26)
 
+######################################
+#        DarkKnight testSuite        #
+######################################
+
+drkTestSuite = testSuite("Dark Knight test suite")
+
+# Opener requirement, end time and potency test 1
+
+def drkTest1TestFunction() -> None:
+    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [BloodWeapon, WaitAbility(4), HardSlash, EdgeShadow, Delirium, SyphonStrike, Souleater, LivingShadow, SaltedEarth, HardSlash, Shadowbringer, EdgeShadow, Bloodspiller,
+                 CarveSpit, Plunge, Bloodspiller, Shadowbringer, EdgeShadow, Bloodspiller, SaltDarkness, EdgeShadow, SyphonStrike ,Plunge, EdgeShadow]
+    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    failedReq = 0
+    for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
+        if event.fatal : failedReq += 1
+
+    return [failedReq, Event.TimeStamp, player.TotalPotency]
+
+def drkTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 22.56, 10730]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drktest1 = test("Opener requirement, end time and potency 1", drkTest1TestFunction, drkTest1ValidationFunction)
+drkTestSuite.addTest(drktest1)
+
+# Combo Potency
+
+def drkTest2TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HardSlash, SyphonStrike]
+    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def drkTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [260]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drktest2 = test("Combo Potency test 1", drkTest2TestFunction, drkTest2ValidationFunction)
+drkTestSuite.addTest(drktest2)
+
+# Combo Potency
+
+def drkTest3TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HardSlash,HardSlash, SyphonStrike]
+    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def drkTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [260]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drktest3 = test("Combo Potency test 2", drkTest3TestFunction, drkTest3ValidationFunction)
+drkTestSuite.addTest(drktest3)
+
+# Combo Potency
+
+def drkTest4TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HardSlash,HardSlash, SyphonStrike, SyphonStrike]
+    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def drkTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [120]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drktest4 = test("Combo Potency test 3", drkTest4TestFunction, drkTest4ValidationFunction)
+drkTestSuite.addTest(drktest4)
+
+# Combo Potency
+
+def drkTest5TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HardSlash,SyphonStrike, HardSlash, SyphonStrike]
+    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency]
+
+def drkTest5ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [260]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drktest5 = test("Combo Potency test 4", drkTest5TestFunction, drkTest5ValidationFunction)
+drkTestSuite.addTest(drktest5)
+
+# Combo Potency
+
+def drkTest6TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HardSlash,SyphonStrike, Souleater]
+    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Blood]
+
+def drkTest6ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [340, 20]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drktest6 = test("Combo Potency test 5", drkTest6TestFunction, drkTest6ValidationFunction)
+drkTestSuite.addTest(drktest6)
+
+# Combo Potency
+
+def drkTest7TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HardSlash,SyphonStrike, Souleater, Souleater]
+    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Blood]
+
+def drkTest7ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [120, 20]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drktest7 = test("Combo Potency test 6", drkTest7TestFunction, drkTest7ValidationFunction)
+drkTestSuite.addTest(drktest7)
+
+# Combo Potency
+
+def drkTest8TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HardSlash,SyphonStrike, Souleater,HardSlash,SyphonStrike, Souleater]
+    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Blood]
+
+def drkTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [340, 40]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drktest8 = test("Combo Potency test 7", drkTest8TestFunction, drkTest8ValidationFunction)
+drkTestSuite.addTest(drktest8)
+
+# Combo Potency
+
+def drkTest9TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HardSlash, Souleater]
+    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Blood]
+
+def drkTest9ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [120, 0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drktest9 = test("Combo Potency test 8", drkTest9TestFunction, drkTest9ValidationFunction)
+drkTestSuite.addTest(drktest9)
+
+# Combo Potency
+
+def drkTest10TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [Souleater]
+    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Blood]
+
+def drkTest10ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [120, 0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drktest10 = test("Combo Potency test 9", drkTest10TestFunction, drkTest10ValidationFunction)
+drkTestSuite.addTest(drktest10)
+
+# Combo Potency
+
+def drkTest11TestFunction() -> None:
+    """Combo Potency
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [SyphonStrike, Souleater]
+    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.CastingSpell.Potency, player.Blood]
+
+def drkTest11ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [120, 0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drktest11 = test("Combo Potency test 10", drkTest11TestFunction, drkTest11ValidationFunction)
+drkTestSuite.addTest(drktest11)
+
+# Darkside test
+
+def drkTest12TestFunction() -> None:
+    """Darkside test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [EdgeShadow]
+    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [EdgeShadowBuff in player.buffList]
+
+def drkTest12ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drktest12 = test("Darkside test 1", drkTest12TestFunction, drkTest12ValidationFunction)
+drkTestSuite.addTest(drktest12)
+
+# Darkside test
+
+def drkTest12TestFunction() -> None:
+    """Darkside test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [EdgeShadow, WaitAbility(30.02)]
+    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [EdgeShadowBuff in player.buffList]
+
+def drkTest12ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [False]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drktest12 = test("Darkside test 2", drkTest12TestFunction, drkTest12ValidationFunction)
+drkTestSuite.addTest(drktest12)
+
+# Darkside test
+
+def drkTest12TestFunction() -> None:
+    """Darkside test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [EdgeShadow, EdgeShadow]
+    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [EdgeShadowBuff in player.buffList, round(player.DarksideTimer,2)]
+
+def drkTest12ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True,59.99]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drktest12 = test("Darkside test 3", drkTest12TestFunction, drkTest12ValidationFunction)
+drkTestSuite.addTest(drktest12)
+
+# Delirium
+
+def drkTest13TestFunction() -> None:
+    """Delirium
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HardSlash, SyphonStrike, Souleater,EdgeShadow, EdgeShadow, Delirium, Bloodspiller]
+    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Mana, player.Blood, player.DeliriumStacks]
+
+def drkTest13ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [4200, 20,2]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drktest13 = test("Delirium test 1", drkTest13TestFunction, drkTest13ValidationFunction)
+drkTestSuite.addTest(drktest13)
+
+# Delirium
+
+def drkTest14TestFunction() -> None:
+    """Delirium
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HardSlash, SyphonStrike, Souleater,EdgeShadow, EdgeShadow, Delirium, Bloodspiller, Quietus, Bloodspiller, Bloodspiller]
+    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.Mana, player.Blood, player.DeliriumStacks]
+
+def drkTest14ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [4900, -30,0]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drktest14 = test("Delirium test 2", drkTest14TestFunction, drkTest14ValidationFunction)
+drkTestSuite.addTest(drktest14)
 
 
-pldTestSuite.executeTestSuite()
+
+
+
+drkTestSuite.executeTestSuite()
 
 if False:
-    pb = ProgressBar.init(17, "Executing test suite")
+    pb = ProgressBar.init(18, "Executing test suite")
     blmTestSuite.executeTestSuite()
     next(pb)
     rdmTestSuite.executeTestSuite()
@@ -13196,6 +13753,8 @@ if False:
     warTestSuite.executeTestSuite()
     next(pb)
     gnbTestSuite.executeTestSuite()
+    next(pb)
+    pldTestSuite.executeTestSuite()
     next(pb)
     print("Completed. See logs for info.")
 
