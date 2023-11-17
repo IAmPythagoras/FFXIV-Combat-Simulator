@@ -70,7 +70,7 @@ functionning.
 
 You can read about the experimental results of this solver here : https://docs.google.com/spreadsheets/d/1yVl-F1tHARYIYvz4ZPxIY6MayakYug3OEqpGnpZllqU/edit?usp=sharing
 
-# Validitiy of simulator
+# Validity of simulator
 
 As of version 0.8.30 I have started adding in depth testing of the simulator. The simulator will still have some flaws, but it is currently being checked by around 430 individual tests. More tests
 will be added with time.
