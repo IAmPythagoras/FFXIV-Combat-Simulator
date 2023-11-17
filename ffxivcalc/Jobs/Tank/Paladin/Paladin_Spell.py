@@ -123,7 +123,7 @@ def ApplyTotalEclipse(Player, Enemy):
     if not (TotalEclipseCombo in Player.EffectList) : Player.EffectList.append(TotalEclipseCombo)
 
 def ApplyFightOrFlight(Player, Enemy):
-    Player.FightOrFlightTimer = 25
+    Player.FightOrFlightTimer = 20
     Player.FightOrFlightCD = 60
     Player.buffList.append(FightOrFlightBuff)
     Player.EffectCDList.append(FightOrFlightCheck)
@@ -179,16 +179,6 @@ def ApplyFastBlade(Player, Enemy):
 def ApplyGoringBlade(Player, Enemy):
     Player.GoringBladeCD = 60 * Player.WeaponskillReduction # Cuz is weaponskill
 
-
-
-
-"""
-post 6.3 effect
-def FightOrFlightEffect(Player, Spell):
-    if Spell.isPhysical or isinstance(Spell, DOTSpell):
-        Spell.DPSBonus *= FightOrFlightBuff.MultDPS #Giving bonus to the spell if it is physical
-"""
-
 def DivineMightEffect(Player, Spell):
     """Allows next holy spirit or holy circle to be cast immediately with increased potency.
     """
@@ -205,13 +195,17 @@ def RequestACatEffect(Player, Spell):
 
     match Spell.id:
         case HolySpirit.id:
-            Spell.Potency += 300
-            Spell.CastTime = 0
-            Player.RequestACatStack -= 1
+                             # Divine might has prio over this.
+            if not DivineMightEffect in Player.EffectList:
+                Spell.Potency += 300
+                Spell.CastTime = 0
+                Player.RequestACatStack -= 1
         case HolyCircle.id:
-            Spell.Potency += 170
-            Spell.CastTime = 0
-            Player.RequestACatStack -= 1
+                             # Divine might has prio over this.
+            if not DivineMightEffect in Player.EffectList:
+                Spell.Potency += 170
+                Spell.CastTime = 0
+                Player.RequestACatStack -= 1
         case Clemency.id:
             Spell.CastTime = 0
             Player.RequestACatStack -= 1
@@ -238,7 +232,7 @@ def FastBladeCombo(Player, Spell):
     if Spell.id == RiotBlade.id:
         Spell.Potency += 160
         Player.EffectToRemove.append(FastBladeCombo)
-        Player.EffectList.append(RiotBladeCombo)
+        if not (RiotBladeCombo in Player.EffectList) : Player.EffectList.append(RiotBladeCombo)
 
 def RiotBladeCombo(Player, Spell):
     if Spell.id == RoyalAuthority.id:

@@ -221,6 +221,7 @@ def ApplyTrickAttack(Player, Enemy):
     Player.TrickAttackTimer = 15
     Player.EffectCDList.append(TrickAttackCheck)
     Player.buffList.append(TrickAttackBuff)
+    Player.Suiton = False
 
                              # Only relevant to PreBakedAction and only does that code if true. Also checking if the PreBakedAction player is this ninja
     #if Player.CurrentFight.SavePreBakedAction and Player == Player.CurrentFight.PlayerList[Player.CurrentFight.PlayerIDSavePreBakedAction]:
@@ -281,26 +282,29 @@ def TenChiJinEffect(Player, Spell):
             #No notable effect to give
         elif len(Player.TenChiJinRitual) == 2:
 
-            if Player.TenChiJinRitual == [0,1] or Player.TenChiJinRitual == [2,1]: #Raiton
+            if Player.TenChiJinRitual == [0,1] or Player.TenChiJinRitual == [2,1]: # Raiton : Ten -> Chi or Jin -> Chi
                 Spell.Potency += Raiton.Potency
                 Spell.Effect = Raiton.Effect
-            elif Player.TenChiJinRitual == [0, 2] or Player.TenChiJinRitual == [1,2]: #hyoton
+            elif Player.TenChiJinRitual == [0, 2] or Player.TenChiJinRitual == [1,2]: # hyoton : Ten -> Jin or Chi -> Jin
                 Spell.Potency += Hyoton.Potency
                 #No notable effect to give
-            elif Player.TenChiJinRitual == [1,0] or Player.TenChiJinRitual == [2,0]: #Katon
+            elif Player.TenChiJinRitual == [1,0] or Player.TenChiJinRitual == [2,0]: # Katon : Chi -> Ten or Jin -> Ten
                 Spell.Potency += Katon.Potency
                 #No notable effect to give
             #Else, we change nothing and its going to bunny lol
         
         elif len(Player.TenChiJinRitual) == 3:
 
-            if Player.TenChiJinRitual == [0,1,2] or Player.TenChiJinRitual == [1,0,2]: #Suiton
+            if Player.TenChiJinRitual == [0,1,2] or Player.TenChiJinRitual == [1,0,2]: # Suiton : Ten -> Chi -> Jin or Chi -> Ten -> Jin
                 Spell.Potency += Suiton.Potency
                 Spell.Effect = Suiton.Effect
                 Spell.RecastTime += 0.5
-            elif Player.TenChiJinRitual == [2,1,0] or Player.TenChiJinRitual == [1,2,0]: #Huton
+            elif Player.TenChiJinRitual == [2,1,0] or Player.TenChiJinRitual == [1,2,0]: # Huton : Jin -> Chi -> Ten or Chi -> Jin -> Ten
                 Spell.Potency = 0
                 Spell.Effect = Huton.Effect
+            elif Player.TenChiJinRitual == [0,2,1] or Player.TenChiJinRitual == [2,0,1]: # Doton : Ten -> Jin -> Chi or Jin -> Ten -> Chi
+                Spell.Potency = 0
+                Spell.Effect = Doton.Effect
 
             #Since last possible Ninjutsu, we will set TenChiJin Timer to 0.01 so it terminates
             Player.TenChiJinTimer = 0.01
@@ -360,7 +364,7 @@ def GustSlashCombo(Player, Spell):
     elif Spell.id == ArmorCrush.id:
         Spell.Potency += 220
         Player.AddNinki(15)
-        Player.AddHuton(40)
+        Player.AddHuton(30)
         Player.EffectToRemove.append(GustSlashCombo)
 
 #Check

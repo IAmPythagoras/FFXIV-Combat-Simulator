@@ -12,8 +12,9 @@ def BloodRequirement(Player, Spell):
         Spell.BloodCost = 0
         Player.DeliriumStacks -= 1
         return True, -1
-    elif Player.Blood >= 50:
-        Player.Blood -= 50
+                             # Applying cost and checking if works or not.
+    Player.Blood -= 50
+    if Player.Blood >= 0:
         return True, -1
     return False, -1
 
@@ -78,6 +79,7 @@ def BloodWeaponEffect(Player, Spell):
     if Spell.GCD:
         Player.Mana = min(Player.Mana + 600, 10000)
         Player.Blood = min(100, Player.Blood + 10)
+        Player.BloodWeaponStacks -= 1
 
 def DeliriumEffect(Player, Spell):
     if Spell.id == Bloodspiller.id:
@@ -116,7 +118,7 @@ def BloodWeaponCheck(Player, Spell):
         Player.EffectToRemove.append(BloodWeaponCheck)
 
 def DeliriumCheck(Player, Spell):
-    if Player.DeliriumTimer <= 0 or Player.DeliriumStacks == 0:
+    if Player.DeliriumTimer <= 0 or Player.DeliriumStacks <= 0:
         Player.EffectList.remove(DeliriumEffect)
         Player.EffectToRemove.append(DeliriumCheck)
 
@@ -357,7 +359,7 @@ def Oblation(Target):
 
 
 #buff
-EdgeShadowBuff = buff(1.1,name="Edge Of Shadow")
+EdgeShadowBuff = buff(1.1,name="Darkside")
 
 # Maps Ability IDs from FFlogs to Skill objects
 # Not exhaustive: If an ability is missing, check log for id and add it into the mapping.

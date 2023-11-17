@@ -130,7 +130,7 @@ def ApplyHakaze(Player, Enemy):
         #input("COMBO EFFECT")
 
 def ApplyJinpu(Player, Enemy):
-    if not (JinpuEffect in Player.EffectList) : Player.EffectList.append(JinpuEffect)
+    pass
 
 def ApplyShifu(Player, Enemy):
     if not (ShifuEffect in Player.EffectList) : Player.EffectList.append(ShifuEffect)
@@ -228,9 +228,10 @@ def HakazeEffect(Player, Spell):
         Spell.Potency += 160
         if not Player.Fugetsu:
             Player.Fugetsu = True
-            Player.buffList.append(HakazeBuff)
+            Player.buffList.append(FugetsuBuff)
             Player.EffectCDList.append(FugetsuCheck)
             Player.EffectToRemove.append(HakazeEffect)
+        if not (JinpuEffect in Player.EffectList) : Player.EffectList.append(JinpuEffect)
     elif Spell.id == Shifu.id:
         Spell.Potency += 160
         if not (FukaEffect in Player.EffectList) : Player.EffectList.append(FukaEffect)
@@ -275,18 +276,30 @@ def MeikyoEffect(Player, Spell):
         AddKenki(Player, 10)
         Player.Getsu = True
         Player.Meikyo -= 1
+        Player.FugetsuTimer = 40
+        if not Player.Fugetsu:
+            Player.Fugetsu = True
+            Player.buffList.append(FugetsuBuff)
+            Player.EffectCDList.append(FugetsuCheck)
     elif Spell.id == Kasha.id:
         Spell.Potency += 210
         AddKenki(Player, 10)
         Player.Ka = True
         Player.Meikyo -= 1
+        if not (FukaEffect in Player.EffectList) : Player.EffectList.append(FukaEffect)
+        if not (FukaCheck in Player.EffectCDList) : 
+            Player.Haste += 13
+            Player.hasteHasChanged = True
+            Player.hasteChangeValue = 13
+            Player.EffectCDList.append(FukaCheck)
+        Player.FukaTimer = 40
     elif Spell.id == Jinpu.id:
         Player.FugetsuTimer = 40
         AddKenki(Player, 5)
         Spell.Potency += 160
         if not Player.Fugetsu:
             Player.Fugetsu = True
-            Player.MultDPSBonus *= 1.13
+            Player.buffList.append(FugetsuBuff)
             Player.EffectCDList.append(FugetsuCheck)
         Player.Meikyo -= 1
     elif Spell.id == Shifu.id:
@@ -343,7 +356,7 @@ def FukaCheck(Player, Enemy):
 def FugetsuCheck(Player, Enemy):
     if Player.FugetsuTimer <= 0:
         Player.Fugetsu = False
-        Player.buffList.remove(HakazeBuff)
+        Player.buffList.remove(FugetsuBuff)
         Player.EffectToRemove.append(FugetsuCheck)
 
 def HiganbanaCheck(Player, Enemy):
@@ -384,7 +397,7 @@ Enpi = SamuraiSpell(7486, True, 0, 1.5, 100, Add10Kenki, [], 0, type = 2)
 #Iaijutsu
 Higanbana = SamuraiSpell(7489, True, 1.3, 2.5, 200, ApplyHiganbana, [HiganbanaRequirement], 0, type = 2)
 HiganbanaDOT = DOTSpell(-1, 60, True)
-TenkaGoken = SamuraiSpell(7488, True, 1.3, 2.5, 280, ApplyTenkaGoken, [TenkaGokenRequirement], 0, type = 2)
+TenkaGoken = SamuraiSpell(7488, True, 1.3, 2.5, 300, ApplyTenkaGoken, [TenkaGokenRequirement], 0, type = 2)
 Midare = SamuraiSpell(7487, True, 1.3, 2.5, 640, ApplyMidare, [MidareRequirement], 0, type = 2)
 
 #Kaeshi
@@ -394,7 +407,7 @@ KaeshiSetsugekka = SamuraiSpell(16486, True, 0, 2.5, 640, ApplyKaeshi, [KaeshiSe
 
 #Combo Actions
 Hakaze = SamuraiSpell(7477, True, Lock, 2.5, 200, ApplyHakaze, [], 0 , type = 2)
-Jinpu = SamuraiSpell(7478, True, Lock, 2.5, 120, ApplyJinpu, [], 0, type = 2)
+Jinpu = SamuraiSpell(7478, True, Lock, 2.5, 120, empty, [], 0, type = 2)
 Gekko = SamuraiSpell(7481, True, Lock, 2.5, 170, empty, [], 0, type = 2)
 Shifu = SamuraiSpell(7479, True, Lock, 2.5, 120, empty, [], 0, type = 2)
 Kasha = SamuraiSpell(7482, True, Lock, 2.5, 170, empty, [], 0, type = 2)
@@ -421,7 +434,7 @@ Gyoten = SamuraiSpell(7492, False, 0, 0, 100, ApplyGyoten,[GyotenRequirement],10
 Yaten = SamuraiSpell(7493, False, 0, 0, 100, ApplyYaten, [YatenRequirement], 10)
 Kyuten = SamuraiSpell(7491, False, 0, 0, 110, empty, [], 25)
 #buff
-HakazeBuff = buff(1.13,name="Hakaze")
+FugetsuBuff = buff(1.13,name="Hakaze")
 
 def Meditate(time):
     #This function will return a Samurai Spell object that will correspond to a Meditate of the specified amount of time
