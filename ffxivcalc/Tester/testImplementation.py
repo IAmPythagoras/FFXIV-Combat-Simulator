@@ -13699,11 +13699,11 @@ def drkTest14TestFunction() -> None:
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-    return [player.Mana, player.Blood, player.DeliriumStacks]
+    return [player.Mana, player.Blood, player.DeliriumStacks, DeliriumEffect in player.EffectList]
 
 def drkTest14ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [4900, -30,0]
+    expected = [5500, -30,0, False]
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -13711,6 +13711,108 @@ def drkTest14ValidationFunction(testResults) -> (bool, list):
 
 drktest14 = test("Delirium test 2", drkTest14TestFunction, drkTest14ValidationFunction)
 drkTestSuite.addTest(drktest14)
+
+# Blood weapon
+
+def drkTest15TestFunction() -> None:
+    """Blood weapon
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [BloodWeapon, HardSlash, SyphonStrike]
+    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.BloodWeaponStacks, player.Blood,BloodWeaponEffect in player.EffectList]
+
+def drkTest15ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [3, 20, True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drktest15 = test("Bloodweapon test 1", drkTest15TestFunction, drkTest15ValidationFunction)
+drkTestSuite.addTest(drktest15)
+
+# Blood weapon
+
+def drkTest16TestFunction() -> None:
+    """Blood weapon
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [BloodWeapon, HardSlash, SyphonStrike, Souleater, Bloodspiller]
+    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.BloodWeaponStacks, player.Blood,BloodWeaponEffect in player.EffectList]
+
+def drkTest16ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [1, 10, True]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drktest16 = test("Bloodweapon test 2", drkTest16TestFunction, drkTest16ValidationFunction)
+drkTestSuite.addTest(drktest16)
+
+# Blood weapon
+
+def drkTest17TestFunction() -> None:
+    """Blood weapon
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [BloodWeapon, HardSlash, SyphonStrike, Souleater, Bloodspiller, HardSlash, SyphonStrike, Souleater]
+    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [player.BloodWeaponStacks, player.Blood,BloodWeaponEffect in player.EffectList]
+
+def drkTest17ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0, 40, False]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+drktest17 = test("Bloodweapon test 3", drkTest17TestFunction, drkTest17ValidationFunction)
+drkTestSuite.addTest(drktest17)
 
 
 

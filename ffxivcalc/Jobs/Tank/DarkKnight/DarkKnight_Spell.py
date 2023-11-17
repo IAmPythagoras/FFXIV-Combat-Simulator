@@ -79,6 +79,7 @@ def BloodWeaponEffect(Player, Spell):
     if Spell.GCD:
         Player.Mana = min(Player.Mana + 600, 10000)
         Player.Blood = min(100, Player.Blood + 10)
+        Player.BloodWeaponStacks -= 1
 
 def DeliriumEffect(Player, Spell):
     if Spell.id == Bloodspiller.id:
