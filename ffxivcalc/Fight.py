@@ -647,27 +647,37 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     CritRate = (Player.CritRate)
     CritMult = Player.CritMult
     DHRate = Player.DHRate
-    if round(Player.CritRateBonus,2) > 0 : thisPage.addCritBuffList(("Other", Player.CritRateBonus))
-    if round(Player.DHRateBonus,2) > 0 : thisPage.addDHBuffList(("Other", Player.DHRateBonus))
     CritRateBonus = Player.CritRateBonus
     DHRateBonus = Player.DHRateBonus # Saving value for later use if necessary
     f_DET_DH = math.floor((f_DET + Player.DHAuto) * 1000 ) / 1000
 
-    if Enemy.ChainStratagem: 
-        CritRateBonus += 0.1    # If ChainStratagem is active, increase crit rate
-        thisPage.addCritBuffList(("Chain Stratagem", 0.1))
+                             # Check if DOT. If not we take current buffs.
+                             # If is a dot we take snapshotted buffs.
+    if (type == 0 or type == 3) or ((type == 1 or type == 2) and not spellObj.onceThroughFlag):
+        if round(Player.CritRateBonus,2) > 0 : thisPage.addCritBuffList(("Other", Player.CritRateBonus))
+        if round(Player.DHRateBonus,2) > 0 : thisPage.addDHBuffList(("Other", Player.DHRateBonus))
 
-    if Enemy.WanderingMinuet: 
-        CritRateBonus += 0.02 # If WanderingMinuet is active, increase crit rate
-        thisPage.addCritBuffList(("Wandering Minuet", 0.02))
+        if Enemy.ChainStratagem: 
+            CritRateBonus += 0.1    # If ChainStratagem is active, increase crit rate
+            thisPage.addCritBuffList(("Chain Stratagem", 0.1))
 
-    if Enemy.ArmyPaeon: 
-        DHRateBonus += 0.03 # If WanderingMinuet is active, increase crit rate
-        thisPage.addDHBuffList(("ArmyPaeon", 0.03))
+        if Enemy.WanderingMinuet: 
+            CritRateBonus += 0.02 # If WanderingMinuet is active, increase crit rate
+            thisPage.addCritBuffList(("Wandering Minuet", 0.02))
 
-    if Enemy.BattleVoice: 
-        DHRateBonus += 0.2 # If BattleVoice is active, increase DHRate
-        thisPage.addDHBuffList(("Battle Voice", 0.2))
+        if Enemy.ArmyPaeon: 
+            DHRateBonus += 0.03 # If WanderingMinuet is active, increase crit rate
+            thisPage.addDHBuffList(("ArmyPaeon", 0.03))
+
+        if Enemy.BattleVoice: 
+            DHRateBonus += 0.2 # If BattleVoice is active, increase DHRate
+            thisPage.addDHBuffList(("Battle Voice", 0.2))
+    elif (type == 1 or type == 2) and spellObj.onceThroughFlag:
+                             # If dot and has gone through once (so has snapshotted buff) we use them
+        DHRateBonus = spellObj.DHBonus
+        if round(DHRateBonus, 2) > 0 : thisPage.addDHBuffList(("DOTSnapshot", DHRateBonus))
+        CritRateBonus = spellObj.CritBonus
+        if round(CritRateBonus, 2) > 0 : thisPage.addCritBuffList(("DOTSnapshot", CritRateBonus))
 
     DHRate += DHRateBonus# Adding Bonus
     CritRate += CritRateBonus# Adding bonus
@@ -766,12 +776,9 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         
         if not spellObj.onceThroughFlag:# If we haven't gotten through with this DOT once, we have to snapshot the buffs
 
-            if Enemy.ChainStratagem: spellObj.CritBonus += 0.1    # If ChainStratagem is active, increase crit rate
-            if Enemy.WanderingMinuet: spellObj.CritBonus += 0.02 # If WanderingMinuet is active, increase crit rate
-            if Enemy.BattleVoice: spellObj.DHBonus += 0.2 # If BattleVoice is active, increase DHRate
-            if Enemy.ArmyPaeon: spellObj.DHBonus += 0.03 # If armyPaeon is active, increase DHRate
-            spellObj.DHBonus += Player.DHRateBonus # Adding Bonus
-            spellObj.CritBonus += Player.CritRateBonus # Adding bonus
+
+            spellObj.DHBonus += Player.DHRateBonus + DHRateBonus # Adding Bonus
+            spellObj.CritBonus += Player.CritRateBonus + CritRateBonus # Adding bonus
 
             for buffs in Player.buffList: 
                 spellObj.MultBonus += [buffs] # Adding buff to DOT
@@ -788,11 +795,8 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     
         if not spellObj.onceThroughFlag:# If we haven't gotten through with this DOT once, we have to snapshot the buffs
 
-            if Enemy.ChainStratagem: spellObj.CritBonus += 0.1    # If ChainStratagem is active, increase crit rate
-            if Enemy.WanderingMinuet: spellObj.CritBonus += 0.02 # If WanderingMinuet is active, increase crit rate
-            if Enemy.BattleVoice: spellObj.DHBonus += 0.2 # If WanderingMinuet is active, increase DHRate
-            spellObj.DHBonus += Player.DHRateBonus # Adding Bonus
-            spellObj.CritBonus += Player.CritRateBonus # Adding bonus
+            spellObj.DHBonus += Player.DHRateBonus + DHRateBonus # Adding Bonus
+            spellObj.CritBonus += Player.CritRateBonus + CritRateBonus # Adding bonus
 
             for buffs in Player.buffList: 
                 spellObj.MultBonus += [buffs] # Adding buff to DOT

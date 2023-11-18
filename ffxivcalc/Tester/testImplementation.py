@@ -13814,39 +13814,6 @@ def drkTest17ValidationFunction(testResults) -> (bool, list):
 drktest17 = test("Bloodweapon test 3", drkTest17TestFunction, drkTest17ValidationFunction)
 drkTestSuite.addTest(drktest17)
 
-# Blood weapon
-
-def drkTest18TestFunction() -> None:
-    """Blood weapon
-    """
-
-    Dummy = Enemy()
-    Event = Fight(Dummy, False)
-    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
-
-    actionSet = [BloodWeapon, HardSlash, SyphonStrike, Souleater, Bloodspiller, HardSlash, SyphonStrike, Souleater]
-    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
-    
-    Event.AddPlayer([player])
-
-    Event.RequirementOn = False
-    Event.ShowGraph = False
-    Event.IgnoreMana = True
-
-    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
-
-    return [player.BloodWeaponStacks, player.Blood,BloodWeaponEffect in player.EffectList]
-
-def drkTest18ValidationFunction(testResults) -> (bool, list):
-    passed = True
-    expected = [0, 40, False]
-
-    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
-
-    return passed , expected
-
-drktest18 = test("Bloodweapon test 3", drkTest18TestFunction, drkTest18ValidationFunction)
-drkTestSuite.addTest(drktest17)
 
 ######################################
 #           DOT testSuite            #

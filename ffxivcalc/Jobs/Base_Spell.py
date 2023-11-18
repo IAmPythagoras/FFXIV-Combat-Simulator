@@ -583,6 +583,14 @@ class DOTSpell(Spell):
         #so we can snapshot the buffs only once
         #Note that AAs do not snapshot buffs, but in the code they will still have these fields
 
+    def resetBuffSnapshot(self):
+        """This function resets buff snapshots on the DOT object. used for when a DOT is reapplied before it falls off.
+        """
+        self.CritBonus = 0
+        self.DHBonus = 0
+        self.MultBonus = []
+        self.onceThroughFlag = False
+
     def CheckDOT(self, Player, Enemy, TimeUnit : float):
         """
         This function is called every time unit of the simulation and will check if a dot will be applied. A dot is applied every 3 seconds.
@@ -595,6 +603,19 @@ class DOTSpell(Spell):
             #Apply DOT
             tempSpell  = self.Cast(Player, Enemy)#Cast the DOT
             tempSpell.CastFinal(Player, Enemy)
+                             # If the DOT goes for the first time 
+                             # it snapshots buff. We then transfer those
+                             # buffs to the dot object that is being called.
+                             # We will have to refresh those when the
+                             # dot is reapplied.
+            if not self.onceThroughFlag:
+                self.onceThroughFlag = True
+                # Setting mult buff
+                self.MultBonus = tempSpell.MultBonus
+                # Setting DH/Crit rate buff
+                self.DHBonus = tempSpell.DHBonus
+                self.CritBonus = tempSpell.CritBonus
+
             self.DOTTimer = 3
             
 class HOTSpell(DOTSpell):

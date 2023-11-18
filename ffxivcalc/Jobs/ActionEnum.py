@@ -266,6 +266,9 @@ class ScholarActions(ActionEnum):
     Consolation = 22
     Raise = 173
 
+    # DOT
+    BiolysisDOT = -4
+
 
 
 # Whitemage
