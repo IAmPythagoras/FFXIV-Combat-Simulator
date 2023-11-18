@@ -777,8 +777,8 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         if not spellObj.onceThroughFlag:# If we haven't gotten through with this DOT once, we have to snapshot the buffs
 
 
-            spellObj.DHBonus += Player.DHRateBonus + DHRateBonus # Adding Bonus
-            spellObj.CritBonus += Player.CritRateBonus + CritRateBonus # Adding bonus
+            spellObj.DHBonus = DHRateBonus # Adding Bonus
+            spellObj.CritBonus = CritRateBonus # Adding bonus
 
             for buffs in Player.buffList: 
                 spellObj.MultBonus += [buffs] # Adding buff to DOT
@@ -795,8 +795,8 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     
         if not spellObj.onceThroughFlag:# If we haven't gotten through with this DOT once, we have to snapshot the buffs
 
-            spellObj.DHBonus += Player.DHRateBonus + DHRateBonus # Adding Bonus
-            spellObj.CritBonus += Player.CritRateBonus + CritRateBonus # Adding bonus
+            spellObj.DHBonus = DHRateBonus # Adding Bonus
+            spellObj.CritBonus = CritRateBonus # Adding bonus
 
             for buffs in Player.buffList: 
                 spellObj.MultBonus += [buffs] # Adding buff to DOT
