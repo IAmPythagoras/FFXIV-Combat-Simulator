@@ -147,6 +147,7 @@ def ApplyBiolysis(Player, Enemy):
         Player.Biolysis = copy.deepcopy(BiolysisDOT)
         Player.DOTList.append(Player.Biolysis)
         Player.EffectCDList.append(CheckBiolysis)
+    else : Player.Biolysis.resetBuffSnapshot() # If already applied reset snapshot
     Player.BiolysisTimer = 30
 
 def ApplyAetherflow(Player, Enemy):

@@ -211,6 +211,7 @@ def DisembowelCombo(Player, Spell):
             Player.ChaoticSpringDOT = copy.deepcopy(ChaoticSpringDOT)
             Player.DOTList.append(Player.ChaoticSpringDOT)
             Player.EffectCDList.append(ChaoticSpringDOTCheck)
+        else : Player.ChaoticSpringDOT.resetBuffSnapshot() # If already applied reset snapshot
         Player.ChaoticSpringDOTTimer = 24
 
         Player.WheelInMotion = True 

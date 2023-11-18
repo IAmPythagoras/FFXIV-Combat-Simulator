@@ -292,6 +292,7 @@ def ComboEffect(Player, Spell):
                     Player.DemolishDOT = deepcopy(DemolishDOT)
                     Player.EffectCDList.append(DemolishDOTCheck)
                     Player.DOTList.append(Player.DemolishDOT)
+                else: Player.DemolishDOT.resetBuffSnapshot() # If already applied reset snapshot
                 Player.DemolishDOTTimer = 18
             elif Spell.id == SnapPunch.id or Spell.id == Rockbreaker.id:
                 pass #Nothing happens
@@ -320,6 +321,7 @@ def ComboEffect(Player, Spell):
                     Player.DemolishDOT = deepcopy(DemolishDOT)
                     Player.EffectCDList.append(DemolishDOTCheck)
                     Player.DOTList.append(Player.DemolishDOT)
+                else: Player.DemolishDOT.resetBuffSnapshot() # If already applied reset snapshot
                 Player.DemolishDOTTimer = 18
             elif Spell.id == SnapPunch.id or Spell.id == Rockbreaker.id:
                 pass #Nothing happens

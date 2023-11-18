@@ -67,6 +67,7 @@ def ApplyThunder4(Player, Enemy):
         Player.Thunder4DOT = copy.deepcopy(Thunder4DOT)
         Player.DOTList.append(Player.Thunder4DOT)
         Player.EffectCDList.append(Thunder4DOTCheck)
+    else: Player.Thunder4DOT.resetBuffSnapshot() # If already applied reset snapshot
     Player.Thunder4DOTTimer = 18
 
     if Player.SharpCast: #If we have SharpCast
@@ -135,6 +136,7 @@ def ApplyThunder3(Player, Spell):
         Player.Thunder3DOT = copy.deepcopy(Thunder3DOT)
         Player.DOTList.append(Player.Thunder3DOT)
         Player.EffectCDList.append(Thunder3DOTCheck)
+    else: Player.Thunder3DOT.resetBuffSnapshot() # If already applied reset snapshot
     Player.Thunder3DOTTimer = 30
 
     if Player.SharpCast: #If we have SharpCast

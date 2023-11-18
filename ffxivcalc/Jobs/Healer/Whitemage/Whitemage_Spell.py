@@ -94,6 +94,7 @@ def ApplyDia(Player, Enemy):
         Player.Dia = copy.deepcopy(DiaDOT)
         Player.EffectCDList.append(CheckDia)
         Player.DOTList.append(Player.Dia)
+    else : Player.Dia.resetBuffSnapshot() # If already applied reset snapshot
 
 def ApplyAssize(Player, Enemy):
     Player.Mana = min(10000, Player.Mana + 500)
