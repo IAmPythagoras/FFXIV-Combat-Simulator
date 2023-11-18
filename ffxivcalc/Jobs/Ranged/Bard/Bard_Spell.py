@@ -156,6 +156,7 @@ def ApplyStormbite(Player, Enemy):
         Player.StormbiteDOT = copy.deepcopy(StormbiteDOT)
         Player.DOTList.append(Player.StormbiteDOT)
         Player.EffectCDList.append(StormbiteDOTCheck)
+    else : Player.StormbiteDOT.resetBuffSnapshot() # reset buff snapshot is reapplied
     Player.StormbiteDOTTimer = 45
 
 def ApplyCausticbite(Player, Enemy):
@@ -165,6 +166,7 @@ def ApplyCausticbite(Player, Enemy):
         Player.CausticbiteDOT = copy.deepcopy(CausticbiteDOT)
         Player.DOTList.append(Player.CausticbiteDOT)
         Player.EffectCDList.append(CausticbiteDOTCheck)
+    else : Player.CausticbiteDOT.resetBuffSnapshot() # reset buff snapshot is reapplied
     Player.CausticbiteDOTTimer = 45
 
 def ApplySidewinder(Player, Enemy):

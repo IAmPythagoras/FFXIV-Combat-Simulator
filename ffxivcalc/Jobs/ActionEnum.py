@@ -68,7 +68,9 @@ class BlackMageActions(ActionEnum):
     Xenoglossy = 16507
     Amplifier = 25796
 
+    # DOT
     Thunder4Dot = -40
+    Thunder3DOT = -21
 
 
 # RedMage
@@ -202,6 +204,9 @@ class AstrologianActions(ActionEnum):
     Macrocosmos = 25874
     Microcosmos = 17
 
+    #DOT
+    CombustDOT = -12
+
 
 # Sage
 
@@ -233,6 +238,10 @@ class SageActions(ActionEnum):
     Panhaima = 24311
     Krasis = 24317
     Pneuma = 24318
+
+    # DOT
+    EnkrasianDOT = -12
+
 # Scholar
 
 class ScholarActions(ActionEnum):
@@ -299,6 +308,9 @@ class WhiteMageActions(ActionEnum):
     PlenaryIndulgence = 19
     Raise = 125
 
+    # DOT
+    DiaDOT = -5
+
 # Tank
 
 class TankActions(ActionEnum):
@@ -353,6 +365,9 @@ class DarkKnightActions(ActionEnum):
     PCarveSpit = 28
     PDelay = 29
 
+    # DOT
+    SaltedEarthDOT = -14
+
 
 # Gunbreaker
 
@@ -386,6 +401,10 @@ class GunbreakerActions(ActionEnum):
     HeartOfLight = 16160
     BowShock = 16159
 
+    # DOT
+    BowShockDOT = -10
+    SonicBreakDOT = -9
+
 # Paladin
 
 class PaladinActions(ActionEnum):
@@ -416,6 +435,9 @@ class PaladinActions(ActionEnum):
     Clemency = 3541
     DivineVeil = 3540
     PassageOfArms = 7385
+
+    # DOT
+    ScornDOT = -6
 
 
 # Warrior
@@ -494,6 +516,9 @@ class SamuraiActions(ActionEnum):
     Yaten = 7493
     Enpi = 7486
     ThirdEye = 7498
+
+    # DOT
+    HiganbanaDOT = -1
 
     
 # Reaper
@@ -580,6 +605,9 @@ class NinjaActions(ActionEnum):
     BunshinPhantom = 8
     ShadowAuto = 35
 
+    # DOT
+    DotonDOT = -33
+
 
 # Monk
 
@@ -611,8 +639,10 @@ class MonkActions(ActionEnum):
     Anatman = 16475
     Mantra = 65
 
-    AA = -5
 
+    # DOT
+    AA = -5
+    DemolishDOT = -10
 
 # Dragoon
 
@@ -643,6 +673,9 @@ class DragoonActions(ActionEnum):
     Nastrond = 7400
     Stardiver = 16480
     WyrmwindThrust = 25773
+
+    # DOT
+    ChaoticSpringDOT = -22
     
 
 # Physical Ranged
@@ -688,6 +721,10 @@ class BardActions(ActionEnum):
     RepellingShot = 112
     BloodLetter = 110
     BlastArrow = 25784
+
+    # DOT
+    CausticbiteDOT = -21
+    StormbiteDOT = -20
 
 # Machinist
 
