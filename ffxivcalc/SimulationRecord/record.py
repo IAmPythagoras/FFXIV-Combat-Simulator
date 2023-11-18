@@ -132,7 +132,7 @@ class SimulationRecord:
         ncols = len(colName)
                              # This works well. Found by just using a configuration that looked good
                              # and using the ratio of nrows to height.
-        height = max((160/538) * nrows,30)
+        height = ((160/538) * nrows)
 
         fig = plt.figure(figsize=(14,height), dpi=300)
         ax = plt.subplot(111)

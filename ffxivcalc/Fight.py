@@ -678,8 +678,6 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     auto_crit = False
     auto_DH = False
 
-    #fight_logging.debug("Action has crit bonus of " + str(Player.CritRateBonus + CritRateBonus))
-
     if type == 0: # Making sure its not an AA or DOT
         if Player.JobEnum == JobEnum.Machinist: 
             # Then if machinist, has to check if direct crit guarantee
@@ -770,7 +768,8 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
             if Enemy.ChainStratagem: spellObj.CritBonus += 0.1    # If ChainStratagem is active, increase crit rate
             if Enemy.WanderingMinuet: spellObj.CritBonus += 0.02 # If WanderingMinuet is active, increase crit rate
-            if Enemy.BattleVoice: spellObj.DHBonus += 0.2 # If WanderingMinuet is active, increase DHRate
+            if Enemy.BattleVoice: spellObj.DHBonus += 0.2 # If BattleVoice is active, increase DHRate
+            if Enemy.ArmyPaeon: spellObj.DHBonus += 0.03 # If armyPaeon is active, increase DHRate
             spellObj.DHBonus += Player.DHRateBonus # Adding Bonus
             spellObj.CritBonus += Player.CritRateBonus # Adding bonus
 
