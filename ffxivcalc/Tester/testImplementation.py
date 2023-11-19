@@ -13833,8 +13833,8 @@ def dotTest1TestFunction() -> None:
     Event = Fight(Dummy, False)
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
 
-    actionSet = []
-    player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+    actionSet = [ChainStratagem, Biolysis, WaitAbility(5)]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
     
     Event.AddPlayer([player])
 
@@ -13843,24 +13843,275 @@ def dotTest1TestFunction() -> None:
     Event.IgnoreMana = True
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
-
-    return [player.BloodWeaponStacks, player.Blood,BloodWeaponEffect in player.EffectList]
+    dotObj = player.Biolysis
+    return [dotObj.CritBonus, dotObj.DHBonus, dotObj.MultBonus]
 
 def dotTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 40, False]
+    expected = [0.1,0,[]]
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
     return passed , expected
 
-drktest1 = test("DOT buff clipping test 1", drkTest1TestFunction, drkTest1ValidationFunction)
-drkTestSuite.addTest(drktest1)
+dottest1 = test("DOT buff clipping test 1", dotTest1TestFunction, dotTest1ValidationFunction)
+dotTestSuite.addTest(dottest1)
+
+# DOT
+
+def dotTest2TestFunction() -> None:
+    """DOT buff clipping
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [ChainStratagem, Biolysis, WaitAbility(5)]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+    brdPlayer = Player([WaitAbility(1), ArmyPaeon], [], Stat, JobEnum.Bard)
+    
+    Event.AddPlayer([player,brdPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+    dotObj = player.Biolysis
+    return [dotObj.CritBonus, dotObj.DHBonus, dotObj.MultBonus]
+
+def dotTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0.1,0,[]]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+dottest2 = test("DOT buff clipping test 2", dotTest2TestFunction, dotTest2ValidationFunction)
+dotTestSuite.addTest(dottest2)
+
+# DOT
+
+def dotTest3TestFunction() -> None:
+    """DOT buff clipping
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [ChainStratagem, Biolysis, WaitAbility(5), Biolysis, WaitAbility(3.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+    brdPlayer = Player([WaitAbility(1), ArmyPaeon, BattleVoice, RadiantFinale], [], Stat, JobEnum.Bard)
+    
+    Event.AddPlayer([player,brdPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+    dotObj = player.Biolysis
+    return [dotObj.CritBonus, dotObj.DHBonus, dotObj.MultBonus[0].MultDPS]
+
+def dotTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0.1,0.23,1.02]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+dottest3 = test("DOT buff clipping test 3", dotTest3TestFunction, dotTest3ValidationFunction)
+dotTestSuite.addTest(dottest3)
+
+# DOT
+
+def dotTest4TestFunction() -> None:
+    """DOT buff clipping
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [ChainStratagem, Biolysis, WaitAbility(5), Biolysis, WaitAbility(30.02), Biolysis, WaitAbility(0.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+    brdPlayer = Player([WaitAbility(1), ArmyPaeon, BattleVoice, RadiantFinale, WaitAbility(4), WaitAbility(20), MageBallad], [], Stat, JobEnum.Bard)
+    
+    Event.AddPlayer([player,brdPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+    dotObj = player.Biolysis
+    return [dotObj.CritBonus, dotObj.DHBonus, len(dotObj.MultBonus),dotObj.MultBonus[0].MultDPS]
+
+def dotTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0,0,1, 1.01]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+dottest4 = test("DOT buff clipping test 4", dotTest4TestFunction, dotTest4ValidationFunction)
+dotTestSuite.addTest(dottest4)
+
+# DOT
+
+def dotTest5TestFunction() -> None:
+    """DOT buff clipping
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [ChainStratagem, Biolysis, WaitAbility(5), Biolysis, WaitAbility(30.02), Biolysis, WaitAbility(0.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+    brdPlayer = Player([WaitAbility(1), ArmyPaeon, BattleVoice, RadiantFinale, WaitAbility(4), WaitAbility(20), MageBallad], [], Stat, JobEnum.Bard)
+    ninPlayer = Player([WaitAbility(1),Mug], [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player,brdPlayer,ninPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+    dotObj = player.Biolysis
+    return [dotObj.CritBonus, dotObj.DHBonus, len(dotObj.MultBonus),dotObj.MultBonus[0].MultDPS]
+
+def dotTest5ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0,0,1, 1.01]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+dottest5 = test("DOT buff clipping test 5", dotTest5TestFunction, dotTest5ValidationFunction)
+dotTestSuite.addTest(dottest5)
+
+# DOT
+
+def dotTest6TestFunction() -> None:
+    """DOT buff clipping
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [ChainStratagem, Biolysis, WaitAbility(5)]
+    player = Player(actionSet, [], Stat, JobEnum.Scholar)
+    brdPlayer = Player([WaitAbility(1), ArmyPaeon, BattleVoice, RadiantFinale], [], Stat, JobEnum.Bard)
+    ninPlayer = Player([Mug], [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player,brdPlayer,ninPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+    dotObj = player.Biolysis
+    return [dotObj.CritBonus, dotObj.DHBonus, len(dotObj.MultBonus),dotObj.MultBonus[0].MultDPS]
+
+def dotTest6ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0.1,0,1, 1.05]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+dottest6 = test("DOT buff clipping test 6", dotTest6TestFunction, dotTest6ValidationFunction)
+dotTestSuite.addTest(dottest6)
+
+# DOT
+
+def dotTest7TestFunction() -> None:
+    """DOT buff clipping
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [WaitAbility(2),BowShock, NoMercy, WaitAbility(3.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    brdPlayer = Player([ArmyPaeon, BattleVoice, RadiantFinale], [], Stat, JobEnum.Bard)
+    ninPlayer = Player([Mug], [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player,brdPlayer,ninPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+    dotObj = player.BowShockDOT
+    return [dotObj.CritBonus, dotObj.DHBonus, len(dotObj.MultBonus),dotObj.MultBonus[0].MultDPS, dotObj.MultBonus[1].MultDPS]
+
+def dotTest7ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0,0.23,2, 1.05, 1.02]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+dottest7 = test("DOT buff clipping test 7", dotTest7TestFunction, dotTest7ValidationFunction)
+dotTestSuite.addTest(dottest7)
+
+# DOT
+
+def dotTest8TestFunction() -> None:
+    """DOT buff clipping
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [KeenEdge,NoMercy,WaitAbility(2), BowShock, WaitAbility(15.02)]
+    player = Player(actionSet, [], Stat, JobEnum.Gunbreaker)
+    brdPlayer = Player([ArmyPaeon, BattleVoice, RadiantFinale], [], Stat, JobEnum.Bard)
+    ninPlayer = Player([Mug], [], Stat, JobEnum.Ninja)
+
+    Event.AddPlayer([player,brdPlayer,ninPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+    dotObj = player.BowShockDOT
+    return [dotObj.CritBonus, dotObj.DHBonus, len(dotObj.MultBonus),dotObj.MultBonus[0].MultDPS, dotObj.MultBonus[1].MultDPS]
+
+def dotTest8ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [0,0.23,2, 1.05, 1.02]
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+dottest8 = test("DOT buff clipping test 8", dotTest8TestFunction, dotTest8ValidationFunction)
+dotTestSuite.addTest(dottest8)
 
 
 
+dotTestSuite.executeTestSuite()
 
-if True:
+
+if False:
     pb = ProgressBar.init(19, "Executing test suite")
     blmTestSuite.executeTestSuite()
     next(pb)
