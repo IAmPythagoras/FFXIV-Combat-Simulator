@@ -191,7 +191,7 @@ class SimulationRecord:
                 ha=haList[2],
                 fontsize=size+1
             )
-            crititalDH = "!!"
+            crititalDH = ""
             if self.pageList[nrows-y-1].autoCrit : crititalDH += "!"
             if self.pageList[nrows-y-1].autoDH : crititalDH += "!"
             ax.annotate(

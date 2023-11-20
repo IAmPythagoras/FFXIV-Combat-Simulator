@@ -594,6 +594,14 @@ class DOTSpell(Spell):
         self.potSnapshot = False
         self.onceThroughFlag = False
 
+    def setBuffSnapshot(self, dotToCopy):
+        """This function set the snapshots buff by copying the values in the given spellObj
+        """
+        self.CritBonus = dotToCopy.CritBonus
+        self.DHBonus = dotToCopy.DHBonus
+        self.MultBonus = dotToCopy.MultBonus
+        self.potSnapshot = dotToCopy.potSnapshot
+
     def CheckDOT(self, Player, Enemy, TimeUnit : float):
         """
         This function is called every time unit of the simulation and will check if a dot will be applied. A dot is applied every 3 seconds.
@@ -613,12 +621,9 @@ class DOTSpell(Spell):
                              # dot is reapplied.
             if not self.onceThroughFlag:
                 self.onceThroughFlag = True
-                # Setting mult buff
-                self.MultBonus = tempSpell.MultBonus
-                # Setting DH/Crit rate buff
-                self.DHBonus = tempSpell.DHBonus
-                self.CritBonus = tempSpell.CritBonus
-
+                # Using tempSpell to snapshot buffs
+                self.setBuffSnapshot(tempSpell)
+                
             self.DOTTimer = 3
             
 class HOTSpell(DOTSpell):

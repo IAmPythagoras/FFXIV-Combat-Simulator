@@ -617,8 +617,8 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     thisPage.setPotency(Potency)
     thisPage.setTimeStamp(Player.CurrentFight.TimeStamp)
 
-    # Checking if under pot for record
-    if Player.PotionTimer > 0 : thisPage.setHasPotion()
+    # Checking if under pot for record (only if not DOT)
+    if Player.PotionTimer > 0 and (type != 1 and type != 2): thisPage.setHasPotion()
 
     # The type input signifies what type of damage we are dealing with, since the computation will chance according to what
     # type of damage it is
@@ -682,6 +682,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         if round(DHRateBonus, 2) > 0 : thisPage.addDHBuffList(("DOTSnapshot", DHRateBonus))
         CritRateBonus = spellObj.CritBonus
         if round(CritRateBonus, 2) > 0 : thisPage.addCritBuffList(("DOTSnapshot", CritRateBonus))
+        
         if spellObj.potSnapshot : 
                              # We have to recompute f_AP.
             if Player.PotionTimer <= 0 :
@@ -689,10 +690,15 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
                              # So we only change f_MAIN_DMG when the potion is no longer active
                              # on the player but the DOT has it snapshotted.
                 mainStatBonus = min(int(MainStat * 0.1), 262)
-                if isTank : f_MAIN_DMG = (100+math.floor(((MainStat+262)-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
-                else: f_MAIN_DMG = (100+math.floor(((MainStat+262)-baseMain)*195/baseMain))/100
+                if isTank : f_MAIN_DMG = (100+math.floor(((MainStat+mainStatBonus)-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
+                else: f_MAIN_DMG = (100+math.floor(((MainStat+mainStatBonus)-baseMain)*195/baseMain))/100
             thisPage.setHasPotion()
-
+        elif not spellObj.potSnapshot and Player.PotionTimer > 0:
+                             # If not snapshot Potion BUT potion is currently applied
+                             # We have to recalculate f_MAIN_DMG using the lower
+                             # MainStatvalue
+            if isTank : f_MAIN_DMG = (100+math.floor(((MainStat-Player.mainStatBonus)-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
+            else: f_MAIN_DMG = (100+math.floor(((MainStat-Player.mainStatBonus)-baseMain)*195/baseMain))/100
     DHRate += DHRateBonus# Adding Bonus
     CritRate += CritRateBonus# Adding bonus
 
