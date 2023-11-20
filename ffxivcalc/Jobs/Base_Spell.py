@@ -528,6 +528,7 @@ def ApplyPotion(Player, Enemy):
     """
     Functions applies a potion and boosts the main stat of the player
     """
+                             # The comp. % bonus is already applied on Player.Stat["MainStat"]
     Player.mainStatBonus = min(math.floor(Player.Stat["MainStat"] * 0.1),262) # Capped from grade 8 HQ tincture
     Player.Stat["MainStat"] += Player.mainStatBonus
     Player.PotionTimer = 30
@@ -579,6 +580,7 @@ class DOTSpell(Spell):
         self.CritBonus = 0
         self.DHBonus = 0
         self.MultBonus = []
+        self.potSnapshot = False
         self.onceThroughFlag = False #This flag will be set to True once the DOT damage has been through damage computation once
         #so we can snapshot the buffs only once
         #Note that AAs do not snapshot buffs, but in the code they will still have these fields
@@ -589,6 +591,7 @@ class DOTSpell(Spell):
         self.CritBonus = 0
         self.DHBonus = 0
         self.MultBonus = []
+        self.potSnapshot = False
         self.onceThroughFlag = False
 
     def CheckDOT(self, Player, Enemy, TimeUnit : float):

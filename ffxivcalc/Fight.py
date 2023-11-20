@@ -677,10 +677,21 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
             thisPage.addDHBuffList(("BV", 0.2))
     elif (type == 1 or type == 2) and spellObj.onceThroughFlag:
                              # If dot and has gone through once (so has snapshotted buff) we use them
+                             # This only considers Crit,DH and Pot snapshot
         DHRateBonus = spellObj.DHBonus
         if round(DHRateBonus, 2) > 0 : thisPage.addDHBuffList(("DOTSnapshot", DHRateBonus))
         CritRateBonus = spellObj.CritBonus
         if round(CritRateBonus, 2) > 0 : thisPage.addCritBuffList(("DOTSnapshot", CritRateBonus))
+        if spellObj.potSnapshot : 
+                             # We have to recompute f_AP.
+            if Player.PotionTimer <= 0 :
+                             # If a potion is already applied f_MAIN_DMG won't change so we skip
+                             # So we only change f_MAIN_DMG when the potion is no longer active
+                             # on the player but the DOT has it snapshotted.
+                mainStatBonus = min(int(MainStat * 0.1), 262)
+                if isTank : f_MAIN_DMG = (100+math.floor(((MainStat+262)-baseMain)*156/baseMain))/100 # Tanks have a difference constant 
+                else: f_MAIN_DMG = (100+math.floor(((MainStat+262)-baseMain)*195/baseMain))/100
+            thisPage.setHasPotion()
 
     DHRate += DHRateBonus# Adding Bonus
     CritRate += CritRateBonus# Adding bonus
@@ -782,6 +793,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
             spellObj.DHBonus = DHRateBonus # Adding Bonus
             spellObj.CritBonus = CritRateBonus # Adding bonus
+            spellObj.potSnapshot = Player.PotionTimer > 0 # Checking Potion
 
             for buffs in Player.buffList: 
                 spellObj.MultBonus += [buffs] # Adding buff to DOT
@@ -800,6 +812,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
             spellObj.DHBonus = DHRateBonus # Adding Bonus
             spellObj.CritBonus = CritRateBonus # Adding bonus
+            spellObj.potSnapshot = Player.PotionTimer > 0 # Checking Potion
 
             for buffs in Player.buffList: 
                 spellObj.MultBonus += [buffs] # Adding buff to DOT
