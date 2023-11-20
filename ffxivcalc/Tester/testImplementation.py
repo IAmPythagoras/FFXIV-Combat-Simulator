@@ -51,6 +51,7 @@ from ffxivcalc.Jobs.Melee.Reaper.Reaper_Spell import *
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import *
 
 import logging
+from random import seed, sample
 
 main_logging = logging.getLogger("ffxivcalc")
 test_logging = main_logging.getChild("Testing")
@@ -71,6 +72,67 @@ base_stat = {
         "Piety" : 390
     }       
         
+
+buffLookup = {
+    SearingLight : SearingLightbuff,
+    Embolden : EmboldenBuff,
+    Divination : DivinationBuff,
+    Mug : MugBuff,
+    ArcaneCircle : ArcaneCircleBuff,
+    Brotherhood : BrotherhoodBuff
+}
+buffJobLookup = {
+    SearingLight : JobEnum.Summoner,
+    Embolden : JobEnum.RedMage,
+    Divination : JobEnum.Astrologian,
+    Mug : JobEnum.Ninja,
+    ArcaneCircle : JobEnum.Reaper,
+    Brotherhood : JobEnum.Monk
+}
+
+def generateDOTSnapshotTest(buffToApply, buffBeforeDOT : int, buffAfterDOT : int, dotAction, dotPlayerJob,setSeed=260929833):
+    """This function generates random dot clipping test. It is given a seed for reproducibility.
+    buffToApply : list(Action) -> List of actions that gives buff to execute in this test
+    buffBeforeDOT : int -> Number of buffs to apply before DOT
+    buffAFterDOT : int -> Number of buffs to apply after DOT
+    """
+    seed(seed)
+    indexListBeforeDOT = sample(range(0,len(buffToApply)-1), buffBeforeDOT)
+
+    buffListBeforeDOT = []
+    buffListAfterDOT = []
+
+    expectedSnapshotList = []
+
+    for i in range(len(buffToApply)):
+        if i in indexListBeforeDOT : buffListBeforeDOT.append(buffToApply[i])
+        else : buffListAfterDOT.append(buffToApply[i])
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    for action in buffListBeforeDOT:
+        newPlayer = Player([action], [], base_stat,buffJobLookup[action])
+        Event.AddPlayer([newPlayer])
+
+    for action in buffListAfterDOT:
+        newPlayer = Player([WaitAbility(5),action], [], base_stat,buffJobLookup[action])
+        expectedSnapshotList.append(buffLookup[action])
+        Event.AddPlayer([newPlayer])
+
+    dotPlayer = Player([WaitAbility(1), dotAction], [], base_stat, dotPlayerJob)
+    Event.AddPlayer([dotPlayer])
+
+    print(buffListBeforeDOT)
+    print(buffListAfterDOT)
+    print(expectedSnapshotList[0].isEqual(ArcaneCircleBuff))
+
+    return Event, expectedSnapshotList
+
+
+generateDOTSnapshotTest([SearingLight, ArcaneCircle], 1, 1, Biolysis, JobEnum.Scholar)
+
+exit()
 
 class test:
     """

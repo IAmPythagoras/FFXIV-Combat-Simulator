@@ -32,6 +32,12 @@ class buff:
     def __str__(self) -> str:
         return self.name + " (" + str(int(round(self.MultDPS-1,2)*100)) + "%) " 
 
+    def isEqual(self, otherBuff):
+        """This function checks equality between self and another buff.
+        Equality is defined as same name and multDPS and isDebuff value.
+        """
+        return (self.MultDPS == otherBuff.MultDPS) and (self.name == otherBuff.name) and (self.isDebuff == otherBuff.isDebuff)
+
 class buffHistory:
     """
     This class represents an interval of time in which a buff was present.
