@@ -682,6 +682,12 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         if round(DHRateBonus, 2) > 0 : thisPage.addDHBuffList(("DOTSnapshot", DHRateBonus))
         CritRateBonus = spellObj.CritBonus
         if round(CritRateBonus, 2) > 0 : thisPage.addCritBuffList(("DOTSnapshot", CritRateBonus))
+
+                             # Checking if ChainStratagem clips since ground DOT do not clip
+                             # Debuff
+        if spellObj.isGround and Enemy.ChainStragem:
+            CritRateBonus += 0.1    # If ChainStratagem is active, increase crit rate
+            thisPage.addCritBuffList(("CS", 0.1))
         
         if spellObj.potSnapshot : 
                              # We have to recompute f_AP.
@@ -798,7 +804,9 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
 
             spellObj.DHBonus = DHRateBonus # Adding Bonus
-            spellObj.CritBonus = CritRateBonus # Adding bonus
+                             # Adding Crit bonus but removing ChainStratagem if groundDOT since
+                             # Chain Strat is a debuff.
+            spellObj.CritBonus = CritRateBonus - (0.1 if spellObj.isGround and Enemy.ChainStratagem else 0)
             spellObj.potSnapshot = Player.PotionTimer > 0 # Checking Potion
 
             for buffs in Player.buffList: 
@@ -823,7 +831,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
             spellObj.DHBonus = DHRateBonus # Adding DH Bonus
                              # Adding Crit bonus but removing ChainStratagem if groundDOT since
                              # Chain Strat is a debuff.
-            spellObj.CritBonus = CritRateBonus - (0.1 if spellObj.isGround and Enemy.ChainStratagem)
+            spellObj.CritBonus = CritRateBonus - (0.1 if spellObj.isGround and Enemy.ChainStratagem else 0)
             spellObj.potSnapshot = Player.PotionTimer > 0 # Checking Potion
 
             for buffs in Player.buffList: 
@@ -856,6 +864,17 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         for buffs in spellObj.MultBonus:
             Damage = math.floor(Damage * buffs.MultDPS)
             thisPage.addPercentBuff(buffs)
+                             # If DOT is a ground DOT we have to add buffs that are debuff
+        if spellObj.isGround:
+            for buffs in Player.buffList: 
+                if buffs.isDebuff:
+                    Damage = math.floor(Damage * buffs.MultDPS) # Multiplying all debuffs
+                    thisPage.addPercentBuff(buffs)
+            for buffs in Enemy.buffList:
+                if buffs.isDebuff:
+                    Damage = math.floor(Damage * buffs.MultDPS) # Multiplying all debuffs
+                    thisPage.addPercentBuff(buffs)
+
 
     if spellObj.id == -2878: #If wildfire it cannot crit or DH, so we remove it
         non_crit_dh_expected, dh_crit_expected = Damage, Damage # Non crit expected damage, expected damage with crit
