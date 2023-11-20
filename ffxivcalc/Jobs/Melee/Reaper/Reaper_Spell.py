@@ -371,7 +371,7 @@ SoulScythe = ReaperSpell(24381, False, 0, 0, 180, ApplySoulSlice, [SoulSliceRequ
 GrimReaping = ReaperSpell(24397, True, 0, 2.5,200, ApplyGrimReaping, [VoidReapingRequirement], False)
 LemureScythe = ReaperSpell(24400, False, 0, 0, 100, ApplyLemureSlice, [LemureSliceRequirement], False) #AOE version of Lemure Slice
 #buff
-DeathDesignBuff = buff(1.1,name="Death Design")
+DeathDesignBuff = buff(1.1,name="Death Design", isDebuff = True)
 ArcaneCircleBuff = buff(1.03,name="AC")
 
 ReaperAbility = {

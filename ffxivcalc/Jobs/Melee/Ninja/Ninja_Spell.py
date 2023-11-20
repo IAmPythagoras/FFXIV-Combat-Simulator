@@ -454,7 +454,7 @@ HyoshoRanryu = NinjaSpell(16492, True, Lock,1.5, 1300, ApplyHyoshoRanryu, [Hyoto
 Katon = NinjaSpell(2266, True, Lock, 1.5, 350, ApplyHyoshoRanryu, [KatonRequirement], False, True)
 GokaMekkyaku = NinjaSpell(16491, True, Lock, 1.5, 600, ApplyHyoshoRanryu, [KatonRequirement, KassatsuOnRequirement], False, True)
 Doton = NinjaSpell(2270, True, Lock, 1.5, 0, ApplyDoton, [DotonRequirement], False, True)
-DotonDOT = DOTSpell(-33, 80, True)
+DotonDOT = DOTSpell(-33, 80, True, isGround=True)
 
 #Ritual
 Ten = NinjaSpell(2259, True, 0, 0.5, 0, ApplyTen, [NinjutsuRequirement], False, False)
@@ -482,8 +482,8 @@ Hide = NinjaSpell(2245, True, 0, 0, 0, ApplyHide, [], False, False)
 ShadeShift = NinjaSpell(2241, False, Lock, 0, 0, ApplyShadeShift, [ShadeShiftRequirement], False, False)
 HellfrogMedium = NinjaSpell(7401, False, Lock, 0, 160, ApplyBhavacakra, [BhavacakraRequirement], False, False)
 #buff
-MugBuff = buff(1.05,name="Mug")
-TrickAttackBuff = buff(1.1,name="Trick Attack")
+MugBuff = buff(1.05,name="Mug", isDebuff = True)
+TrickAttackBuff = buff(1.1,name="Trick Attack", isDebuff = True)
 
 
 NinjaAbility = {

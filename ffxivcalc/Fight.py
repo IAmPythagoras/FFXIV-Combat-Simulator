@@ -802,9 +802,13 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
             spellObj.potSnapshot = Player.PotionTimer > 0 # Checking Potion
 
             for buffs in Player.buffList: 
-                spellObj.MultBonus += [buffs] # Adding buff to DOT
+                             # Adding buff to DOT only if not (ground and debuff) since ground DOT
+                             # do not snapshot debuff.
+                if not (spellObj.isGround and buffs.isDebuff) : spellObj.MultBonus += [buffs] 
             for buffs in Enemy.buffList:
-                spellObj.MultBonus += [buffs] # Adding buff to DOT
+                             # Adding buff to DOT only if not (ground and debuff) since ground DOT
+                             # do not snapshot debuff.
+                if not (spellObj.isGround and buffs.isDebuff) : spellObj.MultBonus += [buffs] 
 
             # Now the DOT has completely snapshot all possible buff. So we save those
             # and never come back here
@@ -816,14 +820,20 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     
         if not spellObj.onceThroughFlag:# If we haven't gotten through with this DOT once, we have to snapshot the buffs
 
-            spellObj.DHBonus = DHRateBonus # Adding Bonus
-            spellObj.CritBonus = CritRateBonus # Adding bonus
+            spellObj.DHBonus = DHRateBonus # Adding DH Bonus
+                             # Adding Crit bonus but removing ChainStratagem if groundDOT since
+                             # Chain Strat is a debuff.
+            spellObj.CritBonus = CritRateBonus - (0.1 if spellObj.isGround and Enemy.ChainStratagem)
             spellObj.potSnapshot = Player.PotionTimer > 0 # Checking Potion
 
             for buffs in Player.buffList: 
-                spellObj.MultBonus += [buffs] # Adding buff to DOT
+                             # Adding buff to DOT only if not (ground and debuff) since ground DOT
+                             # do not snapshot debuff.
+                if not (spellObj.isGround and buffs.isDebuff) : spellObj.MultBonus += [buffs] 
             for buffs in Enemy.buffList:
-                spellObj.MultBonus += [buffs] # Adding buff to DOT
+                             # Adding buff to DOT only if not (ground and debuff) since ground DOT
+                             # do not snapshot debuff.
+                if not (spellObj.isGround and buffs.isDebuff) : spellObj.MultBonus += [buffs] 
 
             # Now the DOT has completely snapshot all possible buff. So we save those
             # and never come back here

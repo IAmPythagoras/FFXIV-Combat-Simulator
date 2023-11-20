@@ -20,10 +20,14 @@ class FailedToCast(Exception):#Exception called if a spell fails to cast
 class buff:
     """
     This class is any buff given to a player. It contains the buff's value
+    MultDPS : float -> Value of the multiplier
+    name : str -> Name of the buff. 
+    isDebuff : -> True if is a debuff.
     """
-    def __init__(self, MultDPS : float, name : str = "Unnamed"):
+    def __init__(self, MultDPS : float, name : str = "Unnamed", isDebuff : bool = False):
         self.MultDPS = MultDPS #DPS multiplier of the buff
         self.name = name
+        self.isDebuff = isDebuff
 
     def __str__(self) -> str:
         return self.name + " (" + str(int(round(self.MultDPS-1,2)*100)) + "%) " 
@@ -565,16 +569,18 @@ class DOTSpell(Spell):
     This class is any DOT. The action applying a dot will append a DOT object from this class (or any subclass of DOTSpell) which will do damage over time.
     """
     #Represents DOT
-    def __init__(self, id, Potency, isPhysical):
+    def __init__(self, id, Potency, isPhysical, isGround : bool = False):
         """
         id : int -> id of the dot. Dot have negative ids
         Potency : int -> base potency of the DOT
         isPhysical : bool -> True if the dot is physical
+        isGround : bool -> True if the DOT is ground. Ground DOT do not snapshot debuff.
         """
         super().__init__(id, False, 0, 0, Potency,  0, empty, [])
         #Note that here Potency is the potency of the dot, not of the ability
         self.DOTTimer = 0   #This represents the timer of the dot, and it will apply at each 3 seconds
         self.isPhysical = isPhysical #True if physical dot, false if magical dot
+        self.isGround = isGround
 
         #This part will keep in memory the buffs when the DOT is applied.
         self.CritBonus = 0
