@@ -268,7 +268,7 @@ SearingLight = SummonerSpell(25801, False, Lock, 0, 0, 0, ApplySearingLight, [Se
 PhysickSMN = SummonerSpell(16230, True, 1.5, 2.5, 0, 0, empty, [ManaRequirement])
 Resurrection = SummonerSpell(173, True, 8, 2.5, 0, 2400, empty, [ManaRequirement])
 #buff
-SearingLightbuff = buff(1.03,name="Searing Light")
+SearingLightbuff = buff(1.03,name="SL")
 
 SummonerAbility = {
 3579 : Ruin3,

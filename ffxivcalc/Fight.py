@@ -617,6 +617,9 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     thisPage.setPotency(Potency)
     thisPage.setTimeStamp(Player.CurrentFight.TimeStamp)
 
+    # Checking if under pot for record
+    if Player.PotionTimer > 0 : thisPage.setHasPotion()
+
     # The type input signifies what type of damage we are dealing with, since the computation will chance according to what
     # type of damage it is
 
@@ -659,19 +662,19 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
         if Enemy.ChainStratagem: 
             CritRateBonus += 0.1    # If ChainStratagem is active, increase crit rate
-            thisPage.addCritBuffList(("Chain Stratagem", 0.1))
+            thisPage.addCritBuffList(("CS", 0.1))
 
         if Enemy.WanderingMinuet: 
             CritRateBonus += 0.02 # If WanderingMinuet is active, increase crit rate
-            thisPage.addCritBuffList(("Wandering Minuet", 0.02))
+            thisPage.addCritBuffList(("WM", 0.02))
 
         if Enemy.ArmyPaeon: 
             DHRateBonus += 0.03 # If WanderingMinuet is active, increase crit rate
-            thisPage.addDHBuffList(("ArmyPaeon", 0.03))
+            thisPage.addDHBuffList(("AP", 0.03))
 
         if Enemy.BattleVoice: 
             DHRateBonus += 0.2 # If BattleVoice is active, increase DHRate
-            thisPage.addDHBuffList(("Battle Voice", 0.2))
+            thisPage.addDHBuffList(("BV", 0.2))
     elif (type == 1 or type == 2) and spellObj.onceThroughFlag:
                              # If dot and has gone through once (so has snapshotted buff) we use them
         DHRateBonus = spellObj.DHBonus

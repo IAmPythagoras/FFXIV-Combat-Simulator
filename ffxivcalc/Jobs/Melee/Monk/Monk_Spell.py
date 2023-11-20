@@ -374,7 +374,7 @@ Thunderclap = MonkSpell(25762, False, 0, 0, ApplyThunderclap, [ThunderclapRequir
 Mantra = MonkSpell(65, False, 0, 0, ApplyMantra, [MantraRequirement], False, False)
 #Buff
 DisciplinedFistBuff = buff(1.15,name="Disciplined Fist")
-BrotherhoodBuff = buff(1.05,name="Brotherhood")
+BrotherhoodBuff = buff(1.05,name="Bro")
 RiddleOfFireBuff = buff(1.15,name="Riddle Of Fire")
 
 
