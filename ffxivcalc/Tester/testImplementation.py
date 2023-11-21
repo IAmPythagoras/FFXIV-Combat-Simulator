@@ -13865,7 +13865,7 @@ buffJobLookup = {
     WanderingMinuet : JobEnum.Bard
 }
 
-def generateDOTSnapshotTest(buffToApply, buffBeforeDOT : int, buffAfterDOT : int, dotAction, dotPlayerJob,setSeed=0):
+def generateDOTSnapshotTest(buffToApply, buffBeforeDOT : int, buffAfterDOT : int, dotAction, dotPlayerJob,isGround,setSeed=0):
     """This function generates random dot clipping test. It is given a seed for reproducibility.
     buffToApply : list(Action) -> List of actions that gives buff to execute in this test
     buffBeforeDOT : int -> Number of buffs to apply before DOT
@@ -13902,6 +13902,14 @@ def generateDOTSnapshotTest(buffToApply, buffBeforeDOT : int, buffAfterDOT : int
     Event.AddPlayer([dotPlayer])
 
     for action in buffListBeforeDOT:
+
+                             # If isGround = True and action is debuff we don't clip.
+        if isGround:
+            match action.id:
+                case Mug.id:
+                    continue
+                case ChainStratagem.id:
+                    continue
                              # Matching id since matching object themself doesn't
                              # seem to work?
         match action.id:
@@ -13946,13 +13954,13 @@ def generateDOTSnapshotTest(buffToApply, buffBeforeDOT : int, buffAfterDOT : int
     return Event, [round(expectedDHBuff,2), round(expectedCritBuff,2),expectedSnapshotList], dotPlayer
 
 
-def generateWholeDOTTest(testName, beforeDot : int, afterDot : int, DoTAction, playerDOTEnum, dotFieldName):
+def generateWholeDOTTest(testName, beforeDot : int, afterDot : int, DoTAction, playerDOTEnum, dotFieldName, isGround=False):
     """Generates test object
     """      
                             # Generating fight with random buff snapshotting
     Event, expected, player = generateDOTSnapshotTest([SearingLight, Embolden, Divination, Mug, ArcaneCircle, Brotherhood, ChainStratagem, 
                                                        BattleVoice, BattleLitany, ArmyPaeon, MageBallad, WanderingMinuet, TechnicalFinish, StandardFinish, Devilment, DRGBuff], 
-                                                       beforeDot, afterDot, DoTAction, playerDOTEnum)
+                                                       beforeDot, afterDot, DoTAction, playerDOTEnum,isGround)
 
     Event.RequirementOn = False
     Event.ShowGraph = False
@@ -13982,19 +13990,21 @@ def generateWholeDOTTest(testName, beforeDot : int, afterDot : int, DoTAction, p
 
         passed = passed and testResult[0] == expected[0] and testResult[1] == expected[1]
 
-        return False, expected
+        return passed, expected
 
     return test(testName, testFunction, validFunction)
 
 
-jobList = [JobEnum.BlackMage,JobEnum.BlackMage,JobEnum.Scholar, JobEnum.Astrologian,JobEnum.WhiteMage,JobEnum.Sage,JobEnum.Bard,JobEnum.Bard, JobEnum.Dragoon, JobEnum.Monk, JobEnum.Samurai, JobEnum.Gunbreaker, JobEnum.Gunbreaker]
-dotList = [Thunder3, Thunder4, Biolysis, Combust, Dia, EukrasianDosis, Causticbite, Stormbite, ChaoticSpring, Demolish, Higanbana, BowShock, SonicBreak]
-fieldList = ["Thunder3DOT", "Thunder4DOT", "Biolysis", "CumbustDOT", "Dia", "Eukrasian", "CausticbiteDOT", "StormbiteDOT", "ChaoticSpringDOT", "DemolishDOT", "Higanbana", "BowShockDOT", "SonicBreakDOT"]
-    
+jobList = [JobEnum.BlackMage,JobEnum.BlackMage,JobEnum.Scholar, JobEnum.Astrologian,JobEnum.WhiteMage,JobEnum.Sage,JobEnum.Bard,JobEnum.Bard, JobEnum.Dragoon, JobEnum.Monk, JobEnum.Samurai, JobEnum.Gunbreaker, JobEnum.Gunbreaker, JobEnum.Summoner, JobEnum.DarkKnight, JobEnum.Ninja]
+dotList = [Thunder3, Thunder4, Biolysis, Combust, Dia, EukrasianDosis, Causticbite, Stormbite, ChaoticSpring, Demolish, Higanbana, BowShock, SonicBreak, Slipstream, SaltedEarth, Doton]
+fieldList = ["Thunder3DOT", "Thunder4DOT", "Biolysis", "CumbustDOT", "Dia", "Eukrasian", "CausticbiteDOT", "StormbiteDOT", "ChaoticSpringDOT", "DemolishDOT", "Higanbana", "BowShockDOT", "SonicBreakDOT", "SlipstreamDOT", "SaltedEarthDOT", "DotonDOT"]
+isGroundList = [False, False, False, False, False, False, False, False, False, False, False, False, False, True, True, True]
+
 for i in range(len(jobList)):
     
     for j in range(0,15,3):
-        dotTestSuite.addTest(generateWholeDOTTest(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test " + str(int(j/3)+1), j if j != 15 else 16, (16-j) if j != 15 else 0, dotList[i],jobList[i], fieldList[i]))
+        dotTestSuite.addTest(generateWholeDOTTest(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test " + str(int(j/3)+1), j if j != 15 else 16, (16-j) if j != 15 else 0, 
+                                                  dotList[i],jobList[i], fieldList[i], isGround=isGroundList[i]))
 
 
 dotTestSuite.executeTestSuite()

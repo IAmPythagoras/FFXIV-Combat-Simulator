@@ -685,7 +685,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
                              # Checking if ChainStratagem clips since ground DOT do not clip
                              # Debuff
-        if spellObj.isGround and Enemy.ChainStragem:
+        if spellObj.isGround and Enemy.ChainStratagem:
             CritRateBonus += 0.1    # If ChainStratagem is active, increase crit rate
             thisPage.addCritBuffList(("CS", 0.1))
         
