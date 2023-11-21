@@ -182,7 +182,7 @@ def ApplyCombust(Player, Enemy):
         Player.CumbustDOTTimer = 30
         Player.DOTList.append(Player.CumbustDOT)
         Player.EffectCDList.append(CumbustDOTCheck)
-    else : Player.Cumbust.resetBuffSnapshot() # If already applied reset snapshot
+    else : Player.CumbustDOT.resetBuffSnapshot() # If already applied reset snapshot
     Player.CumbustTimer = 30
 
 #Effect

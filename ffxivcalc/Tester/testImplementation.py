@@ -51,7 +51,7 @@ from ffxivcalc.Jobs.Melee.Reaper.Reaper_Spell import *
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import *
 
 import logging
-from random import seed, sample
+from random import randint, seed, sample
 
 main_logging = logging.getLogger("ffxivcalc")
 test_logging = main_logging.getChild("Testing")
@@ -101,7 +101,7 @@ class test:
         try:
             testResults = self.testFunction()
         except Exception as Error:
-            test_logging.error("A '" + Error.__class__.__name__ + "' was catched when executing " + self.testName + ". Error message : (" + str(Error)+")")   
+            test_logging.error("A '" + Error.__class__.__name__ + "' was catched when executing " + self.testName + ". \nError message : " + repr(Error)+"")   
             return False
         validation, expected = self.validationFunction(testResults)
 
@@ -13824,8 +13824,11 @@ drkTestSuite.addTest(drktest17)
 ######################################
 #           DOT testSuite            #
 ######################################
-
-dotTestSuite = testSuite("DOT test suite")
+                             # Generating random seed
+                             # used for the DOT test
+randomSeed = randint(1,999999)
+seed(randomSeed)
+dotTestSuite = testSuite("DOT test suite - Seed : " + str(randomSeed))
 
 # Dot
 # Buff should clip on a dot once it is applied. These test will make sure that this is
@@ -13848,7 +13851,8 @@ buffLookup = {
     WanderingMinuet : hitBuff(0.02),
     TechnicalFinish : buff(1.05, "TF"),
     StandardFinish : buff(1.05, "SF"),
-    DRGBuff : LeftEyeBuff
+    DRGBuff : LeftEyeBuff,
+    Potion : None
 }
 buffJobLookup = {
     SearingLight : JobEnum.Summoner,
@@ -13865,13 +13869,12 @@ buffJobLookup = {
     WanderingMinuet : JobEnum.Bard
 }
 
-def generateDOTSnapshotTest(buffToApply, buffBeforeDOT : int, buffAfterDOT : int, dotAction, dotPlayerJob,isGround,setSeed=0):
+def generateDOTSnapshotTest(buffToApply, buffBeforeDOT : int, buffAfterDOT : int, dotAction, dotPlayerJob,isGround):
     """This function generates random dot clipping test. It is given a seed for reproducibility.
     buffToApply : list(Action) -> List of actions that gives buff to execute in this test
     buffBeforeDOT : int -> Number of buffs to apply before DOT
     buffAFterDOT : int -> Number of buffs to apply after DOT
     """
-    if setSeed != 0 : seed(setSeed)
     indexListBeforeDOT = sample(range(0,len(buffToApply)), buffBeforeDOT)
 
     buffListBeforeDOT = []
@@ -13880,6 +13883,7 @@ def generateDOTSnapshotTest(buffToApply, buffBeforeDOT : int, buffAfterDOT : int
     expectedSnapshotList = []
     expectedDHBuff = 0
     expectedCritBuff = 0
+    snapshotPotion = False
 
     for i in range(len(buffToApply)):
         if i in indexListBeforeDOT : buffListBeforeDOT.append(buffToApply[i])
@@ -13901,8 +13905,16 @@ def generateDOTSnapshotTest(buffToApply, buffBeforeDOT : int, buffAfterDOT : int
             dotPlayer = Player([WaitAbility(7), dotAction, WaitAbility(0.1)], [], base_stat, dotPlayerJob)
     Event.AddPlayer([dotPlayer])
 
-    for action in buffListBeforeDOT:
+                             # If potion is before DOT insert at start of action set.
+                             # If after append at the end.
+    if Potion in buffListBeforeDOT: 
+        dotPlayer.ActionSet.insert(0, Potion)
+        snapshotPotion = True
+    else : dotPlayer.ActionSet.append(Potion)
 
+    for action in buffListBeforeDOT:
+                             # If potion skip since was treated earlier
+        if action == Potion : continue
                              # If isGround = True and action is debuff we don't clip.
         if isGround:
             match action.id:
@@ -13935,23 +13947,25 @@ def generateDOTSnapshotTest(buffToApply, buffBeforeDOT : int, buffAfterDOT : int
         Event.AddPlayer([newPlayer])
 
     for action in buffListAfterDOT:
+                             # If potion skip since was treated earlier
+        if action == Potion : continue
         match action.id:
             case Devilment.id:
-                newPlayer = Player([ClosedPosition(dotPlayer), WaitAbility(10),Devilment], [], base_stat,JobEnum.Dancer)
+                newPlayer = Player([ClosedPosition(dotPlayer), WaitAbility(11),Devilment], [], base_stat,JobEnum.Dancer)
             case TechnicalFinish.id:
-                newPlayer = Player([WaitAbility(10),TechnicalStep, Pirouette, Entrechat, Jete, Emboite, TechnicalFinish], [], base_stat,JobEnum.Dancer)
+                newPlayer = Player([WaitAbility(11),TechnicalStep, Pirouette, Entrechat, Jete, Emboite, TechnicalFinish], [], base_stat,JobEnum.Dancer)
             case StandardFinish.id:
-                newPlayer = Player([ClosedPosition(dotPlayer),WaitAbility(10), StandardStep, Jete, Pirouette, StandardFinish], [], base_stat,JobEnum.Dancer)
+                newPlayer = Player([ClosedPosition(dotPlayer),WaitAbility(11), StandardStep, Jete, Pirouette, StandardFinish], [], base_stat,JobEnum.Dancer)
             case 7398 : # DragonSight
-                newPlayer = Player([WaitAbility(10),DragonSight(dotPlayer)], [], base_stat,JobEnum.Dragoon)
+                newPlayer = Player([WaitAbility(11),DragonSight(dotPlayer)], [], base_stat,JobEnum.Dragoon)
             case _ :
-                newPlayer = Player([WaitAbility(10),action], [], base_stat,buffJobLookup[action])
+                newPlayer = Player([WaitAbility(11),action], [], base_stat,buffJobLookup[action])
         Event.AddPlayer([newPlayer])
 
                              # Sorting by name
     expectedSnapshotList.sort(key=lambda x : x.name)
 
-    return Event, [round(expectedDHBuff,2), round(expectedCritBuff,2),expectedSnapshotList], dotPlayer
+    return Event, [round(expectedDHBuff,2), round(expectedCritBuff,2),expectedSnapshotList, snapshotPotion], dotPlayer
 
 
 def generateWholeDOTTest(testName, beforeDot : int, afterDot : int, DoTAction, playerDOTEnum, dotFieldName, isGround=False):
@@ -13959,7 +13973,7 @@ def generateWholeDOTTest(testName, beforeDot : int, afterDot : int, DoTAction, p
     """      
                             # Generating fight with random buff snapshotting
     Event, expected, player = generateDOTSnapshotTest([SearingLight, Embolden, Divination, Mug, ArcaneCircle, Brotherhood, ChainStratagem, 
-                                                       BattleVoice, BattleLitany, ArmyPaeon, MageBallad, WanderingMinuet, TechnicalFinish, StandardFinish, Devilment, DRGBuff], 
+                                                       BattleVoice, BattleLitany, ArmyPaeon, MageBallad, WanderingMinuet, TechnicalFinish, StandardFinish, Devilment, DRGBuff, Potion], 
                                                        beforeDot, afterDot, DoTAction, playerDOTEnum,isGround)
 
     Event.RequirementOn = False
@@ -13971,13 +13985,15 @@ def generateWholeDOTTest(testName, beforeDot : int, afterDot : int, DoTAction, p
     def testFunction() -> None:
         Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-        buffList = player.__dict__[dotFieldName].MultBonus
-        dhBuff = player.__dict__[dotFieldName].DHBonus
-        critBuff = player.__dict__[dotFieldName].CritBonus
+        dotObj = player.__dict__[dotFieldName]
+        buffList = dotObj.MultBonus
+        dhBuff = dotObj.DHBonus
+        critBuff = dotObj.CritBonus
+        snapshotPotion = dotObj.potSnapshot
 
         buffList.sort(key=sortKey)
 
-        return [round(dhBuff,2), round(critBuff,2), buffList]
+        return [round(dhBuff,2), round(critBuff,2), buffList, snapshotPotion]
 
     def validFunction(testResult) -> (bool,list):
         passed = True
@@ -13988,7 +14004,7 @@ def generateWholeDOTTest(testName, beforeDot : int, afterDot : int, DoTAction, p
                 break
             passed = passed and testResult[2][i].isEqual(expected[2][i])
 
-        passed = passed and testResult[0] == expected[0] and testResult[1] == expected[1]
+        passed = passed and testResult[0] == expected[0] and testResult[1] == expected[1] and testResult[3] == expected[3]
 
         return passed, expected
 
@@ -14002,16 +14018,48 @@ isGroundList = [False, False, False, False, False, False, False, False, False, F
 
 for i in range(len(jobList)):
     
-    for j in range(0,16,3):
-        dotTestSuite.addTest(generateWholeDOTTest(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test " + str(int(j/3)+1), j if j != 15 else 16, (16-j) if j != 15 else 0, 
+    for j in range(0,17,3):
+        dotTestSuite.addTest(generateWholeDOTTest(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test " + str(int(j/3)+1), j if j != 15 else 17, (17-j) if j != 15 else 0, 
                                                   dotList[i],jobList[i], fieldList[i], isGround=isGroundList[i]))
+        
+                             # Adding an additional test that has all buffs before DOT and dot is reapplied.
+                             # So should expect to loose everything
+    def addTestFunction():
+        Event, expected, player = generateDOTSnapshotTest([SearingLight, Embolden, Divination, Mug, ArcaneCircle, Brotherhood, ChainStratagem, 
+                                                        BattleVoice, BattleLitany, ArmyPaeon, MageBallad, WanderingMinuet, TechnicalFinish, StandardFinish, Devilment, DRGBuff, Potion], 
+                                                        17, 0, dotList[i],jobList[i],isGround=isGroundList[i])
+                                # Appending dot at the end of action set.
+                                # Note that index 0 is dotPlayer since
+                                # it is added first.
+        player.ActionSet.append(dotList[i])
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        dotObj = player.__dict__[fieldList[i]]
+        buffList = dotObj.MultBonus
+        dhBuff = dotObj.DHBonus
+        critBuff = dotObj.CritBonus
+        snapshotPotion = dotObj.potSnapshot
+
+        return [round(dhBuff,2), round(critBuff,2), buffList, snapshotPotion]
+
+    def addValidFunction(testResult):
+        passed = True
+        expected = [0,0,[], False]
+
+        for i in range(len(expected)) : passed = passed and (expected[i] == testResult[i])
+
+        return passed, expected
+    
+    dotTestSuite.addTest(test(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test 7 (Reapplying DOT)", addTestFunction, addValidFunction))
+        
 
 
-dotTestSuite.executeTestSuite()
-
-
-if False:
-    pb = ProgressBar.init(19, "Executing test suite")
+if True:
+    pb = ProgressBar.init(20, "Executing all test suite")
     blmTestSuite.executeTestSuite()
     next(pb)
     rdmTestSuite.executeTestSuite()
@@ -14049,6 +14097,8 @@ if False:
     pldTestSuite.executeTestSuite()
     next(pb)
     drkTestSuite.executeTestSuite()
+    next(pb)
+    dotTestSuite.executeTestSuite()
     next(pb)
     print("Completed. See logs for info.")
 
