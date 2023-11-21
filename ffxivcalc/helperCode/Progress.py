@@ -59,6 +59,11 @@ class ProgressBar:
         """
         self.currentProgress = self.total-1
         next(self)
+
+    def setName(self, newName : str):
+        """Sets the name of the progress bar to the newly given name
+        """
+        self.name = newName
     
     @classmethod
     def init(self, total : int, name : str):

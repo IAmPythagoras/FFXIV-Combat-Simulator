@@ -125,14 +125,22 @@ class testSuite:
         """
         self.testList.append(newTest)
 
-    def executeTestSuite(self):
+    def executeTestSuite(self) -> (bool, int):
+        """This function executes all test in order of insertion into the testList.
+        It returns a tuple which corresponds to (passed?, how many test failed).
+        """
         test_logging.debug("Executing test suite -> " + self.testSuiteName)
         success = True
+        numFailed = 0
         x = len(self.testList)
-        for test in self.testList: success = test.executeTest() and success
+        for test in self.testList: 
+            curTest = test.executeTest()
+            if not curTest : numFailed += 1
+            success = success and curTest
 
         if not success : test_logging.error("Testsuite " + self.testSuiteName + " had at least one fail test. See above.")
         else : test_logging.debug(self.testSuiteName + " completed without errors.")
+        return success, numFailed
 
 
 ######################################
@@ -14056,49 +14064,74 @@ for i in range(len(jobList)):
     
     dotTestSuite.addTest(test(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test 7 (Reapplying DOT)", addTestFunction, addValidFunction))
         
-
-
 if True:
+
+    failedTestDict = {}
+
     pb = ProgressBar.init(20, "Executing all test suite")
-    blmTestSuite.executeTestSuite()
+    pb.setName(blmTestSuite.testSuiteName)
+    failedTestDict[blmTestSuite.testSuiteName] = blmTestSuite.executeTestSuite()
     next(pb)
-    rdmTestSuite.executeTestSuite()
+    pb.setName(rdmTestSuite.testSuiteName)
+    failedTestDict[rdmTestSuite.testSuiteName] = rdmTestSuite.executeTestSuite()
     next(pb)
-    smnTestSuite.executeTestSuite()
+    pb.setName(smnTestSuite.testSuiteName)
+    failedTestDict[smnTestSuite.testSuiteName] = smnTestSuite.executeTestSuite()
     next(pb)
-    whmTestSuite.executeTestSuite()
+    pb.setName(whmTestSuite.testSuiteName)
+    failedTestDict[whmTestSuite.testSuiteName] = whmTestSuite.executeTestSuite()
     next(pb)
-    astTestSuite.executeTestSuite()
+    pb.setName(astTestSuite.testSuiteName)
+    failedTestDict[astTestSuite.testSuiteName] = astTestSuite.executeTestSuite()
     next(pb)
-    sgeTestSuite.executeTestSuite()
+    pb.setName(sgeTestSuite.testSuiteName)
+    failedTestDict[sgeTestSuite.testSuiteName] = sgeTestSuite.executeTestSuite()
     next(pb)
-    schTestSuite.executeTestSuite()
+    pb.setName(schTestSuite.testSuiteName)
+    failedTestDict[schTestSuite.testSuiteName] = schTestSuite.executeTestSuite()
     next(pb)
-    mchTestSuite.executeTestSuite()
+    pb.setName(mchTestSuite.testSuiteName)
+    failedTestDict[mchTestSuite.testSuiteName] = mchTestSuite.executeTestSuite()
     next(pb)
-    brdTestSuite.executeTestSuite()
+    pb.setName(brdTestSuite.testSuiteName)
+    failedTestDict[brdTestSuite.testSuiteName] = brdTestSuite.executeTestSuite()
     next(pb)
-    dncTestSuite.executeTestSuite()
+    pb.setName(dncTestSuite.testSuiteName)
+    failedTestDict[dncTestSuite.testSuiteName] = dncTestSuite.executeTestSuite()
     next(pb)
-    ninTestSuite.executeTestSuite()
+    pb.setName(ninTestSuite.testSuiteName)
+    failedTestDict[ninTestSuite.testSuiteName] = ninTestSuite.executeTestSuite()
     next(pb)
-    samTestSuite.executeTestSuite()
+    pb.setName(samTestSuite.testSuiteName)
+    failedTestDict[samTestSuite.testSuiteName] = samTestSuite.executeTestSuite()
     next(pb)
-    rprTestSuite.executeTestSuite()
+    pb.setName(rprTestSuite.testSuiteName)
+    failedTestDict[rprTestSuite.testSuiteName] = rprTestSuite.executeTestSuite()
     next(pb)
-    drgTestSuite.executeTestSuite()
+    pb.setName(drgTestSuite.testSuiteName)
+    failedTestDict[drgTestSuite.testSuiteName] = drgTestSuite.executeTestSuite()
     next(pb)
-    mnkTestSuite.executeTestSuite()
+    pb.setName(mnkTestSuite.testSuiteName)
+    failedTestDict[mnkTestSuite.testSuiteName] = mnkTestSuite.executeTestSuite()
     next(pb)
-    warTestSuite.executeTestSuite()
+    pb.setName(warTestSuite.testSuiteName)
+    failedTestDict[warTestSuite.testSuiteName] = warTestSuite.executeTestSuite()
     next(pb)
-    gnbTestSuite.executeTestSuite()
+    pb.setName(gnbTestSuite.testSuiteName)
+    failedTestDict[gnbTestSuite.testSuiteName] = gnbTestSuite.executeTestSuite()
     next(pb)
-    pldTestSuite.executeTestSuite()
+    pb.setName(pldTestSuite.testSuiteName)
+    failedTestDict[pldTestSuite.testSuiteName] = pldTestSuite.executeTestSuite()
     next(pb)
-    drkTestSuite.executeTestSuite()
+    pb.setName(drkTestSuite.testSuiteName)
+    failedTestDict[drkTestSuite.testSuiteName] = drkTestSuite.executeTestSuite()
     next(pb)
-    dotTestSuite.executeTestSuite()
+    pb.setName(dotTestSuite.testSuiteName)
+    failedTestDict[dotTestSuite.testSuiteName] = dotTestSuite.executeTestSuite()
     next(pb)
+
+    for key in failedTestDict:
+        if not failedTestDict[key][0]:
+            print(key + " had " + str(failedTestDict[key][1]) + " failed tests.")
     print("Completed. See logs for info.")
 
