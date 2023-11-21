@@ -14002,7 +14002,7 @@ isGroundList = [False, False, False, False, False, False, False, False, False, F
 
 for i in range(len(jobList)):
     
-    for j in range(0,15,3):
+    for j in range(0,16,3):
         dotTestSuite.addTest(generateWholeDOTTest(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test " + str(int(j/3)+1), j if j != 15 else 16, (16-j) if j != 15 else 0, 
                                                   dotList[i],jobList[i], fieldList[i], isGround=isGroundList[i]))
 
