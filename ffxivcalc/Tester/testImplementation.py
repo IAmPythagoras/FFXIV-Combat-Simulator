@@ -13831,6 +13831,8 @@ dotTestSuite = testSuite("DOT test suite")
 # Buff should clip on a dot once it is applied. These test will make sure that this is
 # happening without issues.
 
+DRGBuff = DragonSight(Player([],[],base_stat, JobEnum.BlackMage))
+
 buffLookup = {
     SearingLight : SearingLightbuff,
     Embolden : EmboldenBuff,
@@ -13843,7 +13845,10 @@ buffLookup = {
     BattleLitany : hitBuff(0.10),
     ArmyPaeon : hitBuff(0.03, isCrit=False),
     MageBallad : MageBalladBuff,
-    WanderingMinuet : hitBuff(0.02)
+    WanderingMinuet : hitBuff(0.02),
+    TechnicalFinish : buff(1.05, "TF"),
+    StandardFinish : buff(1.05, "SF"),
+    DRGBuff : LeftEyeBuff
 }
 buffJobLookup = {
     SearingLight : JobEnum.Summoner,
@@ -13883,8 +13888,38 @@ def generateDOTSnapshotTest(buffToApply, buffBeforeDOT : int, buffAfterDOT : int
     Dummy = Enemy()
     Event = Fight(Dummy, False)
 
+                             # Matching Job type since some jobs require
+                             # combo for DOT
+    match dotPlayerJob:
+        case JobEnum.Monk:
+            dotPlayer = Player([WaitAbility(5),Bootshine, TrueStrike, Demolish,WaitAbility(0.1)], [], base_stat, dotPlayerJob)
+        case JobEnum.Dragoon:
+            dotPlayer = Player([WaitAbility(5),TrueThrust, Disembowel, ChaoticSpring,WaitAbility(0.1)], [], base_stat, dotPlayerJob)
+                             # Appending Power Surge which is gained in disembowel
+            expectedSnapshotList.append(PowerSurgeBuff)
+        case _ :
+            dotPlayer = Player([WaitAbility(7), dotAction, WaitAbility(0.1)], [], base_stat, dotPlayerJob)
+    Event.AddPlayer([dotPlayer])
+
     for action in buffListBeforeDOT:
-        newPlayer = Player([action], [], base_stat,buffJobLookup[action])
+                             # Matching id since matching object themself doesn't
+                             # seem to work?
+        match action.id:
+            case Devilment.id:
+                newPlayer = Player([ClosedPosition(dotPlayer), Devilment], [], base_stat,JobEnum.Dancer)
+                Event.AddPlayer([newPlayer])
+                expectedCritBuff += 0.2
+                expectedDHBuff += 0.2
+                continue
+            case TechnicalFinish.id:
+                newPlayer = Player([TechnicalStep, Pirouette, Entrechat, Jete, Emboite, TechnicalFinish], [], base_stat,JobEnum.Dancer)
+            case StandardFinish.id:
+                newPlayer = Player([ClosedPosition(dotPlayer), StandardStep, Jete, Pirouette, StandardFinish], [], base_stat,JobEnum.Dancer)
+            case 7398 : # DragonSight
+                newPlayer = Player([DragonSight(dotPlayer)], [], base_stat,JobEnum.Dragoon)
+            case _ :
+                newPlayer = Player([action], [], base_stat,buffJobLookup[action])
+
         if isinstance(buffLookup[action], hitBuff):
             if buffLookup[action].isCrit : expectedCritBuff += buffLookup[action].buff
             else : expectedDHBuff += buffLookup[action].buff
@@ -13892,30 +13927,32 @@ def generateDOTSnapshotTest(buffToApply, buffBeforeDOT : int, buffAfterDOT : int
         Event.AddPlayer([newPlayer])
 
     for action in buffListAfterDOT:
-        newPlayer = Player([WaitAbility(10),action], [], base_stat,buffJobLookup[action])
+        match action.id:
+            case Devilment.id:
+                newPlayer = Player([ClosedPosition(dotPlayer), WaitAbility(10),Devilment], [], base_stat,JobEnum.Dancer)
+            case TechnicalFinish.id:
+                newPlayer = Player([WaitAbility(10),TechnicalStep, Pirouette, Entrechat, Jete, Emboite, TechnicalFinish], [], base_stat,JobEnum.Dancer)
+            case StandardFinish.id:
+                newPlayer = Player([ClosedPosition(dotPlayer),WaitAbility(10), StandardStep, Jete, Pirouette, StandardFinish], [], base_stat,JobEnum.Dancer)
+            case 7398 : # DragonSight
+                newPlayer = Player([WaitAbility(10),DragonSight(dotPlayer)], [], base_stat,JobEnum.Dragoon)
+            case _ :
+                newPlayer = Player([WaitAbility(10),action], [], base_stat,buffJobLookup[action])
         Event.AddPlayer([newPlayer])
-    
-                             # Matching Job type since some jobs require
-                             # combo for DOT
-    match dotPlayerJob:
-        case JobEnum.Monk:
-            dotPlayer = Player([Bootshine, TrueStrike, Demolish,WaitAbility(0.1)], [], base_stat, dotPlayerJob)
-        case JobEnum.Dragoon:
-            dotPlayer = Player([TrueThrust, Disembowel, ChaoticSpring,WaitAbility(0.1)], [], base_stat, dotPlayerJob)
-        case _ :
-            dotPlayer = Player([WaitAbility(2.5), dotAction, WaitAbility(0.1)], [], base_stat, dotPlayerJob)
-    Event.AddPlayer([dotPlayer])
+
+                             # Sorting by name
     expectedSnapshotList.sort(key=lambda x : x.name)
 
-    return Event, [expectedDHBuff, expectedCritBuff,expectedSnapshotList], dotPlayer
+    return Event, [round(expectedDHBuff,2), round(expectedCritBuff,2),expectedSnapshotList], dotPlayer
 
 
 def generateWholeDOTTest(testName, beforeDot : int, afterDot : int, DoTAction, playerDOTEnum, dotFieldName):
     """Generates test object
     """      
                             # Generating fight with random buff snapshotting
-    Event, expected, player = generateDOTSnapshotTest([SearingLight, Embolden, Divination, Mug, ArcaneCircle, Brotherhood, ChainStratagem, BattleVoice, BattleLitany, ArmyPaeon, MageBallad, WanderingMinuet]
-                                                     , beforeDot, afterDot, DoTAction, playerDOTEnum)
+    Event, expected, player = generateDOTSnapshotTest([SearingLight, Embolden, Divination, Mug, ArcaneCircle, Brotherhood, ChainStratagem, 
+                                                       BattleVoice, BattleLitany, ArmyPaeon, MageBallad, WanderingMinuet, TechnicalFinish, StandardFinish, Devilment, DRGBuff], 
+                                                       beforeDot, afterDot, DoTAction, playerDOTEnum)
 
     Event.RequirementOn = False
     Event.ShowGraph = False
@@ -13932,16 +13969,19 @@ def generateWholeDOTTest(testName, beforeDot : int, afterDot : int, DoTAction, p
 
         buffList.sort(key=sortKey)
 
-        return [dhBuff, critBuff, buffList]
+        return [round(dhBuff,2), round(critBuff,2), buffList]
 
     def validFunction(testResult) -> (bool,list):
         passed = True
 
         for i in range(len(expected[2])):
+            if i == len(expected[2]) or i == len(testResult[2]):
+                passed = False 
+                break
             passed = passed and testResult[2][i].isEqual(expected[2][i])
 
         passed = passed and testResult[0] == expected[0] and testResult[1] == expected[1]
-        
+
         return False, expected
 
     return test(testName, testFunction, validFunction)
@@ -13952,10 +13992,9 @@ dotList = [Thunder3, Thunder4, Biolysis, Combust, Dia, EukrasianDosis, Causticbi
 fieldList = ["Thunder3DOT", "Thunder4DOT", "Biolysis", "CumbustDOT", "Dia", "Eukrasian", "CausticbiteDOT", "StormbiteDOT", "ChaoticSpringDOT", "DemolishDOT", "Higanbana", "BowShockDOT", "SonicBreakDOT"]
     
 for i in range(len(jobList)):
-    if jobList[i] == JobEnum.Dragoon or jobList[i] == JobEnum.Monk: continue
     
-    for j in range(0,12,3):
-        dotTestSuite.addTest(generateWholeDOTTest(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test " + str(int(j/3)+1), j, 12-j, dotList[i],jobList[i], fieldList[i]))
+    for j in range(0,15,3):
+        dotTestSuite.addTest(generateWholeDOTTest(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test " + str(int(j/3)+1), j if j != 15 else 16, (16-j) if j != 15 else 0, dotList[i],jobList[i], fieldList[i]))
 
 
 dotTestSuite.executeTestSuite()
