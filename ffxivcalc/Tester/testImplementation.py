@@ -13892,10 +13892,18 @@ def generateDOTSnapshotTest(buffToApply, buffBeforeDOT : int, buffAfterDOT : int
         Event.AddPlayer([newPlayer])
 
     for action in buffListAfterDOT:
-        newPlayer = Player([WaitAbility(5),action], [], base_stat,buffJobLookup[action])
+        newPlayer = Player([WaitAbility(10),action], [], base_stat,buffJobLookup[action])
         Event.AddPlayer([newPlayer])
-
-    dotPlayer = Player([WaitAbility(1), dotAction, WaitAbility(0.1)], [], base_stat, dotPlayerJob)
+    
+                             # Matching Job type since some jobs require
+                             # combo for DOT
+    match dotPlayerJob:
+        case JobEnum.Monk:
+            dotPlayer = Player([Bootshine, TrueStrike, Demolish,WaitAbility(0.1)], [], base_stat, dotPlayerJob)
+        case JobEnum.Dragoon:
+            dotPlayer = Player([TrueThrust, Disembowel, ChaoticSpring,WaitAbility(0.1)], [], base_stat, dotPlayerJob)
+        case _ :
+            dotPlayer = Player([WaitAbility(2.5), dotAction, WaitAbility(0.1)], [], base_stat, dotPlayerJob)
     Event.AddPlayer([dotPlayer])
     expectedSnapshotList.sort(key=lambda x : x.name)
 
@@ -13933,8 +13941,8 @@ def generateWholeDOTTest(testName, beforeDot : int, afterDot : int, DoTAction, p
             passed = passed and testResult[2][i].isEqual(expected[2][i])
 
         passed = passed and testResult[0] == expected[0] and testResult[1] == expected[1]
-
-        return passed, expected
+        
+        return False, expected
 
     return test(testName, testFunction, validFunction)
 

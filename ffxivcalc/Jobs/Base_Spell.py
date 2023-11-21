@@ -31,6 +31,9 @@ class buff:
 
     def __str__(self) -> str:
         return self.name + " (" + str(int(round(self.MultDPS-1,2)*100)) + "%) " 
+    
+    def __repr__(self) -> str:
+        return str(self)
 
     def isEqual(self, otherBuff):
         """This function checks equality between self and another buff.
