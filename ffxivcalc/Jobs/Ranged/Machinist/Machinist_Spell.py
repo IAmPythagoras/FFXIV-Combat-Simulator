@@ -234,7 +234,7 @@ def BioblasterDOTCheck(Player, Enemy):
 
 def WildFireCheck(Player, Enemy):
     if Player.WildFireTimer <= 0:
-        WildFireOff = MachinistSpell(2878, False, 0, 0, 240 * Player.WildFireStack, 0, empty, [], False)
+        WildFireOff = MachinistSpell(-2878, False, 0, 0, 240 * Player.WildFireStack, 0, empty, [], False)
         # Gives same ID as wildfire action so it shows in the log file
         #Temporary Spell that will be put in front of the Queue
         Player.ActionSet.insert(Player.NextSpell+1, WildFireOff) #Insert in queue, will be instantly executed

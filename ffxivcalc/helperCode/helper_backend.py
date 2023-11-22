@@ -151,7 +151,7 @@ def AskInput(range):
 
 
 
-def SaveFight(Event, countdown, fightDuration, saveName):
+def SaveFight(Event, countdown, fightDuration, saveName, saveFile=True):
     #This function will save a fight into memory.
 
     #The file will be saved as a JSON format
@@ -174,6 +174,8 @@ def SaveFight(Event, countdown, fightDuration, saveName):
         PlayerIDList += [Player.playerID]
 
         PlayerDict["stat"] = Player.Stat
+                             # Using base main stat since it will have been affected if the fight has already been simulated
+        PlayerDict["stat"]["MainStat"] = Player.baseMainStat
         actionList = []
 
         PlayerDict["Auras"] = copy.deepcopy(Player.auras)
@@ -189,7 +191,8 @@ def SaveFight(Event, countdown, fightDuration, saveName):
                     actionList.append(copy.deepcopy(actionDict))#adding to dict
             else: #Normal ability
                 actionDict["actionName"] = name_for_id(action.id,Player.ClassAction, Player.JobAction)
-                if action.TargetID != 0 : actionDict["targetID"] = action.TargetID # id 0 is by default the main enemy. So no need to write if not needed
+                if action.TargetID != 0 : 
+                    actionDict["targetID"] = action.TargetPlayerObject.playerID # id 0 is by default the main enemy. So no need to write if not needed
 
                 actionList.append(copy.deepcopy(actionDict))#adding to dict
 
@@ -213,10 +216,13 @@ def SaveFight(Event, countdown, fightDuration, saveName):
                 },
                 "PlayerList" : PlayerListDict
     }}
-    save_dir: Path = Path.cwd() / 'saved'
-    with open(save_dir / f'{saveName}.json', "w") as write_files:
-        json.dump(data,write_files, indent=4) #saving file
 
+    if saveFile:
+                             # If saving as file save it
+        save_dir: Path = Path.cwd() / 'saved'
+        with open(save_dir / f'{saveName}.json', "w") as write_files:
+            json.dump(data,write_files, indent=4) #saving file
+    return data
 
 def RestoreFightObject(data : dict, name : str = ""):
     """
@@ -263,7 +269,7 @@ def RestoreFightObject(data : dict, name : str = ""):
         elif job_name == "WhiteMage" : job_object = Player([], [], stat, JobEnum.WhiteMage)
         elif job_name == "Astrologian" : job_object = Player([], [], stat, JobEnum.Astrologian)
         #Tank
-        elif job_name == "Warrior" : job_object = Player([], [SurgingTempestEffect],  stat, JobEnum.Warrior)
+        elif job_name == "Warrior" : job_object = Player([], [],  stat, JobEnum.Warrior)
         elif job_name == "DarkKnight" : job_object = Player([], [],  stat, JobEnum.DarkKnight)
         elif job_name == "Paladin" : job_object = Player([], [], stat, JobEnum.Paladin)
         elif job_name == "Gunbreaker" : job_object = Player([], [],  stat, JobEnum.Gunbreaker)
@@ -296,7 +302,7 @@ def RestoreFightObject(data : dict, name : str = ""):
         #We will then check for Auras and do the appropriate effect
         
         # Logging the stat of the player
-        logging.debug("Player id " + str(job_object.playerID) + " has stats : " + str(job_object.Stat))
+        helper_logging.debug("Player id " + str(job_object.playerID) + " has stats : " + str(job_object.Stat))
 
         for aura in player["Auras"]: #Going through all buffs in the player
             #We will look for a selection of buffs that are important. We will assume
@@ -522,7 +528,6 @@ def GenerateLayoutDict(player_list):
         id+=1
 
     return data
-
 
 # Condition functions to go with conditionalAction
 

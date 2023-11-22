@@ -377,14 +377,16 @@ EnAvant = DancerSpell(16010, False, 0, 0, empty, [], False) #No requirement, spa
 CuringWaltz = DancerSpell(16015, False, 0, 0, ApplyCuringWaltz, [CuringWaltzRequirement], False)
 Samba = DancerSpell(16012, False, 0, 0, ApplySamba, [SambaRequirement], False)
 #buff
-TechnicalFinishBuff = buff(1,name="Technical Finish") #We will adapt the buff depending on number of steps at casting
-StandardFinishBuff = buff(1,name="Standard Finish") #We will adapt the buff depending on number of steps at casting
+TechnicalFinishBuff = buff(1,name="TF") #We will adapt the buff depending on number of steps at casting
+StandardFinishBuff = buff(1,name="SF") #We will adapt the buff depending on number of steps at casting
 
 #Dance Partner
 Ending = DancerSpell(18073, False, 0, 0, ApplyEnding, [], False)
 
 def ClosedPosition(Partner, InFight="True"):
     def ApplyClosedPosition(Player, Enemy):
+                             # Updating target ID once the action has been done.
+        ClosedPositionSpell.TargetID = Partner.playerID
 
         if InFight : Player.ClosedPositionCD = 30 #Only update CD if in Fight, since we can dance partner before begins
 

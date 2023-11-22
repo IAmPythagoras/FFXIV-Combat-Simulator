@@ -283,7 +283,7 @@ FloodShadow = DRKSkill(10, False, Lock, 0, 160, 3000, 0, ApplyEdgeShadowEffect, 
 CarveSpit = DRKSkill(3643, False, Lock, 0, 510, 0, 0, ApplyCarveSpitEffect, [CarveSpitRequirement])
 AbyssalDrain = DRKSkill(12, False, Lock, 0, 150, 0, 0, ApplyAbyssalDrainEffect, [AbyssalDrainRequirement])
 SaltedEarth = DRKSkill(3639, False, Lock, 0, 0, 0, 0, ApplySaltedEarth, [SaltedEarthRequirement]) #Ground target DOT, ticks once upon placement.
-SaltedEarthDOT = DOTSpell(-14, 50, True)
+SaltedEarthDOT = DOTSpell(-14, 50, True, isGround=True)
 SaltDarkness = DRKSkill(25755, False, Lock, 0, 500, 0, 0, empty, [SaltDarknessRequirement])
 Shadowbringer = DRKSkill(25757, False, Lock, 0, 600, 0, 0, SpendShadowbringer, [ShadowbringerRequirement])
 LivingShadow = DRKSkill(16472, False, Lock, 0, 0, 0, 50, SummonLivingShadow, [BloodRequirement])
@@ -319,12 +319,15 @@ def TBN(Target):
 
     def ApplyTBN(Player, Enemy):
         ApplyDarkArts(Player, Enemy)
+                             # Refreshing targetID
+        TBNSpell.TargetID = Target.playerID
 
         TBNShield = Shield(int(Target.MaxHP * 0.25), 7, Target)
         Target.ShieldList.insert(0, TBNShield) # Inserting shield at first since TBN has prio
 
     TBNSpell = DRKSkill(7393, False, Lock, 0, 0, 3000, 0, ApplyTBN, [TBNRequirement])     #Simply makes the next EdgeShadow free for now.
-    TBNSpell.TargetID == Target.playerID
+    TBNSpell.TargetID = Target.playerID
+    TBNSpell.TargetPlayerObject = Target
     return TBNSpell
 
 

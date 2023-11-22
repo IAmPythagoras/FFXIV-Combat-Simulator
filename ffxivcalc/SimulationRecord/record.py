@@ -33,6 +33,7 @@ class page:
         self.DHBuffList = []
         self.CritBuffList = []
         self.playerID = 0
+        self.hasPotion = False
 
     def setPlayerID(self,newID : int ):
         self.playerID = newID
@@ -64,6 +65,11 @@ class page:
     def addCritBuffList(self, newEntry):
         self.CritBuffList.append(newEntry)
 
+    def setHasPotion(self):
+        """This function sets the value of the field hasPotion to True
+        """
+        self.hasPotion = True
+
     def __str__(self) -> str:
 
         percentBuffStr = ""
@@ -81,6 +87,8 @@ class page:
 
         if self.autoCrit : crititalDH += "!"
         if self.autoDH : crititalDH += "!"
+
+        if self.hasPotion : crititalDH += " Pot"
 
         return self.Name + " ; " + str(self.Potency) + " ; " + str(self.Damage) + " " + crititalDH + " ; " + " ; " + str(self.TimeStamp) + " ; " + percentBuffStr + " ; " + dhBuffStr + " ; " + critBuffStr
 
@@ -132,7 +140,7 @@ class SimulationRecord:
         ncols = len(colName)
                              # This works well. Found by just using a configuration that looked good
                              # and using the ratio of nrows to height.
-        height = max((160/538) * nrows,30)
+        height = ((160/538) * nrows)
 
         fig = plt.figure(figsize=(14,height), dpi=300)
         ax = plt.subplot(111)
@@ -151,6 +159,9 @@ class SimulationRecord:
             for buffs in self.pageList[nrows-y-1].PercentBuffList:
                 curPercentCount += 1
                 percentBuffStr += str(buffs) + ("\n" if curPercentCount%4 == 0 else " ")
+
+            if self.pageList[nrows-y-1].hasPotion : percentBuffStr += "Potion "
+
             for buffs in self.pageList[nrows-y-1].DHBuffList:
                 dhBuffStr += buffs[0] + "(" + str(int(buffs[1]*100)) + "%) "
             for buffs in self.pageList[nrows-y-1].CritBuffList:

@@ -156,6 +156,7 @@ def ApplyStormbite(Player, Enemy):
         Player.StormbiteDOT = copy.deepcopy(StormbiteDOT)
         Player.DOTList.append(Player.StormbiteDOT)
         Player.EffectCDList.append(StormbiteDOTCheck)
+    else : Player.StormbiteDOT.resetBuffSnapshot() # reset buff snapshot is reapplied
     Player.StormbiteDOTTimer = 45
 
 def ApplyCausticbite(Player, Enemy):
@@ -165,6 +166,7 @@ def ApplyCausticbite(Player, Enemy):
         Player.CausticbiteDOT = copy.deepcopy(CausticbiteDOT)
         Player.DOTList.append(Player.CausticbiteDOT)
         Player.EffectCDList.append(CausticbiteDOTCheck)
+    else : Player.CausticbiteDOT.resetBuffSnapshot() # reset buff snapshot is reapplied
     Player.CausticbiteDOTTimer = 45
 
 def ApplySidewinder(Player, Enemy):
@@ -465,9 +467,9 @@ PitchPerfect2 = BardSpell(25, False, 0, 220, ApplyPitchPerfect2, [PitchPerfect2R
 PitchPerfect3 = BardSpell(7404, False, 0, 360, ApplyPitchPerfect3, [PitchPerfect3Requirement],False)
 
 #buff
-RadiantFinaleBuff = buff(1.02,name="Radian Finale")
+RadiantFinaleBuff = buff(1.02,name="RF")
 RagingStrikeBuff = buff(1.15,name="Raging Strike")
-MageBalladBuff = buff(1.01,name="Mage Ballad")
+MageBalladBuff = buff(1.01,name="MB")
 
 def NatureMinne(target):
     Nature = BardSpell(7408, False, 0, 0, ApplyNatureMinne, [NatureMinneRequirement], False)

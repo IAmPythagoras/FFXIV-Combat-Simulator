@@ -211,6 +211,7 @@ def DisembowelCombo(Player, Spell):
             Player.ChaoticSpringDOT = copy.deepcopy(ChaoticSpringDOT)
             Player.DOTList.append(Player.ChaoticSpringDOT)
             Player.EffectCDList.append(ChaoticSpringDOTCheck)
+        else : Player.ChaoticSpringDOT.resetBuffSnapshot() # If already applied reset snapshot
         Player.ChaoticSpringDOTTimer = 24
 
         Player.WheelInMotion = True 
@@ -315,8 +316,8 @@ ElusiveJump = DragoonSpell(94, False, 0, 0, empty, [], 0) #No requirement, I wil
 
 
 #buff
-RightEyeBuff = buff(1.1,name="Right Eye")
-LeftEyeBuff = buff(1.05,name="Left Eye")
+RightEyeBuff = buff(1.1,name="RE")
+LeftEyeBuff = buff(1.05,name="LE")
 LanceChargeBuff = buff(1.1,name="Lance Charge")
 PowerSurgeBuff = buff(1.1,name="Power Surge")
 
@@ -329,6 +330,9 @@ def DragonSight(Target):
             Player.EffectToRemove.append(DragonSightCheck)
 
     def ApplyDragonSight(Player, Enemy):
+                             # Refreshing target playerID
+        DragonSightSpell.TargetID = Target.playerID
+
         Player.DragonSightCD = 120
         Player.DragonSightTimer = 20
 

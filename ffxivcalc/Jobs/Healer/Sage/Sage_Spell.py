@@ -143,6 +143,7 @@ def ApplyEukrasian(Player, Enemy):
         Player.Eukrasian = copy.deepcopy(EukrasianDOT)
         Player.EffectCDList.append(EukrasianDOTCheck)
         Player.DOTList.append(Player.Eukrasian)
+    else : Player.Eukrasian.resetBuffSnapshot() # If already applied reset snapshot
     Player.EukrasianTimer = 30
 
 
