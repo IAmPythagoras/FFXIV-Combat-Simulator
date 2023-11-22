@@ -172,3 +172,5 @@ cython_debug/
 .vscode/launch.json
 
 SimulationRecord.pdf
+
+*.pdf
