@@ -13832,6 +13832,13 @@ drkTestSuite.addTest(drktest17)
 ######################################
 #           DOT testSuite            #
 ######################################
+
+# The DOT testSuite is a randomly generated test suite. We take all party buffs in the game
+# and randomly put them before or after the DOT is applied. Every DOT has 7 tests in total.
+# Test 1-6 are the same, only there is an increasing amount of buffs before the dot is applied
+# and test 7 is test 6 (so all buffs are applied before DOT) and we reapply the DOT.
+# The seed is given in order to redo the test in a controlled environment if needed.
+
                              # Generating random seed
                              # used for the DOT test
 randomSeed = randint(1,999999)
@@ -14063,7 +14070,21 @@ for i in range(len(jobList)):
         return passed, expected
     
     dotTestSuite.addTest(test(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test 7 (Reapplying DOT)", addTestFunction, addValidFunction))
-        
+
+
+######################################
+#   RestoreFightObject testSuite     #
+######################################
+
+# This test suite only tests the function helperCode.RestoreFightObject which is used
+# in the website. This is to make sure updating the website to this version does not break it 
+# (or more specifically break the backend of it). This tests for both no error thrown and also
+# the validity of the restoration.
+
+
+rfoTestSuite = testSuite("helperCode.RestoreFightObject test suite")
+
+
 if True:
 
     failedTestDict = {}
