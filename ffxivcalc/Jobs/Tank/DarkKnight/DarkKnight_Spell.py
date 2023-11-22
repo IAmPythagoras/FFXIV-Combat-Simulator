@@ -327,6 +327,7 @@ def TBN(Target):
 
     TBNSpell = DRKSkill(7393, False, Lock, 0, 0, 3000, 0, ApplyTBN, [TBNRequirement])     #Simply makes the next EdgeShadow free for now.
     TBNSpell.TargetID = Target.playerID
+    TBNSpell.TargetPlayerObject = Target
     return TBNSpell
 
 

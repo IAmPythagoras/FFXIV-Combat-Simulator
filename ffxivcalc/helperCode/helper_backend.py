@@ -191,7 +191,8 @@ def SaveFight(Event, countdown, fightDuration, saveName, saveFile=True):
                     actionList.append(copy.deepcopy(actionDict))#adding to dict
             else: #Normal ability
                 actionDict["actionName"] = name_for_id(action.id,Player.ClassAction, Player.JobAction)
-                if action.TargetID != 0 : actionDict["targetID"] = action.TargetID # id 0 is by default the main enemy. So no need to write if not needed
+                if action.TargetID != 0 : 
+                    actionDict["targetID"] = action.TargetPlayerObject.playerID # id 0 is by default the main enemy. So no need to write if not needed
 
                 actionList.append(copy.deepcopy(actionDict))#adding to dict
 
