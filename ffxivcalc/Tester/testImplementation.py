@@ -14081,11 +14081,58 @@ for i in range(len(jobList)):
 # (or more specifically break the backend of it). This tests for both no error thrown and also
 # the validity of the restoration.
 
+from ffxivcalc.helperCode.helper_backend import SaveFight, RestoreFightObject
 
 rfoTestSuite = testSuite("helperCode.RestoreFightObject test suite")
 
+def rfoTest1TestFunction() -> None:
+    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
 
-if True:
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [HolySpirit, FastBlade, RiotBlade, WaitAbility(1), Potion, RoyalAuthority, FightOrFlight, RequestACat, GoringBlade, CircleScorn, 
+                 Expiacion, Confetti, Intervene, BladeFaith, Intervene, BladeTruth, BladeValor, HolySpirit, Atonement, Atonement, Atonement, FastBlade, 
+                 RiotBlade, RoyalAuthority, Atonement, CircleScorn, Expiacion, Atonement, Atonement, FastBlade, RiotBlade, HolySpirit, RoyalAuthority, Atonement, 
+                 Atonement, Atonement, FastBlade, RiotBlade, FightOrFlight, RequestACat, GoringBlade, Expiacion, Confetti, BladeFaith, Intervene, BladeTruth, Intervene, 
+                 BladeValor, HolySpirit, RoyalAuthority, HolySpirit, Atonement ]
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+
+    data = SaveFight(Event, 0, 500, "", saveFile=False)
+
+    restoredFightObj = RestoreFightObject(data)
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+    restoredFightObj.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [Event.TimeStamp, restoredFightObj.TimeStamp, Event.PlayerList[0].TotalPotency,restoredFightObj.PlayerList[0].TotalPotency,
+            Event.PlayerList[0].TotalDamage,restoredFightObj.PlayerList[0].TotalDamage]
+
+def rfoTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+
+    for i in range(0,3):
+        passed = passed and testResults[2*i] == testResults[2*i + 1]
+
+    return passed , testResults
+
+rfotest1 = test("RestoreFightObject test 1", rfoTest1TestFunction, rfoTest1ValidationFunction)
+rfoTestSuite.addTest(rfotest1)
+
+
+
+rfoTestSuite.executeTestSuite()
+
+if False:
 
     failedTestDict = {}
 

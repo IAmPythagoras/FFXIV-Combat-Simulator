@@ -151,7 +151,7 @@ def AskInput(range):
 
 
 
-def SaveFight(Event, countdown, fightDuration, saveName):
+def SaveFight(Event, countdown, fightDuration, saveName, saveFile=True):
     #This function will save a fight into memory.
 
     #The file will be saved as a JSON format
@@ -213,10 +213,13 @@ def SaveFight(Event, countdown, fightDuration, saveName):
                 },
                 "PlayerList" : PlayerListDict
     }}
-    save_dir: Path = Path.cwd() / 'saved'
-    with open(save_dir / f'{saveName}.json', "w") as write_files:
-        json.dump(data,write_files, indent=4) #saving file
 
+    if saveFile:
+                             # If saving as file save it
+        save_dir: Path = Path.cwd() / 'saved'
+        with open(save_dir / f'{saveName}.json', "w") as write_files:
+            json.dump(data,write_files, indent=4) #saving file
+    return data
 
 def RestoreFightObject(data : dict, name : str = ""):
     """
@@ -522,7 +525,6 @@ def GenerateLayoutDict(player_list):
         id+=1
 
     return data
-
 
 # Condition functions to go with conditionalAction
 
