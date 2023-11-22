@@ -14471,14 +14471,11 @@ rfotest6 = test("RestoreFightObject test 6", rfoTest6TestFunction, rfoTest6Valid
 rfoTestSuite.addTest(rfotest6)
 
 
-
-rfoTestSuite.executeTestSuite()
-
-if False:
+if True:
 
     failedTestDict = {}
 
-    pb = ProgressBar.init(20, "Executing all test suite")
+    pb = ProgressBar.init(21, "Executing all test suite")
     pb.setName(blmTestSuite.testSuiteName)
     failedTestDict[blmTestSuite.testSuiteName] = blmTestSuite.executeTestSuite()
     pb.setName(rdmTestSuite.testSuiteName)
@@ -14538,7 +14535,9 @@ if False:
     pb.setName(dotTestSuite.testSuiteName)
     next(pb)
     failedTestDict[dotTestSuite.testSuiteName] = dotTestSuite.executeTestSuite()
+    pb.setName(rfoTestSuite.testSuiteName)
     next(pb)
+    failedTestDict[rfoTestSuite.testSuiteName] = rfoTestSuite.executeTestSuite()
 
     for key in failedTestDict:
         if not failedTestDict[key][0]:
