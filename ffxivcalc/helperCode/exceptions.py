@@ -110,6 +110,9 @@ class InvalidTarget(Exception):
 
     def __str__(self) -> str:
         return f'{self.message} {self.Target} {self.message_2}'
+    
+    def __repr__(self):
+        return str(self)
 
 
 class InvalidMitigation(Exception):
