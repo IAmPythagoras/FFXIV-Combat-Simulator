@@ -14128,6 +14128,343 @@ def rfoTest1ValidationFunction(testResults) -> (bool, list):
 rfotest1 = test("RestoreFightObject test 1", rfoTest1TestFunction, rfoTest1ValidationFunction)
 rfoTestSuite.addTest(rfotest1)
 
+# Test
+
+def rfoTest2TestFunction() -> None:
+    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+    BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 716, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390} # Stats for BlackMage
+    RDMStat = {"MainStat": 3378, "WD": 132, "Det": 1601, "Ten": 400, "SS": 502, "SkS": 400, "Crit": 2514, "DH": 1616} # Stats for RedMage
+    SMNStat =  {'MainStat': 3378, 'WD': 132, 'Det': 1342, 'Ten': 400, 'SS': 1411, 'SkS': 400, 'Crit': 2284, 'DH': 1196, 'Piety': 390} # Stats for Summoner
+
+    BLMOpener = [SharpCast, Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, Swiftcast, Despair, 
+             Manafront,Triplecast, Fire4, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose, Fire3, Fire4, Fire4, Fire4, Despair, 
+             Blizzard3, Blizzard4,Paradox, Fire3, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Despair,
+             Blizzard3, Blizzard4,Paradox, Fire3, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Despair]
+    SMNOpener = [Ruin3, Summon, SearingLight, AstralImpulse, AstralImpulse, AstralImpulse, EnergyDrainSMN, Enkindle, AstralImpulse, Deathflare, Fester, AstralImpulse, Fester, AstralImpulse, Garuda, Swiftcast, Slipstream, Emerald, Emerald, Emerald, Emerald, Titan, Topaz, Mountain, Topaz, Mountain, Topaz, Mountain, Topaz, Mountain, Ifrit, Cyclone, Strike, Ruby, Ruby, Ruin4, Ruin3]
+    RDMOpener = [Verthunder, Verareo, Swiftcast,Acceleration, Verthunder, Potion,Verthunder, Embolden, Manafication, EnchantedRiposte, Fleche, EnchantedZwerchhau, 
+             Contre, EnchantedRedoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verstone, Verareo, Verfire, Verthunder, 
+             Acceleration, Verareo, Verstone, Verthunder, Fleche, Jolt, Verthunder, Verfire, Verareo, Contre, Jolt, Verareo, Engagement, Corps, Verstone, 
+             Verthunder, EnchantedRiposte, EnchantedZwerchhau, EnchantedRedoublement, Fleche, Verflare, Scorch, Resolution]
+    actionSet = [HolySpirit, FastBlade, RiotBlade, WaitAbility(1), Potion, RoyalAuthority, FightOrFlight, RequestACat, GoringBlade, CircleScorn, 
+                 Expiacion, Confetti, Intervene, BladeFaith, Intervene, BladeTruth, BladeValor, HolySpirit, Atonement, Atonement, Atonement, FastBlade, 
+                 RiotBlade, RoyalAuthority, Atonement, CircleScorn, Expiacion, Atonement, Atonement, FastBlade, RiotBlade, HolySpirit, RoyalAuthority, Atonement, 
+                 Atonement, Atonement, FastBlade, RiotBlade, FightOrFlight, RequestACat, GoringBlade, Expiacion, Confetti, BladeFaith, Intervene, BladeTruth, Intervene, 
+                 BladeValor, HolySpirit, RoyalAuthority, HolySpirit, Atonement ]
+    
+    player = Player(actionSet, [], Stat, JobEnum.Paladin)
+    BLMPlayer = Player(BLMOpener, [], BLMStat, JobEnum.BlackMage)
+    RDMPlayer = Player(RDMOpener, [], RDMStat, JobEnum.RedMage)
+    SMNPlayer = Player(SMNOpener, [], SMNStat, JobEnum.Summoner)
+    
+    Event.AddPlayer([player,BLMPlayer,RDMPlayer,SMNPlayer])
+
+    Event.RequirementOn = True
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+
+    data = SaveFight(Event, 0, 500, "", saveFile=False)
+
+    restoredFightObj = RestoreFightObject(data)
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+    restoredFightObj.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [Event.TimeStamp, restoredFightObj.TimeStamp, 
+            Event.PlayerList[0].TotalPotency,restoredFightObj.PlayerList[0].TotalPotency,Event.PlayerList[0].TotalDamage,restoredFightObj.PlayerList[0].TotalDamage,
+            Event.PlayerList[1].TotalPotency,restoredFightObj.PlayerList[1].TotalPotency,Event.PlayerList[1].TotalDamage,restoredFightObj.PlayerList[1].TotalDamage,
+            Event.PlayerList[2].TotalPotency,restoredFightObj.PlayerList[2].TotalPotency,Event.PlayerList[2].TotalDamage,restoredFightObj.PlayerList[2].TotalDamage,
+            Event.PlayerList[3].TotalPotency,restoredFightObj.PlayerList[3].TotalPotency,Event.PlayerList[3].TotalDamage,restoredFightObj.PlayerList[3].TotalDamage]
+
+def rfoTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+
+    for i in range(0,9):
+        passed = passed and testResults[2*i] == testResults[2*i + 1]
+
+    return passed , testResults
+
+rfotest2 = test("RestoreFightObject test 2", rfoTest2TestFunction, rfoTest2ValidationFunction)
+rfoTestSuite.addTest(rfotest2)
+
+# Test
+
+def rfoTest3TestFunction() -> None:
+    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    SCHOpener = [Broil, Biolysis, Aetherflow, Broil, Swiftcast, Broil, ChainStratagem, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, 
+                Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Biolysis, Broil, Broil,
+                Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil]
+    WHMOpener = [Glare, ThinAir, Dia, Glare, WaitAbility(1), PresenceOfMind, Glare, Glare, Glare, Glare, Glare, ThinAir, Glare, Glare, Glare, Glare, Glare, Glare, Dia, Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare]
+    ASTOpener = [Malefic, Lightspeed, Combust, Malefic, Malefic, Divination, Malefic, MinorArcana, Astrodyne, Malefic, LordOfCrown, Malefic, Malefic, Malefic, Malefic, 
+                Malefic, Malefic,Combust, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic,
+                Malefic, Malefic, Malefic]
+    SGEOpener = [Dosis, Eukrasia, EukrasianDosis, Dosis, Dosis, Phlegma, Phlegma, Dosis, Dosis, Dosis, Dosis, Dosis, 
+                Dosis, Dosis, Dosis, Eukrasia, EukrasianDosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, 
+                Dosis, Dosis, Dosis, Dosis, Dosis, Dosis]
+
+    SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 1412, 'SkS': 400, 'Crit': 2306, 'DH': 440, 'Piety': 390} # Stats for Scholar
+    WHMStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 1242, 'SkS': 400, 'Crit': 2502, 'DH': 436, 'Piety': 390} # Stats for WhiteMage
+    ASTStat =  {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 1242, 'SkS': 400, 'Crit': 2502, 'DH': 436, 'Piety': 390} # Stats for Astrologian
+    SGEStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 954, 'SkS': 400, 'Crit': 2502, 'DH': 724, 'Piety': 390} # Stats for Sage
+
+    SCHPlayer = Player(SCHOpener, [], SCHStat, JobEnum.Scholar)
+    WHMPlayer = Player(WHMOpener, [], WHMStat, JobEnum.WhiteMage)
+    SGEPlayer = Player(SGEOpener, [], SGEStat, JobEnum.Sage)
+    ASTPlayer = Player(ASTOpener, [], ASTStat, JobEnum.Astrologian)
+    
+    Event.AddPlayer([SCHPlayer,WHMPlayer,SGEPlayer,ASTPlayer])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+
+    data = SaveFight(Event, 0, 500, "", saveFile=False)
+
+    restoredFightObj = RestoreFightObject(data)
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+    restoredFightObj.RequirementOn = False
+    restoredFightObj.ShowGraph = False
+    restoredFightObj.IgnoreMana = True
+    restoredFightObj.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [Event.TimeStamp, restoredFightObj.TimeStamp, 
+            Event.PlayerList[0].TotalPotency,restoredFightObj.PlayerList[0].TotalPotency,Event.PlayerList[0].TotalDamage,restoredFightObj.PlayerList[0].TotalDamage,
+            Event.PlayerList[1].TotalPotency,restoredFightObj.PlayerList[1].TotalPotency,Event.PlayerList[1].TotalDamage,restoredFightObj.PlayerList[1].TotalDamage,
+            Event.PlayerList[2].TotalPotency,restoredFightObj.PlayerList[2].TotalPotency,Event.PlayerList[2].TotalDamage,restoredFightObj.PlayerList[2].TotalDamage,
+            Event.PlayerList[3].TotalPotency,restoredFightObj.PlayerList[3].TotalPotency,Event.PlayerList[3].TotalDamage,restoredFightObj.PlayerList[3].TotalDamage]
+
+def rfoTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+
+    for i in range(0,9):
+        passed = passed and testResults[2*i] == testResults[2*i + 1]
+
+    return passed , testResults
+
+rfotest3 = test("RestoreFightObject test 3", rfoTest3TestFunction, rfoTest3ValidationFunction)
+rfoTestSuite.addTest(rfotest3)
+
+# Test
+
+def rfoTest4TestFunction() -> None:
+    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    NINStat = {'MainStat': 3378, 'WD': 132, 'Det': 1666, 'Ten': 400, 'SS': 400, 'SkS': 714, 'Crit': 2595, 'DH': 1258, 'Piety': 390} # Stats for Ninja
+    SAMStat =  {'MainStat': 3367, 'WD': 132, 'Det': 1248, 'Ten': 400, 'SS': 400, 'SkS': 976, 'Crit': 2587, 'DH': 1422, 'Piety': 390} # Stats for Samurai
+    DRGStat =  {'MainStat': 3378, 'WD': 132, 'Det': 1726, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2567, 'DH': 1540, 'Piety': 390} # Stats for Dragoon
+    MNKStat = {'MainStat': 3378, 'WD': 132, 'Det': 1464, 'Ten': 400, 'SS': 400, 'SkS': 889, 'Crit': 2606, 'DH': 1274, 'Piety': 390} # Stats for Monk
+    RPRStat = {'MainStat': 3378, 'WD': 132, 'Det': 1870, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2567, 'DH': 1360, 'Piety': 390} # Stats for Reaper
+
+    NINPlayer = Player([], [], NINStat, JobEnum.Ninja)
+    SAMPlayer = Player([], [], SAMStat, JobEnum.Samurai)
+    DRGPlayer = Player([], [], DRGStat, JobEnum.Dragoon)
+    RPRPlayer = Player([], [], RPRStat, JobEnum.Reaper)
+    MNKPlayer = Player([], [], MNKStat, JobEnum.Monk)
+
+    Event.AddPlayer([NINPlayer,SAMPlayer,DRGPlayer,RPRPlayer,MNKPlayer])
+
+    SAMOpener = [Meikyo, Gekko, WaitAbility(1), Potion, Kasha, Ikishoten, Yukikaze, Midare, KaeshiSetsugekka, Senei, Meikyo, Gekko, Shinten, Higanbana, Shinten, Gekko, Shinten, OgiNamikiri, Shoha, KaeshiNamikiri, Kasha, Shinten, Hakaze, Yukikaze, Midare, KaeshiSetsugekka, Shinten, Hakaze, Jinpu, Gekko, Shinten, Hakaze, Shifu, Kasha, Hakaze, Shinten, Yukikaze, Midare, Hakaze, Jinpu, Gekko, Hakaze, Shifu, Kasha, Shinten, Hakaze, Yukikaze, Shinten, Meikyo, Kasha, Kasha, Shinten, Shoha, Gekko, Shinten, Hakaze, Yukikaze, Shinten, Midare, KaeshiSetsugekka, Hakaze, Yukikaze, Hakaze, Shinten, Shifu, Kasha]
+    DRGOpener = [TrueThrust, Disembowel, LanceCharge, DragonSight(NINPlayer), ChaoticSpring, BattleLitany, Geirskogul, WheelingThrust, HighJump,
+                LifeSurge, FangAndClaw, DragonFireDive, SpineshafterDive, RaidenThrust, MirageDive, SpineshafterDive, VorpalThrust, LifeSurge,
+                HeavenThrust, FangAndClaw, WheelingThrust, RaidenThrust, WyrmwindThrust, Disembowel, ChaoticSpring, WheelingThrust, FangAndClaw,
+                Geirskogul, RaidenThrust, HighJump, MirageDive, VorpalThrust, HeavenThrust, FangAndClaw, WheelingThrust, RaidenThrust, WyrmwindThrust,
+                Disembowel, ChaoticSpring, WheelingThrust, FangAndClaw, RaidenThrust, LanceCharge, VorpalThrust, LifeSurge, Geirskogul, HeavenThrust,
+                Nastrond, HighJump, FangAndClaw, Stardiver, WheelingThrust, MirageDive, RaidenThrust, WyrmwindThrust, VorpalThrust, Nastrond, HeavenThrust,
+                FangAndClaw, WheelingThrust]
+
+    MNKOpener = [DragonKick, PerfectBalance, TwinSnakes, RiddleOfFire, Demolish, WaitAbility(1), Potion, Bootshine, Brotherhood, TheForbiddenChakra, RisingPhoenix, RiddleOfWind, DragonKick, TheForbiddenChakra, PerfectBalance, Bootshine, SnapPunch, TheForbiddenChakra, TwinSnakes, RisingPhoenix, TheForbiddenChakra, DragonKick, TrueStrike, TheForbiddenChakra, Demolish, Bootshine, TwinSnakes, SnapPunch, DragonKick, TrueStrike, SnapPunch, Bootshine, TwinSnakes, Demolish, DragonKick, TrueStrike, SnapPunch, TheForbiddenChakra, Bootshine, TwinSnakes, SnapPunch, DragonKick, TrueStrike, Demolish, Bootshine, TwinSnakes, RiddleOfFire, DragonKick, Bootshine, TheForbiddenChakra, DragonKick, ElixirField, Bootshine, TwinSnakes, DragonKick, DragonKick, DragonKick, DragonKick ]
+    NINOpener = [Jin, Chi, Ten, Huton, Hide, Ten, Chi, Jin, WaitAbility(5), Suiton, Kassatsu, SpinningEdge, Potion, GustSlash, Mug, Bunshin, PhantomKamaitachi, TrickAttack, AeolianEdge, DreamWithinADream, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, TenChiJin, Ten2, Chi2, Jin2, Meisui, FleetingRaiju, Bhavacakra, FleetingRaiju, Bhavacakra, Ten, Chi, Raiton, FleetingRaiju, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, GustSlash, ArmorCrush, Bhavacakra, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, Ten, Chi, Jin, Suiton, GustSlash, AeolianEdge, Kassatsu, SpinningEdge, GustSlash, AeolianEdge, TrickAttack, SpinningEdge, DreamWithinADream, Bhavacakra, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, Ten, Chi, Raiton, FleetingRaiju, FleetingRaiju, GustSlash, ArmorCrush, SpinningEdge, GustSlash, AeolianEdge]
+    RPROpener = [Soulsow, Harpe, ShadowOfDeath, ArcaneCircle, SoulSlice, SoulSlice, Potion, PlentifulHarvest, Enshroud, CrossReaping, VoidReaping, LemureSlice, CrossReaping, VoidReaping, LemureSlice, Communio, Gluttony, Gibbet, Gallows, UnveiledGibbet, Gibbet, ShadowOfDeath, Slice, WaxingSlice, InfernalSlice, Slice, WaxingSlice, InfernalSlice, UnveiledGallows, Gallows, SoulSlice, UnveiledGibbet, Gibbet, Enshroud, CrossReaping, VoidReaping, LemureSlice, CrossReaping, VoidReaping, LemureSlice, Communio, HarvestMoon ]
+
+    
+    NINPlayer.ActionSet = NINOpener
+    SAMPlayer.ActionSet = SAMOpener
+    DRGPlayer.ActionSet = DRGOpener
+    RPRPlayer.ActionSet = RPROpener
+    MNKPlayer.ActionSet = MNKOpener
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    data = SaveFight(Event, 0, 500, "", saveFile=False)
+    restoredFightObj = RestoreFightObject(data)
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    restoredFightObj.RequirementOn = False
+    restoredFightObj.ShowGraph = False
+    restoredFightObj.IgnoreMana = True
+    restoredFightObj.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [Event.TimeStamp, restoredFightObj.TimeStamp, 
+            Event.PlayerList[0].TotalPotency,restoredFightObj.PlayerList[0].TotalPotency,Event.PlayerList[0].TotalDamage,restoredFightObj.PlayerList[0].TotalDamage,
+            Event.PlayerList[1].TotalPotency,restoredFightObj.PlayerList[1].TotalPotency,Event.PlayerList[1].TotalDamage,restoredFightObj.PlayerList[1].TotalDamage,
+            Event.PlayerList[2].TotalPotency,restoredFightObj.PlayerList[2].TotalPotency,Event.PlayerList[2].TotalDamage,restoredFightObj.PlayerList[2].TotalDamage,
+            Event.PlayerList[3].TotalPotency,restoredFightObj.PlayerList[3].TotalPotency,Event.PlayerList[3].TotalDamage,restoredFightObj.PlayerList[3].TotalDamage,
+            Event.PlayerList[4].TotalPotency,restoredFightObj.PlayerList[4].TotalPotency,Event.PlayerList[4].TotalDamage,restoredFightObj.PlayerList[4].TotalDamage]
+
+def rfoTest4ValidationFunction(testResults) -> (bool, list):
+    passed = True
+
+    for i in range(0,11):
+        passed = passed and testResults[2*i] == testResults[2*i + 1]
+
+    return passed , testResults
+
+rfotest4 = test("RestoreFightObject test 4", rfoTest4TestFunction, rfoTest4ValidationFunction)
+rfoTestSuite.addTest(rfotest4)
+
+# Test
+
+def rfoTest5TestFunction() -> None:
+    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    DRKStat = {'MainStat': 3338, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 591, 'Crit': 2627, 'DH': 976, 'Piety': 390} # Stats for DarkKnight
+    WARStat = {'MainStat': 3338, 'WD': 132, 'Det': 2023, 'Ten': 529, 'SS': 400, 'SkS': 948, 'Crit': 2481, 'DH': 652, 'Piety': 390} # Stats for Warrior
+    WARStat = {'MainStat': 3338, 'WD': 132, 'Det': 2076, 'Ten': 529, 'SS': 400, 'SkS': 934, 'Crit': 2586, 'DH': 508, 'Piety': 390} # Stats for Warrior
+    PLDStat = {'MainStat': 3328, 'WD': 132, 'Det': 2182, 'Ten': 529, 'SS': 400, 'SkS': 400, 'Crit': 2540, 'DH': 976, 'Piety': 390}# Stats for Paladin
+    GNBStat = {'MainStat': 3338, 'WD': 132, 'Det': 1944, 'Ten': 529, 'SS': 400, 'SkS': 1462, 'Crit': 2262, 'DH': 436, 'Piety': 390}# Stats for Gunbreaker
+
+    DRKPlayer = Player([], [], DRKStat, JobEnum.DarkKnight)
+    WARPlayer = Player([], [], WARStat, JobEnum.Warrior)
+    PLDPlayer = Player([], [], PLDStat, JobEnum.Paladin)
+    GNBPlayer = Player([], [], GNBStat, JobEnum.Gunbreaker)
+
+    Event.AddPlayer([DRKPlayer,WARPlayer,PLDPlayer,GNBPlayer])
+
+    DRKOpener = [BloodWeapon,WaitAbility(5),TBN(DRKPlayer), HardSlash, EdgeShadow, Delirium, SyphonStrike, WaitAbility(1), Potion, Souleater, LivingShadow, SaltedEarth, 
+                HardSlash, Shadowbringer, EdgeShadow, Bloodspiller, EdgeShadow, CarveSpit, Bloodspiller, Plunge, EdgeShadow, Bloodspiller, SaltDarkness, Shadowbringer, 
+                SyphonStrike, EdgeShadow, Plunge,Souleater, HardSlash, SyphonStrike, Souleater, Bloodspiller, HardSlash, SyphonStrike, Souleater, HardSlash, SyphonStrike, 
+                Plunge, Souleater, Bloodspiller, HardSlash, SyphonStrike, Souleater, HardSlash, BloodWeapon, SyphonStrike, Delirium, Bloodspiller, Bloodspiller, EdgeShadow, 
+                Bloodspiller, Bloodspiller, CarveSpit, Souleater, EdgeShadow, HardSlash ]
+    WAROpener = [Tomahawk, Infuriate, HeavySwing, Upheaval ,Maim, WaitAbility(1), Potion, StormEye, InnerRelease, Onslaught, InnerChaos, Onslaught, PrimalRend,Onslaught, 
+                 FellCleave, FellCleave, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath, FellCleave, Infuriate, Upheaval, InnerChaos, HeavySwing, Maim, StormEye, 
+                 HeavySwing, Maim, StormPath, FellCleave, HeavySwing, Maim, Onslaught, StormEye , HeavySwing, Upheaval, Maim, StormPath, InnerRelease, PrimalRend, FellCleave, 
+                 FellCleave, Onslaught, FellCleave, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath]
+    PLDOpener = [HolySpirit, FastBlade, RiotBlade, WaitAbility(1), Potion, RoyalAuthority, FightOrFlight, RequestACat, GoringBlade, CircleScorn, Expiacion, Confetti, Intervene, BladeFaith, Intervene, BladeTruth, BladeValor, HolySpirit, Atonement, Atonement, Atonement, FastBlade, RiotBlade, RoyalAuthority, Atonement, CircleScorn, Expiacion, Atonement, Atonement, FastBlade, RiotBlade, HolySpirit, RoyalAuthority, Atonement, Atonement, Atonement, FastBlade, RiotBlade, FightOrFlight, RequestACat, GoringBlade, Expiacion, Confetti, BladeFaith, Intervene, BladeTruth, Intervene, BladeValor, HolySpirit, RoyalAuthority, HolySpirit, Atonement ]
+    GNBOpener = [KeenEdge, Potion, BrutalShell, NoMercy, Bloodfest, GnashingFang, JugularRip, SonicBreak, BowShock, BlastingZone, DoubleDown, RoughDivide, SavageClaw, AbdomenTear, WickedTalon, EyeGouge, RoughDivide, SolidBarrel, BurstStrike, Hypervelocity, KeenEdge, BrutalShell, SolidBarrel, KeenEdge, BrutalShell, GnashingFang, JugularRip,SavageClaw, AbdomenTear, BlastingZone, WickedTalon, EyeGouge, SolidBarrel, KeenEdge, BrutalShell, SolidBarrel, KeenEdge, BrutalShell, SolidBarrel,KeenEdge, BrutalShell, NoMercy, RoughDivide, GnashingFang, JugularRip, DoubleDown, BlastingZone, RoughDivide, SavageClaw, AbdomenTear, WickedTalon, EyeGouge, SolidBarrel, BurstStrike, Hypervelocity, KeenEdge, BrutalShell, SolidBarrel]
+
+    DRKPlayer.ActionSet = DRKOpener
+    WARPlayer.ActionSet = WAROpener
+    PLDPlayer.ActionSet = PLDOpener
+    GNBPlayer.ActionSet = GNBOpener
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    data = SaveFight(Event, 0, 500, "", saveFile=False)
+    restoredFightObj = RestoreFightObject(data)
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    restoredFightObj.RequirementOn = False
+    restoredFightObj.ShowGraph = False
+    restoredFightObj.IgnoreMana = True
+    restoredFightObj.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [Event.TimeStamp, restoredFightObj.TimeStamp, 
+            Event.PlayerList[0].TotalPotency,restoredFightObj.PlayerList[0].TotalPotency,Event.PlayerList[0].TotalDamage,restoredFightObj.PlayerList[0].TotalDamage,
+            Event.PlayerList[1].TotalPotency,restoredFightObj.PlayerList[1].TotalPotency,Event.PlayerList[1].TotalDamage,restoredFightObj.PlayerList[1].TotalDamage,
+            Event.PlayerList[2].TotalPotency,restoredFightObj.PlayerList[2].TotalPotency,Event.PlayerList[2].TotalDamage,restoredFightObj.PlayerList[2].TotalDamage,
+            Event.PlayerList[3].TotalPotency,restoredFightObj.PlayerList[3].TotalPotency,Event.PlayerList[3].TotalDamage,restoredFightObj.PlayerList[3].TotalDamage]
+
+def rfoTest5ValidationFunction(testResults) -> (bool, list):
+    passed = True
+
+    for i in range(0,9):
+        passed = passed and testResults[2*i] == testResults[2*i + 1]
+
+    return passed , testResults
+
+rfotest5 = test("RestoreFightObject test 5", rfoTest5TestFunction, rfoTest5ValidationFunction)
+rfoTestSuite.addTest(rfotest5)
+
+# Test
+
+def rfoTest6TestFunction() -> None:
+    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+
+    MCHStat = {'MainStat': 3378, 'WD': 132, 'Det': 1844, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2557, 'DH': 1432, 'Piety': 390} # Stats for Machinist
+    BRDStat = {'MainStat': 3378, 'WD': 132, 'Det': 1885, 'Ten': 400, 'SS': 400, 'SkS': 479, 'Crit': 2598, 'DH': 1252, 'Piety': 390} # Stats for Bard
+    DNCStat = {'MainStat': 3378, 'WD': 132, 'Det': 1844, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2557, 'DH': 1396, 'Piety': 390} # Stats for Dancer
+
+    MCHPlayer = Player([], [], MCHStat, JobEnum.Machinist)
+    BRDPlayer = Player([], [], BRDStat, JobEnum.Bard)
+    DNCPlayer = Player([], [], DNCStat, JobEnum.Dancer)
+
+    Event.AddPlayer([MCHPlayer,BRDPlayer,DNCPlayer])
+
+    BRDOpener = [Stormbite, WanderingMinuet, RagingStrike, Causticbite, EmpyrealArrow, BloodLetter, RefulgentArrow, RadiantFinale, BattleVoice, BurstShot, Barrage, RefulgentArrow, Sidewinder, BurstShot, RefulgentArrow, BurstShot, EmpyrealArrow, BurstShot, PitchPerfect3, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow]#,MageBallad, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, ArmyPaeon, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow]
+    MCHOpener = [Reassemble, WaitAbility(5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, 
+                Reassemble, WaitAbility(2.2), Wildfire, ChainSaw, Automaton,Hypercharge, HeatBlast, Ricochet, HeatBlast, GaussRound, HeatBlast, Ricochet, 
+                HeatBlast, GaussRound, HeatBlast, Ricochet, Drill, GaussRound, Ricochet, SplitShot, Ricochet, SlugShot, CleanShot, SplitShot, SlugShot, 
+                CleanShot, SplitShot,  AirAnchor, Drill, SlugShot, CleanShot, SplitShot, GaussRound, Ricochet, SlugShot, CleanShot, SplitShot, SlugShot, 
+                Automaton, CleanShot, SplitShot, SlugShot, CleanShot, Drill, SplitShot, Hypercharge, HeatBlast, GaussRound, HeatBlast, Ricochet, HeatBlast, 
+                GaussRound, HeatBlast, Ricochet, HeatBlast, Reassemble, ChainSaw, GaussRound, Ricochet, SlugShot, CleanShot, SplitShot, SlugShot, CleanShot]
+    DNCOpener = [ClosedPosition(MCHPlayer),StandardStep, Pirouette, Jete, StandardFinish, TechnicalStep, Pirouette, Jete, Entrechat, Emboite, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Jete, Pirouette, StandardFinish, Cascade, SaberDance, ReverseCascade, Fountain, FountainFall, Cascade, SaberDance, ReverseCascade, Fountain, FountainFall, Cascade, ReverseCascade, StandardStep, Emboite, Jete, StandardFinish, SaberDance, Fountain, Cascade, Fountain, FountainFall, Flourish, FanDance3, SaberDance, FanDance4, FountainFall, ReverseCascade, FanDance1, FanDance3, Cascade, ReverseCascade, Fountain, FountainFall]
+
+    MCHPlayer.ActionSet = MCHOpener
+    BRDPlayer.ActionSet = BRDOpener
+    DNCPlayer.ActionSet = DNCOpener
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    data = SaveFight(Event, 0, 500, "", saveFile=False)
+    restoredFightObj = RestoreFightObject(data)
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    restoredFightObj.RequirementOn = False
+    restoredFightObj.ShowGraph = False
+    restoredFightObj.IgnoreMana = True
+    restoredFightObj.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    return [Event.TimeStamp, restoredFightObj.TimeStamp, #[89.99, 89.99
+            Event.PlayerList[0].TotalPotency,restoredFightObj.PlayerList[0].TotalPotency,Event.PlayerList[0].TotalDamage,restoredFightObj.PlayerList[0].TotalDamage,#21650, 21650, 751042, 751042,
+            Event.PlayerList[1].TotalPotency,restoredFightObj.PlayerList[1].TotalPotency,Event.PlayerList[1].TotalDamage,restoredFightObj.PlayerList[1].TotalDamage,#20100, 20100, 858422, 938710,
+            Event.PlayerList[2].TotalPotency,restoredFightObj.PlayerList[2].TotalPotency,Event.PlayerList[2].TotalDamage,restoredFightObj.PlayerList[2].TotalDamage]
+
+def rfoTest6ValidationFunction(testResults) -> (bool, list):
+    passed = True
+
+    for i in range(0,7):
+        passed = passed and testResults[2*i] == testResults[2*i + 1]
+
+    return passed , testResults
+
+rfotest6 = test("RestoreFightObject test 6", rfoTest6TestFunction, rfoTest6ValidationFunction)
+rfoTestSuite.addTest(rfotest6)
+
 
 
 rfoTestSuite.executeTestSuite()

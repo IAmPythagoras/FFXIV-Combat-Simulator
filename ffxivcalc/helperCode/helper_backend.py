@@ -299,7 +299,7 @@ def RestoreFightObject(data : dict, name : str = ""):
         #We will then check for Auras and do the appropriate effect
         
         # Logging the stat of the player
-        logging.debug("Player id " + str(job_object.playerID) + " has stats : " + str(job_object.Stat))
+        helper_logging.debug("Player id " + str(job_object.playerID) + " has stats : " + str(job_object.Stat))
 
         for aura in player["Auras"]: #Going through all buffs in the player
             #We will look for a selection of buffs that are important. We will assume
