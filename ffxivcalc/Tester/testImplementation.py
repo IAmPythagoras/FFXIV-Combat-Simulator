@@ -14438,11 +14438,11 @@ def rfoTest6TestFunction() -> None:
     Event.RequirementOn = False
     Event.ShowGraph = False
     Event.IgnoreMana = True
-
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
     data = SaveFight(Event, 0, 500, "", saveFile=False)
     restoredFightObj = RestoreFightObject(data)
 
-    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+    
 
     restoredFightObj.RequirementOn = False
     restoredFightObj.ShowGraph = False

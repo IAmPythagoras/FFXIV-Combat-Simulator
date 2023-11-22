@@ -174,6 +174,8 @@ def SaveFight(Event, countdown, fightDuration, saveName, saveFile=True):
         PlayerIDList += [Player.playerID]
 
         PlayerDict["stat"] = Player.Stat
+                             # Using base main stat since it will have been affected if the fight has already been simulated
+        PlayerDict["stat"]["MainStat"] = Player.baseMainStat
         actionList = []
 
         PlayerDict["Auras"] = copy.deepcopy(Player.auras)
