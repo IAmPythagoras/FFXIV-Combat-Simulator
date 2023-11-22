@@ -14200,28 +14200,32 @@ def rfoTest3TestFunction() -> None:
 
     Dummy = Enemy()
     Event = Fight(Dummy, False)
-    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 650, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
-
-    SCHOpener = [Broil, Biolysis, Aetherflow, Broil, Swiftcast, Broil, ChainStratagem, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, 
-                Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Biolysis, Broil, Broil,
-                Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil]
-    WHMOpener = [Glare, ThinAir, Dia, Glare, WaitAbility(1), PresenceOfMind, Glare, Glare, Glare, Glare, Glare, ThinAir, Glare, Glare, Glare, Glare, Glare, Glare, Dia, Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare]
-    ASTOpener = [Malefic, Lightspeed, Combust, Malefic, Malefic, Divination, Malefic, MinorArcana, Astrodyne, Malefic, LordOfCrown, Malefic, Malefic, Malefic, Malefic, 
-                Malefic, Malefic,Combust, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic,
-                Malefic, Malefic, Malefic]
-    SGEOpener = [Dosis, Eukrasia, EukrasianDosis, Dosis, Dosis, Phlegma, Phlegma, Dosis, Dosis, Dosis, Dosis, Dosis, 
-                Dosis, Dosis, Dosis, Eukrasia, EukrasianDosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, 
-                Dosis, Dosis, Dosis, Dosis, Dosis, Dosis]
 
     SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 1412, 'SkS': 400, 'Crit': 2306, 'DH': 440, 'Piety': 390} # Stats for Scholar
     WHMStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 1242, 'SkS': 400, 'Crit': 2502, 'DH': 436, 'Piety': 390} # Stats for WhiteMage
     ASTStat =  {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 1242, 'SkS': 400, 'Crit': 2502, 'DH': 436, 'Piety': 390} # Stats for Astrologian
     SGEStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 954, 'SkS': 400, 'Crit': 2502, 'DH': 724, 'Piety': 390} # Stats for Sage
 
-    SCHPlayer = Player(SCHOpener, [], SCHStat, JobEnum.Scholar)
-    WHMPlayer = Player(WHMOpener, [], WHMStat, JobEnum.WhiteMage)
-    SGEPlayer = Player(SGEOpener, [], SGEStat, JobEnum.Sage)
-    ASTPlayer = Player(ASTOpener, [], ASTStat, JobEnum.Astrologian)
+    SCHPlayer = Player([], [], SCHStat, JobEnum.Scholar)
+    WHMPlayer = Player([], [], WHMStat, JobEnum.WhiteMage)
+    SGEPlayer = Player([], [], SGEStat, JobEnum.Sage)
+    ASTPlayer = Player([], [], ASTStat, JobEnum.Astrologian)
+
+    SCHOpener = [Broil, Biolysis, Aetherflow, Broil, Swiftcast, Broil, ChainStratagem, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, 
+                Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Biolysis, Broil, Broil,
+                Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil]
+    WHMOpener = [Glare, ThinAir, Dia, Glare, WaitAbility(1), PresenceOfMind, Glare, Glare, Glare, Glare, Glare, ThinAir, Glare, Glare, Glare, Glare, Glare, Glare, Dia, Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare]
+    ASTOpener = [Malefic, Lightspeed, Combust, Bole(SCHPlayer),Malefic, Ewer(WHMPlayer),Malefic, Spire(SGEPlayer),Divination, Malefic, MinorArcana, Astrodyne, Malefic, LordOfCrown, Malefic,Spear(ASTPlayer), Malefic, Malefic, Malefic, 
+                Malefic, Malefic,Combust, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic,
+                Malefic, Malefic, Malefic]
+    SGEOpener = [Dosis, Eukrasia, EukrasianDosis, Dosis, Dosis, Phlegma, Phlegma, Dosis, Dosis, Dosis, Dosis, Dosis, 
+                Dosis, Dosis, Dosis, Eukrasia, EukrasianDosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, 
+                Dosis, Dosis, Dosis, Dosis, Dosis, Dosis]
+
+    SCHPlayer.ActionSet = SCHOpener
+    WHMPlayer.ActionSet = WHMOpener
+    ASTPlayer.ActionSet = ASTOpener
+    SGEPlayer.ActionSet = SGEOpener
     
     Event.AddPlayer([SCHPlayer,WHMPlayer,SGEPlayer,ASTPlayer])
 

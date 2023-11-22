@@ -121,7 +121,7 @@ class Fight:
         self.PlayerList = [] # Empty player list
         self.MaxPotencyPlentifulHarvest = False # True will make Plentiful Harvest do max potency regardless of player.
         self.TimeUnit = 0
-        self.nextID = 0 # Used to give ID to players
+        self.nextID = 1 # Used to give ID to players. ID 0 is invalid
 
         self.simulationRecord = SimulationRecord() # Creating SimulationRecord object
 
