@@ -307,6 +307,8 @@ def Arcanum(Target, Type, Melee):
             Player.EffectToRemove.append(ArcanumCheck)
 
     def ApplyArcanum(Player, Spell):
+                             # Refreshing targetID
+        ArcanumSpell.TargetID = Target.playerID
         Player.HasCard = False
                              # Default value for buff
         buff = ArcanumBuffMin

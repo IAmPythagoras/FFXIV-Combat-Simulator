@@ -330,6 +330,9 @@ def DragonSight(Target):
             Player.EffectToRemove.append(DragonSightCheck)
 
     def ApplyDragonSight(Player, Enemy):
+                             # Refreshing target playerID
+        DragonSightSpell.TargetID = Target.playerID
+
         Player.DragonSightCD = 120
         Player.DragonSightTimer = 20
 
