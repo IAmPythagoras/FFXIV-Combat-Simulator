@@ -319,12 +319,14 @@ def TBN(Target):
 
     def ApplyTBN(Player, Enemy):
         ApplyDarkArts(Player, Enemy)
+                             # Refreshing targetID
+        TBNSpell.TargetID = Target.playerID
 
         TBNShield = Shield(int(Target.MaxHP * 0.25), 7, Target)
         Target.ShieldList.insert(0, TBNShield) # Inserting shield at first since TBN has prio
 
     TBNSpell = DRKSkill(7393, False, Lock, 0, 0, 3000, 0, ApplyTBN, [TBNRequirement])     #Simply makes the next EdgeShadow free for now.
-    TBNSpell.TargetID == Target.playerID
+    TBNSpell.TargetID = Target.playerID
     return TBNSpell
 
 
