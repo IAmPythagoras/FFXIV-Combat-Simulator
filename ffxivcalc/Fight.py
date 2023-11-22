@@ -121,6 +121,7 @@ class Fight:
         self.PlayerList = [] # Empty player list
         self.MaxPotencyPlentifulHarvest = False # True will make Plentiful Harvest do max potency regardless of player.
         self.TimeUnit = 0
+        self.nextID = 0 # Used to give ID to players
 
         self.simulationRecord = SimulationRecord() # Creating SimulationRecord object
 
@@ -151,12 +152,11 @@ class Fight:
         self.ExtractInfo = DefaultExtractInfo
 
     def AddPlayer(self, Players):
-        nextID = 0
         for player in Players:
             player.CurrentFight = self
             self.PlayerList.append(player)
-            player.playerID = nextID
-            nextID += 1
+            player.playerID = self.nextID
+            self.nextID += 1
 
     def SimulateZIPFight(self):
         """

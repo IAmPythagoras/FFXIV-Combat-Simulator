@@ -746,6 +746,7 @@ class MachinistActions(ActionEnum):
     CleanShot = 7413
     HeatBlast = 7410
     Wildfire = 2878
+    WildfireOff = -2878
     Detonator = 1111111
     GaussRound = 2874
     Ricochet = 2890
@@ -755,6 +756,7 @@ class MachinistActions(ActionEnum):
     Bunker = 15
     Collider = 16
     QueenAA = -24
+    
 
 # Dancer
 

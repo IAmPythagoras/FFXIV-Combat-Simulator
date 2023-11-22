@@ -385,6 +385,8 @@ Ending = DancerSpell(18073, False, 0, 0, ApplyEnding, [], False)
 
 def ClosedPosition(Partner, InFight="True"):
     def ApplyClosedPosition(Player, Enemy):
+                             # Updating target ID once the action has been done.
+        ClosedPositionSpell.TargetID = Partner.playerID
 
         if InFight : Player.ClosedPositionCD = 30 #Only update CD if in Fight, since we can dance partner before begins
 
