@@ -766,12 +766,16 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         """
                              # Snapshotting all buff on that action.
         buffList = []
+        potActive = False
         if type == 0 or type == 3 or not spellObj.onceThroughFlag:
                              # if AA or action take all curent buff/debuff
             for buff in Player.buffList:
                 buffList.append(buff)
             for buff in Enemy.buffList:
                 buffList.append(buff)
+
+            potActive = Player.PotionTimer > 0 or (isPet and Player.Master.PotionTimer > 0)
+
         else:
                              # If is DOT we take the snapshotted buffs + debuff if ground
             for buff in spellObj.MultBonus:
@@ -779,11 +783,11 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
                              # If DOT is a ground DOT we have to add buffs that are debuff
             if spellObj.isGround:
                 for buff in Player.buffList: 
-                    if buff.isDebuff:
-                        buffList.append(buff)
+                    if buff.isDebuff: buffList.append(buff)
                 for buff in Enemy.buffList:
-                    if buff.isDebuff:
-                        buffList.append(buff)
+                    if buff.isDebuff: buffList.append(buff)
+
+            potActive = spellObj.potSnapshot
 
         if auto_crit and auto_DH : fight_logging.debug("Auto Crit/DH prebaked")
         elif auto_crit : fight_logging.debug("Auto Crit prebaked")
@@ -800,7 +804,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
                              # Giving dh and crit bonus
         newPreBaked.CritBonus = CritRateBonus
         newPreBaked.DHBonus = DHRateBonus
-        newPreBaked.potionIsActive =  Player.PotionTimer > 0 or (isPet and Player.Master.PotionTimer > 0)
+        newPreBaked.potionIsActive = potActive
         (Player if not isPet else Player.Master).PreBakedActionSet.append(newPreBaked)
         
         return Potency, Potency        # Exit the function since we are not interested in the immediate damage value. Still return potency as to not break the fight's duration.
