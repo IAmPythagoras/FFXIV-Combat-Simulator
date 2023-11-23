@@ -656,7 +656,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
                              # Check if DOT. If not we take current buffs.
                              # If is a dot we take snapshotted buffs.
-    if (type == 0 or type == 3) or ((type == 1 or type == 2) and not spellObj.onceThroughFlag):
+    if (type == 0 or type == 3) or not spellObj.onceThroughFlag:
         if round(Player.CritRateBonus,2) > 0 : thisPage.addCritBuffList(("Other", Player.CritRateBonus))
         if round(Player.DHRateBonus,2) > 0 : thisPage.addDHBuffList(("Other", Player.DHRateBonus))
 
@@ -675,7 +675,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         if Enemy.BattleVoice: 
             DHRateBonus += 0.2 # If BattleVoice is active, increase DHRate
             thisPage.addDHBuffList(("BV", 0.2))
-    elif (type == 1 or type == 2) and spellObj.onceThroughFlag:
+    else:
                              # If dot and has gone through once (so has snapshotted buff) we use them
                              # This only considers Crit,DH and Pot snapshot
         DHRateBonus = spellObj.DHBonus
