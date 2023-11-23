@@ -766,10 +766,24 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         """
                              # Snapshotting all buff on that action.
         buffList = []
-        for buff in Player.buffList:
-            buffList.append(buff)
-        for buff in Enemy.buffList:
-            buffList.append(buff)
+        if type == 0 or type == 3:
+                             # if AA or action take all curent buff/debuff
+            for buff in Player.buffList:
+                buffList.append(buff)
+            for buff in Enemy.buffList:
+                buffList.append(buff)
+        else :
+                             # If is DOT we take the snapshotted buffs + debuff if ground
+            for buff in spellObj.MultBonus:
+                buffList.append(buff)
+                             # If DOT is a ground DOT we have to add buffs that are debuff
+            if spellObj.isGround:
+                for buff in Player.buffList: 
+                    if buff.isDebuff:
+                        buffList.append(buff)
+                for buff in Enemy.buffList:
+                    if buff.isDebuff:
+                        buffList.append(buff)
 
         if auto_crit and auto_DH : fight_logging.debug("Auto Crit/DH prebaked")
         elif auto_crit : fight_logging.debug("Auto Crit prebaked")
