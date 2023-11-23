@@ -246,7 +246,7 @@ class Fight:
 
         fight_logging.debug("counted GCD  : " + str(countGCD))
         fight_logging.debug("previous GCD : " + str(player.GCDCounter))
-        if getInfo : return round(ExpectedDamage/timeStamp,2), {}, timeStamp, totalPotency
+        if getInfo : return round(ExpectedDamage/timeStamp,2), ExpectedDamage, timeStamp, totalPotency
         return round(ExpectedDamage/timeStamp if True else ExpectedDamage,2), {}
 
         
@@ -595,7 +595,7 @@ def GCDReductionEffect(Player, Spell) -> None:
         if Spell.RecastTime < 1.5 and Spell.RecastTime > 0 : Spell.RecastTime = 1.5 # A GCD cannot go under 1.5 sec
 
 # Compute Damage
-def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBakedAction : bool = False, PlayerIDSavePreBakedAction : int = 0) -> float:
+def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBakedAction : bool = False, PlayerIDSavePreBakedAction : int = 1) -> float:
 
     """
     This function computes the damage from a given potency.

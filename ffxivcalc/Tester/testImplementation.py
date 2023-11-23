@@ -14471,7 +14471,181 @@ rfotest6 = test("RestoreFightObject test 6", rfoTest6TestFunction, rfoTest6Valid
 rfoTestSuite.addTest(rfotest6)
 
 
-if True:
+######################################
+#      preBakedFight testSuite       #
+######################################
+
+# This test suite tests the validity of preBakedFight simulations.
+# It will compare the endTime, the DPS/TP/TD of the player we are preBaking the fight for.
+
+from ffxivcalc.GearSolver.Solver import computeDamageValue
+
+pbfTestSuite = testSuite("PreBakedFight simulation test suite")
+
+# Test
+
+def pbfTest1TestFunction() -> None:
+    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    stat = {'MainStat': 3378, 'WD': 132, 'Det': 1844, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2557, 'DH': 1396, 'Piety': 390} # Stats for Dancer
+
+    player = Player([], [], stat, JobEnum.Dancer)
+
+    DNCOpener = [StandardStep, Pirouette, Jete, StandardFinish, TechnicalStep, Pirouette, Jete, Entrechat, Emboite, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Jete, Pirouette, StandardFinish, Cascade, SaberDance, ReverseCascade, Fountain, FountainFall, Cascade, SaberDance, ReverseCascade, Fountain, FountainFall, Cascade, ReverseCascade, StandardStep, Emboite, Jete, StandardFinish, SaberDance, Fountain, Cascade, Fountain, FountainFall, Flourish, FanDance3, SaberDance, FanDance4, FountainFall, ReverseCascade, FanDance1, FanDance3, Cascade, ReverseCascade, Fountain, FountainFall]
+
+    player.ActionSet = DNCOpener
+
+    Event.AddPlayer([player])
+
+    comparedEvent = Event.deepCopy()
+
+    Event.SavePreBakedAction = True
+    Event.PlayerIDSavePreBakedAction = 1
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    comparedEvent.RequirementOn = False
+    comparedEvent.ShowGraph = False
+    comparedEvent.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+    comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+    f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
+    ExpectedDamage, randomDamageDict, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
+
+
+
+    return [ExpectedDamage,round(comparedEvent.PlayerList[0].TotalDamage/comparedEvent.TimeStamp,2), duration, comparedEvent.TimeStamp,potency, comparedEvent.PlayerList[0].TotalPotency]
+
+def pbfTest1ValidationFunction(testResults) -> (bool, list):
+    passed = True
+
+    for i in range(0,3):
+        passed = passed and testResults[2*i] == testResults[2*i + 1]
+
+    return passed , testResults
+
+pbftest1 = test("preBakedFight test 1", pbfTest1TestFunction, pbfTest1ValidationFunction)
+pbfTestSuite.addTest(pbftest1)
+
+# Test
+
+def pbfTest2TestFunction() -> None:
+    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 716, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    player = Player([], [], stat, JobEnum.BlackMage)
+
+    Opener = [SharpCast, Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, Swiftcast, Despair, 
+             Manafront,Triplecast, Fire4, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose, Fire3, Fire4, Fire4, Fire4, Despair, 
+             Blizzard3, Blizzard4,Paradox, Fire3, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Despair,
+             Blizzard3, Blizzard4,Paradox, Fire3, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Despair]
+
+    player.ActionSet = Opener
+
+    Event.AddPlayer([player])
+
+    comparedEvent = Event.deepCopy()
+
+    Event.SavePreBakedAction = True
+    Event.PlayerIDSavePreBakedAction = 1
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    comparedEvent.RequirementOn = False
+    comparedEvent.ShowGraph = False
+    comparedEvent.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+    comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+
+    f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
+    ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
+
+
+    return [expectedTotalDamage,comparedEvent.PlayerList[0].TotalDamage, duration, comparedEvent.TimeStamp,potency, comparedEvent.PlayerList[0].TotalPotency]
+
+def pbfTest2ValidationFunction(testResults) -> (bool, list):
+    passed = True
+
+    for i in range(0,3):
+        passed = passed and testResults[2*i] == testResults[2*i + 1]
+
+    return passed , testResults
+
+pbftest2 = test("preBakedFight test 2", pbfTest2TestFunction, pbfTest2ValidationFunction)
+pbfTestSuite.addTest(pbftest2)
+
+# Test
+
+def pbfTest3TestFunction() -> None:
+    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 716, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    player = Player([], [], stat, JobEnum.Summoner)
+
+    Opener = [Ruin3, Summon, SearingLight, AstralImpulse, AstralImpulse, AstralImpulse, EnergyDrainSMN, Enkindle, AstralImpulse, Deathflare, Fester,
+              AstralImpulse, Fester, AstralImpulse, Garuda, Swiftcast, Slipstream, Emerald, Emerald, Emerald, Emerald, Titan, Topaz, Mountain, Topaz,
+              Mountain, Topaz, Mountain, Topaz, Mountain, Ifrit, Cyclone, Strike, Ruby, Ruby, Ruin4, Ruin3]
+
+    player.ActionSet = Opener
+
+    Event.AddPlayer([player])
+
+    comparedEvent = Event.deepCopy()
+
+    Event.SavePreBakedAction = True
+    Event.PlayerIDSavePreBakedAction = 1
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    comparedEvent.RequirementOn = False
+    comparedEvent.ShowGraph = False
+    comparedEvent.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+    comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+
+    f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
+    ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
+
+
+    return [expectedTotalDamage,comparedEvent.PlayerList[0].TotalDamage, duration, comparedEvent.TimeStamp,potency, comparedEvent.PlayerList[0].TotalPotency]
+
+def pbfTest3ValidationFunction(testResults) -> (bool, list):
+    passed = True
+
+    for i in range(0,3):
+        passed = passed and testResults[2*i] == testResults[2*i + 1]
+
+    return passed , testResults
+
+pbftest3 = test("preBakedFight test 3", pbfTest3TestFunction, pbfTest3ValidationFunction)
+pbfTestSuite.addTest(pbftest3)
+
+
+
+
+pbfTestSuite.executeTestSuite()
+
+if False:
 
     failedTestDict = {}
 

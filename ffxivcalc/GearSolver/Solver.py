@@ -38,12 +38,13 @@ def getBaseStat(IsTank=False):
         "Piety" : 390
     }  
 
-def getGearDPSValue(Fight, gearSet : GearSet, PlayerIndex : int, n : int =10000):
+def getGearDPSValue(Fight, gearSet : GearSet, PlayerIndex : int,PlayerID : int, n : int =10000):
     """
     This function returns the expected damage of a gear set given a fight
     Fight -> Fight object
     gearSet : GearSet -> Gear set to be tested
     PlayerIndex : int -> index of the player to test the gear set on
+    PlayerID : int -> ID of the player
     n : int -> Number of times to run random simulations.
     """
                              # Computes the PreBakedAction and asks the fight object to remember those actions for the player with the given ID.
@@ -59,7 +60,7 @@ def getGearDPSValue(Fight, gearSet : GearSet, PlayerIndex : int, n : int =10000)
     player.Stat["SS" if IsCaster else "SkS"] = GearStat["SS" if IsCaster else "SkS"]
     Fight.SavePreBakedAction = True
                              # The playerIndex value is the ID value here.
-    Fight.PlayerIDSavePreBakedAction = PlayerIndex
+    Fight.PlayerIDSavePreBakedAction = PlayerID
     Fight.SimulateFight(0.01, 500, False, n=0,PPSGraph=False)
     player.DamageInstanceList = []
 
@@ -149,7 +150,7 @@ def findGCDTimerRange(minSPDValue : int, maxSPDValue : int, subGCDHasteAmount : 
 
 def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, PercentileToOpt : list = ["exp", "99", "90", "75", "50"],
               materiaDepthSearchIterator : int = 1, randomIteration : int = 10000, oddMateriaValue : int = 18, evenMateriaValue : int = 36,
-              PlayerIndex : int = 0, mendSpellSpeed : bool = False, maxSPDValue : int = 5000, minSPDValue : int = 0, useNewAlgo : bool = False, oversaturationIterationsPreGear : int = 0,
+              PlayerIndex : int = 0, PlayerID : int = 1, mendSpellSpeed : bool = False, maxSPDValue : int = 5000, minSPDValue : int = 0, useNewAlgo : bool = False, oversaturationIterationsPreGear : int = 0,
               oversaturationIterationsPostGear : int = 0, findOptMateriaGearBF : bool = False, swapDHDetBeforeSpeed : bool = True, minPiety : int = 390, gcdTimerSpecificActionList : dict = None):
     """
     Finds the BiS of the player given a Gear search space and a Fight. The Solver will output to a file named
@@ -174,6 +175,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     oddMateriaValue : int -> Stat gained from odd Materia
     evenMateriaValue : int -> Stat gained from even Materia
     PlayerIndex : int -> Index of the player for which the user wants to optimize the gearset. Must be the index of the player in the Fight.PlayerList.
+    PlayerID : int -> ID of the player for which we want to optimize.
     mendSpellSpeed : bool -> If True the solver will look at Spell Speed value for speed.
     maxSPDValue : int -> Max Spell Speed or skill Speed value. Every gear set above that value will be discarded.
     minSPDValue : int -> Min Spell Speed or skill Speed value. Every gear set under that value will be discarded.
@@ -213,7 +215,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     Fight.PlayerList[PlayerIndex].Stat = getBaseStat(IsTank=IsTank)
     Fight.SavePreBakedAction = True
                              # The playerIndex value is the ID value here.
-    Fight.PlayerIDSavePreBakedAction = PlayerIndex
+    Fight.PlayerIDSavePreBakedAction = PlayerID
 
                              # Finding haste amount if any.
     hasteAmount = 0
