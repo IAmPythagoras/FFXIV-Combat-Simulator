@@ -766,13 +766,13 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         """
                              # Snapshotting all buff on that action.
         buffList = []
-        if type == 0 or type == 3:
+        if type == 0 or type == 3 or not spellObj.onceThroughFlag:
                              # if AA or action take all curent buff/debuff
             for buff in Player.buffList:
                 buffList.append(buff)
             for buff in Enemy.buffList:
                 buffList.append(buff)
-        else :
+        elif type == 1 or type == 2  :
                              # If is DOT we take the snapshotted buffs + debuff if ground
             for buff in spellObj.MultBonus:
                 buffList.append(buff)
@@ -867,7 +867,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         Damage = math.floor(math.floor(Damage * math.floor(f_WD * (Player.Delay/3) *100 )/100) * Player.Trait)
     # Now applying buffs
 
-    if type == 0 or type == 3: # If Action or AA, then we apply the current buffs
+    if type == 0 or type == 3 or not spellObj.onceThroughFlag: # If Action or AA, then we apply the current buffs
         for buffs in Player.buffList: 
             Damage = math.floor(Damage * buffs.MultDPS) # Multiplying all buffs
             thisPage.addPercentBuff(buffs)
