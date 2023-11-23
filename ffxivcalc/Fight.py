@@ -772,7 +772,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
                 buffList.append(buff)
             for buff in Enemy.buffList:
                 buffList.append(buff)
-        elif type == 1 or type == 2  :
+        else:
                              # If is DOT we take the snapshotted buffs + debuff if ground
             for buff in spellObj.MultBonus:
                 buffList.append(buff)
