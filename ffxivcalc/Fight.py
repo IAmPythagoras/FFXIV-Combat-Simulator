@@ -60,6 +60,8 @@ class Fight:
         updated and will still target the player from the original fight (the one that is being deepcopied).
         To fix this we will look for the actions with target, get the targetID and replace these actions with the appropriate
         action that now targets the correct player.
+        Note that because of how this is implemented, any fight object that has a buff given to another player must have both the caster
+        and the target in its player list as if the target is not in the playerList it will not receive a valid ID.
         """
         from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import ClosedPosition
         from ffxivcalc.Jobs.Melee.Dragoon.Dragoon_Spell import DragonSight
@@ -892,6 +894,9 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         newPreBaked.CritBonus = CritRateBonus
         newPreBaked.DHBonus = DHRateBonus
         newPreBaked.potionIsActive = potActive
+                             # have to specific if is wildfire
+        if spellObj.id == -2878 : newPreBaked.isWildfire = True
+
         (Player if not isPet else Player.Master).PreBakedActionSet.append(newPreBaked)
         
         return Potency, Potency        # Exit the function since we are not interested in the immediate damage value. Still return potency as to not break the fight's duration.

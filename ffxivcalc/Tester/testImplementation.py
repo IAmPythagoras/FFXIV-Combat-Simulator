@@ -8980,7 +8980,7 @@ drgTestSuite = testSuite("Dragoon test suite")
 # Opener requirement, end time and potency test 1
 
 def drgTest1TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -10049,7 +10049,7 @@ mnkTestSuite = testSuite("Monk test suite")
 # Opener requirement, end time and potency test 1
 
 def mnkTest1TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -10941,7 +10941,7 @@ warTestSuite = testSuite("Warrior test suite")
 # Opener requirement, end time and potency test 1
 
 def warTest1TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -11530,7 +11530,7 @@ gnbTestSuite = testSuite("Gunbreaker test suite")
 # Opener requirement, end time and potency test 1
 
 def gnbTest1TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -12282,7 +12282,7 @@ pldTestSuite = testSuite("Paladin test suite")
 # Opener requirement, end time and potency test 1
 
 def pldTest1TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -13180,7 +13180,7 @@ drkTestSuite = testSuite("Dark Knight test suite")
 # Opener requirement, end time and potency test 1
 
 def drkTest1TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -14086,7 +14086,7 @@ from ffxivcalc.helperCode.helper_backend import SaveFight, RestoreFightObject
 rfoTestSuite = testSuite("helperCode.RestoreFightObject test suite")
 
 def rfoTest1TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -14131,7 +14131,7 @@ rfoTestSuite.addTest(rfotest1)
 # Test
 
 def rfoTest2TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -14195,7 +14195,7 @@ rfoTestSuite.addTest(rfotest2)
 # Test
 
 def rfoTest3TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -14264,7 +14264,7 @@ rfoTestSuite.addTest(rfotest3)
 # Test
 
 def rfoTest4TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -14339,7 +14339,7 @@ rfoTestSuite.addTest(rfotest4)
 # Test
 
 def rfoTest5TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -14409,7 +14409,7 @@ rfoTestSuite.addTest(rfotest5)
 # Test
 
 def rfoTest6TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -14487,7 +14487,7 @@ pbfTestSuite = testSuite("PreBakedFight simulation test suite")
 # Test
 
 def pbfTest1TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -14538,7 +14538,7 @@ pbfTestSuite.addTest(pbftest1)
 # Test
 
 def pbfTest2TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -14592,7 +14592,7 @@ pbfTestSuite.addTest(pbftest2)
 # Test
 
 def pbfTest3TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -14645,7 +14645,7 @@ pbfTestSuite.addTest(pbftest3)
 # Test
 
 def pbfTest4TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -14699,7 +14699,7 @@ pbfTestSuite.addTest(pbftest4)
 # Test
 
 def pbfTest5TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -14752,7 +14752,7 @@ pbfTestSuite.addTest(pbftest5)
 # Test
 
 def pbfTest6TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -14805,7 +14805,7 @@ pbfTestSuite.addTest(pbftest6)
 # Test
 
 def pbfTest7TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -14859,7 +14859,7 @@ pbfTestSuite.addTest(pbftest7)
 # Test
 
 def pbfTest8TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -14913,7 +14913,7 @@ pbfTestSuite.addTest(pbftest8)
 # Test
 
 def pbfTest9TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -14967,7 +14967,7 @@ pbfTestSuite.addTest(pbftest9)
 # Test
 
 def pbfTest10TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -14978,7 +14978,7 @@ def pbfTest10TestFunction() -> None:
     player = Player([], [], stat, JobEnum.Machinist)
 
     Opener = [Reassemble, WaitAbility(5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, 
-			Reassemble, WaitAbility(2.2), Wildfire, ChainSaw, Automaton,Hypercharge, HeatBlast, Ricochet, HeatBlast, GaussRound, HeatBlast, Ricochet, 
+			Reassemble, WaitAbility(2.2),ChainSaw, Automaton,Hypercharge, HeatBlast, Ricochet, HeatBlast, GaussRound, HeatBlast, Ricochet, 
 			HeatBlast, GaussRound, HeatBlast, Ricochet, Drill, GaussRound, Ricochet, SplitShot, Ricochet, SlugShot, CleanShot, SplitShot, SlugShot, 
 			CleanShot, SplitShot,  AirAnchor, Drill, SlugShot, CleanShot, SplitShot, GaussRound, Ricochet, SlugShot, CleanShot, SplitShot, SlugShot, 
 			Automaton, CleanShot, SplitShot, SlugShot, CleanShot, Drill, SplitShot, Hypercharge, HeatBlast, GaussRound, HeatBlast, Ricochet, HeatBlast, 
@@ -15023,7 +15023,7 @@ pbfTestSuite.addTest(pbftest10)
 # Test
 
 def pbfTest11TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -15078,7 +15078,7 @@ pbfTestSuite.addTest(pbftest11)
 # Test
 
 def pbfTest12TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -15099,7 +15099,7 @@ def pbfTest12TestFunction() -> None:
 
     player.ActionSet = Opener
 
-    Event.AddPlayer([player])
+    Event.AddPlayer([player,NINPlayer])
 
     comparedEvent = Event.deepCopy()
 
@@ -15136,7 +15136,7 @@ pbfTestSuite.addTest(pbftest12)
 # Test
 
 def pbfTest13TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -15191,7 +15191,7 @@ pbfTestSuite.addTest(pbftest13)
 # Test
 
 def pbfTest14TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -15247,7 +15247,7 @@ pbfTestSuite.addTest(pbftest14)
 # Test
 
 def pbfTest15TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -15301,7 +15301,7 @@ pbfTestSuite.addTest(pbftest15)
 # Test
 
 def pbfTest16TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -15356,7 +15356,7 @@ pbfTestSuite.addTest(pbftest16)
 # Test
 
 def pbfTest17TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -15410,7 +15410,7 @@ pbfTestSuite.addTest(pbftest17)
 # Test
 
 def pbfTest18TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()
@@ -15465,7 +15465,7 @@ pbfTestSuite.addTest(pbftest18)
 # Test
 
 def pbfTest19TestFunction() -> None:
-    """This test will try the opener of a dragoon. It will test for failed requirements but will not check for mana.
+    """
     """
 
     Dummy = Enemy()

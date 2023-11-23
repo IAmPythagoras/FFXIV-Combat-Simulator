@@ -172,6 +172,7 @@ class PreBakedAction:
         self.potionIsActive = False  # True if this action has a potion applied to it.
 
         self.isConditionalAction = isConditionalAction
+        self.isWildfire = False # True if is wildfire. Have to consider different since does not crit or dh.
 
     def resetPercentageBonus(self):
         self.PercentageBonus = []
@@ -208,6 +209,9 @@ class PreBakedAction:
 
         for buff in self.PercentageBonus:
             Damage = math.floor(Damage * buff)
+
+                             # If is wildfire don't crit or dh so just return
+        if self.isWildfire: return Damage, Damage
 
         
         auto_crit_bonus = (1 + self.CritBonus * f_CritMult) if self.AutoCrit else 1# Auto_crit bonus if buffed
@@ -431,6 +435,9 @@ class Spell:
 
                                 # If the action has 0 potency we skip the computation
                                 # Note that this also means the action won't be added as a ZIPAction for the player.
+                                # Also won't be added as a PreBakedAction. This can cause issue for waitAbility if scheduled at the end.
+                                # The preBakedAction in that case will go until the last AA which might not be at the same time as waitAbility 
+                                # finishes. This only affects end time and is not a super big issue. Probably just don't put waitAbility at the end?
             if self.Potency != 0 : minDamage,Damage= player.CurrentFight.ComputeDamageFunction(player, self.Potency, Enemy, self.DPSBonus, type, self, SavePreBakedAction = player.CurrentFight.SavePreBakedAction, PlayerIDSavePreBakedAction = player.CurrentFight.PlayerIDSavePreBakedAction)    #Damage computation
             
             # move this before damage??????
