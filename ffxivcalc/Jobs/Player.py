@@ -2440,7 +2440,7 @@ class Pet(Player):
         """
         This function is called upon reusing the object to reset the stats and other attributes that could interfere. 
         """
-        self.f_WD = self.Master.f_WD
+        self.f_WD = (Master.Stat["WD"]+floor(390*self.JobMod/1000))/100
         self.f_DET = self.Master.f_DET
         self.f_TEN = self.Master.f_TEN
         self.f_SPD = self.Master.f_SPD
