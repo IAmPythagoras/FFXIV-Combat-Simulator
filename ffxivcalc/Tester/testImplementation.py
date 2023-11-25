@@ -15765,7 +15765,7 @@ def pbfTest23ValidationFunction(testResults) -> (bool, list):
 
     return passed , testResults
 
-pbftest23 = test("preBakedFight test 23 - Ninja Dance partner", pbfTest23TestFunction, pbfTest23ValidationFunction)
+pbftest23 = test("preBakedFight test 23 - Machinist Dance partner", pbfTest23TestFunction, pbfTest23ValidationFunction)
 pbfTestSuite.addTest(pbftest23)
 
 # Test
@@ -15856,7 +15856,7 @@ def pbfTest25TestFunction() -> None:
 
     
     DNCOpener = [ClosedPosition(player),StandardStep, Pirouette, Jete, StandardFinish, TechnicalStep, Pirouette, Jete, Entrechat, Emboite, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Jete, Pirouette, StandardFinish, Cascade, SaberDance, ReverseCascade, Fountain, FountainFall, Cascade, SaberDance, ReverseCascade, Fountain, FountainFall, Cascade, ReverseCascade, StandardStep, Emboite, Jete, StandardFinish, SaberDance, Fountain, Cascade, Fountain, FountainFall, Flourish, FanDance3, SaberDance, FanDance4, FountainFall, ReverseCascade, FanDance1, FanDance3, Cascade, ReverseCascade, Fountain, FountainFall]
-    drgOpener = [DragonSight(player), BattleLitany]
+    drgOpener = []
     astOpener = [Bole(player), WaitAbility(20), Bole(player)]
 
     player.ActionSet = Opener
@@ -15864,7 +15864,7 @@ def pbfTest25TestFunction() -> None:
     drgPlayer.ActionSet = drgOpener
     astPlayer.ActionSet = astOpener
 
-    Event.AddPlayer([player, dncPlayer, drgPlayer, astPlayer])
+    Event.AddPlayer([player, drgPlayer])
 
     comparedEvent = Event.deepCopy()
 
