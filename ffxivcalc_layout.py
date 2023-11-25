@@ -153,7 +153,6 @@ SGEOpener = [Dosis, Eukrasia, EukrasianDosis, Dosis, Dosis, Phlegma, Phlegma, Do
             Dosis, Dosis, Dosis, Eukrasia, EukrasianDosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, Dosis, 
             Dosis, Dosis, Dosis, Dosis, Dosis, Dosis]
 
-SCHOpener = [ChainStratagem,Biolysis,WaitAbility(20),Biolysis,WaitAbility(40)]
 
 # Physical Ranged 
 BRDOpener = [Stormbite, WanderingMinuet, RagingStrike, Causticbite, EmpyrealArrow, BloodLetter, RefulgentArrow, RadiantFinale, BattleVoice, BurstShot, Barrage, RefulgentArrow, Sidewinder, BurstShot, RefulgentArrow, BurstShot, EmpyrealArrow, BurstShot, PitchPerfect3, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, WaitAbility(40)]#,MageBallad, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, ArmyPaeon, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow]
@@ -234,7 +233,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [MCHPlayer, DNCPlayer, BRDPlayer]
+PlayerList = [MCHPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -260,11 +259,9 @@ level = logging.DEBUG if not findBiS else logging.WARNING
 logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
 __logger__.setLevel(level=level) 
 
-if not findBiS:
+if False:#not findBiS:
     from ffxivcalc.helperCode.helper_backend import SaveFight
     Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False, MaxTeamBonus=False) # Simulating fight
-    SaveFight(Event, 0, 500, "test2", saveFile=True)
-    
     if False : Event.simulationRecord.saveRecord()
     pass
 
@@ -296,3 +293,8 @@ if findBiS:
     optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=False,minSPDValue=500,maxSPDValue=570, useNewAlgo=True, 
                                 oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=1,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=True, minPiety=0)
     
+if True:
+    from ffxivcalc.GearSolver.Gear import GearSet
+    from ffxivcalc.GearSolver.Solver import getGearDPSValue
+
+    print(getGearDPSValue(Event, GearSet(), 0, 1))

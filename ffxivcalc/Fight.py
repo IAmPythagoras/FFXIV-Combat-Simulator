@@ -60,6 +60,8 @@ class Fight:
         updated and will still target the player from the original fight (the one that is being deepcopied).
         To fix this we will look for the actions with target, get the targetID and replace these actions with the appropriate
         action that now targets the correct player.
+        Note that because of how this is implemented, any fight object that has a buff given to another player must have both the caster
+        and the target in its player list as if the target is not in the playerList it will not receive a valid ID.
         """
         from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import ClosedPosition
         from ffxivcalc.Jobs.Melee.Dragoon.Dragoon_Spell import DragonSight
@@ -246,7 +248,7 @@ class Fight:
 
         fight_logging.debug("counted GCD  : " + str(countGCD))
         fight_logging.debug("previous GCD : " + str(player.GCDCounter))
-        if getInfo : return round(ExpectedDamage/timeStamp,2), {}, timeStamp, totalPotency
+        if getInfo : return round(ExpectedDamage/timeStamp,2), ExpectedDamage, timeStamp, totalPotency
         return round(ExpectedDamage/timeStamp if True else ExpectedDamage,2), {}
 
         
@@ -595,7 +597,7 @@ def GCDReductionEffect(Player, Spell) -> None:
         if Spell.RecastTime < 1.5 and Spell.RecastTime > 0 : Spell.RecastTime = 1.5 # A GCD cannot go under 1.5 sec
 
 # Compute Damage
-def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBakedAction : bool = False, PlayerIDSavePreBakedAction : int = 0) -> float:
+def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBakedAction : bool = False, PlayerIDSavePreBakedAction : int = 1) -> float:
 
     """
     This function computes the damage from a given potency.
@@ -656,7 +658,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
                              # Check if DOT. If not we take current buffs.
                              # If is a dot we take snapshotted buffs.
-    if (type == 0 or type == 3) or ((type == 1 or type == 2) and not spellObj.onceThroughFlag):
+    if (type == 0 or type == 3) or not spellObj.onceThroughFlag:
         if round(Player.CritRateBonus,2) > 0 : thisPage.addCritBuffList(("Other", Player.CritRateBonus))
         if round(Player.DHRateBonus,2) > 0 : thisPage.addDHBuffList(("Other", Player.DHRateBonus))
 
@@ -675,7 +677,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         if Enemy.BattleVoice: 
             DHRateBonus += 0.2 # If BattleVoice is active, increase DHRate
             thisPage.addDHBuffList(("BV", 0.2))
-    elif (type == 1 or type == 2) and spellObj.onceThroughFlag:
+    else:
                              # If dot and has gone through once (so has snapshotted buff) we use them
                              # This only considers Crit,DH and Pot snapshot
         DHRateBonus = spellObj.DHBonus
@@ -758,38 +760,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
                 auto_crit = True
 
     if type == 0: fight_logging.debug(str((Player.Stat["MainStat"],f_MAIN_DMG, f_WD, f_DET, f_TEN, f_SPD, CritRate, CritMult, DHRate)))
-    if SavePreBakedAction and (Player.playerID == PlayerIDSavePreBakedAction or (isPet and Player.Master.playerID == PlayerIDSavePreBakedAction)): 
-        """
-        If that is set to true we will record all we need and will not compute the rest.
-        We will check if the action is a GCD with recast time of lesser or equal to 1.5s since the GCD
-        cannot go lower. The total time will be remembered and substracted from the total time that is reduceable from more SpS.
-        """
-                             # Snapshotting all buff on that action.
-        buffList = []
-        for buff in Player.buffList:
-            buffList.append(buff)
-        for buff in Enemy.buffList:
-            buffList.append(buff)
 
-        if auto_crit and auto_DH : fight_logging.debug("Auto Crit/DH prebaked")
-        elif auto_crit : fight_logging.debug("Auto Crit prebaked")
-
-        nonReducableStamp = 0 if not Player.CurrentFight.FightStart else Player.totalTimeNoFaster
-        reducableStamp = 0 if not Player.CurrentFight.FightStart else Player.CurrentFight.TimeStamp - Player.totalTimeNoFaster
-
-        gcdLockTimer = max(spellObj.notRoundRecastTime, spellObj.notRoundCastTime) if spellObj.GCD  and (Player.RoleEnum != RoleEnum.Pet) and max(spellObj.notRoundRecastTime, spellObj.notRoundCastTime) > 1.5 else 0
-        if spellObj.GCD and (Player.RoleEnum == RoleEnum.Melee or Player.RoleEnum == RoleEnum.Tank) and spellObj.type == 1 : gcdLockTimer = 0
-        elif spellObj.GCD and (Player.RoleEnum == RoleEnum.Caster) and spellObj.type == 2 : gcdLockTimer = 0
-        
-        newPreBaked = PreBakedAction(isTank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type,Player.CurrentFight.TimeStamp if Player.CurrentFight.FightStart else 0, nonReducableStamp + (0 if type == 0 else reducableStamp), 
-                                     reducableStamp if type == 0 else 0 ,AutoCrit=auto_crit, AutoDH=auto_DH, isFromPet=isPet, isGCD=spellObj.GCD,gcdLockTimer=gcdLockTimer,spellDPSBuff=SpellBonus, isConditionalAction=spellObj.conditionalAction)
-                             # Giving dh and crit bonus
-        newPreBaked.CritBonus = CritRateBonus
-        newPreBaked.DHBonus = DHRateBonus
-        newPreBaked.potionIsActive =  Player.PotionTimer > 0 or (isPet and Player.Master.PotionTimer > 0)
-        (Player if not isPet else Player.Master).PreBakedActionSet.append(newPreBaked)
-        
-        return Potency, Potency        # Exit the function since we are not interested in the immediate damage value. Still return potency as to not break the fight's duration.
 
     if type == 0: # Type 0 is direct damage
         #Damage = Potency * f_MAIN_DMG * f_DET * f_TEN  *f_WD * Player.Trait
@@ -853,7 +824,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         Damage = math.floor(math.floor(Damage * math.floor(f_WD * (Player.Delay/3) *100 )/100) * Player.Trait)
     # Now applying buffs
 
-    if type == 0 or type == 3: # If Action or AA, then we apply the current buffs
+    if type == 0 or type == 3 or not spellObj.onceThroughFlag: # If Action or AA, then we apply the current buffs
         for buffs in Player.buffList: 
             Damage = math.floor(Damage * buffs.MultDPS) # Multiplying all buffs
             thisPage.addPercentBuff(buffs)
@@ -874,6 +845,61 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
                 if buffs.isDebuff:
                     Damage = math.floor(Damage * buffs.MultDPS) # Multiplying all debuffs
                     thisPage.addPercentBuff(buffs)
+
+
+    if SavePreBakedAction and (Player.playerID == PlayerIDSavePreBakedAction or (isPet and Player.Master.playerID == PlayerIDSavePreBakedAction)): 
+        """
+        If that is set to true we will record all we need and will not compute the rest.
+        We will check if the action is a GCD with recast time of lesser or equal to 1.5s since the GCD
+        cannot go lower. The total time will be remembered and substracted from the total time that is reduceable from more SpS.
+        """
+                             # Snapshotting all buff on that action.
+        buffList = []
+        potActive = False
+        if type == 0 or type == 3 or not spellObj.onceThroughFlag:
+                             # if AA or action take all curent buff/debuff
+            for buff in Player.buffList:
+                buffList.append(buff)
+            for buff in Enemy.buffList:
+                buffList.append(buff)
+
+            potActive = Player.PotionTimer > 0 or (isPet and Player.Master.PotionTimer > 0)
+
+        else:
+                             # If is DOT we take the snapshotted buffs + debuff if ground
+            for buff in spellObj.MultBonus:
+                buffList.append(buff)
+                             # If DOT is a ground DOT we have to add buffs that are debuff
+            if spellObj.isGround:
+                for buff in Player.buffList: 
+                    if buff.isDebuff: buffList.append(buff)
+                for buff in Enemy.buffList:
+                    if buff.isDebuff: buffList.append(buff)
+
+            potActive = spellObj.potSnapshot
+
+        if auto_crit and auto_DH : fight_logging.debug("Auto Crit/DH prebaked")
+        elif auto_crit : fight_logging.debug("Auto Crit prebaked")
+
+        nonReducableStamp = 0 if not Player.CurrentFight.FightStart else Player.totalTimeNoFaster
+        reducableStamp = 0 if not Player.CurrentFight.FightStart else Player.CurrentFight.TimeStamp - Player.totalTimeNoFaster
+
+        gcdLockTimer = max(spellObj.notRoundRecastTime, spellObj.notRoundCastTime) if spellObj.GCD  and (Player.RoleEnum != RoleEnum.Pet) and max(spellObj.notRoundRecastTime, spellObj.notRoundCastTime) > 1.5 else 0
+        if spellObj.GCD and (Player.RoleEnum == RoleEnum.Melee or Player.RoleEnum == RoleEnum.Tank) and spellObj.type == 1 : gcdLockTimer = 0
+        elif spellObj.GCD and (Player.RoleEnum == RoleEnum.Caster) and spellObj.type == 2 : gcdLockTimer = 0
+        
+        newPreBaked = PreBakedAction(isTank, Player.CurrentFight.TeamCompositionBonus,buffList, Player.Trait, Potency, type,Player.CurrentFight.TimeStamp if Player.CurrentFight.FightStart else 0, nonReducableStamp + (0 if type == 0 else reducableStamp), 
+                                     reducableStamp if type == 0 else 0 ,AutoCrit=auto_crit, AutoDH=auto_DH, isFromPet=isPet, isGCD=spellObj.GCD,gcdLockTimer=gcdLockTimer,spellDPSBuff=SpellBonus, isConditionalAction=spellObj.conditionalAction)
+                             # Giving dh and crit bonus
+        newPreBaked.CritBonus = CritRateBonus
+        newPreBaked.DHBonus = DHRateBonus
+        newPreBaked.potionIsActive = potActive
+                             # have to specific if is wildfire
+        if spellObj.id == -2878 : newPreBaked.isWildfire = True
+
+        (Player if not isPet else Player.Master).PreBakedActionSet.append(newPreBaked)
+        
+        return Potency, Potency        # Exit the function since we are not interested in the immediate damage value. Still return potency as to not break the fight's duration.
 
 
     if spellObj.id == -2878: #If wildfire it cannot crit or DH, so we remove it

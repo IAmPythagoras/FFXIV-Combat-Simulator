@@ -2410,9 +2410,9 @@ class Pet(Player):
         self.ArcanumTimer = self.Master.ArcanumTimer # ArcanumTimer
         self.MeditativeBrotherhoodTimer = self.Master.MeditativeBrotherhoodTimer # Meditative Brotherhood Timer
 
-                             # Pets do not have the 5% comp bonus, so we remove the comp bonus from this fight.
-        
-        self.Stat["MainStat"] = int(self.Stat["MainStat"]/Master.CurrentFight.TeamCompositionBonus)
+                             # Pets do not have the 5% comp bonus, so we take baseMain stat and then check if potion
+        self.Stat["MainStat"] = Master.baseMainStat
+        if Master.PotionTimer > 0 : self.Stat["MainStat"] += min(int(self.Stat["MainStat"] * 0.1), 262)
 
         player_logging.debug("New Pet Created : " + str(self.Stat))
 
@@ -2440,7 +2440,7 @@ class Pet(Player):
         """
         This function is called upon reusing the object to reset the stats and other attributes that could interfere. 
         """
-        self.f_WD = self.Master.f_WD
+        self.f_WD = (self.Master.Stat["WD"]+floor(390*self.JobMod/1000))/100
         self.f_DET = self.Master.f_DET
         self.f_TEN = self.Master.f_TEN
         self.f_SPD = self.Master.f_SPD
@@ -2451,5 +2451,10 @@ class Pet(Player):
         self.CritRateBonus = self.Master.CritRateBonus  # CritRateBonus
         self.DHRateBonus = self.Master.DHRateBonus # DHRate Bonus Very usefull for dancer personnal and dance partner crit/DH rate bonus
         self.Stat = deepcopy(self.Master.Stat)
+
+                             # Pets do not have the 5% comp bonus, so we take baseMain stat and then check if potion
+        self.Stat["MainStat"] = self.Master.baseMainStat
+        if self.Master.PotionTimer > 0 : self.Stat["MainStat"] += min(int(self.Stat["MainStat"] * 0.1), 262)
+
         self.ArcanumTimer = self.Master.ArcanumTimer # ArcanumTimer
         self.MeditativeBrotherhoodTimer = self.Master.MeditativeBrotherhoodTimer # Meditative Brotherhood Timer
