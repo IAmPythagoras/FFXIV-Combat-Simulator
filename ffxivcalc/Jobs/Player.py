@@ -144,9 +144,15 @@ class Player:
         isSpell : bool -> True if the value to use is SpellReduction. For simplicity, this value will be figured out based on the 
                           job of the player.
         """
-                             # Do not worry about CastingLockTimer since it will be 0 at this point.
+                             # Do not worry about CastingLockTimer since it will be 0 at this point. NOT TRUE
+                             # ANYMORE WILL HAVE TO WORK ON THAT
         self.GCDLockTimer = floor(floor(int(self.GCDLockTimer * 1000 ) * (100 - self.hasteChangeValue)/100)/10)/100
         player_logging.debug("Haste change has been detected. New GCDLockTimer : " + str(self.GCDLockTimer))
+                             # Recomputing AA delay lock
+        self.currentDelay = floor(floor(int(self.baseDelay * 1000 ) * (100 - self.Haste)/100)/10)/100
+                             # Updating the AA Timer
+        self.autoPointer.DOTTimer = floor(floor(int(self.autoPointer.DOTTimer * 1000 ) * (100 - self.hasteChangeValue)/100)/10)/100
+
         self.hasteHasChanged = False
         self.hasteChangeValue = 0
 
@@ -326,6 +332,14 @@ class Player:
         for index in range(ActionIndex+1, len(self.ActionSet)):
             if self.ActionSet[index].GCD : return False
         return True
+    
+    def setBasedWeaponDelay(self, newDelay : float) -> None:
+        """This function sets the value of the Delay for AA. By default has a value of 3.
+
+        Args:
+            newDelay (float): Value of the day in seconds.
+        """
+        self.baseDelay = newDelay
 
     def __init__(self, ActionSet, EffectList, Stat,Job : JobEnum):
 
@@ -373,7 +387,9 @@ class Player:
         self.oGCDLockTimer = 0 # How long we have to wait until next oGCD
         self.GCDLockTimer = 0 # How long we have to wait until next GCD
         self.PotionTimer = 0 # Timer on the effect of potion
-        self.Delay = 3 # Default time difference between AAs
+        self.baseDelay = 3 # Default time difference between AAs
+        self.currentDelay = 3 # current Delay to be applied to AAs. Differs from baseDelay with Haste.
+        self.autoPointer = None # Pointer to the player's AA DOT.
         self.Haste = 0 # Total Haste value of the player.
         self.hasteHasChanged = False # Flag to know if haste has changed. This is needed to recompute recast time.
         self.hasteChangeValue = 0 # Value for which haste has changed. Can be negative or positive.

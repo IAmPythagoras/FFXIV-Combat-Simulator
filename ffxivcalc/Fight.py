@@ -326,6 +326,8 @@ class Fight:
             Player.SpellReduction = (1000 - math.floor(130 * (Player.Stat["SS"]-400) / 1900))/1000
             Player.WeaponskillReduction = (1000 - math.floor(130 * (Player.Stat["SkS"]-400) / 1900))/1000
             Player.EffectList.append(GCDReductionEffect)
+                                         # Computing AA delay
+            Player.currentDelay = math.floor(math.floor(int(self.baseDelay * 1000 ) * (100 - self.Haste)/100)/10)/100
 
         fight_logging.debug("Starting simulation with TeamCompositionBonus = " + str(self.TeamCompositionBonus))
         fight_logging.debug("Parameters are -> RequirementOn : " + str(self.RequirementOn) + ", IgnoreMana : " + str(self.IgnoreMana))
@@ -403,6 +405,8 @@ class Fight:
 
             # Updating and casting DOT if needed
             for player in self.PlayerList:
+                             # Recomputing recastTime if new Haste has been added.
+                if player.hasteHasChanged: player.recomputeRecastLock(isSpell=(player.RoleEnum == RoleEnum.Caster))
                 for DOT in player.DOTList:
                     DOT.CheckDOT(player,self.Enemy, TimeUnit)
 

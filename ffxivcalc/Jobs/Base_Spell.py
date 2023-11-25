@@ -387,9 +387,6 @@ class Spell:
         for Effect in self.Effect:
             Effect(player, Enemy)#Put effects on Player and/or Enemy
 
-                             # Recomputing recastTime if new Haste has been added.
-        if player.hasteHasChanged: player.recomputeRecastLock(isSpell=(player.RoleEnum == RoleEnum.Caster))
-
         #This will include substracting the mana (it has been verified before that the mana was enough)
         minDamage, Damage, Heal = 0,0,0
         if self.AOEHeal or self.TargetHeal:
@@ -482,11 +479,17 @@ class Spell:
                 player.CurrentFight.FightStart = True
                                 # Giving all players AA
                 for gamer in player.CurrentFight.PlayerList:
-                    if gamer.JobEnum == JobEnum.Monk: gamer.DOTList.append(copy.deepcopy(Monk_Auto))
+                                # I feel like this could a place for pointer issue. Leaving this here so
+                                # I see this in case there are issues and I forgor about that place.
+                    aaDOT = None
+                    if gamer.JobEnum == JobEnum.Monk: aaDOT = copy.deepcopy(Monk_Auto)
                     elif gamer.RoleEnum == RoleEnum.Melee or gamer.JobEnum == JobEnum.Dancer or gamer.RoleEnum == RoleEnum.Tank:
-                        gamer.DOTList.append(copy.deepcopy(Melee_AADOT))
+                        aaDOT = copy.deepcopy(Melee_AADOT)
                     elif gamer.RoleEnum == RoleEnum.PhysicalRanged:
-                        gamer.DOTList.append(copy.deepcopy(Ranged_AADOT))
+                        aaDOT = copy.deepcopy(Ranged_AADOT)
+                             # Giving AA
+                    gamer.DOTList.append(aaDOT)
+                    gamer.autoPointer = aaDOT
 
                                 # Will record the starting HP of every player for graph
                 for gamer in player.CurrentFight.PlayerList:
@@ -671,6 +674,23 @@ class Auto_Attack(DOTSpell):
         else: super().__init__(id, 90, True) # Melee AA, 90 potency
 
         self.DOTTimer = 0 
+
+    def CheckDOT(self, Player, Enemy, TimeUnit : float) -> None:
+        """
+        This is the function called to check if the AA is applied. Same function as to DOTSpell.CheckDOT
+        """
+                             # Update DOT Timer.
+        self.DOTTimer = max(0, self.DOTTimer-TimeUnit)
+
+
+        if(self.DOTTimer <= 0):
+            #Apply DOT
+            tempSpell  = self.Cast(Player, Enemy)#Cast the DOT
+            tempSpell.CastFinal(Player, Enemy)
+            
+            self.DOTTimer = Player.currentDelay
+
+        
 
 class Queen_Auto(Auto_Attack):
     """
