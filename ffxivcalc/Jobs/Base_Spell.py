@@ -481,9 +481,11 @@ class Spell:
                 for gamer in player.CurrentFight.PlayerList:
                                 # I feel like this could a place for pointer issue. Leaving this here so
                                 # I see this in case there are issues and I forgor about that place.
+                                # Note that caster/healer are not given AAs even though they in theory
+                                # should. That will come in a future version.
                     aaDOT = None
-                    if gamer.JobEnum == JobEnum.Monk: aaDOT = copy.deepcopy(Monk_Auto)
-                    elif gamer.RoleEnum == RoleEnum.Melee or gamer.JobEnum == JobEnum.Dancer or gamer.RoleEnum == RoleEnum.Tank:
+                    #if gamer.JobEnum == JobEnum.Monk: aaDOT = copy.deepcopy(Monk_Auto)
+                    if gamer.RoleEnum == RoleEnum.Melee or gamer.JobEnum == JobEnum.Dancer or gamer.RoleEnum == RoleEnum.Tank:
                         aaDOT = copy.deepcopy(Melee_AADOT)
                     elif gamer.RoleEnum == RoleEnum.PhysicalRanged:
                         aaDOT = copy.deepcopy(Ranged_AADOT)
@@ -557,14 +559,6 @@ def ApplyPotion(Player, Enemy):
     Player.PotionTimer = 30
 
     Player.EffectCDList.append(PotionCheck)
-
-                                     # Only relevant to PreBakedAction and only does that code if true
-    #if Player.CurrentFight.SavePreBakedAction:
-    #    fight = Player.CurrentFight
-    #                                 # If prepull, make it start at 0.05
-    #    startTime = fight.TimeStamp if fight.FightStart else -0.05
-    #    history = buffHistory(startTime, startTime + 30)
-    #    Player.PotionHistory.append(history)
 
 def PrepullPotion(Player, Enemy): #If potion is prepull
     """
@@ -681,7 +675,6 @@ class Auto_Attack(DOTSpell):
         """
                              # Update DOT Timer.
         self.DOTTimer = max(0, self.DOTTimer-TimeUnit)
-
 
         if(self.DOTTimer <= 0):
             #Apply DOT
