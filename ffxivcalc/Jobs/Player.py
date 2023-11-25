@@ -148,10 +148,13 @@ class Player:
                              # ANYMORE WILL HAVE TO WORK ON THAT
         self.GCDLockTimer = floor(floor(int(self.GCDLockTimer * 1000 ) * (100 - self.hasteChangeValue)/100)/10)/100
         player_logging.debug("Haste change has been detected. New GCDLockTimer : " + str(self.GCDLockTimer))
+
+                             # Only update this if player has AA. Which means if autoPointer is not None
+        if self.autoPointer:
                              # Recomputing AA delay lock
-        self.currentDelay = floor(floor(int(self.baseDelay * 1000 ) * (100 - (self.Haste + self.autoHaste))/100)/10)/100
+            self.currentDelay = floor(floor(int(self.baseDelay * 1000 ) * (100 - (self.Haste + self.autoHaste))/100)/10)/100
                              # Updating the AA Timer
-        self.autoPointer.DOTTimer = floor(floor(int(self.autoPointer.DOTTimer * 1000 ) * (100 - self.hasteChangeValue)/100)/10)/100
+            self.autoPointer.DOTTimer = floor(floor(int(self.autoPointer.DOTTimer * 1000 ) * (100 - self.hasteChangeValue)/100)/10)/100
 
         self.hasteHasChanged = False
         self.hasteChangeValue = 0

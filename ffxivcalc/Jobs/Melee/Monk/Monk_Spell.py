@@ -63,7 +63,7 @@ def ApplyRiddleOfWind(Player, Enemy):
                              # Since it only says it reduces the delay by 50%
                              # This does not affect the current DOTTimer of the auto.
                              # This could be a wrong interpretation.
-                             # This will only update the Player.curDelay
+                             # This will only update the Player.currentDelay
     Player.autoHaste = 50
     Player.hasteHasChanged = True
     Player.EffectCDList.append(RiddleOfWindCheck)

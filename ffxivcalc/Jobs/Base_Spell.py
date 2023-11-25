@@ -490,8 +490,9 @@ class Spell:
                     elif gamer.RoleEnum == RoleEnum.PhysicalRanged:
                         aaDOT = copy.deepcopy(Ranged_AADOT)
                              # Giving AA
-                    gamer.DOTList.append(aaDOT)
-                    gamer.autoPointer = aaDOT
+                    if aaDOT:
+                        gamer.DOTList.append(aaDOT)
+                        gamer.autoPointer = aaDOT
 
                                 # Will record the starting HP of every player for graph
                 for gamer in player.CurrentFight.PlayerList:

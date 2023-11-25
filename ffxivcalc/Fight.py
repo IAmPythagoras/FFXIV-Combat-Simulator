@@ -825,7 +825,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
     elif type == 3: # Auto-attacks
         Damage = math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG) * f_DET) * f_TEN) * f_SPD)
-        Damage = math.floor(math.floor(Damage * math.floor(f_WD * (Player.Delay/3) *100 )/100) * Player.Trait)
+        Damage = math.floor(math.floor(Damage * math.floor(f_WD * (Player.currentDelay/3) *100 )/100) * Player.Trait)
     # Now applying buffs
 
     if type == 0 or type == 3 or not spellObj.onceThroughFlag: # If Action or AA, then we apply the current buffs
