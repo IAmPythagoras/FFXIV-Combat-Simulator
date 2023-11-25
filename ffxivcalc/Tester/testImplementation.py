@@ -5988,7 +5988,7 @@ dncTestSuite.addTest(dnctest20)
 
 # Technical Finish
 
-def dncTest20TestFunction() -> None:
+def dncTest21TestFunction() -> None:
     """Technical Finish
     """
 
@@ -6011,7 +6011,7 @@ def dncTest20TestFunction() -> None:
 
     return [player.TechnicalFinishBuff in Dummy.buffList, player.TechnicalFinishBuff]
 
-def dncTest20ValidationFunction(testResults) -> (bool, list):
+def dncTest21ValidationFunction(testResults) -> (bool, list):
     passed = True
     expected = [False, None]   
 
@@ -6019,8 +6019,8 @@ def dncTest20ValidationFunction(testResults) -> (bool, list):
 
     return passed , expected
 
-dnctest20 = test("Techincal Finish test 7", dncTest20TestFunction, dncTest20ValidationFunction)
-dncTestSuite.addTest(dnctest20)
+dnctest21 = test("Techincal Finish test 8", dncTest21TestFunction, dncTest21ValidationFunction)
+dncTestSuite.addTest(dnctest21)
 
 # Tillana 
 
