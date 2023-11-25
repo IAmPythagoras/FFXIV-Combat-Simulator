@@ -8,11 +8,15 @@ A testSuite is a compilation of different tests that are testing a similar thing
 EX : A Blackmage testSuite, etc.
 
 """
+from ffxivcalc.helperCode.Progress import ProgressBar
+pb = ProgressBar.init(23, "Initializing test suites")
+
+
 from ffxivcalc.Fight import Fight
 from ffxivcalc.Jobs.Player import Player
 from ffxivcalc.Jobs.PlayerEnum import *
 from ffxivcalc.Enemy import Enemy
-from ffxivcalc.helperCode.Progress import ProgressBar
+
 
 from ffxivcalc.Jobs.Base_Spell import WaitAbility, Potion, conditionalAction
 from ffxivcalc.Jobs.Caster.Caster_Spell import *
@@ -16347,12 +16351,6 @@ def pbfTest31ValidationFunction(testResults) -> (bool, list):
 pbftest31 = test("preBakedFight test 31 - DarkKnight + Dance partner + Dragoon buff + astro card + Other buff", pbfTest31TestFunction, pbfTest31ValidationFunction)
 pbfTestSuite.addTest(pbftest31)
 
-###############
-
-
-###############
-
-
 # Test
 
 def pbfTest32TestFunction() -> None:
@@ -16565,14 +16563,224 @@ def pbfTest34ValidationFunction(testResults) -> (bool, list):
 pbftest34 = test("preBakedFight test 34 - Blackmage + Dance partner + Dragoon buff + astro card + Other buff", pbfTest34TestFunction, pbfTest34ValidationFunction)
 pbfTestSuite.addTest(pbftest34)
 
-pbfTestSuite.executeTestSuite()
+###############
 
-if False:
+
+###############
+
+
+# Test
+
+def pbfTest35TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    stat = {'MainStat': 3378, 'WD': 132, 'Det': 1885, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2598, 'DH': 1252, 'Piety': 390}
+
+    player = Player([], [], stat, JobEnum.Warrior)
+    dncPlayer = Player([], [], stat, JobEnum.Dancer)
+
+    Opener = [Tomahawk, Infuriate, HeavySwing, Upheaval ,Maim, WaitAbility(1), Potion, StormEye, InnerRelease, Onslaught, InnerChaos, Onslaught, PrimalRend,Onslaught, 
+              FellCleave, FellCleave, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath, FellCleave, Infuriate, Upheaval, InnerChaos, HeavySwing, Maim, StormEye, 
+              HeavySwing, Maim, StormPath, FellCleave, HeavySwing, Maim, Onslaught, StormEye , HeavySwing, Upheaval, Maim, StormPath, InnerRelease, PrimalRend, FellCleave, 
+              FellCleave, Onslaught, FellCleave, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath, HeavySwing, Maim, StormPath, HeavySwing, Maim, StormPath, HeavySwing, Maim, StormPath,
+              HeavySwing, Maim, StormPath, HeavySwing, Maim, StormPath]
+    
+    DNCOpener = [ClosedPosition(player),StandardStep, Pirouette, Jete, StandardFinish, TechnicalStep, Pirouette, Jete, Entrechat, Emboite, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Jete, Pirouette, StandardFinish, Cascade, SaberDance, ReverseCascade, Fountain, FountainFall, Cascade, SaberDance, ReverseCascade, Fountain, FountainFall, Cascade, ReverseCascade, StandardStep, Emboite, Jete, StandardFinish, SaberDance, Fountain, Cascade, Fountain, FountainFall, Flourish, FanDance3, SaberDance, FanDance4, FountainFall, ReverseCascade, FanDance1, FanDance3, Cascade, ReverseCascade, Fountain, FountainFall]
+
+
+    player.ActionSet = Opener
+    dncPlayer.ActionSet = DNCOpener
+
+    Event.AddPlayer([player, dncPlayer])
+
+    comparedEvent = Event.deepCopy()
+
+    Event.SavePreBakedAction = True
+    Event.PlayerIDSavePreBakedAction = 1
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    comparedEvent.RequirementOn = False
+    comparedEvent.ShowGraph = False
+    comparedEvent.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+    comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+
+    f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
+    ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
+
+
+    return [ duration, comparedEvent.TimeStamp, 
+            expectedTotalDamage,comparedEvent.PlayerList[0].TotalDamage,potency, comparedEvent.PlayerList[0].TotalPotency,]
+
+def pbfTest35ValidationFunction(testResults) -> (bool, list):
+    passed = True
+
+    for i in range(0,3):
+        passed = passed and testResults[2*i] == testResults[2*i + 1]
+
+    return passed , testResults
+
+pbftest35 = test("preBakedFight test 35 - Warrior Dance partner", pbfTest35TestFunction, pbfTest35ValidationFunction)
+pbfTestSuite.addTest(pbftest35)
+
+# Test
+
+def pbfTest36TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    stat = {'MainStat': 3378, 'WD': 132, 'Det': 1885, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2598, 'DH': 1252, 'Piety': 390}
+
+    player = Player([], [], stat, JobEnum.Warrior)
+    dncPlayer = Player([], [], stat, JobEnum.Dancer)
+    drgPlayer = Player([], [], stat, JobEnum.Dragoon)
+
+    Opener = [Tomahawk, Infuriate, HeavySwing, Upheaval ,Maim, WaitAbility(1), Potion, StormEye, InnerRelease, Onslaught, InnerChaos, Onslaught, PrimalRend,Onslaught, 
+              FellCleave, FellCleave, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath, FellCleave, Infuriate, Upheaval, InnerChaos, HeavySwing, Maim, StormEye, 
+              HeavySwing, Maim, StormPath, FellCleave, HeavySwing, Maim, Onslaught, StormEye , HeavySwing, Upheaval, Maim, StormPath, InnerRelease, PrimalRend, FellCleave, 
+              FellCleave, Onslaught, FellCleave, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath, HeavySwing, Maim, StormPath, HeavySwing, Maim, StormPath, HeavySwing, Maim, StormPath,
+              HeavySwing, Maim, StormPath, HeavySwing, Maim, StormPath]
+
+    
+    DNCOpener = [ClosedPosition(player),StandardStep, Pirouette, Jete, StandardFinish, TechnicalStep, Pirouette, Jete, Entrechat, Emboite, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Jete, Pirouette, StandardFinish, Cascade, SaberDance, ReverseCascade, Fountain, FountainFall, Cascade, SaberDance, ReverseCascade, Fountain, FountainFall, Cascade, ReverseCascade, StandardStep, Emboite, Jete, StandardFinish, SaberDance, Fountain, Cascade, Fountain, FountainFall, Flourish, FanDance3, SaberDance, FanDance4, FountainFall, ReverseCascade, FanDance1, FanDance3, Cascade, ReverseCascade, Fountain, FountainFall]
+    drgOpener = [DragonSight(player), BattleLitany]
+
+    player.ActionSet = Opener
+    dncPlayer.ActionSet = DNCOpener
+    drgPlayer.ActionSet = drgOpener
+
+    Event.AddPlayer([player, dncPlayer, drgPlayer])
+
+    comparedEvent = Event.deepCopy()
+
+    Event.SavePreBakedAction = True
+    Event.PlayerIDSavePreBakedAction = 1
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    comparedEvent.RequirementOn = False
+    comparedEvent.ShowGraph = False
+    comparedEvent.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+    comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+
+    f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
+    ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
+
+
+    return [ duration, comparedEvent.TimeStamp, 
+            expectedTotalDamage,comparedEvent.PlayerList[0].TotalDamage,potency, comparedEvent.PlayerList[0].TotalPotency]
+
+def pbfTest36ValidationFunction(testResults) -> (bool, list):
+    passed = True
+
+    for i in range(0,3):
+        passed = passed and testResults[2*i] == testResults[2*i + 1]
+
+    return passed , testResults
+
+pbftest36 = test("preBakedFight test 36 - Warrior + Dance partner + Dragoon buff", pbfTest36TestFunction, pbfTest36ValidationFunction)
+pbfTestSuite.addTest(pbftest36)
+
+# Test
+
+def pbfTest37TestFunction() -> None:
+    """
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    stat = {'MainStat': 3378, 'WD': 132, 'Det': 1885, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2598, 'DH': 1252, 'Piety': 390}
+
+    player = Player([], [], stat, JobEnum.Warrior)
+    dncPlayer = Player([], [], stat, JobEnum.Dancer)
+    drgPlayer = Player([], [], stat, JobEnum.Dragoon)
+    astPlayer = Player([], [], stat, JobEnum.Astrologian)
+
+    Opener = [Tomahawk, Infuriate, HeavySwing, Upheaval ,Maim, WaitAbility(1), Potion, StormEye, InnerRelease, Onslaught, InnerChaos, Onslaught, PrimalRend,Onslaught, 
+              FellCleave, FellCleave, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath, FellCleave, Infuriate, Upheaval, InnerChaos, HeavySwing, Maim, StormEye, 
+              HeavySwing, Maim, StormPath, FellCleave, HeavySwing, Maim, Onslaught, StormEye , HeavySwing, Upheaval, Maim, StormPath, InnerRelease, PrimalRend, FellCleave, 
+              FellCleave, Onslaught, FellCleave, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath, HeavySwing, Maim, StormPath, HeavySwing, Maim, StormPath, HeavySwing, Maim, StormPath,
+              HeavySwing, Maim, StormPath, HeavySwing, Maim, StormPath]
+
+    
+    DNCOpener = [ClosedPosition(player),StandardStep, Pirouette, Jete, StandardFinish, TechnicalStep, Pirouette, Jete, Entrechat, Emboite, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Jete, Pirouette, StandardFinish, Cascade, SaberDance, ReverseCascade, Fountain, FountainFall, Cascade, SaberDance, ReverseCascade, Fountain, FountainFall, Cascade, ReverseCascade, StandardStep, Emboite, Jete, StandardFinish, SaberDance, Fountain, Cascade, Fountain, FountainFall, Flourish, FanDance3, SaberDance, FanDance4, FountainFall, ReverseCascade, FanDance1, FanDance3, Cascade, ReverseCascade, Fountain, FountainFall]
+    drgOpener = [DragonSight(player), BattleLitany]
+    astOpener = [Bole(player), WaitAbility(20), Bole(player)]
+
+    player.ActionSet = Opener
+    dncPlayer.ActionSet = DNCOpener
+    drgPlayer.ActionSet = drgOpener
+    astPlayer.ActionSet = astOpener
+
+    RDMPlayer = Player([], [], stat, JobEnum.RedMage)
+    SCHPlayer = Player([], [], stat, JobEnum.Scholar)
+    RPRPlayer = Player([], [], stat, JobEnum.Reaper)
+    MNKPlayer = Player([], [], stat, JobEnum.Monk)
+    RDMOpener = [WaitAbility(15), Embolden]
+    SCHOpener = [WaitAbility(7), ChainStratagem]
+    RPROpener = [ArcaneCircle]
+    MNKOpener = [WaitAbility(30), Brotherhood]
+    RDMPlayer.ActionSet = RDMOpener
+    SCHPlayer.ActionSet = SCHOpener
+    RPRPlayer.ActionSet = RPROpener
+    MNKPlayer.ActionSet = MNKOpener
+    player.ActionSet = Opener
+    dncPlayer.ActionSet = DNCOpener
+    drgPlayer.ActionSet = drgOpener
+    astPlayer.ActionSet = astOpener
+
+    Event.AddPlayer([player, dncPlayer, drgPlayer, astPlayer,RDMPlayer, SCHPlayer, RPRPlayer, MNKPlayer])
+
+    comparedEvent = Event.deepCopy()
+
+    Event.SavePreBakedAction = True
+    Event.PlayerIDSavePreBakedAction = 1
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    comparedEvent.RequirementOn = False
+    comparedEvent.ShowGraph = False
+    comparedEvent.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+    comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+
+    f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
+    ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
+
+
+    return [ duration, comparedEvent.TimeStamp, 
+            expectedTotalDamage,comparedEvent.PlayerList[0].TotalDamage,potency, comparedEvent.PlayerList[0].TotalPotency,]
+
+def pbfTest37ValidationFunction(testResults) -> (bool, list):
+    passed = True
+
+    for i in range(0,3):
+        passed = passed and testResults[2*i] == testResults[2*i + 1]
+
+    return passed , testResults
+
+pbftest37 = test("preBakedFight test 37 - Warrior + Dance partner + Dragoon buff + astro card + Other buff", pbfTest37TestFunction, pbfTest37ValidationFunction)
+pbfTestSuite.addTest(pbftest37)
+
+if True:
 
     failedTestDict = {}
-
-    pb = ProgressBar.init(21, "Executing all test suite")
+    
     pb.setName(blmTestSuite.testSuiteName)
+    next(pb)
     failedTestDict[blmTestSuite.testSuiteName] = blmTestSuite.executeTestSuite()
     pb.setName(rdmTestSuite.testSuiteName)
     next(pb)
@@ -16634,6 +16842,10 @@ if False:
     pb.setName(rfoTestSuite.testSuiteName)
     next(pb)
     failedTestDict[rfoTestSuite.testSuiteName] = rfoTestSuite.executeTestSuite()
+    pb.setName(pbfTestSuite.testSuiteName)
+    next(pb)
+    failedTestDict[pbfTestSuite.testSuiteName] = pbfTestSuite.executeTestSuite()
+    next(pb)
 
     for key in failedTestDict:
         if not failedTestDict[key][0]:
