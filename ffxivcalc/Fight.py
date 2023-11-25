@@ -327,7 +327,7 @@ class Fight:
             Player.WeaponskillReduction = (1000 - math.floor(130 * (Player.Stat["SkS"]-400) / 1900))/1000
             Player.EffectList.append(GCDReductionEffect)
                                          # Computing AA delay
-            Player.currentDelay = math.floor(math.floor(int(self.baseDelay * 1000 ) * (100 - self.Haste)/100)/10)/100
+            Player.currentDelay = math.floor(math.floor(int(Player.baseDelay * 1000 ) * (100 - Player.Haste)/100)/10)/100
 
         fight_logging.debug("Starting simulation with TeamCompositionBonus = " + str(self.TeamCompositionBonus))
         fight_logging.debug("Parameters are -> RequirementOn : " + str(self.RequirementOn) + ", IgnoreMana : " + str(self.IgnoreMana))
