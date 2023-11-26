@@ -151,8 +151,11 @@ class Player:
 
                              # Only update this if player has AA. Which means if autoPointer is not None
         if self.autoPointer:
-                             # Recomputing AA delay lock
-            self.currentDelay = floor(floor(int(self.baseDelay * 1000 ) * (100 - (self.Haste + self.autoHaste))/100)/10)/100
+                             # Recomputing AA delay lock. The haste buffs are multiplied for
+                             # autos. However since only Monk has more than 1 haste buff (namely riddle of wind)
+                             # we can seperate the two by just adding Haste * autoHaste.
+            aaMultHasteBuff = int((100 - self.Haste) * (100-self.autoHaste))/100
+            self.currentDelay = floor(floor(int(self.baseDelay * 1000 ) * (aaMultHasteBuff)/100)/10)/100
                              # Updating the AA Timer
             self.autoPointer.DOTTimer = floor(floor(int(self.autoPointer.DOTTimer * 1000 ) * (100 - self.hasteChangeValue)/100)/10)/100
 

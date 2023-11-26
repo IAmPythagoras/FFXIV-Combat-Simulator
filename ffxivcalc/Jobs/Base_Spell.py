@@ -437,7 +437,6 @@ class Spell:
                                 # finishes. This only affects end time and is not a super big issue. Probably just don't put waitAbility at the end?
             if self.Potency != 0 : minDamage,Damage= player.CurrentFight.ComputeDamageFunction(player, self.Potency, Enemy, self.DPSBonus, type, self, SavePreBakedAction = player.CurrentFight.SavePreBakedAction, PlayerIDSavePreBakedAction = player.CurrentFight.PlayerIDSavePreBakedAction)    #Damage computation
             
-            # move this before damage??????
             if player.JobEnum == JobEnum.Pet and self.Potency != 0: # Is a pet and action does damage
 
                 # Updating damage and potency

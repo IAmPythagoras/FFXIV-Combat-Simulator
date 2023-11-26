@@ -2189,7 +2189,7 @@ def whmTest1TestFunction() -> None:
 
 def whmTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 37.15, 6330]    
+    expected = [0, 37.23, 6330]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -2577,7 +2577,7 @@ def astTest1TestFunction() -> None:
 
 def astTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 66.92, 7800]   
+    expected = [0, 66.93, 7800]
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -7162,7 +7162,7 @@ def samTest1TestFunction() -> None:
 
 def samTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 79.26, 13030]
+    expected = [0, 79.26, 13300]
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -10081,7 +10081,7 @@ def mnkTest1TestFunction() -> None:
 
 def mnkTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 53.86, 8120]
+    expected = [0, 53.85, 8390]
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
