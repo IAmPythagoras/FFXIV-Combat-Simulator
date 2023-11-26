@@ -159,7 +159,6 @@ class Player:
 
                              # Only update this if player has AA. Which means if autoPointer is not None
         if self.autoPointer:
-<<<<<<< HEAD
                              # Auto haste buff are multiplicative. Furthermore, since only Monk has
                              # two haste buffs and the other one is just auto haste buff we can only
                              # worry about the current haste and the autoHaste amount and multiply both.
@@ -167,13 +166,6 @@ class Player:
                              # Recomputing AA delay lock
             self.currentDelay = floor(floor(int(self.baseDelay * 1000 ) * (aaMultHaste)/100)/10)/100
             player_logging.debug("Haste change detected. New delay : " + str(self.currentDelay) + " aaMultHaste : " + str(aaMultHaste))
-=======
-                             # Recomputing AA delay lock. The haste buffs are multiplied for
-                             # autos. However since only Monk has more than 1 haste buff (namely riddle of wind)
-                             # we can seperate the two by just adding Haste * autoHaste.
-            aaMultHasteBuff = int((100 - self.Haste) * (100-self.autoHaste)/100)
-            self.currentDelay = floor(floor(int(self.baseDelay * 1000 ) * (aaMultHasteBuff)/100)/10)/100
->>>>>>> 43863a1849a49f72656ebe4f6f0c987c9b1641a7
                              # Updating the AA Timer
             #self.autoPointer.DOTTimer = floor(floor(int(self.autoPointer.DOTTimer * 1000 ) * (100 - self.hasteChangeValue)/100)/10)/100
 
