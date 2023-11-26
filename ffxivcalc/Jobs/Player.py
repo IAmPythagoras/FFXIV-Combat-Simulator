@@ -579,13 +579,8 @@ class Player:
         """
         if (self.GCDLockTimer > 0) : self.GCDLockTimer = round(max(0, self.GCDLockTimer-time),2)
         if (self.oGCDLockTimer > 0) : self.oGCDLockTimer = round(max(0, self.oGCDLockTimer-time),2)
-<<<<<<< HEAD
         if (self.CastingLockTimer > 0) : self.CastingLockTimer = round(max(0, self.CastingLockTimer-time),2)
         if (self.ManaTick > 0) : self.ManaTick = round(max(0, self.ManaTick-time),2)
-=======
-        if (self.CastingLockTimer > 0) : self.CastingLockTimer = max(0, self.CastingLockTimer-time)
-        if (self.ManaTick > 0) : self.ManaTick = max(0, self.ManaTick-time)
->>>>>>> 43863a1849a49f72656ebe4f6f0c987c9b1641a7
         if (self.ArcanumTimer > 0) : self.ArcanumTimer = max(0, self.ArcanumTimer-time)
         if (self.PotionTimer > 0) : self.PotionTimer = max(0, self.PotionTimer-time)
         if (self.MeditativeBrotherhoodTimer > 0) : self.MeditativeBrotherhoodTimer = max(0, self.MeditativeBrotherhoodTimer-time)
