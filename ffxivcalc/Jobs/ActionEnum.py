@@ -150,6 +150,7 @@ class SummonerActions(ActionEnum):
     ApplySummonAuto = -115
     BahamutAuto = -14
     PhoinixAuto = -15
+    SlipstreamDOT = 100
 
 
 # Healer

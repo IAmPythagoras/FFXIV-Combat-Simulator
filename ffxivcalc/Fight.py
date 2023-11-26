@@ -403,14 +403,21 @@ class Fight:
                 for buff in player.GivenHealBuffList : buff.UpdateTimer(TimeUnit) # Update buff on given heal timer
                 for buff in player.MitBuffList : buff.UpdateTimer(TimeUnit) # Update Mit buff timer
 
-            # Updating and casting DOT if needed
+                             # Updating and casting DOT if needed
             for player in self.PlayerList:
                              # Recomputing recastTime if new Haste has been added.
-                if player.hasteHasChanged: player.recomputeRecastLock(isSpell=(player.RoleEnum == RoleEnum.Caster))
+                             # Note that I am not certain if this goes here or in CastFinal.
+                             # Having the recomputeRecastLock here means that as soon as a haste buff is applied
+                             # it recomptes the recast lock based on the haste change. recomputeRecastLock()
+                             # changes the aaDelay, current AATimer and the current recast lock but it does NOT
+                             # recompute the current casting timer. This is because if you APPLY a haste buff it is either
+                             # a GCD effect or an oGCD, meaning when you apply the casting timer should always be 0.
+                             # And when the haste buff gets removed I BELIEVE that it does not affect the CURRENT casting
+                             # but it will affect the recast. Hence why we do not recompute the casting timer (at least I think it works like that).
+                if player.hasteHasChanged: 
+                    player.recomputeRecastLock(isSpell=(player.RoleEnum == RoleEnum.Caster))
                 for DOT in player.DOTList:
                     DOT.CheckDOT(player,self.Enemy, TimeUnit)
-
-
                     
             for player in self.PlayerList:
                 # Loops through the playerList
@@ -438,6 +445,8 @@ class Fight:
                 player.updateTimer(TimeUnit)
                 player.updateCD(TimeUnit)
                 player.updateLock() # Update the lock on the player to see if the player's state changes
+                                    # Castfinal is being called in player.updateLock() if it applies.
+
 
             if self.wipe: # If we detect that wipe has been set to true we stop the simulation. This for now only happens if a failedRequirement is fatal
                 break
@@ -825,7 +834,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
     elif type == 3: # Auto-attacks
         Damage = math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG) * f_DET) * f_TEN) * f_SPD)
-        Damage = math.floor(math.floor(Damage * math.floor(f_WD * (Player.currentDelay/3) *100 )/100) * Player.Trait)
+        Damage = math.floor(math.floor(Damage * math.floor(f_WD * (Player.baseDelay/3) *100 )/100) * Player.Trait)
     # Now applying buffs
 
     if type == 0 or type == 3 or not spellObj.onceThroughFlag: # If Action or AA, then we apply the current buffs
