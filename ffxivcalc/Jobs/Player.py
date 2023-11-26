@@ -140,21 +140,34 @@ class Player:
     def recomputeRecastLock(self, isSpell : bool):
         """
         This function is called if a Haste change has been detected. This will recompute the gcdLock of the player.
-        We only recompute the GCD Lock.
+        We only recompute the GCD Lock. Note that this is no longer valid, see function declaration for comment.
         isSpell : bool -> True if the value to use is SpellReduction. For simplicity, this value will be figured out based on the 
                           job of the player.
         """
+
+                            # Leaving some of the code as comment in case.
+                            # But found that haste buffs only affect the next GCD, meaning we do not have to recompute
+                            # current lock timer. This also means we only have to update the currentDelay for AA.
+                            # Note that this function is currently being called as soon as a change happens (before DOTs are applied)
+                            # and it could be moved to being only called when AAs are applied IF there was a haste change.
+                            # I will leave everything here regardless for now.
+
                              # Do not worry about CastingLockTimer since it will be 0 at this point. NOT TRUE
                              # ANYMORE WILL HAVE TO WORK ON THAT
-        self.GCDLockTimer = floor(floor(int(self.GCDLockTimer * 1000 ) * (100 - self.hasteChangeValue)/100)/10)/100
-        player_logging.debug("Haste change has been detected. New GCDLockTimer : " + str(self.GCDLockTimer))
+        #self.GCDLockTimer = floor(floor(int(self.GCDLockTimer * 1000 ) * (100 - self.hasteChangeValue)/100)/10)/100
+        #player_logging.debug("Haste change has been detected. New GCDLockTimer : " + str(self.GCDLockTimer))
 
                              # Only update this if player has AA. Which means if autoPointer is not None
         if self.autoPointer:
+                             # Auto haste buff are multiplicative. Furthermore, since only Monk has
+                             # two haste buffs and the other one is just auto haste buff we can only
+                             # worry about the current haste and the autoHaste amount and multiply both.
+            aaMultHaste = int((100-self.Haste) * (100-self.autoHaste)/100)
                              # Recomputing AA delay lock
-            self.currentDelay = floor(floor(int(self.baseDelay * 1000 ) * (100 - (self.Haste + self.autoHaste))/100)/10)/100
+            self.currentDelay = floor(floor(int(self.baseDelay * 1000 ) * (aaMultHaste)/100)/10)/100
+            player_logging.debug("Haste change detected. New delay : " + str(self.currentDelay) + " aaMultHaste : " + str(aaMultHaste))
                              # Updating the AA Timer
-            self.autoPointer.DOTTimer = floor(floor(int(self.autoPointer.DOTTimer * 1000 ) * (100 - self.hasteChangeValue)/100)/10)/100
+            #self.autoPointer.DOTTimer = floor(floor(int(self.autoPointer.DOTTimer * 1000 ) * (100 - self.hasteChangeValue)/100)/10)/100
 
         self.hasteHasChanged = False
         self.hasteChangeValue = 0
@@ -559,12 +572,15 @@ class Player:
     def updateTimer(self, time : float) -> None:
         """
         Updates the base timer of the player and calls the specific to the role and job update timer function
+        Note that some of these update have round(_,2). This is because those are cyclic timer and a slight deviation
+        can add up to a non-negligeable deviation by the end. The other timers are not cyclic and so them having a +-0.01 accuracy 
+        isn't a big deal (for now). The timer of DOTs are also updated with a round(_,2)
         time : float -> unit by which we update the timers
         """
-        if (self.GCDLockTimer > 0) : self.GCDLockTimer = max(0, self.GCDLockTimer-time)
-        if (self.oGCDLockTimer > 0) : self.oGCDLockTimer = max(0, self.oGCDLockTimer-time)
-        if (self.CastingLockTimer > 0) : self.CastingLockTimer = max(0, self.CastingLockTimer-time)
-        if (self.ManaTick > 0) : self.ManaTick = max(0, self.ManaTick-time)
+        if (self.GCDLockTimer > 0) : self.GCDLockTimer = round(max(0, self.GCDLockTimer-time),2)
+        if (self.oGCDLockTimer > 0) : self.oGCDLockTimer = round(max(0, self.oGCDLockTimer-time),2)
+        if (self.CastingLockTimer > 0) : self.CastingLockTimer = round(max(0, self.CastingLockTimer-time),2)
+        if (self.ManaTick > 0) : self.ManaTick = round(max(0, self.ManaTick-time),2)
         if (self.ArcanumTimer > 0) : self.ArcanumTimer = max(0, self.ArcanumTimer-time)
         if (self.PotionTimer > 0) : self.PotionTimer = max(0, self.PotionTimer-time)
         if (self.MeditativeBrotherhoodTimer > 0) : self.MeditativeBrotherhoodTimer = max(0, self.MeditativeBrotherhoodTimer-time)

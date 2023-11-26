@@ -628,7 +628,7 @@ class DOTSpell(Spell):
         If a dot has to be applied it will Cast and Castfinal itself and reset its DOTTimer to 3 seconds.
         """
 
-        self.DOTTimer = max(0, self.DOTTimer-TimeUnit)
+        self.DOTTimer = round(max(0, self.DOTTimer-TimeUnit),2)
 
         if(self.DOTTimer <= 0):
             #Apply DOT
@@ -675,7 +675,7 @@ class Auto_Attack(DOTSpell):
         This is the function called to check if the AA is applied. Same function as to DOTSpell.CheckDOT
         """
                              # Update DOT Timer.
-        self.DOTTimer = max(0, self.DOTTimer-TimeUnit)
+        self.DOTTimer = round(max(0, self.DOTTimer-TimeUnit),2)
 
         if(self.DOTTimer <= 0):
             #Apply DOT
@@ -715,6 +715,7 @@ class Monk_AA(Melee_Auto):
     """
     Subclass of DOTSpell only for monk autos. The reason is that it can be on a faster rate if RiddleOfWind is activated. So the DOT
     update function is overwritten and checks for that and will update the timer accordingly.
+    This class should in theory be deprecated and not used anymore.
     """
     def __init__(self):
         super().__init__(-5, False)
@@ -722,7 +723,7 @@ class Monk_AA(Melee_Auto):
 
     def CheckDOT(self, Player, Enemy, TimeUnit):
         
-        self.DOTTimer = max(0, self.DOTTimer-TimeUnit)
+        self.DOTTimer = round(max(0, self.DOTTimer-TimeUnit),2)
 
         if(self.DOTTimer <= 0):
             #Apply AA
