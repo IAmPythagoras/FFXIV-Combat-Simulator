@@ -594,7 +594,11 @@ class DOTSpell(Spell):
         """
         super().__init__(id, False, 0, 0, Potency,  0, empty, [])
         #Note that here Potency is the potency of the dot, not of the ability
-        self.DOTTimer = 0   #This represents the timer of the dot, and it will apply at each 3 seconds
+        self.DOTTimer = 0.02 # This represents the timer of the dot, and it will apply at each 3 seconds
+                             # The timer is initialized at 0.02 because if it is initialized at 0 it hits immediatly, which
+                             # results in 1 more tic than we would expect. This fixes the issue and gives the expected number of tic.
+                             # Note that this could create issue in edge cases where buffs are not being clipped because there is less than
+                             # 0.02 seconds left on them. I consider this negligeable for now.
         self.isPhysical = isPhysical #True if physical dot, false if magical dot
         self.isGround = isGround
 

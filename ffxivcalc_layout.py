@@ -191,6 +191,8 @@ FellCleave, Onslaught, FellCleave, FellCleave, Infuriate, InnerChaos, HeavySwing
 PLDOpener = [HolySpirit, FastBlade, RiotBlade, WaitAbility(1), Potion, RoyalAuthority, FightOrFlight, RequestACat, GoringBlade, CircleScorn, Expiacion, Confetti, Intervene, BladeFaith, Intervene, BladeTruth, BladeValor, HolySpirit, Atonement, Atonement, Atonement, FastBlade, RiotBlade, RoyalAuthority, Atonement, CircleScorn, Expiacion, Atonement, Atonement, FastBlade, RiotBlade, HolySpirit, RoyalAuthority, Atonement, Atonement, Atonement, FastBlade, RiotBlade, FightOrFlight, RequestACat, GoringBlade, Expiacion, Confetti, BladeFaith, Intervene, BladeTruth, Intervene, BladeValor, HolySpirit, RoyalAuthority, HolySpirit, Atonement ]
 GNBOpener = [KeenEdge, Potion, BrutalShell, NoMercy, Bloodfest, GnashingFang, JugularRip, SonicBreak, BowShock, BlastingZone, DoubleDown, RoughDivide, SavageClaw, AbdomenTear, WickedTalon, EyeGouge, RoughDivide, SolidBarrel, BurstStrike, Hypervelocity, KeenEdge, BrutalShell, SolidBarrel, KeenEdge, BrutalShell, GnashingFang, JugularRip,SavageClaw, AbdomenTear, BlastingZone, WickedTalon, EyeGouge, SolidBarrel, KeenEdge, BrutalShell, SolidBarrel, KeenEdge, BrutalShell, SolidBarrel,KeenEdge, BrutalShell, NoMercy, RoughDivide, GnashingFang, JugularRip, DoubleDown, BlastingZone, RoughDivide, SavageClaw, AbdomenTear, WickedTalon, EyeGouge, SolidBarrel, BurstStrike, Hypervelocity, KeenEdge, BrutalShell, SolidBarrel]
 
+SCHOpener = [Biolysis, WaitAbility(35)]
+
 # ===============================================================================================
 
 # Here we are linking the earlier created action list to the player object. You should not have to change anything here except if you are trying to simulate
@@ -233,7 +235,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [MCHPlayer]
+PlayerList = [SCHPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -259,10 +261,10 @@ level = logging.DEBUG if not findBiS else logging.WARNING
 logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
 __logger__.setLevel(level=level) 
 
-if False:#not findBiS:
+if not findBiS:
     from ffxivcalc.helperCode.helper_backend import SaveFight
     Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False, MaxTeamBonus=False) # Simulating fight
-    if False : Event.simulationRecord.saveRecord()
+    if True : Event.simulationRecord.saveRecord()
     pass
 
 # ===============================================================================================
@@ -292,9 +294,3 @@ if findBiS:
     materiaSpace = [Crit, DH, Det]
     optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=False,minSPDValue=500,maxSPDValue=570, useNewAlgo=True, 
                                 oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=1,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=True, minPiety=0)
-    
-if True:
-    from ffxivcalc.GearSolver.Gear import GearSet
-    from ffxivcalc.GearSolver.Solver import getGearDPSValue
-
-    print(getGearDPSValue(Event, GearSet(), 0, 1))
