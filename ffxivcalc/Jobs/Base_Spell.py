@@ -493,8 +493,8 @@ class Spell:
                         gamer.DOTList.append(aaDOT)
                         gamer.autoPointer = aaDOT
                                  # recomputing for current delay in case haste buffs were applied
-                                 # before it starts
-                    gamer.recomputeRecastLock(isSpell=(gamer.RoleEnum == RoleEnum.Caster))
+                                 # before it starts. Only do this if the player has AA
+                        gamer.recomputeRecastLock(isSpell=(gamer.RoleEnum == RoleEnum.Caster))
 
                                 # Will record the starting HP of every player for graph
                 for gamer in player.CurrentFight.PlayerList:

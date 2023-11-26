@@ -564,8 +564,8 @@ class Player:
         Updates the base timer of the player and calls the specific to the role and job update timer function
         time : float -> unit by which we update the timers
         """
-        if (self.GCDLockTimer > 0) : self.GCDLockTimer = max(0, self.GCDLockTimer-time)
-        if (self.oGCDLockTimer > 0) : self.oGCDLockTimer = max(0, self.oGCDLockTimer-time)
+        if (self.GCDLockTimer > 0) : self.GCDLockTimer = round(max(0, self.GCDLockTimer-time),2)
+        if (self.oGCDLockTimer > 0) : self.oGCDLockTimer = round(max(0, self.oGCDLockTimer-time),2)
         if (self.CastingLockTimer > 0) : self.CastingLockTimer = max(0, self.CastingLockTimer-time)
         if (self.ManaTick > 0) : self.ManaTick = max(0, self.ManaTick-time)
         if (self.ArcanumTimer > 0) : self.ArcanumTimer = max(0, self.ArcanumTimer-time)
