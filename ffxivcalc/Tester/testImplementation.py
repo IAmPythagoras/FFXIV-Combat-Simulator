@@ -183,7 +183,7 @@ def blmTest1TestFunction() -> None:
 
 def blmTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 85.61, 9349]    
+    expected = [0, 86.07, 9349]    
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -1061,7 +1061,7 @@ def rdmTest1TestFunction() -> None:
 
 def rdmTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 32.47, 8730]    
+    expected = [0, 32.49, 8730]    
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -1515,7 +1515,7 @@ def smnTest1TestFunction() -> None:
 
 def smnTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 80.18, 9530]    
+    expected = [0, 80.21, 9530]    
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -1555,7 +1555,7 @@ def smnTest2TestFunction() -> None:
 
 def smnTest2ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 105.88, 14510]    
+    expected = [0, 105.91, 14510]    
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -2189,7 +2189,7 @@ def whmTest1TestFunction() -> None:
 
 def whmTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 37.23, 6330]   
+    expected = [0, 37.29, 6330]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -2577,7 +2577,7 @@ def astTest1TestFunction() -> None:
 
 def astTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 66.93, 7800]
+    expected = [0, 67.1, 7800]
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -3269,7 +3269,7 @@ def sgeTest1TestFunction() -> None:
 
 def sgeTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 51.37, 8000]   
+    expected = [0, 51.39, 8000]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -3621,7 +3621,7 @@ def mchTest1TestFunction() -> None:
 
 def mchTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 82.51, 11050]   
+    expected = [0, 82.52, 11050]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -3689,7 +3689,7 @@ def mchTest3TestFunction() -> None:
 
 def mchTest3ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [2, 28.46,2, 30]   
+    expected = [2, 28.45,2, 30]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -3723,7 +3723,7 @@ def mchTest4TestFunction() -> None:
 
 def mchTest4ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 11.99, 3, 0]   
+    expected = [0, 11.97, 3, 0]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -3757,7 +3757,7 @@ def mchTest5TestFunction() -> None:
 
 def mchTest5ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [1, 25.49, 2, 13.51]   
+    expected = [1, 25.46, 2, 13.51]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -4314,7 +4314,7 @@ def brdTest1TestFunction() -> None:
 
 def brdTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 70.73, 6670]   
+    expected = [0, 70.74, 6670]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -4518,7 +4518,7 @@ def brdTest6TestFunction() -> None:
 
 def brdTest6ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [True,24.27]   
+    expected = [True,24.25]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -4620,7 +4620,7 @@ def brdTest9TestFunction() -> None:
 
 def brdTest9ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [16,25.01, True]   
+    expected = [16,25.00, True]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -4688,7 +4688,7 @@ def brdTest11TestFunction() -> None:
 
 def brdTest11ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [True,25.01]   
+    expected = [True,25]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -5287,7 +5287,7 @@ def dncTest1TestFunction() -> None:
 
 def dncTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 18.38, 5420]   
+    expected = [0, 18.49, 5420]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -6437,7 +6437,7 @@ def ninTest9TestFunction() -> None:
 
 def ninTest9ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [420, 25, 45.76]   
+    expected = [420, 25, 45.75]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -6471,7 +6471,7 @@ def ninTest10TestFunction() -> None:
 
 def ninTest10ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [200, 25, 43.64]   
+    expected = [200, 25, 43.63]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -6505,7 +6505,7 @@ def ninTest11TestFunction() -> None:
 
 def ninTest11ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [200, 0,17.88]   
+    expected = [200, 0,17.87]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -6539,7 +6539,7 @@ def ninTest12TestFunction() -> None:
 
 def ninTest12ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [200, 0,17.88]   
+    expected = [200, 0,17.87]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -6573,7 +6573,7 @@ def ninTest13TestFunction() -> None:
 
 def ninTest13ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [200, 25,13.64]   
+    expected = [200, 25,13.63]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -6811,7 +6811,7 @@ def ninTest20TestFunction() -> None:
 
 def ninTest20ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [650,5]   
+    expected = [650,4.99]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -6879,7 +6879,7 @@ def ninTest22TestFunction() -> None:
 
 def ninTest22ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [350,5]   
+    expected = [350,4.99]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -7162,7 +7162,7 @@ def samTest1TestFunction() -> None:
 
 def samTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 79.26, 13300]
+    expected = [0, 79.6, 13300]
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -8864,7 +8864,7 @@ def rprTest25TestFunction() -> None:
 
 def rprTest25ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [True, 0.03]
+    expected = [True, 0.02]
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -8898,7 +8898,7 @@ def rprTest26TestFunction() -> None:
 
 def rprTest26ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [True,30.02]
+    expected = [True,30.01]
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -10081,7 +10081,7 @@ def mnkTest1TestFunction() -> None:
 
 def mnkTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 53.85, 8390]
+    expected = [0, 53.99, 8390]
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -12316,7 +12316,7 @@ def pldTest1TestFunction() -> None:
 
 def pldTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 87.81, 23780]
+    expected = [0, 87.8, 23780]
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
