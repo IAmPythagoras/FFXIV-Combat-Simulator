@@ -371,7 +371,7 @@ class Spell:
                 player.CurrentFight.wipe = True # otherwise we stop the simulation 
                 return tempSpell
         #Will make sure CastTime is at least Lock
-        if tempSpell.id > 0 and tempSpell.CastTime < Lock : tempSpell.CastTime = 0 #id < 0 are special abilities like DOT, so we do not want them to be affected by that
+        if tempSpell.id > 0 and tempSpell.id != 212 and tempSpell.CastTime < Lock : tempSpell.CastTime = 0 #id < 0 are special abilities like DOT, so we do not want them to be affected by that
         return tempSpell
         #Will put casting spell in player, and do damage/effect once the casting time is over
 
