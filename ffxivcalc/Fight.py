@@ -396,6 +396,13 @@ class Fight:
 
                 self.Enemy.UpdateTimer(TimeUnit) # Updating the Enemy's timers
 
+                        # We will now update any timer each player and the enemy has
+            for player in self.PlayerList:
+                player.updateTimer(TimeUnit)
+                player.updateCD(TimeUnit)
+                player.updateLock() # Update the lock on the player to see if the player's state changes
+                                    # Castfinal is being called in player.updateLock() if it applies.
+
             # Updating shield timer and healing buff timer of all players
             for player in self.PlayerList:
                 for shield in player.ShieldList: shield.UpdateTimer(TimeUnit) # Update shield timer
@@ -437,13 +444,6 @@ class Fight:
                     player.recomputeRecastLock(isSpell=(player.RoleEnum == RoleEnum.Caster))
                 for DOT in player.DOTList:
                     DOT.CheckDOT(player,self.Enemy, TimeUnit)
-
-            # We will now update any timer each player and the enemy has
-            for player in self.PlayerList:
-                player.updateTimer(TimeUnit)
-                player.updateCD(TimeUnit)
-                player.updateLock() # Update the lock on the player to see if the player's state changes
-                                    # Castfinal is being called in player.updateLock() if it applies.
 
 
             if self.wipe: # If we detect that wipe has been set to true we stop the simulation. This for now only happens if a failedRequirement is fatal

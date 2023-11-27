@@ -561,6 +561,8 @@ def ApplyPotion(Player, Enemy):
     Player.Stat["MainStat"] += Player.mainStatBonus
     Player.PotionTimer = 30
 
+    base_spell_logging.debug("Using Potion at " + str(Player.CurrentFight.TimeStamp))
+
     Player.EffectCDList.append(PotionCheck)
 
 def PrepullPotion(Player, Enemy): #If potion is prepull
@@ -578,6 +580,7 @@ def PotionCheck(Player, Enemy):
     if Player.PotionTimer <= 0:
         Player.Stat["MainStat"] -= Player.mainStatBonus #Assuming we are capped
         Player.EffectCDList.remove(PotionCheck)
+        base_spell_logging.debug("removing Potion at " + str(Player.CurrentFight.TimeStamp))
 
 
 class DOTSpell(Spell):
