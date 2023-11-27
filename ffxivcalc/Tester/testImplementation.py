@@ -6640,7 +6640,8 @@ def ninTest14TestFunction() -> None:
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
                              # The third result is checking if the DPS bonus is in fact being applied. 24617 is damage without Kassatsu
-    return [player.CastingSpell.Potency, player.CastingSpell.DPSBonus, round(player.TotalDamage/(24617),2)]
+                             # Removing 3405 from total damage that comes from AA. So the remainder is Raiton damage
+    return [player.CastingSpell.Potency, player.CastingSpell.DPSBonus, round((player.TotalDamage-3405)/(24617),2)]
 
 def ninTest14ValidationFunction(testResults) -> (bool, list):
     passed = True
@@ -6674,7 +6675,8 @@ def ninTest15TestFunction() -> None:
 
     Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
                              # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
-    return [player.CastingSpell.Potency, player.CastingSpell.DPSBonus, round(player.TotalDamage/(49234),2)]
+                             # Removing 3405 from total damage that comes from AA. So the remainder is Hyosho damage
+    return [player.CastingSpell.Potency, player.CastingSpell.DPSBonus, round((player.TotalDamage-3405)/(49234),2)]
 
 def ninTest15ValidationFunction(testResults) -> (bool, list):
     passed = True
@@ -15295,7 +15297,7 @@ def pbfTest15TestFunction() -> None:
 
     player = Player([], [], stat, JobEnum.Reaper)
 
-    Opener = [Soulsow, Harpe, ShadowOfDeath, ArcaneCircle, SoulSlice, SoulSlice, Potion, PlentifulHarvest, Enshroud, CrossReaping, VoidReaping, 
+    Opener = [Soulsow, Harpe, ShadowOfDeath, ArcaneCircle, SoulSlice, SoulSlice, WaitAbility(0.01),Potion, PlentifulHarvest, Enshroud, CrossReaping, VoidReaping, 
               LemureSlice, CrossReaping, VoidReaping, LemureSlice, Communio, Gluttony, Gibbet, Gallows, UnveiledGibbet, Gibbet, ShadowOfDeath, Slice, 
               WaxingSlice, InfernalSlice, Slice, WaxingSlice, InfernalSlice, UnveiledGallows, Gallows, SoulSlice, UnveiledGibbet, Gibbet, Enshroud, CrossReaping, 
               VoidReaping, LemureSlice, CrossReaping, VoidReaping, LemureSlice, Communio, HarvestMoon ]
