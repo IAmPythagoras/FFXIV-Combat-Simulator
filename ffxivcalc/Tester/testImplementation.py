@@ -3757,7 +3757,7 @@ def mchTest5TestFunction() -> None:
 
 def mchTest5ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [1, 25.46, 2, 13.51]   
+    expected = [1, 25.46, 2, 13.5]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -4234,7 +4234,7 @@ def mchTest19TestFunction() -> None:
 
 def mchTest19ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [True, 2350]   
+    expected = [True, 2430]   
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -4242,6 +4242,7 @@ def mchTest19ValidationFunction(testResults) -> (bool, list):
 
 mchtest19 = test("Automaton test 1", mchTest19TestFunction, mchTest19ValidationFunction)
 mchTestSuite.addTest(mchtest19)
+
 
 # Automaton test
 
@@ -4277,6 +4278,42 @@ def mchTest20ValidationFunction(testResults) -> (bool, list):
 
 mchtest20 = test("Automaton test 2", mchTest20TestFunction, mchTest20ValidationFunction)
 mchTestSuite.addTest(mchtest20)
+
+# Automaton test
+
+def mchTest21TestFunction() -> None:
+    """Automaton test
+    """
+
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+    Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+    actionSet = [SplitShot, Automaton, WaitAbility(15), SplitShot]
+    player = Player(actionSet, [], Stat, JobEnum.Machinist)
+    player.BatteryGauge = 100
+
+    Event.AddPlayer([player])
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+    pet = player.Pet
+    return [pet.TrueLock, player.TotalPotency]
+
+def mchTest21ValidationFunction(testResults) -> (bool, list):
+    passed = True
+    expected = [True, 3210]   
+
+    for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+    return passed , expected
+
+mchtest21 = test("Automaton test 3 - Max Battery Gauge", mchTest21TestFunction, mchTest21ValidationFunction)
+mchTestSuite.addTest(mchtest21)
 
 ######################################
 #           Bard testSuite           #
@@ -6167,7 +6204,7 @@ def ninTest1TestFunction() -> None:
 
 def ninTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 25.08, 11410]   
+    expected = [0, 25.21, 11500] 
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -8023,7 +8060,7 @@ def rprTest1TestFunction() -> None:
 
 def rprTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 27.17, 9760]
+    expected = [0, 27.2, 9760]
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -10081,7 +10118,7 @@ def mnkTest1TestFunction() -> None:
 
 def mnkTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 53.99, 8390]
+    expected = [0, 53.99, 8120]
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -13937,12 +13974,9 @@ def generateDOTSnapshotTest(buffToApply, buffBeforeDOT : int, buffAfterDOT : int
                              # If isGround = True and action is debuff we don't clip.
         if isGround:
             match action.id:
-                case Mug.id:
+                case Mug.id | ChainStratagem.id:
                     continue
-                case ChainStratagem.id:
-                    continue
-                             # Matching id since matching object themself doesn't
-                             # seem to work?
+
         match action.id:
             case Devilment.id:
                 newPlayer = Player([ClosedPosition(dotPlayer), Devilment], [], base_stat,JobEnum.Dancer)
@@ -13970,15 +14004,15 @@ def generateDOTSnapshotTest(buffToApply, buffBeforeDOT : int, buffAfterDOT : int
         if action == Potion : continue
         match action.id:
             case Devilment.id:
-                newPlayer = Player([ClosedPosition(dotPlayer), WaitAbility(11),Devilment], [], base_stat,JobEnum.Dancer)
+                newPlayer = Player([ClosedPosition(dotPlayer), WaitAbility(12),Devilment], [], base_stat,JobEnum.Dancer)
             case TechnicalFinish.id:
-                newPlayer = Player([WaitAbility(11),TechnicalStep, Pirouette, Entrechat, Jete, Emboite, TechnicalFinish], [], base_stat,JobEnum.Dancer)
+                newPlayer = Player([WaitAbility(12),TechnicalStep, Pirouette, Entrechat, Jete, Emboite, TechnicalFinish], [], base_stat,JobEnum.Dancer)
             case StandardFinish.id:
-                newPlayer = Player([ClosedPosition(dotPlayer),WaitAbility(11), StandardStep, Jete, Pirouette, StandardFinish], [], base_stat,JobEnum.Dancer)
+                newPlayer = Player([ClosedPosition(dotPlayer),WaitAbility(12), StandardStep, Jete, Pirouette, StandardFinish], [], base_stat,JobEnum.Dancer)
             case 7398 : # DragonSight
-                newPlayer = Player([WaitAbility(11),DragonSight(dotPlayer)], [], base_stat,JobEnum.Dragoon)
+                newPlayer = Player([WaitAbility(12),DragonSight(dotPlayer)], [], base_stat,JobEnum.Dragoon)
             case _ :
-                newPlayer = Player([WaitAbility(11),action], [], base_stat,buffJobLookup[action])
+                newPlayer = Player([WaitAbility(12),action], [], base_stat,buffJobLookup[action])
         Event.AddPlayer([newPlayer])
 
                              # Sorting by name

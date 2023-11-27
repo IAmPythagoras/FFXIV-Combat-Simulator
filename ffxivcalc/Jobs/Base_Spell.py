@@ -700,9 +700,6 @@ class Queen_Auto(Auto_Attack):
     def __init__(self, id, Ranged):
         super().__init__(id, Ranged)
         self.Weaponskill = False
-        self.DOTTimer = 0.02 # Set a higher value since it will result
-                             # in one more auto than expected
-                             # otherwise
 
 class Melee_Auto(Auto_Attack):
     """
