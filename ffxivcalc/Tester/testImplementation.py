@@ -16993,7 +16993,7 @@ def generateGCDTest(testPlayer, gcdAction,hasteAction,actionHasteAmount : int, a
 
         return passed, expectedResult
     
-    return testFunction, validationFunction
+    return testFunction, validationFunction, randomSPD, randomDelay
 
 # Generating test
 
@@ -17006,15 +17006,15 @@ actionTestList = [Xenoglossy, Dia, Combust, ArmorCrush, Enpi, Bootshine, Titan, 
 testAAList = [False, False, False, True, True, True, False, True, False, True]
 
 # Number of tests to be performed per job
-n = 10
+n = 15
 
 for i,job in enumerate(playerTestList):
     testPlayer = Player([], [], base_stat, job)
     for j in range(n):
-        tF, vF = generateGCDTest(testPlayer, actionTestList[i], hasteActionTestList[i], actionHasteAmountList[i],
+        tF, vF, randomSPD, randomDelay = generateGCDTest(testPlayer, actionTestList[i], hasteActionTestList[i], actionHasteAmountList[i],
                                  aaHasteAmountList[i], baseHasteAmountList[i],  testAAList[i])
         
-        gcdTestSuite.addTest(test("GCD timer " + ("+ AA delay " if testAAList[i] else "") + f" for {JobEnum.name_for_id(job)} test {j+1}", tF, vF))
+        gcdTestSuite.addTest(test("GCD timer " + ("+ AA delay " if testAAList[i] else "") + f" for {JobEnum.name_for_id(job)} test {j+1} - SPD : {randomSPD} + wDelay : {randomDelay}", tF, vF))
 
 
 

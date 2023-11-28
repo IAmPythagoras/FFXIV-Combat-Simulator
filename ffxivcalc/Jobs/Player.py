@@ -172,7 +172,10 @@ class Player:
                              # worry about the current haste and the autoHaste amount and multiply both.
             aaMultHaste = int((100-self.Haste) * (100-self.autoHaste)/100)
                              # Recomputing AA delay lock
-            self.currentDelay = floor(floor(int(self.baseDelay * 1000 ) * (aaMultHaste)/100)/10)/100
+                             # rounding on self.delay * 1000 on the integer is needed as otherwise it sometimes
+                             # creates issues with floating points. Ex : 2.01 * 1000 = 2009.9999... which when
+                             # int() = 2009
+            self.currentDelay = floor(floor(int(round(self.baseDelay * 1000,0)) * (aaMultHaste)/100)/10)/100
             player_logging.debug("Haste change detected. New delay : " + str(self.currentDelay) + " aaMultHaste : " + str(aaMultHaste))
                              # Updating the AA Timer
             #self.autoPointer.DOTTimer = floor(floor(int(self.autoPointer.DOTTimer * 1000 ) * (100 - self.hasteChangeValue)/100)/10)/100
