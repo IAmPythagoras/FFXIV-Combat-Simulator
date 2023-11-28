@@ -137,6 +137,14 @@ class Player:
         Job : JobEnum -> Specific job of the player
     """
 
+    def setStat(self, newStat : dict):
+        """
+        This function sets the given stat dict as the stat of the player. It does a deepcopy if the newStat
+        dictionnary to avoid any issues.
+        newStat : dict -> New stats dictionnary.
+        """
+        self.Stat = deepcopy(newStat)
+
     def recomputeRecastLock(self, isSpell : bool):
         """
         This function is called if a Haste change has been detected. This will recompute the gcdLock of the player.

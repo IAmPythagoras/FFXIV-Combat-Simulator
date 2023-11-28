@@ -11,7 +11,7 @@ EX : A Blackmage testSuite, etc.
 from ffxivcalc.helperCode.Progress import ProgressBar
 pb = ProgressBar.init(23, "Initializing test suites")
 
-
+from math import floor
 from ffxivcalc.Fight import Fight
 from ffxivcalc.Jobs.Player import Player
 from ffxivcalc.Jobs.PlayerEnum import *
@@ -16775,7 +16775,208 @@ def pbfTest37ValidationFunction(testResults) -> (bool, list):
 pbftest37 = test("preBakedFight test 37 - Warrior + Dance partner + Dragoon buff + astro card + Other buff", pbfTest37TestFunction, pbfTest37ValidationFunction)
 pbfTestSuite.addTest(pbftest37)
 
-if True:
+######################################
+#      GCD timer testSuite       #
+######################################
+
+# This test suite tests the GCD timer of a player under certain effect and tests the AA delay if it applies.
+# These tests are randomly generated given a seed that can be set by changing the value under here. 
+# The randomness is to select a SpS/SkS value and a random autoDelay (if it applies) since testing all different values might be redundant but also
+# a bit long. Going for random testing here is in my opinion the best way.
+
+randomSeed = randint(1,999999)
+seed(randomSeed)
+gcdTestSuite = testSuite(f"GCD timer simulation test suite - seed {randomSeed}")
+
+
+def __computeGCDAndAATimer(spdValue : int, hasteAmount : int, autoHasteAmount : int, weaponDelay : int) -> (float, float):
+    """
+    This function computes the GCD timer assuming a base GCD of 2.5 seconds and
+    the weaponDelay given a base weaponDelay.
+    spdValue : int -> Speed stat's value
+    hasteAmount : int -> Amount of haste affecting the GCD timer
+    autoHasteAmount : int -> Amount of haste affecting the weaponDelay only.
+    weaponDelay : int -> Weapon delay in milli seconds.
+    """
+    reductionRatio = (1000 - math.floor(130 * (spdValue-400) / 1900))/1000
+    gcdTimer = floor(floor(floor((2500 * reductionRatio)) * (100 - hasteAmount)/100)/10)/100
+
+    aaMultHaste = int((100-hasteAmount) * (100-autoHasteAmount)/100)
+    curDelay = floor(floor(weaponDelay * (aaMultHaste)/100)/10)/100
+
+    return gcdTimer, curDelay
+
+# generateGCDTest() generates a gcd test with a random SpS/SkS value.
+
+def generateGCDTest(testPlayer, gcdAction,hasteAction,actionHasteAmount : int, autoHasteAmount : int, testAA : bool, testSeed : int = randomSeed):
+    """
+    This function generates a random gcd timer test using the seed given.
+    testPlayer : Player -> player object to test
+    hasteAction : Spell -> Action to have the player perform
+    actionHasteAmount : int -> Haste amount gained by that action.
+    autoHasteAmount : int -> Amount of haste gained for autos.
+    testAA : bool -> True if want to test for aaDelay too.
+    """
+
+    testPlayer.setStat(base_stat)
+                             # Sampling SPD value between 400-3500
+                             # and weaponDelay between 2.00-3.00 seconds
+    randomSPD = randint(400,3500)
+    randomDelay = randint(2000,3000) if testAA else 3000
+
+    isCaster = testPlayer.RoleEnum == RoleEnum.Caster or testPlayer.RoleEnum == RoleEnum.Healer
+    testPlayer.Stat["SS" if isCaster else "SkS"] = randomSPD
+
+                             # Creating all event and simulating them. Taking results to compare later in test and validation
+                             # function of the test.
+    Dummy = Enemy()
+    Event = Fight(Dummy, False)
+
+    testResult = []
+    expectedResult = []
+
+                             # Doing hasteAction and then gcd.
+                             # Should expect gcd timer to be affected by action.
+    Event.AddPlayer([deepcopy(testPlayer)])
+    Event.PlayerList[0].ActionSet = [hasteAction, gcdAction]
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+
+    gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, actionHasteAmount, 0, randomDelay)
+
+    testResult += [Event.PlayerList[0].CastingSpell.RecastTime]
+    expectedResult += [gcdTimer]
+
+                             # Doing gcdAction alone
+    Event = Fight(Dummy, False)
+    Event.AddPlayer([deepcopy(testPlayer)])
+    Event.PlayerList[0].ActionSet = [gcdAction]
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+
+    gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, 0, 0, randomDelay)
+
+    testResult += [Event.PlayerList[0].CastingSpell.RecastTime]
+    expectedResult += [gcdTimer]
+
+                             # Should affect recast time
+    Event = Fight(Dummy, False)
+    Event.AddPlayer([deepcopy(testPlayer)])
+    Event.PlayerList[0].ActionSet = [gcdAction, hasteAction, gcdAction]
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+
+    gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, actionHasteAmount, 0, randomDelay)
+
+    testResult += [Event.PlayerList[0].CastingSpell.RecastTime]
+    expectedResult += [gcdTimer]
+
+                             # Should not affect recast time
+    Event = Fight(Dummy, False)
+    Event.AddPlayer([deepcopy(testPlayer)])
+    Event.PlayerList[0].ActionSet = [gcdAction, hasteAction, WaitAbility(35), gcdAction]
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+
+    gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, 0, 0, randomDelay)
+
+    testResult += [Event.PlayerList[0].CastingSpell.RecastTime]
+    expectedResult += [gcdTimer]
+
+                             # Should not affect recast time
+    Event = Fight(Dummy, False)
+    Event.AddPlayer([deepcopy(testPlayer)])
+    Event.PlayerList[0].ActionSet = [hasteAction, WaitAbility(35), gcdAction]
+
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+
+    Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+
+    gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, 0, 0, randomDelay)
+
+    testResult += [Event.PlayerList[0].CastingSpell.RecastTime]
+    expectedResult += [gcdTimer]
+
+
+    if testAA:
+                             # Should not affect weaponDelay
+        Event = Fight(Dummy, False)
+        Event.AddPlayer([deepcopy(testPlayer)])
+        Event.PlayerList[0].ActionSet = [hasteAction]
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+
+        gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, actionHasteAmount, autoHasteAmount, randomDelay)
+
+        testResult += [Event.PlayerList[0].currentDelay]
+        expectedResult += [aaDelay]
+
+                             # Should not affect weaponDelay
+        Event = Fight(Dummy, False)
+        Event.AddPlayer([deepcopy(testPlayer)])
+        Event.PlayerList[0].ActionSet = [hasteAction, WaitAbility(40)]
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+
+        gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, 0, 0, randomDelay)
+
+        testResult += [Event.PlayerList[0].currentDelay]
+        expectedResult += [aaDelay]
+
+
+    def testFunction() -> list:
+        return testResult
+    
+    def validationFunction(testResult) -> (bool, list):
+        passed = True
+
+        for t in range(len(testResult)): passed = passed and (testResult[i] == expectedResult[i])
+
+        return passed, expectedResult
+    
+    return testFunction, validationFunction
+
+
+player = Player([], [], base_stat, JobEnum.BlackMage)
+
+tF, vF = generateGCDTest(player, Xenoglossy, LeyLines, 15, 0, False)
+testT = test("test", tF, vF)
+
+gcdTestSuite.addTest(testT)
+
+
+
+
+
+gcdTestSuite.executeTestSuite()
+
+if False:
 
     failedTestDict = {}
     
