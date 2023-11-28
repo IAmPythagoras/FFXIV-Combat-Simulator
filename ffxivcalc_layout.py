@@ -294,3 +294,9 @@ if findBiS:
     materiaSpace = [Crit, DH, Det]
     optimal, random = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=False,minSPDValue=500,maxSPDValue=570, useNewAlgo=True, 
                                 oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=1,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=True, minPiety=0)
+    
+
+#if False:
+#    from ffxivcalc.GearSolver.Gear import GearSet
+#    from ffxivcalc.GearSolver.Solver import getGearDPSValue
+#    print(getGearDPSValue(Event, GearSet(), 0, 1))

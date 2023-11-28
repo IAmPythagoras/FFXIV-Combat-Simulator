@@ -371,7 +371,7 @@ class Spell:
                 player.CurrentFight.wipe = True # otherwise we stop the simulation 
                 return tempSpell
         #Will make sure CastTime is at least Lock
-        if tempSpell.id > 0 and tempSpell.CastTime < Lock : tempSpell.CastTime = 0 #id < 0 are special abilities like DOT, so we do not want them to be affected by that
+        if tempSpell.id > 0 and tempSpell.id != 212 and tempSpell.CastTime < Lock : tempSpell.CastTime = 0 #id < 0 are special abilities like DOT, so we do not want them to be affected by that
         return tempSpell
         #Will put casting spell in player, and do damage/effect once the casting time is over
 
@@ -561,6 +561,8 @@ def ApplyPotion(Player, Enemy):
     Player.Stat["MainStat"] += Player.mainStatBonus
     Player.PotionTimer = 30
 
+    base_spell_logging.debug("Using Potion at " + str(Player.CurrentFight.TimeStamp))
+
     Player.EffectCDList.append(PotionCheck)
 
 def PrepullPotion(Player, Enemy): #If potion is prepull
@@ -578,6 +580,7 @@ def PotionCheck(Player, Enemy):
     if Player.PotionTimer <= 0:
         Player.Stat["MainStat"] -= Player.mainStatBonus #Assuming we are capped
         Player.EffectCDList.remove(PotionCheck)
+        base_spell_logging.debug("removing Potion at " + str(Player.CurrentFight.TimeStamp))
 
 
 class DOTSpell(Spell):
@@ -700,9 +703,6 @@ class Queen_Auto(Auto_Attack):
     def __init__(self, id, Ranged):
         super().__init__(id, Ranged)
         self.Weaponskill = False
-        self.DOTTimer = 0.02 # Set a higher value since it will result
-                             # in one more auto than expected
-                             # otherwise
 
 class Melee_Auto(Auto_Attack):
     """
