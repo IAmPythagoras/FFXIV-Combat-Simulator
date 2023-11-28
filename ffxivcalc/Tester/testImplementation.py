@@ -16859,7 +16859,7 @@ def generateGCDTest(testPlayer, gcdAction,hasteAction,actionHasteAmount : int, a
                              # Sampling SPD value between 400-3500
                              # and weaponDelay between 2.00-3.00 seconds
     randomSPD = randint(400,3500)
-    randomDelay = randint(2000,3000) if testAA else 3000
+    randomDelay = randint(200,300) * 10 if testAA else 3000
 
     isCaster = testPlayer.RoleEnum == RoleEnum.Caster or testPlayer.RoleEnum == RoleEnum.Healer
     testPlayer.Stat["SS" if isCaster else "SkS"] = randomSPD

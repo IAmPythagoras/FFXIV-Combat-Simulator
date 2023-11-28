@@ -394,7 +394,7 @@ def MeikyoStackCheck(Player, Enemy):
 #GCD
 OgiNamikiri = SamuraiSpell(25781, True, 1.8, 2.5, 860, ApplyOgiNamikiri, [OgiNamikiriRequirement], 0, type = 2)
 KaeshiNamikiri = SamuraiSpell(25782, True, 0, 1, 860, ApplyKaeshiNamikiri, [KaeshiNamikiriRequirement], 0)
-Enpi = SamuraiSpell(7486, True, 0, 1.5, 100, Add10Kenki, [], 0, type = 2)
+Enpi = SamuraiSpell(7486, True, 0, 2.5, 100, Add10Kenki, [], 0, type = 2)
 
 #Iaijutsu
 Higanbana = SamuraiSpell(7489, True, 1.3, 2.5, 200, ApplyHiganbana, [HiganbanaRequirement], 0, type = 2)
