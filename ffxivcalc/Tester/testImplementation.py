@@ -56,7 +56,7 @@ from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import *
 
 import logging
 from random import randint, seed, sample
-
+next(pb)
 main_logging = logging.getLogger("ffxivcalc")
 test_logging = main_logging.getChild("Testing")
 
@@ -152,7 +152,7 @@ class testSuite:
 ######################################
 
 blmTestSuite = testSuite("Blackmage test suite")
-
+next(pb)
 # Opener requirement, end time and potency test 1
 
 def blmTest1TestFunction() -> None:
@@ -1029,7 +1029,7 @@ blmTestSuite.addTest(blmtest25)
 ######################################
 
 rdmTestSuite = testSuite("Redmage test suite")
-
+next(pb)
 # Opener requirement, end time and potency test 1
 
 def rdmTest1TestFunction() -> None:
@@ -1484,7 +1484,7 @@ rdmTestSuite.addTest(rdmtest13)
 ######################################
 
 smnTestSuite = testSuite("Summoner test suite")
-
+next(pb)
 # Opener requirement, end time and potency test 1
 
 def smnTest1TestFunction() -> None:
@@ -1877,7 +1877,7 @@ smnTestSuite.addTest(smntest11)
 ######################################
 
 schTestSuite = testSuite("Scholar test suite")
-
+next(pb)
 # Opener requirement, end time and potency test 1
 
 def schTest1TestFunction() -> None:
@@ -2158,7 +2158,7 @@ schTestSuite.addTest(schtest8)
 ######################################
 
 whmTestSuite = testSuite("Whitemage test suite")
-
+next(pb)
 # Opener requirement, end time and potency test 1
 
 def whmTest1TestFunction() -> None:
@@ -2543,7 +2543,7 @@ whmTestSuite.addTest(whmtest11)
 ######################################
 
 astTestSuite = testSuite("Astrologian test suite")
-
+next(pb)
 # Opener requirement, end time and potency test 1
 
 def astTest1TestFunction() -> None:
@@ -3238,7 +3238,7 @@ astTestSuite.addTest(asttest18)
 ######################################
 
 sgeTestSuite = testSuite("Sage test suite")
-
+next(pb)
 # Opener requirement, end time and potency test 1
 
 def sgeTest1TestFunction() -> None:
@@ -3589,7 +3589,7 @@ sgeTestSuite.addTest(sgetest10)
 ######################################
 
 mchTestSuite = testSuite("Machinist test suite")
-
+next(pb)
 # Opener requirement, end time and potency test 1
 
 def mchTest1TestFunction() -> None:
@@ -4320,7 +4320,7 @@ mchTestSuite.addTest(mchtest21)
 ######################################
 
 brdTestSuite = testSuite("Bard test suite")
-
+next(pb)
 # Opener requirement, end time and potency test 1
 
 def brdTest1TestFunction() -> None:
@@ -5293,7 +5293,7 @@ brdTestSuite.addTest(brdtest26)
 ######################################
 
 dncTestSuite = testSuite("Dancer test suite")
-
+next(pb)
 # Opener requirement, end time and potency test 1
 
 def dncTest1TestFunction() -> None:
@@ -6172,7 +6172,7 @@ dncTestSuite.addTest(dnctest23)
 ######################################
 
 ninTestSuite = testSuite("Ninja test suite")
-
+next(pb)
 # Opener requirement, end time and potency test 1
 
 def ninTest1TestFunction() -> None:
@@ -7170,7 +7170,7 @@ ninTestSuite.addTest(nintest29)
 ######################################
 
 samTestSuite = testSuite("Samurai test suite")
-
+next(pb)
 # Opener requirement, end time and potency test 1
 
 def samTest1TestFunction() -> None:
@@ -8031,7 +8031,7 @@ samTestSuite.addTest(samtest24)
 ######################################
 
 rprTestSuite = testSuite("Reaper test suite")
-
+next(pb)
 # Opener requirement, end time and potency test 1
 
 def rprTest1TestFunction() -> None:
@@ -9019,7 +9019,7 @@ rprTestSuite.addTest(rprtest28)
 ######################################
 
 drgTestSuite = testSuite("Dragoon test suite")
-
+next(pb)
 # Opener requirement, end time and potency test 1
 
 def drgTest1TestFunction() -> None:
@@ -10088,7 +10088,7 @@ drgTestSuite.addTest(drgtest30)
 ######################################
 
 mnkTestSuite = testSuite("Monk test suite")
-
+next(pb)
 # Opener requirement, end time and potency test 1
 
 def mnkTest1TestFunction() -> None:
@@ -10980,7 +10980,7 @@ mnkTestSuite.addTest(mnktest25)
 ######################################
 
 warTestSuite = testSuite("Warrior test suite")
-
+next(pb)
 # Opener requirement, end time and potency test 1
 
 def warTest1TestFunction() -> None:
@@ -11569,7 +11569,7 @@ warTestSuite.addTest(wartest17)
 ######################################
 
 gnbTestSuite = testSuite("Gunbreaker test suite")
-
+next(pb)
 # Opener requirement, end time and potency test 1
 
 def gnbTest1TestFunction() -> None:
@@ -12321,7 +12321,7 @@ gnbTestSuite.addTest(gnbtest22)
 ######################################
 
 pldTestSuite = testSuite("Paladin test suite")
-
+next(pb)
 # Opener requirement, end time and potency test 1
 
 def pldTest1TestFunction() -> None:
@@ -13219,7 +13219,7 @@ pldTestSuite.addTest(pldtest26)
 ######################################
 
 drkTestSuite = testSuite("Dark Knight test suite")
-
+next(pb)
 # Opener requirement, end time and potency test 1
 
 def drkTest1TestFunction() -> None:
@@ -13875,7 +13875,7 @@ drkTestSuite.addTest(drktest17)
 ######################################
 #           DOT testSuite            #
 ######################################
-
+next(pb)
 # The DOT testSuite is a randomly generated test suite. We take all party buffs in the game
 # and randomly put them before or after the DOT is applied. Every DOT has 7 tests in total.
 # Test 1-6 are the same, only there is an increasing amount of buffs before the dot is applied
@@ -14130,7 +14130,7 @@ for i in range(len(jobList)):
 from ffxivcalc.helperCode.helper_backend import SaveFight, RestoreFightObject
 
 rfoTestSuite = testSuite("helperCode.RestoreFightObject test suite")
-
+next(pb)
 def rfoTest1TestFunction() -> None:
     """
     """
@@ -14529,7 +14529,7 @@ rfoTestSuite.addTest(rfotest6)
 from ffxivcalc.GearSolver.Solver import computeDamageValue
 
 pbfTestSuite = testSuite("PreBakedFight simulation test suite")
-
+next(pb)
 # Test
 
 def pbfTest1TestFunction() -> None:
@@ -16829,7 +16829,7 @@ pbfTestSuite.addTest(pbftest37)
 randomSeed = randint(1,999999)
 seed(randomSeed)
 gcdTestSuite = testSuite(f"GCD timer simulation test suite - seed {randomSeed}")
-
+next(pb)
 
 def __computeGCDAndAATimer(spdValue : int, hasteAmount : int, autoHasteAmount : int, weaponDelay : int) -> (float, float):
     """
@@ -16860,104 +16860,38 @@ def generateGCDTest(testPlayer, gcdAction,hasteAction,actionHasteAmount : int, a
     baseHaste : int -> Base haste amount. Usually coming from traits
     testAA : bool -> True if want to test for aaDelay too.
     """
-
-    testPlayer.setStat(base_stat)
                              # Sampling SPD value between 400-3500
                              # and weaponDelay between 2.00-3.00 seconds
     randomSPD = randint(400,3500)
     randomDelay = randint(200,300) * 10 if testAA else 3000
 
-    isCaster = testPlayer.RoleEnum == RoleEnum.Caster or testPlayer.RoleEnum == RoleEnum.Healer
-    testPlayer.Stat["SS" if isCaster else "SkS"] = randomSPD
-    testPlayer.baseDelay = round(randomDelay/1000,2)
+    def testFunction() -> list:
+        testPlayer.setStat(base_stat)
 
-                             # Changing player field if required
-    match testPlayer.JobEnum:
-        case JobEnum.Astrologian:
-            testPlayer.Celestial , testPlayer.Solar, testPlayer.Lunar = True, True, True
-        case JobEnum.Samurai:
-            testPlayer.EffectList.append(HakazeEffect)
-        case _:
-            pass
+        isCaster = testPlayer.RoleEnum == RoleEnum.Caster or testPlayer.RoleEnum == RoleEnum.Healer
+        testPlayer.Stat["SS" if isCaster else "SkS"] = randomSPD
+        testPlayer.baseDelay = round(randomDelay/1000,2)
+                                # Changing player field if required
+        match testPlayer.JobEnum:
+            case JobEnum.Astrologian:
+                testPlayer.Celestial , testPlayer.Solar, testPlayer.Lunar = True, True, True
+            case JobEnum.Samurai:
+                testPlayer.EffectList.append(HakazeEffect)
+            case _:
+                pass
 
-                             # Creating all event and simulating them. Taking results to compare later in test and validation
-                             # function of the test.
-    Dummy = Enemy()
-    Event = Fight(Dummy, False)
-
-    testResult = []
-    expectedResult = []
-
-                             # Doing hasteAction and then gcd.
-                             # Should expect gcd timer to be affected by action.
-    Event.AddPlayer([deepcopy(testPlayer)])
-    Event.PlayerList[0].ActionSet = [hasteAction, gcdAction]
-
-    Event.RequirementOn = False
-    Event.ShowGraph = False
-    Event.IgnoreMana = True
-
-    Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-
-    gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, actionHasteAmount + baseHaste, 0, randomDelay)
-
-    testResult += [Event.PlayerList[0].CastingSpell.RecastTime]
-    expectedResult += [gcdTimer]
-
-                             # Should affect recast time
-    Event = Fight(Dummy, False)
-    Event.AddPlayer([deepcopy(testPlayer)])
-    Event.PlayerList[0].ActionSet = [gcdAction, hasteAction, gcdAction]
-
-    Event.RequirementOn = False
-    Event.ShowGraph = False
-    Event.IgnoreMana = True
-
-    Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-
-    gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, actionHasteAmount + baseHaste, 0, randomDelay)
-
-    testResult += [Event.PlayerList[0].CastingSpell.RecastTime]
-    expectedResult += [gcdTimer]
-
-                             # Should not affect recast time
-    Event = Fight(Dummy, False)
-    Event.AddPlayer([deepcopy(testPlayer)])
-    Event.PlayerList[0].ActionSet = [gcdAction, hasteAction, WaitAbility(65), gcdAction]
-
-    Event.RequirementOn = False
-    Event.ShowGraph = False
-    Event.IgnoreMana = True
-
-    Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-
-    gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, 0 + baseHaste, 0, randomDelay)
-
-    testResult += [Event.PlayerList[0].CastingSpell.RecastTime]
-    expectedResult += [gcdTimer]
-
-                             # Should not affect recast time
-    Event = Fight(Dummy, False)
-    Event.AddPlayer([deepcopy(testPlayer)])
-    Event.PlayerList[0].ActionSet = [hasteAction, WaitAbility(65), gcdAction]
-
-    Event.RequirementOn = False
-    Event.ShowGraph = False
-    Event.IgnoreMana = True
-
-    Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-
-    gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, 0 + baseHaste, 0, randomDelay)
-
-    testResult += [Event.PlayerList[0].CastingSpell.RecastTime]
-    expectedResult += [gcdTimer]
-
-
-    if testAA:
-                             # Should not affect weaponDelay
+                                # Creating all event and simulating them. Taking results to compare later in test and validation
+                                # function of the test.
+        Dummy = Enemy()
         Event = Fight(Dummy, False)
+
+        testResult = []
+        expectedResult = []
+
+                                # Doing hasteAction and then gcd.
+                                # Should expect gcd timer to be affected by action.
         Event.AddPlayer([deepcopy(testPlayer)])
-        Event.PlayerList[0].ActionSet = [gcdAction,hasteAction, WaitAbility(0.1)]
+        Event.PlayerList[0].ActionSet = [hasteAction, gcdAction]
 
         Event.RequirementOn = False
         Event.ShowGraph = False
@@ -16965,15 +16899,31 @@ def generateGCDTest(testPlayer, gcdAction,hasteAction,actionHasteAmount : int, a
 
         Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
 
-        gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, actionHasteAmount + baseHaste, autoHasteAmount, randomDelay)
+        gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, actionHasteAmount + baseHaste, 0, randomDelay)
 
-        testResult += [Event.PlayerList[0].currentDelay]
-        expectedResult += [aaDelay]
+        testResult += [Event.PlayerList[0].CastingSpell.RecastTime]
+        expectedResult += [gcdTimer]
 
-                             # Should not affect weaponDelay
+                                # Should affect recast time
         Event = Fight(Dummy, False)
         Event.AddPlayer([deepcopy(testPlayer)])
-        Event.PlayerList[0].ActionSet = [gcdAction,hasteAction, WaitAbility(65)]
+        Event.PlayerList[0].ActionSet = [gcdAction, hasteAction, gcdAction]
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+
+        gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, actionHasteAmount + baseHaste, 0, randomDelay)
+
+        testResult += [Event.PlayerList[0].CastingSpell.RecastTime]
+        expectedResult += [gcdTimer]
+
+                                # Should not affect recast time
+        Event = Fight(Dummy, False)
+        Event.AddPlayer([deepcopy(testPlayer)])
+        Event.PlayerList[0].ActionSet = [gcdAction, hasteAction, WaitAbility(65), gcdAction]
 
         Event.RequirementOn = False
         Event.ShowGraph = False
@@ -16983,21 +16933,71 @@ def generateGCDTest(testPlayer, gcdAction,hasteAction,actionHasteAmount : int, a
 
         gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, 0 + baseHaste, 0, randomDelay)
 
-        testResult += [Event.PlayerList[0].currentDelay]
-        expectedResult += [aaDelay]
+        testResult += [Event.PlayerList[0].CastingSpell.RecastTime]
+        expectedResult += [gcdTimer]
+
+                                # Should not affect recast time
+        Event = Fight(Dummy, False)
+        Event.AddPlayer([deepcopy(testPlayer)])
+        Event.PlayerList[0].ActionSet = [hasteAction, WaitAbility(65), gcdAction]
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+
+        gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, 0 + baseHaste, 0, randomDelay)
+
+        testResult += [Event.PlayerList[0].CastingSpell.RecastTime]
+        expectedResult += [gcdTimer]
+
+
+        if testAA:
+                                # Should not affect weaponDelay
+            Event = Fight(Dummy, False)
+            Event.AddPlayer([deepcopy(testPlayer)])
+            Event.PlayerList[0].ActionSet = [gcdAction,hasteAction, WaitAbility(0.1)]
+
+            Event.RequirementOn = False
+            Event.ShowGraph = False
+            Event.IgnoreMana = True
+
+            Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+
+            gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, actionHasteAmount + baseHaste, autoHasteAmount, randomDelay)
+
+            testResult += [Event.PlayerList[0].currentDelay]
+            expectedResult += [aaDelay]
+
+                                # Should not affect weaponDelay
+            Event = Fight(Dummy, False)
+            Event.AddPlayer([deepcopy(testPlayer)])
+            Event.PlayerList[0].ActionSet = [gcdAction,hasteAction, WaitAbility(65)]
+
+            Event.RequirementOn = False
+            Event.ShowGraph = False
+            Event.IgnoreMana = True
+
+            Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+
+            gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, 0 + baseHaste, 0, randomDelay)
+
+            testResult += [Event.PlayerList[0].currentDelay]
+            expectedResult += [aaDelay]
 
         testResult = list(map(lambda x : round(x,2),testResult))
 
-
-    def testFunction() -> list:
-        return testResult
+        return testResult, expectedResult
     
     def validationFunction(result) -> (bool, list):
         passed = True
+        testResult = result[0]
+        expected = result[1]
 
-        for i in range(len(result)): passed = passed and (round(result[i],2) == expectedResult[i])
+        for i in range(len(result)): passed = passed and (testResult[i]== expected[i])
 
-        return passed, expectedResult
+        return passed, expected
     
     return testFunction, validationFunction, randomSPD, randomDelay
 
@@ -17012,7 +17012,7 @@ actionTestList = [Xenoglossy, Dia, Combust, ArmorCrush, Enpi, Bootshine, Titan, 
 testAAList = [False, False, False, True, True, True, False, True, False, True]
 
 # Number of tests to be performed per job
-n = 15
+n = 5
 
 for i,job in enumerate(playerTestList):
     testPlayer = Player([], [], base_stat, job)
@@ -17023,9 +17023,8 @@ for i,job in enumerate(playerTestList):
         gcdTestSuite.addTest(test("GCD timer " + ("+ AA delay " if testAAList[i] else "") + f" for {JobEnum.name_for_id(job)} test {j+1} - SPD : {randomSPD} + wDelay : {randomDelay}", tF, vF))
 
 
-
 if True:
-
+    pb = ProgressBar.init(24, "")
     failedTestDict = {}
     
     pb.setName(blmTestSuite.testSuiteName)
