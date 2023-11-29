@@ -9,7 +9,7 @@ EX : A Blackmage testSuite, etc.
 
 """
 from ffxivcalc.helperCode.Progress import ProgressBar
-pb = ProgressBar.init(23, "Initializing test suites")
+pb = ProgressBar.init(24, "Initializing test suites")
 
 from math import floor
 from ffxivcalc.Fight import Fight
@@ -14078,15 +14078,21 @@ for i in range(len(jobList)):
                                                   dotList[i],jobList[i], fieldList[i], isGround=isGroundList[i]))
         
                              # Adding an additional test that has all buffs before DOT and dot is reapplied.
-                             # So should expect to loose everything
+                             # Some buffs will clip again but we are expecting to loose everything
+                             # since we look right away. In other words the buff snapshot hasn't happened
+                             # yet.
     def addTestFunction():
         Event, expected, player = generateDOTSnapshotTest([SearingLight, Embolden, Divination, Mug, ArcaneCircle, Brotherhood, ChainStratagem, 
                                                         BattleVoice, BattleLitany, ArmyPaeon, MageBallad, WanderingMinuet, TechnicalFinish, StandardFinish, Devilment, DRGBuff, Potion], 
                                                         17, 0, dotList[i],jobList[i],isGround=isGroundList[i])
-                                # Appending dot at the end of action set.
-                                # Note that index 0 is dotPlayer since
-                                # it is added first.
-        player.ActionSet.append(dotList[i])
+        match jobList[i]:
+            case JobEnum.Dragoon:
+                player.ActionSet += [TrueThrust, Disembowel, ChaoticSpring]
+            case JobEnum.Monk:
+                player.ActionSet += [Bootshine, TrueStrike, Demolish]
+            case _:
+                player.ActionSet += [WaitAbility(2),dotList[i]]
+        
         Event.RequirementOn = False
         Event.ShowGraph = False
         Event.IgnoreMana = True
@@ -17018,13 +17024,7 @@ for i,job in enumerate(playerTestList):
 
 
 
-
-
-
-
-gcdTestSuite.executeTestSuite()
-
-if False:
+if True:
 
     failedTestDict = {}
     
@@ -17094,6 +17094,9 @@ if False:
     pb.setName(pbfTestSuite.testSuiteName)
     next(pb)
     failedTestDict[pbfTestSuite.testSuiteName] = pbfTestSuite.executeTestSuite()
+    pb.setName(gcdTestSuite.testSuiteName)
+    next(pb)
+    failedTestDict[gcdTestSuite.testSuiteName] = gcdTestSuite.executeTestSuite()
     next(pb)
 
     for key in failedTestDict:
