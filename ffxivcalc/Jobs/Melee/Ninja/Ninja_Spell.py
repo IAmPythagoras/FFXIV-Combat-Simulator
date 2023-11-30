@@ -99,9 +99,11 @@ def ApplyShadeShift(Player, Enemy):
 def ApplyDoton(Player, Enemy):
     Player.ResetRitual()
     Player.DotonTimer = 18
-    Player.DotonDOT = copy.deepcopy(DotonDOT)
-    Player.DOTList.append(Player.DotonDOT)
-    Player.EffectCDList.append(DotonCheck)
+    if Player.DotonDOT == None:
+        Player.DotonDOT = copy.deepcopy(DotonDOT)
+        Player.DOTList.append(Player.DotonDOT)
+        Player.EffectCDList.append(DotonCheck)
+    else : Player.DotonDOT.resetBuffSnapshot()
 
 def ApplyTen(Player, Enemy):
     ApplyNinjutsu(Player, Enemy)

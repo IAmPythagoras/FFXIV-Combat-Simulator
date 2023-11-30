@@ -185,10 +185,10 @@ def ApplyHiganbana(Player, Enemy):
     if Player.Higanbana == None:
         Player.Higanbana = copy.deepcopy(HiganbanaDOT)
         Player.DOTList.append(Player.Higanbana)
+        Player.EffectCDList.append(HiganbanaCheck)
     else: Player.Higanbana.resetBuffSnapshot() # If already applied reset snapshot
     Player.HiganbanaTimer = 60
     Player.MeditationGauge = min(3, Player.MeditationGauge + 1)
-    Player.EffectCDList.append(HiganbanaCheck)
     Player.Setsu, Player.Ka, Player.Getsu = False, False, False #Reseting
 
 def ApplyOgiNamikiri(Player, Enemy):
