@@ -1850,14 +1850,14 @@ class Player:
             if (self.KyutenCD > 0) : self.KyutenCD = max(0,self.KyutenCD - time)
             if (self.TsubamegaeshiCD > 0) : self.TsubamegaeshiCD = max(0,self.TsubamegaeshiCD - time)
             if (self.HagakureCD > 0) : self.HagakureCD = max(0,self.HagakureCD - time)
-    
-
+            
         def updateTimer(self, time : float):
             
             if (self.FugetsuTimer > 0) : self.FugetsuTimer = max(0,self.FugetsuTimer - time)
             if (self.FukaTimer > 0) : self.FukaTimer = max(0,self.FukaTimer - time)
             if (self.HiganbanaTimer > 0) : self.HiganbanaTimer = max(0,self.HiganbanaTimer - time)
             if (self.EnhancedEnpiTimer > 0) : self.EnhancedEnpiTimer = max(0,self.EnhancedEnpiTimer - time)
+            if (self.DotonTimer > 0) : self.DotonTimer = max(0,self.DotonTimer - time)
 
         # update functions
         self.updateJobTimer = updateTimer

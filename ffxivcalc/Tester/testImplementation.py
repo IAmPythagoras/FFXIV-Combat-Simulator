@@ -14045,6 +14045,8 @@ def generateDOTTicCountTest(dotDuration : int, dotAction, job : int, dotFieldNam
                     player.ActionSet += [TrueThrust, Disembowel, ChaoticSpring,WaitAbility(resetAfter - 5),TrueThrust, Disembowel, ChaoticSpring, WaitAbility(dotDuration + 5)]
                 case JobEnum.Monk:
                     player.ActionSet += [Bootshine, TrueStrike, Demolish,WaitAbility(resetAfter - 4),Bootshine, TrueStrike, Demolish, WaitAbility(dotDuration + 5)]
+                case JobEnum.Samurai:
+                    player.ActionSet += [Higanbana,WaitAbility(resetAfter - 1.3),Higanbana, WaitAbility(dotDuration + 5)]
                 case _:
                     match player.RoleEnum:
                         case RoleEnum.Caster:
@@ -14098,7 +14100,7 @@ def generateDOTTicCountTest(dotDuration : int, dotAction, job : int, dotFieldNam
         expectedTic = expectedTic + 1 if resetAfter > 0 else expectedTic
         passed = expectedTic == testTic
 
-        return False, expectedTic
+        return passed, expectedTic
     
     return ticTestFunction,ticValidFunction
 
@@ -14153,7 +14155,7 @@ dotDurationList = [30, 18, 30, 30, 30, 30, 45, 45, 24, 18, 60, 15, 30, 15, 15, 1
 for i in range(len(jobList)):
     
     for j in range(0,17,3):
-        dotTestSuite.addTest(generateWholeDOTTest(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test " + str(int(j/3)+1), j if j != 15 else 17, (17-j) if j != 15 else 0, 
+        dotTestSuite.addTest(generateWholeDOTTest(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test " + str(int(j/3)+1) + " (buff Snapshot)", j if j != 15 else 17, (17-j) if j != 15 else 0, 
                                                   dotList[i],jobList[i], fieldList[i], isGround=isGroundList[i]))
         
                              # Adding an additional test that has all buffs before DOT and dot is reapplied.
