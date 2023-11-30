@@ -2557,8 +2557,8 @@ def astTest1TestFunction() -> None:
 
     actionSet = [Draw, WaitAbility(30),Malefic, Lightspeed, Combust, Arcanum(NINPlayer, "Lunar", True), Draw, Malefic,Arcanum(NINPlayer, "Solar", True), Draw, Malefic,Arcanum(NINPlayer, "Celestial", True), 
 			    Divination, Malefic, MinorArcana, Astrodyne, Malefic, LordOfCrown, Malefic, Malefic, Malefic, Malefic, 
-                Malefic, Malefic,Combust, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, 
-			    Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic]
+                Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, 
+			    Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic,Combust, WaitAbility(30)]
     player = Player(actionSet, [], Stat, JobEnum.Astrologian)
 
     Event.AddPlayer([player, NINPlayer])
@@ -2577,7 +2577,7 @@ def astTest1TestFunction() -> None:
 
 def astTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 67.1, 7800]
+    expected = [0, 95.72, 8350]
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -7182,7 +7182,7 @@ def samTest1TestFunction() -> None:
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
 
     actionSet = [Meikyo, WaitAbility(9), Gekko, Kasha, Ikishoten, Yukikaze, Midare, Senei, KaeshiSetsugekka, Meikyo, Gekko, Shinten, Higanbana, Shinten, OgiNamikiri, Shoha, 
-                 KaeshiNamikiri, Kasha, Shinten, Gekko, Gyoten, Hakaze, Yukikaze, Shinten, Midare, KaeshiSetsugekka, WaitAbility(50)]
+                 KaeshiNamikiri, Kasha, Shinten, Gekko, Gyoten, Hakaze, Yukikaze, Shinten, Midare, KaeshiSetsugekka, WaitAbility(60)]
     player = Player(actionSet, [], Stat, JobEnum.Samurai)
 
     Event.AddPlayer([player])
@@ -7201,7 +7201,7 @@ def samTest1TestFunction() -> None:
 
 def samTest1ValidationFunction(testResults) -> (bool, list):
     passed = True
-    expected = [0, 79.6, 13300]
+    expected = [0, 89.6, 13870]
 
     for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -7798,7 +7798,7 @@ def samTest18TestFunction() -> None:
     Event = Fight(Dummy, False)
     Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 508, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
 
-    actionSet = [Meikyo,Gekko, Higanbana, WaitAbility(60)]
+    actionSet = [Meikyo,Gekko, Higanbana, WaitAbility(60.01)]
     player = Player(actionSet, [], Stat, JobEnum.Samurai)
 
     Event.AddPlayer([player])
