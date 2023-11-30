@@ -168,7 +168,7 @@ def ApplyKaeshiHiganbana(Player, Enemy):
         Player.Higanbana = copy.deepcopy(HiganbanaDOT)
         Player.DOTList.append(Player.Higanbana)
     else: Player.Higanbana.resetBuffSnapshot() # If already applied reset snapshot
-    Player.HiganbanaTimer = 45 #Adding dot
+    Player.HiganbanaTimer = 60 #Adding dot
 
 def ApplyKaeshiGoken(Player, Enemy):
     Player.DirectCrit = True
@@ -186,7 +186,7 @@ def ApplyHiganbana(Player, Enemy):
         Player.Higanbana = copy.deepcopy(HiganbanaDOT)
         Player.DOTList.append(Player.Higanbana)
     else: Player.Higanbana.resetBuffSnapshot() # If already applied reset snapshot
-    Player.HiganbanaTimer = 45
+    Player.HiganbanaTimer = 60
     Player.MeditationGauge = min(3, Player.MeditationGauge + 1)
     Player.EffectCDList.append(HiganbanaCheck)
     Player.Setsu, Player.Ka, Player.Getsu = False, False, False #Reseting

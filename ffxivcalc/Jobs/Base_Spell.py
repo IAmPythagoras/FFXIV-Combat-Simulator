@@ -611,6 +611,7 @@ class DOTSpell(Spell):
         self.MultBonus = []
         self.potSnapshot = False
         self.onceThroughFlag = False #This flag will be set to True once the DOT damage has been through damage computation once
+        self.ticAmount = 0 # Amount of tics done by this DOT object.
         #so we can snapshot the buffs only once
         #Note that AAs do not snapshot buffs, but in the code they will still have these fields
 
@@ -652,6 +653,8 @@ class DOTSpell(Spell):
                 self.onceThroughFlag = True
                 # Using tempSpell to snapshot buffs
                 self.setBuffSnapshot(tempSpell)
+
+            self.ticAmount+=1
                 
             self.DOTTimer = 3
             

@@ -14070,6 +14070,7 @@ jobList = [JobEnum.BlackMage,JobEnum.BlackMage,JobEnum.Scholar, JobEnum.Astrolog
 dotList = [Thunder3, Thunder4, Biolysis, Combust, Dia, EukrasianDosis, Causticbite, Stormbite, ChaoticSpring, Demolish, Higanbana, BowShock, SonicBreak, Slipstream, SaltedEarth, Doton]
 fieldList = ["Thunder3DOT", "Thunder4DOT", "Biolysis", "CumbustDOT", "Dia", "Eukrasian", "CausticbiteDOT", "StormbiteDOT", "ChaoticSpringDOT", "DemolishDOT", "Higanbana", "BowShockDOT", "SonicBreakDOT", "SlipstreamDOT", "SaltedEarthDOT", "DotonDOT"]
 isGroundList = [False, False, False, False, False, False, False, False, False, False, False, False, False, True, True, True]
+dotDurationList = [30, 18, 30, 30, 30, 30, 45, 45, 24, 18, 60, 15, 30, 15, 15, 18]
 
 for i in range(len(jobList)):
     
@@ -14116,6 +14117,34 @@ for i in range(len(jobList)):
         return passed, expected
     
     dotTestSuite.addTest(test(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test 7 (Reapplying DOT)", addTestFunction, addValidFunction))
+
+                             # Adding additional tet that check for the total number of tic
+    def ticTestFunction():
+
+        Event = Fight(Enemy(), False)
+        player = Player([],[], base_stat, jobList[i])
+
+        pointerToDOTObj = [player.__dict__[fieldList[i]]]
+
+        match jobList[i]:
+            case JobEnum.Dragoon:
+                player.ActionSet += [TrueThrust, Disembowel, ChaoticSpring, WaitAbility(dotDurationList[i])]
+            case JobEnum.Monk:
+                player.ActionSet += [Bootshine, TrueStrike, Demolish, WaitAbility(dotDurationList[i])]
+            case _:
+                player.ActionSet += [dotList[i]]
+        
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        input(pointerToDOTObj[0].ticAmount)
+
+        
+
+    ticTestFunction()
 
 
 ######################################
