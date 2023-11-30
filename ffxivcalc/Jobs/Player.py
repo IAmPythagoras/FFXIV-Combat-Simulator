@@ -1806,7 +1806,6 @@ class Player:
         self.FukaTimer = 0
         self.HiganbanaTimer = 0
         self.EnhancedEnpiTimer = 0
-        self.DotonTimer = 0
         
 
         #CD
@@ -1858,7 +1857,7 @@ class Player:
             if (self.FukaTimer > 0) : self.FukaTimer = max(0,self.FukaTimer - time)
             if (self.HiganbanaTimer > 0) : self.HiganbanaTimer = max(0,self.HiganbanaTimer - time)
             if (self.EnhancedEnpiTimer > 0) : self.EnhancedEnpiTimer = max(0,self.EnhancedEnpiTimer - time)
-            if (self.DotonTimer > 0) : self.DotonTimer = max(0,self.DotonTimer - time)
+            
 
         # update functions
         self.updateJobTimer = updateTimer
@@ -2027,6 +2026,7 @@ class Player:
             if (self.SuitonTimer > 0) : self.SuitonTimer = max(0,self.SuitonTimer - time)
             if (self.PhantomKamaitachiReadyTimer > 0) : self.PhantomKamaitachiReadyTimer = max(0,self.PhantomKamaitachiReadyTimer - time)
             if (self.TenChiJinTimer > 0) : self.TenChiJinTimer = max(0,self.TenChiJinTimer - time)
+            if (self.DotonTimer > 0) : self.DotonTimer = max(0,self.DotonTimer - time)
 
         # update functions
         self.updateJobTimer = updateTimer
