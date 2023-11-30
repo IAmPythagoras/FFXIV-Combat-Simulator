@@ -1806,6 +1806,7 @@ class Player:
         self.FukaTimer = 0
         self.HiganbanaTimer = 0
         self.EnhancedEnpiTimer = 0
+        self.DotonTimer = 0
         
 
         #CD
