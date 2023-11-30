@@ -14022,6 +14022,85 @@ def generateDOTSnapshotTest(buffToApply, buffBeforeDOT : int, buffAfterDOT : int
 
     return Event, [round(expectedDHBuff,2), round(expectedCritBuff,2),expectedSnapshotList, snapshotPotion], dotPlayer
 
+def generateDOTTicCountTest(dotDuration : int, dotAction, job : int, dotFieldName : str, resetAfter : float = 0):
+    """Generates two functions (test and validate) for tests that count the number of DOT tic.
+
+    Args:
+        dotDuration (int): base duration of the dot
+        dotAction (Spell): Spell object of the dot
+        job (JobEnum): Job Enum of the player doing the dot
+        dotFieldName (str): Name of the field in the player's object that contains the DOT object.\
+        resetAfter (float) : amount of time to wait until reapplying DOT. If 0 does not reapply.
+                             This value should be bigger than 5 or 0 in order to avoid any issues
+                             with reapplying DOTs that require combo.
+    """
+    def ticTestFunction():
+
+        Event = Fight(Enemy(), False)
+        player = Player([],[], base_stat, job)
+
+        if resetAfter > 0 :
+            match job:
+                case JobEnum.Dragoon:
+                    player.ActionSet += [TrueThrust, Disembowel, ChaoticSpring,WaitAbility(resetAfter - 5),TrueThrust, Disembowel, ChaoticSpring, WaitAbility(dotDuration + 5)]
+                case JobEnum.Monk:
+                    player.ActionSet += [Bootshine, TrueStrike, Demolish,WaitAbility(resetAfter - 4),Bootshine, TrueStrike, Demolish, WaitAbility(dotDuration + 5)]
+                case _:
+                    match player.RoleEnum:
+                        case RoleEnum.Caster:
+                                # Adding swiftcast for isntant DOT cast for SMN/BLM
+                            player.ActionSet += [dotAction, WaitAbility(resetAfter),Swiftcast, dotAction,WaitAbility(dotDuration + 5)]
+                        case _:
+                            player.ActionSet += [dotAction, WaitAbility(resetAfter), dotAction,WaitAbility(dotDuration + 5)]
+        else:
+            match job:
+                case JobEnum.Dragoon:
+                    player.ActionSet += [TrueThrust, Disembowel, ChaoticSpring,WaitAbility(dotDuration + 5)]
+                case JobEnum.Monk:
+                    player.ActionSet += [Bootshine, TrueStrike, Demolish,WaitAbility(dotDuration + 5)]
+                case _:
+                    player.ActionSet += [dotAction,WaitAbility(dotDuration + 5)]
+        
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+                             # This list will receive the DOT object given to the player
+        dotPointerList = []
+
+        def getData(Fight):
+            """This function is set as the ExtractInfo of the fight. Once it detects
+               the DOT is not None, it appends it to the dotPointerList. This lets us keep a reference on it
+               even when it gets set to none after the DOT expiration. We can then check the number of tic.
+               In order to only append once, we set the ExtractInfo function to "nothing" once we pass once.
+            """
+            def nothing(Fight):
+                pass
+            if Fight.PlayerList[0].__dict__[dotFieldName] != None:
+                dotPointerList.append(Fight.PlayerList[0].__dict__[dotFieldName])
+                Fight.ExtractInfo = nothing
+
+        Event.ExtractInfo = getData
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return dotPointerList[0].ticAmount
+    
+    def ticValidFunction(testTic):
+        passed = True
+        expectedTic = (dotDuration+resetAfter)//3
+                             # Adding 1 since we get 1 free TIC at each time we add the DOT.
+                             # Since the DOT tic is kind of random (looking at logs)
+                             # I made it clip asap. This results in 1 more DOT tic
+                             # here (note that this CAN happen in game).
+        expectedTic = expectedTic + 1 if resetAfter > 0 else expectedTic
+        passed = expectedTic == testTic
+
+        return False, expectedTic
+    
+    return ticTestFunction,ticValidFunction
 
 def generateWholeDOTTest(testName, beforeDot : int, afterDot : int, DoTAction, playerDOTEnum, dotFieldName, isGround=False):
     """Generates test object
@@ -14064,7 +14143,6 @@ def generateWholeDOTTest(testName, beforeDot : int, afterDot : int, DoTAction, p
         return passed, expected
 
     return test(testName, testFunction, validFunction)
-
 
 jobList = [JobEnum.BlackMage,JobEnum.BlackMage,JobEnum.Scholar, JobEnum.Astrologian,JobEnum.WhiteMage,JobEnum.Sage,JobEnum.Bard,JobEnum.Bard, JobEnum.Dragoon, JobEnum.Monk, JobEnum.Samurai, JobEnum.Gunbreaker, JobEnum.Gunbreaker, JobEnum.Summoner, JobEnum.DarkKnight, JobEnum.Ninja]
 dotList = [Thunder3, Thunder4, Biolysis, Combust, Dia, EukrasianDosis, Causticbite, Stormbite, ChaoticSpring, Demolish, Higanbana, BowShock, SonicBreak, Slipstream, SaltedEarth, Doton]
@@ -14119,32 +14197,19 @@ for i in range(len(jobList)):
     dotTestSuite.addTest(test(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test 7 (Reapplying DOT)", addTestFunction, addValidFunction))
 
                              # Adding additional tet that check for the total number of tic
-    def ticTestFunction():
 
-        Event = Fight(Enemy(), False)
-        player = Player([],[], base_stat, jobList[i])
-
-        pointerToDOTObj = [player.__dict__[fieldList[i]]]
-
-        match jobList[i]:
-            case JobEnum.Dragoon:
-                player.ActionSet += [TrueThrust, Disembowel, ChaoticSpring, WaitAbility(dotDurationList[i])]
-            case JobEnum.Monk:
-                player.ActionSet += [Bootshine, TrueStrike, Demolish, WaitAbility(dotDurationList[i])]
-            case _:
-                player.ActionSet += [dotList[i]]
-        
-        Event.RequirementOn = False
-        Event.ShowGraph = False
-        Event.IgnoreMana = True
-
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
-
-        input(pointerToDOTObj[0].ticAmount)
+    tF, vF = generateDOTTicCountTest(dotDurationList[i], dotList[i], jobList[i], fieldList[i])
+    dotTestSuite.addTest(test(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test 8 (Counting tic)", tF, vF))
+    tF2, vF2 = generateDOTTicCountTest(dotDurationList[i], dotList[i], jobList[i], fieldList[i], resetAfter=5) # Should result in 2 more ticks
+    dotTestSuite.addTest(test(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test 9 (Counting tic, resetAfter=5)", tF2, vF2))
+    tF3, vF3 = generateDOTTicCountTest(dotDurationList[i], dotList[i], jobList[i], fieldList[i], resetAfter=8) # Should result in 3 more ticks
+    dotTestSuite.addTest(test(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test 10 (Counting tic, resetAfter=8)", tF3, vF3))
+    tF4, vF4 = generateDOTTicCountTest(dotDurationList[i], dotList[i], jobList[i], fieldList[i], resetAfter=12.5) # Should result in 5 more ticks
+    dotTestSuite.addTest(test(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test 11 (Counting tic, resetAfter=12.5)", tF4, vF4))
 
         
 
-    ticTestFunction()
+
 
 
 ######################################
@@ -17051,8 +17116,8 @@ for i,job in enumerate(playerTestList):
         
         gcdTestSuite.addTest(test("GCD timer " + ("+ AA delay " if testAAList[i] else "") + f" for {JobEnum.name_for_id(job)} test {j+1} - SPD : {randomSPD} + wDelay : {randomDelay}", tF, vF))
 
-
-if True:
+dotTestSuite.executeTestSuite()
+if False:
     pb = ProgressBar.init(24, "")
     failedTestDict = {}
     
