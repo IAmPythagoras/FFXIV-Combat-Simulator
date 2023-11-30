@@ -284,7 +284,7 @@ TrueThrust = DragoonSpell(75, True, 2.5, 230, ApplyTrueThrust, [TrueThrustRequir
 Disembowel = DragoonSpell(87, True, 2.5, 140, empty, [], True, type = 2)
 VorpalThrust = DragoonSpell(78, True, 2.5, 130, empty, [], True, type = 2)
 ChaoticSpring = DragoonSpell(25772, True, 2.5, 140, empty, [], True, type = 2)
-ChaoticSpringDOT = DOTSpell(-22, 45, True)
+ChaoticSpringDOT = DOTSpell(-220, 45, True)
 HeavenThrust = DragoonSpell(25771, True, 2.5, 100, empty, [], True, type = 2)
 
 WheelingThrust = DragoonSpell(3556, True, 2.5, 300, ApplyWheelingThrust, [WheelingThrustRequirement], True , type = 2)

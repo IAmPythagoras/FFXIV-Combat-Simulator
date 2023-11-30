@@ -14031,7 +14031,7 @@ def generateDOTTicCountTest(dotDuration : int, dotAction, job : int, dotFieldNam
         job (JobEnum): Job Enum of the player doing the dot
         dotFieldName (str): Name of the field in the player's object that contains the DOT object.\
         resetAfter (float) : amount of time to wait until reapplying DOT. If 0 does not reapply.
-                             This value should be bigger than 5 or 0 in order to avoid any issues
+                             This value should be bigger than 7.5 or 0 in order to avoid any issues
                              with reapplying DOTs that require combo.
     """
     def ticTestFunction():
@@ -14202,16 +14202,12 @@ for i in range(len(jobList)):
 
     tF, vF = generateDOTTicCountTest(dotDurationList[i], dotList[i], jobList[i], fieldList[i])
     dotTestSuite.addTest(test(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test 8 (Counting tic)", tF, vF))
-    tF2, vF2 = generateDOTTicCountTest(dotDurationList[i], dotList[i], jobList[i], fieldList[i], resetAfter=5) # Should result in 2 more ticks
-    dotTestSuite.addTest(test(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test 9 (Counting tic, resetAfter=5)", tF2, vF2))
+    tF2, vF2 = generateDOTTicCountTest(dotDurationList[i], dotList[i], jobList[i], fieldList[i], resetAfter=7.5) # Should result in 3 more ticks
+    dotTestSuite.addTest(test(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test 9 (Counting tic, resetAfter=7.5)", tF2, vF2))
     tF3, vF3 = generateDOTTicCountTest(dotDurationList[i], dotList[i], jobList[i], fieldList[i], resetAfter=8) # Should result in 3 more ticks
     dotTestSuite.addTest(test(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test 10 (Counting tic, resetAfter=8)", tF3, vF3))
     tF4, vF4 = generateDOTTicCountTest(dotDurationList[i], dotList[i], jobList[i], fieldList[i], resetAfter=12.5) # Should result in 5 more ticks
     dotTestSuite.addTest(test(JobEnum.name_for_id(jobList[i]) + " dot test (" + fieldList[i] + ") - test 11 (Counting tic, resetAfter=12.5)", tF4, vF4))
-
-        
-
-
 
 
 ######################################
@@ -17118,8 +17114,7 @@ for i,job in enumerate(playerTestList):
         
         gcdTestSuite.addTest(test("GCD timer " + ("+ AA delay " if testAAList[i] else "") + f" for {JobEnum.name_for_id(job)} test {j+1} - SPD : {randomSPD} + wDelay : {randomDelay}", tF, vF))
 
-dotTestSuite.executeTestSuite()
-if False:
+if True:
     pb = ProgressBar.init(24, "")
     failedTestDict = {}
     

@@ -676,7 +676,7 @@ class DragoonActions(ActionEnum):
     WyrmwindThrust = 25773
 
     # DOT
-    ChaoticSpringDOT = -22
+    ChaoticSpringDOT = -220
     
 
 # Physical Ranged
