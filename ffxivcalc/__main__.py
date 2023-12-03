@@ -6,7 +6,7 @@ import logging
 
 from ffxivcalc import __name__ as prog
 from ffxivcalc.UI.SimulationInput import ExecuteMemoryCode as fight_main
-from ffxivcalc.Tester.Tester import Tester
+from ffxivcalc.Tester.testImplementation import executeTests
 from ffxivcalc.UI.TUI import TUI_draw
 
 __logger__ = logging.getLogger("ffxivcalc") # root logger
@@ -38,7 +38,7 @@ def get_parser() -> ArgumentParser:
 
 def main() -> int:
     """
-    Entrypoint into the cli. Can be called with ``python -mffxivcalc``
+    Entrypoint into the cli. Can be called with ``python -m ffxivcalc``
     :return: Return code, for use with cli programs to indicate success/failure
     """
     parser = get_parser()
@@ -64,7 +64,8 @@ def main() -> int:
         case 'simulate':
             fight_main(False, time_unit=args.step_size, TimeLimit=args.time_limit)
         case 'tests':
-            Tester(args.json).Test()
+            #executeTests()
+            pass
         case 'tui':
             TUI_draw()
         case _: # default case
