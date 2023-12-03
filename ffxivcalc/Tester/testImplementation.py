@@ -17111,6 +17111,12 @@ for i,job in enumerate(playerTestList):
 
 
 def executeTests() -> int:
+                             # Silence the main_logging and
+                             # unmute the test_logging
+                             # so we only see test results
+                             # in log.
+    main_logging.setLevel(level=logging.ERROR) 
+    test_logging.setLevel(level=logging.DEBUG)
     if True:
         pb = ProgressBar.init(24, "")
         failedTestDict = {}
@@ -17196,7 +17202,5 @@ def executeTests() -> int:
 if __name__ == "__main__":
     level = logging.DEBUG 
     logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
-    main_logging.setLevel(level=logging.ERROR) 
-    test_logging.setLevel(level=logging.DEBUG)
     executeTests()
 
