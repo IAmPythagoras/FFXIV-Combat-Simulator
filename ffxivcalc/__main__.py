@@ -28,7 +28,6 @@ def get_parser() -> ArgumentParser:
 
     # Running tester
     test_parser = subparsers.add_parser('tests')
-    test_parser.add_argument('json', type=Path, help='path to Tester folder', nargs='?', default='ffxivcalc/Tester')
 
     # Running tui
     subparsers.add_parser('tui')
@@ -58,14 +57,13 @@ def main() -> int:
             case _: # more than 3 V is too much, save as case 3
                 level = logging.DEBUG
                 logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
-        __logger__.setLevel(level=level) # __logger__ = logging.getLogger("ffxivcalc") 
+        __logger__.setLevel(level=level) 
 
     match args.action:
         case 'simulate':
             fight_main(False, time_unit=args.step_size, TimeLimit=args.time_limit)
         case 'tests':
-            #executeTests()
-            pass
+            executeTests()
         case 'tui':
             TUI_draw()
         case _: # default case
