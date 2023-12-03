@@ -9,7 +9,6 @@ EX : A Blackmage testSuite, etc.
 
 """
 from ffxivcalc.helperCode.Progress import ProgressBar
-pb = ProgressBar.init(24, "Initializing test suites")
 
 from math import floor
 from ffxivcalc.Fight import Fight
@@ -56,7 +55,7 @@ from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import *
 
 import logging
 from random import randint, seed, sample
-next(pb)
+
 main_logging = logging.getLogger("ffxivcalc")
 test_logging = main_logging.getChild("Testing")
 
@@ -152,7 +151,7 @@ class testSuite:
 ######################################
 
 blmTestSuite = testSuite("Blackmage test suite")
-next(pb)
+
 # Opener requirement, end time and potency test 1
 
 def blmTest1TestFunction() -> None:
@@ -1029,7 +1028,7 @@ blmTestSuite.addTest(blmtest25)
 ######################################
 
 rdmTestSuite = testSuite("Redmage test suite")
-next(pb)
+
 # Opener requirement, end time and potency test 1
 
 def rdmTest1TestFunction() -> None:
@@ -1484,7 +1483,7 @@ rdmTestSuite.addTest(rdmtest13)
 ######################################
 
 smnTestSuite = testSuite("Summoner test suite")
-next(pb)
+
 # Opener requirement, end time and potency test 1
 
 def smnTest1TestFunction() -> None:
@@ -1877,7 +1876,7 @@ smnTestSuite.addTest(smntest11)
 ######################################
 
 schTestSuite = testSuite("Scholar test suite")
-next(pb)
+
 # Opener requirement, end time and potency test 1
 
 def schTest1TestFunction() -> None:
@@ -2158,7 +2157,7 @@ schTestSuite.addTest(schtest8)
 ######################################
 
 whmTestSuite = testSuite("Whitemage test suite")
-next(pb)
+
 # Opener requirement, end time and potency test 1
 
 def whmTest1TestFunction() -> None:
@@ -2543,7 +2542,7 @@ whmTestSuite.addTest(whmtest11)
 ######################################
 
 astTestSuite = testSuite("Astrologian test suite")
-next(pb)
+
 # Opener requirement, end time and potency test 1
 
 def astTest1TestFunction() -> None:
@@ -3238,7 +3237,7 @@ astTestSuite.addTest(asttest18)
 ######################################
 
 sgeTestSuite = testSuite("Sage test suite")
-next(pb)
+
 # Opener requirement, end time and potency test 1
 
 def sgeTest1TestFunction() -> None:
@@ -3589,7 +3588,7 @@ sgeTestSuite.addTest(sgetest10)
 ######################################
 
 mchTestSuite = testSuite("Machinist test suite")
-next(pb)
+
 # Opener requirement, end time and potency test 1
 
 def mchTest1TestFunction() -> None:
@@ -4320,7 +4319,7 @@ mchTestSuite.addTest(mchtest21)
 ######################################
 
 brdTestSuite = testSuite("Bard test suite")
-next(pb)
+
 # Opener requirement, end time and potency test 1
 
 def brdTest1TestFunction() -> None:
@@ -5293,7 +5292,7 @@ brdTestSuite.addTest(brdtest26)
 ######################################
 
 dncTestSuite = testSuite("Dancer test suite")
-next(pb)
+
 # Opener requirement, end time and potency test 1
 
 def dncTest1TestFunction() -> None:
@@ -6172,7 +6171,7 @@ dncTestSuite.addTest(dnctest23)
 ######################################
 
 ninTestSuite = testSuite("Ninja test suite")
-next(pb)
+
 # Opener requirement, end time and potency test 1
 
 def ninTest1TestFunction() -> None:
@@ -7170,7 +7169,7 @@ ninTestSuite.addTest(nintest29)
 ######################################
 
 samTestSuite = testSuite("Samurai test suite")
-next(pb)
+
 # Opener requirement, end time and potency test 1
 
 def samTest1TestFunction() -> None:
@@ -8031,7 +8030,7 @@ samTestSuite.addTest(samtest24)
 ######################################
 
 rprTestSuite = testSuite("Reaper test suite")
-next(pb)
+
 # Opener requirement, end time and potency test 1
 
 def rprTest1TestFunction() -> None:
@@ -9019,7 +9018,7 @@ rprTestSuite.addTest(rprtest28)
 ######################################
 
 drgTestSuite = testSuite("Dragoon test suite")
-next(pb)
+
 # Opener requirement, end time and potency test 1
 
 def drgTest1TestFunction() -> None:
@@ -10088,7 +10087,7 @@ drgTestSuite.addTest(drgtest30)
 ######################################
 
 mnkTestSuite = testSuite("Monk test suite")
-next(pb)
+
 # Opener requirement, end time and potency test 1
 
 def mnkTest1TestFunction() -> None:
@@ -10980,7 +10979,7 @@ mnkTestSuite.addTest(mnktest25)
 ######################################
 
 warTestSuite = testSuite("Warrior test suite")
-next(pb)
+
 # Opener requirement, end time and potency test 1
 
 def warTest1TestFunction() -> None:
@@ -11569,7 +11568,7 @@ warTestSuite.addTest(wartest17)
 ######################################
 
 gnbTestSuite = testSuite("Gunbreaker test suite")
-next(pb)
+
 # Opener requirement, end time and potency test 1
 
 def gnbTest1TestFunction() -> None:
@@ -12321,7 +12320,7 @@ gnbTestSuite.addTest(gnbtest22)
 ######################################
 
 pldTestSuite = testSuite("Paladin test suite")
-next(pb)
+
 # Opener requirement, end time and potency test 1
 
 def pldTest1TestFunction() -> None:
@@ -13219,7 +13218,7 @@ pldTestSuite.addTest(pldtest26)
 ######################################
 
 drkTestSuite = testSuite("Dark Knight test suite")
-next(pb)
+
 # Opener requirement, end time and potency test 1
 
 def drkTest1TestFunction() -> None:
@@ -13875,7 +13874,7 @@ drkTestSuite.addTest(drktest17)
 ######################################
 #           DOT testSuite            #
 ######################################
-next(pb)
+
 # The DOT testSuite is a randomly generated test suite. We take all party buffs in the game
 # and randomly put them before or after the DOT is applied. Every DOT has 7 tests in total.
 # Test 1-6 are the same, only there is an increasing amount of buffs before the dot is applied
@@ -14222,7 +14221,7 @@ for i in range(len(jobList)):
 from ffxivcalc.helperCode.helper_backend import SaveFight, RestoreFightObject
 
 rfoTestSuite = testSuite("helperCode.RestoreFightObject test suite")
-next(pb)
+
 def rfoTest1TestFunction() -> None:
     """
     """
@@ -14621,7 +14620,7 @@ rfoTestSuite.addTest(rfotest6)
 from ffxivcalc.GearSolver.Solver import computeDamageValue
 
 pbfTestSuite = testSuite("PreBakedFight simulation test suite")
-next(pb)
+
 # Test
 
 def pbfTest1TestFunction() -> None:
@@ -16921,7 +16920,7 @@ pbfTestSuite.addTest(pbftest37)
 randomSeed = randint(1,999999)
 seed(randomSeed)
 gcdTestSuite = testSuite(f"GCD timer simulation test suite - seed {randomSeed}")
-next(pb)
+
 
 def __computeGCDAndAATimer(spdValue : int, hasteAmount : int, autoHasteAmount : int, weaponDelay : int) -> (float, float):
     """
