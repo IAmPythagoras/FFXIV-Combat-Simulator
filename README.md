@@ -7,7 +7,14 @@ It uses the most up to date version of FFIXV-Combat-Simulator, but has some limi
 
 # Install
 
-To install the library, use this command line : 
+You can install this library using pip : 
+
+```
+pip install ffxivcalc
+```
+
+or using git (this would let you download from the dev branch "feature/GeneralDev"): 
+
 ```
 pip install ffxiv-combat-simulator@git+https://github.com/IAmPythagoras/FFXIV-Combat-Simulator.git@main
 ```
