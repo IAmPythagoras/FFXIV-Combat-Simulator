@@ -326,6 +326,8 @@ class Fight:
             Player.SpellReduction = (1000 - math.floor(130 * (Player.Stat["SS"]-400) / 1900))/1000
             Player.WeaponskillReduction = (1000 - math.floor(130 * (Player.Stat["SkS"]-400) / 1900))/1000
             Player.EffectList.append(GCDReductionEffect)
+                                         # Computing AA delay
+            Player.currentDelay = math.floor(math.floor(int(Player.baseDelay * 1000 ) * (100 - Player.Haste)/100)/10)/100
 
         fight_logging.debug("Starting simulation with TeamCompositionBonus = " + str(self.TeamCompositionBonus))
         fight_logging.debug("Parameters are -> RequirementOn : " + str(self.RequirementOn) + ", IgnoreMana : " + str(self.IgnoreMana))
@@ -394,19 +396,19 @@ class Fight:
 
                 self.Enemy.UpdateTimer(TimeUnit) # Updating the Enemy's timers
 
+                        # We will now update any timer each player and the enemy has
+            for player in self.PlayerList:
+                player.updateTimer(TimeUnit)
+                player.updateCD(TimeUnit)
+                player.updateLock() # Update the lock on the player to see if the player's state changes
+                                    # Castfinal is being called in player.updateLock() if it applies.
+
             # Updating shield timer and healing buff timer of all players
             for player in self.PlayerList:
                 for shield in player.ShieldList: shield.UpdateTimer(TimeUnit) # Update shield timer
                 for buff in player.ReceivedHealBuffList : buff.UpdateTimer(TimeUnit) # Update buff on received heal timer
                 for buff in player.GivenHealBuffList : buff.UpdateTimer(TimeUnit) # Update buff on given heal timer
                 for buff in player.MitBuffList : buff.UpdateTimer(TimeUnit) # Update Mit buff timer
-
-            # Updating and casting DOT if needed
-            for player in self.PlayerList:
-                for DOT in player.DOTList:
-                    DOT.CheckDOT(player,self.Enemy, TimeUnit)
-
-
                     
             for player in self.PlayerList:
                 # Loops through the playerList
@@ -426,14 +428,23 @@ class Fight:
                 # Resets the list containing functions to be removed and added
                 player.EffectToRemove = []
                 player.EffectToAdd = []
+
             
-
-
-            # We will now update any timer each player and the enemy has
             for player in self.PlayerList:
-                player.updateTimer(TimeUnit)
-                player.updateCD(TimeUnit)
-                player.updateLock() # Update the lock on the player to see if the player's state changes
+                             # Recomputing recastTime if new Haste has been added.
+                             # Note that I am not certain if this goes here or in CastFinal.
+                             # Having the recomputeRecastLock here means that as soon as a haste buff is applied
+                             # it recomptes the recast lock based on the haste change. recomputeRecastLock()
+                             # changes the aaDelay, current AATimer and the current recast lock but it does NOT
+                             # recompute the current casting timer. This is because if you APPLY a haste buff it is either
+                             # a GCD effect or an oGCD, meaning when you apply the casting timer should always be 0.
+                             # And when the haste buff gets removed I BELIEVE that it does not affect the CURRENT casting
+                             # but it will affect the recast. Hence why we do not recompute the casting timer (at least I think it works like that).
+                if player.hasteHasChanged: 
+                    player.recomputeRecastLock(isSpell=(player.RoleEnum == RoleEnum.Caster))
+                for DOT in player.DOTList:
+                    DOT.CheckDOT(player,self.Enemy, TimeUnit)
+
 
             if self.wipe: # If we detect that wipe has been set to true we stop the simulation. This for now only happens if a failedRequirement is fatal
                 break
@@ -580,6 +591,7 @@ class Fight:
 # HELPER FUNCTIONS UNDER
 
 # GCDReduction Effect
+
 def GCDReductionEffect(Player, Spell) -> None:
     """
     Computes the GCD reduction according to the SkillSpeed or the SpellSpeed of the player
@@ -821,7 +833,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
     elif type == 3: # Auto-attacks
         Damage = math.floor(math.floor(math.floor(math.floor(Potency * f_MAIN_DMG) * f_DET) * f_TEN) * f_SPD)
-        Damage = math.floor(math.floor(Damage * math.floor(f_WD * (Player.Delay/3) *100 )/100) * Player.Trait)
+        Damage = math.floor(math.floor(Damage * math.floor(f_WD * (Player.baseDelay/3) *100 )/100) * Player.Trait)
     # Now applying buffs
 
     if type == 0 or type == 3 or not spellObj.onceThroughFlag: # If Action or AA, then we apply the current buffs

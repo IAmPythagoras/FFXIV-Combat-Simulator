@@ -204,9 +204,11 @@ def ApplyAbyssalDrainEffect(Player, Spell):
 def ApplySaltedEarth(Player, Spell):
     Player.SaltedEarthCD = 90
     Player.SaltedEarthTimer = 15
-    Player.SaltedEarthDOT = copy.deepcopy(SaltedEarthDOT)
-    Player.DOTList.append(Player.SaltedEarthDOT)
-    Player.EffectCDList.append(SaltedEarthCheck)
+    if Player.SaltedEarthDOT == None:
+        Player.SaltedEarthDOT = copy.deepcopy(SaltedEarthDOT)
+        Player.DOTList.append(Player.SaltedEarthDOT)
+        Player.EffectCDList.append(SaltedEarthCheck)
+    else : Player.SaltedEarthDOT.resetBuffSnapshot()
 
 def ApplySaltDarknessEffect(Player, Spell):
     Player.SaltDarknessCD = 15

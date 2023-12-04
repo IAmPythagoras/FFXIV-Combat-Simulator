@@ -59,6 +59,14 @@ def ApplyChakra(Player, Enemy):
 def ApplyRiddleOfWind(Player, Enemy):
     Player.RiddleOfWindCD = 90
     Player.RiddleOfWindTimer = 15
+                             # Delay reduced by 50%.
+                             # Since it only says it reduces the delay by 50%
+                             # This does not affect the current DOTTimer of the auto.
+                             # This could be a wrong interpretation.
+                             # This will only update the Player.currentDelay
+    Player.autoHaste = 50
+    Player.hasteHasChanged = True
+    Player.EffectCDList.append(RiddleOfWindCheck)
 
 def ApplyRiddleOfFire(Player, Enemy):
     Player.RiddleOfFireCD = 60
@@ -194,6 +202,12 @@ def LeadenFistEffect(Player, Spell):
     if Spell.id == Bootshine.id: Spell.Potency += 100
 
 #Check
+
+def RiddleOfWindCheck(Player, Enemy):
+    if Player.RiddleOfWindTimer <= 0:
+        Player.autoHaste = 0
+        Player.hasteHasChanged = True
+        Player.EffectToRemove.append(RiddleOfWindCheck)
 
 def RiddleOfFireCheck(Player, Enemy):
     if Player.RiddleOfFireTimer <= 0:

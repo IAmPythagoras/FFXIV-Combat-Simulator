@@ -56,7 +56,7 @@ def getGearDPSValue(Fight, gearSet : GearSet, PlayerIndex : int,PlayerID : int, 
 
     player.Stat = getBaseStat(IsTank=IsTank)
     GearStat = gearSet.GetGearSetStat(IsTank=IsTank)
-    GearStat = {'MainStat': 3378, 'WD': 132, 'Det': 1697, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2554, 'DH': 1582, 'Piety': 390}
+    GearStat = {'MainStat': 3378, 'WD': 132, 'Det': 1885, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2598, 'DH': 1252, 'Piety': 390}
     player.Stat["SS" if IsCaster else "SkS"] = GearStat["SS" if IsCaster else "SkS"]
     Fight.SavePreBakedAction = True
                              # The playerIndex value is the ID value here.

@@ -105,16 +105,20 @@ def ApplyRoughDivide(Player, Enemy):
 def ApplyBowShock(Player, Enemy):
     Player.BowShockCD = 60
     Player.BowShockTimer = 15
-    Player.BowShockDOT = copy.deepcopy(BowShockDOT)
-    Player.DOTList.append(Player.BowShockDOT)
-    Player.EffectCDList.append(BowShockDOTCheck)
+    if Player.BowShockDOT == None:
+        Player.BowShockDOT = copy.deepcopy(BowShockDOT)
+        Player.DOTList.append(Player.BowShockDOT)
+        Player.EffectCDList.append(BowShockDOTCheck)
+    else: Player.BowShockDOT.resetBuffSnapshot()
 
 def ApplySonicBreak(Player, Enemy):
     Player.SonicBreakCD = 60
     Player.SonicBreakTimer = 30
-    Player.SonicBreakDOT = copy.deepcopy(SonicBreakDOT)
-    Player.DOTList.append(Player.SonicBreakDOT)
-    Player.EffectCDList.append(SonicBreakDOTCheck)
+    if Player.SonicBreakDOT == None:
+        Player.SonicBreakDOT = copy.deepcopy(SonicBreakDOT)
+        Player.DOTList.append(Player.SonicBreakDOT)
+        Player.EffectCDList.append(SonicBreakDOTCheck)
+    else: Player.SonicBreakDOT.resetBuffSnapshot()
 
 def ApplyDoubleDown(Player, Enemy):
     Player.DoubleDownCD = 60 * Player.WeaponskillReduction

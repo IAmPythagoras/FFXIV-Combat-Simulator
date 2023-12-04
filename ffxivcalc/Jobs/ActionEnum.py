@@ -150,6 +150,7 @@ class SummonerActions(ActionEnum):
     ApplySummonAuto = -115
     BahamutAuto = -14
     PhoinixAuto = -15
+    SlipstreamDOT = 100
 
 
 # Healer
@@ -675,7 +676,7 @@ class DragoonActions(ActionEnum):
     WyrmwindThrust = 25773
 
     # DOT
-    ChaoticSpringDOT = -22
+    ChaoticSpringDOT = -220
     
 
 # Physical Ranged

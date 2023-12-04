@@ -110,11 +110,12 @@ def ApplyEmerald(Player, Enemy):
 
 def ApplySlipstream(Player, Enemy):
     Player.GarudaSpecial = False
-
-    Player.SlipstreamDOT = copy.deepcopy(SlipstreamDOT)
-    Player.DOTList.append(Player.SlipstreamDOT)
     Player.SlipstreamDOTTimer = 15
-    Player.EffectCDList.append(SlipstreamDOTCheck)
+    if Player.SlipstreamDOT == None : 
+        Player.SlipstreamDOT = copy.deepcopy(SlipstreamDOT)
+        Player.DOTList.append(Player.SlipstreamDOT)
+        Player.EffectCDList.append(SlipstreamDOTCheck)
+    else : Player.SlipstreamDOT.resetBuffSnapshot()
 
 def ApplySummon(Player, Enemy):
     Player.SummonCD = 60 * Player.SpellReduction

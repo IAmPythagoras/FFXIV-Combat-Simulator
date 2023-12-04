@@ -168,7 +168,7 @@ def ApplyKaeshiHiganbana(Player, Enemy):
         Player.Higanbana = copy.deepcopy(HiganbanaDOT)
         Player.DOTList.append(Player.Higanbana)
     else: Player.Higanbana.resetBuffSnapshot() # If already applied reset snapshot
-    Player.HiganbanaTimer = 45 #Adding dot
+    Player.HiganbanaTimer = 60 #Adding dot
 
 def ApplyKaeshiGoken(Player, Enemy):
     Player.DirectCrit = True
@@ -185,10 +185,10 @@ def ApplyHiganbana(Player, Enemy):
     if Player.Higanbana == None:
         Player.Higanbana = copy.deepcopy(HiganbanaDOT)
         Player.DOTList.append(Player.Higanbana)
+        Player.EffectCDList.append(HiganbanaCheck)
     else: Player.Higanbana.resetBuffSnapshot() # If already applied reset snapshot
-    Player.HiganbanaTimer = 45
+    Player.HiganbanaTimer = 60
     Player.MeditationGauge = min(3, Player.MeditationGauge + 1)
-    Player.EffectCDList.append(HiganbanaCheck)
     Player.Setsu, Player.Ka, Player.Getsu = False, False, False #Reseting
 
 def ApplyOgiNamikiri(Player, Enemy):
@@ -394,7 +394,7 @@ def MeikyoStackCheck(Player, Enemy):
 #GCD
 OgiNamikiri = SamuraiSpell(25781, True, 1.8, 2.5, 860, ApplyOgiNamikiri, [OgiNamikiriRequirement], 0, type = 2)
 KaeshiNamikiri = SamuraiSpell(25782, True, 0, 1, 860, ApplyKaeshiNamikiri, [KaeshiNamikiriRequirement], 0)
-Enpi = SamuraiSpell(7486, True, 0, 1.5, 100, Add10Kenki, [], 0, type = 2)
+Enpi = SamuraiSpell(7486, True, 0, 2.5, 100, Add10Kenki, [], 0, type = 2)
 
 #Iaijutsu
 Higanbana = SamuraiSpell(7489, True, 1.3, 2.5, 200, ApplyHiganbana, [HiganbanaRequirement], 0, type = 2)

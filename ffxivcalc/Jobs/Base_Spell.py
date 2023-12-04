@@ -371,7 +371,7 @@ class Spell:
                 player.CurrentFight.wipe = True # otherwise we stop the simulation 
                 return tempSpell
         #Will make sure CastTime is at least Lock
-        if tempSpell.id > 0 and tempSpell.CastTime < Lock : tempSpell.CastTime = 0 #id < 0 are special abilities like DOT, so we do not want them to be affected by that
+        if tempSpell.id > 0 and tempSpell.id != 212 and tempSpell.CastTime < Lock : tempSpell.CastTime = 0 #id < 0 are special abilities like DOT, so we do not want them to be affected by that
         return tempSpell
         #Will put casting spell in player, and do damage/effect once the casting time is over
 
@@ -386,9 +386,6 @@ class Spell:
         
         for Effect in self.Effect:
             Effect(player, Enemy)#Put effects on Player and/or Enemy
-
-                             # Recomputing recastTime if new Haste has been added.
-        if player.hasteHasChanged: player.recomputeRecastLock(isSpell=(player.RoleEnum == RoleEnum.Caster))
 
         #This will include substracting the mana (it has been verified before that the mana was enough)
         minDamage, Damage, Heal = 0,0,0
@@ -440,7 +437,6 @@ class Spell:
                                 # finishes. This only affects end time and is not a super big issue. Probably just don't put waitAbility at the end?
             if self.Potency != 0 : minDamage,Damage= player.CurrentFight.ComputeDamageFunction(player, self.Potency, Enemy, self.DPSBonus, type, self, SavePreBakedAction = player.CurrentFight.SavePreBakedAction, PlayerIDSavePreBakedAction = player.CurrentFight.PlayerIDSavePreBakedAction)    #Damage computation
             
-            # move this before damage??????
             if player.JobEnum == JobEnum.Pet and self.Potency != 0: # Is a pet and action does damage
 
                 # Updating damage and potency
@@ -482,11 +478,23 @@ class Spell:
                 player.CurrentFight.FightStart = True
                                 # Giving all players AA
                 for gamer in player.CurrentFight.PlayerList:
-                    if gamer.JobEnum == JobEnum.Monk: gamer.DOTList.append(copy.deepcopy(Monk_Auto))
-                    elif gamer.RoleEnum == RoleEnum.Melee or gamer.JobEnum == JobEnum.Dancer or gamer.RoleEnum == RoleEnum.Tank:
-                        gamer.DOTList.append(copy.deepcopy(Melee_AADOT))
+                                # I feel like this could a place for pointer issue. Leaving this here so
+                                # I see this in case there are issues and I forgor about that place.
+                                # Note that caster/healer are not given AAs even though they in theory
+                                # should. That will come in a future version.
+                    aaDOT = None
+                    #if gamer.JobEnum == JobEnum.Monk: aaDOT = copy.deepcopy(Monk_Auto)
+                    if gamer.RoleEnum == RoleEnum.Melee or gamer.JobEnum == JobEnum.Dancer or gamer.RoleEnum == RoleEnum.Tank:
+                        aaDOT = copy.deepcopy(Melee_AADOT)
                     elif gamer.RoleEnum == RoleEnum.PhysicalRanged:
-                        gamer.DOTList.append(copy.deepcopy(Ranged_AADOT))
+                        aaDOT = copy.deepcopy(Ranged_AADOT)
+                             # Giving AA
+                    if aaDOT:
+                        gamer.DOTList.append(aaDOT)
+                        gamer.autoPointer = aaDOT
+                                 # recomputing for current delay in case haste buffs were applied
+                                 # before it starts. Only do this if the player has AA
+                        gamer.recomputeRecastLock(isSpell=(gamer.RoleEnum == RoleEnum.Caster))
 
                                 # Will record the starting HP of every player for graph
                 for gamer in player.CurrentFight.PlayerList:
@@ -553,15 +561,9 @@ def ApplyPotion(Player, Enemy):
     Player.Stat["MainStat"] += Player.mainStatBonus
     Player.PotionTimer = 30
 
-    Player.EffectCDList.append(PotionCheck)
+    base_spell_logging.debug("Using Potion at " + str(Player.CurrentFight.TimeStamp))
 
-                                     # Only relevant to PreBakedAction and only does that code if true
-    #if Player.CurrentFight.SavePreBakedAction:
-    #    fight = Player.CurrentFight
-    #                                 # If prepull, make it start at 0.05
-    #    startTime = fight.TimeStamp if fight.FightStart else -0.05
-    #    history = buffHistory(startTime, startTime + 30)
-    #    Player.PotionHistory.append(history)
+    Player.EffectCDList.append(PotionCheck)
 
 def PrepullPotion(Player, Enemy): #If potion is prepull
     """
@@ -578,6 +580,7 @@ def PotionCheck(Player, Enemy):
     if Player.PotionTimer <= 0:
         Player.Stat["MainStat"] -= Player.mainStatBonus #Assuming we are capped
         Player.EffectCDList.remove(PotionCheck)
+        base_spell_logging.debug("removing Potion at " + str(Player.CurrentFight.TimeStamp))
 
 
 class DOTSpell(Spell):
@@ -594,7 +597,11 @@ class DOTSpell(Spell):
         """
         super().__init__(id, False, 0, 0, Potency,  0, empty, [])
         #Note that here Potency is the potency of the dot, not of the ability
-        self.DOTTimer = 0   #This represents the timer of the dot, and it will apply at each 3 seconds
+        self.DOTTimer = 0.02 # This represents the timer of the dot, and it will apply at each 3 seconds
+                             # The timer is initialized at 0.02 because if it is initialized at 0 it hits immediatly, which
+                             # results in 1 more tic than we would expect. This fixes the issue and gives the expected number of tic.
+                             # Note that this could create issue in edge cases where buffs are not being clipped because there is less than
+                             # 0.02 seconds left on them. I consider this negligeable for now.
         self.isPhysical = isPhysical #True if physical dot, false if magical dot
         self.isGround = isGround
 
@@ -604,6 +611,7 @@ class DOTSpell(Spell):
         self.MultBonus = []
         self.potSnapshot = False
         self.onceThroughFlag = False #This flag will be set to True once the DOT damage has been through damage computation once
+        self.ticAmount = 0 # Amount of tics done by this DOT object.
         #so we can snapshot the buffs only once
         #Note that AAs do not snapshot buffs, but in the code they will still have these fields
 
@@ -630,7 +638,7 @@ class DOTSpell(Spell):
         If a dot has to be applied it will Cast and Castfinal itself and reset its DOTTimer to 3 seconds.
         """
 
-        self.DOTTimer = max(0, self.DOTTimer-TimeUnit)
+        self.DOTTimer = round(max(0, self.DOTTimer-TimeUnit),2)
 
         if(self.DOTTimer <= 0):
             #Apply DOT
@@ -645,6 +653,8 @@ class DOTSpell(Spell):
                 self.onceThroughFlag = True
                 # Using tempSpell to snapshot buffs
                 self.setBuffSnapshot(tempSpell)
+
+            self.ticAmount+=1 # A tic counter used for testing
                 
             self.DOTTimer = 3
             
@@ -671,6 +681,22 @@ class Auto_Attack(DOTSpell):
         else: super().__init__(id, 90, True) # Melee AA, 90 potency
 
         self.DOTTimer = 0 
+
+    def CheckDOT(self, Player, Enemy, TimeUnit : float) -> None:
+        """
+        This is the function called to check if the AA is applied. Same function as to DOTSpell.CheckDOT
+        """
+                             # Update DOT Timer.
+        self.DOTTimer = round(max(0, self.DOTTimer-TimeUnit),2)
+
+        if(self.DOTTimer <= 0):
+            #Apply DOT
+            tempSpell  = self.Cast(Player, Enemy)#Cast the DOT
+            tempSpell.CastFinal(Player, Enemy)
+            
+            self.DOTTimer = Player.currentDelay
+
+        
 
 class Queen_Auto(Auto_Attack):
     """
@@ -701,6 +727,7 @@ class Monk_AA(Melee_Auto):
     """
     Subclass of DOTSpell only for monk autos. The reason is that it can be on a faster rate if RiddleOfWind is activated. So the DOT
     update function is overwritten and checks for that and will update the timer accordingly.
+    This class should in theory be deprecated and not used anymore.
     """
     def __init__(self):
         super().__init__(-5, False)
@@ -708,7 +735,7 @@ class Monk_AA(Melee_Auto):
 
     def CheckDOT(self, Player, Enemy, TimeUnit):
         
-        self.DOTTimer = max(0, self.DOTTimer-TimeUnit)
+        self.DOTTimer = round(max(0, self.DOTTimer-TimeUnit),2)
 
         if(self.DOTTimer <= 0):
             #Apply AA

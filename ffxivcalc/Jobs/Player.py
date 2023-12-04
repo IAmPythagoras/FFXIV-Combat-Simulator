@@ -137,16 +137,49 @@ class Player:
         Job : JobEnum -> Specific job of the player
     """
 
+    def setStat(self, newStat : dict):
+        """
+        This function sets the given stat dict as the stat of the player. It does a deepcopy if the newStat
+        dictionnary to avoid any issues.
+        newStat : dict -> New stats dictionnary.
+        """
+        self.Stat = deepcopy(newStat)
+
     def recomputeRecastLock(self, isSpell : bool):
         """
         This function is called if a Haste change has been detected. This will recompute the gcdLock of the player.
-        We only recompute the GCD Lock.
+        We only recompute the GCD Lock. Note that this is no longer valid, see function declaration for comment.
         isSpell : bool -> True if the value to use is SpellReduction. For simplicity, this value will be figured out based on the 
                           job of the player.
         """
-                             # Do not worry about CastingLockTimer since it will be 0 at this point.
-        self.GCDLockTimer = floor(floor(int(self.GCDLockTimer * 1000 ) * (100 - self.hasteChangeValue)/100)/10)/100
-        player_logging.debug("Haste change has been detected. New GCDLockTimer : " + str(self.GCDLockTimer))
+
+                            # Leaving some of the code as comment in case.
+                            # But found that haste buffs only affect the next GCD, meaning we do not have to recompute
+                            # current lock timer. This also means we only have to update the currentDelay for AA.
+                            # Note that this function is currently being called as soon as a change happens (before DOTs are applied)
+                            # and it could be moved to being only called when AAs are applied IF there was a haste change.
+                            # I will leave everything here regardless for now.
+
+                             # Do not worry about CastingLockTimer since it will be 0 at this point. NOT TRUE
+                             # ANYMORE WILL HAVE TO WORK ON THAT
+        #self.GCDLockTimer = floor(floor(int(self.GCDLockTimer * 1000 ) * (100 - self.hasteChangeValue)/100)/10)/100
+        #player_logging.debug("Haste change has been detected. New GCDLockTimer : " + str(self.GCDLockTimer))
+
+                             # Only update this if player has AA. Which means if autoPointer is not None
+        if self.autoPointer:
+                             # Auto haste buff are multiplicative. Furthermore, since only Monk has
+                             # two haste buffs and the other one is just auto haste buff we can only
+                             # worry about the current haste and the autoHaste amount and multiply both.
+            aaMultHaste = int((100-self.Haste) * (100-self.autoHaste)/100)
+                             # Recomputing AA delay lock
+                             # rounding on self.delay * 1000 on the integer is needed as otherwise it sometimes
+                             # creates issues with floating points. Ex : 2.01 * 1000 = 2009.9999... which when
+                             # int() = 2009
+            self.currentDelay = floor(floor(int(round(self.baseDelay * 1000,0)) * (aaMultHaste)/100)/10)/100
+            player_logging.debug("Haste change detected. New delay : " + str(self.currentDelay) + " aaMultHaste : " + str(aaMultHaste))
+                             # Updating the AA Timer
+            #self.autoPointer.DOTTimer = floor(floor(int(self.autoPointer.DOTTimer * 1000 ) * (100 - self.hasteChangeValue)/100)/10)/100
+
         self.hasteHasChanged = False
         self.hasteChangeValue = 0
 
@@ -326,6 +359,14 @@ class Player:
         for index in range(ActionIndex+1, len(self.ActionSet)):
             if self.ActionSet[index].GCD : return False
         return True
+    
+    def setBasedWeaponDelay(self, newDelay : float) -> None:
+        """This function sets the value of the Delay for AA. By default has a value of 3.
+
+        Args:
+            newDelay (float): Value of the day in seconds.
+        """
+        self.baseDelay = newDelay
 
     def __init__(self, ActionSet, EffectList, Stat,Job : JobEnum):
 
@@ -373,8 +414,11 @@ class Player:
         self.oGCDLockTimer = 0 # How long we have to wait until next oGCD
         self.GCDLockTimer = 0 # How long we have to wait until next GCD
         self.PotionTimer = 0 # Timer on the effect of potion
-        self.Delay = 3 # Default time difference between AAs
+        self.baseDelay = 3 # Default time difference between AAs
+        self.currentDelay = 3 # current Delay to be applied to AAs. Differs from baseDelay with Haste.
+        self.autoPointer = None # Pointer to the player's AA DOT.
         self.Haste = 0 # Total Haste value of the player.
+        self.autoHaste = 0 # Haste amount for AA only. This is only really relevant for monk Riddle Of Wind.
         self.hasteHasChanged = False # Flag to know if haste has changed. This is needed to recompute recast time.
         self.hasteChangeValue = 0 # Value for which haste has changed. Can be negative or positive.
 
@@ -539,12 +583,15 @@ class Player:
     def updateTimer(self, time : float) -> None:
         """
         Updates the base timer of the player and calls the specific to the role and job update timer function
+        Note that some of these update have round(_,2). This is because those are cyclic timer and a slight deviation
+        can add up to a non-negligeable deviation by the end. The other timers are not cyclic and so them having a +-0.01 accuracy 
+        isn't a big deal (for now). The timer of DOTs are also updated with a round(_,2)
         time : float -> unit by which we update the timers
         """
-        if (self.GCDLockTimer > 0) : self.GCDLockTimer = max(0, self.GCDLockTimer-time)
-        if (self.oGCDLockTimer > 0) : self.oGCDLockTimer = max(0, self.oGCDLockTimer-time)
-        if (self.CastingLockTimer > 0) : self.CastingLockTimer = max(0, self.CastingLockTimer-time)
-        if (self.ManaTick > 0) : self.ManaTick = max(0, self.ManaTick-time)
+        if (self.GCDLockTimer > 0) : self.GCDLockTimer = round(max(0, self.GCDLockTimer-time),2)
+        if (self.oGCDLockTimer > 0) : self.oGCDLockTimer = round(max(0, self.oGCDLockTimer-time),2)
+        if (self.CastingLockTimer > 0) : self.CastingLockTimer = round(max(0, self.CastingLockTimer-time),2)
+        if (self.ManaTick > 0) : self.ManaTick = round(max(0, self.ManaTick-time),2)
         if (self.ArcanumTimer > 0) : self.ArcanumTimer = max(0, self.ArcanumTimer-time)
         if (self.PotionTimer > 0) : self.PotionTimer = max(0, self.PotionTimer-time)
         if (self.MeditativeBrotherhoodTimer > 0) : self.MeditativeBrotherhoodTimer = max(0, self.MeditativeBrotherhoodTimer-time)
@@ -1803,14 +1850,14 @@ class Player:
             if (self.KyutenCD > 0) : self.KyutenCD = max(0,self.KyutenCD - time)
             if (self.TsubamegaeshiCD > 0) : self.TsubamegaeshiCD = max(0,self.TsubamegaeshiCD - time)
             if (self.HagakureCD > 0) : self.HagakureCD = max(0,self.HagakureCD - time)
-    
-
+            
         def updateTimer(self, time : float):
             
             if (self.FugetsuTimer > 0) : self.FugetsuTimer = max(0,self.FugetsuTimer - time)
             if (self.FukaTimer > 0) : self.FukaTimer = max(0,self.FukaTimer - time)
             if (self.HiganbanaTimer > 0) : self.HiganbanaTimer = max(0,self.HiganbanaTimer - time)
             if (self.EnhancedEnpiTimer > 0) : self.EnhancedEnpiTimer = max(0,self.EnhancedEnpiTimer - time)
+            
 
         # update functions
         self.updateJobTimer = updateTimer
@@ -1979,6 +2026,7 @@ class Player:
             if (self.SuitonTimer > 0) : self.SuitonTimer = max(0,self.SuitonTimer - time)
             if (self.PhantomKamaitachiReadyTimer > 0) : self.PhantomKamaitachiReadyTimer = max(0,self.PhantomKamaitachiReadyTimer - time)
             if (self.TenChiJinTimer > 0) : self.TenChiJinTimer = max(0,self.TenChiJinTimer - time)
+            if (self.DotonTimer > 0) : self.DotonTimer = max(0,self.DotonTimer - time)
 
         # update functions
         self.updateJobTimer = updateTimer
