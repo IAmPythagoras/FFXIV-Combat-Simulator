@@ -17199,13 +17199,13 @@ def generateGCDTestSuite(setSeed : int = 0) -> testSuite:
 
     return gcdTestSuite
 
-def executeTests(setSeed : int = 0, testSuiteName : str = "") -> int:
+def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBUG) -> int:
                              # Silence the main_logging and
                              # unmute the test_logging
                              # so we only see test results
                              # in log.
     main_logging.setLevel(level=logging.ERROR) 
-    test_logging.setLevel(level=logging.DEBUG)
+    test_logging.setLevel(level=level)
     failedTestDict = {}
     if len(testSuiteName) == 0:
         # Execute all tests

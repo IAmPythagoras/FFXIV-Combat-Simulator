@@ -68,7 +68,7 @@ def main() -> int:
         case 'simulate':
             fight_main(False, time_unit=args.step_size, TimeLimit=args.time_limit)
         case 'tests':
-            executeTests(setSeed=args.seed, testSuiteName=args.name)
+            executeTests(setSeed=args.seed, testSuiteName=args.name,level=level)
         case 'tui':
             TUI_draw()
         case _: # default case

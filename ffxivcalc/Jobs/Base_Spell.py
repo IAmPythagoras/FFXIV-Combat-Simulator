@@ -643,7 +643,7 @@ class DOTSpell(Spell):
         if(self.DOTTimer <= 0):
             #Apply DOT
             tempSpell  = self.Cast(Player, Enemy)#Cast the DOT
-            tempSpell.CastFinal(Player, Enemy)
+            #tempSpell.CastFinal(Player, Enemy)
                              # If the DOT goes for the first time 
                              # it snapshots buff. We then transfer those
                              # buffs to the dot object that is being called.
