@@ -17311,72 +17311,95 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "") -> int:
         match testSuiteName:
             case "BLM":
                 blmTestSuite = generateBLMTestSuite()
+                print(f"Executing {blmTestSuite.testSuiteName}")
                 failedTestDict[blmTestSuite.testSuiteName] = blmTestSuite.executeTestSuite()
             case "RDM":
                 rdmTestSuite = generateRDMTestSuite()
+                print(f"Executing {rdmTestSuite.testSuiteName}")
                 failedTestDict[rdmTestSuite.testSuiteName] = rdmTestSuite.executeTestSuite()
             case "SMN":
                 smnTestSuite = generateSMNTestSuite()
+                print(f"Executing {smnTestSuite.testSuiteName}")
                 failedTestDict[smnTestSuite.testSuiteName] = smnTestSuite.executeTestSuite()
             case "SCH":
                 schTestSuite = generateSCHTestSuite()
+                print(f"Executing {schTestSuite.testSuiteName}")
                 failedTestDict[schTestSuite.testSuiteName] = schTestSuite.executeTestSuite()
             case "SGE":
                 sgeTestSuite = generateSGETestSuite()
+                print(f"Executing {sgeTestSuite.testSuiteName}")
                 failedTestDict[sgeTestSuite.testSuiteName] = sgeTestSuite.executeTestSuite()
             case "AST":
                 astTestSuite = generateASTTestSuite()
+                print(f"Executing {astTestSuite.testSuiteName}")
                 failedTestDict[astTestSuite.testSuiteName] = astTestSuite.executeTestSuite()
             case "WHM":
                 whmTestSuite = generateWHMTestSuite()
+                print(f"Executing {whmTestSuite.testSuiteName}")
                 failedTestDict[whmTestSuite.testSuiteName] = whmTestSuite.executeTestSuite()
             case "MCH":
                 mchTestSuite = generateMCHTestSuite()
+                print(f"Executing {mchTestSuite.testSuiteName}")
                 failedTestDict[mchTestSuite.testSuiteName] = mchTestSuite.executeTestSuite()
             case "BRD":
                 brdTestSuite = generateBRDTestSuite()
+                print(f"Executing {brdTestSuite.testSuiteName}")
                 failedTestDict[brdTestSuite.testSuiteName] = brdTestSuite.executeTestSuite()
             case "DNC":
                 dncTestSuite = generateDNCTestSuite()
+                print(f"Executing {dncTestSuite.testSuiteName}")
                 failedTestDict[dncTestSuite.testSuiteName] = dncTestSuite.executeTestSuite()
             case "NIN":
                 ninTestSuite = generateNINTestSuite()
+                print(f"Executing {ninTestSuite.testSuiteName}")
                 failedTestDict[ninTestSuite.testSuiteName] = ninTestSuite.executeTestSuite()
             case "RPR":
                 rprTestSuite = generateRPRTestSuite()
+                print(f"Executing {rprTestSuite.testSuiteName}")
                 failedTestDict[rprTestSuite.testSuiteName] = rprTestSuite.executeTestSuite()
             case "DRG":
                 drgTestSuite = generateDRGTestSuite()
+                print(f"Executing {drgTestSuite.testSuiteName}")
                 failedTestDict[drgTestSuite.testSuiteName] = drgTestSuite.executeTestSuite()
             case "SAM":
                 samTestSuite = generateSAMTestSuite()
+                print(f"Executing {samTestSuite.testSuiteName}")
                 failedTestDict[samTestSuite.testSuiteName] = samTestSuite.executeTestSuite()
             case "MNK":
                 mnkTestSuite = generateMNKTestSuite()
+                print(f"Executing {mnkTestSuite.testSuiteName}")
                 failedTestDict[mnkTestSuite.testSuiteName] = mnkTestSuite.executeTestSuite()
             case "DRK":
                 DRKTestSuite = generateDRKTestSuite()
+                print(f"Executing {DRKTestSuite.testSuiteName}")
                 failedTestDict[DRKTestSuite.testSuiteName] = DRKTestSuite.executeTestSuite()
             case "GNB":
                 gnbTestSuite = generateGNBTestSuite()
+                print(f"Executing {gnbTestSuite.testSuiteName}")
                 failedTestDict[gnbTestSuite.testSuiteName] = gnbTestSuite.executeTestSuite()
             case "PLD":
                 pldTestSuite = generatePLDTestSuite()
+                print(f"Executing {pldTestSuite.testSuiteName}")
                 failedTestDict[pldTestSuite.testSuiteName] = pldTestSuite.executeTestSuite()
             case "WAR":
                 warTestSuite = generateWARTestSuite()
+                print(f"Executing {warTestSuite.testSuiteName}")
                 failedTestDict[warTestSuite.testSuiteName] = warTestSuite.executeTestSuite()
             case "DOT":
                 dotTestSuite = generateDOTTestSuite(setSeed=setSeed)
+                print(f"Executing {dotTestSuite.testSuiteName}")
                 failedTestDict[dotTestSuite.testSuiteName] = dotTestSuite.executeTestSuite()
             case "RFO":
                 rfoTestSuite = generateRFOTestSuite()
+                print(f"Executing {rfoTestSuite.testSuiteName}")
                 failedTestDict[rfoTestSuite.testSuiteName] = rfoTestSuite.executeTestSuite()
             case "PBF":
                 pbfTestSuite = generatePBFTestSuite()
+                print(f"Executing {pbfTestSuite.testSuiteName}")
                 failedTestDict[pbfTestSuite.testSuiteName] = pbfTestSuite.executeTestSuite()
             case "GCD":
                 gcdTestSuite = generateGCDTestSuite(setSeed=setSeed)
+                print(f"Executing {gcdTestSuite.testSuiteName}")
                 failedTestDict[gcdTestSuite.testSuiteName] = gcdTestSuite.executeTestSuite()
 
     for key in failedTestDict:
