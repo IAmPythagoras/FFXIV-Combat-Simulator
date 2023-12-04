@@ -654,7 +654,7 @@ class DOTSpell(Spell):
                 # Using tempSpell to snapshot buffs
                 self.setBuffSnapshot(tempSpell)
 
-            self.ticAmount+=1
+            self.ticAmount+=1 # A tic counter used for testing
                 
             self.DOTTimer = 3
             
