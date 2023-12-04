@@ -32,7 +32,7 @@ def get_parser() -> ArgumentParser:
     test_parser.add_argument('-s', '--seed', type=int, default=0, help=seed_help) # argument to specify seed for DOT and aa test suite.
                                                                   # The same seed is given to both test if specified.
     name_help = "-n XXXXX (Name of a specific test suite to run. If not specified runs all the test suites. If invalid name returns an error).\nA valid name is the 3 letters of the test suite's name."
-    test_parser.add_argument('n', '--name', type=str, default="", help=name_help) # Specifies te name of the test suites we want to run. 
+    test_parser.add_argument('-n', '--name', type=str, default="", help=name_help) # Specifies te name of the test suites we want to run. 
 
     # Running tui
     subparsers.add_parser('tui')
