@@ -7,7 +7,7 @@ It uses the most up to date version of FFIXV-Combat-Simulator, but has some limi
 
 # Install
 
-You can install this library using pip : 
+You can install this library using pip (currently has issues) : 
 
 ```
 pip install ffxivcalc
