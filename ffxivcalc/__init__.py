@@ -1,1 +1,11 @@
-__version__ = '0.8.52'
+__version__ = '0.8.60'
+
+"""
+Update history :
+
+0.8.60 :
+    - Added more accurate AA, weapon delay, haste affecting delay.
+    - Fixed DOT/AA issues
+    - Added AA delay, GCD timer and more DOT tests.
+
+"""
