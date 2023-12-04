@@ -47,6 +47,7 @@ def main() -> int:
     """
     parser = get_parser()
     args = parser.parse_args()
+    level = logging.ERROR
 
     if args.verbose > 0:
         match args.verbose:
