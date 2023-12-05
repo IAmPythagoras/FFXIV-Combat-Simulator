@@ -1,9 +1,9 @@
-__version__ = '0.8.70'
+__version__ = '0.8.700'
 
 """
 Update history :
 
-0.8.70 :
+0.8.700 :
     - Made PyPi package.
 
 0.8.60 :
