@@ -121,7 +121,7 @@ class SimulationRecord:
         f.write(str(self))
         f.close()
 
-    def saveRecord(self,idList : list = []):
+    def saveRecord(self,idList : list = [],saveAsPDF=True):
         """
         This function saves the record as a plot (pdf).
         """
@@ -238,12 +238,14 @@ class SimulationRecord:
         ax.plot([ax.get_xlim()[0], ax.get_xlim()[1]], [0, 0], lw=1.5, color='black', marker='', zorder=4)
         for x in range(1, 5*(nrows),5):
             ax.plot([ax.get_xlim()[0], ax.get_xlim()[1]], [x+1, x+1], lw=1.15, color='gray', ls=':', zorder=3 , marker='')
+            
+        if saveAsPDF:
+            plt.savefig(
+            'SimulationRecord.pdf',
+            dpi=700,
+            bbox_inches='tight'
+            )
 
-        plt.savefig(
-        'SimulationRecord.pdf',
-        dpi=700,
-        bbox_inches='tight'
-        )
-
+        return fig
 
 
