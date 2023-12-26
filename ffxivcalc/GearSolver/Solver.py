@@ -151,7 +151,8 @@ def findGCDTimerRange(minSPDValue : int, maxSPDValue : int, subGCDHasteAmount : 
 def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, PercentileToOpt : list = ["exp", "99", "90", "75", "50"],
               materiaDepthSearchIterator : int = 1, randomIteration : int = 10000, oddMateriaValue : int = 18, evenMateriaValue : int = 36,
               PlayerIndex : int = 0, PlayerID : int = 1, mendSpellSpeed : bool = False, maxSPDValue : int = 5000, minSPDValue : int = 0, useNewAlgo : bool = False, oversaturationIterationsPreGear : int = 0,
-              oversaturationIterationsPostGear : int = 0, findOptMateriaGearBF : bool = False, swapDHDetBeforeSpeed : bool = True, minPiety : int = 390, gcdTimerSpecificActionList : dict = None):
+              oversaturationIterationsPostGear : int = 0, findOptMateriaGearBF : bool = False, swapDHDetBeforeSpeed : bool = True, minPiety : int = 390, gcdTimerSpecificActionList : dict = None,
+              saveAsFile : bool = True):
     """
     Finds the BiS of the player given a Gear search space and a Fight. The Solver will output to a file named
     bisSolver[Job]Result[number].txt with all the relevant information and returns the gearSets. The solver outputs the best Expected Damage GearSet as well as
@@ -190,6 +191,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
                                          the action list present in the fight object. Recommended to use the findGCDTimerRange() function
                                          with required minSPDValue and maxSPDValue in order to get an accurate dictionary. The mapping of gcd Tier
                                          does not have to be exhaustive. If no key is found it will use the rotation of the Fight object instead.
+    saveAsFile : bool -> If true saves the result in a file.
     """
 
                              # Checking the validity of the given search space and some other parameters.
@@ -470,16 +472,17 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
         text += ("========================\n")
 
                              # Will find appropriate name for the file so it doesn't overwrite another existing file
-    filenameSkeleton = 'bisSolver' + JobEnum.name_for_id(Fight.PlayerList[PlayerIndex].JobEnum) + "Result"
-    testFileName = filenameSkeleton
-    counter = 1
-    while os.path.isfile(testFileName + ".txt"):
-        testFileName = filenameSkeleton + "(" + str(counter) + ")"
-        counter += 1
-    with open(testFileName + ".txt", 'w') as f:
-        f.write(text)
+    if saveAsFile : 
+        filenameSkeleton = 'bisSolver' + JobEnum.name_for_id(Fight.PlayerList[PlayerIndex].JobEnum) + "Result"
+        testFileName = filenameSkeleton
+        counter = 1
+        while os.path.isfile(testFileName + ".txt"):
+            testFileName = filenameSkeleton + "(" + str(counter) + ")"
+            counter += 1
+        with open(testFileName + ".txt", 'w') as f:
+            f.write(text)
 
-    return optimalGearSet, optimalRandomGearSetMateria
+    return optimalGearSet, optimalRandomGearSetMateria, text
     
 
 def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list[int], gcdTimerTierFight, hasteAmount : int,  JobMod : int, IsTank : bool, IsCaster : bool,PlayerIndex : int, 
