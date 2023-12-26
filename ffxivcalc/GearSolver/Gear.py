@@ -589,37 +589,43 @@ def ImportGear(fileName : str) -> dict:
     gear type as key with a list of all gear of that type in the import file.
     fileName : str -> Name of the file. Must be formatted correctly
     """
+    try:
+        f = open(fileName) #Opening save
+        GearDict = translateGear(json.load(f))
+    except:
+        print("An error occurent when trying to import the gear set with file name : " + fileName + "\n")
 
-    f = open(fileName) #Opening save
+    return GearDict
 
-    data = json.load(f) #Loading json file
+def translateGear(data):
+    """
+    This function takes a list of gaer and returns a dictionnary with each gear in a key corresponding to their
+    type
+    """
 
     GearDict = {}
 
     for GearPiece in data:
-        try:
-            type = GearType.name_for_id(GearPiece["GearType"])
-            StatList = [Stat(StatType.id_for_name(S[0]), S[1]) for S in GearPiece["StatList"]]
-            ImportedGear = Gear(GearPiece["GearType"], StatList, MateriaLimit = GearPiece["MateriaLimit"], Name = GearPiece["Name"])
+        type = GearType.name_for_id(GearPiece["GearType"])
+        StatList = [Stat(StatType.id_for_name(S[0]), S[1]) for S in GearPiece["StatList"]]
+        ImportedGear = Gear(GearPiece["GearType"], StatList, MateriaLimit = GearPiece["MateriaLimit"], Name = GearPiece["Name"])
 
-            if "customStatLimit" in GearPiece.keys(): ImportedGear.setStatLimit(GearPiece["customStatLimit"])
+        if "customStatLimit" in GearPiece.keys(): ImportedGear.setStatLimit(GearPiece["customStatLimit"])
 
-            if type in GearDict.keys():
-                GearDict[type].append(ImportedGear)
-            else:
-                GearDict[type] = [ImportedGear]
+        if type in GearDict.keys():
+            GearDict[type].append(ImportedGear)
+        else:
+            GearDict[type] = [ImportedGear]
 
-                                # Checking if ignoreOptimize
-            if "ignoreOptimize" in GearPiece.keys():
-                                # if true, then we also check for materias to put on.
-                ImportedGear.setIgnoreOptimize(True)
-                if "defaultMateriaList" in GearPiece.keys():
+                            # Checking if ignoreOptimize
+        if "ignoreOptimize" in GearPiece.keys():
+                            # if true, then we also check for materias to put on.
+            ImportedGear.setIgnoreOptimize(True)
+            if "defaultMateriaList" in GearPiece.keys():
 
-                    for materia in GearPiece["defaultMateriaList"]:
-                                # materia will contain the type and the value. It will be assumed to be even.
-                        matGen = MateriaGenerator(0,materia["value"])
-                        ImportedGear.AddMateria(matGen.GenerateMateria(StatType(materia["type"])))
-        except:
-            print("An error occurent when trying to import the gear set with file name : " + fileName + "\n")
+                for materia in GearPiece["defaultMateriaList"]:
+                            # materia will contain the type and the value. It will be assumed to be even.
+                    matGen = MateriaGenerator(0,materia["value"])
+                    ImportedGear.AddMateria(matGen.GenerateMateria(StatType(materia["type"])))
 
     return GearDict
