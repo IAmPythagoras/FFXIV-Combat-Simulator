@@ -450,14 +450,30 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     gcdTimer = computeGCDTimer(GearStat["SS" if IsCaster else "SkS"],hasteAmount)
     curMax, curRandom, duration, potency = preBakedFightGCDTierList[gcdTimer].SimulatePreBakedFight(PlayerIndex, GearStat["MainStat"],f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=randomIteration, getInfo=True)
     if "exp" in PercentileToOpt:
+        statDict = optimalGearSet.GetGearSetStat(IsTank=IsTank)
+        damageValue = computeDamageValue(statDict, JobMod, IsTank, IsCaster)
+        gcdTimer = computeGCDTimer(statDict["SS" if IsCaster else "SkS"], hasteAmount)
+
         #optimalGearSet.addFood(curBestExpectedFood)
-        text += "Best optimal : "
+        text += "Best found gear set : "
         text += (str(optimalGearSet) + "\n")
         text += ("Expected Damage : " + str(curMax) + "\n")
-        text += ("Potency : " + str(potency))
-        text += ("TimeStamp : " + str(duration))
-        text += ("Random Damage : " + str(curRandom) + "\n")
-        text += str(computeDamageValue(optimalGearSet.GetGearSetStat(IsTank=IsTank), JobMod, IsTank, IsCaster))
+        #text += ("Potency : " + str(potency))
+        #text += ("TimeStamp : " + str(duration))
+        #text += ("Random Damage : " + str(curRandom) + "\n")
+        #text += str(computeDamageValue(optimalGearSet.GetGearSetStat(IsTank=IsTank), JobMod, IsTank, IsCaster))
+        
+        text += ("Base gcd timer (s) : " +  str(gcdTimer[0]))
+        if hasteAmount != 0 : text += ("Base gcd timer (s) : " +  str(gcdTimer[1]))
+        f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto
+        text += ("Determination damage increase : " + str(int(damageValue[1] * 100)/100))
+        if isTank : text += ("Tenacity damage increase : " + str(int(damageValue[2] * 100)/100))
+        text += ("Speed DOT damage increase : " +  str(int(damageValue[3]*100)/100))
+        text += ("Crit rate : " + str(int(damageValue[4] * 100)/100))
+        text += ("Crit multiplier : " + str(int(damageValue[5] * 100)/100))
+        text += ("DH rate : " + str(int(damageValue[6] * 100)/100))
+        text += ("DH bonus (auto crit) : " + str(int(damageValue[7] * 100)/100))
+
 
     for percentile in optimalRandomGearSetMateria:
         GearStat = optimalRandomGearSetMateria[percentile][1].GetGearSetStat(IsTank=IsTank)
