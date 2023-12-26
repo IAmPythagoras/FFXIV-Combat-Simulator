@@ -467,7 +467,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
         if hasteAmount != 0 : text += ("Base gcd timer (s) : " +  str(gcdTimer[1]))
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto
         text += ("Determination damage increase : " + str(int(damageValue[1] * 100)/100))
-        if isTank : text += ("Tenacity damage increase : " + str(int(damageValue[2] * 100)/100))
+        if IsTank : text += ("Tenacity damage increase : " + str(int(damageValue[2] * 100)/100))
         text += ("Speed DOT damage increase : " +  str(int(damageValue[3]*100)/100))
         text += ("Crit rate : " + str(int(damageValue[4] * 100)/100))
         text += ("Crit multiplier : " + str(int(damageValue[5] * 100)/100))
