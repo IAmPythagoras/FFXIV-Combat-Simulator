@@ -29,7 +29,6 @@ class ProgressBar:
         return self.currentState
 
     def setExtraBuffer(self, buff):
-        input("SETTING BUFFER")
         self.extraBuffer = buff
 
     def __iter__(self):
@@ -56,7 +55,8 @@ class ProgressBar:
 
         loadBar = "\r"+ self.name +" |"+bar+"| " + ((str(percent) + " %") if self.currentProgress > 0 else "") + " ETA : " + str(predictedTime) + "s"
         self.currentState = loadBar
-        self.extraBuffer['pb'] = loadBar
+        if self.extraBuffer != None: self.extraBuffer['pb'] = loadBar
+        
 
                              # This will remove characters that are not supposed to be there anymore
         if len(loadBar) > self.lenLoadBar: self.lenLoadBar = len(loadBar)
