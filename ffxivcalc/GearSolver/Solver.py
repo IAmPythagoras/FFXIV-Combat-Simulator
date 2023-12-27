@@ -463,16 +463,15 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
         #text += ("Random Damage : " + str(curRandom) + "\n")
         #text += str(computeDamageValue(optimalGearSet.GetGearSetStat(IsTank=IsTank), JobMod, IsTank, IsCaster))
         
-        text += ("Base gcd timer (s) : " +  str(gcdTimer[0]))
-        if hasteAmount != 0 : text += ("Base gcd timer (s) : " +  str(gcdTimer[1]))
-        f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto
-        text += ("Determination damage increase : " + str(int(damageValue[1] * 100)/100))
-        if IsTank : text += ("Tenacity damage increase : " + str(int(damageValue[2] * 100)/100))
-        text += ("Speed DOT damage increase : " +  str(int(damageValue[3]*100)/100))
-        text += ("Crit rate : " + str(int(damageValue[4] * 100)/100))
-        text += ("Crit multiplier : " + str(int(damageValue[5] * 100)/100))
-        text += ("DH rate : " + str(int(damageValue[6] * 100)/100))
-        text += ("DH bonus (auto crit) : " + str(int(damageValue[7] * 100)/100))
+        text += ("Base gcd timer (s) : " +  str(gcdTimer[0]) + "\n")
+        if hasteAmount != 0 : text += ("Base gcd timer (s) : " +  str(gcdTimer[1]) + "\n")
+        text += ("Determination damage increase : " + str(int(damageValue[1] * 100)/100) + "\n")
+        if IsTank : text += ("Tenacity damage increase : " + str(int(damageValue[2] * 100)/100) + "\n")
+        text += ("Speed DOT damage increase : " +  str(int(damageValue[3]*100)/100) + "\n")
+        text += ("Crit rate : " + str(int(damageValue[4] * 100)/100) + "\n")
+        text += ("Crit multiplier : " + str(int(damageValue[5] * 100)/100) + "\n")
+        text += ("DH rate : " + str(int(damageValue[6] * 100)/100) + "\n")
+        text += ("DH bonus (auto crit) : " + str(int(damageValue[7] * 100)/100) + "\n")
 
 
     for percentile in optimalRandomGearSetMateria:
