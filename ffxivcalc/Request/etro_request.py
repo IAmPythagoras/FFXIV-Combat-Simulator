@@ -2,13 +2,14 @@
 """
 This code was taken from a comment in : https://github.com/IAmPythagoras/FFXIV-Combat-Simulator/issues/17
 and was written by https://github.com/Alex-Ueki @apollo#3810
-and modified to fit the use I have of it.
+and modified to fit the needs I have.
 """
 # Installed versions I use
 # coreapi==2.3.3
 # coreapi-cli==1.0.9
 import coreapi
 import logging
+
 main_logging = logging.getLogger("ffxivcalc")
 etro_logging = main_logging.getChild("etroAPI")
 
@@ -38,6 +39,7 @@ def get_gearset_data(set_id: str) -> dict:
         for i in range(len(data["totalParams"]))
     }
 
+    input(stats)
 
     # Will now change the keys' name
 

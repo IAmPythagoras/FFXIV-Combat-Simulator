@@ -128,7 +128,6 @@ def ImportFightBackend(fightID,fightNumber):
 
     return Event
 
-
 def AskInput(range):
     #This function will ask a numerical value to the user where range is the number of options
     #The inputs are assumed to be numerically ordered and starting at 1 and finishing at (range)
@@ -148,8 +147,6 @@ def AskInput(range):
             return user_input
         else : #Non-valid input
             user_input = input("This is not a valid input. Please enter a valid number : ")
-
-
 
 def SaveFight(Event, countdown, fightDuration, saveName, saveFile=True):
     #This function will save a fight into memory.
@@ -290,10 +287,11 @@ def RestoreFightObject(data : dict, name : str = ""):
         
 
         job_object.playerID = player["playerID"] #Giving the playerID
+                             # If weaponDelay was in the data we set it
+        if 'weaponDelay' in player.keys() : job_object.setBasedWeaponDelay(player['weaponDelay'])
         helper_logging.debug("Creating job object : " + job_name + " for playerID : " + str(player["playerID"]))
 
-        if "PlayerName" in player.keys():
-            job_object.PlayerName = player["PlayerName"]
+        if "PlayerName" in player.keys():job_object.PlayerName = player["PlayerName"]
 
         PlayerActionList[str(job_object.playerID)] = {"job" : job_name, "job_object" : job_object, "actionList" : player["actionList"], "actionObject" : []} #Adding new Key accessible by IDs
 
