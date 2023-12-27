@@ -148,11 +148,11 @@ def findGCDTimerRange(minSPDValue : int, maxSPDValue : int, subGCDHasteAmount : 
 
     return gcdTierList
 
-def BiSSolver(session,Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, PercentileToOpt : list = ["exp", "99", "90", "75", "50"],
+def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, PercentileToOpt : list = ["exp", "99", "90", "75", "50"],
               materiaDepthSearchIterator : int = 1, randomIteration : int = 10000, oddMateriaValue : int = 18, evenMateriaValue : int = 36,
               PlayerIndex : int = 0, PlayerID : int = 1, mendSpellSpeed : bool = False, maxSPDValue : int = 5000, minSPDValue : int = 0, useNewAlgo : bool = False, oversaturationIterationsPreGear : int = 0,
               oversaturationIterationsPostGear : int = 0, findOptMateriaGearBF : bool = False, swapDHDetBeforeSpeed : bool = True, minPiety : int = 390, gcdTimerSpecificActionList : dict = None,
-              saveAsFile : bool = True):
+              saveAsFile : bool = True, showBar : bool = True, loadingBarBuffer = None):
     """
     Finds the BiS of the player given a Gear search space and a Fight. The Solver will output to a file named
     bisSolver[Job]Result[number].txt with all the relevant information and returns the gearSets. The solver outputs the best Expected Damage GearSet as well as
@@ -192,6 +192,8 @@ def BiSSolver(session,Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : 
                                          with required minSPDValue and maxSPDValue in order to get an accurate dictionary. The mapping of gcd Tier
                                          does not have to be exhaustive. If no key is found it will use the rotation of the Fight object instead.
     saveAsFile : bool -> If true saves the result in a file.
+    showBar : bool -> If true shows loading bar. If false doesn't but still updates the loading bar's memory
+    loadingBarBuffer : dict -> This dictionnary will be given the progress bar's adress at the key 'pb'. Can be used to access the PB.
     """
 
                              # Checking the validity of the given search space and some other parameters.
@@ -235,6 +237,7 @@ def BiSSolver(session,Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : 
     gcdTimerDict = findGCDTimerRange(minSPDValue, maxSPDValue,subGCDHasteAmount=hasteAmount)
     solver_logging.warning("Computed GCD timer : " + str(gcdTimerDict))
     gcdTimerProgress = ProgressBar.init(len(gcdTimerDict.keys()), "Prebaking GCD tier")
+    gcdTimerProgress.setShowBar(showBar)
 
                              # This dictionnary contains all Fight object. The key is (gcdTimer, hastedGCDTimer)
     preBakedFightGCDTierList = {}
@@ -276,7 +279,8 @@ def BiSSolver(session,Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : 
         total *= len(GearSpace[key])
 
     gearBFpB = ProgressBar.init(total, "Finding Best Gear Set")
-    gearBFpB.setExtraBuffer(session)
+    gearBFPb.setShowBar(showBar)
+    gearBFpB.setExtraBuffer(loadingBarBuffer)
                              # Need at least one of each gear piece.
     for Weapon in GearSpace["WEAPON"]:
         newGearSet.AddGear(Weapon)

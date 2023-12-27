@@ -18,6 +18,7 @@ class ProgressBar:
         self.name = ""
         self.currentState = ""
         self.extraBuffer = None
+        self.showBar = True
         
                              # Timing related fields
         self.iterationAverage = 0 
@@ -27,6 +28,9 @@ class ProgressBar:
 
     def getCurrentState(self):
         return self.currentState
+    
+    def setShowBar(self, val):
+        self.showBar = val
 
     def setExtraBuffer(self, buff):
         self.extraBuffer = buff
@@ -61,8 +65,8 @@ class ProgressBar:
                              # This will remove characters that are not supposed to be there anymore
         if len(loadBar) > self.lenLoadBar: self.lenLoadBar = len(loadBar)
         for i in range(len(loadBar), self.lenLoadBar): loadBar += " "
-
-        print(loadBar, end="\r")
+                             # only print on screen if showBar is true
+        if self.showBar: print(loadBar, end="\r")
         if self.total - self.currentProgress == 0:print()
         return self
     
