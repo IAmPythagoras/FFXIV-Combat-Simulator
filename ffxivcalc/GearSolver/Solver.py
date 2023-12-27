@@ -279,7 +279,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
         total *= len(GearSpace[key])
 
     gearBFpB = ProgressBar.init(total, "Finding Best Gear Set")
-    gearBFPb.setShowBar(showBar)
+    gearBFpB.setShowBar(showBar)
     gearBFpB.setExtraBuffer(loadingBarBuffer)
                              # Need at least one of each gear piece.
     for Weapon in GearSpace["WEAPON"]:
