@@ -29,6 +29,7 @@ class ProgressBar:
         return self.currentState
 
     def setExtraBuffer(self, buff):
+        input("SETTING BUFFER")
         self.extraBuffer = buff
 
     def __iter__(self):
