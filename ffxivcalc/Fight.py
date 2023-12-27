@@ -502,7 +502,7 @@ class Fight:
             # update self.TimeStamp
             self.TimeStamp += TimeUnit
             self.TimeStamp = round(self.TimeStamp,2) # Round it for cleaner value
-            if vocal and self.FightStart and self.showProgress: next(pB)
+            next(pB)
 
             if self.FightStart and not start:
                 self.TimeStamp = 0
