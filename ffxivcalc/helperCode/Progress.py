@@ -9,17 +9,22 @@ class ProgressBar:
     display itself.
     total : int -> total number of iterations
     name : str -> Name of the progress bar
+    currentState : str -> Last generated frame of the progress bar
     """
     def __init__(self):
         self.total = 0
         self.currentProgress = 0
         self.name = ""
+        self.currentState = ""
         
                              # Timing related fields
         self.iterationAverage = 0 
         self.sumIterations = 0
         self.lastIterTime = 0
         self.lenLoadBar = 0
+
+    def getCurrentState(self):
+        return self.currentState
 
     def __iter__(self):
         self.currentProgress = -1
@@ -44,6 +49,7 @@ class ProgressBar:
         bar = "❚" * int(percent) + "-" * (100-int(percent))
 
         loadBar = "\r"+ self.name +" |"+bar+"| " + ((str(percent) + " %") if self.currentProgress > 0 else "") + " ETA : " + str(predictedTime) + "s"
+        self.currentState = loadBar
 
                              # This will remove characters that are not supposed to be there anymore
         if len(loadBar) > self.lenLoadBar: self.lenLoadBar = len(loadBar)
