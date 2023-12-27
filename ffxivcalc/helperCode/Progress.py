@@ -67,7 +67,7 @@ class ProgressBar:
         for i in range(len(loadBar), self.lenLoadBar): loadBar += " "
                              # only print on screen if showBar is true
         if self.showBar: print(loadBar, end="\r")
-        if self.total - self.currentProgress == 0:print()
+        if (self.total - self.currentProgress == 0) and self.showBar:print()
         return self
     
     def complete(self):
