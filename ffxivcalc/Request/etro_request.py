@@ -39,13 +39,11 @@ def get_gearset_data(set_id: str) -> dict:
         for i in range(len(data["totalParams"]))
     }
 
-    input(stats)
-
     # Will now change the keys' name
 
     return {
         "MainStat" : data["totalParams"][0]["value"] , # Always first value
-        "WD" : stats["Weapon DMG Multiplier"] if "Weapon DMG Multiplier" in stats.keys() else 0,
+        "WD" : stats["Weapon Damage"] if "Weapon Damage" in stats.keys() else 0,
         "Det" : stats["DET"],
         "Ten" : stats["TEN"] if "TEN" in stats.keys() else 400,
         "SS" : stats["SPS"] if "SPS" in stats.keys() else 400,
