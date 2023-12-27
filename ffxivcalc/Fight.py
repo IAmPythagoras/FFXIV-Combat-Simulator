@@ -542,7 +542,7 @@ class Fight:
         # Printing the results if vocal is true.
         if vocal and self.TimeStamp < TimeLimit: pB.complete()
         fig2 = None
-        if n > 0 and computeGraph : fig2 = SimulateRuns(self, n)
+        if n > 0 and computeGraph : fig2 = SimulateRuns(self, n,showBar=showProgress, pBNewBuffer=loadingBarBuffer)
         if computeGraph : result, fig = PrintResult(self, self.TimeStamp, self.timeValue, PPSGraph=PPSGraph)
         else : result, fig = "", None
         if vocal:
