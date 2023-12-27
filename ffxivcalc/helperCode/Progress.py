@@ -10,12 +10,14 @@ class ProgressBar:
     total : int -> total number of iterations
     name : str -> Name of the progress bar
     currentState : str -> Last generated frame of the progress bar
+    extraBuffer : -> place to write the PB too
     """
     def __init__(self):
         self.total = 0
         self.currentProgress = 0
         self.name = ""
         self.currentState = ""
+        self.extraBuffer = None
         
                              # Timing related fields
         self.iterationAverage = 0 
@@ -25,6 +27,9 @@ class ProgressBar:
 
     def getCurrentState(self):
         return self.currentState
+
+    def setExtraBuffer(self, buff):
+        self.extraBuffer = buff
 
     def __iter__(self):
         self.currentProgress = -1
@@ -50,6 +55,7 @@ class ProgressBar:
 
         loadBar = "\r"+ self.name +" |"+bar+"| " + ((str(percent) + " %") if self.currentProgress > 0 else "") + " ETA : " + str(predictedTime) + "s"
         self.currentState = loadBar
+        extraBuffer['pb'] = loadBar
 
                              # This will remove characters that are not supposed to be there anymore
         if len(loadBar) > self.lenLoadBar: self.lenLoadBar = len(loadBar)
