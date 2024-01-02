@@ -19,35 +19,41 @@ def get_gearset_data(set_id: str) -> dict:
     set_id : str -> URL of the set from etro
     """
     # Handles urls by checking for webpage name and splitting
-    logging.debug("Requesting gearset info from etro.gg, set_id : " + set_id)
-    cleaned_set_id = set_id.split("/")[-1] if "etro.gg/gearset" in set_id else set_id # Cleans the URL
-    client = coreapi.Client()
-    data = client .action(
-        client.get("https://etro.gg/api/docs/"),
-        ["gearsets", "read"],
-        params={
-            "id": cleaned_set_id,
-        },
-    )
+    logging.debug("Requesting gearset info from etro.gg, set_id : " + str(set_id))
+    try:
+        cleaned_set_id = set_id.split("/")[-1] if "etro.gg/gearset" in set_id else set_id # Cleans the URL
+        client = coreapi.Client()
+        data = client .action(
+            client.get("https://etro.gg/api/docs/"),
+            ["gearsets", "read"],
+            params={
+                "id": cleaned_set_id,
+            },
+        )
 
 
-    # Since the first 8 data points are the stats. That's all we are interested in.
-    # We will not use all of them since we will filter through. But this contains all we need
+        # Since the first 8 data points are the stats. That's all we are interested in.
+        # We will not use all of them since we will filter through. But this contains all we need
 
-    stats = {
-        data["totalParams"][i]["name"] : data["totalParams"][i]["value"] 
-        for i in range(len(data["totalParams"]))
-    }
+        stats = {
+            data["totalParams"][i]["name"] : data["totalParams"][i]["value"] 
+            for i in range(len(data["totalParams"]))
+        }
 
-    # Will now change the keys' name
+        # Will now change the keys' name
 
-    return {
-        "MainStat" : data["totalParams"][0]["value"] , # Always first value
-        "WD" : stats["Weapon Damage"] if "Weapon Damage" in stats.keys() else 0,
-        "Det" : stats["DET"],
-        "Ten" : stats["TEN"] if "TEN" in stats.keys() else 400,
-        "SS" : stats["SPS"] if "SPS" in stats.keys() else 400,
-        "SkS" : stats["SkS"] if "SkS" in stats.keys() else 400,
-        "Crit" : stats["CRT"],
-        "DH" : stats["DH"]
-    }
+        return {
+            "MainStat" : data["totalParams"][0]["value"] , # Always first value
+            "WD" : stats["Weapon Damage"] if "Weapon Damage" in stats.keys() else 0,
+            "Det" : stats["DET"],
+            "Ten" : stats["TEN"] if "TEN" in stats.keys() else 400,
+            "SS" : stats["SPS"] if "SPS" in stats.keys() else 400,
+            "SkS" : stats["SkS"] if "SkS" in stats.keys() else 400,
+            "Crit" : stats["CRT"],
+            "DH" : stats["DH"],
+            "Piety" : stats["Piety"] if "Piety" in stats.keys() else 390
+        }
+    except:
+                             # If error during import (wrong URL, server error, etc.)
+                             # it returns None
+        return None
