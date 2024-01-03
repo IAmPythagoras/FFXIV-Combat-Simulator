@@ -245,7 +245,8 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
         Fight.PlayerList[PlayerIndex].Stat['SS' if IsCaster else "SkS"] = gcdTimerDict[key]
         preBakedFightGCDTierList[key] = Fight.deepCopy()
 
-        input(preBakedFightGCDTierList[key].PlayerList[0].Stat["WD"])
+        print(preBakedFightGCDTierList[key].PlayerList[0].Stat["WD"])
+        input("ALLO")
         
 
                              # If a specific gcd timer rotation is given then we swap the ActionSet for the gccd specific one.
