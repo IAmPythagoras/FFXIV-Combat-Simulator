@@ -259,6 +259,9 @@ def RestoreFightObject(data : dict, name : str = ""):
             #stat["WD"] -= math.floor((baseMain * JobMod) /1000)
         else :
             stat = player["stat"]
+        
+        for key in stat:
+            stat[key] = int(stat[key])
 
         #Healer
         if job_name == "Sage" : job_object = Player([], [],stat, JobEnum.Sage)
