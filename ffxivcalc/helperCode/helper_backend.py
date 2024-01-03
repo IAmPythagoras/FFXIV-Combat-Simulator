@@ -252,11 +252,11 @@ def RestoreFightObject(data : dict, name : str = ""):
             stat = get_gearset_data(etro_url)
 
             # Since etro now returns only the weapon damage multiplier, we have to find the the original WD.
-            job_object.f_WD = PlayerActionList[str(job_object.playerID)]["job_object"].Stat["WD"]/100 # Mult bonus we already know.
+            #job_object.f_WD = PlayerActionList[str(job_object.playerID)]["job_object"].Stat["WD"]/100 # Mult bonus we already know.
             
-            baseMain = 390
-            JobMod = job_object.JobMod # Level 90 jobmod value, specific to each job
-            stat["WD"] -= math.floor((baseMain * JobMod) /1000)
+            #baseMain = 390
+            #JobMod = job_object.JobMod # Level 90 jobmod value, specific to each job
+            #stat["WD"] -= math.floor((baseMain * JobMod) /1000)
         else :
             stat = player["stat"]
 

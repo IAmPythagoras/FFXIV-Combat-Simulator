@@ -567,7 +567,7 @@ class Fight:
 
             JobMod = Player.JobMod # Level 90 jobmod value, specific to each job
 
-            Player.f_WD = (Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))/100 # Necessary to check if its not 0 since etro only returns the damage multiplier.
+            Player.f_WD = (Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))/100 
             Player.f_DET = math.floor(1000+math.floor(140*(Player.Stat["Det"]-baseMain)/levelMod))/1000# Determination damage
             if Player.RoleEnum == RoleEnum.Tank : Player.f_TEN = (1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000 # Tenacity damage, 1 for non-tank player
             else : Player.f_TEN = 1 # if non-tank

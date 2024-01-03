@@ -607,7 +607,7 @@ def translateGear(data):
 
     for GearPiece in data:
         type = GearType.name_for_id(GearPiece["GearType"])
-        StatList = [Stat(StatType.id_for_name(S[0]), S[1]) for S in GearPiece["StatList"]]
+        StatList = [Stat(StatType.id_for_name(S[0]), int(S[1])) for S in GearPiece["StatList"]]
         ImportedGear = Gear(GearPiece["GearType"], StatList, MateriaLimit = GearPiece["MateriaLimit"], Name = GearPiece["Name"])
 
         if "customStatLimit" in GearPiece.keys(): ImportedGear.setStatLimit(GearPiece["customStatLimit"])
