@@ -8,7 +8,7 @@ This will also contain the Enum "GearType" which will differentiate the type of 
 "Food" which can affect a player's stats, Materias which will affect a gear's stats.
 """
 
-from ffxivcalc.helperCode.exceptions import MateriaOverflow, InvalidStatRequest
+from ffxivcalc.helperCode.exceptions import MateriaOverflow, InvalidStatRequest, InvalidFileName
 import json
 
 from enum import IntEnum
@@ -364,7 +364,7 @@ class Gear:
             if Materia.StatType == StatEnum:
                 statValue = min(Materia.Value + statValue, self.StatLimit)
         
-        return statValue
+        return int(statValue)
     
     def getGearTypeName(self) -> str:
         """
@@ -589,17 +589,18 @@ def ImportGear(fileName : str) -> dict:
     gear type as key with a list of all gear of that type in the import file.
     fileName : str -> Name of the file. Must be formatted correctly
     """
+    GearDict = {}
     try:
         f = open(fileName) #Opening save
         GearDict = translateGear(json.load(f))
     except:
-        print("An error occurent when trying to import the gear set with file name : " + fileName + "\n")
+        raise InvalidFileName(fileName)
 
     return GearDict
 
 def translateGear(data):
     """
-    This function takes a list of gaer and returns a dictionnary with each gear in a key corresponding to their
+    This function takes a list of gear and returns a dictionnary with each gear in a key corresponding to their
     type
     """
 

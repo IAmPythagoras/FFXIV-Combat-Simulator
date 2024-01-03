@@ -134,6 +134,19 @@ class InvalidMitigation(Exception):
     def __str__(self) -> str:
         return f'{self.message}'
     
+class InvalidFileName(Exception):
+    """This exception is raised when given an invalid file name
+
+    fileName : str
+    """
+    def __init__(self, fileName : str):
+
+        self.message = "Invalid file name" + fileName
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'
+    
 class ActionNotFound(Exception):#Exception called if an action isn't found in the dictionnary
     pass
 class JobNotFound(Exception):#Exception called if a Job isn't found
