@@ -567,6 +567,7 @@ class Fight:
 
             JobMod = Player.JobMod # Level 90 jobmod value, specific to each job
             print("WD : " + str(Player.Stat["WD"]))
+            print(Player.PlayerName)
             print(type(Player.Stat["WD"]))
             Player.f_WD = (Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))/100 
             Player.f_DET = math.floor(1000+math.floor(140*(Player.Stat["Det"]-baseMain)/levelMod))/1000# Determination damage
