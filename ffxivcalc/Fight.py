@@ -566,9 +566,7 @@ class Fight:
             baseSub = 400# Level 90 LevelMod values
 
             JobMod = Player.JobMod # Level 90 jobmod value, specific to each job
-            print("WD : " + str(Player.Stat["WD"]))
-            print(Player.PlayerName)
-            print(type(Player.Stat["WD"]))
+
             Player.f_WD = (Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))/100 
             Player.f_DET = math.floor(1000+math.floor(140*(Player.Stat["Det"]-baseMain)/levelMod))/1000# Determination damage
             if Player.RoleEnum == RoleEnum.Tank : Player.f_TEN = (1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000 # Tenacity damage, 1 for non-tank player
