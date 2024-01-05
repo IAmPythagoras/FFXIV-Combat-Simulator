@@ -170,7 +170,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -209,7 +209,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -246,7 +246,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Mana,player.ElementalGauge]
 
@@ -279,7 +279,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Mana,player.ElementalGauge]
 
@@ -312,7 +312,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Mana,player.ElementalGauge]
 
@@ -345,7 +345,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Mana,player.ElementalGauge]
 
@@ -379,7 +379,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.ElementalGauge]
 
@@ -412,7 +412,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.ElementalGauge]
 
@@ -445,7 +445,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.ElementalGauge]
 
@@ -478,7 +478,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.ElementalGauge]
 
@@ -511,7 +511,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.ElementalGauge]
 
@@ -544,7 +544,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.ElementalGauge]
 
@@ -577,7 +577,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.ElementalGauge]
 
@@ -610,7 +610,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.EnochianTimer]
 
@@ -643,7 +643,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.PolyglotStack, player.ElementalGauge, player.UmbralHearts]
 
@@ -676,7 +676,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Mana]
 
@@ -709,7 +709,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Mana]
 
@@ -742,7 +742,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Mana]
 
@@ -775,7 +775,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Mana, player.EnochianTimer]
 
@@ -808,7 +808,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Mana]
 
@@ -841,7 +841,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Mana]
 
@@ -874,7 +874,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.TripleCastStack]
 
@@ -907,7 +907,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.TripleCastStack]
 
@@ -940,7 +940,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.TripleCastStack]
 
@@ -973,7 +973,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.TripleCastStack]
 
@@ -1006,7 +1006,7 @@ def generateBLMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = False
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [SwiftcastEffect in player.EffectList]
 
@@ -1052,7 +1052,7 @@ def generateRDMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -1090,7 +1090,7 @@ def generateRDMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DualCast]
 
@@ -1124,7 +1124,7 @@ def generateRDMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DualCast, SwiftcastEffect in player.EffectList]
 
@@ -1158,7 +1158,7 @@ def generateRDMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DualCast, SwiftcastEffect in player.EffectList, AccelerationEffect in player.EffectList]
 
@@ -1192,7 +1192,7 @@ def generateRDMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DualCast, SwiftcastEffect in player.EffectList, AccelerationEffect in player.EffectList]
 
@@ -1226,7 +1226,7 @@ def generateRDMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DualCast, SwiftcastEffect in player.EffectList, AccelerationEffect in player.EffectList]
 
@@ -1260,7 +1260,7 @@ def generateRDMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DualCast, SwiftcastEffect in player.EffectList, AccelerationEffect in player.EffectList]
 
@@ -1294,7 +1294,7 @@ def generateRDMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.WhiteMana, player.BlackMana]
 
@@ -1328,7 +1328,7 @@ def generateRDMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.WhiteMana, player.BlackMana]
 
@@ -1362,7 +1362,7 @@ def generateRDMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.WhiteMana, player.BlackMana]
 
@@ -1396,7 +1396,7 @@ def generateRDMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.WhiteMana, player.BlackMana]
 
@@ -1430,7 +1430,7 @@ def generateRDMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.WhiteMana, player.BlackMana]
 
@@ -1464,7 +1464,7 @@ def generateRDMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.WhiteMana, player.BlackMana]
 
@@ -1510,7 +1510,7 @@ def generateSMNTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -1550,7 +1550,7 @@ def generateSMNTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -1588,7 +1588,7 @@ def generateSMNTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         pet = player.Pet
         return [player.TotalPotency, pet.TrueLock]
@@ -1623,7 +1623,7 @@ def generateSMNTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         pet = player.Pet
         return [player.TotalPotency, pet.TrueLock]
@@ -1658,7 +1658,7 @@ def generateSMNTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [SearingLightbuff in Dummy.buffList]
 
@@ -1692,7 +1692,7 @@ def generateSMNTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [SearingLightbuff in Dummy.buffList]
 
@@ -1726,7 +1726,7 @@ def generateSMNTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.GarudaStack, player.GarudaSpecial, player.CastingSpell.CastTime]
 
@@ -1760,7 +1760,7 @@ def generateSMNTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.GarudaStack, player.GarudaSpecial, player.IfritStack, player.IfritSpecial, player.IfritSpecialCombo]
 
@@ -1794,7 +1794,7 @@ def generateSMNTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.IfritStack, player.IfritSpecial, player.IfritSpecialCombo, player.IfritGem, player.TitanGem, player.TitanStack, player.TitanSpecial ]
 
@@ -1828,7 +1828,7 @@ def generateSMNTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.FurtherRuin]
 
@@ -1862,7 +1862,7 @@ def generateSMNTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.FurtherRuin]
 
@@ -1907,7 +1907,7 @@ def generateSCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -1945,7 +1945,7 @@ def generateSCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.AetherFlowStack]
 
@@ -1979,7 +1979,7 @@ def generateSCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.AetherFlowStack]
 
@@ -2013,7 +2013,7 @@ def generateSCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.AetherFlowStack]
 
@@ -2047,7 +2047,7 @@ def generateSCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.AetherFlowStack]
 
@@ -2081,7 +2081,7 @@ def generateSCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.AetherFlowStack]
 
@@ -2114,7 +2114,7 @@ def generateSCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [Dummy.ChainStratagem]
 
@@ -2147,7 +2147,7 @@ def generateSCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [Dummy.ChainStratagem]
 
@@ -2192,7 +2192,7 @@ def generateWHMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -2230,7 +2230,7 @@ def generateWHMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.ManaCost]
 
@@ -2264,7 +2264,7 @@ def generateWHMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.ManaCost]
 
@@ -2298,7 +2298,7 @@ def generateWHMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.ManaCost]
 
@@ -2332,7 +2332,7 @@ def generateWHMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Haste, PresenceOfMindEffect in player.EffectList ]
 
@@ -2366,7 +2366,7 @@ def generateWHMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Haste, PresenceOfMindEffect in player.EffectList ]
 
@@ -2400,7 +2400,7 @@ def generateWHMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.LilyStack, player.UsedLily, player.BloomLily]
 
@@ -2434,7 +2434,7 @@ def generateWHMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.LilyStack, player.UsedLily, player.BloomLily]
 
@@ -2468,7 +2468,7 @@ def generateWHMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.LilyStack, player.UsedLily, player.BloomLily]
 
@@ -2502,7 +2502,7 @@ def generateWHMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.LilyStack, player.UsedLily, player.BloomLily]
 
@@ -2536,7 +2536,7 @@ def generateWHMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.LilyStack, player.UsedLily, player.BloomLily]
 
@@ -2584,7 +2584,7 @@ def generateASTTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -2623,7 +2623,7 @@ def generateASTTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Solar, player.Lunar, player.Celestial, len(NINPlayer.buffList), player.HasCard]
 
@@ -2658,7 +2658,7 @@ def generateASTTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Solar, player.Lunar, player.Celestial, len(NINPlayer.buffList), ]
 
@@ -2693,7 +2693,7 @@ def generateASTTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Solar, player.Lunar, player.Celestial, len(NINPlayer.buffList)]
 
@@ -2728,7 +2728,7 @@ def generateASTTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Solar, player.Lunar, player.Celestial, BodyEffect in player.EffectList]
 
@@ -2763,7 +2763,7 @@ def generateASTTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Solar, player.Lunar, player.Celestial, BodyEffect in player.EffectList, len(NINPlayer.buffList)]
 
@@ -2798,7 +2798,7 @@ def generateASTTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Solar, player.Lunar, player.Celestial, BodyEffect in player.EffectList]
 
@@ -2833,7 +2833,7 @@ def generateASTTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Solar, player.Lunar, player.Celestial, BodyEffect in player.EffectList,AstrodyneBuff in player.buffList]
 
@@ -2869,7 +2869,7 @@ def generateASTTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Solar, player.Lunar, player.Celestial, BodyEffect in player.EffectList,AstrodyneBuff in player.buffList]
 
@@ -2904,7 +2904,7 @@ def generateASTTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.CastTime]
 
@@ -2939,7 +2939,7 @@ def generateASTTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.CastTime]
 
@@ -2974,7 +2974,7 @@ def generateASTTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.HasCard, player.Redraw, player.DrawStack]
 
@@ -3009,7 +3009,7 @@ def generateASTTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.HasCard, player.Redraw, player.DrawStack]
 
@@ -3044,7 +3044,7 @@ def generateASTTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.HasCard, player.Redraw, player.DrawStack]
 
@@ -3079,7 +3079,7 @@ def generateASTTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.HasCard, player.Redraw, player.DrawStack]
 
@@ -3114,7 +3114,7 @@ def generateASTTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.HasCard, player.Redraw, player.DrawStack]
 
@@ -3153,7 +3153,7 @@ def generateASTTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [DivinationBuff in Dummy.buffList]
 
@@ -3192,7 +3192,7 @@ def generateASTTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [DivinationBuff in Dummy.buffList]
 
@@ -3231,7 +3231,7 @@ def generateASTTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [DivinationBuff in Dummy.buffList]
 
@@ -3280,7 +3280,7 @@ def generateSGETestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -3318,7 +3318,7 @@ def generateSGETestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.AddersgallStack]
 
@@ -3352,7 +3352,7 @@ def generateSGETestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.AddersgallStack]
 
@@ -3386,7 +3386,7 @@ def generateSGETestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.AddersgallStack]
 
@@ -3420,7 +3420,7 @@ def generateSGETestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.AddersgallStack]
 
@@ -3454,7 +3454,7 @@ def generateSGETestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.AddersgallStack]
 
@@ -3488,7 +3488,7 @@ def generateSGETestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.AdderstingStack]
 
@@ -3522,7 +3522,7 @@ def generateSGETestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.AdderstingStack]
 
@@ -3556,7 +3556,7 @@ def generateSGETestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.AdderstingStack]
 
@@ -3590,7 +3590,7 @@ def generateSGETestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.AdderstingStack]
 
@@ -3636,7 +3636,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -3674,7 +3674,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.RicochetStack, round(player.RicochetCD,2), player.GaussRoundStack, round(player.GaussRoundCD,2)]
 
@@ -3708,7 +3708,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.RicochetStack, round(player.RicochetCD,2), player.GaussRoundStack, round(player.GaussRoundCD,2)]
 
@@ -3742,7 +3742,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.RicochetStack, round(player.RicochetCD,2), player.GaussRoundStack, round(player.GaussRoundCD,2)]
 
@@ -3776,7 +3776,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.RicochetStack, round(player.RicochetCD,2), player.GaussRoundStack, round(player.GaussRoundCD,2)]
 
@@ -3810,7 +3810,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.WildFireStack]
 
@@ -3844,7 +3844,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.WildFireStack]
 
@@ -3878,7 +3878,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.WildFireStack]
 
@@ -3912,7 +3912,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.WildFireStack]
 
@@ -3946,7 +3946,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -3980,7 +3980,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -4014,7 +4014,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -4048,7 +4048,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -4082,7 +4082,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -4116,7 +4116,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -4150,7 +4150,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -4184,7 +4184,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -4218,7 +4218,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -4252,7 +4252,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         pet = player.Pet
         return [pet.TrueLock, player.TotalPotency]
@@ -4288,7 +4288,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         pet = player.Pet
         return [pet.TrueLock, player.TotalPotency]
@@ -4324,7 +4324,7 @@ def generateMCHTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         pet = player.Pet
         return [pet.TrueLock, player.TotalPotency]
@@ -4370,7 +4370,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -4408,7 +4408,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.StormbiteDOTTimer, player.CausticbiteDOTTimer]
 
@@ -4442,7 +4442,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.StormbiteDOTTimer, player.CausticbiteDOTTimer]
 
@@ -4476,7 +4476,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.StormbiteDOTTimer, player.CausticbiteDOTTimer]
 
@@ -4510,7 +4510,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.StormbiteDOTTimer, player.CausticbiteDOTTimer]
 
@@ -4544,7 +4544,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.StormbiteDOTTimer, player.CausticbiteDOTTimer]
 
@@ -4578,7 +4578,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [Dummy.WanderingMinuet, round(player.SongTimer,2)]
 
@@ -4612,7 +4612,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [Dummy.WanderingMinuet, player.SongTimer]
 
@@ -4646,7 +4646,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Haste, round(player.SongTimer,2), Dummy.ArmyPaeon]
 
@@ -4680,7 +4680,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Haste, round(player.SongTimer,2), Dummy.ArmyPaeon]
 
@@ -4714,7 +4714,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Haste, round(player.SongTimer,2), Dummy.ArmyPaeon]
 
@@ -4748,7 +4748,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [MageBalladBuff in Dummy.buffList, round(player.SongTimer,2)]
 
@@ -4782,7 +4782,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [MageBalladBuff in Dummy.buffList, round(player.SongTimer,2)]
 
@@ -4816,7 +4816,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [MageBalladBuff in Dummy.buffList, round(player.SongTimer,2), Dummy.WanderingMinuet]
 
@@ -4850,7 +4850,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [MageBalladBuff in Dummy.buffList, round(player.SongTimer,2), player.Haste]
 
@@ -4884,7 +4884,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [MageBalladBuff in Dummy.buffList, round(player.SongTimer,2), player.Haste, Dummy.WanderingMinuet, Dummy.ArmyPaeon]
 
@@ -4918,7 +4918,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [MageBalladBuff in Dummy.buffList, round(player.SongTimer,2), player.Haste, Dummy.WanderingMinuet, Dummy.ArmyPaeon]
 
@@ -4950,7 +4950,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [MageBalladBuff in Dummy.buffList, round(player.SongTimer,2), player.Haste, Dummy.WanderingMinuet]
 
@@ -4982,7 +4982,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.RadiantFinaleBuff.MultDPS, player.RadiantFinaleBuff in Dummy.buffList]
 
@@ -5014,7 +5014,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.RadiantFinaleBuff.MultDPS, player.RadiantFinaleBuff in Dummy.buffList]
 
@@ -5046,7 +5046,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.RadiantFinaleBuff.MultDPS, player.RadiantFinaleBuff in Dummy.buffList]
 
@@ -5078,7 +5078,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.RadiantFinaleBuff.MultDPS, player.RadiantFinaleBuff in Dummy.buffList]
 
@@ -5110,7 +5110,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.RadiantFinaleBuff.MultDPS, player.RadiantFinaleBuff in Dummy.buffList]
 
@@ -5142,7 +5142,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.RadiantFinaleBuff.MultDPS, player.RadiantFinaleBuff in Dummy.buffList]
 
@@ -5174,7 +5174,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.RadiantFinaleBuff.MultDPS, player.RadiantFinaleBuff in Dummy.buffList]
 
@@ -5206,7 +5206,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [RagingStrikeBuff in player.buffList]
 
@@ -5238,7 +5238,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [RagingStrikeBuff in player.buffList]
 
@@ -5270,7 +5270,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [Dummy.BattleVoice]
 
@@ -5302,7 +5302,7 @@ def generateBRDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [Dummy.BattleVoice]
 
@@ -5347,7 +5347,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -5386,7 +5386,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.StandardFinishBuff in NINPlayer.buffList, player.StandardFinishBuff.MultDPS]
 
@@ -5421,7 +5421,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.StandardFinishBuff in NINPlayer.buffList, player.StandardFinishBuff.MultDPS]
 
@@ -5456,7 +5456,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.StandardFinishBuff in NINPlayer.buffList, player.StandardFinishBuff.MultDPS]
 
@@ -5493,7 +5493,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.StandardFinishBuff in NINPlayer.buffList, player.StandardFinishBuff.MultDPS]
 
@@ -5530,7 +5530,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.StandardFinishBuff in NINPlayer.buffList, player.StandardFinishBuff.MultDPS]
 
@@ -5567,7 +5567,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.StandardFinishBuff in NINPlayer.buffList, player.StandardFinishBuff]
 
@@ -5604,7 +5604,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.StandardFinishBuff in NINPlayer.buffList, player.StandardFinishBuff.MultDPS]
 
@@ -5641,7 +5641,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CritRateBonus, player.DHRateBonus]
 
@@ -5678,7 +5678,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CritRateBonus, player.DHRateBonus, NINPlayer.CritRateBonus, NINPlayer.DHRateBonus]
 
@@ -5715,7 +5715,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CritRateBonus, player.DHRateBonus, NINPlayer.CritRateBonus, NINPlayer.DHRateBonus]
 
@@ -5752,7 +5752,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CritRateBonus, player.DHRateBonus, NINPlayer.CritRateBonus, NINPlayer.DHRateBonus]
 
@@ -5789,7 +5789,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CritRateBonus, player.DHRateBonus, NINPlayer.CritRateBonus, NINPlayer.DHRateBonus]
 
@@ -5825,7 +5825,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.TechnicalFinishBuff in Dummy.buffList, player.TechnicalFinishBuff.MultDPS]
 
@@ -5861,7 +5861,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.TechnicalFinishBuff in Dummy.buffList, player.TechnicalFinishBuff.MultDPS]
 
@@ -5897,7 +5897,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.TechnicalFinishBuff in Dummy.buffList, player.TechnicalFinishBuff.MultDPS]
 
@@ -5933,7 +5933,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.TechnicalFinishBuff in Dummy.buffList, player.TechnicalFinishBuff.MultDPS]
 
@@ -5969,7 +5969,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.TechnicalFinishBuff in Dummy.buffList, player.TechnicalFinishBuff.MultDPS]
 
@@ -6005,7 +6005,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.TechnicalFinishBuff in Dummy.buffList, player.TechnicalFinishBuff.MultDPS]
 
@@ -6041,7 +6041,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.TechnicalFinishBuff in Dummy.buffList, player.TechnicalFinishBuff]
 
@@ -6077,7 +6077,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.TechnicalFinishBuff in Dummy.buffList, player.TechnicalFinishBuff]
 
@@ -6113,7 +6113,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.StandardFinishBuff.MultDPS, player.StandardFinishBuff in NINPlayer.buffList]
 
@@ -6149,7 +6149,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -6185,7 +6185,7 @@ def generateDNCTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -6231,7 +6231,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -6269,7 +6269,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.NinkiGauge]
 
@@ -6303,7 +6303,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.NinkiGauge]
 
@@ -6337,7 +6337,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.NinkiGauge]
 
@@ -6371,7 +6371,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.NinkiGauge]
 
@@ -6405,7 +6405,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.NinkiGauge]
 
@@ -6439,7 +6439,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.NinkiGauge]
 
@@ -6473,7 +6473,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.NinkiGauge]
 
@@ -6505,7 +6505,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.NinkiGauge, round(round(player.HutonTimer,2),2)]
 
@@ -6539,7 +6539,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.NinkiGauge, round(player.HutonTimer,2)]
 
@@ -6573,7 +6573,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.NinkiGauge, round(player.HutonTimer,2)]
 
@@ -6607,7 +6607,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.NinkiGauge, round(player.HutonTimer,2)]
 
@@ -6641,7 +6641,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.NinkiGauge, round(player.HutonTimer,2)]
 
@@ -6675,7 +6675,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
                                 # The third result is checking if the DPS bonus is in fact being applied. 24617 is damage without Kassatsu
                                 # Removing 3405 from total damage that comes from AA. So the remainder is Raiton damage
         return [player.CastingSpell.Potency, player.CastingSpell.DPSBonus, round((player.TotalDamage-3405)/(24617),2)]
@@ -6710,7 +6710,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
                                 # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
                                 # Removing 3405 from total damage that comes from AA. So the remainder is Hyosho damage
         return [player.CastingSpell.Potency, player.CastingSpell.DPSBonus, round((player.TotalDamage-3405)/(49234),2)]
@@ -6745,7 +6745,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
                                 # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
         return [player.CastingSpell.Potency, round(player.TenChiJinTimer,2)]
 
@@ -6779,7 +6779,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
                                 # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
         return [player.CastingSpell.Potency, round(player.TenChiJinTimer,2)]
 
@@ -6813,7 +6813,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
                                 # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
         return [player.CastingSpell.Potency, round(player.TenChiJinTimer,2)]
 
@@ -6847,7 +6847,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
                                 # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
         return [player.CastingSpell.Potency, round(player.TenChiJinTimer,2)]
 
@@ -6881,7 +6881,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
                                 # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
         return [player.CastingSpell.Potency, round(player.TenChiJinTimer,2)]
 
@@ -6915,7 +6915,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
                                 # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
         return [player.CastingSpell.Potency, round(player.TenChiJinTimer,2), player.Suiton]
 
@@ -6949,7 +6949,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
                                 # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
         return [player.CastingSpell.Potency, round(player.TenChiJinTimer,2)]
 
@@ -6983,7 +6983,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
                                 # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
         return [player.CastingSpell.Potency, round(player.TenChiJinTimer,2), player.DotonDOT in player.DOTList]
 
@@ -7017,7 +7017,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
                                 # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
         return [player.CastingSpell.Potency, round(player.TenChiJinTimer,2), HutonEffect in player.EffectList, player.Haste]
 
@@ -7051,7 +7051,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
                                 # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
         return [MugBuff in Dummy.buffList, player.NinkiGauge]
 
@@ -7085,7 +7085,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
                                 # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
         return [MugBuff in Dummy.buffList, player.NinkiGauge]
 
@@ -7119,7 +7119,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
                                 # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
         return [MugBuff in Dummy.buffList, player.NinkiGauge]
 
@@ -7153,7 +7153,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
                                 # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
         return [player.Suiton, TrickAttackBuff in player.buffList]
 
@@ -7187,7 +7187,7 @@ def generateNINTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
                                 # The third result is checking if the DPS bonus is in fact being applied. 49234 is damage without Kassatsu (if it was possible)
         return [player.Suiton, TrickAttackBuff in player.buffList]
 
@@ -7232,7 +7232,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -7270,7 +7270,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, FugetsuBuff in player.buffList, player.KenkiGauge]
 
@@ -7304,7 +7304,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, FugetsuBuff in player.buffList, player.KenkiGauge]
 
@@ -7338,7 +7338,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Getsu, player.KenkiGauge]
 
@@ -7372,7 +7372,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Getsu, player.KenkiGauge]
 
@@ -7406,7 +7406,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, FugetsuBuff in player.buffList, player.KenkiGauge]
 
@@ -7440,7 +7440,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Haste, player.KenkiGauge]
 
@@ -7474,7 +7474,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Haste, player.KenkiGauge]
 
@@ -7508,7 +7508,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Ka, player.KenkiGauge, player.Haste]
 
@@ -7542,7 +7542,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Ka, player.KenkiGauge, player.Haste]
 
@@ -7576,7 +7576,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Ka, player.KenkiGauge, player.Haste]
 
@@ -7610,7 +7610,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Setsu, player.KenkiGauge]
 
@@ -7644,7 +7644,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Setsu, player.KenkiGauge]
 
@@ -7678,7 +7678,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Getsu, player.KenkiGauge, FugetsuBuff in player.buffList]
 
@@ -7712,7 +7712,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Ka, player.KenkiGauge, player.Haste]
 
@@ -7746,7 +7746,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Setsu, player.KenkiGauge, player.Haste]
 
@@ -7780,7 +7780,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.KenkiGauge, player.Haste]
 
@@ -7814,7 +7814,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Getsu, player.Higanbana in player.DOTList, player.MeditationGauge]
 
@@ -7848,7 +7848,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Getsu, player.Higanbana in player.DOTList, player.MeditationGauge]
 
@@ -7882,7 +7882,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Getsu, player.Ka, player.MeditationGauge]
 
@@ -7916,7 +7916,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Getsu, player.Ka, player.Setsu, player.MeditationGauge]
 
@@ -7950,7 +7950,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Getsu, player.Ka, player.Setsu, player.MeditationGauge]
 
@@ -7984,7 +7984,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.KenkiGauge, player.Ka, player.Setsu, player.Getsu]
 
@@ -8018,7 +8018,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.KenkiGauge, player.Ka, player.Setsu, player.Getsu]
 
@@ -8052,7 +8052,7 @@ def generateSAMTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.KenkiGauge, player.OgiNamikiriReady]
 
@@ -8097,7 +8097,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -8135,7 +8135,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SoulGauge]
 
@@ -8169,7 +8169,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SoulGauge]
 
@@ -8203,7 +8203,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SoulGauge]
 
@@ -8237,7 +8237,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SoulGauge]
 
@@ -8271,7 +8271,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SoulGauge]
 
@@ -8305,7 +8305,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SoulGauge]
 
@@ -8339,7 +8339,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SoulGauge, player.ShroudGauge]
 
@@ -8373,7 +8373,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SoulGauge, player.ShroudGauge]
 
@@ -8407,7 +8407,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SoulGauge, player.ShroudGauge]
 
@@ -8442,7 +8442,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SoulGauge, player.ShroudGauge]
 
@@ -8477,7 +8477,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SoulGauge, player.ShroudGauge]
 
@@ -8518,7 +8518,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SoulGauge, player.ShroudGauge]
 
@@ -8560,7 +8560,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SoulGauge, player.ShroudGauge]
 
@@ -8602,7 +8602,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SoulGauge, player.ShroudGauge]
 
@@ -8636,7 +8636,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [ArcaneCircleBuff in Dummy.buffList]
 
@@ -8670,7 +8670,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [ArcaneCircleBuff in Dummy.buffList]
 
@@ -8704,7 +8704,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SoulGauge, player.ShroudGauge]
 
@@ -8738,7 +8738,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SoulGauge, player.ShroudGauge]
 
@@ -8772,7 +8772,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.LemureGauge, player.VoidShroudGauge]
 
@@ -8806,7 +8806,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.LemureGauge, player.VoidShroudGauge]
 
@@ -8840,7 +8840,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.LemureGauge, player.VoidShroudGauge]
 
@@ -8874,7 +8874,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.LemureGauge, player.VoidShroudGauge]
 
@@ -8908,7 +8908,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.LemureGauge, player.VoidShroudGauge]
 
@@ -8942,7 +8942,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [DeathDesignBuff in player.buffList, round(player.DeathDesignTimer,2)]
 
@@ -8976,7 +8976,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [DeathDesignBuff in player.buffList, round(player.DeathDesignTimer,2)]
 
@@ -9010,7 +9010,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [DeathDesignBuff in player.buffList, round(player.DeathDesignTimer,2)]
 
@@ -9044,7 +9044,7 @@ def generateRPRTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [DeathDesignBuff in player.buffList, round(player.DeathDesignTimer,2)]
 
@@ -9091,7 +9091,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -9130,7 +9130,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -9165,7 +9165,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -9200,7 +9200,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.FangAndClaw]
 
@@ -9235,7 +9235,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.FangAndClaw, player.TotalPotency]
 
@@ -9270,7 +9270,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.FangAndClaw, player.WheelInMotion, player.DraconianFire]
 
@@ -9305,7 +9305,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.FangAndClaw, player.WheelInMotion, player.DraconianFire]
 
@@ -9340,7 +9340,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, PowerSurgeBuff in player.buffList]
 
@@ -9375,7 +9375,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, PowerSurgeBuff in player.buffList]
 
@@ -9410,7 +9410,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, PowerSurgeBuff in player.buffList]
 
@@ -9445,7 +9445,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, PowerSurgeBuff in player.buffList, player.ChaoticSpringDOT in player.DOTList]
 
@@ -9480,7 +9480,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, PowerSurgeBuff in player.buffList, player.ChaoticSpringDOT in player.DOTList, player.WheelInMotion]
 
@@ -9515,7 +9515,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.WheelInMotion, player.FangAndClaw, player.DraconianFire]
 
@@ -9550,7 +9550,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.WheelInMotion, player.FangAndClaw, player.DraconianFire]
 
@@ -9585,7 +9585,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, PowerSurgeBuff in player.buffList]
 
@@ -9620,7 +9620,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, PowerSurgeBuff in player.buffList, player.ChaoticSpringDOT in player.DOTList, player.WheelInMotion]
 
@@ -9655,7 +9655,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.NextCrit]
 
@@ -9690,7 +9690,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.NextCrit]
 
@@ -9725,7 +9725,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DraconianFire, player.CastingSpell.Potency, player.FirstmindGauge]
 
@@ -9760,7 +9760,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DraconianFire, player.CastingSpell.Potency, player.FirstmindGauge]
 
@@ -9796,7 +9796,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DraconianFire, player.CastingSpell.Potency, player.FirstmindGauge]
 
@@ -9832,7 +9832,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DraconianFire, player.CastingSpell.Potency, player.FirstmindGauge, PowerSurgeBuff in player.buffList, player.ChaoticSpringDOT in player.DOTList]
 
@@ -9868,7 +9868,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DraconianFire, player.CastingSpell.Potency, player.FirstmindGauge, PowerSurgeBuff in player.buffList, player.ChaoticSpringDOT in player.DOTList]
 
@@ -9903,7 +9903,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DragonGauge, player.LifeOfTheDragon]
 
@@ -9938,7 +9938,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DragonGauge, player.LifeOfTheDragon]
 
@@ -9973,7 +9973,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DragonGauge, player.LifeOfTheDragon]
 
@@ -10009,7 +10009,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CritRateBonus, ninplayer.CritRateBonus]
 
@@ -10045,7 +10045,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CritRateBonus, ninplayer.CritRateBonus]
 
@@ -10081,7 +10081,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [RightEyeBuff in player.buffList, LeftEyeBuff in ninplayer.buffList]
 
@@ -10117,7 +10117,7 @@ def generateDRGTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [RightEyeBuff in player.buffList, LeftEyeBuff in ninplayer.buffList]
 
@@ -10163,7 +10163,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -10201,7 +10201,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.GuaranteedCrit]
 
@@ -10235,7 +10235,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.GuaranteedCrit]
 
@@ -10269,7 +10269,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, DisciplinedFistBuff in player.buffList]
 
@@ -10303,7 +10303,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, DisciplinedFistBuff in player.buffList]
 
@@ -10337,7 +10337,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, DisciplinedFistBuff in player.buffList]
 
@@ -10371,7 +10371,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.DemolishDOT in player.DOTList]
 
@@ -10405,7 +10405,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.DemolishDOT in player.DOTList]
 
@@ -10439,7 +10439,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -10473,7 +10473,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DemolishDOT in player.DOTList]
 
@@ -10507,7 +10507,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DemolishDOT in player.DOTList, LeadenFistEffect in player.EffectList, DisciplinedFistBuff in player.buffList]
 
@@ -10541,7 +10541,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DemolishDOT in player.DOTList, LeadenFistEffect in player.EffectList, DisciplinedFistBuff in player.buffList, player.MasterGauge]
 
@@ -10575,7 +10575,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DemolishDOT in player.DOTList, LeadenFistEffect in player.EffectList, DisciplinedFistBuff in player.buffList, player.MasterGauge]
 
@@ -10609,7 +10609,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DemolishDOT in player.DOTList, LeadenFistEffect in player.EffectList, DisciplinedFistBuff in player.buffList, player.MasterGauge]
 
@@ -10643,7 +10643,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DemolishDOT in player.DOTList, LeadenFistEffect in player.EffectList, DisciplinedFistBuff in player.buffList, player.MasterGauge]
 
@@ -10677,7 +10677,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DemolishDOT in player.DOTList, LeadenFistEffect in player.EffectList, DisciplinedFistBuff in player.buffList, player.MasterGauge]
 
@@ -10711,7 +10711,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DemolishDOT in player.DOTList, LeadenFistEffect in player.EffectList, DisciplinedFistBuff in player.buffList, player.MasterGauge]
 
@@ -10747,7 +10747,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.DemolishDOT in player.DOTList, LeadenFistEffect in player.EffectList, DisciplinedFistBuff in player.buffList, player.MasterGauge]
 
@@ -10781,7 +10781,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [round(Event.TimeStamp,2), player.CastingSpell.Potency]
 
@@ -10821,7 +10821,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [BrotherhoodBuff in player.buffList,BrotherhoodBuff in player2.buffList,BrotherhoodBuff in player3.buffList,BrotherhoodBuff in player4.buffList,BrotherhoodBuff in player5.buffList
                 ,BrotherhoodBuff in player6.buffList,BrotherhoodBuff in player7.buffList,BrotherhoodBuff in player8.buffList]
@@ -10862,7 +10862,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [BrotherhoodBuff in player.buffList,BrotherhoodBuff in player2.buffList,BrotherhoodBuff in player3.buffList,BrotherhoodBuff in player4.buffList,BrotherhoodBuff in player5.buffList
                 ,BrotherhoodBuff in player6.buffList,BrotherhoodBuff in player7.buffList,BrotherhoodBuff in player8.buffList]
@@ -10904,7 +10904,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.MaxChakraGate, round(player.ExpectedChakraGate,2)]
 
@@ -10945,7 +10945,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.MaxChakraGate, round(player.ExpectedChakraGate,2)]
 
@@ -10979,7 +10979,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [RiddleOfFireBuff in player.buffList]
 
@@ -11013,7 +11013,7 @@ def generateMNKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [RiddleOfFireBuff in player.buffList]
 
@@ -11058,7 +11058,7 @@ def generateWARTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -11096,7 +11096,7 @@ def generateWARTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.BeastGauge]
 
@@ -11130,7 +11130,7 @@ def generateWARTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.BeastGauge]
 
@@ -11164,7 +11164,7 @@ def generateWARTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.BeastGauge]
 
@@ -11198,7 +11198,7 @@ def generateWARTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.BeastGauge]
 
@@ -11232,7 +11232,7 @@ def generateWARTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.BeastGauge, SurgingTempestBuff in player.buffList]
 
@@ -11266,7 +11266,7 @@ def generateWARTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.BeastGauge]
 
@@ -11300,7 +11300,7 @@ def generateWARTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.BeastGauge, SurgingTempestBuff in player.buffList]
 
@@ -11334,7 +11334,7 @@ def generateWARTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.BeastGauge, SurgingTempestBuff in player.buffList]
 
@@ -11368,7 +11368,7 @@ def generateWARTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.BeastGauge, SurgingTempestBuff in player.buffList]
 
@@ -11402,7 +11402,7 @@ def generateWARTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.BeastGauge, SurgingTempestBuff in player.buffList]
 
@@ -11436,7 +11436,7 @@ def generateWARTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.BeastGauge]
 
@@ -11470,7 +11470,7 @@ def generateWARTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.BeastGauge]
 
@@ -11504,7 +11504,7 @@ def generateWARTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.BeastGauge]
 
@@ -11538,7 +11538,7 @@ def generateWARTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.BeastGauge]
 
@@ -11572,7 +11572,7 @@ def generateWARTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.BeastGauge]
 
@@ -11606,7 +11606,7 @@ def generateWARTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.BeastGauge]
 
@@ -11651,7 +11651,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -11689,7 +11689,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.PowderGauge]
 
@@ -11723,7 +11723,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.PowderGauge]
 
@@ -11757,7 +11757,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.PowderGauge]
 
@@ -11791,7 +11791,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.PowderGauge]
 
@@ -11825,7 +11825,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.PowderGauge]
 
@@ -11859,7 +11859,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.PowderGauge]
 
@@ -11893,7 +11893,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.PowderGauge]
 
@@ -11927,7 +11927,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.PowderGauge]
 
@@ -11961,7 +11961,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.PowderGauge]
 
@@ -11995,7 +11995,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.PowderGauge]
 
@@ -12026,7 +12026,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.PowderGauge]
 
@@ -12060,7 +12060,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.PowderGauge]
 
@@ -12094,7 +12094,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.PowderGauge]
 
@@ -12128,7 +12128,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.PowderGauge]
 
@@ -12162,7 +12162,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.PowderGauge]
 
@@ -12196,7 +12196,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.PowderGauge]
 
@@ -12230,7 +12230,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.PowderGauge]
 
@@ -12263,7 +12263,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.PowderGauge, NoMercyBuff in player.buffList]
 
@@ -12296,7 +12296,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.PowderGauge, NoMercyBuff in player.buffList, NoMercyBuff.MultDPS]
 
@@ -12329,7 +12329,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.BowShockDOT in player.DOTList]
 
@@ -12362,7 +12362,7 @@ def generateGNBTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.BowShockDOT in player.DOTList]
 
@@ -12410,7 +12410,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -12448,7 +12448,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -12482,7 +12482,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -12516,7 +12516,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -12550,7 +12550,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -12584,7 +12584,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SwordOathStack, DivineMightEffect in player.EffectList]
 
@@ -12618,7 +12618,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SwordOathStack, DivineMightEffect in player.EffectList]
 
@@ -12652,7 +12652,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SwordOathStack, DivineMightEffect in player.EffectList]
 
@@ -12686,7 +12686,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SwordOathStack, DivineMightEffect in player.EffectList]
 
@@ -12720,7 +12720,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SwordOathStack, DivineMightEffect in player.EffectList, player.CastingSpell.CastTime]
 
@@ -12754,7 +12754,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.SwordOathStack, DivineMightEffect in player.EffectList, player.CastingSpell.CastTime]
 
@@ -12788,7 +12788,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.CastingSpell.CastTime]
 
@@ -12822,7 +12822,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.CastingSpell.CastTime]
 
@@ -12856,7 +12856,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.CastingSpell.CastTime]
 
@@ -12890,7 +12890,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -12924,7 +12924,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -12958,7 +12958,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -12992,7 +12992,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -13026,7 +13026,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -13060,7 +13060,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -13094,7 +13094,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -13128,7 +13128,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -13162,7 +13162,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -13196,7 +13196,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -13230,7 +13230,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [FightOrFlightBuff in player.buffList, FightOrFlightBuff.MultDPS]
 
@@ -13264,7 +13264,7 @@ def generatePLDTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [FightOrFlightBuff in player.buffList, FightOrFlightBuff.MultDPS]
 
@@ -13309,7 +13309,7 @@ def generateDRKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         failedReq = 0
         for event in Event.failedRequirementList: # Counts all fatal requirement failed. Must be 0 for test to pass
@@ -13347,7 +13347,7 @@ def generateDRKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -13381,7 +13381,7 @@ def generateDRKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -13415,7 +13415,7 @@ def generateDRKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -13449,7 +13449,7 @@ def generateDRKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency]
 
@@ -13483,7 +13483,7 @@ def generateDRKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Blood]
 
@@ -13517,7 +13517,7 @@ def generateDRKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Blood]
 
@@ -13551,7 +13551,7 @@ def generateDRKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Blood]
 
@@ -13585,7 +13585,7 @@ def generateDRKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Blood]
 
@@ -13619,7 +13619,7 @@ def generateDRKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Blood]
 
@@ -13653,7 +13653,7 @@ def generateDRKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.CastingSpell.Potency, player.Blood]
 
@@ -13687,7 +13687,7 @@ def generateDRKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [EdgeShadowBuff in player.buffList]
 
@@ -13721,7 +13721,7 @@ def generateDRKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [EdgeShadowBuff in player.buffList]
 
@@ -13755,7 +13755,7 @@ def generateDRKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [EdgeShadowBuff in player.buffList, round(player.DarksideTimer,2)]
 
@@ -13789,7 +13789,7 @@ def generateDRKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Mana, player.Blood, player.DeliriumStacks]
 
@@ -13823,7 +13823,7 @@ def generateDRKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.Mana, player.Blood, player.DeliriumStacks, DeliriumEffect in player.EffectList]
 
@@ -13857,7 +13857,7 @@ def generateDRKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.BloodWeaponStacks, player.Blood,BloodWeaponEffect in player.EffectList]
 
@@ -13891,7 +13891,7 @@ def generateDRKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.BloodWeaponStacks, player.Blood,BloodWeaponEffect in player.EffectList]
 
@@ -13925,7 +13925,7 @@ def generateDRKTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [player.BloodWeaponStacks, player.Blood,BloodWeaponEffect in player.EffectList]
 
@@ -14158,7 +14158,7 @@ def generateDOTTestSuite(setSeed : int = 0) -> testSuite:
 
             Event.ExtractInfo = getData
 
-            Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+            Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
             return dotPointerList[0].ticAmount
         
@@ -14191,7 +14191,7 @@ def generateDOTTestSuite(setSeed : int = 0) -> testSuite:
         sortKey = lambda x : x.name
 
         def testFunction() -> None:
-            Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+            Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
             dotObj = player.__dict__[dotFieldName]
             buffList = dotObj.MultBonus
@@ -14250,7 +14250,7 @@ def generateDOTTestSuite(setSeed : int = 0) -> testSuite:
             Event.ShowGraph = False
             Event.IgnoreMana = True
 
-            Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+            Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
             dotObj = player.__dict__[fieldList[i]]
             buffList = dotObj.MultBonus
@@ -14324,8 +14324,8 @@ def generateRFOTestSuite() -> testSuite:
 
         restoredFightObj = RestoreFightObject(data)
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
-        restoredFightObj.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        restoredFightObj.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [Event.TimeStamp, restoredFightObj.TimeStamp, Event.PlayerList[0].TotalPotency,restoredFightObj.PlayerList[0].TotalPotency,
                 Event.PlayerList[0].TotalDamage,restoredFightObj.PlayerList[0].TotalDamage]
@@ -14385,8 +14385,8 @@ def generateRFOTestSuite() -> testSuite:
 
         restoredFightObj = RestoreFightObject(data)
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
-        restoredFightObj.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        restoredFightObj.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [Event.TimeStamp, restoredFightObj.TimeStamp, 
                 Event.PlayerList[0].TotalPotency,restoredFightObj.PlayerList[0].TotalPotency,Event.PlayerList[0].TotalDamage,restoredFightObj.PlayerList[0].TotalDamage,
@@ -14446,7 +14446,7 @@ def generateRFOTestSuite() -> testSuite:
         Event.ShowGraph = False
         Event.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
         data = SaveFight(Event, 0, 500, "", saveFile=False)
 
         restoredFightObj = RestoreFightObject(data)
@@ -14455,7 +14455,7 @@ def generateRFOTestSuite() -> testSuite:
         restoredFightObj.RequirementOn = False
         restoredFightObj.ShowGraph = False
         restoredFightObj.IgnoreMana = True
-        restoredFightObj.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        restoredFightObj.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [Event.TimeStamp, restoredFightObj.TimeStamp, 
                 Event.PlayerList[0].TotalPotency,restoredFightObj.PlayerList[0].TotalPotency,Event.PlayerList[0].TotalDamage,restoredFightObj.PlayerList[0].TotalDamage,
@@ -14524,12 +14524,12 @@ def generateRFOTestSuite() -> testSuite:
         data = SaveFight(Event, 0, 500, "", saveFile=False)
         restoredFightObj = RestoreFightObject(data)
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         restoredFightObj.RequirementOn = False
         restoredFightObj.ShowGraph = False
         restoredFightObj.IgnoreMana = True
-        restoredFightObj.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        restoredFightObj.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [Event.TimeStamp, restoredFightObj.TimeStamp, 
                 Event.PlayerList[0].TotalPotency,restoredFightObj.PlayerList[0].TotalPotency,Event.PlayerList[0].TotalDamage,restoredFightObj.PlayerList[0].TotalDamage,
@@ -14595,12 +14595,12 @@ def generateRFOTestSuite() -> testSuite:
         data = SaveFight(Event, 0, 500, "", saveFile=False)
         restoredFightObj = RestoreFightObject(data)
 
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         restoredFightObj.RequirementOn = False
         restoredFightObj.ShowGraph = False
         restoredFightObj.IgnoreMana = True
-        restoredFightObj.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        restoredFightObj.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [Event.TimeStamp, restoredFightObj.TimeStamp, 
                 Event.PlayerList[0].TotalPotency,restoredFightObj.PlayerList[0].TotalPotency,Event.PlayerList[0].TotalDamage,restoredFightObj.PlayerList[0].TotalDamage,
@@ -14657,7 +14657,7 @@ def generateRFOTestSuite() -> testSuite:
         Event.IgnoreMana = True
         
         data = SaveFight(Event, 0, 500, "", saveFile=False)
-        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
         restoredFightObj = RestoreFightObject(data)
 
         
@@ -14665,7 +14665,7 @@ def generateRFOTestSuite() -> testSuite:
         restoredFightObj.RequirementOn = False
         restoredFightObj.ShowGraph = False
         restoredFightObj.IgnoreMana = True
-        restoredFightObj.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+        restoredFightObj.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         return [Event.TimeStamp, restoredFightObj.TimeStamp, #[89.99, 89.99
                 Event.PlayerList[0].TotalPotency,restoredFightObj.PlayerList[0].TotalPotency,Event.PlayerList[0].TotalDamage,restoredFightObj.PlayerList[0].TotalDamage,#21650, 21650, 751042, 751042,
@@ -14732,8 +14732,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, randomDamageDict, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
 
@@ -14786,8 +14786,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -14839,8 +14839,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -14893,8 +14893,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -14946,8 +14946,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -14999,8 +14999,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -15053,8 +15053,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -15107,8 +15107,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -15161,8 +15161,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -15217,8 +15217,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -15272,8 +15272,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -15330,8 +15330,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -15385,8 +15385,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -15441,8 +15441,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -15495,8 +15495,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -15550,8 +15550,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -15604,8 +15604,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -15659,8 +15659,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -15714,8 +15714,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -15774,8 +15774,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -15837,8 +15837,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -15918,8 +15918,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -15979,8 +15979,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -16043,8 +16043,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -16128,8 +16128,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -16188,8 +16188,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -16251,8 +16251,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -16334,8 +16334,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -16395,8 +16395,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -16459,8 +16459,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -16543,8 +16543,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -16605,8 +16605,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -16670,8 +16670,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -16755,8 +16755,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -16821,8 +16821,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -16884,8 +16884,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -16967,8 +16967,8 @@ def generatePBFTestSuite() -> testSuite:
         comparedEvent.ShowGraph = False
         comparedEvent.IgnoreMana = True
 
-        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
-        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+        Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
+        comparedEvent.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
         f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto = computeDamageValue(stat, player.JobMod, player.RoleEnum == RoleEnum.Tank, player.RoleEnum == RoleEnum.Caster or player.RoleEnum == RoleEnum.Healer)
         ExpectedDamage, expectedTotalDamage, duration, potency = Event.SimulatePreBakedFight(0, player.baseMainStat,f_WD, f_DET, f_TEN, f_SPD, f_CritRate, f_CritMult, f_DH, DHAuto, n=1,getInfo = True)
@@ -17072,7 +17072,7 @@ def generateGCDTestSuite(setSeed : int = 0) -> testSuite:
             Event.ShowGraph = False
             Event.IgnoreMana = True
 
-            Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+            Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
             gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, actionHasteAmount + baseHaste, 0, randomDelay)
 
@@ -17088,7 +17088,7 @@ def generateGCDTestSuite(setSeed : int = 0) -> testSuite:
             Event.ShowGraph = False
             Event.IgnoreMana = True
 
-            Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+            Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
             gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, actionHasteAmount + baseHaste, 0, randomDelay)
 
@@ -17104,7 +17104,7 @@ def generateGCDTestSuite(setSeed : int = 0) -> testSuite:
             Event.ShowGraph = False
             Event.IgnoreMana = True
 
-            Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+            Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
             gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, 0 + baseHaste, 0, randomDelay)
 
@@ -17120,7 +17120,7 @@ def generateGCDTestSuite(setSeed : int = 0) -> testSuite:
             Event.ShowGraph = False
             Event.IgnoreMana = True
 
-            Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+            Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
             gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, 0 + baseHaste, 0, randomDelay)
 
@@ -17138,7 +17138,7 @@ def generateGCDTestSuite(setSeed : int = 0) -> testSuite:
                 Event.ShowGraph = False
                 Event.IgnoreMana = True
 
-                Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+                Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
                 gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, actionHasteAmount + baseHaste, autoHasteAmount, randomDelay)
 
@@ -17154,7 +17154,7 @@ def generateGCDTestSuite(setSeed : int = 0) -> testSuite:
                 Event.ShowGraph = False
                 Event.IgnoreMana = True
 
-                Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False)
+                Event.SimulateFight(0.01, 500, False, n=0,PPSGraph=False, showProgress=False,computeGraph=False,showProgress=False)
 
                 gcdTimer, aaDelay = __computeGCDAndAATimer(randomSPD, 0 + baseHaste, 0, randomDelay)
 
