@@ -291,7 +291,7 @@ def RestoreFightObject(data : dict, name : str = ""):
 
         job_object.playerID = player["playerID"] #Giving the playerID
                              # If weaponDelay was in the data we set it
-        if 'weaponDelay' in player.keys() : job_object.setBasedWeaponDelay(player['weaponDelay'])
+        if 'weaponDelay' in player.keys() : job_object.setBasedWeaponDelay(float(player['weaponDelay']))
         helper_logging.debug("Creating job object : " + job_name + " for playerID : " + str(player["playerID"]))
 
         if "PlayerName" in player.keys():job_object.PlayerName = player["PlayerName"]
