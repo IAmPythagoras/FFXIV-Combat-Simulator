@@ -17402,11 +17402,14 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
                 print(f"Executing {gcdTestSuite.testSuiteName}")
                 failedTestDict[gcdTestSuite.testSuiteName] = gcdTestSuite.executeTestSuite()
 
+    totalFailedTest = 0
+
     for key in failedTestDict:
         if not failedTestDict[key][0]:
             print(key + " had " + str(failedTestDict[key][1]) + " failed tests.")
+            totalFailedTest += failedTestDict[key][1]
 
-    if len(failedTestDict.keys()) == 0:
+    if totalFailedTest == 0:
         print("Completed without errors. See logs for info.")
     else:
         print("Completed. See logs for info.")
