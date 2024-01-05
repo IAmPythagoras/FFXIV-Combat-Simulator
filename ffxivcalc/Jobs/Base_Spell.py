@@ -4,7 +4,7 @@ import logging
 main_logging = logging.getLogger("ffxivcalc")
 base_spell_logging = main_logging.getChild("Base_Spell")
 
-from ffxivcalc.Jobs.ActionEnum import name_for_id
+from ffxivcalc.Jobs.ActionEnum import ActionEnum
 import math
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
 from ffxivcalc.Jobs.PlayerEnum import RoleEnum
@@ -319,7 +319,7 @@ class Spell:
 
         tempSpell.notRoundCastTime = tempSpell.CastTime
         tempSpell.notRoundRecastTime = tempSpell.RecastTime
-
+        print(ActionEnum.name_for_id(tempSpell.id))
         tempSpell.CastTime = roundDown(tempSpell.CastTime, 3)
         tempSpell.RecastTime = roundDown(tempSpell.RecastTime, 3)
 
