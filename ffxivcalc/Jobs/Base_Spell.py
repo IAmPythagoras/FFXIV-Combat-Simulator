@@ -319,9 +319,7 @@ class Spell:
 
         tempSpell.notRoundCastTime = tempSpell.CastTime
         tempSpell.notRoundRecastTime = tempSpell.RecastTime
-        print(name_for_id(tempSpell.id))
-        print(tempSpell.id)
-        print(tempSpell)
+
         tempSpell.CastTime = roundDown(tempSpell.CastTime, 3)
         tempSpell.RecastTime = roundDown(tempSpell.RecastTime, 3)
 
