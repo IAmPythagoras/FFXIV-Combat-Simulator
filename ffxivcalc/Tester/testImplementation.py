@@ -17405,7 +17405,11 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
     for key in failedTestDict:
         if not failedTestDict[key][0]:
             print(key + " had " + str(failedTestDict[key][1]) + " failed tests.")
-    print("Completed. See logs for info.")
+
+    if len(failedTestDict.keys()) == 0:
+        print("Completed without errors. See logs for info.")
+    else:
+        print("Completed. See logs for info.")
 
     return 0
 
