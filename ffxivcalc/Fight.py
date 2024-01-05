@@ -333,9 +333,8 @@ class Fight:
 
         fight_logging.debug("Starting simulation with TeamCompositionBonus = " + str(self.TeamCompositionBonus))
         fight_logging.debug("Parameters are -> RequirementOn : " + str(self.RequirementOn) + ", IgnoreMana : " + str(self.IgnoreMana))
-        pB = ProgressBar.init(int(TimeLimit/TimeUnit), "Progress Of Fight (maxTime)")
-        pB.setShowBar(showProgress)
-        pB.setExtraBuffer(loadingBarBuffer)
+        pB = ProgressBar.init(int(TimeLimit/TimeUnit), "Progress Of Fight (maxTime)", showBar=showProgress, extraBuffer=loadingBarBuffer)
+
         while(self.TimeStamp <= TimeLimit):
 
             for player in self.PlayerList:

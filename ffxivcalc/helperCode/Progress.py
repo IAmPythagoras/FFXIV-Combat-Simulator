@@ -83,15 +83,22 @@ class ProgressBar:
         self.name = newName
     
     @classmethod
-    def init(self, total : int, name : str):
+    def init(self, total : int, name : str, showBar : bool = True, extraBuffer = None):
         """
         This class method returns an iterator of the progress bar.
+
+        total : int -> Total amount of iterations
+        name : string -> name of loading bar (that is displayed)
+        showBar : bool -> If true displays the progress bar using print()
+        extraBuffer -> Dictionnary in which the pb view will be written at the key 'pb'
         """
         newProgressBar = ProgressBar()
         newProgressBar.total = total
         newProgressBar.name = name
         newProgressBar.lastIterTime = time()
         iterator = iter(newProgressBar)
+        iterator.setExtraBuffer(extraBuffer)
+        iterator.setShowBar(showBar)
         next(iterator)
         return iterator
     
