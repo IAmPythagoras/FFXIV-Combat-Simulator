@@ -12,7 +12,7 @@ For now the BiS Solver will only work if the Fight has one player variable, mean
 from ffxivcalc.GearSolver.Gear import GearSet, MateriaGenerator, GearType, StatType
 from ffxivcalc.Jobs.PlayerEnum import RoleEnum, JobEnum
 from ffxivcalc.helperCode.Progress import ProgressBar
-from ffxivcalc.helperCode.exceptions import InvalidFoodSpace, InvalidGearSpace, InvalidMateriaSpace, InvalidFunctionParameter
+from ffxivcalc.helperCode.exceptions import InvalidFoodSpace, InvalidGearSpace, InvalidMateriaSpace, InvalidFunctionParameter, MultiValuedWeaponDelay
 from math import floor
 from copy import deepcopy
 import os
@@ -238,6 +238,18 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     solver_logging.warning("Computed GCD timer : " + str(gcdTimerDict))
     gcdTimerProgress = ProgressBar.init(len(gcdTimerDict.keys()), "Prebaking GCD tier")
     gcdTimerProgress.setShowBar(showBar)
+
+                             # Getting weaponDelay value. If more than one weaponDelay value returns an error as the solver currently cannot handle more than
+                             # one different value (because we are prebaking each fight). It would be possible but would need to prebake each fight also depending
+                             # on the weaponDelay value TODO
+    weaponDelay = GearSpace["WEAPON"][0].getWeaponDelay() # -> Note that this list is non empty at this point since we checked before hand
+    for weapon in GearSpace["WEAPON"]:
+        if weaponDelay != weapon.getWeaponDelay():
+            # If not equal either means two different weapon delay which is currently not possible (see above)
+            raise MultiValuedWeaponDelay(weaponDelay, weapon.getWeaponDelay())
+        
+    Fight.PlayerList[PlayerIndex].setBasedWeaponDelay(weaponDelay)
+                             # Setting base weaponDelay
 
                              # This dictionnary contains all Fight object. The key is (gcdTimer, hastedGCDTimer)
     preBakedFightGCDTierList = {}
@@ -477,6 +489,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
         text += ("Crit multiplier : " + str(int(damageValue[5] * 100)/100) + "\n")
         text += ("DH rate : " + str(int(damageValue[6] * 100)/100) + "\n")
         text += ("DH bonus (auto crit) : " + str(int(damageValue[7] * 100)/100) + "\n")
+        text += "Weapon delay "+ str(weaponDelay) + " s"
 
 
     for percentile in optimalRandomGearSetMateria:

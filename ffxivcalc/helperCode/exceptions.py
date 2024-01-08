@@ -40,6 +40,18 @@ class InvalidGearSpace(Exception):
     def __str__(self) -> str:
         return f'{self.message}'
 
+class MultiValuedWeaponDelay(Exception):
+    """This exception is raised when weapons in a gear space have different weapon delay value
+    """
+
+    def __init__(self, weaponDelay : int, newWeaponDelay : int):
+        self.message = f"The GearSpace has at least two weapons with different 'weaponDelay' value. Please make sure these values are identical : ( {weaponDelay} != {newWeaponDelay} )"
+
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'
+
 class InvalidFoodSpace(Exception):
     """
     This exception is raised when the FoodSpace is invalid.
