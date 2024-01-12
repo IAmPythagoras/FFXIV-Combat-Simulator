@@ -237,8 +237,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
                              # Getting all possible gcdTimers from the given range of speed value. Will simulate prebakedsimulation for all of them.
     gcdTimerDict = findGCDTimerRange(minSPDValue, maxSPDValue,subGCDHasteAmount=hasteAmount)
     solver_logging.warning("Computed GCD timer : " + str(gcdTimerDict))
-    gcdTimerProgress = ProgressBar.init(len(gcdTimerDict.keys()), "Prebaking GCD tier")
-    gcdTimerProgress.setShowBar(showBar)
+    gcdTimerProgress = ProgressBar.init(len(gcdTimerDict.keys()), "Prebaking GCD tier",showBar=showBar, extraBuffer=loadingBarBuffer)
 
                              # Getting weaponDelay value. If more than one weaponDelay value returns an error as the solver currently cannot handle more than
                              # one different value (because we are prebaking each fight). It would be possible but would need to prebake each fight also depending
@@ -291,9 +290,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     for key in GearSpace:
         total *= len(GearSpace[key])
 
-    gearBFpB = ProgressBar.init(total, "Finding Best Gear Set")
-    gearBFpB.setShowBar(showBar)
-    gearBFpB.setExtraBuffer(loadingBarBuffer)
+    gearBFpB = ProgressBar.init(total, "Finding Best Gear Set",showBar=showBar, extraBuffer=loadingBarBuffer)
                              # Need at least one of each gear piece.
     for Weapon in GearSpace["WEAPON"]:
         newGearSet.AddGear(Weapon)
