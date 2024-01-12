@@ -152,7 +152,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
               materiaDepthSearchIterator : int = 1, randomIteration : int = 10000, oddMateriaValue : int = 18, evenMateriaValue : int = 36,
               PlayerIndex : int = 0, PlayerID : int = 1, mendSpellSpeed : bool = False, maxSPDValue : int = 5000, minSPDValue : int = 0, useNewAlgo : bool = False, oversaturationIterationsPreGear : int = 0,
               oversaturationIterationsPostGear : int = 0, findOptMateriaGearBF : bool = False, swapDHDetBeforeSpeed : bool = True, minPiety : int = 390, gcdTimerSpecificActionList : dict = None,
-              saveAsFile : bool = True, showBar : bool = True, loadingBarBuffer = None):
+              saveAsFile : bool = True, showBar : bool = True, loadingBarBuffer = None,returnGearSet : bool = True):
     """
     Finds the BiS of the player given a Gear search space and a Fight. The Solver will output to a file named
     bisSolver[Job]Result[number].txt with all the relevant information and returns the gearSets. The solver outputs the best Expected Damage GearSet as well as
@@ -194,6 +194,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     saveAsFile : bool -> If true saves the result in a file.
     showBar : bool -> If true shows loading bar. If false doesn't but still updates the loading bar's memory
     loadingBarBuffer : dict -> This dictionnary will be given the progress bar's adress at the key 'pb'. Can be used to access the PB.
+    returnGearSet : bool = True -> If true returns the gear set,random,text. If false returns the expectedDPS,text
     """
 
                              # Checking the validity of the given search space and some other parameters.
@@ -514,6 +515,9 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
             counter += 1
         with open(testFileName + ".txt", 'w') as f:
             f.write(text)
+
+    if not returnGearSet :
+        return curMax, text
 
     return optimalGearSet, optimalRandomGearSetMateria, text
     
