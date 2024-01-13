@@ -213,6 +213,11 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
 
                              # Computes the PreBakedAction and asks the fight object to remember those actions for the player with the given ID.
                              # The simulated player will be given base stats.
+    
+
+                             # Making deep copy of GearSpace so we do not modify the object insides the space
+    newGearSpace = {key : [deepcopy(element) for element in GearSpace[key]] for key in GearSpace.keys()}
+    GearSpace = newGearSpace
 
     IsTank = Fight.PlayerList[PlayerIndex].RoleEnum == RoleEnum.Tank
     IsCaster = Fight.PlayerList[PlayerIndex].RoleEnum == RoleEnum.Caster or Fight.PlayerList[PlayerIndex].RoleEnum == RoleEnum.Healer
