@@ -8,7 +8,7 @@ This will also contain the Enum "GearType" which will differentiate the type of 
 "Food" which can affect a player's stats, Materias which will affect a gear's stats.
 """
 
-from ffxivcalc.helperCode.exceptions import MateriaOverflow, InvalidStatRequest
+from ffxivcalc.helperCode.exceptions import MateriaOverflow, InvalidStatRequest, InvalidFileName
 import json
 
 from enum import IntEnum
@@ -159,6 +159,7 @@ class Gear:
     GearType -> Type of the gear piece
     StatList : list(Stat) -> List of all stat of the gear piece.
     MateriaLimit : int -> Limit of materia the gear can receive.
+    weaponDelay : int -> Weapon delay for AAs. Base value of 0. Can be set using setWeaponDelay and accessed using getWeaponDelay on the object
     Name : str -> Used to differentiate same type gear
 
     __ignoreOptimize : bool -> If true, solver will not attempt to optimize the materias on this gear piece.
@@ -173,6 +174,8 @@ class Gear:
         self.illegalMeld = False # This is set to true when this piece of gear is illegaly Overmelded
 
         self.__ignoreOptimize = False 
+
+        self.weaponDelay = 0 # Can be set using setWeaponDelay
 
         for Stats in StatList:
             self.Stat[StatType.name_for_id(Stats.StatType)] = Stats
@@ -194,6 +197,16 @@ class Gear:
             strReturn += mat
 
         return strReturn + " Name : " + self.Name
+    
+    def getWeaponDelay(self):
+        """Return value of weapon delay. If not a weapon returns 0
+        """
+        return self.weaponDelay
+    
+    def setWeaponDelay(self, value : float):
+        """This function sets the value of weaponDelay for this gear
+        """
+        self.weaponDelay = value
     
     def setIgnoreOptimize(self, newVal : bool) -> None:
         """
@@ -364,7 +377,7 @@ class Gear:
             if Materia.StatType == StatEnum:
                 statValue = min(Materia.Value + statValue, self.StatLimit)
         
-        return statValue
+        return int(statValue)
     
     def getGearTypeName(self) -> str:
         """
@@ -529,6 +542,15 @@ class GearSet:
     
     def ResetGearSet(self):
         self.GearSet = {}
+
+    def getWeaponDelay(self):
+        """This function returns the weapon delay in seconds of the current weapon. If no weapon is equiped
+           it returns the base value of 3.0
+        """
+
+        if "WEAPON" in self.GearSet.keys():
+            return self.GearSet["WEAPON"].weaponDelay
+        return 3.0
         
     def GetGearSetStat(self, IsTank : bool = False):
         self.IsTank = IsTank
@@ -589,17 +611,18 @@ def ImportGear(fileName : str) -> dict:
     gear type as key with a list of all gear of that type in the import file.
     fileName : str -> Name of the file. Must be formatted correctly
     """
+    GearDict = {}
     try:
         f = open(fileName) #Opening save
         GearDict = translateGear(json.load(f))
     except:
-        print("An error occurent when trying to import the gear set with file name : " + fileName + "\n")
+        raise InvalidFileName(fileName)
 
     return GearDict
 
 def translateGear(data):
     """
-    This function takes a list of gaer and returns a dictionnary with each gear in a key corresponding to their
+    This function takes a list of gear and returns a dictionnary with each gear in a key corresponding to their
     type
     """
 
@@ -607,9 +630,13 @@ def translateGear(data):
 
     for GearPiece in data:
         type = GearType.name_for_id(GearPiece["GearType"])
-        StatList = [Stat(StatType.id_for_name(S[0]), S[1]) for S in GearPiece["StatList"]]
+        StatList = [Stat(StatType.id_for_name(S[0]), int(S[1])) for S in GearPiece["StatList"]]
         ImportedGear = Gear(GearPiece["GearType"], StatList, MateriaLimit = GearPiece["MateriaLimit"], Name = GearPiece["Name"])
 
+                             # If is a weapon sets the weaponDelay to the desired value
+        if "WeaponDelay" in GearPiece.keys(): ImportedGear.setWeaponDelay(float(GearPiece["WeaponDelay"]))
+
+                             # If a custom stat limit is set uses this one instead of the highest stat one
         if "customStatLimit" in GearPiece.keys(): ImportedGear.setStatLimit(GearPiece["customStatLimit"])
 
         if type in GearDict.keys():
@@ -619,7 +646,7 @@ def translateGear(data):
 
                             # Checking if ignoreOptimize
         if "ignoreOptimize" in GearPiece.keys():
-                            # if true, then we also check for materias to put on.
+                            # if true, then we also check for materias to put on and let the solver know to not optimize this gear piece
             ImportedGear.setIgnoreOptimize(True)
             if "defaultMateriaList" in GearPiece.keys():
 

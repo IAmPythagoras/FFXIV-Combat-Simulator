@@ -13,13 +13,17 @@ logging.getLogger('PIL').setLevel(logging.INFO) # silencing PIL logger
 
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
 
-def SimulateRuns(fight, n : int):
+def SimulateRuns(fight, n : int, showBar : bool = True, pBNewBuffer = None):
     """
     This function will simulate the fight with ZIPActions the given number of time and will
     generate the DPS distribution from it
     n (int) -> Number of times to run the random simulation
+    showBar : bool -> If true shows pB.
+    pBNewBuffer : dict -> This will receive pB's currents frame in the key 'pb'
     """
     zipFightProgress = ProgressBar.init(n, "Computing DPS Dist")
+    zipFightProgress.setShowBar(showBar)
+    zipFightProgress.setExtraBuffer(pBNewBuffer)
     for i in range(n):
         fight.SimulateZIPFight()
         next(zipFightProgress)

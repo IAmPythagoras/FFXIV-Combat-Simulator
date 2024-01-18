@@ -40,6 +40,18 @@ class InvalidGearSpace(Exception):
     def __str__(self) -> str:
         return f'{self.message}'
 
+class MultiValuedWeaponDelay(Exception):
+    """This exception is raised when weapons in a gear space have different weapon delay value
+    """
+
+    def __init__(self, weaponDelay : int, newWeaponDelay : int):
+        self.message = f"The GearSpace has at least two weapons with different 'weaponDelay' value. Please make sure these values are identical : ( {weaponDelay} != {newWeaponDelay} )"
+
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'
+
 class InvalidFoodSpace(Exception):
     """
     This exception is raised when the FoodSpace is invalid.
@@ -129,6 +141,19 @@ class InvalidMitigation(Exception):
         self.PercentMit = PercentMit
 
         self.message = "A mitigation that is both only for Physical and for Magic damage was being constructed" if not InvalidRange else "The given PercentMit value " + str(self.PercentMit) + " is not within the valid range of (0,1)."
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'
+    
+class InvalidFileName(Exception):
+    """This exception is raised when given an invalid file name
+
+    fileName : str
+    """
+    def __init__(self, fileName : str):
+
+        self.message = "Invalid file name" + fileName
         super().__init__(self.message)
 
     def __str__(self) -> str:

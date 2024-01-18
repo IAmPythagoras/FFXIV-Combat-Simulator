@@ -128,7 +128,6 @@ def ImportFightBackend(fightID,fightNumber):
 
     return Event
 
-
 def AskInput(range):
     #This function will ask a numerical value to the user where range is the number of options
     #The inputs are assumed to be numerically ordered and starting at 1 and finishing at (range)
@@ -148,8 +147,6 @@ def AskInput(range):
             return user_input
         else : #Non-valid input
             user_input = input("This is not a valid input. Please enter a valid number : ")
-
-
 
 def SaveFight(Event, countdown, fightDuration, saveName, saveFile=True):
     #This function will save a fight into memory.
@@ -255,13 +252,16 @@ def RestoreFightObject(data : dict, name : str = ""):
             stat = get_gearset_data(etro_url)
 
             # Since etro now returns only the weapon damage multiplier, we have to find the the original WD.
-            job_object.f_WD = PlayerActionList[str(job_object.playerID)]["job_object"].Stat["WD"]/100 # Mult bonus we already know.
+            #job_object.f_WD = PlayerActionList[str(job_object.playerID)]["job_object"].Stat["WD"]/100 # Mult bonus we already know.
             
-            baseMain = 390
-            JobMod = job_object.JobMod # Level 90 jobmod value, specific to each job
-            stat["WD"] -= math.floor((baseMain * JobMod) /1000)
+            #baseMain = 390
+            #JobMod = job_object.JobMod # Level 90 jobmod value, specific to each job
+            #stat["WD"] -= math.floor((baseMain * JobMod) /1000)
         else :
             stat = player["stat"]
+        
+        for key in stat:
+            stat[key] = int(stat[key])
 
         #Healer
         if job_name == "Sage" : job_object = Player([], [],stat, JobEnum.Sage)
@@ -290,10 +290,11 @@ def RestoreFightObject(data : dict, name : str = ""):
         
 
         job_object.playerID = player["playerID"] #Giving the playerID
+                             # If weaponDelay was in the data we set it
+        if 'weaponDelay' in player.keys() : job_object.setBasedWeaponDelay(float(player['weaponDelay']))
         helper_logging.debug("Creating job object : " + job_name + " for playerID : " + str(player["playerID"]))
 
-        if "PlayerName" in player.keys():
-            job_object.PlayerName = player["PlayerName"]
+        if "PlayerName" in player.keys():job_object.PlayerName = player["PlayerName"]
 
         PlayerActionList[str(job_object.playerID)] = {"job" : job_name, "job_object" : job_object, "actionList" : player["actionList"], "actionObject" : []} #Adding new Key accessible by IDs
 
@@ -365,7 +366,7 @@ def RestoreFightObject(data : dict, name : str = ""):
 
             if int(actionID) == 212 : 
                 #WaitAbility. WaitAbility has a special field where the waited time is specified
-                actionObject = WaitAbility(action["waitTime"])
+                actionObject = WaitAbility(float(action["waitTime"]))
             else: 
                 if "targetID" in action.keys(): # Action has a target
                     actionObject = lookup_abilityID(actionID,action["targetID"], playerID,PlayerActionList) #Getting action object

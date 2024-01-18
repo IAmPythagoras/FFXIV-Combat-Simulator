@@ -255,7 +255,7 @@ class Fight:
 
 
     def SimulateFight(self, TimeUnit, TimeLimit, vocal, PPSGraph : bool = True, MaxTeamBonus : bool = False, MaxPotencyPlentifulHarvest : bool = False, n = 0, showProgress : bool = True,
-                      computeGraph : bool = True) -> None:
+                      computeGraph : bool = True, loadingBarBuffer = None) -> None:
 
         """
         This function will Simulate the fight given the enemy and player list of this Fight
@@ -270,8 +270,10 @@ class Fight:
         loglevel (str) -> level at which we want the logging to record.
         PPSGraph (bool) = True -> If we want the PPS graph to be next to the DPS graph
         MaaxTeamBonus (bool) = False -> If true, gives the 5% bonus regardless of team comp
-        showProgress (bool) = True -> If true show fight progress bar.
+        showProgress (bool) = True -> If true show fight progress bar. Still computes the Pb even if false.
         computeGraph (bool) = True -> If true will process the Graphs even if they do not show.
+        loadingBarBuffer = None -> This dict will have the key 'pb' be set as the progress bar of the simulation
+        
         """
         self.MaxPotencyPlentifulHarvest = MaxPotencyPlentifulHarvest
         self.TimeStamp = 0   # Keep track of the time
@@ -331,8 +333,8 @@ class Fight:
 
         fight_logging.debug("Starting simulation with TeamCompositionBonus = " + str(self.TeamCompositionBonus))
         fight_logging.debug("Parameters are -> RequirementOn : " + str(self.RequirementOn) + ", IgnoreMana : " + str(self.IgnoreMana))
-        if self.showProgress:
-            pB = ProgressBar.init(int(TimeLimit/TimeUnit), "Progress Of Fight (maxTime)")
+        pB = ProgressBar.init(int(TimeLimit/TimeUnit), "Progress Of Fight (maxTime)", showBar=showProgress, extraBuffer=loadingBarBuffer)
+
         while(self.TimeStamp <= TimeLimit):
 
             for player in self.PlayerList:
@@ -499,7 +501,7 @@ class Fight:
             # update self.TimeStamp
             self.TimeStamp += TimeUnit
             self.TimeStamp = round(self.TimeStamp,2) # Round it for cleaner value
-            if vocal and self.FightStart and self.showProgress: next(pB)
+            next(pB)
 
             if self.FightStart and not start:
                 self.TimeStamp = 0
@@ -537,9 +539,9 @@ class Fight:
             gamer.HPGraph[1].append(gamer.HP)
 
         # Printing the results if vocal is true.
-        if vocal and self.TimeStamp < TimeLimit: pB.complete()
+        if self.TimeStamp < TimeLimit: pB.complete()
         fig2 = None
-        if n > 0 and computeGraph : fig2 = SimulateRuns(self, n)
+        if n > 0 and computeGraph : fig2 = SimulateRuns(self, n,showBar=showProgress, pBNewBuffer=loadingBarBuffer)
         if computeGraph : result, fig = PrintResult(self, self.TimeStamp, self.timeValue, PPSGraph=PPSGraph)
         else : result, fig = "", None
         if vocal:
@@ -564,7 +566,7 @@ class Fight:
 
             JobMod = Player.JobMod # Level 90 jobmod value, specific to each job
 
-            Player.f_WD = (Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))/100 # Necessary to check if its not 0 since etro only returns the damage multiplier.
+            Player.f_WD = (Player.Stat["WD"]+math.floor(baseMain*JobMod/1000))/100 
             Player.f_DET = math.floor(1000+math.floor(140*(Player.Stat["Det"]-baseMain)/levelMod))/1000# Determination damage
             if Player.RoleEnum == RoleEnum.Tank : Player.f_TEN = (1000+math.floor(100*(Player.Stat["Ten"]-baseSub)/levelMod))/1000 # Tenacity damage, 1 for non-tank player
             else : Player.f_TEN = 1 # if non-tank

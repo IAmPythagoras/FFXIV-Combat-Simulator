@@ -12,7 +12,7 @@ For now the BiS Solver will only work if the Fight has one player variable, mean
 from ffxivcalc.GearSolver.Gear import GearSet, MateriaGenerator, GearType, StatType
 from ffxivcalc.Jobs.PlayerEnum import RoleEnum, JobEnum
 from ffxivcalc.helperCode.Progress import ProgressBar
-from ffxivcalc.helperCode.exceptions import InvalidFoodSpace, InvalidGearSpace, InvalidMateriaSpace, InvalidFunctionParameter
+from ffxivcalc.helperCode.exceptions import InvalidFoodSpace, InvalidGearSpace, InvalidMateriaSpace, InvalidFunctionParameter, MultiValuedWeaponDelay
 from math import floor
 from copy import deepcopy
 import os
@@ -152,7 +152,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
               materiaDepthSearchIterator : int = 1, randomIteration : int = 10000, oddMateriaValue : int = 18, evenMateriaValue : int = 36,
               PlayerIndex : int = 0, PlayerID : int = 1, mendSpellSpeed : bool = False, maxSPDValue : int = 5000, minSPDValue : int = 0, useNewAlgo : bool = False, oversaturationIterationsPreGear : int = 0,
               oversaturationIterationsPostGear : int = 0, findOptMateriaGearBF : bool = False, swapDHDetBeforeSpeed : bool = True, minPiety : int = 390, gcdTimerSpecificActionList : dict = None,
-              saveAsFile : bool = True):
+              saveAsFile : bool = True, showBar : bool = True, loadingBarBuffer = None,returnGearSet : bool = True):
     """
     Finds the BiS of the player given a Gear search space and a Fight. The Solver will output to a file named
     bisSolver[Job]Result[number].txt with all the relevant information and returns the gearSets. The solver outputs the best Expected Damage GearSet as well as
@@ -192,6 +192,9 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
                                          with required minSPDValue and maxSPDValue in order to get an accurate dictionary. The mapping of gcd Tier
                                          does not have to be exhaustive. If no key is found it will use the rotation of the Fight object instead.
     saveAsFile : bool -> If true saves the result in a file.
+    showBar : bool -> If true shows loading bar. If false doesn't but still updates the loading bar's memory
+    loadingBarBuffer : dict -> This dictionnary will be given the progress bar's adress at the key 'pb'. Can be used to access the PB.
+    returnGearSet : bool = True -> If true returns the gear set,random,text. If false returns the expectedDPS,text
     """
 
                              # Checking the validity of the given search space and some other parameters.
@@ -210,6 +213,11 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
 
                              # Computes the PreBakedAction and asks the fight object to remember those actions for the player with the given ID.
                              # The simulated player will be given base stats.
+    
+
+                             # Making deep copy of GearSpace so we do not modify the object insides the space
+    newGearSpace = {key : [deepcopy(element) for element in GearSpace[key]] for key in GearSpace.keys()}
+    GearSpace = newGearSpace
 
     IsTank = Fight.PlayerList[PlayerIndex].RoleEnum == RoleEnum.Tank
     IsCaster = Fight.PlayerList[PlayerIndex].RoleEnum == RoleEnum.Caster or Fight.PlayerList[PlayerIndex].RoleEnum == RoleEnum.Healer
@@ -234,7 +242,19 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
                              # Getting all possible gcdTimers from the given range of speed value. Will simulate prebakedsimulation for all of them.
     gcdTimerDict = findGCDTimerRange(minSPDValue, maxSPDValue,subGCDHasteAmount=hasteAmount)
     solver_logging.warning("Computed GCD timer : " + str(gcdTimerDict))
-    gcdTimerProgress = ProgressBar.init(len(gcdTimerDict.keys()), "Prebaking GCD tier")
+    gcdTimerProgress = ProgressBar.init(len(gcdTimerDict.keys()), "Prebaking GCD tier",showBar=showBar, extraBuffer=loadingBarBuffer)
+
+                             # Getting weaponDelay value. If more than one weaponDelay value returns an error as the solver currently cannot handle more than
+                             # one different value (because we are prebaking each fight). It would be possible but would need to prebake each fight also depending
+                             # on the weaponDelay value TODO
+    weaponDelay = GearSpace["WEAPON"][0].getWeaponDelay() # -> Note that this list is non empty at this point since we checked before hand
+    for weapon in GearSpace["WEAPON"]:
+        if weaponDelay != weapon.getWeaponDelay():
+            # If not equal either means two different weapon delay which is currently not possible (see above)
+            raise MultiValuedWeaponDelay(weaponDelay, weapon.getWeaponDelay())
+        
+    Fight.PlayerList[PlayerIndex].setBasedWeaponDelay(weaponDelay)
+                             # Setting base weaponDelay
 
                              # This dictionnary contains all Fight object. The key is (gcdTimer, hastedGCDTimer)
     preBakedFightGCDTierList = {}
@@ -275,7 +295,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
     for key in GearSpace:
         total *= len(GearSpace[key])
 
-    gearBFpB = ProgressBar.init(total, "Finding Best Gear Set")
+    gearBFpB = ProgressBar.init(total, "Finding Best Gear Set",showBar=showBar, extraBuffer=loadingBarBuffer)
                              # Need at least one of each gear piece.
     for Weapon in GearSpace["WEAPON"]:
         newGearSet.AddGear(Weapon)
@@ -472,6 +492,7 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
         text += ("Crit multiplier : " + str(int(damageValue[5] * 100)/100) + "\n")
         text += ("DH rate : " + str(int(damageValue[6] * 100)/100) + "\n")
         text += ("DH bonus (auto crit) : " + str(int(damageValue[7] * 100)/100) + "\n")
+        text += "Weapon delay "+ str(weaponDelay) + " s"
 
 
     for percentile in optimalRandomGearSetMateria:
@@ -496,6 +517,9 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
             counter += 1
         with open(testFileName + ".txt", 'w') as f:
             f.write(text)
+
+    if not returnGearSet :
+        return curMax, text
 
     return optimalGearSet, optimalRandomGearSetMateria, text
     
