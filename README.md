@@ -1,9 +1,12 @@
 [![Discord](https://img.shields.io/discord/970724799464738977?color=7289da&label=Discord&logo=discord)](https://discord.gg/mZXKUNy2sw)
 
-# Website
+# Website / Webapp
 
 The website https://ffxivdpscalc.azurewebsites.net allows an easier time for people without coding knowledge to use the simulator.
-It uses the most up to date version of FFIXV-Combat-Simulator, but has some limitations to keep computation time low.
+
+(Note that the website will be taken down once the webapp is done)
+
+You can also download a beta version of the desktop app that runs locally and does not have any of the limitations the website is subject too : https://github.com/IAmPythagoras/ffxivcalcWebApp .
 
 # Install
 
