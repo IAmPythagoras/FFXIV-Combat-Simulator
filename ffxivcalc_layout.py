@@ -259,7 +259,7 @@ __logger__.setLevel(level=level)
 
 if not findBiS:
     from ffxivcalc.helperCode.helper_backend import SaveFight
-    print(Event.PlayerList[0].computeTimeStamp())
+    #print(Event.PlayerList[0].computeTimeStamp())
     Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False, MaxTeamBonus=False) # Simulating fight
     if False : Event.simulationRecord.saveRecord()
     pass

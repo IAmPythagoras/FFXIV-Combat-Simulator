@@ -456,6 +456,77 @@ class Player:
                              # This is simply for optimization so we only check once
         checkForHasteAction = len(possibleHasteActionId) != 0
         hasHasteAction = False
+
+
+                             # Will check for DOTs and will track an estimate of remaining time on the DOT
+                             # We proceed similarly to hasteBuff and look for what class has DOTs
+        possibleDOTActionId = []
+        dotTimer = 0 
+                             # We only consider DOTs that are 'running' and ignore SMN Garuda DOT, GNB DOT,
+                             # DRK puddle, etc. But we take 
+                             # buffs that have to be reapplied like on RPR
+        match self.JobEnum:
+            case JobEnum.BlackMage : # T3/T4
+                possibleDOTActionId.append(153)
+                possibleDOTActionId.append(7420)
+                dotTimer = 30
+            case JobEnum.WhiteMage : # Dia
+                possibleDOTActionId.append(16532)
+                dotTimer = 30
+            case JobEnum.Scholar : # Biolysis
+                possibleDOTActionId.append(16540)
+                dotTimer = 30
+            case JobEnum.Astrologian : # Combust
+                possibleDOTActionId.append(16554)
+                dotTimer = 30
+            case JobEnum.Sage : # Eukrasian Dosis
+                possibleDOTActionId.append(24314)
+                dotTimer = 30
+            case JobEnum.Dragoon : # Chaotic Spring
+                possibleDOTActionId.append(25772)
+                dotTimer = 24
+            case JobEnum.Monk : # Demolish
+                possibleDOTActionId.append(66)
+                dotTimer = 18
+            case JobEnum.Samurai : # Higanbana
+                possibleDOTActionId.append(16484)
+                possibleDOTActionId.append(7489)
+                dotTimer = 60
+            case JobEnum.Bard : # Shadowbite (will only track shadowbite)
+                                # but allows IronJaws to reset timer
+                possibleDOTActionId.append(16494)
+                possibleDOTActionId.append(3560)
+                dotTimer = 45
+
+                             # Will also check for the running buffs timer
+                             # Done similarly to DOT and hasteBuff
+        possibleBuffActionId = []
+        buffTimer = 0
+
+        match self.JobEnum:
+            case JobEnum.Reaper : # Death Design
+                possibleBuffActionId.append(24378)
+                possibleBuffActionId.append(24379)
+                buffTimer = 30
+            case JobEnum.Samurai : # Only tracks fugetsu
+                possibleBuffActionId.append(7478)
+                buffTimer = 40
+            case JobEnum.Dragoon : # Powersurge
+                possibleBuffActionId.append(87)
+                buffTimer = 30
+            case JobEnum.Monk : # Twin snakes
+                possibleBuffActionId.append(61)
+                buffTimer = 15
+            case JobEnum.DarkKnight : # Darkside
+                possibleBuffActionId.append(10)
+                possibleBuffActionId.append(16470)
+                buffTimer = 30
+            case JobEnum.Warrior :
+                possibleBuffActionId.append(16462)
+                possibleBuffActionId.append(16470)
+                possibleBuffActionId.append(7389)
+                buffTimer = 30            
+
                              # gcdIndexList contains the index of all actions done by the player that are GCD.
         gcdIndexList = []    
         firstIndexDamage = 0
