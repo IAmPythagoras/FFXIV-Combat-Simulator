@@ -408,27 +408,42 @@ class Player:
         finalGCDLockTimer = 0
                              # gcdIndexList contains the index of all actions done by the player that are GCD.
         gcdIndexList = []    
-
+        firstIndexDamage = 0
                              # Need to find first action that actually damages. Usually a GCD but should check
         
-        for action in self.ActionSet:
+        for index,action in enumerate(self.ActionSet):
             if action.Potency > 0 :
                              # Found first damaging action
                              # Add to timestamp and will check for GCD clipping
                 spellObj = deepcopy(action)
                 self.computeActionTimer(spellObj)
                              # Adding estimated value
-                curTimeStamp += max(spellObj.RecastTime, spellObj.CastTime)
+                curTimeStamp += max(0,spellObj.RecastTime - spellObj.CastTime)
+                             # Saving first index
+                firstIndexDamage = index
+                             # This is an edge case where there is only one GCD casted followed by some oGCD.
+                             # Since it will not be put into gcdIndexList we initialize the value of finalGCDLockTimer
+                             # To what is left in it.
+                if action.GCD : finalGCDLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
+                break
 
-                             # Populating gcdIndexList
-        for index,action in enumerate(self.ActionSet):
+                             # Populating gcdIndexList. Skips first damage instance
+                             #
+        for index in range(firstIndexDamage+1,len(self.ActionSet)):
+            action = self.ActionSet[index]
             if action.GCD : gcdIndexList.append((index))
             
                              # Initialize curTimeStamp according to first done oGCDs?
 
         if len(gcdIndexList) == 0 : 
-                             # No GCD performed, so compute using only oGCD
-            pass
+                             # No (other) GCD(s) performed, so compute using only oGCD
+            for index in range(firstIndexDamage+1,len(self.ActionSet)):
+                action = self.ActionSet[index]
+                curTimeStamp += self.ActionSet[index].RecastTime
+                             # Since no other GCD remove oGCD cast time from the lock timer
+                finalGCDLockTimer -= self.ActionSet[index].RecastTime
+            return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(max(0,finalGCDLockTimer),2)}
+
 
         lastGCDIndex = gcdIndexList[-1]
         for listIndex,gcdIndex in enumerate(gcdIndexList):
