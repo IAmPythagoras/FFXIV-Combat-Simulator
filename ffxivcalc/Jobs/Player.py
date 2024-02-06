@@ -183,7 +183,6 @@ class Player:
         self.hasteHasChanged = False
         self.hasteChangeValue = 0
 
-
     def AddHealingBuff(self, buff : HealingBuff, GivenHealBuff = True, stackable = False):
         """
         This function appends a HealingBuff object to the player's ReceivedHealBuffList or GivenHealBuffList.
@@ -367,6 +366,104 @@ class Player:
             newDelay (float): Value of the day in seconds.
         """
         self.baseDelay = newDelay
+
+    def computeActionReduction(self) -> None:
+        """
+        This function computes SpellReduction and WeaponSkillReduction ratio and sets those values at the
+        appropriate fields.
+        """
+        self.SpellReduction = (1000 - floor(130 * (self.Stat["SS"]-400) / 1900))/1000
+        self.WeaponskillReduction = (1000 - floor(130 * (self.Stat["SkS"]-400) / 1900))/1000
+
+    def computeActionTimer(self, Spell) -> None:
+
+        """
+        This function computes the new CastTime and RecastTime of the Spell given the player's current Haste and SpS/SkS value.
+
+        Spell (Spell) -> Spell object to alter the CastTime and RecastTime
+        """
+        if Spell.type == 1: # Spell
+            Spell.CastTime = floor(floor(floor((int(Spell.CastTime * 1000 ) * self.SpellReduction)) * (100 - self.Haste)/100)/10)/100  if Spell.CastTime > 0 else 0
+            Spell.RecastTime =floor(floor(floor((int(Spell.RecastTime * 1000 ) * self.SpellReduction)) * (100 - self.Haste)/100)/10)/100
+            if Spell.RecastTime < 1.5 and Spell.RecastTime > 0 : Spell.RecastTime = 1.5 # A GCD cannot go under 1.5 sec
+        elif Spell.type == 2: # Weaponskill
+            Spell.CastTime = floor(floor(floor((int(Spell.CastTime * 1000 ) * self.WeaponskillReduction)) * (100 - self.Haste)/100)/10)/100 if Spell.CastTime > 0 else 0
+            Spell.RecastTime = floor(floor(floor((int(Spell.RecastTime * 1000 ) * self.WeaponskillReduction)) * (100 - self.Haste)/100)/10)/100
+            if Spell.RecastTime < 1.5 and Spell.RecastTime > 0 : Spell.RecastTime = 1.5 # A GCD cannot go under 1.5 sec
+
+    def computeTimeStamp(self) -> dict:
+        """
+        This function computes the final time stamp of the player given its current ActionSet and SpS/SkS value.
+        The result could be a bit off for players with haste buff as this is meant as an approximation.
+        It will also return how long is left until the next GCD after the last action is casted. In other words it returns how long
+        the player will have to wait to execute another GCD.
+
+        Return :
+        dict -> {currentTimeStamp : float, untilNextGCD : float}
+        """
+                             # Computes the reduction ratios
+        self.computeActionReduction()
+                             # Initializes timeStamp and finalLockTimer
+        curTimeStamp = 0
+        finalGCDLockTimer = 0
+                             # gcdIndexList contains the index of all actions done by the player that are GCD.
+        gcdIndexList = []    
+
+                             # Need to find first action that actually damages. Usually a GCD but should check
+        
+                             # Populating gcdIndexList
+        for index,action in enumerate(self.ActionSet):
+            if action.GCD : gcdIndexList.append((index))
+            
+                             # Initialize curTimeStamp according to first done oGCDs?
+
+        if len(gcdIndexList) == 0 : 
+                             # No GCD performed, so compute using only oGCD
+            pass
+
+        lastGCDIndex = gcdIndexList[-1]
+        for listIndex,gcdIndex in enumerate(gcdIndexList):
+            if gcdIndex == lastGCDIndex:
+                             # Last GCD. So simply compute how long is left in the GCD
+                             # Making deep copy to not affect anything
+                spellObj = deepcopy(self.ActionSet[gcdIndex])
+                self.computeActionTimer(spellObj)
+                             # Adding CastTime only since last GCD
+                curTimeStamp += spellObj.CastTime
+
+                gcdLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
+
+                for ogcdIndex in range(lastGCDIndex+1,len(self.ActionSet)):
+                    gcdLockTimer -= self.ActionSet[ogcdIndex].RecastTime
+
+                             # If there is risks of clipping gcdLockTimer will be negative.
+                             # So we substract gcdLockTimer from curTimeStamp (min(gcdLockTimer,0))
+                             # Could be interesting to add 'Risk of Clipping between GCD X and GCD Y'
+                curTimeStamp -= min(0,gcdLockTimer)
+                finalGCDLockTimer = gcdLockTimer
+            else:
+                             # Making deep copy to not affect anything
+                spellObj = deepcopy(self.ActionSet[gcdIndex])
+                self.computeActionTimer(spellObj)
+                             # Adding estimated value
+                curTimeStamp += max(spellObj.RecastTime, spellObj.CastTime)
+
+                gcdLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
+                             # Will check if any potential clipping until next GCD
+                             # Adding up all oGCD actions between both GCD.
+                for ogcdIndex in range(gcdIndex+1,gcdIndex[listIndex+1]):
+                    gcdLockTimer -= self.ActionSet[ogcdIndex].RecastTime
+
+                             # 
+
+
+                             # If there is risks of clipping gcdLockTimer will be negative.
+                             # So we substract gcdLockTimer from curTimeStamp (min(gcdLockTimer,0))
+                             # Could be interesting to add 'Risk of Clipping between GCD X and GCD Y'
+                curTimeStamp -= min(0,gcdLockTimer)
+
+        return {"currentTimeStamp" : curTimeStamp, "untilNextGCD" : finalGCDLockTimer}
+
 
     def __init__(self, ActionSet, EffectList, Stat,Job : JobEnum):
 

@@ -251,9 +251,6 @@ class Fight:
         if getInfo : return round(ExpectedDamage/timeStamp,2), ExpectedDamage, timeStamp, totalPotency
         return round(ExpectedDamage/timeStamp if True else ExpectedDamage,2), {}
 
-        
-
-
     def SimulateFight(self, TimeUnit, TimeLimit, vocal, PPSGraph : bool = True, MaxTeamBonus : bool = False, MaxPotencyPlentifulHarvest : bool = False, n = 0, showProgress : bool = True,
                       computeGraph : bool = True, loadingBarBuffer = None) -> None:
 
@@ -325,8 +322,7 @@ class Fight:
 
         # Will first compute each player's GCD reduction value based on their Spell Speed and Skill Speed Value
         for Player in self.PlayerList:
-            Player.SpellReduction = (1000 - math.floor(130 * (Player.Stat["SS"]-400) / 1900))/1000
-            Player.WeaponskillReduction = (1000 - math.floor(130 * (Player.Stat["SkS"]-400) / 1900))/1000
+            Player.computeActionReduction()
             Player.EffectList.append(GCDReductionEffect)
                                          # Computing AA delay
             Player.currentDelay = math.floor(math.floor(int(Player.baseDelay * 1000 ) * (100 - Player.Haste)/100)/10)/100
@@ -600,15 +596,9 @@ def GCDReductionEffect(Player, Spell) -> None:
     Player : player -> Player object
     Spell : Spell -> Spell object affected by the effect
     """
-
-    if Spell.type == 1: # Spell
-        Spell.CastTime = math.floor(math.floor(math.floor((int(Spell.CastTime * 1000 ) * Player.SpellReduction)) * (100 - Player.Haste)/100)/10)/100  if Spell.CastTime > 0 else 0
-        Spell.RecastTime = math.floor(math.floor(math.floor((int(Spell.RecastTime * 1000 ) * Player.SpellReduction)) * (100 - Player.Haste)/100)/10)/100
-        if Spell.RecastTime < 1.5 and Spell.RecastTime > 0 : Spell.RecastTime = 1.5 # A GCD cannot go under 1.5 sec
-    elif Spell.type == 2: # Weaponskill
-        Spell.CastTime = math.floor(math.floor(math.floor((int(Spell.CastTime * 1000 ) * Player.WeaponskillReduction)) * (100 - Player.Haste)/100)/10)/100 if Spell.CastTime > 0 else 0
-        Spell.RecastTime = math.floor(math.floor(math.floor((int(Spell.RecastTime * 1000 ) * Player.WeaponskillReduction)) * (100 - Player.Haste)/100)/10)/100
-        if Spell.RecastTime < 1.5 and Spell.RecastTime > 0 : Spell.RecastTime = 1.5 # A GCD cannot go under 1.5 sec
+                             # Computation is done in computeActionTimer function.
+                             # The spell object's property is also changed in this function.
+    Player.computeActionTimer(Spell)
 
 # Compute Damage
 def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBakedAction : bool = False, PlayerIDSavePreBakedAction : int = 1) -> float:
