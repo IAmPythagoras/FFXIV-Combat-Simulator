@@ -397,6 +397,7 @@ class Player:
         The result could be a bit off for players with haste buff as this is meant as an approximation.
         It will also return how long is left until the next GCD after the last action is casted. In other words it returns how long
         the player will have to wait to execute another GCD.
+        This function assumes that haste actions are always applied (if a combo is required)
 
         Return :
         dict -> {currentTimeStamp : float, untilNextGCD : float}
@@ -406,13 +407,72 @@ class Player:
                              # Initializes timeStamp and finalLockTimer
         curTimeStamp = 0
         finalGCDLockTimer = 0
+                             # hasteBuffList contains list of [startTime,EndTime,hasteAmount] to know when to apply haste buffs
+                             # Note that this is a BIG ESTIMATE of the actual time since we do not modify the GCD
+                             # as the oGCD is happening.
+        hasteBuffTimeIntervalList = []
+        hasteBuffIndexList = [] # -> This list contains the index of all haste actions done by the player.
+                                # We check to see if one is made. When a haste action is made hasteBuffTimeIntervalList
+                                # will be added an entry that will let us know when it should finish
+        
+                                # Will look what Haste action is possible from the player
+        possibleHasteActionId = []
+        hasteAmount = 0
+        hasteBuffTimer = 0
+        # Monk can be ommited since the player object of monk is
+        # initialized with haste of 20.
+        # And we assume max haste from bard (even if this results in worst estimate)
+        # This could be made better in future versions.
+        # Also assumes Astrologian always gets haste buff from Astrodyne
+        # TODO -> Fix Bard estimate with army paeon
+        match self.JobEnum:
+            case JobEnum.BlackMage : # Leylines
+                possibleHasteActionId.append(3573)
+                hasteAmount = 15
+                hasteBuffTimer = 30
+            case JobEnum.WhiteMage : # Presence of Mind
+                possibleHasteActionId.append(136)
+                hasteAmount = 20
+                hasteBuffTimer = 15
+            case JobEnum.Samurai : # Shifu
+                possibleHasteActionId.append(7479)
+                hasteAmount = 13
+                hasteBuffTimer = 40
+            case JobEnum.Bard : # Army Paeon
+                possibleHasteActionId.append(116)
+                hasteAmount = 20
+                hasteBuffTimer = 45 # This could be a mistake. TODO FIX THIS
+            case JobEnum.Astrologian : # Astrodyne
+                possibleHasteActionId.append(25870)
+                hasteAmount = 10
+                hasteBuffTimer = 15
+            case JobEnum.Ninja : # 
+                possibleHasteActionId.append(2269)
+                possibleHasteActionId.append(25876)
+                possibleHasteActionId.append(3563)
+                hasteAmount = 15
+                hasteBuffTimer = 60 # Since Huton give 60 we assume the best case
+
+                             # This is simply for optimization so we only check once
+        checkForHasteAction = len(possibleHasteActionId) != 0
+        hasHasteAction = False
                              # gcdIndexList contains the index of all actions done by the player that are GCD.
         gcdIndexList = []    
         firstIndexDamage = 0
-                             # Need to find first action that actually damages. Usually a GCD but should check
+        foundFirstDamage = False
         
+                            
+                             # Need to find first action that actually damages. Usually a GCD but should check
+                             # and will look for haste actions
         for index,action in enumerate(self.ActionSet):
-            if action.Potency > 0 :
+
+            if checkForHasteAction and action.id in possibleHasteActionId:
+                             # Found haste action. Will append to index
+                hasteBuffIndexList.append(index)
+                hasHasteAction = True
+
+            if (not foundFirstDamage) and action.Potency > 0 :
+                foundFirstDamage = True
                              # Found first damaging action
                              # Add to timestamp and will check for GCD clipping
                 spellObj = deepcopy(action)
@@ -425,10 +485,8 @@ class Player:
                              # Since it will not be put into gcdIndexList we initialize the value of finalGCDLockTimer
                              # To what is left in it.
                 if action.GCD : finalGCDLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
-                break
 
                              # Populating gcdIndexList. Skips first damage instance
-                             #
         for index in range(firstIndexDamage+1,len(self.ActionSet)):
             action = self.ActionSet[index]
             if action.GCD : gcdIndexList.append((index))
@@ -466,15 +524,34 @@ class Player:
                 curTimeStamp -= min(0,gcdLockTimer)
                 finalGCDLockTimer = gcdLockTimer
             else:
+                                             # Check if this GCD or if there are oGCD between the next GCD that have HASTE effects
+                if hasHasteAction and (hasteBuffIndexList[0] >= gcdIndex and hasteBuffIndexList[0] < gcdIndexList[listIndex+1]):
+                    hasteBuffIndexList.pop(0) # Remove this haste index
+
+                    hasteBuffTimeIntervalList.append([curTimeStamp,curTimeStamp + hasteBuffTimer, hasteAmount])
+                    hasHasteAction = len(hasteBuffIndexList) != 0
                              # Making deep copy to not affect anything
                 spellObj = deepcopy(self.ActionSet[gcdIndex])
+                
+                             # Checking if this action has an haste effect onto it.
+                             # If it does we have to add haste to the player and remove it afterward.
+                hasteBonus = 0
+                for hasteInterval in hasteBuffTimeIntervalList:
+                    if curTimeStamp >= hasteInterval[0] and curTimeStamp <= hasteInterval[1]:
+                        hasteBonus = hasteInterval[2]
+                        break
+
+                self.Haste += hasteBonus
                 self.computeActionTimer(spellObj)
+                self.Haste -= hasteBonus
                              # Adding estimated value
                 curTimeStamp += max(spellObj.RecastTime, spellObj.CastTime)
 
                 gcdLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
                              # Will check if any potential clipping until next GCD
                              # Adding up all oGCD actions between both GCD.
+
+
                 for ogcdIndex in range(gcdIndex+1,gcdIndexList[listIndex+1]):
                     gcdLockTimer -= self.ActionSet[ogcdIndex].RecastTime
 

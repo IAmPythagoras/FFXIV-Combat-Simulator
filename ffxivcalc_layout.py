@@ -131,7 +131,7 @@ GNBPlayer = Player([], [], GNBStat, JobEnum.Gunbreaker)
 # Note that if you are simulating with more than 1 per job you will need to create a new list of actions.
 
 # Caster
-BLMOpener = [SharpCast, Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, Fire4, Swiftcast, Despair, 
+BLMOpener = [SharpCast, Fire3, Thunder3, Fire4, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, Swiftcast, Despair, 
              Manafront,Triplecast, Fire4, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose, Fire3, Fire4, Fire4, Fire4, Despair, 
              Blizzard3, Blizzard4,Paradox, Fire3, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Despair,
              Blizzard3, Blizzard4,Paradox, Fire3, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Despair]
@@ -231,7 +231,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [RPRPlayer]
+PlayerList = [MCHPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -259,9 +259,9 @@ __logger__.setLevel(level=level)
 
 if not findBiS:
     from ffxivcalc.helperCode.helper_backend import SaveFight
+    print(Event.PlayerList[0].computeTimeStamp())
     Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False, MaxTeamBonus=False) # Simulating fight
     if False : Event.simulationRecord.saveRecord()
-    print(Event.PlayerList[0].computeTimeStamp())
     pass
 
 # ===============================================================================================
