@@ -542,7 +542,7 @@ class Fight:
         else : result, fig = "", None
         if vocal:
             print(result) 
-            plt.show()
+            if self.ShowGraph : plt.show()
 
         
         return result, fig, fig2

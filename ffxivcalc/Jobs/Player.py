@@ -411,6 +411,15 @@ class Player:
 
                              # Need to find first action that actually damages. Usually a GCD but should check
         
+        for action in self.ActionSet:
+            if action.Potency > 0 :
+                             # Found first damaging action
+                             # Add to timestamp and will check for GCD clipping
+                spellObj = deepcopy(action)
+                self.computeActionTimer(spellObj)
+                             # Adding estimated value
+                curTimeStamp += max(spellObj.RecastTime, spellObj.CastTime)
+
                              # Populating gcdIndexList
         for index,action in enumerate(self.ActionSet):
             if action.GCD : gcdIndexList.append((index))
@@ -451,7 +460,7 @@ class Player:
                 gcdLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
                              # Will check if any potential clipping until next GCD
                              # Adding up all oGCD actions between both GCD.
-                for ogcdIndex in range(gcdIndex+1,gcdIndex[listIndex+1]):
+                for ogcdIndex in range(gcdIndex+1,gcdIndexList[listIndex+1]):
                     gcdLockTimer -= self.ActionSet[ogcdIndex].RecastTime
 
                              # 
@@ -462,7 +471,7 @@ class Player:
                              # Could be interesting to add 'Risk of Clipping between GCD X and GCD Y'
                 curTimeStamp -= min(0,gcdLockTimer)
 
-        return {"currentTimeStamp" : curTimeStamp, "untilNextGCD" : finalGCDLockTimer}
+        return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(finalGCDLockTimer,2)}
 
 
     def __init__(self, ActionSet, EffectList, Stat,Job : JobEnum):
