@@ -17246,9 +17246,9 @@ def generateTimerEstimateTestSuite() -> testSuite:
         return [player.BiolysisTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
 
     def teTest1ValidationFunction(testResults) -> (bool, list):
-        passed = False   
+        passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+2],0.5)
+        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],0.5)
 
         return passed , testResults
 
@@ -17278,9 +17278,9 @@ def generateTimerEstimateTestSuite() -> testSuite:
         return [player.BiolysisTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
 
     def teTest2ValidationFunction(testResults) -> (bool, list):
-        passed = False   
+        passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+2],0.5)
+        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],0.5)
 
         return passed , testResults
 
@@ -17310,14 +17310,209 @@ def generateTimerEstimateTestSuite() -> testSuite:
         return [player.BiolysisTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
 
     def teTest3ValidationFunction(testResults) -> (bool, list):
-        passed = False   
+        passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+2],0.5)
+        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],0.5)
 
         return passed , testResults
 
     teTest3 = test("Scholar DOT and Timestamp estimate test 3 ", teTest3TestFunction, teTest3ValidationFunction)
     timerEstimateTestSuite.addTest(teTest3)
+
+    def teTest4TestFunction() -> None:
+        """This test will try the opener of a blackmage. It will test for failed requirements but will not check for mana.
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 716, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Biolysis, Broil, Broil, Broil, Broil,Broil, Biolysis]
+        player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.BiolysisTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+
+    def teTest4ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],0.5)
+
+        return passed , testResults
+
+    teTest4 = test("Scholar DOT and Timestamp estimate test 4 ", teTest4TestFunction, teTest4ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest4)
+
+    def teTest5TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 716, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Dia, Glare]
+        player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.DiaTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+
+    def teTest5ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],0.5)
+
+        return passed , testResults
+
+    teTest5 = test("Whitemage DOT and Timestamp estimate test 1 ", teTest5TestFunction, teTest5ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest5)
+
+    def teTest6TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 716, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Dia, Glare, Glare, Glare, Glare, Glare, Glare, Glare]
+        player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.DiaTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+
+    def teTest6ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],0.5)
+
+        return passed , testResults
+
+    teTest6 = test("Whitemage DOT and Timestamp estimate test 2 ", teTest6TestFunction, teTest6ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest6)
+
+    def teTest7TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 716, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Dia, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Dia, Glare, Glare]
+        player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.DiaTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+
+    def teTest7ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],0.5)
+
+        return passed , testResults
+
+    teTest7 = test("Whitemage DOT and Timestamp estimate test 3 ", teTest7TestFunction, teTest7ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest7)
+
+    def teTest8TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 716, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Dia, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Dia, Glare, Glare]
+        player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.DiaTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+
+    def teTest8ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],0.5)
+
+        return passed , testResults
+
+    teTest8 = test("Whitemage DOT and Timestamp estimate test 4 ", teTest8TestFunction, teTest8ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest8)
+
+    def teTest9TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 800, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Glare, PresenceOfMind, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare,
+        Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare, Glare]
+        player = Player(actionSet, [], Stat, JobEnum.WhiteMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.DiaTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+
+    def teTest9ValidationFunction(testResults) -> (bool, list):
+        passed = False   
+
+        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],0.5)
+
+        return passed , testResults
+
+    teTest9 = test("Whitemage DOT and Timestamp estimate - Presence of mind test 1 ", teTest9TestFunction, teTest9ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest9)
+
+    
 
 
 

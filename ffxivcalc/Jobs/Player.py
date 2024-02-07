@@ -570,6 +570,14 @@ class Player:
             action = self.ActionSet[index]
             if action.GCD : gcdIndexList.append((index))
             
+
+                             # If first haste action is done between the first GCD and 2nd it will be detected here
+            if hasHasteAction and (hasteBuffIndexList[0] >= firstIndexDamage and hasteBuffIndexList[0] < gcdIndexList[0]):
+                    hasteBuffIndexList.pop(0) # Remove this haste index
+
+                    hasteBuffTimeIntervalList.append([curTimeStamp,curTimeStamp + hasteBuffTimer, hasteAmount])
+                    hasHasteAction = len(hasteBuffIndexList) != 0
+
                              # Initialize curTimeStamp according to first done oGCDs?
 
         if len(gcdIndexList) == 0 : 
