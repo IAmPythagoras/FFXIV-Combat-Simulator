@@ -819,7 +819,7 @@ class Player:
                     if isSAM and spellObj.id == SamuraiActions.Gekko:
                              # If is a sam we have to check if Gekko is used with Meikyo
                             if meikyoStack > 0: 
-                                curBuffTimer = buffTimer # No need to substract since sam are insta cast
+                                curBuffTimer = buffTimer - spellObj.RecastTime
                             else : curBuffTimer = max(0,curBuffTimer-max(spellObj.RecastTime,spellObj.CastTime))
                     else: curBuffTimer = buffTimer - max(0,spellObj.RecastTime - spellObj.CastTime)
                 else : curBuffTimer = max(0,curBuffTimer-max(spellObj.RecastTime,spellObj.CastTime)) # Removing until end of GCD
