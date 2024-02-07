@@ -653,7 +653,7 @@ class Player:
                 if checkForDOTAction and spellObj.id in possibleDOTActionId:
                              # A dot is detected. Update DOT timer and removing the time lost until the end of the GCD
                     curDOTTimer = dotTimer - max(0,spellObj.RecastTime - spellObj.CastTime)
-                else : curDOTTimer = max(0,curDOTTimer-spellObj.RecastTime) # Removing until end of GCD
+                else : curDOTTimer = max(0,curDOTTimer-max(spellObj.RecastTime,spellObj.CastTime)) # Removing until end of GCD
 
 
                              # Checking for if action is a buff action. Buff actions are only on GCD
@@ -661,7 +661,7 @@ class Player:
                 if checkForBuffAction and spellObj.id in possibleBuffActionId:
                              # A dot is detected. Update buff timer and removing the time lost until the end of the GCD
                     curBuffTimer = buffTimer - max(0,spellObj.RecastTime - spellObj.CastTime)
-                else : curBuffTimer = max(0,curBuffTimer-(spellObj.RecastTime-spellObj.CastTime)) # Removing until end of GCD
+                else : curBuffTimer = max(0,curBuffTimer-max(spellObj.RecastTime,spellObj.CastTime)) # Removing until end of GCD
 
 
 

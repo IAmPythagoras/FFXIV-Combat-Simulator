@@ -17250,7 +17250,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest1ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17282,7 +17282,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest2ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17314,7 +17314,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest3ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17346,7 +17346,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest4ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17378,7 +17378,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest13ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17410,7 +17410,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest5ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17442,7 +17442,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest6ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17474,7 +17474,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest7ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17506,7 +17506,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest8ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17539,7 +17539,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest9ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17572,7 +17572,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest10ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17604,7 +17604,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest11ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17637,7 +17637,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest12ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17669,7 +17669,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest14ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17701,7 +17701,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest15ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17733,7 +17733,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest16ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17748,7 +17748,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
         Event = Fight(Dummy, False)
 
         Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 900, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
-        actionSet = [Eukrasia, EukrasianDosis, Dosis, Dosis, Dosis, Dosis,Dosis, Eukrasia, EukrasianDosis, Dosis, Dosis, Dosis, Phlegma]
+        actionSet = [Eukrasia, EukrasianDosis, Dosis, Dosis, Dosis, Dosis,Dosis, Eukrasia, EukrasianDosis, Dosis, Dosis, Dosis]
         player = Player(actionSet, [], Stat, JobEnum.Sage)
 
         Event.AddPlayer([player])
@@ -17765,7 +17765,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest17ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17797,7 +17797,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest18ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17830,7 +17830,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest19ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17862,7 +17862,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest20ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17894,7 +17894,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest21ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17926,7 +17926,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest22ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17959,7 +17959,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest23ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -17993,7 +17993,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest24ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -18028,7 +18028,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest25ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -18062,7 +18062,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest26ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -18094,7 +18094,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest27ValidationFunction(testResults) -> (bool, list):
         passed = True   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -18109,7 +18109,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
         Event = Fight(Dummy, False)
 
         Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 950, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
-        actionSet = [Thunder3, Fire1, Fire1, Fire1, Fire4, Fire4, Despair, Xenoglossy]
+        actionSet = [Fire1,Thunder3, Fire1, Fire1, Fire1, Fire4, Fire4, Despair]
         player = Player(actionSet, [], Stat, JobEnum.BlackMage)
 
         Event.AddPlayer([player])
@@ -18124,9 +18124,9 @@ def generateTimerEstimateTestSuite() -> testSuite:
         return [player.Thunder3DOTTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
 
     def teTest28ValidationFunction(testResults) -> (bool, list):
-        passed = True   
+        passed = False   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
@@ -18141,7 +18141,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
         Event = Fight(Dummy, False)
 
         Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 950, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
-        actionSet = [Thunder3, Fire1, Fire1, Fire1, Fire4, Fire4, Despair, Xenoglossy, Thunder3, WaitAbility(15), Fire1]
+        actionSet = [Thunder3, Fire1, Fire1, Fire1, Fire4, Fire4, Despair, Xenoglossy, Thunder3, WaitAbility(15), Fire4, Fire1, Fire1, Fire1, Fire1]
         player = Player(actionSet, [], Stat, JobEnum.BlackMage)
 
         Event.AddPlayer([player])
@@ -18156,9 +18156,9 @@ def generateTimerEstimateTestSuite() -> testSuite:
         return [player.Thunder3DOTTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
 
     def teTest29ValidationFunction(testResults) -> (bool, list):
-        passed = False   
-
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         return passed , testResults
 
