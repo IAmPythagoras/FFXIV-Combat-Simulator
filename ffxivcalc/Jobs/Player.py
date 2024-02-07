@@ -617,10 +617,33 @@ class Player:
                              # Last GCD. So simply compute how long is left in the GCD
                              # Making deep copy to not affect anything
                 spellObj = deepcopy(self.ActionSet[gcdIndex])
+
+                             # Checking for haste
+                for hasteInterval in hasteBuffTimeIntervalList:
+                    if curTimeStamp >= hasteInterval[0] and curTimeStamp <= hasteInterval[1]:
+                        hasteBonus = hasteInterval[2]
+                        break
+
+                             # Compute spellObj cast/recast time
+                self.Haste += hasteBonus
                 self.computeActionTimer(spellObj)
+                self.Haste -= hasteBonus
+
+                if isBLM:
+                    if inAstralFire and spellObj.IsIce or inUmbralIce and spellObj.IsFire:
+                             # reduce casttime
+                            spellObj.CastTime = round(spellObj.CastTime/2,2)
+
+                             # Check for swiftcast/Triplecast
+                    if hasSwiftCast:
+                        spellObj.CastTime = 0
+                        hasSwiftCast = False
+                    elif tripleCastStack > 0:
+                        spellObj.CastTime = 0
+                        tripleCastStack -= 1
                              # Adding CastTime only since last GCD
                 curTimeStamp += spellObj.CastTime
-
+                        
                 gcdLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
                 curDOTTimer = max(0,curDOTTimer-spellObj.CastTime) # Removing until end of GCD
                 curBuffTimer = max(0,curBuffTimer-spellObj.CastTime) # Removing until end of GCD
@@ -670,6 +693,19 @@ class Player:
                 self.computeActionTimer(spellObj)
                 self.Haste -= hasteBonus
 
+                             # Checking if BLM in which case we add some effects is it applies 
+                if isBLM:
+                    if inAstralFire and spellObj.IsIce or inUmbralIce and spellObj.IsFire:
+                             # reduce casttime
+                            spellObj.CastTime = round(spellObj.CastTime/2,2)
+
+                             # Check for swiftcast/Triplecast
+                    if hasSwiftCast:
+                        spellObj.CastTime = 0
+                        hasSwiftCast = False
+                    elif tripleCastStack > 0:
+                        spellObj.CastTime = 0
+                        tripleCastStack -= 1
 
                              # Checking for if action is a DOT action. DOTs are only GCD so
                              # we only check with spellObj
@@ -685,22 +721,6 @@ class Player:
                              # A dot is detected. Update buff timer and removing the time lost until the end of the GCD
                     curBuffTimer = buffTimer - max(0,spellObj.RecastTime - spellObj.CastTime)
                 else : curBuffTimer = max(0,curBuffTimer-max(spellObj.RecastTime,spellObj.CastTime)) # Removing until end of GCD
-
-
-
-                             # Checking if BLM in which case we add some effects is it applies 
-                if isBLM:
-                    if inAstralFire and spellObj.IsIce or inUmbralIce and spellObj.IsFire:
-                             # reduce casttime
-                            spellObj.CastTime = round(spellObj.CastTime/2,2)
-
-                             # Check for swiftcast/Triplecast
-                    if hasSwiftCast:
-                        spellObj.CastTime = 0
-                        hasSwiftCast = False
-                    elif tripleCastStack > 0:
-                        spellObj.CastTime = 0
-                        tripleCastStack -= 1
 
                 curTimeStamp += max(spellObj.RecastTime, spellObj.CastTime)
                 

@@ -18196,7 +18196,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest30ValidationFunction(testResults) -> (bool, list):
         passed = True   
         for i in range(0,len(testResults)-2,2): 
-            passed = passed and isClose(testResults[i],testResults[i+1],errorAmountBigger)
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
         passed = passed and testResults[-2] == True and testResults[-1] == False
         return passed , testResults
