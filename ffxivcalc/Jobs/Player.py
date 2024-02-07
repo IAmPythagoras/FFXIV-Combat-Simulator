@@ -829,11 +829,7 @@ class Player:
                              # Adding estimated value 
                 gcdLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
 
-                if gcdLockTimer < 0: # if gcdLockTimer was exceeded then we have to remove to other timer
-                    curDOTTimer = max(0,curDOTTimer+min(0,gcdLockTimer))
-                    curBuffTimer = max(0,curBuffTimer+min(0,gcdLockTimer))
-
-                                             # Last thing we check if BLM changes state or if RDM gets dualcast
+                                             # Last thing we check if BLM changes state, if RDM gets dualcast or if SAM gets meikyo
                 if isBLM:
                     if not inAstralFire and not inUmbralIce: # Not in any
                         if  spellObj.IsFire : inAstralFire = True
@@ -898,7 +894,7 @@ class Player:
                     elif isSMN:
                         if self.ActionSet[ogcdIndex].id == 7561:
                             hasSwiftCast = True
-                    if isSAM:
+                    elif isSAM:
                         if self.ActionSet[ogcdIndex].id == SamuraiActions.Meikyo:
                             meikyoStack = 3
 
@@ -906,6 +902,9 @@ class Player:
                             # So we substract gcdLockTimer from curTimeStamp (min(gcdLockTimer,0))
                             # Could be interesting to add 'Risk of Clipping between GCD X and GCD Y'
                 curTimeStamp -= min(0,gcdLockTimer)
+                if gcdLockTimer < 0: # if gcdLockTimer was exceeded then we have to remove to other timer
+                    curDOTTimer = max(0,curDOTTimer+min(0,gcdLockTimer))
+                    curBuffTimer = max(0,curBuffTimer+min(0,gcdLockTimer))
 
         return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(finalGCDLockTimer,2), "dotTimer" : round(curDOTTimer,2), "buffTimer" : round(curBuffTimer,2),
                 "detectedInFire" : inAstralFire, "detectedInIce" : inUmbralIce, "dualCast" : hasDualCast}
