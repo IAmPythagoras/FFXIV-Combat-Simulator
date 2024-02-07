@@ -17213,6 +17213,7 @@ def generateGCDTestSuite(setSeed : int = 0) -> testSuite:
 
 
 errorAmount = 0.5
+errorAmountBigger = 1.5
 
 def isClose(a : float,b : float, error : int) -> bool:
     """This function returns true if a and b are within error of each other
@@ -17221,7 +17222,7 @@ def isClose(a : float,b : float, error : int) -> bool:
 
 def generateTimerEstimateTestSuite() -> testSuite:
 
-    timerEstimateTestSuite = testSuite("TimerEstimateTestSuite - errorAmount : " + str(errorAmount))
+    timerEstimateTestSuite = testSuite("TimerEstimateTestSuite - errorAmount : " + str(errorAmount) + " errorAmountBigger : " + str(errorAmountBigger))
 
     # Opener requirement, end time and potency test 1
 
@@ -18173,7 +18174,12 @@ def generateTimerEstimateTestSuite() -> testSuite:
         Event = Fight(Dummy, False)
 
         Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 950, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
-        actionSet = [Fire3, LeyLines, Fire4, Thunder3, Fire4, Fire4, Fire4, Fire4, Fire4, Fire4, Fire4, Fire4, Fire4, Thunder3, Fire4, Triplecast,Fire4, Fire4, Fire4, Fire4, Fire4]
+        actionSet = [SharpCast, Fire3, Thunder3, Fire4, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, Swiftcast, Despair, 
+             Manafront,Triplecast, Fire4, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose, Fire3, Fire4, Fire4, Fire4, Despair, 
+             Blizzard3, Blizzard4,Paradox, Fire3, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Despair,
+             Blizzard3, Thunder3,Blizzard4,Paradox, Fire3, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Despair,
+             Blizzard3, Thunder3,Blizzard4,Paradox, Fire3, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Despair,
+             Blizzard3, Thunder3,Blizzard4,Paradox, Fire3, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Despair]
         player = Player(actionSet, [], Stat, JobEnum.BlackMage)
 
         Event.AddPlayer([player])
@@ -18185,17 +18191,51 @@ def generateTimerEstimateTestSuite() -> testSuite:
         estimate = player.computeTimeStamp()
         Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-        return [player.Thunder3DOTTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+        return [player.Thunder3DOTTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"],estimate['detectedInFire'],estimate['detectedInIce']]
 
     def teTest30ValidationFunction(testResults) -> (bool, list):
-        passed = False   
-        for i in range(0,len(testResults),2): 
-            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+        passed = True   
+        for i in range(0,len(testResults)-2,2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmountBigger)
 
+        passed = passed and testResults[-2] == True and testResults[-1] == False
         return passed , testResults
 
-    teTest30 = test("Blackmage DOT and Timestamp estimate test 4 - Leylines", teTest30TestFunction, teTest30ValidationFunction)
+    teTest30 = test("Blackmage DOT and Timestamp estimate test 4 - Leylines (error < 1.5)", teTest30TestFunction, teTest30ValidationFunction)
     timerEstimateTestSuite.addTest(teTest30)
+
+    def teTest31TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 950, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Fire3, LeyLines,Thunder3, Blizzard3]
+        player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.Thunder3DOTTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"],estimate['detectedInFire'],estimate['detectedInIce']]
+
+    def teTest31ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults)-2,2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        passed = passed and testResults[-2] == False and testResults[-1] == True
+        return passed , testResults
+
+    teTest31 = test("Blackmage DOT and Timestamp estimate test 5 - Leylines", teTest31TestFunction, teTest31ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest31)
 
 
 

@@ -577,6 +577,12 @@ class Player:
                              # To what is left in it.
                 if action.GCD : finalGCDLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
                 if action.id in possibleDOTActionId : curDOTTimer = dotTimer - max(0,spellObj.RecastTime-spellObj.CastTime)
+
+                if isBLM:
+                             # if is a BLM we check if the action isFire or isIce if any
+                    if spellObj.IsFire : inAstralFire = True
+                    elif spellObj.IsIce : inUmbralIce = True
+
                              # Do not check for buff since buff actions can never be the first GCD and are always
                              # 2nd or 3rd action.
 
