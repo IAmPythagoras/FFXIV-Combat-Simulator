@@ -625,7 +625,7 @@ class Player:
             action = self.ActionSet[index]
             if action.GCD : gcdIndexList.append(index)
             
-
+        meikyoStack = 0      # Resetting meikyoStack
                              # If first haste action is done between the first GCD and 2nd it will be detected here
         if hasHasteAction and (hasteBuffIndexList[0] < gcdIndexList[0]):
                 hasteBuffIndexList.pop(0) # Remove this haste index
@@ -649,7 +649,7 @@ class Player:
                 if self.ActionSet[index].id == 7561:
                     hasSwiftCast = True
             elif isSAM:
-                if self.ActionSet[index].id == 7499:
+                if self.ActionSet[index].id == SamuraiActions.Meikyo:
                     meikyoStack = 3
             
 
@@ -820,6 +820,7 @@ class Player:
                              # If is a sam we have to check if Gekko is used with Meikyo
                             if meikyoStack > 0: 
                                 curBuffTimer = buffTimer # No need to substract since sam are insta cast
+                            else : curBuffTimer = max(0,curBuffTimer-max(spellObj.RecastTime,spellObj.CastTime))
                     else: curBuffTimer = buffTimer - max(0,spellObj.RecastTime - spellObj.CastTime)
                 else : curBuffTimer = max(0,curBuffTimer-max(spellObj.RecastTime,spellObj.CastTime)) # Removing until end of GCD
 
