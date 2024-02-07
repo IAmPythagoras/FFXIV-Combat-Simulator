@@ -828,39 +828,6 @@ class Player:
                 
                              # Adding estimated value 
                 gcdLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
-                             # Will check if any potential clipping until next GCD
-                             # Adding up all oGCD actions between both GCD.
-
-
-                for ogcdIndex in range(gcdIndex+1,gcdIndexList[listIndex+1]):
-                    gcdLockTimer -= self.ActionSet[ogcdIndex].RecastTime
-
-                             # If isBLM we check if the oGCD action is 'transpose' which will affect the state
-                             # We also check for triplecast/swiftcast
-                    if isBLM : 
-                        if self.ActionSet[ogcdIndex].id == 149 :
-                            if inUmbralIce : 
-                                inUmbralIce = False
-                                inAstralFire = True
-                            elif inAstralFire:
-                                inUmbralIce = True
-                                inAstralFire = False
-                        elif self.ActionSet[ogcdIndex].id == 7561:
-                            hasSwiftCast = True
-                        elif self.ActionSet[ogcdIndex].id == 7421:
-                            tripleCastStack = 3
-                    elif isRDM:
-                        if self.ActionSet[ogcdIndex].id == 7561:
-                            hasSwiftCast = True
-                        elif self.ActionSet[ogcdIndex].id == 7518:
-                            hasAcceleration = True
-                    elif isSMN:
-                        if self.ActionSet[ogcdIndex].id == 7561:
-                            hasSwiftCast = True
-                    if isSAM:
-                        if self.ActionSet[ogcdIndex].id == SamuraiActions.Meikyo:
-                            meikyoStack = 3
-
 
                              # If there is risks of clipping gcdLockTimer will be negative.
                              # So we substract gcdLockTimer from curTimeStamp (min(gcdLockTimer,0))
@@ -907,6 +874,37 @@ class Player:
                 elif isSAM and meikyoStack > 0 and (spellObj.id == SamuraiActions.Yukikaze or spellObj.id == SamuraiActions.Shifu or spellObj.id == SamuraiActions.Kasha
                                                      or spellObj.id == SamuraiActions.Jinpu or spellObj.id == SamuraiActions.Gekko):
                     meikyoStack-=1 
+
+                             # Will check if any potential clipping until next GCD
+                             # Adding up all oGCD actions between both GCD. And will check for important oGCD
+                for ogcdIndex in range(gcdIndex+1,gcdIndexList[listIndex+1]):
+                    gcdLockTimer -= self.ActionSet[ogcdIndex].RecastTime
+
+                             # If isBLM we check if the oGCD action is 'transpose' which will affect the state
+                             # We also check for triplecast/swiftcast
+                    if isBLM : 
+                        if self.ActionSet[ogcdIndex].id == 149 :
+                            if inUmbralIce : 
+                                inUmbralIce = False
+                                inAstralFire = True
+                            elif inAstralFire:
+                                inUmbralIce = True
+                                inAstralFire = False
+                        elif self.ActionSet[ogcdIndex].id == 7561:
+                            hasSwiftCast = True
+                        elif self.ActionSet[ogcdIndex].id == 7421:
+                            tripleCastStack = 3
+                    elif isRDM:
+                        if self.ActionSet[ogcdIndex].id == 7561:
+                            hasSwiftCast = True
+                        elif self.ActionSet[ogcdIndex].id == 7518:
+                            hasAcceleration = True
+                    elif isSMN:
+                        if self.ActionSet[ogcdIndex].id == 7561:
+                            hasSwiftCast = True
+                    if isSAM:
+                        if self.ActionSet[ogcdIndex].id == SamuraiActions.Meikyo:
+                            meikyoStack = 3
 
         return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(finalGCDLockTimer,2), "dotTimer" : round(curDOTTimer,2), "buffTimer" : round(curBuffTimer,2),
                 "detectedInFire" : inAstralFire, "detectedInIce" : inUmbralIce, "dualCast" : hasDualCast}
