@@ -610,7 +610,7 @@ class Player:
                 finalGCDLockTimer -= self.ActionSet[index].RecastTime
             return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(max(0,finalGCDLockTimer),2),"dotTimer" : 0, "buffTimer" : 0}
 
-
+        hasteBonus = 0
         lastGCDIndex = gcdIndexList[-1]
         for listIndex,gcdIndex in enumerate(gcdIndexList):
             if gcdIndex == lastGCDIndex:
@@ -682,7 +682,7 @@ class Player:
                              # Checking if this action has an haste effect onto it.
                              # If it does we have to add haste to the player and remove it afterward.
                              
-                hasteBonus = 0
+                
                 for hasteInterval in hasteBuffTimeIntervalList:
                     if curTimeStamp >= hasteInterval[0] and curTimeStamp <= hasteInterval[1]:
                         hasteBonus = hasteInterval[2]
