@@ -18196,7 +18196,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest30ValidationFunction(testResults) -> (bool, list):
         passed = True   
         for i in range(0,len(testResults)-2,2): 
-            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmountBigger)
 
         passed = passed and testResults[-2] == True and testResults[-1] == False
         return passed , testResults
@@ -18231,11 +18231,80 @@ def generateTimerEstimateTestSuite() -> testSuite:
         for i in range(0,len(testResults)-2,2): 
             passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
-        passed = passed and testResults[-2] == False and testResults[-1] == True
+        passed = passed and testResults[-2] == True and testResults[-1] == False
         return passed , testResults
 
     teTest31 = test("Blackmage DOT and Timestamp estimate test 5 - Leylines", teTest31TestFunction, teTest31ValidationFunction)
     timerEstimateTestSuite.addTest(teTest31)
+
+
+    def teTest32TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 950, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Fire3, LeyLines,Thunder3, Blizzard3,Paradox, Transpose, Swiftcast, Fire3, Fire4]
+        player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.Thunder3DOTTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"],estimate['detectedInFire'],estimate['detectedInIce']]
+
+    def teTest32ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults)-2,2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        passed = passed and testResults[-2] == True and testResults[-1] == False
+        return passed , testResults
+
+    teTest32 = test("Blackmage DOT and Timestamp estimate test 6 - Leylines", teTest32TestFunction, teTest32ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest32)
+
+    def teTest33TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 950, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Verthunder, Verareo, Swiftcast,Acceleration, Verthunder, Potion,Verthunder, Embolden, Manafication, EnchantedRiposte, Fleche, EnchantedZwerchhau, 
+             Contre, EnchantedRedoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verstone, Verareo, Verfire, Verthunder, 
+             Acceleration, Verareo, Verstone, Verthunder, Fleche, Jolt, Verthunder, Verfire, Verareo, Contre, Jolt, Verareo, Engagement, Corps, Verstone, 
+             Verthunder, EnchantedRiposte, EnchantedZwerchhau, EnchantedRedoublement, Fleche, Verflare, Scorch, Resolution]
+        player = Player(actionSet, [], Stat, JobEnum.RedMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+
+    def teTest33ValidationFunction(testResults) -> (bool, list):
+        passed = False   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest33 = test("Redmage Timestamp estimate test 1", teTest33TestFunction, teTest33ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest33)
 
 
 

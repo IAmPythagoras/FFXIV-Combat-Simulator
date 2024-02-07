@@ -434,6 +434,13 @@ class Player:
         tripleCastStack = 0
         hasSwiftCast = False
 
+                                 # If is a RedMage we keep track of swiftcast, acceleration and dual cast
+        isRDM = self.JobEnum == JobEnum.RedMage
+        hasDualCast = False
+        hasAcceleration = False
+        gcdCastDetectionLimit = 1.7 # Actions with cast times under that treshold will give dualcast
+        
+
 
         # Monk can be ommited since the player object of monk is
         # initialized with haste of 20.
@@ -583,6 +590,12 @@ class Player:
                     if spellObj.IsFire : inAstralFire = True
                     elif spellObj.IsIce : inUmbralIce = True
 
+                if isRDM :
+                             # To detect if dualcast is added we check if the spell has a casttime higher then 2.2 . If such is true
+                             # then it wasn't affected by a previous dualcast, acceleration or a previous dualcast
+                    if spellObj.CastTime > gcdCastDetectionLimit:
+                        hasDualCast = True
+
                              # Do not check for buff since buff actions can never be the first GCD and are always
                              # 2nd or 3rd action.
 
@@ -633,15 +646,28 @@ class Player:
                 if isBLM:
                     if inAstralFire and spellObj.IsIce or inUmbralIce and spellObj.IsFire:
                              # reduce casttime
-                            spellObj.CastTime = round(spellObj.CastTime/2,2)
+                            spellObj.CastTime = max(round(spellObj.CastTime/2,2),1.5)
 
                              # Check for swiftcast/Triplecast
-                    if hasSwiftCast:
-                        spellObj.CastTime = 0
-                        hasSwiftCast = False
-                    elif tripleCastStack > 0:
-                        spellObj.CastTime = 0
-                        tripleCastStack -= 1
+                    if spellObj.CastTime > 0.1:
+                        if hasSwiftCast:
+                            spellObj.CastTime = 0
+                            hasSwiftCast = False
+                        elif tripleCastStack > 0:
+                            spellObj.CastTime = 0
+                            tripleCastStack -= 1
+                elif isRDM:
+                    if spellObj.CastTime > 0.1 and spellObj.type == 1:
+                        if hasSwiftCast:
+                            spellObj.CastTime = 0
+                            hasSwiftCast = False
+                        elif hasAcceleration:
+                            spellObj.CastTime = 0
+                            hasAcceleration = False
+                        elif hasDualCast:
+                            spellObj.CastTime = 0
+                            hasDualCast = False
+
                              # Adding CastTime only since last GCD
                 curTimeStamp += spellObj.CastTime
                         
@@ -698,15 +724,28 @@ class Player:
                 if isBLM:
                     if inAstralFire and spellObj.IsIce or inUmbralIce and spellObj.IsFire:
                              # reduce casttime
-                            spellObj.CastTime = round(spellObj.CastTime/2,2)
+                            spellObj.CastTime = max(round(spellObj.CastTime/2,2),1.5)
 
-                             # Check for swiftcast/Triplecast
-                    if hasSwiftCast:
-                        spellObj.CastTime = 0
-                        hasSwiftCast = False
-                    elif tripleCastStack > 0:
-                        spellObj.CastTime = 0
-                        tripleCastStack -= 1
+                             # Check for swiftcast/Triplecast only if spell isn't already insta cast
+                    if spellObj.CastTime > 0.1:
+                        if hasSwiftCast:
+                            spellObj.CastTime = 0
+                            hasSwiftCast = False
+                        elif tripleCastStack > 0:
+                            spellObj.CastTime = 0
+                            tripleCastStack -= 1
+                elif isRDM:
+                             # Check for swiftcast/dualcast/acceleration only if spell isn't already insta cast and is spell
+                    if spellObj.CastTime > 0.1 and spellObj.type == 1:
+                        if hasSwiftCast:
+                            spellObj.CastTime = 0
+                            hasSwiftCast = False
+                        elif hasAcceleration:
+                            spellObj.CastTime = 0
+                            hasAcceleration = False
+                        elif hasDualCast:
+                            spellObj.CastTime = 0
+                            hasDualCast = False
 
                              # Checking for if action is a DOT action. DOTs are only GCD so
                              # we only check with spellObj
@@ -748,6 +787,11 @@ class Player:
                             hasSwiftCast = True
                         elif self.ActionSet[ogcdIndex].id == 7421:
                             tripleCastStack = 3
+                    elif isRDM:
+                        if self.ActionSet[ogcdIndex].id == 7561:
+                            hasSwiftCast = True
+                        elif self.ActionSet[ogcdIndex].id == 7518:
+                            hasAcceleration = True
 
 
                              # If there is risks of clipping gcdLockTimer will be negative.
@@ -758,7 +802,7 @@ class Player:
                     curDOTTimer = max(0,curDOTTimer+min(0,gcdLockTimer))
                     curBuffTimer = max(0,curBuffTimer+min(0,gcdLockTimer))
 
-                                             # Last thing we check if 
+                                             # Last thing we check if BLM changes state or if RDM gets dualcast
                 if isBLM:
                     if not inAstralFire and not inUmbralIce: # Not in any
                         if  spellObj.IsFire : inAstralFire = True
@@ -787,9 +831,13 @@ class Player:
                         else :
                             inUmbralIce = False
                             inAstralFire = False # Might not be required, but is a way to make sure.
+                             # Check if we give dualcast
+                elif isRDM :
+                    if spellObj.CastTime > gcdCastDetectionLimit:
+                        hasDualCast = True
 
         return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(finalGCDLockTimer,2), "dotTimer" : round(curDOTTimer,2), "buffTimer" : round(curBuffTimer,2),
-                "detectedInFire" : inAstralFire, "detectedInIce" : inUmbralIce}
+                "detectedInFire" : inAstralFire, "detectedInIce" : inUmbralIce, "dualCast" : hasDualCast}
 
 
     def __init__(self, ActionSet, EffectList, Stat,Job : JobEnum):
