@@ -857,6 +857,9 @@ class Player:
                     elif isSMN:
                         if self.ActionSet[ogcdIndex].id == 7561:
                             hasSwiftCast = True
+                    if isSAM:
+                        if self.ActionSet[ogcdIndex].id == SamuraiActions.Meikyo:
+                            meikyoStack = 3
 
 
                              # If there is risks of clipping gcdLockTimer will be negative.
