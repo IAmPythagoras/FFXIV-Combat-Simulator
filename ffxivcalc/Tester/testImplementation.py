@@ -17199,6 +17199,64 @@ def generateGCDTestSuite(setSeed : int = 0) -> testSuite:
 
     return gcdTestSuite
 
+
+######################################
+# TimeStamp, Dot/Buff timer estimate #
+######################################
+
+# This functionality aims to estimate the timestamp of a player
+# to situate oneself while using the app or building a rotation.
+# Since this is an estimate the tests will simply be :
+# Simulate the fight and check within a certain margin of error that 
+# the estimate is in agreement.
+#{"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(finalGCDLockTimer,2), "dotTimer" : round(curDOTTimer,2), "buffTimer" : round(curBuffTimer,2)}
+
+
+def isClose(a : float,b : float, error : int) -> bool:
+    """This function returns true if a and b are within error of each other
+    """
+    return abs(a - b) <= error
+
+def generateTimerEstimateTestSuite() -> testSuite:
+
+    timerEstimateTestSuite = testSuite("TimerEstimateTestSuite")
+
+    # Opener requirement, end time and potency test 1
+
+    def teTest1TestFunction() -> None:
+        """This test will try the opener of a blackmage. It will test for failed requirements but will not check for mana.
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 716, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Biolysis, Broil]
+        player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.BiolysisTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+
+    def teTest1ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+2],1)
+
+        return passed , testResults
+
+    teTest1 = test("Scholar DOT and Timestamp estimate test 1 ", teTest1TestFunction, teTest1ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest1)
+
+    return timerEstimateTestSuite
+
 def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBUG) -> int:
                              # Silence the main_logging and
                              # unmute the test_logging
@@ -17234,6 +17292,7 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
         rfoTestSuite = generateRFOTestSuite()
         pbfTestSuite = generatePBFTestSuite()
         gcdTestSuite = generateGCDTestSuite(setSeed=setSeed)
+        teTestSuite = generateTimerEstimateTestSuite()
 
 
         pb.setName(blmTestSuite.testSuiteName)
@@ -17305,6 +17364,9 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
         pb.setName(gcdTestSuite.testSuiteName)
         next(pb)
         failedTestDict[gcdTestSuite.testSuiteName] = gcdTestSuite.executeTestSuite()
+        pb.setName(teTestSuite.testSuiteName)
+        next(pb)
+        failedTestDict[teTestSuite.testSuiteName] = teTestSuite.executeTestSuite()
         next(pb)
 
     else:
@@ -17401,6 +17463,10 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
                 gcdTestSuite = generateGCDTestSuite(setSeed=setSeed)
                 print(f"Executing {gcdTestSuite.testSuiteName}")
                 failedTestDict[gcdTestSuite.testSuiteName] = gcdTestSuite.executeTestSuite()
+            case "TES":
+                teTestSuite = generateTimerEstimateTestSuite()
+                print(f"Executing {teTestSuite.testSuiteName}")
+                failedTestDict[teTestSuite.testSuiteName] = teTestSuite.executeTestSuite()
 
     totalFailedTest = 0
 
@@ -17419,5 +17485,5 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
 if __name__ == "__main__":
     level = logging.DEBUG 
     logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
-    executeTests()
-
+    #executeTests()
+    generateTimerEstimateTestSuite().executeTestSuite()

@@ -404,8 +404,10 @@ class Player:
         """
                              # Computes the reduction ratios
         self.computeActionReduction()
-                             # Initializes timeStamp and finalLockTimer
+                             # Initializes timeStamp and finalLockTimer and other relevants timer
         curTimeStamp = 0
+        curDOTTimer = 0
+        curBuffTimer = 0
         finalGCDLockTimer = 0
                              # hasteBuffList contains list of [startTime,EndTime,hasteAmount] to know when to apply haste buffs
                              # Note that this is a BIG ESTIMATE of the actual time since we do not modify the GCD
@@ -497,6 +499,7 @@ class Player:
                 possibleDOTActionId.append(16494)
                 possibleDOTActionId.append(3560)
                 dotTimer = 45
+        checkForDOTAction = len(possibleDOTActionId) != 0
 
                              # Will also check for the running buffs timer
                              # Done similarly to DOT and hasteBuff
@@ -525,7 +528,9 @@ class Player:
                 possibleBuffActionId.append(16462)
                 possibleBuffActionId.append(16470)
                 possibleBuffActionId.append(7389)
-                buffTimer = 30            
+                buffTimer = 30        
+
+        checkForBuffAction = len(possibleBuffActionId) != 0
 
                              # gcdIndexList contains the index of all actions done by the player that are GCD.
         gcdIndexList = []    
@@ -571,7 +576,7 @@ class Player:
                 curTimeStamp += self.ActionSet[index].RecastTime
                              # Since no other GCD remove oGCD cast time from the lock timer
                 finalGCDLockTimer -= self.ActionSet[index].RecastTime
-            return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(max(0,finalGCDLockTimer),2)}
+            return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(max(0,finalGCDLockTimer),2),"dotTimer" : 0, "buffTimer" : 0}
 
 
         lastGCDIndex = gcdIndexList[-1]
@@ -585,6 +590,8 @@ class Player:
                 curTimeStamp += spellObj.CastTime
 
                 gcdLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
+                curDOTTimer = max(0,curDOTTimer-spellObj.RecastTime) # Removing until end of GCD
+                curBuffTimer = max(0,curBuffTimer-spellObj.RecastTime) # Removing until end of GCD
 
                 for ogcdIndex in range(lastGCDIndex+1,len(self.ActionSet)):
                     gcdLockTimer -= self.ActionSet[ogcdIndex].RecastTime
@@ -595,15 +602,15 @@ class Player:
                 curTimeStamp -= min(0,gcdLockTimer)
                 finalGCDLockTimer = gcdLockTimer
             else:
-                                             # Check if this GCD or if there are oGCD between the next GCD that have HASTE effects
+                             # Check if this GCD or if there are oGCD between the next GCD that have HASTE effects
                 if hasHasteAction and (hasteBuffIndexList[0] >= gcdIndex and hasteBuffIndexList[0] < gcdIndexList[listIndex+1]):
                     hasteBuffIndexList.pop(0) # Remove this haste index
 
                     hasteBuffTimeIntervalList.append([curTimeStamp,curTimeStamp + hasteBuffTimer, hasteAmount])
                     hasHasteAction = len(hasteBuffIndexList) != 0
+
                              # Making deep copy to not affect anything
                 spellObj = deepcopy(self.ActionSet[gcdIndex])
-                
                              # Checking if this action has an haste effect onto it.
                              # If it does we have to add haste to the player and remove it afterward.
                 hasteBonus = 0
@@ -617,6 +624,20 @@ class Player:
                 self.Haste -= hasteBonus
                              # Adding estimated value
                 curTimeStamp += max(spellObj.RecastTime, spellObj.CastTime)
+                curDOTTimer = max(0,curDOTTimer-spellObj.RecastTime) # Removing until end of GCD
+                curBuffTimer = max(0,curBuffTimer-spellObj.RecastTime) # Removing until end of GCD
+
+                             # Checking for if action is a DOT action. DOTs are only GCD so
+                             # we only check with spellObj
+                if checkForDOTAction and spellObj.id in possibleDOTActionId:
+                             # A dot is detected. Update DOT timer and removing the
+                    curDOTTimer = dotTimer
+
+                             # Checking for if action is a buff action. Buff actions are only on GCD
+                             # so we can check spellObj only
+                if checkForBuffAction and spellObj.id in possibleBuffActionId:
+                             # A dot is detected. Update DOT timer and removing the
+                    curBuffTimer = buffTimer
 
                 gcdLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
                              # Will check if any potential clipping until next GCD
@@ -634,7 +655,7 @@ class Player:
                              # Could be interesting to add 'Risk of Clipping between GCD X and GCD Y'
                 curTimeStamp -= min(0,gcdLockTimer)
 
-        return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(finalGCDLockTimer,2)}
+        return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(finalGCDLockTimer,2), "dotTimer" : round(curDOTTimer,2), "buffTimer" : round(curBuffTimer,2)}
 
 
     def __init__(self, ActionSet, EffectList, Stat,Job : JobEnum):
