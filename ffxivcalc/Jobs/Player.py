@@ -829,10 +829,6 @@ class Player:
                              # Adding estimated value 
                 gcdLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
 
-                             # If there is risks of clipping gcdLockTimer will be negative.
-                             # So we substract gcdLockTimer from curTimeStamp (min(gcdLockTimer,0))
-                             # Could be interesting to add 'Risk of Clipping between GCD X and GCD Y'
-                curTimeStamp -= min(0,gcdLockTimer)
                 if gcdLockTimer < 0: # if gcdLockTimer was exceeded then we have to remove to other timer
                     curDOTTimer = max(0,curDOTTimer+min(0,gcdLockTimer))
                     curBuffTimer = max(0,curBuffTimer+min(0,gcdLockTimer))
@@ -905,6 +901,11 @@ class Player:
                     if isSAM:
                         if self.ActionSet[ogcdIndex].id == SamuraiActions.Meikyo:
                             meikyoStack = 3
+
+                            # If there is risks of clipping gcdLockTimer will be negative.
+                            # So we substract gcdLockTimer from curTimeStamp (min(gcdLockTimer,0))
+                            # Could be interesting to add 'Risk of Clipping between GCD X and GCD Y'
+                curTimeStamp -= min(0,gcdLockTimer)
 
         return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(finalGCDLockTimer,2), "dotTimer" : round(curDOTTimer,2), "buffTimer" : round(curBuffTimer,2),
                 "detectedInFire" : inAstralFire, "detectedInIce" : inUmbralIce, "dualCast" : hasDualCast}
