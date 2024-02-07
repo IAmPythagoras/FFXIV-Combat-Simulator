@@ -596,6 +596,16 @@ class Player:
                 curDOTTimer = max(0,curDOTTimer-spellObj.CastTime) # Removing until end of GCD
                 curBuffTimer = max(0,curBuffTimer-spellObj.CastTime) # Removing until end of GCD
 
+
+                             # if last action is buff update curBuffTimer
+                if checkForBuffAction and spellObj.id in possibleBuffActionId:
+                             # A dot is detected. Update buff timer and removing the time lost until the end of the GCD
+                    curBuffTimer = buffTimer
+                             # if last action is DOT update curDOTTimer
+                elif checkForDOTAction and spellObj.id in possibleDOTActionId:
+                             # A dot is detected. Update DOT timer and removing the time lost until the end of the GCD
+                    curDOTTimer = dotTimer
+
                 for ogcdIndex in range(lastGCDIndex+1,len(self.ActionSet)):
                     gcdLockTimer -= self.ActionSet[ogcdIndex].RecastTime
                     curDOTTimer = max(0,curDOTTimer-self.ActionSet[ogcdIndex].RecastTime) # Removing until end of GCD

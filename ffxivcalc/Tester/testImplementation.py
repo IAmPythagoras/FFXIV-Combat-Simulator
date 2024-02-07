@@ -17248,12 +17248,79 @@ def generateTimerEstimateTestSuite() -> testSuite:
     def teTest1ValidationFunction(testResults) -> (bool, list):
         passed = False   
 
-        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+2],1)
+        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+2],0.5)
 
         return passed , testResults
 
     teTest1 = test("Scholar DOT and Timestamp estimate test 1 ", teTest1TestFunction, teTest1ValidationFunction)
     timerEstimateTestSuite.addTest(teTest1)
+
+    def teTest2TestFunction() -> None:
+        """This test will try the opener of a blackmage. It will test for failed requirements but will not check for mana.
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 716, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Biolysis, Broil, Broil, Broil, Broil]
+        player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.BiolysisTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+
+    def teTest2ValidationFunction(testResults) -> (bool, list):
+        passed = False   
+
+        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+2],0.5)
+
+        return passed , testResults
+
+    teTest2 = test("Scholar DOT and Timestamp estimate test 2 ", teTest2TestFunction, teTest2ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest2)
+
+    def teTest3TestFunction() -> None:
+        """This test will try the opener of a blackmage. It will test for failed requirements but will not check for mana.
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 716, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Biolysis, Broil, Broil, Broil, Broil,Broil, Biolysis]
+        player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.BiolysisTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+
+    def teTest3ValidationFunction(testResults) -> (bool, list):
+        passed = False   
+
+        for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+2],0.5)
+
+        return passed , testResults
+
+    teTest3 = test("Scholar DOT and Timestamp estimate test 3 ", teTest3TestFunction, teTest3ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest3)
+
+
+
 
     return timerEstimateTestSuite
 
@@ -17484,6 +17551,8 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
 
 if __name__ == "__main__":
     level = logging.DEBUG 
+    main_logging.setLevel(level=logging.ERROR) 
+    test_logging.setLevel(level=level)
     logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
     #executeTests()
     generateTimerEstimateTestSuite().executeTestSuite()
