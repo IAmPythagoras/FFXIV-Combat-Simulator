@@ -18124,7 +18124,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
         return [player.Thunder3DOTTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
 
     def teTest28ValidationFunction(testResults) -> (bool, list):
-        passed = False   
+        passed = True   
 
         for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
