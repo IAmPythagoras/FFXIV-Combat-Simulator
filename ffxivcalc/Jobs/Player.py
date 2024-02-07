@@ -561,7 +561,7 @@ class Player:
                              # Since it will not be put into gcdIndexList we initialize the value of finalGCDLockTimer
                              # To what is left in it.
                 if action.GCD : finalGCDLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
-                if action.id in possibleDOTActionId : curDOTTimer = dotTimer
+                if action.id in possibleDOTActionId : curDOTTimer = dotTimer - max(spellObj.RecastTime-spellObj.CastTime)
                              # Do not check for buff since buff actions can never be the first GCD and are always
                              # 2nd or 3rd action.
 
@@ -623,24 +623,33 @@ class Player:
                     if curTimeStamp >= hasteInterval[0] and curTimeStamp <= hasteInterval[1]:
                         hasteBonus = hasteInterval[2]
                         break
-                             # Checking for if action is a DOT action. DOTs are only GCD so
-                             # we only check with spellObj
-                if checkForDOTAction and spellObj.id in possibleDOTActionId:
-                             # A dot is detected. Update DOT timer and removing the
-                    curDOTTimer = dotTimer
-                             # Checking for if action is a buff action. Buff actions are only on GCD
-                             # so we can check spellObj only
-                if checkForBuffAction and spellObj.id in possibleBuffActionId:
-                             # A dot is detected. Update DOT timer and removing the
-                    curBuffTimer = buffTimer
+
+                             # Compute spellObj cast/recast time
                 self.Haste += hasteBonus
                 self.computeActionTimer(spellObj)
                 self.Haste -= hasteBonus
+
+
+                             # Checking for if action is a DOT action. DOTs are only GCD so
+                             # we only check with spellObj
+                if checkForDOTAction and spellObj.id in possibleDOTActionId:
+                             # A dot is detected. Update DOT timer and removing the time lost until the end of the GCD
+                    curDOTTimer = dotTimer - max(0,spellObj.RecastTime - spellObj.CastTime)
+                else : curDOTTimer = max(0,curDOTTimer-spellObj.RecastTime) # Removing until end of GCD
+
+
+                             # Checking for if action is a buff action. Buff actions are only on GCD
+                             # so we can check spellObj only
+                if checkForBuffAction and spellObj.id in possibleBuffActionId:
+                             # A dot is detected. Update buff timer and removing the time lost until the end of the GCD
+                    curBuffTimer = buffTimer - max(0,spellObj.RecastTime - spellObj.CastTime)
+                else : curBuffTimer = max(0,curBuffTimer-(spellObj.RecastTime-spellObj.CastTime)) # Removing until end of GCD
+
+
+
                              # Adding estimated value
                 curTimeStamp += max(spellObj.RecastTime, spellObj.CastTime)
-                curDOTTimer = max(0,curDOTTimer-spellObj.RecastTime) # Removing until end of GCD
-                curBuffTimer = max(0,curBuffTimer-spellObj.RecastTime) # Removing until end of GCD
-
+                
 
                 gcdLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
                              # Will check if any potential clipping until next GCD
