@@ -568,15 +568,15 @@ class Player:
                              # Populating gcdIndexList. Skips first damage instance
         for index in range(firstIndexDamage+1,len(self.ActionSet)):
             action = self.ActionSet[index]
-            if action.GCD : gcdIndexList.append((index))
+            if action.GCD : gcdIndexList.append(index)
             
 
                              # If first haste action is done between the first GCD and 2nd it will be detected here
-            if hasHasteAction and (hasteBuffIndexList[0] >= firstIndexDamage and hasteBuffIndexList[0] < gcdIndexList[0]):
-                    hasteBuffIndexList.pop(0) # Remove this haste index
+        if hasHasteAction and (hasteBuffIndexList[0] < gcdIndexList[0]):
+                hasteBuffIndexList.pop(0) # Remove this haste index
 
-                    hasteBuffTimeIntervalList.append([curTimeStamp,curTimeStamp + hasteBuffTimer, hasteAmount])
-                    hasHasteAction = len(hasteBuffIndexList) != 0
+                hasteBuffTimeIntervalList.append([curTimeStamp,curTimeStamp + hasteBuffTimer, hasteAmount])
+                hasHasteAction = len(hasteBuffIndexList) != 0
 
                              # Initialize curTimeStamp according to first done oGCDs?
 
