@@ -593,11 +593,13 @@ class Player:
                 curTimeStamp += spellObj.CastTime
 
                 gcdLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
-                curDOTTimer = max(0,curDOTTimer-spellObj.RecastTime) # Removing until end of GCD
-                curBuffTimer = max(0,curBuffTimer-spellObj.RecastTime) # Removing until end of GCD
+                curDOTTimer = max(0,curDOTTimer-spellObj.CastTime) # Removing until end of GCD
+                curBuffTimer = max(0,curBuffTimer-spellObj.CastTime) # Removing until end of GCD
 
                 for ogcdIndex in range(lastGCDIndex+1,len(self.ActionSet)):
                     gcdLockTimer -= self.ActionSet[ogcdIndex].RecastTime
+                    curDOTTimer = max(0,curDOTTimer-self.ActionSet[ogcdIndex].RecastTime) # Removing until end of GCD
+                    curBuffTimer = max(0,curBuffTimer-self.ActionSet[ogcdIndex].RecastTime) # Removing until end of GCD
 
                              # If there is risks of clipping gcdLockTimer will be negative.
                              # So we substract gcdLockTimer from curTimeStamp (min(gcdLockTimer,0))
@@ -621,7 +623,16 @@ class Player:
                     if curTimeStamp >= hasteInterval[0] and curTimeStamp <= hasteInterval[1]:
                         hasteBonus = hasteInterval[2]
                         break
-
+                             # Checking for if action is a DOT action. DOTs are only GCD so
+                             # we only check with spellObj
+                if checkForDOTAction and spellObj.id in possibleDOTActionId:
+                             # A dot is detected. Update DOT timer and removing the
+                    curDOTTimer = dotTimer
+                             # Checking for if action is a buff action. Buff actions are only on GCD
+                             # so we can check spellObj only
+                if checkForBuffAction and spellObj.id in possibleBuffActionId:
+                             # A dot is detected. Update DOT timer and removing the
+                    curBuffTimer = buffTimer
                 self.Haste += hasteBonus
                 self.computeActionTimer(spellObj)
                 self.Haste -= hasteBonus
@@ -630,17 +641,6 @@ class Player:
                 curDOTTimer = max(0,curDOTTimer-spellObj.RecastTime) # Removing until end of GCD
                 curBuffTimer = max(0,curBuffTimer-spellObj.RecastTime) # Removing until end of GCD
 
-                             # Checking for if action is a DOT action. DOTs are only GCD so
-                             # we only check with spellObj
-                if checkForDOTAction and spellObj.id in possibleDOTActionId:
-                             # A dot is detected. Update DOT timer and removing the
-                    curDOTTimer = dotTimer
-
-                             # Checking for if action is a buff action. Buff actions are only on GCD
-                             # so we can check spellObj only
-                if checkForBuffAction and spellObj.id in possibleBuffActionId:
-                             # A dot is detected. Update DOT timer and removing the
-                    curBuffTimer = buffTimer
 
                 gcdLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
                              # Will check if any potential clipping until next GCD
