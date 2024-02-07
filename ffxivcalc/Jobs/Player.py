@@ -547,7 +547,7 @@ class Player:
                 hasteBuffIndexList.append(index)
                 hasHasteAction = True
 
-            if (not foundFirstDamage) and action.Potency > 0 :
+            if (not foundFirstDamage) and (action.Potency > 0 or action.id in possibleDOTActionId):
                 foundFirstDamage = True
                              # Found first damaging action
                              # Add to timestamp and will check for GCD clipping
@@ -561,6 +561,9 @@ class Player:
                              # Since it will not be put into gcdIndexList we initialize the value of finalGCDLockTimer
                              # To what is left in it.
                 if action.GCD : finalGCDLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
+                if action.id in possibleDOTActionId : curDOTTimer = dotTimer
+                             # Do not check for buff since buff actions can never be the first GCD and are always
+                             # 2nd or 3rd action.
 
                              # Populating gcdIndexList. Skips first damage instance
         for index in range(firstIndexDamage+1,len(self.ActionSet)):

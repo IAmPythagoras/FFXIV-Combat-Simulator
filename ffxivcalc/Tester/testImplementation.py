@@ -17246,7 +17246,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
         return [player.BiolysisTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
 
     def teTest1ValidationFunction(testResults) -> (bool, list):
-        passed = True   
+        passed = False   
 
         for i in range(len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+2],1)
 
