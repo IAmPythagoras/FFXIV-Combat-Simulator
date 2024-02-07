@@ -610,9 +610,10 @@ class Player:
                 finalGCDLockTimer -= self.ActionSet[index].RecastTime
             return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(max(0,finalGCDLockTimer),2),"dotTimer" : 0, "buffTimer" : 0}
 
-        hasteBonus = 0
+        
         lastGCDIndex = gcdIndexList[-1]
         for listIndex,gcdIndex in enumerate(gcdIndexList):
+            hasteBonus = 0 # Always reset haste bonus
             if gcdIndex == lastGCDIndex:
                              # Last GCD. So simply compute how long is left in the GCD
                              # Making deep copy to not affect anything
