@@ -442,7 +442,9 @@ class Player:
 
                                  # If is a Summoner we keept track of swiftcast
         isSMN = self.JobEnum == JobEnum.Summoner
-        
+                                 # If is a Samurai we keep track of Meikyo
+        isSAM = self.JobEnum == JobEnum.Samurai  
+        meikyoStack = 0
 
 
         # Monk can be ommited since the player object of monk is
@@ -462,6 +464,7 @@ class Player:
                 hasteBuffTimer = 15
             case JobEnum.Samurai : # Shifu
                 possibleHasteActionId.append(7479)
+                possibleHasteActionId.append(7482) # Will check if stacks of meikyo
                 hasteAmount = 13
                 hasteBuffTimer = 40
             case JobEnum.Bard : # Army Paeon
@@ -536,8 +539,9 @@ class Player:
                 possibleBuffActionId.append(24378)
                 possibleBuffActionId.append(24379)
                 buffTimer = 30
-            case JobEnum.Samurai : # Only tracks fugetsu
+            case JobEnum.Samurai : # Fugetsu
                 possibleBuffActionId.append(7478)
+                possibleBuffActionId.append(7481) # Will check if have stacks of meikyo
                 buffTimer = 40
             case JobEnum.Dragoon : # Powersurge
                 possibleBuffActionId.append(87)
@@ -567,10 +571,24 @@ class Player:
                              # and will look for haste actions
         for index,action in enumerate(self.ActionSet):
 
+
+            if isSAM and (action.id == SamuraiActions.Meikyo):
+                             # Keep track of meikyo
+                meikyoStack = 3
+
             if checkForHasteAction and action.id in possibleHasteActionId:
                              # Found haste action. Will append to index
-                hasteBuffIndexList.append(index)
-                hasHasteAction = True
+                if isSAM and action.id == SamuraiActions.Kasha:
+                             # If is kasha check if have meikyo stack
+                    if meikyoStack > 0:
+                        hasteBuffIndexList.append(index)
+                        hasHasteAction = True
+                else:
+                    hasteBuffIndexList.append(index)
+                    hasHasteAction = True
+
+            if isSAM and meikyoStack > 0 and (action.id == SamuraiActions.Yukikaze or action.id == SamuraiActions.Shifu or action.id == SamuraiActions.Kasha or action.id == SamuraiActions.Jinpu or action.id == SamuraiActions.Gekko):
+                meikyoStack-=1 
 
             if (not foundFirstDamage) and (action.Potency > 0 or action.id in possibleDOTActionId):
                 foundFirstDamage = True
@@ -615,6 +633,27 @@ class Player:
                 hasteBuffTimeIntervalList.append([curTimeStamp,curTimeStamp + hasteBuffTimer, hasteAmount])
                 hasHasteAction = len(hasteBuffIndexList) != 0
 
+                             # Will check all actions before first damage to see if any applies a buff
+        for index in range(firstIndexDamage):
+            if isBLM : 
+                if self.ActionSet[index].id == 7561:
+                    hasSwiftCast = True
+                elif self.ActionSet[index].id == 7421:
+                    tripleCastStack = 3
+            elif isRDM:
+                if self.ActionSet[index].id == 7561:
+                    hasSwiftCast = True
+                elif self.ActionSet[index].id == 7518:
+                    hasAcceleration = True
+            elif isSMN:
+                if self.ActionSet[index].id == 7561:
+                    hasSwiftCast = True
+            elif isSAM:
+                if self.ActionSet[index].id == 7499:
+                    meikyoStack = 3
+            
+
+
                              # Initialize curTimeStamp according to first done oGCDs?
 
         if len(gcdIndexList) == 0 : 
@@ -624,7 +663,8 @@ class Player:
                 curTimeStamp += self.ActionSet[index].RecastTime
                              # Since no other GCD remove oGCD cast time from the lock timer
                 finalGCDLockTimer -= self.ActionSet[index].RecastTime
-            return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(max(0,finalGCDLockTimer),2),"dotTimer" : 0, "buffTimer" : 0}
+            return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(max(0,finalGCDLockTimer),2),"dotTimer" : 0, "buffTimer" : 0,
+                    "detectedInFire" : inAstralFire, "detectedInIce" : inUmbralIce, "dualCast" : hasDualCast}
 
         
         lastGCDIndex = gcdIndexList[-1]
@@ -685,8 +725,14 @@ class Player:
 
                              # if last action is buff update curBuffTimer
                 if checkForBuffAction and spellObj.id in possibleBuffActionId:
-                             # A dot is detected. Update buff timer and removing the time lost until the end of the GCD
-                    curBuffTimer = buffTimer
+                             # A buff is detected. Update buff timer and removing the time lost until the end of the GCD
+                    if isSAM and spellObj.id == SamuraiActions.Gekko:
+                             # If is a sam we have to check if Gekko is used with Meikyo
+                            if meikyoStack > 0: 
+                                meikyoStack -= 1
+                                curBuffTimer = buffTimer
+                    else: curBuffTimer = buffTimer
+
                              # if last action is DOT update curDOTTimer
                 elif checkForDOTAction and spellObj.id in possibleDOTActionId:
                              # A dot is detected. Update DOT timer and removing the time lost until the end of the GCD
@@ -769,8 +815,12 @@ class Player:
                              # Checking for if action is a buff action. Buff actions are only on GCD
                              # so we can check spellObj only
                 if checkForBuffAction and spellObj.id in possibleBuffActionId:
-                             # A dot is detected. Update buff timer and removing the time lost until the end of the GCD
-                    curBuffTimer = buffTimer - max(0,spellObj.RecastTime - spellObj.CastTime)
+                             # A buff is detected. Update buff timer and removing the time lost until the end of the GCD
+                    if isSAM and spellObj.id == SamuraiActions.Gekko:
+                             # If is a sam we have to check if Gekko is used with Meikyo
+                            if meikyoStack > 0: 
+                                curBuffTimer = buffTimer # No need to substract since sam are insta cast
+                    else: curBuffTimer = buffTimer - max(0,spellObj.RecastTime - spellObj.CastTime)
                 else : curBuffTimer = max(0,curBuffTimer-max(spellObj.RecastTime,spellObj.CastTime)) # Removing until end of GCD
 
                 curTimeStamp += max(spellObj.RecastTime, spellObj.CastTime)
@@ -849,6 +899,10 @@ class Player:
                 elif isRDM :
                     if spellObj.CastTime > gcdCastDetectionLimit:
                         hasDualCast = True
+                             # Check if remove Meikyo stack
+                elif isSAM and meikyoStack > 0 and (spellObj.id == SamuraiActions.Yukikaze or spellObj.id == SamuraiActions.Shifu or spellObj.id == SamuraiActions.Kasha
+                                                     or spellObj.id == SamuraiActions.Jinpu or spellObj.id == SamuraiActions.Gekko):
+                    meikyoStack-=1 
 
         return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(finalGCDLockTimer,2), "dotTimer" : round(curDOTTimer,2), "buffTimer" : round(curBuffTimer,2),
                 "detectedInFire" : inAstralFire, "detectedInIce" : inUmbralIce, "dualCast" : hasDualCast}

@@ -18474,6 +18474,228 @@ def generateTimerEstimateTestSuite() -> testSuite:
     teTest37 = test("Ninja Timestamp estimate test 1", teTest37TestFunction, teTest37ValidationFunction)
     timerEstimateTestSuite.addTest(teTest37)
 
+    def teTest38TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Huton,SpinningEdge, GustSlash, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, GustSlash, AeolianEdge,
+                    GustSlash, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, GustSlash, AeolianEdge]
+        player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+
+    def teTest38ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest38 = test("Ninja Timestamp estimate test 2", teTest38TestFunction, teTest38ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest38)
+
+    def teTest39TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Jin, Chi, Ten, Huton, Hide, Ten, Chi, Jin, WaitAbility(5), Suiton, Kassatsu, SpinningEdge, Potion, GustSlash, Mug, Bunshin, 
+                     PhantomKamaitachi, TrickAttack, AeolianEdge, DreamWithinADream, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, TenChiJin, Ten2, Chi2, 
+                     Jin2, Meisui, FleetingRaiju, Bhavacakra, FleetingRaiju, Bhavacakra, Ten, Chi, Raiton, FleetingRaiju, SpinningEdge, GustSlash, AeolianEdge, 
+                     SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, GustSlash, ArmorCrush, Bhavacakra, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, 
+                     Ten, Chi, Jin, Suiton, GustSlash, AeolianEdge, Kassatsu, SpinningEdge, GustSlash, AeolianEdge, TrickAttack, SpinningEdge, DreamWithinADream, 
+                     Bhavacakra, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, Ten, Chi, Raiton, FleetingRaiju, FleetingRaiju, GustSlash, ArmorCrush, SpinningEdge, GustSlash, AeolianEdge]
+        player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+
+    def teTest39ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest39 = test("Ninja Timestamp estimate test 3", teTest39TestFunction, teTest39ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest39)
+
+    def teTest40TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 889, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [DragonKick, PerfectBalance, TwinSnakes, RiddleOfFire, Demolish, WaitAbility(1), Potion, Bootshine, Brotherhood, TheForbiddenChakra,
+                     RisingPhoenix, RiddleOfWind, DragonKick, TheForbiddenChakra, PerfectBalance, Bootshine, SnapPunch, TheForbiddenChakra, TwinSnakes, 
+                     RisingPhoenix, TheForbiddenChakra, DragonKick, TrueStrike, TheForbiddenChakra, Demolish, Bootshine, TwinSnakes, SnapPunch, DragonKick,
+                     TrueStrike, SnapPunch, Bootshine, TwinSnakes, Demolish, DragonKick, TrueStrike, SnapPunch, TheForbiddenChakra, Bootshine, TwinSnakes, SnapPunch, 
+                     DragonKick, TrueStrike, Demolish, Bootshine, TwinSnakes, RiddleOfFire, DragonKick, Bootshine, TheForbiddenChakra, DragonKick, ElixirField, Bootshine,
+                     TwinSnakes, Demolish, DragonKick, DragonKick, DragonKick]
+        player = Player(actionSet, [], Stat, JobEnum.Monk)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"], player.DemolishDOTTimer, estimate["dotTimer"],
+                player.DisciplinedFistTimer, estimate["buffTimer"]]
+
+    def teTest40ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest40 = test("Monk DOT,buff and Timestamp estimate test 1", teTest40TestFunction, teTest40ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest40)
+
+    def teTest41TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 889, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [DragonKick, PerfectBalance, TwinSnakes, RiddleOfFire, Demolish, WaitAbility(1), Potion, Bootshine, Brotherhood, TheForbiddenChakra,
+                     RisingPhoenix, RiddleOfWind, DragonKick, TheForbiddenChakra, PerfectBalance, Bootshine, SnapPunch, TheForbiddenChakra, TwinSnakes, 
+                     RisingPhoenix, TheForbiddenChakra, DragonKick, TrueStrike, TheForbiddenChakra, Demolish, Bootshine, TwinSnakes, SnapPunch, DragonKick,
+                     TrueStrike, SnapPunch, Bootshine, TwinSnakes, Demolish, DragonKick, TrueStrike, SnapPunch, TheForbiddenChakra, Bootshine, TwinSnakes, SnapPunch, 
+                     DragonKick, TrueStrike, Demolish, Bootshine, TwinSnakes, RiddleOfFire, DragonKick, Bootshine, TheForbiddenChakra, DragonKick, ElixirField, Bootshine,
+                     TwinSnakes, Demolish, DragonKick, DragonKick, DragonKick,DragonKick, DragonKick, DragonKick,DragonKick, DragonKick, DragonKick,DragonKick, DragonKick, DragonKick]
+        player = Player(actionSet, [], Stat, JobEnum.Monk)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"], player.DemolishDOTTimer, estimate["dotTimer"],
+                player.DisciplinedFistTimer, estimate["buffTimer"]]
+
+    def teTest41ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest41 = test("Monk DOT,buff and Timestamp estimate test 2", teTest41TestFunction, teTest41ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest41)
+
+    def teTest42TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [DragonKick, PerfectBalance, TwinSnakes, RiddleOfFire, Demolish, WaitAbility(1), Potion, Bootshine, Brotherhood, TheForbiddenChakra,
+                     RisingPhoenix, RiddleOfWind, DragonKick, TheForbiddenChakra, PerfectBalance, Bootshine, SnapPunch, TheForbiddenChakra, TwinSnakes, 
+                     RisingPhoenix, TheForbiddenChakra, DragonKick, TrueStrike, TheForbiddenChakra, Demolish, Bootshine, TwinSnakes, SnapPunch, DragonKick,
+                     TrueStrike, SnapPunch, Bootshine, TwinSnakes, Demolish, DragonKick, TrueStrike, SnapPunch, TheForbiddenChakra, Bootshine, TwinSnakes, SnapPunch, 
+                     DragonKick, TrueStrike, Demolish, Bootshine, TwinSnakes, RiddleOfFire, DragonKick, Bootshine, TheForbiddenChakra, DragonKick, ElixirField, Bootshine,
+                     TwinSnakes, Demolish, DragonKick, DragonKick, DragonKick,DragonKick, DragonKick, DragonKick,DragonKick, DragonKick, DragonKick,DragonKick, DragonKick, DragonKick]
+        player = Player(actionSet, [], Stat, JobEnum.Monk)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"], player.DemolishDOTTimer, estimate["dotTimer"],
+                player.DisciplinedFistTimer, estimate["buffTimer"]]
+
+    def teTest42ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest42 = test("Monk DOT,buff and Timestamp estimate test 3", teTest42TestFunction, teTest42ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest42)
+
+
+    def teTest43TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 976, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Meikyo, Gekko, WaitAbility(1), Potion, Kasha, Ikishoten, Yukikaze, Midare, KaeshiSetsugekka, Senei, Meikyo, Gekko, Shinten, 
+                     Higanbana, Shinten, Gekko, Shinten, OgiNamikiri, Shoha, KaeshiNamikiri, Kasha, Shinten, Hakaze, Yukikaze, Midare, KaeshiSetsugekka, 
+                     Shinten, Hakaze, Jinpu, Gekko, Shinten, Hakaze, Shifu, Kasha, Hakaze, Shinten, Yukikaze, Midare, Hakaze, Jinpu, Gekko, Hakaze, Shifu, 
+                     Kasha, Shinten, Hakaze, Yukikaze, Shinten, Meikyo, Kasha, Kasha, Shinten, Shoha, Gekko, Shinten, Hakaze, Yukikaze, Shinten, Midare,
+                     KaeshiSetsugekka, Hakaze, Yukikaze, Hakaze, Shinten, Shifu, Kasha]
+        player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"], player.HiganbanaTimer, estimate["dotTimer"],
+                player.FugetsuTimer, estimate["buffTimer"]]
+
+    def teTest43ValidationFunction(testResults) -> (bool, list):
+        passed = False   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest43 = test("Samurai DOT,buff and Timestamp estimate test 1", teTest43TestFunction, teTest43ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest43)
+
 
 
     return timerEstimateTestSuite
