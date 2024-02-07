@@ -421,6 +421,20 @@ class Player:
         possibleHasteActionId = []
         hasteAmount = 0
         hasteBuffTimer = 0
+
+                                 # If the job is blackmage we check for insta cast such as triplecast, swiftcast
+                                 # and keep track of what state the player is in since it affects cast times.
+                                 # It is not negligeable. We will assume a stack of triplecast is used right away
+                                 # (same for swiftcast) and do not check if the casted action is insta cast (which wouldn't use the stack)
+                                 # We also do not keep track of the different level of fire/ice and only assume full stack. This of course adds error, but will be smaller than without
+                                 # this whole thing.
+        isBLM = self.JobEnum == JobEnum.BlackMage
+        inAstralFire = False
+        inUmbralIce = False
+        tripleCastStack = 0
+        hasSwiftCast = False
+
+
         # Monk can be ommited since the player object of monk is
         # initialized with haste of 20.
         # And we assume max haste from bard (even if this results in worst estimate)
@@ -494,9 +508,10 @@ class Player:
                 possibleDOTActionId.append(16484)
                 possibleDOTActionId.append(7489)
                 dotTimer = 60
-            case JobEnum.Bard : # Shadowbite (will only track shadowbite)
-                                # but allows IronJaws to reset timer
-                possibleDOTActionId.append(16494)
+            case JobEnum.Bard : # Only tracks the highest DOT timer and allows iron jaws to reset
+                                # both of them
+                possibleDOTActionId.append(7406)
+                possibleDOTActionId.append(7407)
                 possibleDOTActionId.append(3560)
                 dotTimer = 45
         checkForDOTAction = len(possibleDOTActionId) != 0
@@ -634,8 +649,10 @@ class Player:
 
                              # Making deep copy to not affect anything
                 spellObj = deepcopy(self.ActionSet[gcdIndex])
+
                              # Checking if this action has an haste effect onto it.
                              # If it does we have to add haste to the player and remove it afterward.
+                             
                 hasteBonus = 0
                 for hasteInterval in hasteBuffTimeIntervalList:
                     if curTimeStamp >= hasteInterval[0] and curTimeStamp <= hasteInterval[1]:
@@ -665,10 +682,23 @@ class Player:
 
 
 
-                             # Adding estimated value
+                             # Checking if BLM in which case we add some effects is it applies 
+                if isBLM:
+                    if inAstralFire and spellObj.IsIce or inUmbralIce and spellObj.IsFire:
+                             # reduce casttime
+                            spellObj.CastTime = round(spellObj.CastTime/2,2)
+
+                             # Check for swiftcast/Triplecast
+                    if hasSwiftCast:
+                        spellObj.CastTime = 0
+                        hasSwiftCast = False
+                    elif tripleCastStack > 0:
+                        spellObj.CastTime = 0
+                        tripleCastStack -= 1
+
                 curTimeStamp += max(spellObj.RecastTime, spellObj.CastTime)
                 
-
+                             # Adding estimated value 
                 gcdLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
                              # Will check if any potential clipping until next GCD
                              # Adding up all oGCD actions between both GCD.
@@ -677,7 +707,20 @@ class Player:
                 for ogcdIndex in range(gcdIndex+1,gcdIndexList[listIndex+1]):
                     gcdLockTimer -= self.ActionSet[ogcdIndex].RecastTime
 
-                             # 
+                             # If isBLM we check if the oGCD action is 'transpose' which will affect the state
+                             # We also check for triplecast/swiftcast
+                    if isBLM : 
+                        if self.ActionSet[ogcdIndex].id == 149 :
+                            if inUmbralIce : 
+                                inUmbralIce = False
+                                inAstralFire = True
+                            elif inAstralFire:
+                                inUmbralIce = True
+                                inAstralFire = False
+                        elif self.ActionSet[ogcdIndex].id == 7561:
+                            hasSwiftCast = True
+                        elif self.ActionSet[ogcdIndex].id == 7421:
+                            tripleCastStack = 3
 
 
                              # If there is risks of clipping gcdLockTimer will be negative.
@@ -688,7 +731,38 @@ class Player:
                     curDOTTimer = max(0,curDOTTimer+min(0,gcdLockTimer))
                     curBuffTimer = max(0,curBuffTimer+min(0,gcdLockTimer))
 
-        return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(finalGCDLockTimer,2), "dotTimer" : round(curDOTTimer,2), "buffTimer" : round(curBuffTimer,2)}
+                                             # Last thing we check if 
+                if isBLM:
+                    if not inAstralFire and not inUmbralIce: # Not in any
+                        if  spellObj.IsFire : inAstralFire = True
+                        elif spellObj.IsIce : inUmbralIce = True
+                    if inUmbralIce : 
+                             # The only two actions that can make a BLM go from ice -> fire are F3 and transpose (is an oGCD) so we only check for those two.
+                             # to see if we are now in fire. If the action 'IsIce' or not 'IsFire' and not 'IsIce' then we stay in ice.
+                             # Else we loose both fire and ice
+                        if spellObj.IsIce or (not spellObj.IsFire and not spellObj.IsIce):
+                            pass
+                        elif spellObj.id == 152:
+                            inUmbralIce = False
+                            inAstralFire = True
+                        else :
+                            inUmbralIce = False
+                            inAstralFire = False # Might not be required, but is a way to make sure.
+                    if inAstralFire:
+                             # The only two actions that can make a BLM go from fire -> ice are B3 and transpose (is an oGCD) so we only check for those two.
+                             # to see if we are now in ice. If the action 'IsFire' or not 'IsFire' and not 'IsIce' then we stay in fire.
+                             # Else we loose both fire and ice
+                        if spellObj.IsFire or (not spellObj.IsFire and not spellObj.IsIce):
+                            pass
+                        elif spellObj.id == 154:
+                            inUmbralIce = True
+                            inAstralFire = False
+                        else :
+                            inUmbralIce = False
+                            inAstralFire = False # Might not be required, but is a way to make sure.
+
+        return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(finalGCDLockTimer,2), "dotTimer" : round(curDOTTimer,2), "buffTimer" : round(curBuffTimer,2),
+                "detectedInFire" : inAstralFire, "detectedInIce" : inUmbralIce}
 
 
     def __init__(self, ActionSet, EffectList, Stat,Job : JobEnum):

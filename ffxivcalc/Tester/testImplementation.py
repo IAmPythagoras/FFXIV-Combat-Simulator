@@ -18165,6 +18165,38 @@ def generateTimerEstimateTestSuite() -> testSuite:
     teTest29 = test("Blackmage DOT and Timestamp estimate test 3", teTest29TestFunction, teTest29ValidationFunction)
     timerEstimateTestSuite.addTest(teTest29)
 
+    def teTest30TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 950, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Fire3, LeyLines, Fire4, Thunder3, Fire4, Fire4, Fire4, Fire4, Fire4, Fire4, Fire4, Fire4, Fire4, Thunder3, Fire4, Triplecast,Fire4, Fire4, Fire4, Fire4, Fire4]
+        player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.Thunder3DOTTimer, estimate["dotTimer"], Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+
+    def teTest30ValidationFunction(testResults) -> (bool, list):
+        passed = False   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest30 = test("Blackmage DOT and Timestamp estimate test 4 - Leylines", teTest30TestFunction, teTest30ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest30)
+
 
 
 
