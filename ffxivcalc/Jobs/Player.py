@@ -439,6 +439,9 @@ class Player:
         hasDualCast = False
         hasAcceleration = False
         gcdCastDetectionLimit = 1.7 # Actions with cast times under that treshold will give dualcast
+
+                                 # If is a Summoner we keept track of swiftcast
+        isSMN = self.JobEnum == JobEnum.Summoner
         
 
 
@@ -667,6 +670,10 @@ class Player:
                         elif hasDualCast:
                             spellObj.CastTime = 0
                             hasDualCast = False
+                elif isSMN:
+                    if spellObj.CastTime > 0.1 and hasSwiftCast:
+                            spellObj.CastTime = 0
+                            hasSwiftCast = False
 
                              # Adding CastTime only since last GCD
                 curTimeStamp += spellObj.CastTime
@@ -746,6 +753,10 @@ class Player:
                         elif hasDualCast:
                             spellObj.CastTime = 0
                             hasDualCast = False
+                elif isSMN:
+                    if spellObj.CastTime > 0.1 and hasSwiftCast:
+                            spellObj.CastTime = 0
+                            hasSwiftCast = False
 
                              # Checking for if action is a DOT action. DOTs are only GCD so
                              # we only check with spellObj
@@ -792,6 +803,9 @@ class Player:
                             hasSwiftCast = True
                         elif self.ActionSet[ogcdIndex].id == 7518:
                             hasAcceleration = True
+                    elif isSMN:
+                        if self.ActionSet[ogcdIndex].id == 7561:
+                            hasSwiftCast = True
 
 
                              # If there is risks of clipping gcdLockTimer will be negative.

@@ -18294,10 +18294,10 @@ def generateTimerEstimateTestSuite() -> testSuite:
         estimate = player.computeTimeStamp()
         Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"], False, estimate['dualCast']]
 
     def teTest33ValidationFunction(testResults) -> (bool, list):
-        passed = False   
+        passed = True   
         for i in range(0,len(testResults),2): 
             passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
@@ -18305,6 +18305,104 @@ def generateTimerEstimateTestSuite() -> testSuite:
 
     teTest33 = test("Redmage Timestamp estimate test 1", teTest33TestFunction, teTest33ValidationFunction)
     timerEstimateTestSuite.addTest(teTest33)
+
+    def teTest34TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 950, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Verthunder, Verareo, Swiftcast,Acceleration, Verthunder, Potion,Verthunder]
+        player = Player(actionSet, [], Stat, JobEnum.RedMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"], False, estimate['dualCast']]
+
+    def teTest34ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest34 = test("Redmage Timestamp estimate test 2", teTest34TestFunction, teTest34ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest34)
+
+    def teTest35TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 950, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Verthunder, Verareo,Verstone, Swiftcast,Acceleration, Verthunder, Potion,Verthunder]
+        player = Player(actionSet, [], Stat, JobEnum.RedMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"], True, estimate['dualCast']]
+
+    def teTest35ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest35 = test("Redmage Timestamp estimate test 3", teTest35TestFunction, teTest35ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest35)
+
+    def teTest36TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 523, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Ruin3, Summon, SearingLight, AstralImpulse, AstralImpulse, AstralImpulse, EnergyDrainSMN, Enkindle, AstralImpulse, Deathflare, Fester,
+                    AstralImpulse, Fester, AstralImpulse, Garuda, Swiftcast, Slipstream, Emerald, Emerald, Emerald, Emerald, Titan, Topaz, Mountain, Topaz, 
+                    Mountain, Topaz, Mountain, Topaz, Mountain, Ifrit, Cyclone, Strike, Ruby, Ruby, Ruin4, Ruin3]
+        player = Player(actionSet, [], Stat, JobEnum.RedMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+
+    def teTest36ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest36 = test("Summoner Timestamp estimate test 1", teTest36TestFunction, teTest36ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest36)
 
 
 
