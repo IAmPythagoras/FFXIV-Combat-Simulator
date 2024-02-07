@@ -561,7 +561,7 @@ class Player:
                              # Since it will not be put into gcdIndexList we initialize the value of finalGCDLockTimer
                              # To what is left in it.
                 if action.GCD : finalGCDLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
-                if action.id in possibleDOTActionId : curDOTTimer = dotTimer - max(spellObj.RecastTime-spellObj.CastTime)
+                if action.id in possibleDOTActionId : curDOTTimer = dotTimer - max(0,spellObj.RecastTime-spellObj.CastTime)
                              # Do not check for buff since buff actions can never be the first GCD and are always
                              # 2nd or 3rd action.
 
