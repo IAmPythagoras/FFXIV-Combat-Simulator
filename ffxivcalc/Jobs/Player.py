@@ -642,7 +642,7 @@ class Player:
                 hasHasteAction = len(hasteBuffIndexList) != 0
 
                              # Will check all actions before first damage to see if any applies a buff
-        for index in (range(firstIndexDamage) if firstIndexDamage > 0 else range(len(self.ActionSet))):
+        for index in (range(firstIndexDamage) if foundFirstDamage else range(len(self.ActionSet))):
             if isBLM : 
                 if self.ActionSet[index].id == 7561:
                     hasSwiftCast = True

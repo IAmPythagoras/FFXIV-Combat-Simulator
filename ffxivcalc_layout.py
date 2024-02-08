@@ -195,7 +195,7 @@ GNBOpener = [KeenEdge, Potion, BrutalShell, NoMercy, Bloodfest, GnashingFang, Ju
 
 # Here we are linking the earlier created action list to the player object. You should not have to change anything here except if you are trying to simulate
 # with more than 1 player per job. In which case you will need to link the earlier created object and the earlier created action list.
-
+RDMOpener =[Verthunder, Verareo, Swiftcast,Acceleration, Verthunder, Potion,Verthunder]
 # Caster
 BLMPlayer.ActionSet = BLMOpener
 RDMPlayer.ActionSet = RDMOpener
@@ -233,7 +233,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [DRKPlayer]
+PlayerList = [RDMPlayer]
 
 Event.AddPlayer(PlayerList)
 
