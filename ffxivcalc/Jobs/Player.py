@@ -449,6 +449,7 @@ class Player:
         meikyoStack = 0
 
         isDRK = self.JobEnum == JobEnum.DarkKnight # Keep track since buff is oGCD
+        isWAR = self.JobEnum == JobEnum.Warrior # Have to check how long to add on buffTimer
 
 
         # Monk can be ommited since the player object of monk is
@@ -560,10 +561,10 @@ class Player:
                 possibleBuffActionId.append(16470)
                 buffTimer = 30
                 buffWillStack = True
-            case JobEnum.Warrior :
+            case JobEnum.Warrior : # Inner release buff will be detected in oGCD check
                 possibleBuffActionId.append(16462)
-                possibleBuffActionId.append(7389)
                 possibleBuffActionId.append(45)
+                possibleBuffActionId.append(7389)
                 buffTimer = 30        
                 buffWillStack = True
 
@@ -915,7 +916,10 @@ class Player:
                     elif isDRK: # DRK's buff are oGCD so we check here
                         if checkForBuffAction and self.ActionSet[ogcdIndex].id in possibleBuffActionId:
                             curBuffTimer = min(60,curBuffTimer + buffTimer) - max(0,spellObj.RecastTime - spellObj.CastTime) - min(0,gcdLockTimer)
-
+                    elif isWAR
+                        if checkForBuffAction and self.ActionSet[ogcdIndex].id in possibleBuffActionId:
+                             # Adding 10 seconds to buff
+                            curBuffTimer = min(60,curBuffTimer + 10) - max(0,spellObj.RecastTime - spellObj.CastTime) - min(0,gcdLockTimer)
                             # If there is risks of clipping gcdLockTimer will be negative.
                             # So we substract gcdLockTimer from curTimeStamp (min(gcdLockTimer,0))
                             # Could be interesting to add 'Risk of Clipping between GCD X and GCD Y'
