@@ -78,8 +78,7 @@ MNKStat = {'MainStat': 3378, 'WD': 132, 'Det': 1464, 'Ten': 400, 'SS': 400, 'SkS
 RPRStat = {'MainStat': 3378, 'WD': 132, 'Det': 1870, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2567, 'DH': 1360, 'Piety': 390} # Stats for Reaper
 
 DRKStat = {'MainStat': 3338, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 591, 'Crit': 2627, 'DH': 976, 'Piety': 390} # Stats for DarkKnight
-WARStat = {'MainStat': 3338, 'WD': 132, 'Det': 2023, 'Ten': 529, 'SS': 400, 'SkS': 948, 'Crit': 2481, 'DH': 652, 'Piety': 390} # Stats for Warrior
-WARStat = {'MainStat': 3338, 'WD': 132, 'Det': 2076, 'Ten': 529, 'SS': 400, 'SkS': 934, 'Crit': 2586, 'DH': 508, 'Piety': 390} # Stats for Warrior
+WARStat = {'MainStat': 3338, 'WD': 132, 'Det': 2023, 'Ten': 529, 'SS': 400, 'SkS': 400, 'Crit': 2481, 'DH': 652, 'Piety': 390} # Stats for Warrior
 PLDStat = {'MainStat': 3328, 'WD': 132, 'Det': 2182, 'Ten': 529, 'SS': 400, 'SkS': 400, 'Crit': 2540, 'DH': 976, 'Piety': 390}# Stats for Paladin
 GNBStat = {'MainStat': 3338, 'WD': 132, 'Det': 1944, 'Ten': 529, 'SS': 400, 'SkS': 1462, 'Crit': 2262, 'DH': 436, 'Piety': 390}# Stats for Gunbreaker
 
@@ -195,7 +194,7 @@ GNBOpener = [KeenEdge, Potion, BrutalShell, NoMercy, Bloodfest, GnashingFang, Ju
 
 # Here we are linking the earlier created action list to the player object. You should not have to change anything here except if you are trying to simulate
 # with more than 1 player per job. In which case you will need to link the earlier created object and the earlier created action list.
-RDMOpener =[Verthunder, Verareo, Swiftcast,Acceleration, Verthunder, Potion,Verthunder]
+
 # Caster
 BLMPlayer.ActionSet = BLMOpener
 RDMPlayer.ActionSet = RDMOpener
@@ -233,7 +232,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [RDMPlayer]
+PlayerList = [WARPlayer]
 
 Event.AddPlayer(PlayerList)
 

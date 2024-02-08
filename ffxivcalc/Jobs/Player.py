@@ -663,8 +663,11 @@ class Player:
             elif isDRK:
                 if self.ActionSet[index].id in possibleBuffActionId:
                     curBuffTimer = 30 # If does floodshadow prepull. Not really possible but still
+            elif isWAR:
+                if self.ActionSet[index].id in possibleBuffActionId:
+                    curBuffTimer = 10 # If does floodshadow prepull. Not really possible but still
             
-
+            
 
                              # Initialize curTimeStamp according to first done oGCDs?
 
@@ -915,11 +918,11 @@ class Player:
                             meikyoStack = 3
                     elif isDRK: # DRK's buff are oGCD so we check here
                         if checkForBuffAction and self.ActionSet[ogcdIndex].id in possibleBuffActionId:
-                            curBuffTimer = min(60,curBuffTimer + buffTimer) - max(0,spellObj.RecastTime - spellObj.CastTime) - min(0,gcdLockTimer)
+                            curBuffTimer = min(60,curBuffTimer + buffTimer) - min(0,gcdLockTimer)
                     elif isWAR:
                         if checkForBuffAction and self.ActionSet[ogcdIndex].id in possibleBuffActionId:
                              # Adding 10 seconds to buff
-                            curBuffTimer = min(60,curBuffTimer + 10) - max(0,spellObj.RecastTime - spellObj.CastTime) - min(0,gcdLockTimer)
+                            curBuffTimer = min(60,curBuffTimer + 10) - min(0,gcdLockTimer)
                             # If there is risks of clipping gcdLockTimer will be negative.
                             # So we substract gcdLockTimer from curTimeStamp (min(gcdLockTimer,0))
                             # Could be interesting to add 'Risk of Clipping between GCD X and GCD Y'
