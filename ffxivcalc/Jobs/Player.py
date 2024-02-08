@@ -916,7 +916,7 @@ class Player:
                     elif isDRK: # DRK's buff are oGCD so we check here
                         if checkForBuffAction and self.ActionSet[ogcdIndex].id in possibleBuffActionId:
                             curBuffTimer = min(60,curBuffTimer + buffTimer) - max(0,spellObj.RecastTime - spellObj.CastTime) - min(0,gcdLockTimer)
-                    elif isWAR
+                    elif isWAR:
                         if checkForBuffAction and self.ActionSet[ogcdIndex].id in possibleBuffActionId:
                              # Adding 10 seconds to buff
                             curBuffTimer = min(60,curBuffTimer + 10) - max(0,spellObj.RecastTime - spellObj.CastTime) - min(0,gcdLockTimer)
