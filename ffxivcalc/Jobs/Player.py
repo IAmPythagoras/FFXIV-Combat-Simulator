@@ -642,7 +642,7 @@ class Player:
                 hasHasteAction = len(hasteBuffIndexList) != 0
 
                              # Will check all actions before first damage to see if any applies a buff
-        for index in range(firstIndexDamage):
+        for index in (range(firstIndexDamage) if firstIndexDamage > 0 else range(len(self.ActionSet))):
             if isBLM : 
                 if self.ActionSet[index].id == 7561:
                     hasSwiftCast = True
@@ -659,6 +659,9 @@ class Player:
             elif isSAM:
                 if self.ActionSet[index].id == SamuraiActions.Meikyo:
                     meikyoStack = 3
+            elif isDRK:
+                if self.ActionSet[index].id in possibleBuffActionId:
+                    curBuffTimer = 30 # If does floodshadow prepull. Not really possible but still
             
 
 
@@ -671,7 +674,7 @@ class Player:
                 curTimeStamp += self.ActionSet[index].RecastTime
                              # Since no other GCD remove oGCD cast time from the lock timer
                 finalGCDLockTimer -= self.ActionSet[index].RecastTime
-            return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(max(0,finalGCDLockTimer),2),"dotTimer" : 0, "buffTimer" : 0,
+            return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(max(0,finalGCDLockTimer),2),"dotTimer" : curDOTTimer, "buffTimer" : curBuffTimer,
                     "detectedInFire" : inAstralFire, "detectedInIce" : inUmbralIce, "dualCast" : hasDualCast}
 
         
@@ -910,7 +913,7 @@ class Player:
                         if self.ActionSet[ogcdIndex].id == SamuraiActions.Meikyo:
                             meikyoStack = 3
                     elif isDRK: # DRK's buff are oGCD so we check here
-                        if checkForBuffAction and spellObj.id in possibleBuffActionId:
+                        if checkForBuffAction and self.ActionSet[ogcdIndex].id in possibleBuffActionId:
                             curBuffTimer = min(60,curBuffTimer + buffTimer - max(0,spellObj.RecastTime - spellObj.CastTime))
 
                             # If there is risks of clipping gcdLockTimer will be negative.
