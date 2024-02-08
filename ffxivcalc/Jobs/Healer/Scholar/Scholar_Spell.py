@@ -82,7 +82,7 @@ def ApplyFeyIllumination(Player, Enemy):
 
     for player in Player.CurrentFight.PlayerList:
         player.AddHealingBuff(HealingBuff(1.1, 20, player, GivenHealBuff=False, BuffName="FeyIllumination"))
-        player.AddMitBuff(MitBuff(1.05, 20, player, MagicMit=True, BuffName="FeyIllumination"))
+        player.AddMitBuff(MitBuff(0.95, 20, player, MagicMit=True, BuffName="FeyIllumination"))
 
 def ApplyWhisperingDawn(Player, Enemy):
     Player.WhisperingDawnCD = 60
@@ -113,7 +113,7 @@ def ApplySacredSoil(Player, Enemy):
     Player.AetherFlowStack -= 1
 
     for player in Player.CurrentFight.PlayerList:
-        player.AddMitBuff(MitBuff(1.1, 15, player, BuffName="SacredSoil"))
+        player.AddMitBuff(MitBuff(0.9, 15, player, BuffName="SacredSoil"))
 
 def ApplyExcogitation(Player, Enemy):
     Player.ExcogitationCD = 45
@@ -127,7 +127,7 @@ def ApplyExpedient(Player, Enemy):
     Player.ExpedientCD = 120
 
     for player in Player.CurrentFight.PlayerList:
-        player.AddMitBuff(MitBuff(1.1, 20, player, BuffName="Expedient"))
+        player.AddMitBuff(MitBuff(0.9, 20, player, BuffName="Expedient"))
 
 def ApplyProtraction(Player, Enemy):
     Player.ProtractionCD = 60

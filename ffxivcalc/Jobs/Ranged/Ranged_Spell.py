@@ -1,6 +1,6 @@
 from ffxivcalc.Jobs.Base_Spell import Potion, Spell
 from ffxivcalc.Jobs.Melee.Melee_Spell import ArmLength, SecondWind
-Lock = 0.75
+Lock = 0
 class RangedSpell(Spell):
 
     def __init__(self, id, GCD, CastTime, RecastTime, Potency, ManaCost, Effect, Requirement, type = 0):

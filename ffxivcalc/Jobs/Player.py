@@ -22,7 +22,7 @@ class MitBuff:
     also keeps track of the timer of such a buff.
 
     Returns:
-        PercentMit (float) : Percent damage taken of the mitigation. So if 30% mit, PercentMit = 0.7
+        PercentMit (float) : Percentage of the original damage taken once mitigation is applied. So if 30% mit, PercentMit = 0.7
         Timer (float) : Timer of the mit
         Player (Player) : Player on which the mit is applied
         MagicMit (bool) : If the Mit is only for magic damage
@@ -182,7 +182,6 @@ class Player:
 
         self.hasteHasChanged = False
         self.hasteChangeValue = 0
-
 
     def AddHealingBuff(self, buff : HealingBuff, GivenHealBuff = True, stackable = False):
         """
@@ -367,6 +366,598 @@ class Player:
             newDelay (float): Value of the day in seconds.
         """
         self.baseDelay = newDelay
+
+    def computeActionReduction(self) -> None:
+        """
+        This function computes SpellReduction and WeaponSkillReduction ratio and sets those values at the
+        appropriate fields.
+        """
+        self.SpellReduction = (1000 - floor(130 * (self.Stat["SS"]-400) / 1900))/1000
+        self.WeaponskillReduction = (1000 - floor(130 * (self.Stat["SkS"]-400) / 1900))/1000
+
+    def computeActionTimer(self, Spell) -> None:
+
+        """
+        This function computes the new CastTime and RecastTime of the Spell given the player's current Haste and SpS/SkS value.
+
+        Spell (Spell) -> Spell object to alter the CastTime and RecastTime
+        """
+        if Spell.type == 1: # Spell
+            Spell.CastTime = floor(floor(floor((int(Spell.CastTime * 1000 ) * self.SpellReduction)) * (100 - self.Haste)/100)/10)/100  if Spell.CastTime > 0 else 0
+            Spell.RecastTime =floor(floor(floor((int(Spell.RecastTime * 1000 ) * self.SpellReduction)) * (100 - self.Haste)/100)/10)/100
+            if Spell.RecastTime < 1.5 and Spell.RecastTime > 0 : Spell.RecastTime = 1.5 # A GCD cannot go under 1.5 sec
+        elif Spell.type == 2: # Weaponskill
+            Spell.CastTime = floor(floor(floor((int(Spell.CastTime * 1000 ) * self.WeaponskillReduction)) * (100 - self.Haste)/100)/10)/100 if Spell.CastTime > 0 else 0
+            Spell.RecastTime = floor(floor(floor((int(Spell.RecastTime * 1000 ) * self.WeaponskillReduction)) * (100 - self.Haste)/100)/10)/100
+            if Spell.RecastTime < 1.5 and Spell.RecastTime > 0 : Spell.RecastTime = 1.5 # A GCD cannot go under 1.5 sec
+
+    def computeTimeStamp(self) -> dict:
+        """
+        This function computes the final time stamp of the player given its current ActionSet and SpS/SkS value.
+        The result could be a bit off for players with haste buff as this is meant as an approximation.
+        It will also return how long is left until the next GCD after the last action is casted. In other words it returns how long
+        the player will have to wait to execute another GCD.
+        This function assumes that haste actions are always applied (if a combo is required).
+        This function does not account for any added time due to summons like Living Shadow for darknight. It only considers a time estimate for the
+        player doing the action.
+
+        Return :
+        dict -> {currentTimeStamp : float, untilNextGCD : float}
+        """
+                             # Computes the reduction ratios
+        self.computeActionReduction()
+                             # Initializes timeStamp and finalLockTimer and other relevants timer
+        curTimeStamp = 0
+        curDOTTimer = 0
+        curBuffTimer = 0
+        finalGCDLockTimer = 0
+                             # hasteBuffList contains list of [startTime,EndTime,hasteAmount] to know when to apply haste buffs
+                             # Note that this is a BIG ESTIMATE of the actual time since we do not modify the GCD
+                             # as the oGCD is happening.
+        hasteBuffTimeIntervalList = []
+        hasteBuffIndexList = [] # -> This list contains the index of all haste actions done by the player.
+                                # We check to see if one is made. When a haste action is made hasteBuffTimeIntervalList
+                                # will be added an entry that will let us know when it should finish
+        
+                                # Will look what Haste action is possible from the player
+        possibleHasteActionId = []
+        hasteAmount = 0
+        hasteBuffTimer = 0
+
+                                 # If the job is blackmage we check for insta cast such as triplecast, swiftcast
+                                 # and keep track of what state the player is in since it affects cast times.
+                                 # It is not negligeable. We will assume a stack of triplecast is used right away
+                                 # (same for swiftcast) and do not check if the casted action is insta cast (which wouldn't use the stack)
+                                 # We also do not keep track of the different level of fire/ice and only assume full stack. This of course adds error, but will be smaller than without
+                                 # this whole thing.
+        isBLM = self.JobEnum == JobEnum.BlackMage
+        inAstralFire = False
+        inUmbralIce = False
+        tripleCastStack = 0
+        hasSwiftCast = False
+
+                                 # If is a RedMage we keep track of swiftcast, acceleration and dual cast
+        isRDM = self.JobEnum == JobEnum.RedMage
+        hasDualCast = False
+        hasAcceleration = False
+        gcdCastDetectionLimit = 1.7 # Actions with cast times under that treshold will give dualcast
+
+                                 # If is a Summoner we keept track of swiftcast
+        isSMN = self.JobEnum == JobEnum.Summoner
+                                 # If is a Samurai we keep track of Meikyo
+        isSAM = self.JobEnum == JobEnum.Samurai  
+        meikyoStack = 0
+
+        isDRK = self.JobEnum == JobEnum.DarkKnight # Keep track since buff is oGCD
+        isWAR = self.JobEnum == JobEnum.Warrior # Have to check how long to add on buffTimer
+
+
+        # Monk can be ommited since the player object of monk is
+        # initialized with haste of 20.
+        # And we assume max haste from bard (even if this results in worst estimate)
+        # This could be made better in future versions.
+        # Also assumes Astrologian always gets haste buff from Astrodyne
+        # TODO -> Fix Bard estimate with army paeon
+        match self.JobEnum:
+            case JobEnum.BlackMage : # Leylines
+                possibleHasteActionId.append(BlackMageActions.LeyLines)
+                hasteAmount = 15
+                hasteBuffTimer = 30
+            case JobEnum.WhiteMage : # Presence of Mind
+                possibleHasteActionId.append(WhiteMageActions.PresenceOfMind)
+                hasteAmount = 20
+                hasteBuffTimer = 15
+            case JobEnum.Samurai : # Shifu
+                possibleHasteActionId.append(SamuraiActions.Shifu)
+                possibleHasteActionId.append(SamuraiActions.Kasha) # Will check if stacks of meikyo
+                hasteAmount = 13
+                hasteBuffTimer = 40
+            case JobEnum.Bard : # Army Paeon
+                possibleHasteActionId.append(BardActions.ArmyPaeon)
+                hasteAmount = 20
+                hasteBuffTimer = 45 # This could be a mistake. TODO FIX THIS
+            case JobEnum.Astrologian : # Astrodyne
+                possibleHasteActionId.append(AstrologianActions.Astrodyne)
+                hasteAmount = 10
+                hasteBuffTimer = 15
+            case JobEnum.Ninja : # 
+                possibleHasteActionId.append(NinjaActions.Huton)
+                possibleHasteActionId.append(NinjaActions.Huraijin)
+                possibleHasteActionId.append(NinjaActions.ArmorCrush)
+                hasteAmount = 15
+                hasteBuffTimer = 60 # Since Huton give 60 we assume the best case
+
+                             # This is simply for optimization so we only check once
+        checkForHasteAction = len(possibleHasteActionId) != 0
+        hasHasteAction = False
+
+
+                             # Will check for DOTs and will track an estimate of remaining time on the DOT
+                             # We proceed similarly to hasteBuff and look for what class has DOTs
+        possibleDOTActionId = []
+        dotTimer = 0 
+                             # We only consider DOTs that are 'running' and ignore SMN Garuda DOT, GNB DOT,
+                             # DRK puddle, etc. But we take 
+                             # buffs that have to be reapplied like on RPR
+        match self.JobEnum:
+            case JobEnum.BlackMage : # T3/T4
+                possibleDOTActionId.append(BlackMageActions.ThunderIII)
+                possibleDOTActionId.append(BlackMageActions.ThunderIV)
+                dotTimer = 30
+            case JobEnum.WhiteMage : # Dia
+                possibleDOTActionId.append(WhiteMageActions.Dia)
+                dotTimer = 30
+            case JobEnum.Scholar : # Biolysis
+                possibleDOTActionId.append(ScholarActions.Biolysis)
+                dotTimer = 30
+            case JobEnum.Astrologian : # Combust
+                possibleDOTActionId.append(AstrologianActions.Combust)
+                dotTimer = 30
+            case JobEnum.Sage : # Eukrasian Dosis
+                possibleDOTActionId.append(SageActions.EukrasianDosis)
+                dotTimer = 30
+            case JobEnum.Dragoon : # Chaotic Spring
+                possibleDOTActionId.append(DragoonActions.ChaoticSpring)
+                dotTimer = 24
+            case JobEnum.Monk : # Demolish
+                possibleDOTActionId.append(MonkActions.Demolish)
+                dotTimer = 18
+            case JobEnum.Samurai : # Higanbana
+                possibleDOTActionId.append(SamuraiActions.Higanbana)
+                possibleDOTActionId.append(SamuraiActions.KaeshiHiganbana)
+                dotTimer = 60
+            case JobEnum.Bard : # Only tracks the highest DOT timer and allows iron jaws to reset
+                                # both of them
+                possibleDOTActionId.append(BardActions.Causticbite)
+                possibleDOTActionId.append(BardActions.Stormbite)
+                possibleDOTActionId.append(BardActions.IronJaws)
+                dotTimer = 45
+        checkForDOTAction = len(possibleDOTActionId) != 0
+
+                             # Will also check for the running buffs timer
+                             # Done similarly to DOT and hasteBuff
+        possibleBuffActionId = []
+        buffTimer = 0
+        buffWillStack = False # True if the buff stacks up to 60 seconds
+
+        match self.JobEnum:
+            case JobEnum.Reaper : # Death Design
+                possibleBuffActionId.append(ReaperActions.ShadowOfDeath)
+                possibleBuffActionId.append(ReaperActions.WhorlOfDeath)
+                buffTimer = 30
+                buffWillStack = True
+            case JobEnum.Samurai : # Fugetsu
+                possibleBuffActionId.append(SamuraiActions.Jinpu)
+                possibleBuffActionId.append(SamuraiActions.Gekko) # Will check if have stacks of meikyo
+                buffTimer = 40
+            case JobEnum.Dragoon : # Powersurge
+                possibleBuffActionId.append(DragoonActions.Disembowel)
+                buffTimer = 30
+            case JobEnum.Monk : # Twin snakes
+                possibleBuffActionId.append(MonkActions.TwinSnakes)
+                buffTimer = 15
+            case JobEnum.DarkKnight : # Darkside
+                possibleBuffActionId.append(DarkKnightActions.FloodOfShadow)
+                possibleBuffActionId.append(DarkKnightActions.EdgeOfShadow)
+                buffTimer = 30
+                buffWillStack = True
+            case JobEnum.Warrior : # Inner release buff will be detected in oGCD check
+                possibleBuffActionId.append(WarriorActions.InnerRelease)
+                possibleBuffActionId.append(WarriorActions.MythrilTempest)
+                possibleBuffActionId.append(WarriorActions.StormEye)
+                buffTimer = 30        
+                buffWillStack = True
+
+        checkForBuffAction = len(possibleBuffActionId) != 0
+
+                             # gcdIndexList contains the index of all actions done by the player that are GCD.
+        gcdIndexList = []    
+        firstIndexDamage = 0
+        foundFirstDamage = False
+        
+                            
+                             # Need to find first action that actually damages. Usually a GCD but should check
+                             # and will look for haste actions
+        for index,action in enumerate(self.ActionSet):
+
+
+            if isSAM and (action.id == SamuraiActions.Meikyo):
+                             # Keep track of meikyo
+                meikyoStack = 3
+
+            if checkForHasteAction and action.id in possibleHasteActionId:
+                             # Found haste action. Will append to index
+                if isSAM and action.id == SamuraiActions.Kasha:
+                             # If is kasha check if have meikyo stack
+                    if meikyoStack > 0:
+                        hasteBuffIndexList.append(index)
+                        hasHasteAction = True
+                else:
+                    hasteBuffIndexList.append(index)
+                    hasHasteAction = True
+
+            if isSAM and meikyoStack > 0 and (action.id == SamuraiActions.Yukikaze or action.id == SamuraiActions.Shifu or action.id == SamuraiActions.Kasha or action.id == SamuraiActions.Jinpu or action.id == SamuraiActions.Gekko):
+                meikyoStack-=1 
+
+            if (not foundFirstDamage) and (action.Potency > 0 or action.id in possibleDOTActionId):
+                foundFirstDamage = True
+                             # Found first damaging action
+                             # Add to timestamp and will check for GCD clipping
+                spellObj = deepcopy(action)
+                self.computeActionTimer(spellObj)
+                             # Adding estimated value
+                curTimeStamp += max(0,spellObj.RecastTime - spellObj.CastTime)
+                             # Saving first index
+                firstIndexDamage = index
+                             # This is an edge case where there is only one GCD casted followed by some oGCD.
+                             # Since it will not be put into gcdIndexList we initialize the value of finalGCDLockTimer
+                             # To what is left in it.
+                if action.GCD : finalGCDLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
+                if action.id in possibleDOTActionId : curDOTTimer = dotTimer - max(0,spellObj.RecastTime-spellObj.CastTime)
+
+                if isBLM:
+                             # if is a BLM we check if the action isFire or isIce if any
+                    if spellObj.IsFire : inAstralFire = True
+                    elif spellObj.IsIce : inUmbralIce = True
+
+                if isRDM :
+                             # To detect if dualcast is added we check if the spell has a casttime higher then 2.2 . If such is true
+                             # then it wasn't affected by a previous dualcast, acceleration or a previous dualcast
+                    if spellObj.CastTime > gcdCastDetectionLimit:
+                        hasDualCast = True
+
+                             # Do not check for buff since buff actions can never be the first GCD and are always
+                             # 2nd or 3rd action.
+
+                             # Populating gcdIndexList. Skips first damage instance
+        for index in range(firstIndexDamage+1,len(self.ActionSet)):
+            action = self.ActionSet[index]
+            if action.GCD : gcdIndexList.append(index)
+            
+        meikyoStack = 0      # Resetting meikyoStack
+                             # If first haste action is done between the first GCD and 2nd it will be detected here
+        if hasHasteAction and (hasteBuffIndexList[0] < gcdIndexList[0]):
+                hasteBuffIndexList.pop(0) # Remove this haste index
+
+                hasteBuffTimeIntervalList.append([curTimeStamp,curTimeStamp + hasteBuffTimer, hasteAmount])
+                hasHasteAction = len(hasteBuffIndexList) != 0
+
+                             # Will check all actions before first damage to see if any applies a buff
+        for index in (range(firstIndexDamage) if foundFirstDamage else range(len(self.ActionSet))):
+            if isBLM : 
+                if self.ActionSet[index].id == CasterActions.Swiftcast:
+                    hasSwiftCast = True
+                elif self.ActionSet[index].id == BlackMageActions.Triplecast:
+                    tripleCastStack = 3
+            elif isRDM:
+                if self.ActionSet[index].id == CasterActions.Swiftcast:
+                    hasSwiftCast = True
+                elif self.ActionSet[index].id == RedMageActions.Acceleration:
+                    hasAcceleration = True
+            elif isSMN:
+                if self.ActionSet[index].id == CasterActions.Swiftcast:
+                    hasSwiftCast = True
+            elif isSAM:
+                if self.ActionSet[index].id == SamuraiActions.Meikyo:
+                    meikyoStack = 3
+        hasteBonus = 0
+                             # Must check for oGCD done between first and 2nd GCD whick can give DRK/WAR buffs
+        for index in (range(gcdIndexList[0]) if len(gcdIndexList) > 0 else range(len(self.ActionSet))):
+            if isDRK or isWAR:
+                if self.ActionSet[index].id in possibleBuffActionId:
+                             # We must check the length of the first GCD to remove that from the buffTImer.
+                    spellObj = deepcopy(self.ActionSet[firstIndexDamage])
+
+                             # Checking for haste
+                    for hasteInterval in hasteBuffTimeIntervalList:
+                        if 0 >= hasteInterval[0] and 0 <= hasteInterval[1]:
+                            hasteBonus = hasteInterval[2]
+                            break
+
+                             # Compute spellObj cast/recast time
+                    self.Haste += hasteBonus
+                    self.computeActionTimer(spellObj)
+                    self.Haste -= hasteBonus
+                    curBuffTimer = (30 if isDRK else 10) - max(0,spellObj.RecastTime - spellObj.CastTime)
+            
+            
+
+                             # Initialize curTimeStamp according to first done oGCDs?
+
+        if len(gcdIndexList) == 0 : 
+                             # No (other) GCD(s) performed, so compute using only oGCD
+            for index in range(firstIndexDamage+1,len(self.ActionSet)):
+                action = self.ActionSet[index]
+                curTimeStamp += self.ActionSet[index].RecastTime
+                             # Since no other GCD remove oGCD cast time from the lock timer
+                finalGCDLockTimer -= self.ActionSet[index].RecastTime
+            return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(max(0,finalGCDLockTimer),2),"dotTimer" : curDOTTimer, "buffTimer" : curBuffTimer,
+                    "detectedInFire" : inAstralFire, "detectedInIce" : inUmbralIce, "dualCast" : hasDualCast}
+
+        
+        lastGCDIndex = gcdIndexList[-1]
+        for listIndex,gcdIndex in enumerate(gcdIndexList):
+            hasteBonus = 0 # Always reset haste bonus
+            if gcdIndex == lastGCDIndex:
+                             # Last GCD. So simply compute how long is left in the GCD
+                             # Making deep copy to not affect anything
+                spellObj = deepcopy(self.ActionSet[gcdIndex])
+
+                             # Checking for haste
+                for hasteInterval in hasteBuffTimeIntervalList:
+                    if curTimeStamp >= hasteInterval[0] and curTimeStamp <= hasteInterval[1]:
+                        hasteBonus = hasteInterval[2]
+                        break
+
+                             # Compute spellObj cast/recast time
+                self.Haste += hasteBonus
+                self.computeActionTimer(spellObj)
+                self.Haste -= hasteBonus
+
+                if isBLM:
+                    if inAstralFire and spellObj.IsIce or inUmbralIce and spellObj.IsFire:
+                             # reduce casttime
+                            spellObj.CastTime = max(round(spellObj.CastTime/2,2),1.5)
+
+                             # Check for swiftcast/Triplecast
+                    if spellObj.CastTime > 0.1:
+                        if hasSwiftCast:
+                            spellObj.CastTime = 0
+                            hasSwiftCast = False
+                        elif tripleCastStack > 0:
+                            spellObj.CastTime = 0
+                            tripleCastStack -= 1
+                elif isRDM:
+                    if spellObj.CastTime > 0.1 and spellObj.type == 1:
+                        if hasSwiftCast:
+                            spellObj.CastTime = 0
+                            hasSwiftCast = False
+                        elif hasAcceleration:
+                            spellObj.CastTime = 0
+                            hasAcceleration = False
+                        elif hasDualCast:
+                            spellObj.CastTime = 0
+                            hasDualCast = False
+                elif isSMN:
+                    if spellObj.CastTime > 0.1 and hasSwiftCast:
+                            spellObj.CastTime = 0
+                            hasSwiftCast = False
+
+                             # Adding CastTime only since last GCD
+                curTimeStamp += spellObj.CastTime
+                        
+                gcdLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
+                curDOTTimer = max(0,curDOTTimer-spellObj.CastTime) # Removing until end of GCD
+                curBuffTimer = max(0,curBuffTimer-spellObj.CastTime) # Removing until end of GCD
+
+
+                             # if last action is buff update curBuffTimer
+                if checkForBuffAction and spellObj.id in possibleBuffActionId:
+                             # A buff is detected. Update buff timer and removing the time lost until the end of the GCD
+                    if isSAM and spellObj.id == SamuraiActions.Gekko:
+                             # If is a sam we have to check if Gekko is used with Meikyo
+                            if meikyoStack > 0: 
+                                meikyoStack -= 1
+                                curBuffTimer = buffTimer
+                    else: 
+                        if buffWillStack : curBuffTimer = min(60,buffTimer + curBuffTimer)
+                        else : curBuffTimer = buffTimer
+
+                             # if last action is DOT update curDOTTimer
+                elif checkForDOTAction and spellObj.id in possibleDOTActionId:
+                             # A dot is detected. Update DOT timer and removing the time lost until the end of the GCD
+                    curDOTTimer = dotTimer
+                oGCDRemainingTime = 0
+                for ogcdIndex in range(lastGCDIndex+1,len(self.ActionSet)):
+                    oGCDRemainingTime += self.ActionSet[ogcdIndex].RecastTime
+                    curDOTTimer = max(0,curDOTTimer-self.ActionSet[ogcdIndex].RecastTime) # Removing until end of GCD
+                    curBuffTimer = max(0,curBuffTimer-self.ActionSet[ogcdIndex].RecastTime) # Removing until end of GCD
+
+                             #Since only oGCDs are left we simply add to curTimeStamp the sum of all oGCD
+                curTimeStamp += oGCDRemainingTime
+                finalGCDLockTimer = max(0,gcdLockTimer - oGCDRemainingTime)
+            else:
+                             # Check if this GCD or if there are oGCD between the next GCD that have HASTE effects
+                if hasHasteAction and (hasteBuffIndexList[0] >= gcdIndex and hasteBuffIndexList[0] < gcdIndexList[listIndex+1]):
+                    hasteBuffIndexList.pop(0) # Remove this haste index
+
+                    hasteBuffTimeIntervalList.append([curTimeStamp,curTimeStamp + hasteBuffTimer, hasteAmount])
+                    hasHasteAction = len(hasteBuffIndexList) != 0
+
+                             # Making deep copy to not affect anything
+                spellObj = deepcopy(self.ActionSet[gcdIndex])
+
+                             # Checking if this action has an haste effect onto it.
+                             # If it does we have to add haste to the player and remove it afterward.
+                             
+                
+                for hasteInterval in hasteBuffTimeIntervalList:
+                    if curTimeStamp >= hasteInterval[0] and curTimeStamp <= hasteInterval[1]:
+                        hasteBonus = hasteInterval[2]
+                        break
+
+                             # Compute spellObj cast/recast time
+                self.Haste += hasteBonus
+                self.computeActionTimer(spellObj)
+                self.Haste -= hasteBonus
+
+                             # Checking if BLM in which case we add some effects is it applies 
+                if isBLM:
+                    if inAstralFire and spellObj.IsIce or inUmbralIce and spellObj.IsFire:
+                             # reduce casttime
+                            spellObj.CastTime = max(round(spellObj.CastTime/2,2),1.5)
+
+                             # Check for swiftcast/Triplecast only if spell isn't already insta cast
+                    if spellObj.CastTime > 0.1:
+                        if hasSwiftCast:
+                            spellObj.CastTime = 0
+                            hasSwiftCast = False
+                        elif tripleCastStack > 0:
+                            spellObj.CastTime = 0
+                            tripleCastStack -= 1
+                elif isRDM:
+                             # Check for swiftcast/dualcast/acceleration only if spell isn't already insta cast and is spell
+                    if spellObj.CastTime > 0.1 and spellObj.type == 1:
+                        if hasSwiftCast:
+                            spellObj.CastTime = 0
+                            hasSwiftCast = False
+                        elif hasAcceleration:
+                            spellObj.CastTime = 0
+                            hasAcceleration = False
+                        elif hasDualCast:
+                            spellObj.CastTime = 0
+                            hasDualCast = False
+                elif isSMN:
+                    if spellObj.CastTime > 0.1 and hasSwiftCast:
+                            spellObj.CastTime = 0
+                            hasSwiftCast = False
+
+                             # Checking for if action is a DOT action. DOTs are only GCD so
+                             # we only check with spellObj
+                if checkForDOTAction and spellObj.id in possibleDOTActionId:
+                             # A dot is detected. Update DOT timer and removing the time lost until the end of the GCD
+                    curDOTTimer = dotTimer - max(0,spellObj.RecastTime - spellObj.CastTime)
+                else : curDOTTimer = max(0,curDOTTimer-max(spellObj.RecastTime,spellObj.CastTime)) # Removing until end of GCD
+
+
+                             # Checking for if action is a buff action. Buff actions are only on GCD
+                             # so we can check spellObj only
+                if checkForBuffAction and spellObj.id in possibleBuffActionId:
+                             # A buff is detected. Update buff timer and removing the time lost until the end of the GCD
+                    if isSAM and spellObj.id == SamuraiActions.Gekko:
+                             # If is a sam we have to check if Gekko is used with Meikyo
+                            if meikyoStack > 0: 
+                                curBuffTimer = buffTimer - spellObj.RecastTime
+                            else : curBuffTimer = max(0,curBuffTimer-max(spellObj.RecastTime,spellObj.CastTime))
+                    else: 
+                        if buffWillStack : curBuffTimer = min(60,curBuffTimer + buffTimer) - max(0,spellObj.RecastTime - spellObj.CastTime)
+                        else : curBuffTimer = buffTimer - max(0,spellObj.RecastTime - spellObj.CastTime)
+                else : curBuffTimer = max(0,curBuffTimer-max(spellObj.RecastTime,spellObj.CastTime)) # Removing until end of GCD
+
+                curTimeStamp += max(spellObj.RecastTime, spellObj.CastTime)
+                
+                             # Adding estimated value 
+                gcdLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
+
+                                             # Last thing we check if BLM changes state, if RDM gets dualcast or if SAM gets meikyo
+                if isBLM:
+                    if not inAstralFire and not inUmbralIce: # Not in any
+                        if  spellObj.IsFire : inAstralFire = True
+                        elif spellObj.IsIce : inUmbralIce = True
+                    if inUmbralIce : 
+                             # The only two actions that can make a BLM go from ice -> fire are F3 and transpose (is an oGCD) so we only check for those two.
+                             # to see if we are now in fire. If the action 'IsIce' or not 'IsFire' and not 'IsIce' then we stay in ice.
+                             # Else we loose both fire and ice
+                        if spellObj.IsIce or (not spellObj.IsFire and not spellObj.IsIce):
+                            pass
+                        elif spellObj.id == BlackMageActions.FireIII:
+                            inUmbralIce = False
+                            inAstralFire = True
+                        else :
+                            inUmbralIce = False
+                            inAstralFire = False # Might not be required, but is a way to make sure.
+                    if inAstralFire:
+                             # The only two actions that can make a BLM go from fire -> ice are B3 and transpose (is an oGCD) so we only check for those two.
+                             # to see if we are now in ice. If the action 'IsFire' or not 'IsFire' and not 'IsIce' then we stay in fire.
+                             # Else we loose both fire and ice
+                        if spellObj.IsFire or (not spellObj.IsFire and not spellObj.IsIce):
+                            pass
+                        elif spellObj.id == BlackMageActions.BlizzardIII:
+                            inUmbralIce = True
+                            inAstralFire = False
+                        else :
+                            inUmbralIce = False
+                            inAstralFire = False # Might not be required, but is a way to make sure.
+                             # Check if we give dualcast
+                elif isRDM :
+                    if spellObj.CastTime > gcdCastDetectionLimit:
+                        hasDualCast = True
+                             # Check if remove Meikyo stack
+                elif isSAM and meikyoStack > 0 and (spellObj.id == SamuraiActions.Yukikaze or spellObj.id == SamuraiActions.Shifu or spellObj.id == SamuraiActions.Kasha
+                                                     or spellObj.id == SamuraiActions.Jinpu or spellObj.id == SamuraiActions.Gekko):
+                    meikyoStack-=1 
+
+                             # Will check if any potential clipping until next GCD
+                             # Adding up all oGCD actions between both GCD. And will check for important oGCD
+                for ogcdIndex in range(gcdIndex+1,gcdIndexList[listIndex+1]):
+                    gcdLockTimer -= self.ActionSet[ogcdIndex].RecastTime
+
+                             # If isBLM we check if the oGCD action is 'transpose' which will affect the state
+                             # We also check for triplecast/swiftcast
+                    if isBLM : 
+                        if self.ActionSet[ogcdIndex].id == BlackMageActions.Transpose :
+                            if inUmbralIce : 
+                                inUmbralIce = False
+                                inAstralFire = True
+                            elif inAstralFire:
+                                inUmbralIce = True
+                                inAstralFire = False
+                        elif self.ActionSet[ogcdIndex].id == CasterActions.Swiftcast:
+                            hasSwiftCast = True
+                        elif self.ActionSet[ogcdIndex].id == BlackMageActions.Triplecast:
+                            tripleCastStack = 3
+                    elif isRDM:
+                        if self.ActionSet[ogcdIndex].id == CasterActions.Swiftcast:
+                            hasSwiftCast = True
+                        elif self.ActionSet[ogcdIndex].id == RedMageActions.Acceleration:
+                            hasAcceleration = True
+                    elif isSMN:
+                        if self.ActionSet[ogcdIndex].id == CasterActions.Swiftcast:
+                            hasSwiftCast = True
+                    elif isSAM:
+                        if self.ActionSet[ogcdIndex].id == SamuraiActions.Meikyo:
+                            meikyoStack = 3
+
+                             # For both war/drk. If the new buffTImer is 60 then we have to substract
+                             # the time that happened during the GCD.
+                             # If its under 60 then we have to add what was removed from it and remove the time of the GCD
+
+                    elif isDRK: # DRK's buff are oGCD so we check here
+                        if checkForBuffAction and self.ActionSet[ogcdIndex].id in possibleBuffActionId:
+                            curBuffTimer = min(60,curBuffTimer + buffTimer) 
+                            if curBuffTimer >= 60:
+                                curBuffTimer -= max(0,spellObj.RecastTime - spellObj.CastTime) - min(0,gcdLockTimer)
+                            else :  curBuffTimer += max(spellObj.RecastTime,spellObj.CastTime) - max(0,spellObj.RecastTime - spellObj.CastTime)
+                    elif isWAR:
+                        if checkForBuffAction and self.ActionSet[ogcdIndex].id in possibleBuffActionId:
+                             # Adding 10 seconds to buff
+                            curBuffTimer = min(60,curBuffTimer + 10) 
+                            if curBuffTimer >= 60:
+                                curBuffTimer -= max(0,spellObj.RecastTime - spellObj.CastTime) - min(0,gcdLockTimer)
+                            else :  curBuffTimer += max(spellObj.RecastTime,spellObj.CastTime) - max(0,spellObj.RecastTime - spellObj.CastTime)
+
+
+                            # If there is risks of clipping gcdLockTimer will be negative.
+                            # So we substract gcdLockTimer from curTimeStamp (min(gcdLockTimer,0))
+                            # Could be interesting to add 'Risk of Clipping between GCD X and GCD Y'
+                curTimeStamp -= min(0,gcdLockTimer)
+                if gcdLockTimer < 0: # if gcdLockTimer was exceeded then we have to remove to other timer
+                    curDOTTimer = max(0,curDOTTimer+min(0,gcdLockTimer))
+                    curBuffTimer = max(0,curBuffTimer+min(0,gcdLockTimer))
+
+        return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : max(0,round(finalGCDLockTimer,2)), "dotTimer" : round(curDOTTimer,2), "buffTimer" : round(curBuffTimer,2),
+                "detectedInFire" : inAstralFire, "detectedInIce" : inUmbralIce, "dualCast" : hasDualCast}
+
 
     def __init__(self, ActionSet, EffectList, Stat,Job : JobEnum):
 

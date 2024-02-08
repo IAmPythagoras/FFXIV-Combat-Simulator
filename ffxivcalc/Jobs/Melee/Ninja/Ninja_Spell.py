@@ -4,7 +4,7 @@ import copy
 
 from ffxivcalc.Jobs.Player import Pet
 
-Lock = 0.5
+Lock = 0
 
 
 #Requirement

@@ -55,12 +55,12 @@ Event = Fight(Dummy, False)
 # These stats must include the bonus stats food gives.
 
 # Caster
-BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 716, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390} # Stats for BlackMage
+BLMStat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 824, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390} # Stats for BlackMage
 RDMStat = {"MainStat": 3378, "WD": 132, "Det": 1601, "Ten": 400, "SS": 502, "SkS": 400, "Crit": 2514, "DH": 1616} # Stats for RedMage
 SMNStat =  {'MainStat': 3378, 'WD': 132, 'Det': 1342, 'Ten': 400, 'SS': 1411, 'SkS': 400, 'Crit': 2284, 'DH': 1196, 'Piety': 390} # Stats for Summoner
 
 # Healer
-SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 1412, 'SkS': 400, 'Crit': 2306, 'DH': 440, 'Piety': 390} # Stats for Scholar
+SCHStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2306, 'DH': 440, 'Piety': 390} # Stats for Scholar
 WHMStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 1242, 'SkS': 400, 'Crit': 2502, 'DH': 436, 'Piety': 390} # Stats for WhiteMage
 ASTStat =  {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 1242, 'SkS': 400, 'Crit': 2502, 'DH': 436, 'Piety': 390} # Stats for Astrologian
 SGEStat = {'MainStat': 3368, 'WD': 132, 'Det': 2047, 'Ten': 400, 'SS': 954, 'SkS': 400, 'Crit': 2502, 'DH': 724, 'Piety': 390} # Stats for Sage
@@ -71,15 +71,14 @@ BRDStat = {'MainStat': 3378, 'WD': 132, 'Det': 1885, 'Ten': 400, 'SS': 400, 'SkS
 DNCStat = {'MainStat': 3378, 'WD': 132, 'Det': 1844, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2557, 'DH': 1396, 'Piety': 390} # Stats for Dancer
 
 # Melee
-NINStat = {'MainStat': 3378, 'WD': 132, 'Det': 1666, 'Ten': 400, 'SS': 400, 'SkS': 714, 'Crit': 2595, 'DH': 1258, 'Piety': 390} # Stats for Ninja
+NINStat = {'MainStat': 3378, 'WD': 132, 'Det': 1666, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2595, 'DH': 1258, 'Piety': 390} # Stats for Ninja
 SAMStat =  {'MainStat': 3367, 'WD': 132, 'Det': 1248, 'Ten': 400, 'SS': 400, 'SkS': 976, 'Crit': 2587, 'DH': 1422, 'Piety': 390} # Stats for Samurai
 DRGStat =  {'MainStat': 3378, 'WD': 132, 'Det': 1726, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2567, 'DH': 1540, 'Piety': 390} # Stats for Dragoon
 MNKStat = {'MainStat': 3378, 'WD': 132, 'Det': 1464, 'Ten': 400, 'SS': 400, 'SkS': 889, 'Crit': 2606, 'DH': 1274, 'Piety': 390} # Stats for Monk
 RPRStat = {'MainStat': 3378, 'WD': 132, 'Det': 1870, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2567, 'DH': 1360, 'Piety': 390} # Stats for Reaper
 
 DRKStat = {'MainStat': 3338, 'WD': 132, 'Det': 1901, 'Ten': 529, 'SS': 400, 'SkS': 591, 'Crit': 2627, 'DH': 976, 'Piety': 390} # Stats for DarkKnight
-WARStat = {'MainStat': 3338, 'WD': 132, 'Det': 2023, 'Ten': 529, 'SS': 400, 'SkS': 948, 'Crit': 2481, 'DH': 652, 'Piety': 390} # Stats for Warrior
-WARStat = {'MainStat': 3338, 'WD': 132, 'Det': 2076, 'Ten': 529, 'SS': 400, 'SkS': 934, 'Crit': 2586, 'DH': 508, 'Piety': 390} # Stats for Warrior
+WARStat = {'MainStat': 3338, 'WD': 132, 'Det': 2023, 'Ten': 529, 'SS': 400, 'SkS': 400, 'Crit': 2481, 'DH': 652, 'Piety': 390} # Stats for Warrior
 PLDStat = {'MainStat': 3328, 'WD': 132, 'Det': 2182, 'Ten': 529, 'SS': 400, 'SkS': 400, 'Crit': 2540, 'DH': 976, 'Piety': 390}# Stats for Paladin
 GNBStat = {'MainStat': 3338, 'WD': 132, 'Det': 1944, 'Ten': 529, 'SS': 400, 'SkS': 1462, 'Crit': 2262, 'DH': 436, 'Piety': 390}# Stats for Gunbreaker
 
@@ -131,20 +130,20 @@ GNBPlayer = Player([], [], GNBStat, JobEnum.Gunbreaker)
 # Note that if you are simulating with more than 1 per job you will need to create a new list of actions.
 
 # Caster
-BLMOpener = [SharpCast, Fire3, Thunder3, Fire4, Triplecast, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, Swiftcast, Despair, 
+BLMOpener = [SharpCast, Fire3, Thunder3, Fire4, Fire4, Potion, Fire4, Amplifier, LeyLines, Fire4, Swiftcast, Despair, 
              Manafront,Triplecast, Fire4, Despair, Transpose, Paradox, Xenoglossy, Thunder3, Transpose, Fire3, Fire4, Fire4, Fire4, Despair, 
              Blizzard3, Blizzard4,Paradox, Fire3, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Despair,
              Blizzard3, Blizzard4,Paradox, Fire3, Fire4, Fire4, Fire4, Paradox, Fire4, Fire4, Fire4, Despair]
+
 SMNOpener = [Ruin3, Summon, SearingLight, AstralImpulse, AstralImpulse, AstralImpulse, EnergyDrainSMN, Enkindle, AstralImpulse, Deathflare, Fester, AstralImpulse, Fester, AstralImpulse, Garuda, Swiftcast, Slipstream, Emerald, Emerald, Emerald, Emerald, Titan, Topaz, Mountain, Topaz, Mountain, Topaz, Mountain, Topaz, Mountain, Ifrit, Cyclone, Strike, Ruby, Ruby, Ruin4, Ruin3]
 RDMOpener = [Verthunder, Verareo, Swiftcast,Acceleration, Verthunder, Potion,Verthunder, Embolden, Manafication, EnchantedRiposte, Fleche, EnchantedZwerchhau, 
              Contre, EnchantedRedoublement, Corps, Engagement, Verholy, Corps, Engagement, Scorch, Resolution, Verstone, Verareo, Verfire, Verthunder, 
              Acceleration, Verareo, Verstone, Verthunder, Fleche, Jolt, Verthunder, Verfire, Verareo, Contre, Jolt, Verareo, Engagement, Corps, Verstone, 
              Verthunder, EnchantedRiposte, EnchantedZwerchhau, EnchantedRedoublement, Fleche, Verflare, Scorch, Resolution]
 
+
 # Healer
-SCHOpener = [Broil, Biolysis, Aetherflow, Broil, Swiftcast, Broil, ChainStratagem, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, 
-            Broil, Dissipation, Broil, EnergyDrain, Broil, EnergyDrain, Broil, EnergyDrain, Broil, Broil, Broil, Biolysis, Broil, Broil,
-			Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil,Broil, Broil]
+SCHOpener = [Ruin, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil, Broil]
 WHMOpener = [Glare, ThinAir, Dia, Glare, WaitAbility(1), PresenceOfMind, Glare, Glare, Glare, Glare, Glare, ThinAir, Glare, Glare, Glare, Glare, Glare, Glare, Dia, Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare,Glare]
 ASTOpener = [Malefic, Lightspeed, Combust, Malefic, Malefic, Divination, Malefic, MinorArcana, Astrodyne, Malefic, LordOfCrown, Malefic, Malefic, Malefic, Malefic, 
             Malefic, Malefic,Combust, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic, Malefic,
@@ -163,7 +162,6 @@ MCHOpener = [Reassemble, WaitAbility(5), AirAnchor, GaussRound, Ricochet, Drill,
 			Automaton, CleanShot, SplitShot, SlugShot, CleanShot, Drill, SplitShot, Hypercharge, HeatBlast, GaussRound, HeatBlast, Ricochet, HeatBlast, 
 			GaussRound, HeatBlast, Ricochet, HeatBlast, Reassemble, ChainSaw, GaussRound, Ricochet, SlugShot, CleanShot, SplitShot, SlugShot, CleanShot]
 DNCOpener = [ClosedPosition(MCHPlayer),StandardStep, Pirouette, Jete, StandardFinish, TechnicalStep, Pirouette, Jete, Entrechat, Emboite, TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, Jete, Pirouette, StandardFinish, Cascade, SaberDance, ReverseCascade, Fountain, FountainFall, Cascade, SaberDance, ReverseCascade, Fountain, FountainFall, Cascade, ReverseCascade, StandardStep, Emboite, Jete, StandardFinish, SaberDance, Fountain, Cascade, Fountain, FountainFall, Flourish, FanDance3, SaberDance, FanDance4, FountainFall, ReverseCascade, FanDance1, FanDance3, Cascade, ReverseCascade, Fountain, FountainFall]
-
 # Melee
 SAMOpener = [Meikyo, Gekko, WaitAbility(1), Potion, Kasha, Ikishoten, Yukikaze, Midare, KaeshiSetsugekka, Senei, Meikyo, Gekko, Shinten, Higanbana, Shinten, Gekko, Shinten, OgiNamikiri, Shoha, KaeshiNamikiri, Kasha, Shinten, Hakaze, Yukikaze, Midare, KaeshiSetsugekka, Shinten, Hakaze, Jinpu, Gekko, Shinten, Hakaze, Shifu, Kasha, Hakaze, Shinten, Yukikaze, Midare, Hakaze, Jinpu, Gekko, Hakaze, Shifu, Kasha, Shinten, Hakaze, Yukikaze, Shinten, Meikyo, Kasha, Kasha, Shinten, Shoha, Gekko, Shinten, Hakaze, Yukikaze, Shinten, Midare, KaeshiSetsugekka, Hakaze, Yukikaze, Hakaze, Shinten, Shifu, Kasha]
 DRGOpener = [TrueThrust, Disembowel, LanceCharge, DragonSight(NINPlayer), ChaoticSpring, BattleLitany, Geirskogul, WheelingThrust, HighJump,
@@ -176,7 +174,7 @@ DRGOpener = [TrueThrust, Disembowel, LanceCharge, DragonSight(NINPlayer), Chaoti
 
 MNKOpener = [DragonKick, PerfectBalance, TwinSnakes, RiddleOfFire, Demolish, WaitAbility(1), Potion, Bootshine, Brotherhood, TheForbiddenChakra, RisingPhoenix, RiddleOfWind, DragonKick, TheForbiddenChakra, PerfectBalance, Bootshine, SnapPunch, TheForbiddenChakra, TwinSnakes, RisingPhoenix, TheForbiddenChakra, DragonKick, TrueStrike, TheForbiddenChakra, Demolish, Bootshine, TwinSnakes, SnapPunch, DragonKick, TrueStrike, SnapPunch, Bootshine, TwinSnakes, Demolish, DragonKick, TrueStrike, SnapPunch, TheForbiddenChakra, Bootshine, TwinSnakes, SnapPunch, DragonKick, TrueStrike, Demolish, Bootshine, TwinSnakes, RiddleOfFire, DragonKick, Bootshine, TheForbiddenChakra, DragonKick, ElixirField, Bootshine, TwinSnakes, DragonKick, DragonKick, DragonKick, DragonKick ]
 NINOpener = [Jin, Chi, Ten, Huton, Hide, Ten, Chi, Jin, WaitAbility(5), Suiton, Kassatsu, SpinningEdge, Potion, GustSlash, Mug, Bunshin, PhantomKamaitachi, TrickAttack, AeolianEdge, DreamWithinADream, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, TenChiJin, Ten2, Chi2, Jin2, Meisui, FleetingRaiju, Bhavacakra, FleetingRaiju, Bhavacakra, Ten, Chi, Raiton, FleetingRaiju, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, GustSlash, ArmorCrush, Bhavacakra, SpinningEdge, GustSlash, AeolianEdge, SpinningEdge, Ten, Chi, Jin, Suiton, GustSlash, AeolianEdge, Kassatsu, SpinningEdge, GustSlash, AeolianEdge, TrickAttack, SpinningEdge, DreamWithinADream, Bhavacakra, Ten, Jin, HyoshoRanryu, Ten, Chi, Raiton, Ten, Chi, Raiton, FleetingRaiju, FleetingRaiju, GustSlash, ArmorCrush, SpinningEdge, GustSlash, AeolianEdge]
-RPROpener = [Soulsow, Harpe, ShadowOfDeath, ArcaneCircle, SoulSlice, SoulSlice, Potion, PlentifulHarvest, Enshroud, CrossReaping, VoidReaping, LemureSlice, CrossReaping, VoidReaping, LemureSlice, Communio, Gluttony, Gibbet, Gallows, UnveiledGibbet, Gibbet, ShadowOfDeath, Slice, WaxingSlice, InfernalSlice, Slice, WaxingSlice, InfernalSlice, UnveiledGallows, Gallows, SoulSlice, UnveiledGibbet, Gibbet, Enshroud, CrossReaping, VoidReaping, LemureSlice, CrossReaping, VoidReaping, LemureSlice, Communio, HarvestMoon ]
+RPROpener = [Soulsow, Harpe, ShadowOfDeath, ArcaneCircle, SoulSlice, SoulSlice, Potion, PlentifulHarvest, Enshroud, CrossReaping, VoidReaping, LemureSlice, CrossReaping, VoidReaping, LemureSlice, Communio, Gluttony, Gibbet, Gallows, UnveiledGibbet, Gibbet, ShadowOfDeath, Slice, WaxingSlice, InfernalSlice, Slice, WaxingSlice, InfernalSlice, UnveiledGallows, Gallows, SoulSlice, UnveiledGibbet, Gibbet, Enshroud, CrossReaping, VoidReaping, LemureSlice, CrossReaping, VoidReaping, LemureSlice, Communio, HarvestMoon]
 
 # Tank 
 DRKOpener = [BloodWeapon,WaitAbility(5),TBN(DRKPlayer), HardSlash, EdgeShadow, Delirium, SyphonStrike, WaitAbility(1), Potion, Souleater, LivingShadow, SaltedEarth, 
@@ -184,15 +182,13 @@ DRKOpener = [BloodWeapon,WaitAbility(5),TBN(DRKPlayer), HardSlash, EdgeShadow, D
 			SyphonStrike, EdgeShadow, Plunge,Souleater, HardSlash, SyphonStrike, Souleater, Bloodspiller, HardSlash, SyphonStrike, Souleater, HardSlash, SyphonStrike, 
 			Plunge, Souleater, Bloodspiller, HardSlash, SyphonStrike, Souleater, HardSlash, BloodWeapon, SyphonStrike, Delirium, Bloodspiller, Bloodspiller, EdgeShadow, 
 			Bloodspiller, Bloodspiller, CarveSpit, Souleater, EdgeShadow, HardSlash ]
+
 WAROpener = [Tomahawk, Infuriate, HeavySwing, Upheaval ,Maim, WaitAbility(1), Potion, StormEye, InnerRelease, Onslaught, InnerChaos, Onslaught, PrimalRend,Onslaught, 
-FellCleave, FellCleave, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath, FellCleave, Infuriate, Upheaval, InnerChaos, HeavySwing, Maim, StormEye, 
-HeavySwing, Maim, StormPath, FellCleave, HeavySwing, Maim, Onslaught, StormEye , HeavySwing, Upheaval, Maim, StormPath, InnerRelease, PrimalRend, FellCleave, 
-FellCleave, Onslaught, FellCleave, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath]
+             FellCleave, FellCleave, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath, FellCleave, Infuriate, Upheaval, InnerChaos, HeavySwing, Maim, StormEye, 
+             HeavySwing, Maim, StormPath, FellCleave, HeavySwing, Maim, Onslaught, StormEye , HeavySwing, Upheaval, Maim, StormPath, InnerRelease, PrimalRend, FellCleave, 
+             FellCleave, Onslaught, FellCleave, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath]
 PLDOpener = [HolySpirit, FastBlade, RiotBlade, WaitAbility(1), Potion, RoyalAuthority, FightOrFlight, RequestACat, GoringBlade, CircleScorn, Expiacion, Confetti, Intervene, BladeFaith, Intervene, BladeTruth, BladeValor, HolySpirit, Atonement, Atonement, Atonement, FastBlade, RiotBlade, RoyalAuthority, Atonement, CircleScorn, Expiacion, Atonement, Atonement, FastBlade, RiotBlade, HolySpirit, RoyalAuthority, Atonement, Atonement, Atonement, FastBlade, RiotBlade, FightOrFlight, RequestACat, GoringBlade, Expiacion, Confetti, BladeFaith, Intervene, BladeTruth, Intervene, BladeValor, HolySpirit, RoyalAuthority, HolySpirit, Atonement ]
 GNBOpener = [KeenEdge, Potion, BrutalShell, NoMercy, Bloodfest, GnashingFang, JugularRip, SonicBreak, BowShock, BlastingZone, DoubleDown, RoughDivide, SavageClaw, AbdomenTear, WickedTalon, EyeGouge, RoughDivide, SolidBarrel, BurstStrike, Hypervelocity, KeenEdge, BrutalShell, SolidBarrel, KeenEdge, BrutalShell, GnashingFang, JugularRip,SavageClaw, AbdomenTear, BlastingZone, WickedTalon, EyeGouge, SolidBarrel, KeenEdge, BrutalShell, SolidBarrel, KeenEdge, BrutalShell, SolidBarrel,KeenEdge, BrutalShell, NoMercy, RoughDivide, GnashingFang, JugularRip, DoubleDown, BlastingZone, RoughDivide, SavageClaw, AbdomenTear, WickedTalon, EyeGouge, SolidBarrel, BurstStrike, Hypervelocity, KeenEdge, BrutalShell, SolidBarrel]
-
-SCHOpener = [Biolysis, WaitAbility(35)]
-
 # ===============================================================================================
 
 # Here we are linking the earlier created action list to the player object. You should not have to change anything here except if you are trying to simulate
@@ -235,7 +231,7 @@ GNBPlayer.ActionSet = GNBOpener
 # So if you want to simulate the BlackMage and a RedMage, you would do: 
 # PlayerList = [BLMPlayer, RDMPlayer]
 
-PlayerList = [BLMPlayer]
+PlayerList = [BRDPlayer]
 
 Event.AddPlayer(PlayerList)
 
@@ -254,7 +250,7 @@ Event.RequirementOn = RequirementOn
 Event.ShowGraph = ShowGraph
 Event.IgnoreMana = IgnoreMana
 
-findBiS = True # Set to True if want to find BiS instead.
+findBiS = False # Set to True if want to find BiS instead.
 
 __logger__ = logging.getLogger("ffxivcalc") # root logger
 level = logging.DEBUG if not findBiS else logging.WARNING
@@ -263,8 +259,9 @@ __logger__.setLevel(level=level)
 
 if not findBiS:
     from ffxivcalc.helperCode.helper_backend import SaveFight
+    print(Event.PlayerList[0].computeTimeStamp())
     Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False, MaxTeamBonus=False) # Simulating fight
-    if True : Event.simulationRecord.saveRecord()
+    if False : Event.simulationRecord.saveRecord()
     pass
 
 # ===============================================================================================

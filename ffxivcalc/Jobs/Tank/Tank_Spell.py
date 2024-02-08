@@ -68,7 +68,7 @@ def PowderRequirement(Player, Spell):
 class GunbreakerSpell(TankSpell):
 
     def __init__(self, id, GCD, RecastTime, Potency, Effect, Requirement, PowderCost , type = 0):
-        super().__init__(id, GCD, 0.75, RecastTime, Potency, 0, Effect, Requirement, type = type)
+        super().__init__(id, GCD, 0, RecastTime, Potency, 0, Effect, Requirement, type = type)
 
         self.PowderCost = PowderCost
         self.Requirement += [PowderRequirement]

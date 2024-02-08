@@ -5,7 +5,7 @@
 from ffxivcalc.Jobs.Base_Spell import buff, empty
 from ffxivcalc.Jobs.Tank.Tank_Spell import BigMitRequirement, ApplyBigMit, WarriorSpell
 from ffxivcalc.Jobs.Player import Shield, MitBuff
-Lock = 0.75
+Lock = 0
 
 def BeastGaugeRequirement(Player, Spell):
     RemoveBeast(Player, Spell.Cost)
