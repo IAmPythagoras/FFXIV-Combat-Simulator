@@ -22,7 +22,7 @@ class MitBuff:
     also keeps track of the timer of such a buff.
 
     Returns:
-        PercentMit (float) : Percent damage taken of the mitigation. So if 30% mit, PercentMit = 0.7
+        PercentMit (float) : Percentage of the original damage taken once mitigation is applied. So if 30% mit, PercentMit = 0.7
         Timer (float) : Timer of the mit
         Player (Player) : Player on which the mit is applied
         MagicMit (bool) : If the Mit is only for magic damage

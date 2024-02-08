@@ -71,7 +71,9 @@ def ApplyHallowedGround(Player, Enemy):
 
 def ApplyBulwark(Player, Enemy):
     Player.BulwarkCD = 90
-    BulwarkMit = MitBuff(20, 10, Player)
+    # TODO: clarify block vs normal mit
+    # Block has no affect on dots.
+    BulwarkMit = MitBuff(0.8, 10, Player)
 
     Player.MitBuffList.append(BulwarkMit)
 
