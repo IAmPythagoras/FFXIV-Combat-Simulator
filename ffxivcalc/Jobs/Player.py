@@ -767,16 +767,14 @@ class Player:
                 elif checkForDOTAction and spellObj.id in possibleDOTActionId:
                              # A dot is detected. Update DOT timer and removing the time lost until the end of the GCD
                     curDOTTimer = dotTimer
-
+                oGCDRemainingTime = 0
                 for ogcdIndex in range(lastGCDIndex+1,len(self.ActionSet)):
-                    gcdLockTimer -= self.ActionSet[ogcdIndex].RecastTime
+                    oGCDRemainingTime += self.ActionSet[ogcdIndex].RecastTime
                     curDOTTimer = max(0,curDOTTimer-self.ActionSet[ogcdIndex].RecastTime) # Removing until end of GCD
                     curBuffTimer = max(0,curBuffTimer-self.ActionSet[ogcdIndex].RecastTime) # Removing until end of GCD
 
-                             # If there is risks of clipping gcdLockTimer will be negative.
-                             # So we substract gcdLockTimer from curTimeStamp (min(gcdLockTimer,0))
-                             # Could be interesting to add 'Risk of Clipping between GCD X and GCD Y'
-                curTimeStamp -= min(0,gcdLockTimer)
+                             #Since only oGCDs are left we simply add to curTimeStamp the sum of all oGCD
+                curTimeStamp += oGCDRemainingTime
                 finalGCDLockTimer = gcdLockTimer
             else:
                              # Check if this GCD or if there are oGCD between the next GCD that have HASTE effects
@@ -957,7 +955,7 @@ class Player:
                     curDOTTimer = max(0,curDOTTimer+min(0,gcdLockTimer))
                     curBuffTimer = max(0,curBuffTimer+min(0,gcdLockTimer))
 
-        return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(finalGCDLockTimer,2), "dotTimer" : round(curDOTTimer,2), "buffTimer" : round(curBuffTimer,2),
+        return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : max(0,round(finalGCDLockTimer,2)), "dotTimer" : round(curDOTTimer,2), "buffTimer" : round(curBuffTimer,2),
                 "detectedInFire" : inAstralFire, "detectedInIce" : inUmbralIce, "dualCast" : hasDualCast}
 
 
