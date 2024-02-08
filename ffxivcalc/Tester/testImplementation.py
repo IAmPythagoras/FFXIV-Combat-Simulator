@@ -17224,11 +17224,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
 
     timerEstimateTestSuite = testSuite("TimerEstimateTestSuite - errorAmount : " + str(errorAmount) + " errorAmountBigger : " + str(errorAmountBigger))
 
-    # Opener requirement, end time and potency test 1
-
     def teTest1TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17259,8 +17255,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest1)
 
     def teTest2TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17291,8 +17285,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest2)
 
     def teTest3TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17323,8 +17315,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest3)
 
     def teTest4TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17355,8 +17345,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest4)
 
     def teTest13TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17387,8 +17375,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest13)
 
     def teTest5TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17419,8 +17405,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest5)
 
     def teTest6TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17451,8 +17435,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest6)
 
     def teTest7TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17483,8 +17465,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest7)
 
     def teTest8TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17515,8 +17495,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest8)
 
     def teTest9TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17548,8 +17526,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest9)
 
     def teTest10TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17581,8 +17557,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest10)
 
     def teTest11TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17614,8 +17588,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
 
 
     def teTest12TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17646,8 +17618,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest12)
 
     def teTest14TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17678,8 +17648,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest14)
 
     def teTest15TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17710,8 +17678,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest15)
 
     def teTest16TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17742,8 +17708,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest16)
 
     def teTest17TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17774,8 +17738,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest17)
 
     def teTest18TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17807,8 +17769,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
 
 
     def teTest19TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17839,8 +17799,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest19)
 
     def teTest20TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17871,8 +17829,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest20)
 
     def teTest21TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17903,8 +17859,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest21)
 
     def teTest22TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17936,8 +17890,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
 
 
     def teTest23TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -17968,8 +17920,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest23)
 
     def teTest24TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18003,8 +17953,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
 
 
     def teTest25TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18037,8 +17985,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest25)
 
     def teTest26TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18071,8 +18017,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest26)
 
     def teTest27TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18103,8 +18047,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest27)
     
     def teTest28TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18135,8 +18077,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest28)
 
     def teTest29TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18167,8 +18107,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest29)
 
     def teTest30TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18205,8 +18143,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest30)
 
     def teTest31TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18239,8 +18175,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
 
 
     def teTest32TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18272,8 +18206,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest32)
 
     def teTest33TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18307,8 +18239,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest33)
 
     def teTest34TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18339,8 +18269,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest34)
 
     def teTest35TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18371,8 +18299,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest35)
 
     def teTest36TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18405,8 +18331,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest36)
 
     def teTest37TestFunction() -> None:
-        """
-        """
+ 
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18438,8 +18363,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest37)
 
     def teTest37TestFunction() -> None:
-        """
-        """
+
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18475,8 +18399,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest37)
 
     def teTest38TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18508,8 +18430,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest38)
 
     def teTest39TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18545,8 +18465,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest39)
 
     def teTest40TestFunction() -> None:
-        """
-        """
+
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18583,8 +18502,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest40)
 
     def teTest41TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18621,8 +18538,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest41)
 
     def teTest42TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18660,8 +18575,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
 
 
     def teTest43TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18698,8 +18611,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
 
 
     def teTest44TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18736,8 +18647,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
 
 
     def teTest45TestFunction() -> None:
-        """
-        """
+
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18773,8 +18683,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest45)
 
     def teTest46TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18807,8 +18715,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest46)
 
     def teTest47TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18844,8 +18750,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest47)
 
     def teTest48TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18878,8 +18782,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest48)
 
     def teTest49TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18913,8 +18815,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest49)
 
     def teTest50TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18948,8 +18848,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest50)
 
     def teTest51TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -18987,8 +18885,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest51)
 
     def teTest52TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -19025,8 +18921,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest52)
 
     def teTest53TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -19064,8 +18958,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
 
 
     def teTest54TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -19101,8 +18993,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest54)
 
     def teTest55TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -19137,8 +19027,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
 
 
     def teTest56TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -19172,8 +19060,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest56)
 
     def teTest57TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -19208,8 +19094,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest57)
 
     def teTest58TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -19244,8 +19128,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest58)
 
     def teTest59TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -19281,8 +19163,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest59)
 
     def teTest60TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -19304,7 +19184,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
         Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
         return [Event.TimeStamp, estimate["currentTimeStamp"], 2.5, estimate["untilNextGCD"], player.DarksideTimer, estimate['buffTimer']]
-         # Hardcodes a 0 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
+         # Hardcodes a 2.5 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
 
     def teTest60ValidationFunction(testResults) -> (bool, list):
         passed = True   
@@ -19317,8 +19197,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest60)
 
     def teTest61TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -19341,7 +19219,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
         estimate = player.computeTimeStamp()
         Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-        return [Event.TimeStamp, estimate["currentTimeStamp"], 2.5, estimate["untilNextGCD"], player.DarksideTimer, estimate['buffTimer']]
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"], player.DarksideTimer, estimate['buffTimer']]
          # Hardcodes a 0 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
 
     def teTest61ValidationFunction(testResults) -> (bool, list):
@@ -19355,8 +19233,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest61)
 
     def teTest65TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -19374,7 +19250,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
         estimate = player.computeTimeStamp()
         Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-        return [Event.TimeStamp, estimate["currentTimeStamp"], 2.5, estimate["untilNextGCD"], player.DarksideTimer, estimate['buffTimer']]
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer,estimate["untilNextGCD"], player.DarksideTimer, estimate['buffTimer']]
          # Hardcodes a 0 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
 
     def teTest65ValidationFunction(testResults) -> (bool, list):
@@ -19388,8 +19264,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest65)
 
     def teTest66TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -19407,7 +19281,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
         estimate = player.computeTimeStamp()
         Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-        return [Event.TimeStamp, estimate["currentTimeStamp"], 2.5, estimate["untilNextGCD"], player.DarksideTimer, estimate['buffTimer']]
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer,estimate["untilNextGCD"], player.DarksideTimer, estimate['buffTimer']]
          # Hardcodes a 0 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
 
     def teTest66ValidationFunction(testResults) -> (bool, list):
@@ -19421,8 +19295,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest66)
 
     def teTest62TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -19443,7 +19315,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
         estimate = player.computeTimeStamp()
         Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-        return [Event.TimeStamp, estimate["currentTimeStamp"], 2.5, estimate["untilNextGCD"], player.SurgingTempestTimer, estimate['buffTimer']]
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer,estimate["untilNextGCD"], player.SurgingTempestTimer, estimate['buffTimer']]
          # Hardcodes a 0 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
 
     def teTest62ValidationFunction(testResults) -> (bool, list):
@@ -19457,8 +19329,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
     timerEstimateTestSuite.addTest(teTest62)
 
     def teTest63TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -19479,7 +19349,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
         estimate = player.computeTimeStamp()
         Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-        return [Event.TimeStamp, estimate["currentTimeStamp"], 2.5, estimate["untilNextGCD"], player.SurgingTempestTimer, estimate['buffTimer']]
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer,estimate["untilNextGCD"], player.SurgingTempestTimer, estimate['buffTimer']]
          # Hardcodes a 0 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
 
     def teTest63ValidationFunction(testResults) -> (bool, list):
@@ -19494,8 +19364,6 @@ def generateTimerEstimateTestSuite() -> testSuite:
 
 
     def teTest64TestFunction() -> None:
-        """
-        """
 
         Dummy = Enemy()
         Event = Fight(Dummy, False)
@@ -19513,7 +19381,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
         estimate = player.computeTimeStamp()
         Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-        return [Event.TimeStamp, estimate["currentTimeStamp"], 2.5, estimate["untilNextGCD"], player.SurgingTempestTimer, estimate['buffTimer']]
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer,estimate["untilNextGCD"], player.SurgingTempestTimer, estimate['buffTimer']]
          # Hardcodes a 0 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
 
     def teTest64ValidationFunction(testResults) -> (bool, list):
@@ -19525,6 +19393,347 @@ def generateTimerEstimateTestSuite() -> testSuite:
 
     teTest64 = test("Warrior buff and Timestamp estimate test 3 ", teTest64TestFunction, teTest64ValidationFunction)
     timerEstimateTestSuite.addTest(teTest64)
+
+
+    def teTest67TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 479, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Stormbite, WanderingMinuet, RagingStrike, Causticbite, EmpyrealArrow, BloodLetter, RefulgentArrow, RadiantFinale, 
+                     BattleVoice, BurstShot, Barrage, RefulgentArrow, Sidewinder, BurstShot, RefulgentArrow, BurstShot, EmpyrealArrow, 
+                     BurstShot, PitchPerfect3, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, 
+                     RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow]
+        player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"], max(player.StormbiteDOTTimer, player.CausticbiteDOTTimer), estimate['dotTimer']]
+         # Hardcodes a 0 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
+
+    def teTest67ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest67 = test("Bard DOTand Timestamp estimate test 1 ", teTest67TestFunction, teTest67ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest67)
+
+
+    def teTest68TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 479, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Stormbite, WanderingMinuet, RagingStrike, Causticbite, EmpyrealArrow, BloodLetter, RefulgentArrow, RadiantFinale, 
+                     BattleVoice, BurstShot, Barrage, RefulgentArrow, Sidewinder, BurstShot, IronJaws, RefulgentArrow, BurstShot, EmpyrealArrow, 
+                     BurstShot, PitchPerfect3, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, 
+                     RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, IronJaws,RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow]
+        player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"], max(player.StormbiteDOTTimer, player.CausticbiteDOTTimer), estimate['dotTimer']]
+         # Hardcodes a 0 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
+
+    def teTest68ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest68 = test("Bard DOTand Timestamp estimate test 2 ", teTest68TestFunction, teTest68ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest68)
+
+    def teTest69TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 479, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Stormbite, WanderingMinuet, RagingStrike, Causticbite, EmpyrealArrow, WaitAbility(40), EmpyrealArrow]
+        player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"], max(player.StormbiteDOTTimer, player.CausticbiteDOTTimer), estimate['dotTimer']]
+         # Hardcodes a 0 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
+
+    def teTest69ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest69 = test("Bard DOTand Timestamp estimate test 3 ", teTest69TestFunction, teTest69ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest69)
+
+    def teTest70TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 479, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Stormbite, WanderingMinuet, RagingStrike, Causticbite, EmpyrealArrow, WaitAbility(40), EmpyrealArrow, IronJaws, BlastArrow,
+                     BlastArrow, BlastArrow, ArmyPaeon, BlastArrow, BlastArrow, BlastArrow, BlastArrow, BlastArrow, BlastArrow, BlastArrow, BlastArrow, BlastArrow]
+        player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"], max(player.StormbiteDOTTimer, player.CausticbiteDOTTimer), estimate['dotTimer']]
+         # Hardcodes a 0 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
+
+    def teTest70ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],5)
+            # Hardcoded 5 because ArmyPaeon on Bard is a really big difference
+        return passed , testResults
+
+    teTest70 = test("Bard DOTand Timestamp estimate test 4 (< 5)", teTest70TestFunction, teTest70ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest70)
+
+    def teTest71TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 479, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Stormbite, ArmyPaeon, RagingStrike, Causticbite, EmpyrealArrow, BloodLetter, RefulgentArrow, RadiantFinale, 
+                     BattleVoice, BurstShot, Barrage, RefulgentArrow, Sidewinder, BurstShot, RefulgentArrow, BurstShot, EmpyrealArrow, 
+                     BurstShot, PitchPerfect3, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, 
+                     RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow, BurstShot, RefulgentArrow,
+                     BurstShot, RefulgentArrow,BurstShot, RefulgentArrow,BurstShot, RefulgentArrow,BurstShot, RefulgentArrow,BurstShot, RefulgentArrow]
+        player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"], max(player.StormbiteDOTTimer, player.CausticbiteDOTTimer), estimate['dotTimer']]
+         # Hardcodes a 0 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
+
+    def teTest71ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],5)
+            # Hardcoded 5 because ArmyPaeon on Bard is a really big difference
+        return passed , testResults
+
+    teTest71 = test("Bard DOTand Timestamp estimate test 5 (< 5)", teTest71TestFunction, teTest71ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest71)
+
+    def teTest72TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 479, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Reassemble, WaitAbility(5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, 
+			Reassemble, WaitAbility(2.2), Wildfire, ChainSaw, Automaton,Hypercharge, HeatBlast, Ricochet, HeatBlast, GaussRound, HeatBlast, Ricochet, 
+			HeatBlast, GaussRound, HeatBlast, Ricochet, Drill, GaussRound, Ricochet, SplitShot, Ricochet, SlugShot, CleanShot, SplitShot, SlugShot, 
+			CleanShot, SplitShot,  AirAnchor, Drill, SlugShot, CleanShot, SplitShot, GaussRound, Ricochet, SlugShot, CleanShot, SplitShot, SlugShot, 
+			Automaton, CleanShot, SplitShot, SlugShot, CleanShot, Drill, SplitShot, Hypercharge, HeatBlast, GaussRound, HeatBlast, Ricochet, HeatBlast, 
+			GaussRound, HeatBlast, Ricochet, HeatBlast, Reassemble, ChainSaw, GaussRound, Ricochet, SlugShot, CleanShot, SplitShot, SlugShot, CleanShot]
+        player = Player(actionSet, [], Stat, JobEnum.Machinist)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+         # Hardcodes a 0 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
+
+    def teTest72ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest72 = test("Machinist and Timestamp estimate test 1", teTest72TestFunction, teTest72ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest72)
+
+    def teTest73TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 479, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Reassemble, WaitAbility(5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, 
+			Reassemble, WaitAbility(2.2), Wildfire, ChainSaw, Automaton,Hypercharge, HeatBlast, Ricochet, HeatBlast, GaussRound, HeatBlast, Ricochet, 
+			HeatBlast, GaussRound, HeatBlast, Ricochet, Drill, GaussRound, Ricochet, SplitShot, Ricochet, SlugShot, CleanShot, SplitShot, SlugShot, 
+			CleanShot, SplitShot,  AirAnchor, Drill, SlugShot, CleanShot]
+        player = Player(actionSet, [], Stat, JobEnum.Machinist)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+         # Hardcodes a 0 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
+
+    def teTest73ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest73 = test("Machinist Timestamp estimate test 2", teTest73TestFunction, teTest73ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest73)
+
+    def teTest74TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Reassemble, WaitAbility(5), AirAnchor, GaussRound, Ricochet, Drill, BarrelStabilizer, SplitShot, SlugShot, GaussRound, Ricochet, CleanShot, 
+			Reassemble, WaitAbility(2.2), Wildfire, ChainSaw, Automaton,Hypercharge, HeatBlast, Ricochet, HeatBlast, GaussRound, HeatBlast, Ricochet, 
+			HeatBlast, GaussRound, HeatBlast, Ricochet, Drill, GaussRound, Ricochet, SplitShot, Ricochet, SlugShot, CleanShot, SplitShot, SlugShot, 
+			CleanShot, SplitShot,  AirAnchor, Drill, SlugShot, CleanShot]
+        player = Player(actionSet, [], Stat, JobEnum.Machinist)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+         # Hardcodes a 0 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
+
+    def teTest74ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest74 = test("Machinist Timestamp estimate test 3", teTest74TestFunction, teTest74ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest74)
+
+    def teTest75TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [StandardStep, Pirouette, Jete, StandardFinish, TechnicalStep, Pirouette, Jete, Entrechat, Emboite,
+                    TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, 
+                    Jete, Pirouette, StandardFinish, Cascade, SaberDance, ReverseCascade, Fountain, FountainFall, Cascade, SaberDance, ReverseCascade, 
+                    Fountain, FountainFall, Cascade, ReverseCascade, StandardStep, Emboite, Jete, StandardFinish, SaberDance, Fountain, Cascade, Fountain, 
+                    FountainFall, Flourish, FanDance3, SaberDance, FanDance4, FountainFall, ReverseCascade, FanDance1, FanDance3, Cascade, ReverseCascade, 
+                    Fountain, FountainFall]
+        player = Player(actionSet, [], Stat, JobEnum.Dancer)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+         # Hardcodes a 0 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
+
+    def teTest75ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest75 = test("Dancer Timestamp estimate test 1", teTest75TestFunction, teTest75ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest75)
+
+    def teTest76TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [StandardStep, Pirouette, Jete, StandardFinish, TechnicalStep, Pirouette, Jete, Entrechat, Emboite,
+                    TechnicalFinish, Devilment, StarfallDance, Flourish, FanDance3, Tillana, FanDance4, FountainFall, FanDance1, FanDance3, StandardStep, 
+                    Jete, Pirouette, StandardFinish]
+        player = Player(actionSet, [], Stat, JobEnum.Dancer)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+         # Hardcodes a 0 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
+
+    def teTest76ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest76 = test("Dancer Timestamp estimate test 2", teTest76TestFunction, teTest76ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest76)
 
     return timerEstimateTestSuite
 
