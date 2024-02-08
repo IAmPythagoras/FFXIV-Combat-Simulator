@@ -660,12 +660,25 @@ class Player:
             elif isSAM:
                 if self.ActionSet[index].id == SamuraiActions.Meikyo:
                     meikyoStack = 3
-            elif isDRK:
+        hasteBonus = 0
+                             # Must check for oGCD done between first and 2nd GCD whick can give DRK/WAR buffs
+        for index in (range(gcdIndexList[0]) if len(gcdIndexList) > 0 else range(len(self.ActionSet))):
+            if isDRK or isWAR:
                 if self.ActionSet[index].id in possibleBuffActionId:
-                    curBuffTimer = 30 # If does floodshadow prepull. Not really possible but still
-            elif isWAR:
-                if self.ActionSet[index].id in possibleBuffActionId:
-                    curBuffTimer = 10 # If does floodshadow prepull. Not really possible but still
+                             # We must check the length of the first GCD to remove that from the buffTImer.
+                    spellObj = deepcopy(self.ActionSet[firstIndexDamage])
+
+                             # Checking for haste
+                    for hasteInterval in hasteBuffTimeIntervalList:
+                        if 0 >= hasteInterval[0] and 0 <= hasteInterval[1]:
+                            hasteBonus = hasteInterval[2]
+                            break
+
+                             # Compute spellObj cast/recast time
+                    self.Haste += hasteBonus
+                    self.computeActionTimer(spellObj)
+                    self.Haste -= hasteBonus
+                    curBuffTimer = (30 if isDRK else 10) - max(0,spellObj.RecastTime - spellObj.CastTime)
             
             
 
@@ -918,11 +931,21 @@ class Player:
                             meikyoStack = 3
                     elif isDRK: # DRK's buff are oGCD so we check here
                         if checkForBuffAction and self.ActionSet[ogcdIndex].id in possibleBuffActionId:
-                            curBuffTimer = min(60,curBuffTimer + buffTimer) - min(0,gcdLockTimer)
+                                     # DRK needs to have the - max(0,spellObj.RecastTime - spellObj.CastTime) part because
+                                     # this oGCD is the only place we can 
+                            curBuffTimer = min(60,curBuffTimer + buffTimer) 
+                            if curBuffTimer >= 60:
+                                curBuffTimer -= max(0,spellObj.RecastTime - spellObj.CastTime) - min(0,gcdLockTimer)
+                            else :  curBuffTimer += max(spellObj.RecastTime,spellObj.CastTime) - max(0,spellObj.RecastTime - spellObj.CastTime)
                     elif isWAR:
                         if checkForBuffAction and self.ActionSet[ogcdIndex].id in possibleBuffActionId:
                              # Adding 10 seconds to buff
-                            curBuffTimer = min(60,curBuffTimer + 10) - min(0,gcdLockTimer)
+                            curBuffTimer = min(60,curBuffTimer + 10) 
+                            if curBuffTimer >= 60:
+                                curBuffTimer -= max(0,spellObj.RecastTime - spellObj.CastTime) - min(0,gcdLockTimer)
+                            else :  curBuffTimer += max(spellObj.RecastTime,spellObj.CastTime) - max(0,spellObj.RecastTime - spellObj.CastTime)
+
+
                             # If there is risks of clipping gcdLockTimer will be negative.
                             # So we substract gcdLockTimer from curTimeStamp (min(gcdLockTimer,0))
                             # Could be interesting to add 'Risk of Clipping between GCD X and GCD Y'
