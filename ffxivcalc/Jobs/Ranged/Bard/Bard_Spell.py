@@ -2,7 +2,7 @@ from ffxivcalc.Jobs.Base_Spell import DOTSpell, buff, empty, buffHistory, buffPe
 from ffxivcalc.Jobs.Ranged.Ranged_Spell import BardSpell
 from ffxivcalc.helperCode.helper_math import roundDown
 import copy
-Lock = 0.5
+Lock = 0
 
 #Thanks for birdy for da help lol. Bitchiest bard I've ever known, much love
 
