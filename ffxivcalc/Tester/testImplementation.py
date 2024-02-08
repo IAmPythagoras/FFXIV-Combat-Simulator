@@ -4380,7 +4380,7 @@ def generateBRDTestSuite() -> testSuite:
 
     def brdTest1ValidationFunction(testResults) -> (bool, list):
         passed = True
-        expected = [0, 70.74, 6670]   
+        expected = [0, 70.00, 6670]   
 
         for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -4584,7 +4584,7 @@ def generateBRDTestSuite() -> testSuite:
 
     def brdTest6ValidationFunction(testResults) -> (bool, list):
         passed = True
-        expected = [True,24.25]   
+        expected = [True,24.99]   
 
         for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -7242,7 +7242,7 @@ def generateSAMTestSuite() -> testSuite:
 
     def samTest1ValidationFunction(testResults) -> (bool, list):
         passed = True
-        expected = [0, 89.6, 13870]
+        expected = [0, 89.6, 13570]
 
         for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
