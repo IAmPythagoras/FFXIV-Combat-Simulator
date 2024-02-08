@@ -7,8 +7,8 @@ Update history :
     - Added 'computeActionTimer()' which returns an estimate of a player's timeStamp/DOT timer/buf timer.
       This function can be called on a player object and will return a dictionnary containing the estimates.
     - Added tests to test 'computeActionTimer' functionality.
-    - Fixed mitigation amount issue (higher than 1 values)
-    - Fixed Samurai Higanbana DOT potency (was 60, fixed to 45)
+    - Fixed mitigation amount issue (higher than 1 values) (PR by Apollo)
+    - Fixed Samurai Higanbana DOT potency (was 60, fixed to 45) (PR by Apollo)
     - Moved some gcdTiming computation to the Player object (see Fight.py)
     - Removed lock in various places
 
