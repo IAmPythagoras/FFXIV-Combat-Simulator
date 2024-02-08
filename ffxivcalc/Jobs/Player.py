@@ -835,7 +835,7 @@ class Player:
                                 curBuffTimer = buffTimer - spellObj.RecastTime
                             else : curBuffTimer = max(0,curBuffTimer-max(spellObj.RecastTime,spellObj.CastTime))
                     else: 
-                        if buffWillStack : curBuffTimer = min(60,curBuffTimer + buffTimer - max(0,spellObj.RecastTime - spellObj.CastTime))
+                        if buffWillStack : curBuffTimer = min(60,curBuffTimer + buffTimer) - max(0,spellObj.RecastTime - spellObj.CastTime)
                         else : curBuffTimer = buffTimer - max(0,spellObj.RecastTime - spellObj.CastTime)
                 else : curBuffTimer = max(0,curBuffTimer-max(spellObj.RecastTime,spellObj.CastTime)) # Removing until end of GCD
 
@@ -914,7 +914,7 @@ class Player:
                             meikyoStack = 3
                     elif isDRK: # DRK's buff are oGCD so we check here
                         if checkForBuffAction and self.ActionSet[ogcdIndex].id in possibleBuffActionId:
-                            curBuffTimer = min(60,curBuffTimer + buffTimer - max(0,spellObj.RecastTime - spellObj.CastTime))
+                            curBuffTimer = min(60,curBuffTimer + buffTimer) - max(0,spellObj.RecastTime - spellObj.CastTime) - min(0,gcdLockTimer)
 
                             # If there is risks of clipping gcdLockTimer will be negative.
                             # So we substract gcdLockTimer from curTimeStamp (min(gcdLockTimer,0))

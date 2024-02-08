@@ -19256,7 +19256,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
             HardSlash, Shadowbringer, EdgeShadow, Bloodspiller, EdgeShadow, CarveSpit, Bloodspiller, Plunge, EdgeShadow, Bloodspiller, SaltDarkness, Shadowbringer, 
 			SyphonStrike, EdgeShadow, Plunge,Souleater, HardSlash, SyphonStrike, Souleater, Bloodspiller, HardSlash, SyphonStrike, Souleater, HardSlash, SyphonStrike, 
 			Plunge, Souleater, Bloodspiller, HardSlash, SyphonStrike, Souleater, HardSlash, BloodWeapon, SyphonStrike, Delirium, Bloodspiller, Bloodspiller, EdgeShadow, 
-			Bloodspiller, Bloodspiller, CarveSpit, Souleater, EdgeShadow, HardSlash ]
+			Bloodspiller, Bloodspiller, CarveSpit, Souleater, EdgeShadow, HardSlash]
         player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
 
         Event.AddPlayer([player])
