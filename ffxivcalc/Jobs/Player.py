@@ -397,7 +397,9 @@ class Player:
         The result could be a bit off for players with haste buff as this is meant as an approximation.
         It will also return how long is left until the next GCD after the last action is casted. In other words it returns how long
         the player will have to wait to execute another GCD.
-        This function assumes that haste actions are always applied (if a combo is required)
+        This function assumes that haste actions are always applied (if a combo is required).
+        This function does not account for any added time due to summons like Living Shadow for darknight. It only considers a time estimate for the
+        player doing the action.
 
         Return :
         dict -> {currentTimeStamp : float, untilNextGCD : float}
@@ -445,9 +447,8 @@ class Player:
                                  # If is a Samurai we keep track of Meikyo
         isSAM = self.JobEnum == JobEnum.Samurai  
         meikyoStack = 0
-                                 # Check if the DarkKnight does LivingShadow in which case the final time becomes max(cur,curAtTimeOfCast+20 seconds)
-        isDRK = self.JobEnum == JobEnum.DarkKnight
-        timeStampLiving = 0
+
+        isDRK = self.JobEnum == JobEnum.DarkKnight # Keep track since buff is oGCD
 
 
         # Monk can be ommited since the player object of monk is
@@ -908,9 +909,9 @@ class Player:
                     elif isSAM:
                         if self.ActionSet[ogcdIndex].id == SamuraiActions.Meikyo:
                             meikyoStack = 3
-                    elif isDRK:
-                        if self.ActionSet[ogcdIndex].id == DarkKnightActions.LivingShadow:
-                            timeStampLiving = curTimeStamp
+                    elif isDRK: # DRK's buff are oGCD so we check here
+                        if checkForBuffAction and spellObj.id in possibleBuffActionId:
+                            curBuffTimer = min(60,curBuffTimer + buffTimer - max(0,spellObj.RecastTime - spellObj.CastTime))
 
                             # If there is risks of clipping gcdLockTimer will be negative.
                             # So we substract gcdLockTimer from curTimeStamp (min(gcdLockTimer,0))
@@ -919,9 +920,6 @@ class Player:
                 if gcdLockTimer < 0: # if gcdLockTimer was exceeded then we have to remove to other timer
                     curDOTTimer = max(0,curDOTTimer+min(0,gcdLockTimer))
                     curBuffTimer = max(0,curBuffTimer+min(0,gcdLockTimer))
-                    
-                             # If is a DRK there is a chance the shadow stays longer so we take that into account
-        if isDRK : curTimeStamp = max(curTimeStamp, timeStampLiving + 20)
 
         return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(finalGCDLockTimer,2), "dotTimer" : round(curDOTTimer,2), "buffTimer" : round(curBuffTimer,2),
                 "detectedInFire" : inAstralFire, "detectedInIce" : inUmbralIce, "dualCast" : hasDualCast}

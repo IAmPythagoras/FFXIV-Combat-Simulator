@@ -19268,7 +19268,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
         estimate = player.computeTimeStamp()
         Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"], player.DarksideTimer, estimate['buffTimer']]
 
     def teTest59ValidationFunction(testResults) -> (bool, list):
         passed = True   
@@ -19290,7 +19290,8 @@ def generateTimerEstimateTestSuite() -> testSuite:
         Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
         DRKPlayer = Player([], [], Stat, JobEnum.DarkKnight)
         actionSet = [BloodWeapon,WaitAbility(5),TBN(DRKPlayer), HardSlash, EdgeShadow, Delirium, SyphonStrike, WaitAbility(1), Potion, Souleater, LivingShadow, SaltedEarth, 
-            HardSlash]
+            HardSlash, Shadowbringer, EdgeShadow, Bloodspiller, EdgeShadow, CarveSpit, Bloodspiller, Plunge, EdgeShadow, Bloodspiller, SaltDarkness, Shadowbringer, 
+			SyphonStrike, EdgeShadow, Plunge,Souleater, HardSlash, HardSlash, HardSlash, HardSlash, HardSlash, HardSlash, HardSlash]
         player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
 
         Event.AddPlayer([player])
@@ -19302,7 +19303,8 @@ def generateTimerEstimateTestSuite() -> testSuite:
         estimate = player.computeTimeStamp()
         Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"]]
+        return [Event.TimeStamp, estimate["currentTimeStamp"], 2.5, estimate["untilNextGCD"], player.DarksideTimer, estimate['buffTimer']]
+         # Hardcodes a 0 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
 
     def teTest60ValidationFunction(testResults) -> (bool, list):
         passed = True   
@@ -19313,6 +19315,80 @@ def generateTimerEstimateTestSuite() -> testSuite:
 
     teTest60 = test("Darkknight buff and Timestamp estimate test 2", teTest60TestFunction, teTest60ValidationFunction)
     timerEstimateTestSuite.addTest(teTest60)
+
+    def teTest61TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 3000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        DRKPlayer = Player([], [], Stat, JobEnum.DarkKnight)
+        actionSet = [BloodWeapon,WaitAbility(5),TBN(DRKPlayer), HardSlash, EdgeShadow, Delirium, SyphonStrike, WaitAbility(1), Potion, Souleater, LivingShadow, SaltedEarth, 
+            HardSlash, Shadowbringer, EdgeShadow, Bloodspiller, EdgeShadow, CarveSpit, Bloodspiller, Plunge, EdgeShadow, Bloodspiller, SaltDarkness, Shadowbringer, 
+			SyphonStrike, EdgeShadow, Plunge,Souleater, HardSlash, SyphonStrike, Souleater, Bloodspiller, HardSlash, SyphonStrike, Souleater, HardSlash, SyphonStrike, 
+			Plunge, Souleater, Bloodspiller, HardSlash, SyphonStrike, Souleater, HardSlash, BloodWeapon, SyphonStrike, Delirium, Bloodspiller, Bloodspiller, EdgeShadow, 
+			Bloodspiller, Bloodspiller, CarveSpit, Souleater, EdgeShadow, HardSlash ]
+        player = Player(actionSet, [], Stat, JobEnum.DarkKnight)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], 2.5, estimate["untilNextGCD"], player.DarksideTimer, estimate['buffTimer']]
+         # Hardcodes a 0 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
+
+    def teTest61ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest61 = test("Darkknight buff and Timestamp estimate test 3 ", teTest61TestFunction, teTest61ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest61)
+
+    def teTest62TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = WAROpener = [Tomahawk, Infuriate, HeavySwing, Upheaval ,Maim, WaitAbility(1), Potion, StormEye, InnerRelease, Onslaught, InnerChaos, Onslaught, PrimalRend,Onslaught, 
+                                 FellCleave, FellCleave, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath, FellCleave, Infuriate, Upheaval, InnerChaos, HeavySwing, Maim, StormEye, 
+                                 HeavySwing, Maim, StormPath, FellCleave, HeavySwing, Maim, Onslaught, StormEye , HeavySwing, Upheaval, Maim, StormPath, InnerRelease, PrimalRend, FellCleave, 
+                                 FellCleave, Onslaught, FellCleave, FellCleave, Infuriate, InnerChaos, HeavySwing, Maim, StormPath]
+        player = Player(actionSet, [], Stat, JobEnum.Warrior)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], 2.5, estimate["untilNextGCD"], player.SurgingTempestTimer, estimate['buffTimer']]
+         # Hardcodes a 0 for untilNextGCD since livingshadow furthers the fight. So the until next GCD the estimate returns is right after the DRK finishes, not after living shadow finishes
+
+    def teTest62ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest62 = test("Warrior buff and Timestamp estimate test 1 ", teTest62TestFunction, teTest62ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest62)
 
 
     return timerEstimateTestSuite
