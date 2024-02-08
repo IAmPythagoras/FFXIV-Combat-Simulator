@@ -445,6 +445,9 @@ class Player:
                                  # If is a Samurai we keep track of Meikyo
         isSAM = self.JobEnum == JobEnum.Samurai  
         meikyoStack = 0
+                                 # Check if the DarkKnight does LivingShadow in which case the final time becomes max(cur,curAtTimeOfCast+20 seconds)
+        isDRK = self.JobEnum == JobEnum.DarkKnight
+        timeStampLiving = 0
 
 
         # Monk can be ommited since the player object of monk is
@@ -905,6 +908,9 @@ class Player:
                     elif isSAM:
                         if self.ActionSet[ogcdIndex].id == SamuraiActions.Meikyo:
                             meikyoStack = 3
+                    elif isDRK:
+                        if self.ActionSet[ogcdIndex].id == DarkKnightActions.LivingShadow:
+                            timeStampLiving = curTimeStamp
 
                             # If there is risks of clipping gcdLockTimer will be negative.
                             # So we substract gcdLockTimer from curTimeStamp (min(gcdLockTimer,0))
@@ -913,6 +919,9 @@ class Player:
                 if gcdLockTimer < 0: # if gcdLockTimer was exceeded then we have to remove to other timer
                     curDOTTimer = max(0,curDOTTimer+min(0,gcdLockTimer))
                     curBuffTimer = max(0,curBuffTimer+min(0,gcdLockTimer))
+                    
+                             # If is a DRK there is a chance the shadow stays longer so we take that into account
+        if isDRK : curTimeStamp = max(curTimeStamp, timeStampLiving + 20)
 
         return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : round(finalGCDLockTimer,2), "dotTimer" : round(curDOTTimer,2), "buffTimer" : round(curBuffTimer,2),
                 "detectedInFire" : inAstralFire, "detectedInIce" : inUmbralIce, "dualCast" : hasDualCast}
