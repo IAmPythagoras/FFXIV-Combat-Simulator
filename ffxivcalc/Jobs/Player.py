@@ -460,30 +460,30 @@ class Player:
         # TODO -> Fix Bard estimate with army paeon
         match self.JobEnum:
             case JobEnum.BlackMage : # Leylines
-                possibleHasteActionId.append(3573)
+                possibleHasteActionId.append(BlackMageActions.LeyLines)
                 hasteAmount = 15
                 hasteBuffTimer = 30
             case JobEnum.WhiteMage : # Presence of Mind
-                possibleHasteActionId.append(136)
+                possibleHasteActionId.append(WhiteMageActions.PresenceOfMind)
                 hasteAmount = 20
                 hasteBuffTimer = 15
             case JobEnum.Samurai : # Shifu
-                possibleHasteActionId.append(7479)
-                possibleHasteActionId.append(7482) # Will check if stacks of meikyo
+                possibleHasteActionId.append(SamuraiActions.Shifu)
+                possibleHasteActionId.append(SamuraiActions.Kasha) # Will check if stacks of meikyo
                 hasteAmount = 13
                 hasteBuffTimer = 40
             case JobEnum.Bard : # Army Paeon
-                possibleHasteActionId.append(116)
+                possibleHasteActionId.append(BardActions.ArmyPaeon)
                 hasteAmount = 20
                 hasteBuffTimer = 45 # This could be a mistake. TODO FIX THIS
             case JobEnum.Astrologian : # Astrodyne
-                possibleHasteActionId.append(25870)
+                possibleHasteActionId.append(AstrologianActions.Astrodyne)
                 hasteAmount = 10
                 hasteBuffTimer = 15
             case JobEnum.Ninja : # 
-                possibleHasteActionId.append(2269)
-                possibleHasteActionId.append(25876)
-                possibleHasteActionId.append(3563)
+                possibleHasteActionId.append(NinjaActions.Huton)
+                possibleHasteActionId.append(NinjaActions.Huraijin)
+                possibleHasteActionId.append(NinjaActions.ArmorCrush)
                 hasteAmount = 15
                 hasteBuffTimer = 60 # Since Huton give 60 we assume the best case
 
@@ -501,36 +501,36 @@ class Player:
                              # buffs that have to be reapplied like on RPR
         match self.JobEnum:
             case JobEnum.BlackMage : # T3/T4
-                possibleDOTActionId.append(153)
-                possibleDOTActionId.append(7420)
+                possibleDOTActionId.append(BlackMageActions.ThunderIII)
+                possibleDOTActionId.append(BlackMageActions.ThunderIV)
                 dotTimer = 30
             case JobEnum.WhiteMage : # Dia
-                possibleDOTActionId.append(16532)
+                possibleDOTActionId.append(WhiteMageActions.Dia)
                 dotTimer = 30
             case JobEnum.Scholar : # Biolysis
-                possibleDOTActionId.append(16540)
+                possibleDOTActionId.append(ScholarActions.Biolysis)
                 dotTimer = 30
             case JobEnum.Astrologian : # Combust
-                possibleDOTActionId.append(16554)
+                possibleDOTActionId.append(AstrologianActions.Combust)
                 dotTimer = 30
             case JobEnum.Sage : # Eukrasian Dosis
-                possibleDOTActionId.append(24314)
+                possibleDOTActionId.append(SageActions.EukrasianDosis)
                 dotTimer = 30
             case JobEnum.Dragoon : # Chaotic Spring
-                possibleDOTActionId.append(25772)
+                possibleDOTActionId.append(DragoonActions.ChaoticSpring)
                 dotTimer = 24
             case JobEnum.Monk : # Demolish
-                possibleDOTActionId.append(66)
+                possibleDOTActionId.append(MonkActions.Demolish)
                 dotTimer = 18
             case JobEnum.Samurai : # Higanbana
-                possibleDOTActionId.append(16484)
-                possibleDOTActionId.append(7489)
+                possibleDOTActionId.append(SamuraiActions.Higanbana)
+                possibleDOTActionId.append(SamuraiActions.KaeshiHiganbana)
                 dotTimer = 60
             case JobEnum.Bard : # Only tracks the highest DOT timer and allows iron jaws to reset
                                 # both of them
-                possibleDOTActionId.append(7406)
-                possibleDOTActionId.append(7407)
-                possibleDOTActionId.append(3560)
+                possibleDOTActionId.append(BardActions.Causticbite)
+                possibleDOTActionId.append(BardActions.Stormbite)
+                possibleDOTActionId.append(BardActions.IronJaws)
                 dotTimer = 45
         checkForDOTAction = len(possibleDOTActionId) != 0
 
@@ -542,29 +542,29 @@ class Player:
 
         match self.JobEnum:
             case JobEnum.Reaper : # Death Design
-                possibleBuffActionId.append(24378)
-                possibleBuffActionId.append(24379)
+                possibleBuffActionId.append(ReaperActions.ShadowOfDeath)
+                possibleBuffActionId.append(ReaperActions.WhorlOfDeath)
                 buffTimer = 30
                 buffWillStack = True
             case JobEnum.Samurai : # Fugetsu
-                possibleBuffActionId.append(7478)
-                possibleBuffActionId.append(7481) # Will check if have stacks of meikyo
+                possibleBuffActionId.append(SamuraiActions.Jinpu)
+                possibleBuffActionId.append(SamuraiActions.Gekko) # Will check if have stacks of meikyo
                 buffTimer = 40
             case JobEnum.Dragoon : # Powersurge
-                possibleBuffActionId.append(87)
+                possibleBuffActionId.append(DragoonActions.Disembowel)
                 buffTimer = 30
             case JobEnum.Monk : # Twin snakes
-                possibleBuffActionId.append(61)
+                possibleBuffActionId.append(MonkActions.TwinSnakes)
                 buffTimer = 15
             case JobEnum.DarkKnight : # Darkside
-                possibleBuffActionId.append(10)
-                possibleBuffActionId.append(16470)
+                possibleBuffActionId.append(DarkKnightActions.FloodOfShadow)
+                possibleBuffActionId.append(DarkKnightActions.EdgeOfShadow)
                 buffTimer = 30
                 buffWillStack = True
             case JobEnum.Warrior : # Inner release buff will be detected in oGCD check
-                possibleBuffActionId.append(16462)
-                possibleBuffActionId.append(45)
-                possibleBuffActionId.append(7389)
+                possibleBuffActionId.append(WarriorActions.InnerRelease)
+                possibleBuffActionId.append(WarriorActions.MythrilTempest)
+                possibleBuffActionId.append(WarriorActions.StormEye)
                 buffTimer = 30        
                 buffWillStack = True
 
@@ -645,17 +645,17 @@ class Player:
                              # Will check all actions before first damage to see if any applies a buff
         for index in (range(firstIndexDamage) if foundFirstDamage else range(len(self.ActionSet))):
             if isBLM : 
-                if self.ActionSet[index].id == 7561:
+                if self.ActionSet[index].id == CasterActions.Swiftcast:
                     hasSwiftCast = True
-                elif self.ActionSet[index].id == 7421:
+                elif self.ActionSet[index].id == BlackMageActions.Triplecast:
                     tripleCastStack = 3
             elif isRDM:
-                if self.ActionSet[index].id == 7561:
+                if self.ActionSet[index].id == CasterActions.Swiftcast:
                     hasSwiftCast = True
-                elif self.ActionSet[index].id == 7518:
+                elif self.ActionSet[index].id == RedMageActions.Acceleration:
                     hasAcceleration = True
             elif isSMN:
-                if self.ActionSet[index].id == 7561:
+                if self.ActionSet[index].id == CasterActions.Swiftcast:
                     hasSwiftCast = True
             elif isSAM:
                 if self.ActionSet[index].id == SamuraiActions.Meikyo:
@@ -872,7 +872,7 @@ class Player:
                              # Else we loose both fire and ice
                         if spellObj.IsIce or (not spellObj.IsFire and not spellObj.IsIce):
                             pass
-                        elif spellObj.id == 152:
+                        elif spellObj.id == BlackMageActions.FireIII:
                             inUmbralIce = False
                             inAstralFire = True
                         else :
@@ -884,7 +884,7 @@ class Player:
                              # Else we loose both fire and ice
                         if spellObj.IsFire or (not spellObj.IsFire and not spellObj.IsIce):
                             pass
-                        elif spellObj.id == 154:
+                        elif spellObj.id == BlackMageActions.BlizzardIII:
                             inUmbralIce = True
                             inAstralFire = False
                         else :
@@ -907,32 +907,35 @@ class Player:
                              # If isBLM we check if the oGCD action is 'transpose' which will affect the state
                              # We also check for triplecast/swiftcast
                     if isBLM : 
-                        if self.ActionSet[ogcdIndex].id == 149 :
+                        if self.ActionSet[ogcdIndex].id == BlackMageActions.Transpose :
                             if inUmbralIce : 
                                 inUmbralIce = False
                                 inAstralFire = True
                             elif inAstralFire:
                                 inUmbralIce = True
                                 inAstralFire = False
-                        elif self.ActionSet[ogcdIndex].id == 7561:
+                        elif self.ActionSet[ogcdIndex].id == CasterActions.Swiftcast:
                             hasSwiftCast = True
-                        elif self.ActionSet[ogcdIndex].id == 7421:
+                        elif self.ActionSet[ogcdIndex].id == BlackMageActions.Triplecast:
                             tripleCastStack = 3
                     elif isRDM:
-                        if self.ActionSet[ogcdIndex].id == 7561:
+                        if self.ActionSet[ogcdIndex].id == CasterActions.Swiftcast:
                             hasSwiftCast = True
-                        elif self.ActionSet[ogcdIndex].id == 7518:
+                        elif self.ActionSet[ogcdIndex].id == RedMageActions.Acceleration:
                             hasAcceleration = True
                     elif isSMN:
-                        if self.ActionSet[ogcdIndex].id == 7561:
+                        if self.ActionSet[ogcdIndex].id == CasterActions.Swiftcast:
                             hasSwiftCast = True
                     elif isSAM:
                         if self.ActionSet[ogcdIndex].id == SamuraiActions.Meikyo:
                             meikyoStack = 3
+
+                             # For both war/drk. If the new buffTImer is 60 then we have to substract
+                             # the time that happened during the GCD.
+                             # If its under 60 then we have to add what was removed from it and remove the time of the GCD
+
                     elif isDRK: # DRK's buff are oGCD so we check here
                         if checkForBuffAction and self.ActionSet[ogcdIndex].id in possibleBuffActionId:
-                                     # DRK needs to have the - max(0,spellObj.RecastTime - spellObj.CastTime) part because
-                                     # this oGCD is the only place we can 
                             curBuffTimer = min(60,curBuffTimer + buffTimer) 
                             if curBuffTimer >= 60:
                                 curBuffTimer -= max(0,spellObj.RecastTime - spellObj.CastTime) - min(0,gcdLockTimer)
