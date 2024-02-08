@@ -562,8 +562,8 @@ class Player:
                 buffWillStack = True
             case JobEnum.Warrior :
                 possibleBuffActionId.append(16462)
-                possibleBuffActionId.append(16470)
                 possibleBuffActionId.append(7389)
+                possibleBuffActionId.append(45)
                 buffTimer = 30        
                 buffWillStack = True
 
