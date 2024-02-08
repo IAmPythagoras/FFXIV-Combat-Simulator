@@ -775,7 +775,7 @@ class Player:
 
                              #Since only oGCDs are left we simply add to curTimeStamp the sum of all oGCD
                 curTimeStamp += oGCDRemainingTime
-                finalGCDLockTimer = gcdLockTimer
+                finalGCDLockTimer = max(0,gcdLockTimer - oGCDRemainingTime)
             else:
                              # Check if this GCD or if there are oGCD between the next GCD that have HASTE effects
                 if hasHasteAction and (hasteBuffIndexList[0] >= gcdIndex and hasteBuffIndexList[0] < gcdIndexList[listIndex+1]):
