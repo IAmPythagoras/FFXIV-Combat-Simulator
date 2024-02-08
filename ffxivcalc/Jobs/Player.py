@@ -533,12 +533,14 @@ class Player:
                              # Done similarly to DOT and hasteBuff
         possibleBuffActionId = []
         buffTimer = 0
+        buffWillStack = False # True if the buff stacks up to 60 seconds
 
         match self.JobEnum:
             case JobEnum.Reaper : # Death Design
                 possibleBuffActionId.append(24378)
                 possibleBuffActionId.append(24379)
                 buffTimer = 30
+                buffWillStack = True
             case JobEnum.Samurai : # Fugetsu
                 possibleBuffActionId.append(7478)
                 possibleBuffActionId.append(7481) # Will check if have stacks of meikyo
@@ -553,11 +555,13 @@ class Player:
                 possibleBuffActionId.append(10)
                 possibleBuffActionId.append(16470)
                 buffTimer = 30
+                buffWillStack = True
             case JobEnum.Warrior :
                 possibleBuffActionId.append(16462)
                 possibleBuffActionId.append(16470)
                 possibleBuffActionId.append(7389)
                 buffTimer = 30        
+                buffWillStack = True
 
         checkForBuffAction = len(possibleBuffActionId) != 0
 
@@ -731,7 +735,9 @@ class Player:
                             if meikyoStack > 0: 
                                 meikyoStack -= 1
                                 curBuffTimer = buffTimer
-                    else: curBuffTimer = buffTimer
+                    else: 
+                        if buffWillStack : curBuffTimer = min(60,buffTimer + curBuffTimer)
+                        else : curBuffTimer = buffTimer
 
                              # if last action is DOT update curDOTTimer
                 elif checkForDOTAction and spellObj.id in possibleDOTActionId:
@@ -821,7 +827,9 @@ class Player:
                             if meikyoStack > 0: 
                                 curBuffTimer = buffTimer - spellObj.RecastTime
                             else : curBuffTimer = max(0,curBuffTimer-max(spellObj.RecastTime,spellObj.CastTime))
-                    else: curBuffTimer = buffTimer - max(0,spellObj.RecastTime - spellObj.CastTime)
+                    else: 
+                        if buffWillStack : curBuffTimer = min(60,curBuffTimer + buffTimer - max(0,spellObj.RecastTime - spellObj.CastTime))
+                        else : curBuffTimer = buffTimer - max(0,spellObj.RecastTime - spellObj.CastTime)
                 else : curBuffTimer = max(0,curBuffTimer-max(spellObj.RecastTime,spellObj.CastTime)) # Removing until end of GCD
 
                 curTimeStamp += max(spellObj.RecastTime, spellObj.CastTime)

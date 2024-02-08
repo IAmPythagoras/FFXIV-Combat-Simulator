@@ -18670,7 +18670,8 @@ def generateTimerEstimateTestSuite() -> testSuite:
         actionSet = [Meikyo, Gekko, WaitAbility(1), Potion, Kasha, Ikishoten, Yukikaze, Midare, KaeshiSetsugekka, Senei, Meikyo, Gekko, Shinten, 
                      Higanbana, Shinten, Gekko, Shinten, OgiNamikiri, Shoha, KaeshiNamikiri, Kasha, Shinten, Hakaze, Yukikaze, Midare, KaeshiSetsugekka, 
                      Shinten, Hakaze, Jinpu, Gekko, Shinten, Hakaze, Shifu, Kasha, Hakaze, Shinten, Yukikaze, Midare, Hakaze, Jinpu, Gekko, Hakaze, Shifu, 
-                     Kasha, Shinten, Hakaze, Yukikaze, Shinten, Meikyo, Kasha, Kasha, Shinten, Shoha, Gekko, Shinten, Hakaze]
+                     Kasha, Shinten, Hakaze, Yukikaze, Shinten, Meikyo, Kasha, Kasha, Shinten, Shoha, Gekko, Shinten, Hakaze, Yukikaze, Shinten, Midare,
+                     KaeshiSetsugekka, Hakaze, Yukikaze, Hakaze, Shinten, Shifu, Kasha]
         player = Player(actionSet, [], Stat, JobEnum.Samurai)
 
         Event.AddPlayer([player])
@@ -18686,7 +18687,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
                 player.FugetsuTimer, estimate["buffTimer"]]
 
     def teTest43ValidationFunction(testResults) -> (bool, list):
-        passed = False   
+        passed = True   
         for i in range(0,len(testResults),2): 
             passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
 
@@ -18694,6 +18695,187 @@ def generateTimerEstimateTestSuite() -> testSuite:
 
     teTest43 = test("Samurai DOT,buff and Timestamp estimate test 1", teTest43TestFunction, teTest43ValidationFunction)
     timerEstimateTestSuite.addTest(teTest43)
+
+
+    def teTest44TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 976, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Meikyo, Gekko, WaitAbility(1), Potion, Kasha, Ikishoten, Yukikaze, Midare, KaeshiSetsugekka, Senei, Meikyo, Gekko, Shinten, 
+                     Higanbana, Shinten, Gekko, Shinten, OgiNamikiri, Shoha, KaeshiNamikiri, Kasha, Shinten, Hakaze, Yukikaze, Midare, KaeshiSetsugekka, 
+                     Shinten, Hakaze, Jinpu, Gekko, Shinten, Hakaze, Shifu, Kasha, Hakaze, Shinten, Yukikaze, Midare, Hakaze, Jinpu, Gekko, Hakaze, Shifu, 
+                     Kasha, Shinten, Hakaze, Yukikaze, Shinten, Meikyo, Kasha, Kasha, Shinten, Shoha, Gekko, Higanbana, Shinten, Hakaze, Yukikaze, Shinten, Midare,
+                     KaeshiSetsugekka, Hakaze, Yukikaze, Hakaze, Shinten, Shifu, Kasha]
+        player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"], player.HiganbanaTimer, estimate["dotTimer"],
+                player.FugetsuTimer, estimate["buffTimer"]]
+
+    def teTest44ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest44 = test("Samurai DOT,buff and Timestamp estimate test 2", teTest44TestFunction, teTest44ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest44)
+
+
+    def teTest45TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 976, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Meikyo, Gekko, WaitAbility(1), Potion, Kasha, Ikishoten, Yukikaze, Midare, KaeshiSetsugekka, Senei, Meikyo, Gekko, Shinten, 
+                     Higanbana, Shinten, Gekko, Shinten, OgiNamikiri, Shoha, KaeshiNamikiri, Kasha, Shinten, Hakaze, Yukikaze, Midare, KaeshiSetsugekka, 
+                     Shinten, Hakaze, Jinpu, Gekko, Shinten, Hakaze, Shifu, Kasha, Hakaze, Shinten, Yukikaze, Midare, Hakaze, Jinpu, Gekko, Hakaze, Shifu, 
+                     Kasha, Shinten, Hakaze, Yukikaze, Shinten, Meikyo, Kasha, Kasha, Shinten, Shoha, Gekko, Higanbana, Shinten, Hakaze, Yukikaze, Shinten, Midare,
+                     KaeshiSetsugekka, Hakaze, Yukikaze, Hakaze, Shinten, Shifu, Kasha, WaitAbility(10), Yukikaze]
+        player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"], player.HiganbanaTimer, estimate["dotTimer"],
+                player.FugetsuTimer, estimate["buffTimer"]]
+
+    def teTest45ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest45 = test("Samurai DOT,buff and Timestamp estimate test 3", teTest45TestFunction, teTest45ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest45)
+
+    def teTest46TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 976, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Meikyo, Gekko, WaitAbility(1), Potion, Kasha, Ikishoten, Yukikaze, Midare, KaeshiSetsugekka, Senei, Meikyo, Gekko, Shinten, 
+                     Higanbana, Shinten, Gekko, Shinten, OgiNamikiri, Shoha]
+        player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"], player.HiganbanaTimer, estimate["dotTimer"],
+                player.FugetsuTimer, estimate["buffTimer"]]
+
+    def teTest46ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest46 = test("Samurai DOT,buff and Timestamp estimate test 4", teTest46TestFunction, teTest46ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest46)
+
+    def teTest47TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 2200, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Meikyo, Gekko, WaitAbility(1), Potion, Kasha, Ikishoten, Yukikaze, Midare, KaeshiSetsugekka, Senei, Meikyo, Gekko, Shinten, 
+                     Higanbana, Shinten, Gekko, Shinten, OgiNamikiri, Shoha, KaeshiNamikiri, Kasha, Shinten, Hakaze, Yukikaze, Midare, KaeshiSetsugekka, 
+                     Shinten, Hakaze, Jinpu, Gekko, Shinten, Hakaze, Shifu, Kasha, Hakaze, Shinten, Yukikaze, Midare, Hakaze, Jinpu, Gekko, Hakaze, Shifu, 
+                     Kasha, Shinten, Hakaze, Yukikaze, Shinten, Meikyo, Kasha, Kasha, Shinten, Shoha, Gekko, Higanbana, Shinten, Hakaze, Yukikaze, Shinten, Midare,
+                     KaeshiSetsugekka, Hakaze, Yukikaze, Hakaze, Shinten, Shifu, Kasha, WaitAbility(10), Yukikaze]
+        player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"], player.HiganbanaTimer, estimate["dotTimer"],
+                player.FugetsuTimer, estimate["buffTimer"]]
+
+    def teTest47ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest47 = test("Samurai DOT,buff and Timestamp estimate test 5", teTest47TestFunction, teTest47ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest47)
+
+    def teTest48TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Soulsow, Harpe, ShadowOfDeath, ArcaneCircle, SoulSlice, SoulSlice, Potion, PlentifulHarvest, Enshroud, CrossReaping, 
+                     VoidReaping, LemureSlice, CrossReaping, VoidReaping, LemureSlice, Communio, Gluttony, Gibbet, Gallows, UnveiledGibbet, 
+                     Gibbet, ShadowOfDeath, Slice]
+        player = Player(actionSet, [], Stat, JobEnum.Reaper)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.GCDLockTimer, estimate["untilNextGCD"], player.DeathDesignTimer, estimate["buffTimer"]]
+
+    def teTest48ValidationFunction(testResults) -> (bool, list):
+        passed = False   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest48 = test("Reaper buff and Timestamp estimate test 1", teTest48TestFunction, teTest48ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest48)
 
 
 
