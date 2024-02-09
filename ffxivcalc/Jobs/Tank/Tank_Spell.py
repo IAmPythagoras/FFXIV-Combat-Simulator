@@ -157,7 +157,10 @@ LowBlow = TankSpell(7540, False, Lock, 0, 0, 0, ApplyLowBlow, [LowBlowRequiremen
 Provoke = TankSpell(7533, False, Lock, 0, 0, 0, ApplyProvoke, [ProvokeRequirement])
 Interject = TankSpell(10101010, False, Lock, 0, 0, 0, ApplyInterject, [InterjectRequirement])
 Reprisal = TankSpell(7535, False, Lock, 0, 0, 0, ApplyReprisal, [ReprisalRequirement])
-TankStance = TankSpell(16142, False, 0, 0, 0, 0, ApplyTankStance, [TankStanceRequirement]) #Turn on Tank Stance
+RoyalGuard = TankSpell(16142, False, 0, 0, 0, 0, ApplyTankStance, [TankStanceRequirement]) #Turn on Tank Stance
+Grit = TankSpell(3629, False, 0, 0, 0, 0, ApplyTankStance, [TankStanceRequirement])
+IronWill = TankSpell(28, False, 0, 0, 0, 0, ApplyTankStance, [TankStanceRequirement])
+Defiance = TankSpell(48, False, 0, 0, 0, 0, ApplyTankStance, [TankStanceRequirement])
 TurnOffTankStance = TankSpell(0, False, 0, 0, 0, 0, ApplyTurnOffTankStance, [])#Turn off Tank Stance
 
 def Shirk(Target):
@@ -189,10 +192,10 @@ TankAbility = {
 7540 : LowBlow,
 7533 : Provoke,
 7537 : Shirk,
-16142 : TankStance, #Gunbreaker Tank Stance
-3629 : TankStance, #DarkKnight Tank Stance
-48 : TankStance, #Warrior Tank Stance
-28 : TankStance, #Paladin Tank Stance
+16142 : RoyalGuard, #Gunbreaker Tank Stance
+3629 : Grit, #DarkKnight Tank Stance
+48 : Defiance, #Warrior Tank Stance
+28 : IronWill, #Paladin Tank Stance
 34590541 : Potion,
 34592395 : Potion,
 -2 : Potion,

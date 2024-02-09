@@ -52,7 +52,7 @@ class BlackMageActions(ActionEnum):
     BlizzardIV = 3576
     Freeze = 159
     HighBlizzardII = 25795
-    UmbralSoul = 16505
+    UmbralSoul = 16506
     ThunderIII = 153
     ThunderIV = 7420
     Transpose = 149
@@ -169,10 +169,10 @@ class HealerActions(ActionEnum):
 # Astrologian
 
 class AstrologianActions(ActionEnum):
-    EssentialDignity = 10
-    StellarDetonation = 23
+    EssentialDignity = 3614
+    StellarDetonation = 8324
     Ascend = 3603
-    Lightspeed = 11
+    Lightspeed = 3606
     Malefic = 25871
     Combust = 16554
     Gravity = 25872
@@ -194,14 +194,14 @@ class AstrologianActions(ActionEnum):
     EarthlyStar = 7439
     Benefic = 3594
     BeneficII = 3610
-    AspectedBenefic = 2595
+    AspectedBenefic = 3595
     Helios = 3600
     AspectedHelios = 3601
     Synastry = 3612
     CollectiveUnconscious = 3613
     CelestialOpposition = 16553
     CelestialIntersection = 16556
-    Horoscope = 16557
+    Horoscope = 16558
     Exaltation = 25873
     Macrocosmos = 25874
     Microcosmos = 17
@@ -274,8 +274,9 @@ class ScholarActions(ActionEnum):
     BroilIV = 25865
     RuinII = 17870
     Biolysis = 16540
-    Consolation = 22
+    Consolation = 16546
     Raise = 173
+    DissolveUnion = 7869
 
     # DOT
     BiolysisDOT = -4
@@ -322,7 +323,14 @@ class TankActions(ActionEnum):
     LowBlow = 7540
     Provoke = 7533
     Shirk = 7537
-    TankStance = 16142
+    RoyalGuard = 16142
+    ReleaseRoyalGuard = 16142
+    Grit = 3629
+    ReleaseGrit = 3629
+    IronWill = 28
+    ReleaseIronWill = 28
+    Defiance = 48
+    ReleaseDefiance = 48
     Potion = -2
     WaitAbility = 212
     Interject = 10101010
@@ -333,9 +341,9 @@ class TankActions(ActionEnum):
 # DarkKnight
 
 class DarkKnightActions(ActionEnum):
-    Unleash = 20
+    Unleash = 3621
     FloodOfShadow = 10
-    StalwartSoul = 21
+    StalwartSoul = 16468
     Quietus = 5
     AbyssalDrain = 12
     HardSlash = 3617
