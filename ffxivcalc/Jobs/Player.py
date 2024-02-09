@@ -691,6 +691,7 @@ class Player:
 
         if len(gcdIndexList) == 0 : 
                              # No (other) GCD(s) performed, so compute using only oGCD
+            curTimeStamp = 0 # Reset timeStamp since all remaining actions are insta cast and no GCD.
             for index in range(firstIndexDamage+1,len(self.ActionSet)):
                 action = self.ActionSet[index]
                 curTimeStamp += self.ActionSet[index].RecastTime
