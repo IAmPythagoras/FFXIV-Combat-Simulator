@@ -412,5 +412,6 @@ AstrologianAbility = {
 25874 : Macrocosmos,
 17 : Microcosmos,
 10 : EssentialDignity,
-3603 : Ascend
+3603 : Ascend,
+23 : StellarDetonation
 }

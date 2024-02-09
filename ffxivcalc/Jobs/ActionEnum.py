@@ -170,6 +170,7 @@ class HealerActions(ActionEnum):
 
 class AstrologianActions(ActionEnum):
     EssentialDignity = 10
+    StellarDetonation = 23
     Ascend = 3603
     Lightspeed = 11
     Malefic = 25871
