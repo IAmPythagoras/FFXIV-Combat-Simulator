@@ -53,7 +53,7 @@ def EarthlyStarRequirement(Player, Spell):
 def StellarDetonationRequirement(Player, Spell):
     if Player.EarthlyStarCD > 50 : Spell.Potency = 205 #Changes potency with respect to how long the player has waited since doing EarthlyStar
     elif Player.EarthlyStarCD <= 50 and Player.EarthlyStarCD >= 40 : Spell.Potency = 310
-    return Player.EarthlyStarCD > 40
+    return Player.EarthlyStarCD > 40, -1
 
 def CelestialOppositionRequirement(Player, Spell):
     return Player.CelestialOppositionCD <= 0, Player.CelestialOppositionCD
