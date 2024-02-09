@@ -596,9 +596,6 @@ class Player:
                     hasteBuffIndexList.append(index)
                     hasHasteAction = True
 
-            if isSAM and meikyoStack > 0 and (action.id == SamuraiActions.Yukikaze or action.id == SamuraiActions.Shifu or action.id == SamuraiActions.Kasha or action.id == SamuraiActions.Jinpu or action.id == SamuraiActions.Gekko):
-                meikyoStack-=1 
-
             if (not foundFirstDamage) and (action.Potency > 0 or action.id in possibleDOTActionId):
                 foundFirstDamage = True
                              # Found first damaging action
@@ -613,8 +610,11 @@ class Player:
                              # Since it will not be put into gcdIndexList we initialize the value of finalGCDLockTimer
                              # To what is left in it.
                 if action.GCD : finalGCDLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
-                if action.id in possibleDOTActionId : curDOTTimer = dotTimer - max(0,spellObj.RecastTime-spellObj.CastTime)
-
+                if action.GCD and action.id in possibleDOTActionId : curDOTTimer = dotTimer - max(0,spellObj.RecastTime-spellObj.CastTime)
+                             # Have to check if meikyo was used before the first gcd to cast gekko which gives a buff
+                             # This case for Kasha is checked later
+                if isSAM and action.GCD and spellObj.id == SamuraiActions.Gekko and meikyoStack > 0: curBuffTimer = buffTimer 
+                                
                 if isBLM:
                              # if is a BLM we check if the action isFire or isIce if any
                     if spellObj.IsFire : inAstralFire = True
@@ -625,6 +625,9 @@ class Player:
                              # then it wasn't affected by a previous dualcast, acceleration or a previous dualcast
                     if spellObj.CastTime > gcdCastDetectionLimit:
                         hasDualCast = True
+                        # Removing meikyo stacks if applies
+            if isSAM and meikyoStack > 0 and (action.id == SamuraiActions.Yukikaze or action.id == SamuraiActions.Shifu or action.id == SamuraiActions.Kasha or action.id == SamuraiActions.Jinpu or action.id == SamuraiActions.Gekko):
+                meikyoStack-=1 
 
                              # Do not check for buff since buff actions can never be the first GCD and are always
                              # 2nd or 3rd action.
