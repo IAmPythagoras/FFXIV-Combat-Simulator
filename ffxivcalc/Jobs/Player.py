@@ -643,7 +643,8 @@ class Player:
                 hasHasteAction = len(hasteBuffIndexList) != 0
 
                              # Will check all actions before first damage to see if any applies a buff
-        for index in (range(firstIndexDamage) if foundFirstDamage else range(len(self.ActionSet))):
+                             # Check that gcdIndexList is not empty
+        for index in (range(gcdIndexList[0]) if len(gcdIndexList)>0 else range(len(self.ActionSet))):
             if isBLM : 
                 if self.ActionSet[index].id == CasterActions.Swiftcast:
                     hasSwiftCast = True
@@ -660,6 +661,7 @@ class Player:
             elif isSAM:
                 if self.ActionSet[index].id == SamuraiActions.Meikyo:
                     meikyoStack = 3
+
         hasteBonus = 0
                              # Must check for oGCD done between first and 2nd GCD whick can give DRK/WAR buffs
         for index in (range(gcdIndexList[0]) if len(gcdIndexList) > 0 else range(len(self.ActionSet))):
