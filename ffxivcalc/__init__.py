@@ -1,7 +1,10 @@
-__version__ = '0.8.900'
+__version__ = '0.8.901'
 
 """
 Update history :
+
+0.8.901 :
+    - Fixed some 'computeActionTimer()' issues on Samurai with Meikyo/Gekko interaction, an issue where only having 1 GCD would return wrong estimated time stamp.
 
 0.8.900 :
     - Added 'computeActionTimer()' which returns an estimate of a player's timeStamp/DOT timer/buf timer.
