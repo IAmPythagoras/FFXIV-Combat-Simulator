@@ -597,7 +597,7 @@ class NinjaActions(ActionEnum):
     TenChiJin = 7403
     Bunshin = 16493
     FleetingRaiju = 25777
-    ForkingRaiju = 25777
+    ForkingRaiju = 25778
     Kassatsu = 2264
     Meisui = 16489
 
