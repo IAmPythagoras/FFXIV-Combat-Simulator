@@ -19826,6 +19826,126 @@ def generateTimerEstimateTestSuite() -> testSuite:
     teTest79 = test("Samurai additional test 3", teTest79TestFunction, teTest79ValidationFunction)
     timerEstimateTestSuite.addTest(teTest79)
 
+    def teTest80TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [CasterLB3]
+        player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"]]
+         
+    def teTest80ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest80 = test("Limit Break additional test 1", teTest80TestFunction, teTest80ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest80)
+
+    def teTest81TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Xenoglossy,CasterLB3]
+        player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"]]
+         
+    def teTest81ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest81 = test("Limit Break additional test 2", teTest81TestFunction, teTest81ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest81)
+
+    def teTest82TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Xenoglossy,CasterLB3, Blizzard3, Fire3, Fire4, Fire4, Fire4, CasterLB2]
+        player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"]]
+         
+    def teTest82ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest82 = test("Limit Break additional test 3", teTest82TestFunction, teTest82ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest82)
+
+    def teTest83TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Xenoglossy,CasterLB3, Blizzard3, Fire3, Fire4, Fire4, Fire4, CasterLB2, Fire3, Fire4, Fire4, CasterLB1]
+        player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"]]
+         
+    def teTest83ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest83 = test("Limit Break additional test 4", teTest83TestFunction, teTest83ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest83)
+
     return timerEstimateTestSuite
 
 def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBUG) -> int:

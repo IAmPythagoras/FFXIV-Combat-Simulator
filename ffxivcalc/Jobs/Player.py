@@ -410,6 +410,7 @@ class Player:
         curTimeStamp = 0
         curDOTTimer = 0
         curBuffTimer = 0
+        gcdLockTimer = 0
         finalGCDLockTimer = 0
                              # hasteBuffList contains list of [startTime,EndTime,hasteAmount] to know when to apply haste buffs
                              # Note that this is a BIG ESTIMATE of the actual time since we do not modify the GCD
@@ -604,6 +605,7 @@ class Player:
                 self.computeActionTimer(spellObj)
                              # Adding estimated value
                 curTimeStamp += max(0,spellObj.RecastTime - spellObj.CastTime)
+                gcdLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
                              # Saving first index
                 firstIndexDamage = index
                              # This is an edge case where there is only one GCD casted followed by some oGCD.
@@ -647,6 +649,7 @@ class Player:
 
                              # Will check all actions before first damage to see if any applies a buff
                              # Check that gcdIndexList is not empty
+                             # All these actions except 1 max should be oGCDs
         for index in (range(gcdIndexList[0]) if len(gcdIndexList)>0 else range(len(self.ActionSet))):
             if isBLM : 
                 if self.ActionSet[index].id == CasterActions.Swiftcast:
@@ -665,6 +668,14 @@ class Player:
                 if self.ActionSet[index].id == SamuraiActions.Meikyo:
                     meikyoStack = 3
 
+            if index > firstIndexDamage and not self.ActionSet[index].GCD:
+                             # If is an oGCD after the first action damage and before next GCD we check the 
+                             # lock to make sure we do not go over the gcdLockTimer
+                gcdLockTimer -= max(self.ActionSet[index].CastTime, self.ActionSet[index].RecastTime)
+
+                             # If gcdLockTimer has been overStepped then it is negative so we substract it to the currentTimeStamp
+        curTimeStamp -= min(0,gcdLockTimer)
+        gcdLockTimer = 0
         hasteBonus = 0
                              # Must check for oGCD done between first and 2nd GCD whick can give DRK/WAR buffs
         for index in (range(gcdIndexList[0]) if len(gcdIndexList) > 0 else range(len(self.ActionSet))):
