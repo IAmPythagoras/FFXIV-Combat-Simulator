@@ -20943,7 +20943,7 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
     failedTestDict = {}
     if len(testSuiteName) == 0:
         # Execute all tests
-        pb = ProgressBar.init(25, "Initializing test suites")
+        pb = ProgressBar.init(26, "Initializing test suites")
 
         blmTestSuite = generateBLMTestSuite()
         rdmTestSuite = generateRDMTestSuite()
@@ -20969,6 +20969,7 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
         pbfTestSuite = generatePBFTestSuite()
         gcdTestSuite = generateGCDTestSuite(setSeed=setSeed)
         teTestSuite = generateTimerEstimateTestSuite()
+        lbTestSuite = generateLimitBreakTestSuite()
 
 
         pb.setName(blmTestSuite.testSuiteName)
@@ -21043,6 +21044,9 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
         pb.setName(teTestSuite.testSuiteName)
         next(pb)
         failedTestDict[teTestSuite.testSuiteName] = teTestSuite.executeTestSuite()
+        pb.setName(lbTestSuite.testSuiteName)
+        next(pb)
+        failedTestDict[lbTestSuite.testSuiteName] = lbTestSuite.executeTestSuite()
         next(pb)
 
     else:
@@ -21143,6 +21147,10 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
                 teTestSuite = generateTimerEstimateTestSuite()
                 print(f"Executing {teTestSuite.testSuiteName}")
                 failedTestDict[teTestSuite.testSuiteName] = teTestSuite.executeTestSuite()
+            case "LB":
+                lbTestSuite = generateLimitBreakTestSuite()
+                print(f"Executing {lbTestSuite.testSuiteName}")
+                failedTestDict[lbTestSuite.testSuiteName] = lbTestSuite.executeTestSuite()
 
     totalFailedTest = 0
 
