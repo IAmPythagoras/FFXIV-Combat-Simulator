@@ -292,8 +292,8 @@ LivingShadow = DRKSkill(16472, False, Lock, 0, 0, 0, 50, SummonLivingShadow, [Bl
 Plunge = DRKSkill(3640, False, Lock, 0, 150, 0, 0, SpendPlunge, [PlungeRequirement])
 
 #AOE GCD
-Unleash = DRKSkill(20, True, 0, 2.5, 120, 0, 0, ApplyUnleash, [], type = 1)
-StalwartSoul = DRKSkill(21, True, 0, 2.5, 100, 0, 0, empty, [], type = 1)
+Unleash = DRKSkill(3621, True, 0, 2.5, 120, 0, 0, ApplyUnleash, [], type = 1)
+StalwartSoul = DRKSkill(16468, True, 0, 2.5, 100, 0, 0, empty, [], type = 1)
 #List of Abilities performed by Living Shadow.
 
 PAbyssalDrain = DRKSkill(22, True, 0.5, 2.33, 350, 0, 0, empty, [])
@@ -390,8 +390,8 @@ DarkKnightAbility = {
     25755: SaltDarkness,
     25757: Shadowbringer,
     10 : FloodShadow,
-    20 : Unleash,
-    21 : StalwartSoul,
+    3621 : Unleash,
+    16468 : StalwartSoul,
     5 : Quietus,
     12 : AbyssalDrain,
     34590541: Potion  # This is assumed to be strength pot grade 6

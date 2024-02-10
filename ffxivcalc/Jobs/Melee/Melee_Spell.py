@@ -1,4 +1,4 @@
-from ffxivcalc.Jobs.Base_Spell import Potion, Spell
+from ffxivcalc.Jobs.Base_Spell import Potion, Spell, empty
 Lock = 0
 class MeleeSpell(Spell):
 
@@ -129,6 +129,17 @@ Feint = MeleeSpell(7549, False, Lock, 0, 0, 0, ApplyFeint, [FeintRequirement])
 ArmLength = MeleeSpell(7548, False, Lock, 0, 0, 0, ApplyArmLength, [ArmLengthRequirement])
 TrueNorth = MeleeSpell(7546, False, Lock, 0, 0, 0, ApplyTrueNorth, [TrueNorthRequirement])
 
+# Limit Break actions
+
+LB1Timer = 5.86
+LB2Timer = 6.86
+LB3Timer = 8.20
+
+MeleeLB1 = MeleeSpell(1111, False,LB1Timer, LB1Timer, 0, 0, empty, [], type=3)
+MeleeLB2 = MeleeSpell(1112, False,LB2Timer, LB2Timer, 0, 0, empty, [], type=3)
+MeleeLB3 = MeleeSpell(1113, False,LB3Timer, LB3Timer, 0, 0, empty, [], type=3)
+
+
 MeleeAbility = {
 7541 : SecondWind,
 7863 : LegSweep,
@@ -140,5 +151,8 @@ MeleeAbility = {
 34590542 : Potion,   #DEX,
 34592395 : Potion, # STR 7
 34592396 : Potion, # DEX 7
--2 : Potion
+-2 : Potion,
+1111 : MeleeLB1,
+1112 : MeleeLB2,
+1113 : MeleeLB3
 }

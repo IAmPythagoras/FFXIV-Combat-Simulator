@@ -53,7 +53,7 @@ def EarthlyStarRequirement(Player, Spell):
 def StellarDetonationRequirement(Player, Spell):
     if Player.EarthlyStarCD > 50 : Spell.Potency = 205 #Changes potency with respect to how long the player has waited since doing EarthlyStar
     elif Player.EarthlyStarCD <= 50 and Player.EarthlyStarCD >= 40 : Spell.Potency = 310
-    return Player.EarthlyStarCD > 40
+    return Player.EarthlyStarCD > 40, -1
 
 def CelestialOppositionRequirement(Player, Spell):
     return Player.CelestialOppositionCD <= 0, Player.CelestialOppositionCD
@@ -257,17 +257,17 @@ CumbustDOT = DOTSpell(-12, 55, False)
 Gravity = AstrologianSpell(25872, True, 1.5, 2.5, 130, 400, empty, [ManaRequirement], type = 1)
 #Heal GCD
 AspectedHelios = AstrologianSpell(3601, True, 1.5, 2.5, 0, 800, empty, [ManaRequirement], type = 1)
-AspectedBenefic = AstrologianSpell(2595, True, 0, 2.5, 0, 400, empty, [ManaRequirement], type = 1)
+AspectedBenefic = AstrologianSpell(3595, True, 0, 2.5, 0, 400, empty, [ManaRequirement], type = 1)
 Benefic2 = AstrologianSpell(3610, True, 1.5, 2.5, 0, 700, empty, [ManaRequirement], type = 1)
 Benefic = AstrologianSpell(3594, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement], type = 1)
 Helios = AstrologianSpell(3600, True, 1.5, 2.5, 0, 700, empty, [ManaRequirement], type = 1)
-EssentialDignity = AstrologianSpell(10, False, 0, 0, 0, 0, ApplyEssentialDignity, [EssentialDignityRequirement], type = 1)
+EssentialDignity = AstrologianSpell(3614, False, 0, 0, 0, 0, ApplyEssentialDignity, [EssentialDignityRequirement], type = 1)
 Macrocosmos = AstrologianSpell(25874, True, 0, 0, 250, 600, ApplyMacrocosmos, [MacrocosmosRequirement, ManaRequirement], type = 1)
 Microcosmos = AstrologianSpell(17, True, 0, 0, 0, 0, empty, [MicrocosmosRequirement], type = 1)
 LadyOfCrown = AstrologianSpell(7445, True, 0, 1, 0, 0, empty, [], type = 1)
 Ascend = AstrologianSpell(3603, True, 8, 2.5, 0, 2400, empty, [ManaRequirement])
 #oGCD
-Lightspeed = AstrologianSpell(11, False, Lock, 0, 0, 0, ApplyLightspeed, [LightspeedRequirement])
+Lightspeed = AstrologianSpell(3606, False, Lock, 0, 0, 0, ApplyLightspeed, [LightspeedRequirement])
 Divination = AstrologianSpell(16552, False, Lock, 0, 0, 0, ApplyDivination, [DivinationRequirement])
 MinorArcana = AstrologianSpell(7443, False, Lock, 0, 0, 0, ApplyMinorArcana, [MinorArcanaRequirement])
 Draw = AstrologianSpell(3590, False, Lock,0, 0, 0, ApplyDraw, [DrawRequirement])
@@ -276,10 +276,10 @@ Astrodyne = AstrologianSpell(25870, False, Lock, 0, 0, 0, ApplyAstrodyne, [])
 #Heal oGCD
 Exaltation = AstrologianSpell(25873, False, 0, 0, 0, 0, ApplyExaltation, [ExaltationRequirement])
 NeutralSect = AstrologianSpell(16559, False, 0, 0, 0, 0, ApplyNeutralSect, [NeutralSectRequirement])
-Horoscope = AstrologianSpell(16557, False, 0, 0, 0, 0, ApplyHoroscope, [HoroscopeRequirement])
+Horoscope = AstrologianSpell(16558, False, 0, 0, 0, 0, ApplyHoroscope, [HoroscopeRequirement])
 CelestialIntersection = AstrologianSpell(16556, False, 0, 0, 0, 0, ApplyCelestialIntersection, [CelestialIntersectionRequirement])
 EarthlyStar = AstrologianSpell(7439, False, 0, 0, 0, 0, ApplyEarthlyStar, [EarthlyStarRequirement])
-StellarDetonation = AstrologianSpell(23, False, 0, 0, 0, 0, empty, [StellarDetonationRequirement])
+StellarDetonation = AstrologianSpell(8324, False, 0, 0, 0, 0, empty, [StellarDetonationRequirement])
 CelestialOpposition = AstrologianSpell(16553, False, 0, 0, 0, 0, ApplyCelestialOpposition, [CelestialOppositionRequirement])
 CollectiveUnconscious = AstrologianSpell(3613, False, 0, 0, 0, 0, ApplyCollectiveUnconscious, [CollectiveUnconsciousRequirement])
 Synastry = AstrologianSpell(3612, False, 0, 0, 0, 0, ApplySynastry, [SynastryRequirement])
@@ -379,7 +379,7 @@ def Spire(target):
     return returnSpell
 
 AstrologianAbility = {
-11 : Lightspeed,
+3606 : Lightspeed,
 25871 : Malefic,
 16554 : Combust,
 25872 : Gravity,
@@ -400,17 +400,18 @@ AstrologianAbility = {
 7439 : EarthlyStar,
 3594 : Benefic,
 3610 : Benefic2,
-2595 : AspectedBenefic,
+3595 : AspectedBenefic,
 3600 : Helios,
 3601 : AspectedHelios,
 3612 : Synastry,
 3613 : CollectiveUnconscious,
 16553 : CelestialOpposition,
 16556 : CelestialIntersection,
-16557 : Horoscope,
+16558 : Horoscope,
 25873 : Exaltation,
 25874 : Macrocosmos,
 17 : Microcosmos,
-10 : EssentialDignity,
-3603 : Ascend
+3614 : EssentialDignity,
+3603 : Ascend,
+8324 : StellarDetonation
 }

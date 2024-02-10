@@ -410,6 +410,7 @@ class Player:
         curTimeStamp = 0
         curDOTTimer = 0
         curBuffTimer = 0
+        gcdLockTimer = 0
         finalGCDLockTimer = 0
                              # hasteBuffList contains list of [startTime,EndTime,hasteAmount] to know when to apply haste buffs
                              # Note that this is a BIG ESTIMATE of the actual time since we do not modify the GCD
@@ -596,10 +597,7 @@ class Player:
                     hasteBuffIndexList.append(index)
                     hasHasteAction = True
 
-            if isSAM and meikyoStack > 0 and (action.id == SamuraiActions.Yukikaze or action.id == SamuraiActions.Shifu or action.id == SamuraiActions.Kasha or action.id == SamuraiActions.Jinpu or action.id == SamuraiActions.Gekko):
-                meikyoStack-=1 
-
-            if (not foundFirstDamage) and (action.Potency > 0 or action.id in possibleDOTActionId):
+            if (not foundFirstDamage) and (action.Potency > 0 or action.id in possibleDOTActionId or action.type==3): # if does damage or is a dot or is a LB
                 foundFirstDamage = True
                              # Found first damaging action
                              # Add to timestamp and will check for GCD clipping
@@ -607,24 +605,31 @@ class Player:
                 self.computeActionTimer(spellObj)
                              # Adding estimated value
                 curTimeStamp += max(0,spellObj.RecastTime - spellObj.CastTime)
+                gcdLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
                              # Saving first index
                 firstIndexDamage = index
                              # This is an edge case where there is only one GCD casted followed by some oGCD.
                              # Since it will not be put into gcdIndexList we initialize the value of finalGCDLockTimer
                              # To what is left in it.
                 if action.GCD : finalGCDLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
-                if action.id in possibleDOTActionId : curDOTTimer = dotTimer - max(0,spellObj.RecastTime-spellObj.CastTime)
-
-                if isBLM:
+                if action.GCD and action.id in possibleDOTActionId : curDOTTimer = dotTimer - max(0,spellObj.RecastTime-spellObj.CastTime)
+                             # Have to check if meikyo was used before the first gcd to cast gekko which gives a buff
+                             # This case for Kasha is checked later
+                
+                if isSAM and action.GCD and spellObj.id == SamuraiActions.Gekko and meikyoStack > 0: curBuffTimer = buffTimer      
+                             # Check for BLM/RDM do not want to consider if is a LB. And sleep for blm
+                elif isBLM and action.type!=3 and action.id != CasterActions.Sleep:
                              # if is a BLM we check if the action isFire or isIce if any
                     if spellObj.IsFire : inAstralFire = True
                     elif spellObj.IsIce : inUmbralIce = True
-
-                if isRDM :
+                elif isRDM and spellObj.CastTime > gcdCastDetectionLimit and action.type!=3:
                              # To detect if dualcast is added we check if the spell has a casttime higher then 2.2 . If such is true
-                             # then it wasn't affected by a previous dualcast, acceleration or a previous dualcast
-                    if spellObj.CastTime > gcdCastDetectionLimit:
-                        hasDualCast = True
+                             # then it wasn't affected by a previous dualcast, acceleration or swiftcast
+                    hasDualCast = True
+
+                        # Removing meikyo stacks if applies
+            if isSAM and meikyoStack > 0 and (action.id == SamuraiActions.Yukikaze or action.id == SamuraiActions.Shifu or action.id == SamuraiActions.Kasha or action.id == SamuraiActions.Jinpu or action.id == SamuraiActions.Gekko):
+                meikyoStack-=1 
 
                              # Do not check for buff since buff actions can never be the first GCD and are always
                              # 2nd or 3rd action.
@@ -643,7 +648,9 @@ class Player:
                 hasHasteAction = len(hasteBuffIndexList) != 0
 
                              # Will check all actions before first damage to see if any applies a buff
-        for index in (range(firstIndexDamage) if foundFirstDamage else range(len(self.ActionSet))):
+                             # Check that gcdIndexList is not empty
+                             # All these actions except 1 max should be oGCDs
+        for index in (range(gcdIndexList[0]) if len(gcdIndexList)>0 else range(len(self.ActionSet))):
             if isBLM : 
                 if self.ActionSet[index].id == CasterActions.Swiftcast:
                     hasSwiftCast = True
@@ -660,6 +667,15 @@ class Player:
             elif isSAM:
                 if self.ActionSet[index].id == SamuraiActions.Meikyo:
                     meikyoStack = 3
+
+            if index > firstIndexDamage and not self.ActionSet[index].GCD:
+                             # If is an oGCD after the first action damage and before next GCD we check the 
+                             # lock to make sure we do not go over the gcdLockTimer
+                gcdLockTimer -= max(self.ActionSet[index].CastTime, self.ActionSet[index].RecastTime)
+
+                             # If gcdLockTimer has been overStepped then it is negative so we substract it to the currentTimeStamp
+        curTimeStamp -= min(0,gcdLockTimer)
+        gcdLockTimer = 0
         hasteBonus = 0
                              # Must check for oGCD done between first and 2nd GCD whick can give DRK/WAR buffs
         for index in (range(gcdIndexList[0]) if len(gcdIndexList) > 0 else range(len(self.ActionSet))):
@@ -686,6 +702,7 @@ class Player:
 
         if len(gcdIndexList) == 0 : 
                              # No (other) GCD(s) performed, so compute using only oGCD
+            curTimeStamp = 0 # Reset timeStamp since all remaining actions are insta cast and no GCD.
             for index in range(firstIndexDamage+1,len(self.ActionSet)):
                 action = self.ActionSet[index]
                 curTimeStamp += self.ActionSet[index].RecastTime
@@ -802,7 +819,7 @@ class Player:
                 self.Haste -= hasteBonus
 
                              # Checking if BLM in which case we add some effects is it applies 
-                if isBLM:
+                if isBLM and spellObj.id != CasterActions.Sleep:
                     if inAstralFire and spellObj.IsIce or inUmbralIce and spellObj.IsFire:
                              # reduce casttime
                             spellObj.CastTime = max(round(spellObj.CastTime/2,2),1.5)
@@ -860,7 +877,7 @@ class Player:
                 gcdLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
 
                                              # Last thing we check if BLM changes state, if RDM gets dualcast or if SAM gets meikyo
-                if isBLM:
+                if isBLM and spellObj.id != CasterActions.Sleep:
                     if not inAstralFire and not inUmbralIce: # Not in any
                         if  spellObj.IsFire : inAstralFire = True
                         elif spellObj.IsIce : inUmbralIce = True

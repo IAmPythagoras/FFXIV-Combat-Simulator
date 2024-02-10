@@ -269,7 +269,7 @@ class Spell:
         Manacost : int -> base manacost of the action
         Effect : function -> A function called upon the execution of the action which affects the player and the enemy.
         Requirement : (function -> Bool) -> function called upon the execution to verify if the action can be executed.
-        type (int) : Type of the action. The types are Spell, Weaponskill and Ability. Type = 0 is ability, type = 1 is Spell and type = 2 is Weaponskill.
+        type (int) : Type of the action. The types are Spell, Weaponskill and Ability. Type = 0 is ability, type = 1 is Spell, type = 2 is Weaponskill and type = 3 is a Limit Break
         aoe_fn (function) : Function that will be called (eeeeeeh)
         AOEHeal : bool -> True if the action is an AOE healing action
         TargetHeal : bool -> True if the action is a target healing action
@@ -304,6 +304,10 @@ class Spell:
         player : player -> player object casting
         Enemey : Enemy -> Enemy object on which the action is done.
         """
+
+        if self.type == 3 : # If is a limit break
+            return copy.deepcopy(self)
+
         tempSpell = copy.deepcopy(self)
         #Creating a tempSpell which will have its values changed according that what effect
         #the player and the enemy have
@@ -383,9 +387,11 @@ class Spell:
         player : player -> player object casting
         Enemy : Enemy -> Enemy object on which the action is done.
         """
-        
-        for Effect in self.Effect:
-            Effect(player, Enemy)#Put effects on Player and/or Enemy
+        if self.type == 3:
+            pass # If limit break do not do effect
+        else :
+            for Effect in self.Effect:
+                Effect(player, Enemy)#Put effects on Player and/or Enemy
 
         #This will include substracting the mana (it has been verified before that the mana was enough)
         minDamage, Damage, Heal = 0,0,0
@@ -435,7 +441,11 @@ class Spell:
                                 # Also won't be added as a PreBakedAction. This can cause issue for waitAbility if scheduled at the end.
                                 # The preBakedAction in that case will go until the last AA which might not be at the same time as waitAbility 
                                 # finishes. This only affects end time and is not a super big issue. Probably just don't put waitAbility at the end?
-            if self.Potency != 0 : minDamage,Damage= player.CurrentFight.ComputeDamageFunction(player, self.Potency, Enemy, self.DPSBonus, type, self, SavePreBakedAction = player.CurrentFight.SavePreBakedAction, PlayerIDSavePreBakedAction = player.CurrentFight.PlayerIDSavePreBakedAction)    #Damage computation
+            if self.type == 3:
+                minDamage,Damage= player.CurrentFight.ComputeDamageFunction(player, self.Potency, Enemy, self.DPSBonus, type, self, 
+                                                                            SavePreBakedAction = player.CurrentFight.SavePreBakedAction, 
+                                                                            PlayerIDSavePreBakedAction = player.CurrentFight.PlayerIDSavePreBakedAction)    #Damage computation
+            elif self.Potency != 0 : minDamage,Damage= player.CurrentFight.ComputeDamageFunction(player, self.Potency, Enemy, self.DPSBonus, type, self, SavePreBakedAction = player.CurrentFight.SavePreBakedAction, PlayerIDSavePreBakedAction = player.CurrentFight.PlayerIDSavePreBakedAction)    #Damage computation
             
             if player.JobEnum == JobEnum.Pet and self.Potency != 0: # Is a pet and action does damage
 

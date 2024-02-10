@@ -19735,7 +19735,1203 @@ def generateTimerEstimateTestSuite() -> testSuite:
     teTest76 = test("Dancer Timestamp estimate test 2", teTest76TestFunction, teTest76ValidationFunction)
     timerEstimateTestSuite.addTest(teTest76)
 
+    def teTest77TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Hakaze,Meikyo, Gekko, Hakaze]
+        player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.FugetsuTimer, estimate["buffTimer"]]
+
+    def teTest77ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest77 = test("Samurai additional test 1", teTest77TestFunction, teTest77ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest77)
+
+    def teTest78TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Meikyo, Gekko]
+        player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.FugetsuTimer, estimate["buffTimer"]]
+    
+
+    def teTest78ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest78 = test("Samurai additional test 2", teTest78TestFunction, teTest78ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest78)
+
+    def teTest79TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Gekko, Meikyo, Gekko]
+        player = Player(actionSet, [], Stat, JobEnum.Samurai)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"], player.FugetsuTimer, estimate["buffTimer"]]
+         
+    def teTest79ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest79 = test("Samurai additional test 3", teTest79TestFunction, teTest79ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest79)
+
+    def teTest80TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [CasterLB3]
+        player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [0, estimate["currentTimeStamp"]]
+    # Hardcoded value of 0 since we want the estimate to be 0 since it will start when the lb applies damage
+         
+    def teTest80ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest80 = test("Limit Break additional test 1", teTest80TestFunction, teTest80ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest80)
+
+    def teTest81TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Xenoglossy,CasterLB3]
+        player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"]]
+         
+    def teTest81ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest81 = test("Limit Break additional test 2", teTest81TestFunction, teTest81ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest81)
+
+    def teTest82TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Xenoglossy,CasterLB3, Blizzard3, Fire3, Fire4, Fire4, Fire4, CasterLB2]
+        player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"]]
+         
+    def teTest82ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest82 = test("Limit Break additional test 3", teTest82TestFunction, teTest82ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest82)
+
+    def teTest83TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [Xenoglossy,CasterLB3, Blizzard3, Fire3, Fire4, Fire4, Fire4, CasterLB2, Fire3, Fire4, Fire4, CasterLB1]
+        player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        estimate = player.computeTimeStamp()
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [Event.TimeStamp, estimate["currentTimeStamp"]]
+         
+    def teTest83ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+        for i in range(0,len(testResults),2): 
+            passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    teTest83 = test("Limit Break additional test 4", teTest83TestFunction, teTest83ValidationFunction)
+    timerEstimateTestSuite.addTest(teTest83)
+
     return timerEstimateTestSuite
+
+######################################
+# TimeStamp, Dot/Buff timer estimate #
+######################################
+
+def generateLimitBreakTestSuite():
+
+    lbTestSuite = testSuite("Limit Break test suite")
+
+    def lbTest1TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [CasterLB1]
+        player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest1ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [5.1,5.1]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest1 = test("Limit Break casting/recasting time test 1 - CasterLB1", lbTest1TestFunction, lbTest1ValidationFunction)
+    lbTestSuite.addTest(lbTest1)
+
+    def lbTest2TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 12321, 'SkS': 9999, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [CasterLB1]
+        player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest2ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [5.1,5.1]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest2 = test("Limit Break casting/recasting time test 2 - CasterLB1", lbTest2TestFunction, lbTest2ValidationFunction)
+    lbTestSuite.addTest(lbTest2)
+
+    def lbTest3TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [CasterLB2]
+        player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest3ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [8.1,8.1]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest3 = test("Limit Break casting/recasting time test 3 - CasterLB2", lbTest3TestFunction, lbTest3ValidationFunction)
+    lbTestSuite.addTest(lbTest3)
+
+    def lbTest4TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 9999, 'SkS': 9999, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [CasterLB2]
+        player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest4ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [8.1,8.1]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest4 = test("Limit Break casting/recasting time test 4 - CasterLB2", lbTest4TestFunction, lbTest4ValidationFunction)
+    lbTestSuite.addTest(lbTest4)
+
+    def lbTest5TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [CasterLB3]
+        player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest5ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [12.6,12.6]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest5 = test("Limit Break casting/recasting time test 5 - CasterLB3", lbTest5TestFunction, lbTest5ValidationFunction)
+    lbTestSuite.addTest(lbTest5)
+
+    def lbTest6TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 9999, 'SkS': 9999, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [CasterLB3]
+        player = Player(actionSet, [], Stat, JobEnum.BlackMage)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest6ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [12.6,12.6]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest6 = test("Limit Break casting/recasting time test 6 - CasterLB3", lbTest6TestFunction, lbTest6ValidationFunction)
+    lbTestSuite.addTest(lbTest6)
+
+
+    def lbTest7TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [MeleeLB1]
+        player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest7ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [5.86,5.86]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest7 = test("Limit Break casting/recasting time test 7 - MeleeLB1", lbTest7TestFunction, lbTest7ValidationFunction)
+    lbTestSuite.addTest(lbTest7)
+
+    def lbTest8TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 12321, 'SkS': 9999, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [MeleeLB1]
+        player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest8ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [5.86,5.86]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest8 = test("Limit Break casting/recasting time test 8 - MeleeLB1", lbTest8TestFunction, lbTest8ValidationFunction)
+    lbTestSuite.addTest(lbTest8)
+
+    def lbTest9TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [MeleeLB2]
+        player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest9ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [6.86,6.86]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest9 = test("Limit Break casting/recasting time test 9 - MeleeLB2", lbTest9TestFunction, lbTest9ValidationFunction)
+    lbTestSuite.addTest(lbTest9)
+
+    def lbTest10TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 9999, 'SkS': 9999, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [MeleeLB2]
+        player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest10ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [6.86,6.86]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest10 = test("Limit Break casting/recasting time test 10 - MeleeLB2", lbTest10TestFunction, lbTest10ValidationFunction)
+    lbTestSuite.addTest(lbTest10)
+
+    def lbTest11TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [MeleeLB3]
+        player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest11ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [8.20,8.20]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest11 = test("Limit Break casting/recasting time test 11 - MeleeLB3", lbTest11TestFunction, lbTest11ValidationFunction)
+    lbTestSuite.addTest(lbTest11)
+
+    def lbTest12TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 9999, 'SkS': 9999, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [MeleeLB3]
+        player = Player(actionSet, [], Stat, JobEnum.Ninja)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest12ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [8.20,8.20]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest12 = test("Limit Break casting/recasting time test 12 - MeleeLB3", lbTest12TestFunction, lbTest12ValidationFunction)
+    lbTestSuite.addTest(lbTest12)
+
+    def lbTest13TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [TankLB1]
+        player = Player(actionSet, [], Stat, JobEnum.Warrior)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest13ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [1.93,1.93]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest13 = test("Limit Break casting/recasting time test 13 - TankLB1", lbTest13TestFunction, lbTest13ValidationFunction)
+    lbTestSuite.addTest(lbTest13)
+
+    def lbTest14TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 12321, 'SkS': 9999, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [TankLB1]
+        player = Player(actionSet, [], Stat, JobEnum.Warrior)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest14ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [1.93,1.93]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest14 = test("Limit Break casting/recasting time test 14 - TankLB1", lbTest14TestFunction, lbTest14ValidationFunction)
+    lbTestSuite.addTest(lbTest14)
+
+    def lbTest15TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [TankLB2]
+        player = Player(actionSet, [], Stat, JobEnum.Warrior)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest15ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [3.86,3.86]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest15 = test("Limit Break casting/recasting time test 15 - TankLB2", lbTest15TestFunction, lbTest15ValidationFunction)
+    lbTestSuite.addTest(lbTest15)
+
+    def lbTest16TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 9999, 'SkS': 9999, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [TankLB2]
+        player = Player(actionSet, [], Stat, JobEnum.Warrior)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest16ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [3.86,3.86]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest16 = test("Limit Break casting/recasting time test 16 - TankLB2", lbTest16TestFunction, lbTest16ValidationFunction)
+    lbTestSuite.addTest(lbTest16)
+
+    def lbTest17TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [TankLB3]
+        player = Player(actionSet, [], Stat, JobEnum.Warrior)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest17ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [3.86,3.86]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest17 = test("Limit Break casting/recasting time test 17 - TankLB3", lbTest17TestFunction, lbTest17ValidationFunction)
+    lbTestSuite.addTest(lbTest17)
+
+    def lbTest18TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 9999, 'SkS': 9999, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [TankLB3]
+        player = Player(actionSet, [], Stat, JobEnum.Warrior)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest18ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [3.86,3.86]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest18 = test("Limit Break casting/recasting time test 18 - TankLB3", lbTest18TestFunction, lbTest18ValidationFunction)
+    lbTestSuite.addTest(lbTest18)
+
+    def lbTest19TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [HealerLB1]
+        player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest19ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [4.1,4.1]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest19 = test("Limit Break casting/recasting time test 19 - HealerLB1", lbTest19TestFunction, lbTest19ValidationFunction)
+    lbTestSuite.addTest(lbTest19)
+
+    def lbTest20TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 12321, 'SkS': 9999, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [HealerLB1]
+        player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest20ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [4.1,4.1]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest20 = test("Limit Break casting/recasting time test 20 - HealerLB1", lbTest20TestFunction, lbTest20ValidationFunction)
+    lbTestSuite.addTest(lbTest20)
+
+    def lbTest21TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [HealerLB2]
+        player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest21ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [7.13,7.13]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest21 = test("Limit Break casting/recasting time test 21 - HealerLB2", lbTest21TestFunction, lbTest21ValidationFunction)
+    lbTestSuite.addTest(lbTest21)
+
+    def lbTest22TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 9999, 'SkS': 9999, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [HealerLB2]
+        player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest22ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [7.13,7.13]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest22 = test("Limit Break casting/recasting time test 22 - HealerLB2", lbTest22TestFunction, lbTest22ValidationFunction)
+    lbTestSuite.addTest(lbTest22)
+
+    def lbTest23TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [HealerLB3]
+        player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest23ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [10.10,10.10]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest23 = test("Limit Break casting/recasting time test 23 - HealerLB3", lbTest23TestFunction, lbTest23ValidationFunction)
+    lbTestSuite.addTest(lbTest23)
+
+    def lbTest24TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 9999, 'SkS': 9999, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [HealerLB3]
+        player = Player(actionSet, [], Stat, JobEnum.Scholar)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest24ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [10.10,10.10]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest24 = test("Limit Break casting/recasting time test 24 - HealerLB3", lbTest24TestFunction, lbTest24ValidationFunction)
+    lbTestSuite.addTest(lbTest24)
+
+    def lbTest25TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [RangedLB1]
+        player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest25ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [5.1,5.1]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest25 = test("Limit Break casting/recasting time test 25 - RangedLB1", lbTest25TestFunction, lbTest25ValidationFunction)
+    lbTestSuite.addTest(lbTest25)
+
+    def lbTest26TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 12321, 'SkS': 9999, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [RangedLB1]
+        player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest26ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [5.1,5.1]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest26 = test("Limit Break casting/recasting time test 26 - RangedLB1", lbTest26TestFunction, lbTest26ValidationFunction)
+    lbTestSuite.addTest(lbTest26)
+
+    def lbTest27TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [RangedLB2]
+        player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest27ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [6.1,6.1]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest27 = test("Limit Break casting/recasting time test 27 - RangedLB2", lbTest27TestFunction, lbTest27ValidationFunction)
+    lbTestSuite.addTest(lbTest27)
+
+    def lbTest28TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 9999, 'SkS': 9999, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [RangedLB2]
+        player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest28ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [6.1,6.1]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest28 = test("Limit Break casting/recasting time test 28 - RangedLB2", lbTest28TestFunction, lbTest28ValidationFunction)
+    lbTestSuite.addTest(lbTest28)
+
+    def lbTest29TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 436, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [RangedLB3]
+        player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest29ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [8.20,8.20]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest29 = test("Limit Break casting/recasting time test 29 - RangedLB3", lbTest29TestFunction, lbTest29ValidationFunction)
+    lbTestSuite.addTest(lbTest29)
+
+    def lbTest30TestFunction() -> None:
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 9999, 'SkS': 9999, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        actionSet = [RangedLB3]
+        player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [player.CastingSpell.CastTime,player.CastingSpell.RecastTime]
+         
+    def lbTest30ValidationFunction(testResults) -> (bool, list):
+        passed = True   
+
+        expected = [8.20,8.20]
+
+        for index in range(len(testResults)): 
+            passed = passed and testResults[index] == expected[index]
+
+        return passed , expected
+
+    lbTest30 = test("Limit Break casting/recasting time test 30 - RangedLB3", lbTest30TestFunction, lbTest30ValidationFunction)
+    lbTestSuite.addTest(lbTest30)
+
+
+    return lbTestSuite
 
 def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBUG) -> int:
                              # Silence the main_logging and
@@ -19747,7 +20943,7 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
     failedTestDict = {}
     if len(testSuiteName) == 0:
         # Execute all tests
-        pb = ProgressBar.init(25, "Initializing test suites")
+        pb = ProgressBar.init(26, "Initializing test suites")
 
         blmTestSuite = generateBLMTestSuite()
         rdmTestSuite = generateRDMTestSuite()
@@ -19773,6 +20969,7 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
         pbfTestSuite = generatePBFTestSuite()
         gcdTestSuite = generateGCDTestSuite(setSeed=setSeed)
         teTestSuite = generateTimerEstimateTestSuite()
+        lbTestSuite = generateLimitBreakTestSuite()
 
 
         pb.setName(blmTestSuite.testSuiteName)
@@ -19847,6 +21044,9 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
         pb.setName(teTestSuite.testSuiteName)
         next(pb)
         failedTestDict[teTestSuite.testSuiteName] = teTestSuite.executeTestSuite()
+        pb.setName(lbTestSuite.testSuiteName)
+        next(pb)
+        failedTestDict[lbTestSuite.testSuiteName] = lbTestSuite.executeTestSuite()
         next(pb)
 
     else:
@@ -19947,6 +21147,10 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
                 teTestSuite = generateTimerEstimateTestSuite()
                 print(f"Executing {teTestSuite.testSuiteName}")
                 failedTestDict[teTestSuite.testSuiteName] = teTestSuite.executeTestSuite()
+            case "LB":
+                lbTestSuite = generateLimitBreakTestSuite()
+                print(f"Executing {lbTestSuite.testSuiteName}")
+                failedTestDict[lbTestSuite.testSuiteName] = lbTestSuite.executeTestSuite()
 
     totalFailedTest = 0
 

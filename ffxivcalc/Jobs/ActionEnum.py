@@ -34,6 +34,12 @@ class CasterActions(ActionEnum):
     Sleep = 25880
     Potion = -2
     WaitAbility = 212
+    
+    # Limit Break 
+    CasterLB1 = 1111
+    CasterLB2 = 1112
+    CasterLB3 = 1113
+
 
 # BlackMage
 
@@ -52,7 +58,7 @@ class BlackMageActions(ActionEnum):
     BlizzardIV = 3576
     Freeze = 159
     HighBlizzardII = 25795
-    UmbralSoul = 16505
+    UmbralSoul = 16506
     ThunderIII = 153
     ThunderIV = 7420
     Transpose = 149
@@ -165,13 +171,19 @@ class HealerActions(ActionEnum):
     Potion = -2
     WaitAbility = 212
 
+    # Limit Break
+    HealerLB1 = 1111
+    HealerLB2 = 1112
+    HealerLB3 = 1113
+
 
 # Astrologian
 
 class AstrologianActions(ActionEnum):
-    EssentialDignity = 10
+    EssentialDignity = 3614
+    StellarDetonation = 8324
     Ascend = 3603
-    Lightspeed = 11
+    Lightspeed = 3606
     Malefic = 25871
     Combust = 16554
     Gravity = 25872
@@ -193,14 +205,14 @@ class AstrologianActions(ActionEnum):
     EarthlyStar = 7439
     Benefic = 3594
     BeneficII = 3610
-    AspectedBenefic = 2595
+    AspectedBenefic = 3595
     Helios = 3600
     AspectedHelios = 3601
     Synastry = 3612
     CollectiveUnconscious = 3613
     CelestialOpposition = 16553
     CelestialIntersection = 16556
-    Horoscope = 16557
+    Horoscope = 16558
     Exaltation = 25873
     Macrocosmos = 25874
     Microcosmos = 17
@@ -273,8 +285,9 @@ class ScholarActions(ActionEnum):
     BroilIV = 25865
     RuinII = 17870
     Biolysis = 16540
-    Consolation = 22
+    Consolation = 16546
     Raise = 173
+    DissolveUnion = 7869
 
     # DOT
     BiolysisDOT = -4
@@ -321,20 +334,32 @@ class TankActions(ActionEnum):
     LowBlow = 7540
     Provoke = 7533
     Shirk = 7537
-    TankStance = 16142
+    RoyalGuard = 16142
+    ReleaseRoyalGuard = 16142
+    Grit = 3629
+    ReleaseGrit = 3629
+    IronWill = 28
+    ReleaseIronWill = 28
+    Defiance = 48
+    ReleaseDefiance = 48
     Potion = -2
     WaitAbility = 212
     Interject = 10101010
 
     AA = -22
 
+    # Limit Break
+    TankLB1 = 1111
+    TankLB2 = 1112
+    TankLB3 = 1113
+
 
 # DarkKnight
 
 class DarkKnightActions(ActionEnum):
-    Unleash = 20
+    Unleash = 3621
     FloodOfShadow = 10
-    StalwartSoul = 21
+    StalwartSoul = 16468
     Quietus = 5
     AbyssalDrain = 12
     HardSlash = 3617
@@ -483,6 +508,11 @@ class MeleeActions(ActionEnum):
 
     AA = -22
 
+    # Limit Break
+    MeleeLB1 = 1111
+    MeleeLB2 = 1112
+    MeleeLB3 = 1113
+
 # Samurai
 
 class SamuraiActions(ActionEnum):
@@ -597,7 +627,7 @@ class NinjaActions(ActionEnum):
     TenChiJin = 7403
     Bunshin = 16493
     FleetingRaiju = 25777
-    ForkingRaiju = 25777
+    ForkingRaiju = 25778
     Kassatsu = 2264
     Meisui = 16489
 
@@ -692,6 +722,11 @@ class RangedActions(ActionEnum):
     WaitAbility = 212
 
     AA = -23
+
+    # Limit Break
+    RangedLB1 = 1111
+    RangedLB2 = 1112
+    RangedLB3 = 1113
 
 
 # Bard

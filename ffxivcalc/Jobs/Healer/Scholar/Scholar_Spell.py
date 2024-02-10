@@ -225,11 +225,11 @@ Lustrate = ScholarSpell(189, False, 0, 0, 600, 0, ApplyLustrate, [LustrateRequir
 Indomitability = ScholarSpell(3583, False, 0, 0, 400, 0, ApplyIndomitability, [IndomitabilityRequirement,AetherHealRequirement], AOEHeal=True)#Can be used by recitation
 
 #Fey Healing
-Consolation = ScholarSpell(22, False, 0, 0, 0, 0, ApplyConsolation, [ConsolationRequirement])
+Consolation = ScholarSpell(16546, False, 0, 0, 0, 0, ApplyConsolation, [ConsolationRequirement])
 SummonSeraph = ScholarSpell(16545, False, 0, 0, 250, 0, ApplySummonSeraph, [SummonSeraphRequirement], AOEHeal=True) # 100% shield
 FeyBlessing = ScholarSpell(16543, False, 0, 0, 320, 0, ApplyFeyBlessing, [FeyBlessingRequirement], AOEHeal=True)
 Aetherpact = ScholarSpell(7437, False, 0, 0, 0, 0, empty, []) #No requirement, since 3 sec cd, so not really worth it imo
-DissolveUnion = ScholarSpell(26, False, 0, 0, 0, 0, empty, [])
+DissolveUnion = ScholarSpell(7869, False, 0, 0, 0, 0, empty, [])
 FeyIllumination = ScholarSpell(16538, False, 0, 0, 0, 0, ApplyFeyIllumination, [FeyIlluminationRequirement])
 WhisperingDawn = ScholarSpell(16537, False, 0, 0, 0, 0, ApplyWhisperingDawn, [WhisperingDawnRequirement])
 
@@ -260,6 +260,7 @@ ScholarAbility = {
 25865 : Broil, 
 17870 : Ruin, 
 16540 : Biolysis,
-22 : Consolation,
-173 : Resurrection
+16546 : Consolation,
+173 : Resurrection,
+7869 : DissolveUnion
 }

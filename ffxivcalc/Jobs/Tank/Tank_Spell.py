@@ -1,4 +1,4 @@
-from ffxivcalc.Jobs.Base_Spell import Potion, Spell
+from ffxivcalc.Jobs.Base_Spell import Potion, Spell, empty
 from ffxivcalc.Jobs.Melee.Melee_Spell import ArmLength
 from ffxivcalc.Jobs.Player import MitBuff
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
@@ -157,7 +157,10 @@ LowBlow = TankSpell(7540, False, Lock, 0, 0, 0, ApplyLowBlow, [LowBlowRequiremen
 Provoke = TankSpell(7533, False, Lock, 0, 0, 0, ApplyProvoke, [ProvokeRequirement])
 Interject = TankSpell(10101010, False, Lock, 0, 0, 0, ApplyInterject, [InterjectRequirement])
 Reprisal = TankSpell(7535, False, Lock, 0, 0, 0, ApplyReprisal, [ReprisalRequirement])
-TankStance = TankSpell(16142, False, 0, 0, 0, 0, ApplyTankStance, [TankStanceRequirement]) #Turn on Tank Stance
+RoyalGuard = TankSpell(16142, False, 0, 0, 0, 0, ApplyTankStance, [TankStanceRequirement]) #Turn on Tank Stance
+Grit = TankSpell(3629, False, 0, 0, 0, 0, ApplyTankStance, [TankStanceRequirement])
+IronWill = TankSpell(28, False, 0, 0, 0, 0, ApplyTankStance, [TankStanceRequirement])
+Defiance = TankSpell(48, False, 0, 0, 0, 0, ApplyTankStance, [TankStanceRequirement])
 TurnOffTankStance = TankSpell(0, False, 0, 0, 0, 0, ApplyTurnOffTankStance, [])#Turn off Tank Stance
 
 def Shirk(Target):
@@ -181,6 +184,16 @@ def Shirk(Target):
     return custom_shirk
 
 
+# Limit Break actions
+
+LB1Timer = 1.93
+LB2Timer = 3.86
+LB3Timer = 3.86
+
+TankLB1 = TankSpell(1111, False,LB1Timer, LB1Timer, 0, 0, empty, [], type=3)
+TankLB2 = TankSpell(1112, False,LB2Timer, LB2Timer, 0, 0, empty, [], type=3)
+TankLB3 = TankSpell(1113, False,LB3Timer, LB3Timer, 0, 0, empty, [], type=3)
+
 TankAbility = {
 10101010 : Interject,
 7531 : Rampart,
@@ -189,11 +202,14 @@ TankAbility = {
 7540 : LowBlow,
 7533 : Provoke,
 7537 : Shirk,
-16142 : TankStance, #Gunbreaker Tank Stance
-3629 : TankStance, #DarkKnight Tank Stance
-48 : TankStance, #Warrior Tank Stance
-28 : TankStance, #Paladin Tank Stance
+16142 : RoyalGuard, #Gunbreaker Tank Stance
+3629 : Grit, #DarkKnight Tank Stance
+48 : Defiance, #Warrior Tank Stance
+28 : IronWill, #Paladin Tank Stance
 34590541 : Potion,
 34592395 : Potion,
 -2 : Potion,
+1111 : TankLB1,
+1112 : TankLB2,
+1113 : TankLB3
 }
