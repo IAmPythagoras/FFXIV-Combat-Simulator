@@ -135,9 +135,9 @@ LB1Timer = 5.86
 LB2Timer = 6.86
 LB3Timer = 8.20
 
-MeleeLB1 = MeleeSpell(1111, False,LB1Timer, LB1Timer, 0, 0, empty, [])
-MeleeLB2 = MeleeSpell(1112, False,LB2Timer, LB2Timer, 0, 0, empty, [])
-MeleeLB3 = MeleeSpell(1113, False,LB3Timer, LB3Timer, 0, 0, empty, [])
+MeleeLB1 = MeleeSpell(1111, False,LB1Timer, LB1Timer, 0, 0, empty, [], type=3)
+MeleeLB2 = MeleeSpell(1112, False,LB2Timer, LB2Timer, 0, 0, empty, [], type=3)
+MeleeLB3 = MeleeSpell(1113, False,LB3Timer, LB3Timer, 0, 0, empty, [], type=3)
 
 
 MeleeAbility = {

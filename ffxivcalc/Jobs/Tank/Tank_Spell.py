@@ -190,9 +190,9 @@ LB1Timer = 1.93
 LB2Timer = 3.86
 LB3Timer = 3.86
 
-TankLB1 = TankSpell(1111, False,LB1Timer, LB1Timer, 0, 0, empty, [])
-TankLB2 = TankSpell(1112, False,LB2Timer, LB2Timer, 0, 0, empty, [])
-TankLB3 = TankSpell(1113, False,LB3Timer, LB3Timer, 0, 0, empty, [])
+TankLB1 = TankSpell(1111, False,LB1Timer, LB1Timer, 0, 0, empty, [], type=3)
+TankLB2 = TankSpell(1112, False,LB2Timer, LB2Timer, 0, 0, empty, [], type=3)
+TankLB3 = TankSpell(1113, False,LB3Timer, LB3Timer, 0, 0, empty, [], type=3)
 
 TankAbility = {
 10101010 : Interject,

@@ -639,6 +639,11 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
     # Also, note that this function is still in development, and so some of these formulas might be a bit off. Use at your own risk.
     # This function will compute the DPS given the stats of a player
 
+                # Limit Break damage logic go here
+                # TODO
+    if spellObj.type == 3: return 0, 1000
+
+
     # These computations should be up to date with Endwalker.
     baseMain = 390  
     Enemy = Player.CurrentFight.Enemy # Enemy targetted

@@ -132,9 +132,9 @@ LB1Timer = 5.1
 LB2Timer = 8.1
 LB3Timer = 12.6
 
-CasterLB1 = CasterSpell(1111, False,LB1Timer, LB1Timer, 0, 0, empty, [])
-CasterLB2 = CasterSpell(1112, False,LB2Timer, LB2Timer, 0, 0, empty, [])
-CasterLB3 = CasterSpell(1113, False,LB3Timer, LB3Timer, 0, 0, empty, [])
+CasterLB1 = CasterSpell(1111, False,LB1Timer, LB1Timer, 0, 0, empty, [], type=3)
+CasterLB2 = CasterSpell(1112, False,LB2Timer, LB2Timer, 0, 0, empty, [], type=3)
+CasterLB3 = CasterSpell(1113, False,LB3Timer, LB3Timer, 0, 0, empty, [], type=3)
 
 CasterAbility = {
 7561 : Swiftcast, 

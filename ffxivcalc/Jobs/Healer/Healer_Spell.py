@@ -68,9 +68,9 @@ LB1Timer = 4.10
 LB2Timer = 7.13
 LB3Timer = 10.10
 
-HealerLB1 = HealerSpell(1111, False,LB1Timer, LB1Timer, 0, 0, empty, [])
-HealerLB2 = HealerSpell(1112, False,LB2Timer, LB2Timer, 0, 0, empty, [])
-HealerLB3 = HealerSpell(1113, False,LB3Timer, LB3Timer, 0, 0, empty, [])
+HealerLB1 = HealerSpell(1111, False,LB1Timer, LB1Timer, 0, 0, empty, [], type=3)
+HealerLB2 = HealerSpell(1112, False,LB2Timer, LB2Timer, 0, 0, empty, [], type=3)
+HealerLB3 = HealerSpell(1113, False,LB3Timer, LB3Timer, 0, 0, empty, [], type=3)
 
 HealerAbility = {
 16560 : Repose,
