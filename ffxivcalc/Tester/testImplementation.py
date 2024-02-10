@@ -21171,5 +21171,4 @@ if __name__ == "__main__":
     main_logging.setLevel(level=logging.ERROR) 
     test_logging.setLevel(level=level)
     logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
-    #executeTests()
-    generateLimitBreakTestSuite().executeTestSuite()
+    executeTests()

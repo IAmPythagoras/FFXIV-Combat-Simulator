@@ -615,18 +615,18 @@ class Player:
                 if action.GCD and action.id in possibleDOTActionId : curDOTTimer = dotTimer - max(0,spellObj.RecastTime-spellObj.CastTime)
                              # Have to check if meikyo was used before the first gcd to cast gekko which gives a buff
                              # This case for Kasha is checked later
-                if isSAM and action.GCD and spellObj.id == SamuraiActions.Gekko and meikyoStack > 0: curBuffTimer = buffTimer 
-                                
-                if isBLM:
+                
+                if isSAM and action.GCD and spellObj.id == SamuraiActions.Gekko and meikyoStack > 0: curBuffTimer = buffTimer      
+                             # Check for BLM/RDM do not want to consider if is a LB. And sleep for blm
+                elif isBLM and action.type!=3 and action.id != CasterActions.Sleep:
                              # if is a BLM we check if the action isFire or isIce if any
                     if spellObj.IsFire : inAstralFire = True
                     elif spellObj.IsIce : inUmbralIce = True
-
-                if isRDM :
+                elif isRDM and spellObj.CastTime > gcdCastDetectionLimit and action.type!=3:
                              # To detect if dualcast is added we check if the spell has a casttime higher then 2.2 . If such is true
-                             # then it wasn't affected by a previous dualcast, acceleration or a previous dualcast
-                    if spellObj.CastTime > gcdCastDetectionLimit:
-                        hasDualCast = True
+                             # then it wasn't affected by a previous dualcast, acceleration or swiftcast
+                    hasDualCast = True
+
                         # Removing meikyo stacks if applies
             if isSAM and meikyoStack > 0 and (action.id == SamuraiActions.Yukikaze or action.id == SamuraiActions.Shifu or action.id == SamuraiActions.Kasha or action.id == SamuraiActions.Jinpu or action.id == SamuraiActions.Gekko):
                 meikyoStack-=1 
@@ -819,7 +819,7 @@ class Player:
                 self.Haste -= hasteBonus
 
                              # Checking if BLM in which case we add some effects is it applies 
-                if isBLM:
+                if isBLM and spellObj.id != CasterActions.Sleep:
                     if inAstralFire and spellObj.IsIce or inUmbralIce and spellObj.IsFire:
                              # reduce casttime
                             spellObj.CastTime = max(round(spellObj.CastTime/2,2),1.5)
@@ -877,7 +877,7 @@ class Player:
                 gcdLockTimer = max(0,spellObj.RecastTime - spellObj.CastTime)
 
                                              # Last thing we check if BLM changes state, if RDM gets dualcast or if SAM gets meikyo
-                if isBLM:
+                if isBLM and spellObj.id != CasterActions.Sleep:
                     if not inAstralFire and not inUmbralIce: # Not in any
                         if  spellObj.IsFire : inAstralFire = True
                         elif spellObj.IsIce : inUmbralIce = True
