@@ -247,6 +247,13 @@ def ApplyMug(Player, Enemy):
 
 def ApplyHuraijin(Player, Enemy):
     Player.HutonTimer = 60
+    if not (HutonEffect in Player.EffectList):
+        Player.EffectList.append(HutonEffect)
+    if not (HutonCheck in Player.EffectCDList):
+        Player.Haste += 15
+        Player.hasteChangeValue = 15
+        Player.hasteHasChanged = True
+        Player.EffectCDList.append(HutonCheck)
 
 def ApplyDreamWithinADream(Player, Enemy):
     Player.DreamWithinADreamCD = 60
