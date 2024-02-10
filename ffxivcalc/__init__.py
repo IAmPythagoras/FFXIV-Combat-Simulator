@@ -1,7 +1,14 @@
-__version__ = '0.8.901'
+__version__ = '0.8.910'
 
 """
 Update history :
+
+'0.8.910':
+    - Fixed some 'computeActionTimer()' issues
+    - Added Limit break actions (they do no damage but should be accurate on cast time/animation lock)
+    - Fixed some wrong Ids issue
+    - Fixed Huraijin ninja issue
+    - Added Limit break cast time tests for SpS/SkS interactions.
 
 0.8.901 :
     - Fixed some 'computeActionTimer()' issues on Samurai with Meikyo/Gekko interaction, an issue where only having 1 GCD would return wrong estimated time stamp.
