@@ -19844,7 +19844,8 @@ def generateTimerEstimateTestSuite() -> testSuite:
         estimate = player.computeTimeStamp()
         Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
 
-        return [Event.TimeStamp, estimate["currentTimeStamp"]]
+        return [0, estimate["currentTimeStamp"]]
+    # Hardcoded value of 0 since we want the estimate to be 0 since it will start when the lb applies damage
          
     def teTest80ValidationFunction(testResults) -> (bool, list):
         passed = True   

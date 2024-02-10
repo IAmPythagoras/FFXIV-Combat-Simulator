@@ -597,7 +597,7 @@ class Player:
                     hasteBuffIndexList.append(index)
                     hasHasteAction = True
 
-            if (not foundFirstDamage) and (action.Potency > 0 or action.id in possibleDOTActionId):
+            if (not foundFirstDamage) and (action.Potency > 0 or action.id in possibleDOTActionId or action.type==3): # if does damage or is a dot or is a LB
                 foundFirstDamage = True
                              # Found first damaging action
                              # Add to timestamp and will check for GCD clipping
