@@ -85,7 +85,7 @@ HeadGraze = RangedSpell(0, False, Lock, 0, 0, 0, ApplyHeadGraze, [HeadGrazeRequi
 
 LB1Timer = 5.10
 LB2Timer = 6.10
-LB3Timer = 8.10
+LB3Timer = 8.20
 
 RangedLB1 = RangedSpell(1111, False,LB1Timer, LB1Timer, 0, 0, empty, [], type=3)
 RangedLB2 = RangedSpell(1112, False,LB2Timer, LB2Timer, 0, 0, empty, [], type=3)
