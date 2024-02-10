@@ -126,6 +126,16 @@ Surecast = CasterSpell(7559, False, Lock, 0, 0, 0, ApplySurecast, [SurecastRequi
 Addle = CasterSpell(7560, False, Lock, 0, 0, 0, ApplyAddle, [AddleRequirement])
 Sleep = CasterSpell(25880, True, 2.5, 2.5, 0, 800, empty, [ManaRequirement])
 
+# Limit Break actions
+
+LB1Timer = 5.1
+LB2Timer = 8.1
+LB3Timer = 12.6
+
+CasterLB1 = CasterSpell(1111, False,LB1Timer, LB1Timer, 0, 0, empty, [])
+CasterLB2 = CasterSpell(1112, False,LB2Timer, LB2Timer, 0, 0, empty, [])
+CasterLB3 = CasterSpell(1113, False,LB3Timer, LB3Timer, 0, 0, empty, [])
+
 CasterAbility = {
 7561 : Swiftcast, 
 7562 : LucidDreaming,  
@@ -134,5 +144,8 @@ CasterAbility = {
 25880 : Sleep,
 34590544 : Potion, #Grade 6
 34592398 : Potion, # Grade 7
--2 : Potion
+-2 : Potion,
+1111 : CasterLB1,
+1112 : CasterLB2,
+1113 : CasterLB3
 }

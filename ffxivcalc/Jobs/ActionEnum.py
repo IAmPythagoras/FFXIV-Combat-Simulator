@@ -34,6 +34,12 @@ class CasterActions(ActionEnum):
     Sleep = 25880
     Potion = -2
     WaitAbility = 212
+    
+    # Limit Break 
+    CasterLB1 = 1111
+    CasterLB2 = 1112
+    CasterLB3 = 1113
+
 
 # BlackMage
 
@@ -164,6 +170,11 @@ class HealerActions(ActionEnum):
     Surecast = 7559
     Potion = -2
     WaitAbility = 212
+
+    # Limit Break
+    HealerLB1 = 1111
+    HealerLB2 = 1112
+    HealerLB3 = 1113
 
 
 # Astrologian
@@ -337,6 +348,11 @@ class TankActions(ActionEnum):
 
     AA = -22
 
+    # Limit Break
+    TankLB1 = 1111
+    TankLB2 = 1112
+    TankLB3 = 1113
+
 
 # DarkKnight
 
@@ -491,6 +507,11 @@ class MeleeActions(ActionEnum):
     WaitAbility = 212
 
     AA = -22
+
+    # Limit Break
+    MeleeLB1 = 1111
+    MeleeLB2 = 1112
+    MeleeLB3 = 1113
 
 # Samurai
 
@@ -701,6 +722,11 @@ class RangedActions(ActionEnum):
     WaitAbility = 212
 
     AA = -23
+
+    # Limit Break
+    RangedLB1 = 1111
+    RangedLB2 = 1112
+    RangedLB3 = 1113
 
 
 # Bard

@@ -1,4 +1,4 @@
-from ffxivcalc.Jobs.Base_Spell import Potion, Spell
+from ffxivcalc.Jobs.Base_Spell import Potion, Spell, empty
 from ffxivcalc.Jobs.Melee.Melee_Spell import ArmLength
 from ffxivcalc.Jobs.Player import MitBuff
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
@@ -184,6 +184,16 @@ def Shirk(Target):
     return custom_shirk
 
 
+# Limit Break actions
+
+LB1Timer = 1.93
+LB2Timer = 3.86
+LB3Timer = 3.86
+
+TankLB1 = TankSpell(1111, False,LB1Timer, LB1Timer, 0, 0, empty, [])
+TankLB2 = TankSpell(1112, False,LB2Timer, LB2Timer, 0, 0, empty, [])
+TankLB3 = TankSpell(1113, False,LB3Timer, LB3Timer, 0, 0, empty, [])
+
 TankAbility = {
 10101010 : Interject,
 7531 : Rampart,
@@ -199,4 +209,7 @@ TankAbility = {
 34590541 : Potion,
 34592395 : Potion,
 -2 : Potion,
+1111 : TankLB1,
+1112 : TankLB2,
+1113 : TankLB3
 }
