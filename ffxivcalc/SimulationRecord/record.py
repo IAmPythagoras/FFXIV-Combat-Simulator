@@ -137,6 +137,7 @@ class SimulationRecord:
             curPos += offset
             pos.append(curPos)
         nrows = len(self.pageList)
+        if nrows > 500 : return None
         ncols = len(colName)
                              # This works well. Found by just using a configuration that looked good
                              # and using the ratio of nrows to height.
