@@ -137,13 +137,13 @@ class SimulationRecord:
             curPos += offset
             pos.append(curPos)
         nrows = len(self.pageList)
-        if nrows > 500 : return None
         ncols = len(colName)
                              # This works well. Found by just using a configuration that looked good
                              # and using the ratio of nrows to height.
         height = ((160/538) * nrows)
 
         fig = plt.figure(figsize=(14,height), dpi=300)
+        if nrows > 500 : return fig
         ax = plt.subplot(111)
         ax.set_xlim(0, int(1.5*ncols))
         ax.set_ylim(0, 5*(nrows+1))
