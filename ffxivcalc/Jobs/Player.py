@@ -191,7 +191,7 @@ class Player:
         GivenHealBuff : bool -> If the healing buff is on given heals rather than received heals
         stackable : bool -> True of the buff is stackable
         """
-
+        GivenHealBuff = buff.GivenHealBuff
         if GivenHealBuff and not stackable and (buff.BuffName in self.GivenHealBuffNameList):
                              # The buff is non-stackable and already applied. So we reset the timer.
             for AppliedBuff in self.GivenHealBuffList:
