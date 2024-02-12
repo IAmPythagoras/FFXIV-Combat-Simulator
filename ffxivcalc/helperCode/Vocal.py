@@ -11,6 +11,7 @@ from ffxivcalc.helperCode.helper_math import roundDown
 logging.getLogger('matplotlib').setLevel(logging.INFO) # silencing matplotlib logger
 logging.getLogger('PIL').setLevel(logging.INFO) # silencing PIL logger
 
+
 from ffxivcalc.Jobs.PlayerEnum import JobEnum
 
 def SimulateRuns(fight, n : int, showBar : bool = True, pBNewBuffer = None):

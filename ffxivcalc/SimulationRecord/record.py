@@ -124,6 +124,9 @@ class SimulationRecord:
     def saveRecord(self,idList : list = [],saveAsPDF=True):
         """
         This function saves the record as a plot (pdf).
+
+        idList : list[int] -> If non empty will limit the record's output to player that match the id inside the list
+        saveAsPDF : bool -> If true saves as a PDF
         """
 
         colName = ["Name", "Potency", "Damage", "", "Time","Buff", "DH Buff", "Crit Buff"]
@@ -136,14 +139,28 @@ class SimulationRecord:
         for offset in posOffSet:
             curPos += offset
             pos.append(curPos)
-        nrows = len(self.pageList)
+
+
+                             # Will go through pageList and only append the pages that we want
+        newPageList = [] 
+
+        if len(idList) == 0:
+            newPageList = self.pageList
+        else:
+            for page in self.pageList:
+                if page.playerID in idList:
+                    newPageList.append(page)
+
+
+        nrows = len(newPageList)
         ncols = len(colName)
                              # This works well. Found by just using a configuration that looked good
                              # and using the ratio of nrows to height.
         height = ((160/538) * nrows)
 
-        fig = plt.figure(figsize=(14,height), dpi=300)
-        if nrows > 500 : return fig
+        fig = plt.figure(figsize=(14,height), dpi=700)
+        print("nrows : " + str(nrows))
+        #if nrows > 500 : return fig
         ax = plt.subplot(111)
         ax.set_xlim(0, int(1.5*ncols))
         ax.set_ylim(0, 5*(nrows+1))
@@ -157,15 +174,15 @@ class SimulationRecord:
             dhBuffStr = ""
             critBuffStr = ""
 
-            for buffs in self.pageList[nrows-y-1].PercentBuffList:
+            for buffs in newPageList[nrows-y-1].PercentBuffList:
                 curPercentCount += 1
                 percentBuffStr += str(buffs) + ("\n" if curPercentCount%4 == 0 else " ")
 
-            if self.pageList[nrows-y-1].hasPotion : percentBuffStr += "Potion "
+            if newPageList[nrows-y-1].hasPotion : percentBuffStr += "Potion "
 
-            for buffs in self.pageList[nrows-y-1].DHBuffList:
+            for buffs in newPageList[nrows-y-1].DHBuffList:
                 dhBuffStr += buffs[0] + "(" + str(int(buffs[1]*100)) + "%) "
-            for buffs in self.pageList[nrows-y-1].CritBuffList:
+            for buffs in newPageList[nrows-y-1].CritBuffList:
                 critBuffStr += buffs[0] + "(" + str(int(buffs[1]*100)) + "%) "
 
                              # Removing last character which is a \n
@@ -176,25 +193,25 @@ class SimulationRecord:
             
             ax.annotate(
                 xy=(pos[0],yPos),
-                text=self.pageList[nrows-y-1].Name,
+                text=newPageList[nrows-y-1].Name,
                 ha=haList[0],
                 fontsize=size+1
             )
             ax.annotate(
                 xy=(pos[1],yPos),
-                text=self.pageList[nrows-y-1].Potency,
+                text=newPageList[nrows-y-1].Potency,
                 ha=haList[1],
                 fontsize=size+1
             )
             ax.annotate(
                 xy=(pos[2],yPos),
-                text=self.pageList[nrows-y-1].Damage,
+                text=newPageList[nrows-y-1].Damage,
                 ha=haList[2],
                 fontsize=size+1
             )
             crititalDH = ""
-            if self.pageList[nrows-y-1].autoCrit : crititalDH += "!"
-            if self.pageList[nrows-y-1].autoDH : crititalDH += "!"
+            if newPageList[nrows-y-1].autoCrit : crititalDH += "!"
+            if newPageList[nrows-y-1].autoDH : crititalDH += "!"
             ax.annotate(
                 xy=(pos[3],yPos),
                 text=crititalDH,
@@ -204,7 +221,7 @@ class SimulationRecord:
             )
             ax.annotate(
                 xy=(pos[4],yPos),
-                text=self.pageList[nrows-y-1].TimeStamp,
+                text=newPageList[nrows-y-1].TimeStamp,
                 ha=haList[4],
                 fontsize=size
             )
@@ -241,11 +258,16 @@ class SimulationRecord:
             ax.plot([ax.get_xlim()[0], ax.get_xlim()[1]], [x+1, x+1], lw=1.15, color='gray', ls=':', zorder=3 , marker='')
             
         if saveAsPDF:
-            plt.savefig(
-            'SimulationRecord.pdf',
-            dpi=700,
-            bbox_inches='tight'
-            )
+            try:
+                plt.savefig(
+                'SimulationRecord.pdf',
+                dpi=700,
+                bbox_inches='tight'
+                )
+            except:
+                print("An error happened while trying to export the Simulation Record. This could be due to a too large size.")
+
+            
 
         return fig
 
