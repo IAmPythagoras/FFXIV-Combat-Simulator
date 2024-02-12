@@ -2,7 +2,7 @@
 
 # Desktop app
 
-You can download the desktop app to use within coding : https://github.com/IAmPythagoras/ffxivcalcWebApp .
+You can download the desktop app to use the simulator without having to code : https://github.com/IAmPythagoras/ffxivcalcWebApp .
 
 # Install
 
