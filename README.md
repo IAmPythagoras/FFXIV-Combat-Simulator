@@ -1,6 +1,6 @@
 [![Discord](https://img.shields.io/discord/970724799464738977?color=7289da&label=Discord&logo=discord)](https://discord.gg/mZXKUNy2sw)
 
-# Website / Webapp
+# Desktop app
 
 You can download the desktop app to use within coding : https://github.com/IAmPythagoras/ffxivcalcWebApp .
 
