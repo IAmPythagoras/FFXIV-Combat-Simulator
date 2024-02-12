@@ -12,25 +12,15 @@ You can install this library using pip :
 pip install ffxivcalc
 ```
 
-or using git (this would let you download from the dev branch "feature/GeneralDev"): 
+Or can download latest unstable version using : 
 
 ```
-pip install ffxiv-combat-simulator@git+https://github.com/IAmPythagoras/FFXIV-Combat-Simulator.git@main
+pip install ffxiv-combat-simulator@git+https://github.com/IAmPythagoras/FFXIV-Combat-Simulator.git@feature/GeneralDev
 ```
 
 *Note that you must have git installed : https://git-scm.com/download/win 
 
 You can find the documentation here : https://iampythagoras.github.io/index.html or join the discord linked above if you have any questions.
-
-If you want to locally use the API. Install the ffxiv-combat-simulator library and also install uvicorn :
-```
-pip install uvicorn
-```
-And then run this command:
-```
-python -m uvicorn ffxivcalc.API.API:app
-```
-This will locally launch the API.
 
 # FFXIV-Combat-Simulator (ffxivcalc)
 
@@ -80,24 +70,6 @@ You can read about the experimental results of this solver here : https://docs.g
 
 As of version 0.8.30 I have started adding in depth testing of the simulator. The simulator will still have some flaws, but it is currently being checked by around 430 individual tests. More tests
 will be added with time.
-
-# Discord bot): 
-DISCORD BOT IS CURRENTLY OFFLINE. WILL UPDATE HERE WHEN IT IS AVAILABLE
-I made a disbord bot that uses the python library ffxivcalc in order to simulate fights. Feel free to install it using the link below. As of now, the main bot commands are :
-```
-!Simulate (With a JSON file as a file in the same message)
-!Template <filename> <job1> <job2> ... (Generates a template JSON file used to simulate)
-!Help (for help)
-```
-Use this link to install the bot on your server : 
-```
-https://discord.com/oauth2/authorize?client_id=1071922835011932290&permissions=274878024704&scope=bot
-```
-
-# Currently Working On
-
-Adding code to support multiple enemies at the same time and individual targetting of enemy by the players.
-
 
 # HOW IT WORKS
 
