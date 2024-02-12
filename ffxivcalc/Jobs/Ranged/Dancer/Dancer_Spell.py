@@ -42,6 +42,13 @@ def TechnicalFinishRequirement(Player, Spell):
     #Will check how many step we have
     #Not done in apply since we want to acces the spell easily
 
+
+    # Check if technical finish is already applied. If so we remove it
+    # We check that by looking if check is in player's list
+    if TechnicalFinishCheck in Player.EffectCDList and Player.TechnicalFinishBuff != None:
+        # Is already applied. Remove buff
+        Player.CurrentFight.Enemy.buffList.remove(Player.TechnicalFinishBuff)
+
     Player.TechnicalFinishBuff = copy.deepcopy(TechnicalFinishBuff)
     step = 0
     if Player.Emboite : step +=1
@@ -158,8 +165,10 @@ def ApplyTechnicalFinish(Player, Enemy):
     #The MultBonus has already been computed from Requirement, so we just apply it to the dancer
     #and the dance partner
 
-    #The check will be done on the dancer only
-    Player.EffectCDList.append(TechnicalFinishCheck)
+    # Add only if not present.
+    if not (TechnicalFinishCheck in Player.EffectCDList):
+        Player.EffectCDList.append(TechnicalFinishCheck)
+        
     Enemy.buffList.append(Player.TechnicalFinishBuff) #Since party wide, applies on enemy
 
 
