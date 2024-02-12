@@ -2,11 +2,7 @@
 
 # Website / Webapp
 
-The website https://ffxivdpscalc.azurewebsites.net allows an easier time for people without coding knowledge to use the simulator.
-
-(Note that the website will be taken down once the webapp is done)
-
-You can also download a beta version of the desktop app that runs locally and does not have any of the limitations the website is subject too : https://github.com/IAmPythagoras/ffxivcalcWebApp .
+You can download the desktop app to use within coding : https://github.com/IAmPythagoras/ffxivcalcWebApp .
 
 # Install
 
