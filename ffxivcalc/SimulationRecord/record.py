@@ -145,15 +145,22 @@ class SimulationRecord:
 
         return nRows
 
-    def saveRecordText(self, idList : list = []):
+    def saveRecordText(self, idList : list = [], path : str = 'SimulationRecord.txt', startTime : float = 0, endTime : float = 99999, trackAutos : bool = True,
+                       trackDOTs : bool = True, customizeRecord : bool = False):
         """
-        This function saves the record as a text file.
+        This function saves the record as a text file. Read saveRecord for info on arguments.
         """
 
         self.idList = idList
 
-        f = open("SimulationRecord.txt", "w")
-        f.write(str(self))
+        rString = ""
+        specId = len(self.idList) == 0
+
+        for pages in self.pageList:
+            if not customizeRecord or pages.isValid(startTime, endTime, trackAutos, trackDOTs,idList): rString += str(pages) + '\n'
+
+        f = open(path, "w")
+        f.write(rString)
         f.close()
 
     def saveRecord(self,customizeRecord : bool = False, startTime : float = 0, endTime : float = 99999, trackAutos : bool = True, 
