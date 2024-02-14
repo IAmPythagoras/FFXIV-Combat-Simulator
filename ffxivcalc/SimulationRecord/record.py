@@ -86,7 +86,7 @@ class page:
         """This function returns weither the page would be shown under these restrictions. 
         See SimulationRecord.getRecordLength for a description of the arguments.
         """
-        return self.TimeStamp >= startTime and self.TimeStamp <= endTime and (self.isAuto and trackAutos) and (self.isDOT and trackDOTs) and self.playerID in idList
+        return self.TimeStamp >= startTime and self.TimeStamp <= endTime and (self.isAuto and trackAutos or (not self.isAuto)) and (self.isDOT and trackDOTs  or (not self.isDOT)) and self.playerID in idList
 
     def __str__(self) -> str:
 
