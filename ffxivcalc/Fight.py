@@ -631,6 +631,9 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
                              # Creating page object to record action
     thisPage = page()
     thisPage.setPlayerID(Player.playerID)
+
+    if type == 1 or type == 2:thisPage.setIsDOT()
+    elif type ==3 : thisPage.setIsAuto()
     Player.CurrentFight.simulationRecord.addPage(thisPage)
     thisPage.setName(name_for_id(spellObj.id, Player.ClassAction, Player.JobAction))
     thisPage.setPotency(Potency)

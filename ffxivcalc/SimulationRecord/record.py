@@ -34,6 +34,8 @@ class page:
         self.CritBuffList = []
         self.playerID = 0
         self.hasPotion = False
+        self.isAuto = False
+        self.isDOT = False
 
     def setPlayerID(self,newID : int ):
         self.playerID = newID
@@ -69,6 +71,22 @@ class page:
         """This function sets the value of the field hasPotion to True
         """
         self.hasPotion = True
+    
+    def setIsDOT(self):
+        """sets self.isDOT to true
+        """
+        self.isDOT = True
+
+    def setIsAuto(self):
+        """sets self.isAuto to true
+        """
+        self.isAuto = True
+
+    def isValid(self,startTime : float, endTime : float, trackAutos : bool, trackDOTs : bool, idList) -> bool:
+        """This function returns weither the page would be shown under these restrictions. 
+        See SimulationRecord.getRecordLength for a description of the arguments.
+        """
+        return self.TimeStamp >= startTime and self.TimeStamp <= endTime and (self.isAuto and trackAutos) and (self.isDOT and trackDOTs) and self.playerID in idList
 
     def __str__(self) -> str:
 
@@ -109,6 +127,23 @@ class SimulationRecord:
             if specId or (pages.playerID in self.idList) : rString += str(pages) + "\n"
 
         return rString
+
+    def getRecordLength(self, startTime : float, endTime : float, trackAutos : bool, trackDOTs : bool, idList) -> int:
+        """This function returns the length of the record under the given restrictions
+
+        Args:
+            startTime (float): Record only shows pages with time after this.
+            endTime (float): Record only shows pages with time before this.
+            trackAutos (bool): If true the record will show autos events.
+            trackDOTs (bool): If true the record will show DOTs events.
+            idList (_type_): Player's id that the record will show.
+        """
+        nRows = 0
+
+        for page in self.pageList:
+            if page.isValid(startTime, endTime, trackAutos , trackDOTs, idList): nRows+=1
+
+        return nRows
 
     def saveRecordText(self, idList : list = []):
         """
