@@ -156,12 +156,14 @@ class SimulationRecord:
         f.write(str(self))
         f.close()
 
-    def saveRecord(self,idList : list = [],saveAsPDF=True):
+    def saveRecord(self,customizeRecord : bool = False, startTime : float = 0, endTime : float = 99999, trackAutos : bool = True, 
+                   trackDOTs : bool = True, idList : list = [],saveAsPDF : bool =True):
         """
-        This function saves the record as a plot (pdf).
+        This function saves the record as a plot (pdf). See getRecordLength for a description of the arguments.
 
         idList : list[int] -> If non empty will limit the record's output to player that match the id inside the list
         saveAsPDF : bool -> If true saves as a PDF
+        customizeRecord : bool -> If true will limit pages to the given restrictions.
         """
 
         colName = ["Name", "Potency", "Damage", "", "Time","Buff", "DH Buff", "Crit Buff"]
@@ -179,11 +181,11 @@ class SimulationRecord:
                              # Will go through pageList and only append the pages that we want
         newPageList = [] 
 
-        if len(idList) == 0:
+        if not customizeRecord:
             newPageList = self.pageList
         else:
             for page in self.pageList:
-                if page.playerID in idList:
+                if page.isValid(startTime, endTime, trackAutos, trackDOTs, idList):
                     newPageList.append(page)
 
 
