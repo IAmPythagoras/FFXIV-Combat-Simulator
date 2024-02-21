@@ -71,16 +71,9 @@ You can read about the experimental results of this solver here : https://docs.g
 As of version 0.8.30 I have started adding in depth testing of the simulator. The simulator will still have some flaws, but it is currently being checked by around 430 individual tests. More tests
 will be added with time.
 
-# HOW IT WORKS
+# Other simulators
 
-The big advantage of this program is that instead of computing the average PPS (potency per second) and then using a damage formula to find the
-DPS (Damage per second), it simulates the fight like it would happen in real time. That way, buffs are accurately taken into account. It is also able to discernate between oGCD and GCD, and will treat them accordingly (for weaving and stuff).The program can also see if a rotation is illegal, and will stop if it is determined to be a rotation that cannot be done in the game.
-
-The time-unit used for the program is by default 0.01s/step, but it can be put at whatever smaller (or bigger) number we prefer. It is also able to know when a certain ability cannot be casted, and using that ability anyway will result in an error that stops the simulation. We could in theory disable this checking if we wanted.
-
-Each job in the game is implemented in a relatively similar way. We first create a class JobSpell, which will be an object that will represent a spell/ability/weaponskill of the job. Such an object will have information like casting time, recast time (if GCD), potency, manacost, effect of applying that spell and the requirements of that spell. We then also need to create a class JobPlayer, which will inherit certain traits for its parent class (Healer, Caster, Melee, Ranged or Tank) (This is also the case for spell). This JobPlayer class will contain information like Ability Cooldown, Buff Timer, DOTTimer and other stuff that need to be tracked during the execution of the simulation.
-
-And that's about it, the code will take these two new classes (and object of the JobSpell class) and if everything is done correctly the simulator will be able to run without any issues.
+Make sure to check out this alternative FFXIV simulator [Amas-FF14-Combat-Sim](https://github.com/Amarantine-xiv/Amas-FF14-Combat-Sim) or join its [Discord](https://discord.gg/8GjA5uRcDX)
 
 # If you want to help
 
