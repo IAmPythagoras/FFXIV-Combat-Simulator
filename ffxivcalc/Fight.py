@@ -537,12 +537,25 @@ class Fight:
         # Printing the results if vocal is true.
         if self.TimeStamp < TimeLimit: pB.complete()
         fig2 = None
+        fig = None
         if n > 0 and computeGraph : fig2 = SimulateRuns(self, n,showBar=showProgress, pBNewBuffer=loadingBarBuffer)
         if computeGraph : result, fig = PrintResult(self, self.TimeStamp, self.timeValue, PPSGraph=PPSGraph)
         else : result, fig = "", None
         if vocal:
             print(result) 
-            if self.ShowGraph : plt.show()
+            if self.ShowGraph : 
+                if fig != None:
+                    try:
+                        fig.show()
+                        fig.savefig("test.png")
+                    except:
+                        print("An error happened while trying to export the DPS Vs. Time graph. This could be due to a too large size.")
+                if fig2 != None:
+                    try:
+                        fig2.show()
+                        fig.savefig("test2.png")
+                    except:
+                        print("Error while showing DPS distribution graph. This could be due to a too large size.")
 
         
         return result, fig, fig2
@@ -618,6 +631,9 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
                              # Creating page object to record action
     thisPage = page()
     thisPage.setPlayerID(Player.playerID)
+
+    if type == 1 or type == 2:thisPage.setIsDOT()
+    elif type ==3 : thisPage.setIsAuto()
     Player.CurrentFight.simulationRecord.addPage(thisPage)
     thisPage.setName(name_for_id(spellObj.id, Player.ClassAction, Player.JobAction))
     thisPage.setPotency(Potency)

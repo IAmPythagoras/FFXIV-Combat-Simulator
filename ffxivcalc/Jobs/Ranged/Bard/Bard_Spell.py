@@ -471,10 +471,8 @@ RadiantFinaleBuff = buff(1.02,name="RF")
 RagingStrikeBuff = buff(1.15,name="Raging Strike")
 MageBalladBuff = buff(1.01,name="MB")
 
-def NatureMinne(target):
-    Nature = BardSpell(7408, False, 0, 0, ApplyNatureMinne, [NatureMinneRequirement], False)
-    Nature.TargetID = target.playerID
-    return Nature
+# Party mit buff
+NatureMinne = BardSpell(7408, False, 0, 0, ApplyNatureMinne, [NatureMinneRequirement], False)
 
 BardAbility = {
 101 : RagingStrike, 

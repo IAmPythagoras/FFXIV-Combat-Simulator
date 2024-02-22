@@ -257,7 +257,16 @@ level = logging.DEBUG if not findBiS else logging.WARNING
 logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
 __logger__.setLevel(level=level) 
 
-if not findBiS:
+if True:
+    from ffxivcalc.helperCode.helper_backend import RestoreFightObject
+    from save import save
+    Event = RestoreFightObject(save)
+    Event.RequirementOn = False
+    Event.ShowGraph = False
+    Event.IgnoreMana = True
+    Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False, MaxTeamBonus=False)
+
+if False:#not findBiS:
     from ffxivcalc.helperCode.helper_backend import SaveFight
     print(Event.PlayerList[0].computeTimeStamp())
     Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False, MaxTeamBonus=False) # Simulating fight
