@@ -3,7 +3,16 @@ __version__ = '0.8.910'
 """
 Update history :
 
-'0.8.910':
+0.8.911:
+    - Fixed Bard's Mine issues
+    - Added functionality to filter the record under some restrictions.
+    - Fixed technical finish issue where a double cast would make the simulation crash
+    - Fixed GivenHealBuff issue
+    - Graph from the simulation now save as png instead of opening up.
+
+
+
+0.8.910:
     - Fixed some 'computeActionTimer()' issues
     - Added Limit break actions (they do no damage but should be accurate on cast time/animation lock)
     - Fixed some wrong Ids issue

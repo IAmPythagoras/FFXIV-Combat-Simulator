@@ -547,13 +547,13 @@ class Fight:
                 if fig != None:
                     try:
                         fig.show()
-                        fig.savefig("test.png")
+                        fig.savefig("DPSGraph.png")
                     except:
                         print("An error happened while trying to export the DPS Vs. Time graph. This could be due to a too large size.")
                 if fig2 != None:
                     try:
                         fig2.show()
-                        fig.savefig("test2.png")
+                        fig.savefig("DistGraph.png")
                     except:
                         print("Error while showing DPS distribution graph. This could be due to a too large size.")
 
