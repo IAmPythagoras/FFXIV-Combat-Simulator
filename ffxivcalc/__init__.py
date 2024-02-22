@@ -1,4 +1,4 @@
-__version__ = '0.8.910'
+__version__ = '0.8.911'
 
 """
 Update history :
