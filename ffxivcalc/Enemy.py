@@ -2,7 +2,7 @@
 from copy import deepcopy
 from ffxivcalc.helperCode.helper_math import roundDown
 
-# Exceptions
+# Exception
 from ffxivcalc.helperCode.exceptions import InvalidTankBusterTargetNumber
 
 class EnemyEvent:
