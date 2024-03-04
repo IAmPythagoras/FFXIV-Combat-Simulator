@@ -523,11 +523,12 @@ class Fight:
 
         if self.wipe:
             # If the simulation ran into a problem caused by a failed requirement.
-            result_str = "The simulation ran into a problem. You can disable requirements by setting its value to 'False' in the JSON file.\n" + "=================\n"
+            result_str = "The simulation ran into a problem. You can disable requirements by setting 'Fight.RequirementOn' to 'False'.\n" + "=================\nList of failed fatal requirements : \n"
+
             for t in self.failedRequirementList: # Printing the failed requirement if it was fatal
                 if t.fatal : 
                     result_str += (
-                        "Failed Fatal Requirement : " + t.requirementName + " Timestamp : " + str(t.timeStamp)
+                        "Failed Fatal Requirement : " + t.requirementName + " Timestamp : " + str(t.timeStamp) + "\n"
                         )
                              # Recording final HP value of players
         for gamer in self.PlayerList:
@@ -542,7 +543,7 @@ class Fight:
         if computeGraph : result, fig = PrintResult(self, self.TimeStamp, self.timeValue, PPSGraph=PPSGraph)
         else : result, fig = "", None
         if vocal:
-            print(result) 
+            print(result_str + "\n" + result) 
             if self.ShowGraph : 
                 if fig != None:
                     try:
