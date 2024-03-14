@@ -10,6 +10,7 @@ import pandas as pd
 
 from ffxivcalc.Request import custom_columns
 from ffxivcalc.Request import game_data
+from ffxivcalc.helperCode.exceptions import invalidFFLogsFightId, invalidFFLogsQuery
 
 LOG = logging.getLogger(__name__)
 
@@ -101,7 +102,7 @@ class FFLogClientV2:
         Output contains info from both report and the fights.
         """
         LOG.debug(f"Fetching fflogs reportData:report:fights via {code}")
-        return self.client.execute(
+        data = self.client.execute(
             query="""query reportData($code: String!, $kills: KillType!){
                   reportData
                   {
@@ -129,17 +130,35 @@ class FFLogClientV2:
                 "code": code,
                 "kills": fight_type,
             },
-        )["data"]["reportData"]["report"]
+        )
+        self._check_if_valid_query(data)
+        return data["data"]["reportData"]["report"]
 
-    def get_fights(self, code: str, fight_type: str = "Kills") -> List[Dict]:
+    def _check_if_valid_query(self,query : Dict):
+        """Checks the validity of the returned query. If a query is invalid it contains the key 'message' with a message. An error
+        will be raised an the message displayed to the user."""
+
+        if 'errors' in query.keys():
+            raise invalidFFLogsQuery(query['errors'][0]['message'])
+
+    def _check_valid_fight_id(self,fightList : List[Dict], fight_id : str) -> bool:
+        """Checks if the given id is within the retrieved fight list. Raises invalidFFLogsFightId if not valid."""
+
+        if not fight_id in [
+            str(fight['id']) for fight in fightList
+        ]:
+            raise invalidFFLogsFightId(fight_id)
+
+    def get_fights(self, code: str,fight_type: str = "Kills") -> List[Dict]:
         """Fetches the high level fights from a log."""
         LOG.debug(f"Fetching fflogs reportData:report:fights via {code}")
-        return self.client.execute(
+        data = self.client.execute(
             query="""query reportData($code: String!, $kills: KillType!){
                   reportData
                   {
                     report(code: $code){
                       fights(killType: $kills){
+                        id
                         encounterID
                         startTime
                         endTime
@@ -154,14 +173,17 @@ class FFLogClientV2:
                 """,
             variables={
                 "code": code,
-                "kills": fight_type,
+                "kills": fight_type
             },
-        )["data"]["reportData"]["report"]["fights"]
+        )
+        self._check_if_valid_query(data)
+
+        return data["data"]["reportData"]["report"]["fights"]
 
     def get_abilities(self, code: str) -> List[Dict]:
         """Fetches the high level fights from a log."""
         LOG.debug(f"Fetching fflogs reportData:report:fights via {code}")
-        return self.client.execute(
+        data = self.client.execute(
             query="""query reportData($code: String!){
                   reportData
                   {
@@ -180,10 +202,13 @@ class FFLogClientV2:
             variables={
                 "code": code,
             },
-        )["data"]["reportData"]["report"]["masterData"]["abilities"]
+        )
+        self._check_if_valid_query(data)
+
+        return data["data"]["reportData"]["report"]["masterData"]["abilities"]
 
     def stream_fight_events(
-        self, code: str, fight_type: str = "Kills"
+        self, code: str, fight_type: str = "Kills", fight_id : str = ""
     ) -> Iterator:
         """Streams fight event data
 
@@ -192,7 +217,12 @@ class FFLogClientV2:
         """
         self._populate_caches(code=code)
 
-        for fight in self.get_fights(code=code, fight_type=fight_type):
+        fightList = self.get_fights(code=code,fight_type=fight_type)
+
+        if len(fight_id) != 0: self._check_valid_fight_id(fightList, fight_id)
+
+        for fight in fightList:
+            if fight_id != "" and str(fight["id"]) != fight_id : continue
             yield (
                 fight["name"],
                 self._process_fight_data(
@@ -308,7 +338,10 @@ class FFLogClientV2:
                         }
                         """,
             variables={"code": code},
-        )["data"]["reportData"]["report"]["masterData"]
+        )
+        self._check_if_valid_query(log_data)
+
+        log_data = log_data["data"]["reportData"]["report"]["masterData"]
 
         self.ability_id_cache[code] = {
             ability["gameID"]: ability for ability in log_data["abilities"]
@@ -411,6 +444,9 @@ class FFLogClientV2:
                 "kills": fight_type,
                 "limit": 10000,
             },
-        )["data"]["reportData"]["report"]["events"]
+        )
+
+        self._check_if_valid_query(raw_data)
+        raw_data = raw_data["data"]["reportData"]["report"]["events"]
 
         return raw_data["data"], raw_data["nextPageTimestamp"]

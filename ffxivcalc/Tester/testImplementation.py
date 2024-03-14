@@ -54,6 +54,8 @@ from ffxivcalc.Jobs.Melee.Reaper.Reaper_Spell import *
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import *
 
 import logging
+from ffxivcalc.Request.FFLogs_api import FFLogClientV2
+from ffxivcalc.Jobs import ActionEnum
 from random import randint, seed, sample
 
 main_logging = logging.getLogger("ffxivcalc")
@@ -19950,7 +19952,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     return timerEstimateTestSuite
 
 ######################################
-# TimeStamp, Dot/Buff timer estimate #
+#         Limit break test           #
 ######################################
 
 def generateLimitBreakTestSuite():
@@ -20933,6 +20935,52 @@ def generateLimitBreakTestSuite():
 
     return lbTestSuite
 
+######################################
+#            FFLogs test             #
+######################################
+
+# This will check that the created fight's player have the correct action set.
+# Will only check up to around 2:30 of the fight as this is around when the rotation should begin anew.
+
+
+def generateFFLogsTestSuite():
+
+    fflogTestSuite = testSuite("FFLogs test suite.")
+
+    def ffTest1TestFunction() -> None:
+        client = FFLogClientV2("RQwfx3vATFWGahJc", fight_id="8")
+
+        for fight in client:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        return [
+            ActionEnum.BlackMageActions.name_for_id(action.id) 
+            for action in ffLogFight.PlayerList[1].ActionSet
+        ]
+
+    def ffTest1ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        blmActionName = ['Sharpcast', 'FireIII', 'FireIV', 'Triplecast', 'FireIV', 'Amplifier', 'LeyLines', 'FireIV', 'Potion', 'FireIV', 'Sharpcast', 'Triplecast', 'Despair', 'Manafication', 'FireIV', 'Swiftcast', 'Despair',
+                         'Transpose','Paradox','Xenoglossy','ThunderIII','Transpose','FireIII','FireIV','FireIV','FireIV','FireIV','Despair','BlizzardIII','BlizzardIV','Paradox','Sharpcast','FireIII','FireIV','FireIV','ThunderIII','FireIV','Paradox','FireIV','FireIV','FireIV','Despair','Xenoglossy','Transpose',
+                         'Paradox','Sharpcast','ThunderIII','Swiftcast','Transpose','FireIII','FireIV','FireIV','FireIV','Despair','BlizzardIII','BlizzardIV','Paradox','Manaward','FireIII','FireIV', 'FireIV', 'ThunderIII', 'FireIV', 'Paradox', 'FireIV', 'Xenoglossy', 'Triplecast', 'FireIV', 'FireIV', 'Despair',
+                          'Transpose', 'Paradox', 'LucidDreaming', 'Xenoglossy', 'Amplifier', 'Xenoglossy', 'Sharpcast', 'ThunderIII', 'Transpose', 'Swiftcast', 'FireIII', 'Triplecast', 'FireIV', 'FireIV', 'LeyLines', 'FireIV', 'Despair', 'Xenoglossy', 'Manafication', 'FireIV', 'Despair', 'BlizzardIII', 'Paradox', 'BlizzardIV', 'FireIII']
+
+
+        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
+
+        return passed , testResults
+
+    ffTest1 = test("FFLogs test 1 - Blackmage test : (RQwfx3vATFWGahJc,8)", ffTest1TestFunction, ffTest1ValidationFunction)
+    fflogTestSuite.addTest(ffTest1)
+
+    return fflogTestSuite
+
+
 def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBUG) -> int:
                              # Silence the main_logging and
                              # unmute the test_logging
@@ -21171,4 +21219,5 @@ if __name__ == "__main__":
     main_logging.setLevel(level=logging.ERROR) 
     test_logging.setLevel(level=level)
     logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
-    executeTests()
+    generateFFLogsTestSuite().executeTestSuite()
+    #executeTests()

@@ -170,3 +170,23 @@ class playerIDNotFound(Exception):#Exception called if the player isn't found wi
 class emptyEventList(Exception):
     # Exception is called if trying to give an enemy an empty event list.
     pass
+
+class invalidFFLogsFightId(Exception):
+    # Exception is called when the users asks to retrieve a fight from a fight list with a wrong id.
+    def __init__(self, fight_id : str):
+
+        self.message = "The provided fight id is invalid. Provided id : " + fight_id
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'
+    
+class invalidFFLogsQuery(Exception):
+    # Exception is called when the users does an invalid query to fflogs
+    def __init__(self, message : str):
+
+        self.message = "Invalid FFLogs query. The query returned with this error message : " + message
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'

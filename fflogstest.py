@@ -20,19 +20,9 @@ __logger__.setLevel(level=level)
 
 for fight in it:
     df = get_fflog_events_dataframe(fight[1])
-    #df[df["type"] != 'combatantinfo'][['fight_time', 'type', 'source_name', 'ability_name']].to_csv('data.txt', sep='\t', index=False)
-    #input()
     view = ffxiv_sim_view(df)
-
-    #for name, data in df[df["type"] == "combatantinfo"]["auras"].items():
-    #    for li in data:
-    #        input(li)
-
-
     for fightView in view:
         data = fightView[1]
         fight = RestoreFightObject(data)
         fight.RequirementOn = False
         fight.SimulateFight(0.01, 500, True)
-        input("GO to next")
-        input()
