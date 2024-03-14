@@ -56,6 +56,9 @@ from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import *
 import logging
 from ffxivcalc.Request.FFLogs_api import FFLogClientV2
 from ffxivcalc.Jobs import ActionEnum
+from ffxivcalc.Request.FFLogs_api import FFLogClientV2, get_fflog_events_dataframe
+from ffxivcalc.Request.ffxivcalcViewTranslator import ffxiv_sim_view
+from ffxivcalc.helperCode.helper_backend import RestoreFightObject
 from random import randint, seed, sample
 
 main_logging = logging.getLogger("ffxivcalc")
@@ -20944,13 +20947,17 @@ def generateLimitBreakTestSuite():
 
 
 def generateFFLogsTestSuite():
-
+    
     fflogTestSuite = testSuite("FFLogs test suite.")
 
+    import os
+    os.environ["FFLOGS_CLIENT_ID"] = "9b8e6c18-39d6-4ae0-91c7-e9221e699769"
+    os.environ["FFLOGS_CLIENT_SECRET"] = "u0j8e1aIygCejB6HiBJFJcr0RB1MSIkVkLdgxDox"
     def ffTest1TestFunction() -> None:
-        client = FFLogClientV2("RQwfx3vATFWGahJc", fight_id="8")
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("RQwfx3vATFWGahJc", fight_id="8")
 
-        for fight in client:
+        for fight in iterator:
             df = get_fflog_events_dataframe(fight[1])
             view = ffxiv_sim_view(df)
             for fightView in view:
@@ -20959,13 +20966,13 @@ def generateFFLogsTestSuite():
 
         return [
             ActionEnum.BlackMageActions.name_for_id(action.id) 
-            for action in ffLogFight.PlayerList[1].ActionSet
+            for action in ffLogFight.PlayerList[6].ActionSet
         ]
 
     def ffTest1ValidationFunction(testResults) -> (bool, list):
         passed = True
 
-        blmActionName = ['Sharpcast', 'FireIII', 'FireIV', 'Triplecast', 'FireIV', 'Amplifier', 'LeyLines', 'FireIV', 'Potion', 'FireIV', 'Sharpcast', 'Triplecast', 'Despair', 'Manafication', 'FireIV', 'Swiftcast', 'Despair',
+        blmActionName = ['FireIII', 'FireIV', 'Triplecast', 'FireIV', 'Amplifier', 'LeyLines', 'FireIV', 'Potion', 'FireIV', 'Sharpcast', 'Triplecast', 'Despair', 'Manafication', 'FireIV', 'Swiftcast', 'Despair',
                          'Transpose','Paradox','Xenoglossy','ThunderIII','Transpose','FireIII','FireIV','FireIV','FireIV','FireIV','Despair','BlizzardIII','BlizzardIV','Paradox','Sharpcast','FireIII','FireIV','FireIV','ThunderIII','FireIV','Paradox','FireIV','FireIV','FireIV','Despair','Xenoglossy','Transpose',
                          'Paradox','Sharpcast','ThunderIII','Swiftcast','Transpose','FireIII','FireIV','FireIV','FireIV','Despair','BlizzardIII','BlizzardIV','Paradox','Manaward','FireIII','FireIV', 'FireIV', 'ThunderIII', 'FireIV', 'Paradox', 'FireIV', 'Xenoglossy', 'Triplecast', 'FireIV', 'FireIV', 'Despair',
                           'Transpose', 'Paradox', 'LucidDreaming', 'Xenoglossy', 'Amplifier', 'Xenoglossy', 'Sharpcast', 'ThunderIII', 'Transpose', 'Swiftcast', 'FireIII', 'Triplecast', 'FireIV', 'FireIV', 'LeyLines', 'FireIV', 'Despair', 'Xenoglossy', 'Manafication', 'FireIV', 'Despair', 'BlizzardIII', 'Paradox', 'BlizzardIV', 'FireIII']
