@@ -49,8 +49,6 @@ class MitBuff:
         else :
             self.TrueMit = False
 
-        
-
     def UpdateTimer(self, time : float):
         """Update the timer of the buff and removes itself if timer reaches 0.
 
@@ -1863,8 +1861,8 @@ class Player:
 
     def init_sage(self):
         #Stack
-        self.AddersgallStack = 0
-        self.AdderstingStack = 0
+        self.AddersgallStack = 3
+        self.AdderstingStack = 3
 
         #Buff
         self.Eukrasia = False

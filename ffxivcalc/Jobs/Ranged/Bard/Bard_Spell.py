@@ -83,7 +83,8 @@ def BloodLetterRequirement(Player, Spell):
         need = 15 - Player.BloodLetterCD #What reduction we need
         #input("maxblood : " + str(Player.MaximumBloodLetterReduction))
         if Player.MaximumBloodLetterReduction - need < -10 : 
-            input("Bard rotation might not be feasible")
+            pass
+            #input("Bard rotation might not be feasible")
             #return False, -1 #If it is bigger, than this rotation is impossible
 
 

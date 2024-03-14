@@ -166,3 +166,7 @@ class JobNotFound(Exception):#Exception called if a Job isn't found
 
 class playerIDNotFound(Exception):#Exception called if the player isn't found with the ID given by using the Fight.playerForID function.
     pass
+
+class emptyEventList(Exception):
+    # Exception is called if trying to give an enemy an empty event list.
+    pass

@@ -330,7 +330,6 @@ def RestoreFightObject(data : dict, name : str = ""):
             elif aura == "Mudra":
                 #Will also assume huton has been done
                 ApplyHuton(job_object, None) #Giving Huton
-                job_object.HutonTimer = 53 #Assuming some loss
                 #If mudra is detected, we will assume we have casted it for Suiton
                 job_object.CurrentRitual = [0,1,2]
             elif aura == "Eukrasia":
