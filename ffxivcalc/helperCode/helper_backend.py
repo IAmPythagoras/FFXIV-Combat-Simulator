@@ -312,8 +312,6 @@ def RestoreFightObject(data : dict, name : str = ""):
             job_object.auras += [aura] #Adding aura. Used for when restoring a fight using a saved file.
             
             if aura == "SharpCast":
-                #SharpCast for BLM.
-                job_object.SharpCast = True
                 job_object.ActionSet.append(SharpCast)
             elif aura == "Ley Lines":
                 job_object.ActionSet.append(LeyLines)

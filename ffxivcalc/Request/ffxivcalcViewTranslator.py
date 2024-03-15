@@ -276,6 +276,7 @@ def _get_ffxiv_calc_ability_name(
 
 AURA_MAPPINGS = {
     "Sharpcast": "SharpCast",
+    "Ley Lines": "Ley Lines",
     "Soulsow": "Soulsow",
     "Medicated": "Medicated",
     "Meikyo Shisui": "Meikyo Shisui",
@@ -283,7 +284,8 @@ AURA_MAPPINGS = {
     "Eukrasia": "Eukrasia",
     "Standard Finish": "Standard Step",
     "Closed Position": "ClosedPosition",
-    "Dance Partner": "Dance partner",
+    "Dance Partner": "Dance partner"
+
 }
 
 

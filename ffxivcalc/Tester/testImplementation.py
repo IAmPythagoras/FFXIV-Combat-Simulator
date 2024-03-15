@@ -20970,7 +20970,7 @@ def generateFFLogsTestSuite():
         ]
 
     def ffTest1ValidationFunction(testResults) -> (bool, list):
-        passed = testResults[1]
+        passed = testResults
 
         blmActionName = ['Sharpcast','FireIII', 'ThunderIII', 'FireIV', 'Triplecast', 'FireIV', 'Amplifier', 'LeyLines', 'FireIV', 'Potion', 'FireIV', 'Sharpcast', 'Triplecast', 'Despair', 'Manafont', 'FireIV', 'Swiftcast', 'Despair',
                          'Transpose','Paradox','Xenoglossy','ThunderIII','Transpose','FireIII','FireIV','FireIV','FireIV','Despair','BlizzardIII','BlizzardIV','Paradox','Sharpcast','FireIII','FireIV','FireIV','ThunderIII', 'Sharpcast', 'FireIV','Paradox','FireIV','FireIV','FireIV','Despair','Xenoglossy','Transpose',
@@ -21009,7 +21009,7 @@ def generateFFLogsTestSuite():
         ]
 
     def ffTest2ValidationFunction(testResults) -> (bool, list):
-        passed = testResults[1]
+        passed = testResults
 
         blmActionName = ['Sharpcast', 'LeyLines', 'FireIII','ThunderIII', 'FireIV', 'Triplecast','FireIV','Sharpcast','Amplifier','FireIV','Swiftcast','LucidDreaming','FireIV','Manaward','Addle','Despair','Manafont','Triplecast',
                          'FireIV','Despair','Transpose','Paradox','Xenoglossy','ThunderIII','Transpose','FireIII','Sharpcast','FireIV','FireIV','FireIV','Despair','BlizzardIII','BlizzardIV','Paradox','FireIII','FireIV','FireIV',
