@@ -14,7 +14,7 @@ from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import SongEffect
 from ffxivcalc.Jobs.Tank.DarkKnight.DarkKnight_Spell import BloodWeaponCheck, BloodWeaponEffect
 from ffxivcalc.Jobs.Tank.Warrior.Warrior_Spell import SurgingTempestEffect
 from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
-from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect
+from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, SharpCast, LeyLines
 
 from ffxivcalc.Fight import Fight
 from ffxivcalc.Enemy import Enemy
@@ -314,6 +314,9 @@ def RestoreFightObject(data : dict, name : str = ""):
             if aura == "SharpCast":
                 #SharpCast for BLM.
                 job_object.SharpCast = True
+                job_object.ActionSet.append(SharpCast)
+            elif aura == "Ley Lines":
+                job_object.ActionSet.append(LeyLines)
             elif aura == "Soulsow":
                 job_object.Soulsow = True
             elif aura == "Medicated":
@@ -382,6 +385,8 @@ def RestoreFightObject(data : dict, name : str = ""):
     for playerID in PlayerActionList:
         PlayerActionList[playerID]["job_object"].ActionSet = PlayerActionList[playerID]["actionObject"] #Linking player object and action list
         Event.AddPlayer([PlayerActionList[playerID]["job_object"]]) #Adding job_object to Event
+
+
 
 
     return Event

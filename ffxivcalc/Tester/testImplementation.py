@@ -20965,25 +20965,67 @@ def generateFFLogsTestSuite():
                 ffLogFight = RestoreFightObject(data)
 
         return [
-            ActionEnum.BlackMageActions.name_for_id(action.id) 
+            ActionEnum.name_for_id(action.id, ActionEnum.CasterActions, ActionEnum.BlackMageActions) 
             for action in ffLogFight.PlayerList[6].ActionSet
         ]
 
     def ffTest1ValidationFunction(testResults) -> (bool, list):
-        passed = True
+        passed = testResults[1]
 
-        blmActionName = ['FireIII', 'FireIV', 'Triplecast', 'FireIV', 'Amplifier', 'LeyLines', 'FireIV', 'Potion', 'FireIV', 'Sharpcast', 'Triplecast', 'Despair', 'Manafication', 'FireIV', 'Swiftcast', 'Despair',
-                         'Transpose','Paradox','Xenoglossy','ThunderIII','Transpose','FireIII','FireIV','FireIV','FireIV','FireIV','Despair','BlizzardIII','BlizzardIV','Paradox','Sharpcast','FireIII','FireIV','FireIV','ThunderIII','FireIV','Paradox','FireIV','FireIV','FireIV','Despair','Xenoglossy','Transpose',
-                         'Paradox','Sharpcast','ThunderIII','Swiftcast','Transpose','FireIII','FireIV','FireIV','FireIV','Despair','BlizzardIII','BlizzardIV','Paradox','Manaward','FireIII','FireIV', 'FireIV', 'ThunderIII', 'FireIV', 'Paradox', 'FireIV', 'Xenoglossy', 'Triplecast', 'FireIV', 'FireIV', 'Despair',
-                          'Transpose', 'Paradox', 'LucidDreaming', 'Xenoglossy', 'Amplifier', 'Xenoglossy', 'Sharpcast', 'ThunderIII', 'Transpose', 'Swiftcast', 'FireIII', 'Triplecast', 'FireIV', 'FireIV', 'LeyLines', 'FireIV', 'Despair', 'Xenoglossy', 'Manafication', 'FireIV', 'Despair', 'BlizzardIII', 'Paradox', 'BlizzardIV', 'FireIII']
+        blmActionName = ['Sharpcast','FireIII', 'ThunderIII', 'FireIV', 'Triplecast', 'FireIV', 'Amplifier', 'LeyLines', 'FireIV', 'Potion', 'FireIV', 'Sharpcast', 'Triplecast', 'Despair', 'Manafont', 'FireIV', 'Swiftcast', 'Despair',
+                         'Transpose','Paradox','Xenoglossy','ThunderIII','Transpose','FireIII','FireIV','FireIV','FireIV','Despair','BlizzardIII','BlizzardIV','Paradox','Sharpcast','FireIII','FireIV','FireIV','ThunderIII', 'Sharpcast', 'FireIV','Paradox','FireIV','FireIV','FireIV','Despair','Xenoglossy','Transpose',
+                         'Paradox','Sharpcast','ThunderIII','Swiftcast','Transpose','FireIII','FireIV','FireIV','FireIV','Despair','BlizzardIII','BlizzardIV','Paradox','Manaward','FireIII','Sharpcast', 'FireIV', 'FireIV', 'ThunderIII', 'FireIV', 'Paradox', 'FireIV', 'Xenoglossy', 'Triplecast', 'FireIV', 'FireIV', 'Despair',
+                          'Transpose', 'Paradox', 'LucidDreaming', 'Xenoglossy', 'Amplifier', 'Xenoglossy','Surecast', 'Sharpcast', 'ThunderIII', 'Transpose', 'Swiftcast', 'FireIII', 'Triplecast', 'FireIV', 'FireIV', 'LeyLines', 'FireIV', 'Despair', 'Xenoglossy', 'Manafont', 'FireIV', 'Despair', 'BlizzardIII', 'Paradox', 'BlizzardIV', 'FireIII']
+        failedTest = []
+        for i in range(0,len(blmActionName)): 
+            if blmActionName[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, blmActionName[i], testResults[i]))
 
-
-        for i in range(0,len(testResults),2): passed = passed and isClose(testResults[i],testResults[i+1],errorAmount)
-
-        return passed , testResults
+        return passed , failedTest
 
     ffTest1 = test("FFLogs test 1 - Blackmage test : (RQwfx3vATFWGahJc,8)", ffTest1TestFunction, ffTest1ValidationFunction)
-    fflogTestSuite.addTest(ffTest1)
+    #fflogTestSuite.addTest(ffTest1)
+
+    def ffTest2TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("bzfjTDV7gBGx1Y3m", fight_id="10")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.BlackMage
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.CasterActions, ActionEnum.BlackMageActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+        ]
+
+    def ffTest2ValidationFunction(testResults) -> (bool, list):
+        passed = testResults[1]
+
+        blmActionName = ['Sharpcast', 'LeyLines', 'FireIII','ThunderIII', 'FireIV', 'Triplecast','FireIV','Sharpcast','Amplifier','FireIV','Swiftcast','LucidDreaming','FireIV','Manaward','Addle','Despair','Manafont','Triplecast',
+                         'FireIV','Despair','Transpose','Paradox','Xenoglossy','ThunderIII','Transpose','FireIII','Sharpcast','FireIV','FireIV','FireIV','Despair','BlizzardIII','BlizzardIV','Paradox','FireIII','FireIV','FireIV',
+                         'ThunderIII','Sharpcast','FireIV','Paradox','FireIV','FireIV','FireIV','Xenoglossy','Swiftcast','Despair','Transpose','Paradox','Sharpcast','ThunderIII','Transpose','FireIII','FireIV','FireIV','Triplecast','FireIV','FireIV','Despair','BlizzardIII',
+                         'BlizzardIV','Paradox','Sharpcast','FireIII','FireIV','ThunderIII','Potion','FireIV','FireIV','Paradox','Xenoglossy','LeyLines','FireIV','FireIV','FireIV','Despair','Xenoglossy','Amplifier','LucidDreaming','Xenoglossy',
+                         'Manafont','Sharpcast','FireIV','Xenoglossy','Swiftcast','Despair','Transpose','ThunderIII','Paradox', 'Triplecast', 'Transpose', 'FireIII', 'FireIV', 'FireIV', 'FireIV', 'Despair']
+        failedTest = []
+        for i in range(0,len(blmActionName)): 
+            if blmActionName[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, blmActionName[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest2 = test("FFLogs test 2 - Blackmage test : (bzfjTDV7gBGx1Y3m,10)", ffTest2TestFunction, ffTest2ValidationFunction)
+    fflogTestSuite.addTest(ffTest2)
 
     return fflogTestSuite
 

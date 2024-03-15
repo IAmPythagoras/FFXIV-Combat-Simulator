@@ -18,7 +18,7 @@ class ActionEnum(IntEnum):
         log_str = (
             "Unable to match ID : " + str(id) + " to an ability name in job : " + cls.__name__
         )
-        action_logging.warning(log_str)
+        action_logging.error(log_str)
         return 'Unknown'
 
     @classmethod
@@ -29,6 +29,7 @@ class ActionEnum(IntEnum):
         log_str = (
             "Unable to match name : " + name + " to an ability id in class : " + cls.__name__
         )
+        action_logging.error(log_str)
         return -1 # Evaluated as Unknown
 
 # Caster
