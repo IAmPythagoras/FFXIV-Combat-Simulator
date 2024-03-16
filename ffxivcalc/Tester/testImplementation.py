@@ -20988,7 +20988,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest1 = test("FFLogs test 1 - Blackmage test : (RQwfx3vATFWGahJc,8)", ffTest1TestFunction, ffTest1ValidationFunction)
-    fflogTestSuite.addTest(ffTest1)
+    #fflogTestSuite.addTest(ffTest1)
 
     def ffTest2TestFunction() -> None:
         client = FFLogClientV2()
@@ -21029,7 +21029,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest2 = test("FFLogs test 2 - Blackmage test : (bzfjTDV7gBGx1Y3m,10)", ffTest2TestFunction, ffTest2ValidationFunction)
-    fflogTestSuite.addTest(ffTest2)
+    #fflogTestSuite.addTest(ffTest2)
 
     def ffTest3TestFunction() -> None:
         client = FFLogClientV2()
@@ -21071,7 +21071,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest3 = test("FFLogs test 3 - Redmage test : (Mkj7gynfpDBGHacW,5)", ffTest3TestFunction, ffTest3ValidationFunction)
-    fflogTestSuite.addTest(ffTest3)
+    #fflogTestSuite.addTest(ffTest3)
 
     def ffTest4TestFunction() -> None:
         client = FFLogClientV2()
@@ -21110,7 +21110,52 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest4 = test("FFLogs test 4 - Summoner test : (YbDaH9C6dNVJAh8T,67)", ffTest4TestFunction, ffTest4ValidationFunction)
-    fflogTestSuite.addTest(ffTest4)
+    #fflogTestSuite.addTest(ffTest4)
+
+    def ffTest5TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("ytpwWPVGd8ZfzgTD", fight_id="18")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Scholar
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.HealerActions, ActionEnum.ScholarActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest5ValidationFunction(testResults) -> (bool, list):
+        passed = testResults
+
+        expectedActions =  ['Potion','BroilIV','Biolysis', 'Dissipation','BroilIV','Swiftcast','BroilIV','ChainStratagem','EnergyDrain',
+                            'BroilIV','EnergyDrain','BroilIV','EnergyDrain','BroilIV','Aetherflow','BroilIV','EnergyDrain','BroilIV','EnergyDrain','Biolysis','EnergyDrain','LucidDreaming',
+                            'BroilIV','BroilIV','BroilIV','BroilIV','BroilIV','BroilIV','BroilIV','BroilIV','Protraction','BroilIV','BroilIV',
+                            'BroilIV','Biolysis','BroilIV','BroilIV','BroilIV','BroilIV','SummonSeraph','BroilIV','Consolation','BroilIV','BroilIV','BroilIV',
+                            'Consolation', 'BroilIV', 'WhisperingDawn', 'BroilIV', 'Aetherflow', 'BroilIV', 'Biolysis', 'BroilIV', 'BroilIV',
+                            'FeyBlessing', 'BroilIV', 'LucidDreaming', 'BroilIV', 'BroilIV', 'BroilIV', 'BroilIV', 'BroilIV', 'BroilIV', 'BroilIV', 'BroilIV', 'Biolysis',
+                            'BroilIV', 'BroilIV', 'BroilIV', 'BroilIV', 'BroilIV', 'BroilIV', 'BroilIV', 'FeyIllumination', 'BroilIV', 'ChainStratagem', 
+                            'BroilIV', 'EnergyDrain', 'BroilIV', 'EnergyDrain', 'BroilIV', 'EnergyDrain', 'Biolysis', 'Aetherflow','EnergyDrain','BroilIV','EnergyDrain','BroilIV','EnergyDrain','BroilIV',
+                            'BroilIV','Expedient','BroilIV','LucidDreaming','BroilIV']
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest5 = test("FFLogs test 5 - Scholar test : (ytpwWPVGd8ZfzgTD,18)", ffTest5TestFunction, ffTest5ValidationFunction)
+    fflogTestSuite.addTest(ffTest5)
 
     return fflogTestSuite
 

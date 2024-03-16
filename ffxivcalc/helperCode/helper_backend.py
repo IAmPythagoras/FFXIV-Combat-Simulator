@@ -19,7 +19,7 @@ from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, Sha
 from ffxivcalc.Fight import Fight
 from ffxivcalc.Enemy import Enemy
 from ffxivcalc.Request.FFLogsAPIRequest import getAbilityList, lookup_abilityID
-from ffxivcalc.Jobs.Base_Spell import PrepullPotion, WaitAbility
+from ffxivcalc.Jobs.Base_Spell import Potion, WaitAbility
 from ffxivcalc.Jobs.Player import Player
 from ffxivcalc.Jobs.PlayerEnum import *
 
@@ -318,9 +318,7 @@ def RestoreFightObject(data : dict, name : str = ""):
             elif aura == "Soulsow":
                 job_object.Soulsow = True
             elif aura == "Medicated":
-                #Potion
-                job_object.EffectCDList.append(PrepullPotion) #Adding this effect that will automatically apply the potion
-                #on the first go through of the sim
+                job_object.ActionSet.append(Potion)
             elif aura == "Meikyo Shisui":
                 job_object.EffectCDList.append(MeikyoStackCheck)
                 job_object.MeikyoCD = 46
