@@ -362,7 +362,10 @@ def RestoreFightObject(data : dict, name : str = ""):
         player_obj = PlayerActionList[playerID]["job_object"] # Getting job object so we can have access to the ActionEnum of the class
 
         for action in PlayerActionList[playerID]["actionList"]:
-            actionID = id_for_name(action["actionName"], player_obj.ClassAction, player_obj.JobAction) # Getting id from name
+
+            actionID = (action["abilityGameID"] 
+                       if 'abilityGameID' in action.keys() else 
+                       id_for_name(action["actionName"], player_obj.ClassAction, player_obj.JobAction)) # Getting id from name
 
             if int(actionID) == 212 : 
                 #WaitAbility. WaitAbility has a special field where the waited time is specified
