@@ -253,6 +253,9 @@ def _get_ffxiv_calc_ability_name(
         job_cls=job_enum,
     )
 
+    if name_from_id == "SummonPhoenix" or name_from_id == "SummonBahamut":
+        pass
+
     if name_from_id != "Unknown":
         return name_from_id
 

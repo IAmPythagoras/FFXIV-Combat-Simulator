@@ -130,6 +130,7 @@ class SummonerActions(ActionEnum):
     FountainOfFire = 16514
     BrandOfPurgatory = 16515
     EnkindlePhoenix = 16516
+    Rekindle = 321321
     Ifrit = 25838
     Ruby = 25823
     RubyCatastrophe = 25832

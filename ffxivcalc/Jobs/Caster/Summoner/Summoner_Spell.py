@@ -8,6 +8,9 @@ Lock = 0
 
 #Requirement
 
+def RekindleRequirement(Player, Spell):
+    return True, -1
+
 def Ruin4Requirement(Player, Spell):
     return Player.FurtherRuin, -1
 
@@ -174,6 +177,9 @@ def ApplySearingLight(Player, Enemy):
     Enemy.buffList.append(SearingLightbuff)
     Player.EffectCDList.append(SearingLightCheck)
 
+def ApplyRekindle(Player, Enemy):
+    pass
+
                                      # Only doing this if SavePreBakedAction is true
     #if Player.CurrentFight.SavePreBakedAction:
     #    fight = Player.CurrentFight
@@ -262,6 +268,7 @@ EnkindleSummon = SummonerSpell(-17, False, 0, 0, 1300, 0, empty, []) #Enkindle d
 #oGCD
 Enkindle = SummonerSpell(7429, False, 0, 0, 0, 0, ApplyEnkindle, [EnkindleRequirement]) #Smaller lock since executed by pet, might have to reconsider... >.>
 Deathflare = SummonerSpell(3582, False, Lock, 0, 500, 0, ApplyDeathflare, [DeathflareRequirement])
+Rekindle = SummonerSpell(321321, False, 0, 0 ,0, 0, ApplyRekindle, [RekindleRequirement])
 EnergyDrainSMN = SummonerSpell(16508, False, Lock, 0, 200, 0, ApplyEnergyDrain, [EnergyDrainRequirement])
 Fester = SummonerSpell(181, False, Lock, 0, 340, 0, ApplyFester, [FesterRequirement])
 PainFlare = SummonerSpell(3578, False, 0, 0, 150, 0, ApplyFester, [FesterRequirement]) #AOE version of Fester
@@ -287,6 +294,7 @@ SummonerAbility = {
 16514 : FountainOfFire, #Fountain Of Fire
 16515 : BrandOfPurgatory, #AOE of FoF
 16516 : Enkindle, #Phoenix Enkindle
+321321 : Rekindle,
 #16519 : ScarletFlame, #Pheonix AA
 25838 : Ifrit,
 25823 : Ruby,

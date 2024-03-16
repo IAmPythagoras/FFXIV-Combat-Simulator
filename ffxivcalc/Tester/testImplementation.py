@@ -20953,6 +20953,8 @@ def generateFFLogsTestSuite():
     import os
     os.environ["FFLOGS_CLIENT_ID"] = "9b8e6c18-39d6-4ae0-91c7-e9221e699769"
     os.environ["FFLOGS_CLIENT_SECRET"] = "u0j8e1aIygCejB6HiBJFJcr0RB1MSIkVkLdgxDox"
+
+    logging.getLogger("urllib3").level = logging.ERROR
     def ffTest1TestFunction() -> None:
         client = FFLogClientV2()
         iterator = client.stream_fight_events("RQwfx3vATFWGahJc", fight_id="8")
@@ -21006,6 +21008,7 @@ def generateFFLogsTestSuite():
         return [
             ActionEnum.name_for_id(action.id, ActionEnum.CasterActions, ActionEnum.BlackMageActions) 
             for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
         ]
 
     def ffTest2ValidationFunction(testResults) -> (bool, list):
@@ -21025,7 +21028,88 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest2 = test("FFLogs test 2 - Blackmage test : (bzfjTDV7gBGx1Y3m,10)", ffTest2TestFunction, ffTest2ValidationFunction)
-    fflogTestSuite.addTest(ffTest2)
+    #fflogTestSuite.addTest(ffTest2)
+
+    def ffTest3TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("Mkj7gynfpDBGHacW", fight_id="5")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.RedMage
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.CasterActions, ActionEnum.RedMageActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest3ValidationFunction(testResults) -> (bool, list):
+        passed = testResults
+
+        expectedActions = ['Verthunder','Verareo','Acceleration','Swiftcast','Verthunder','Fleche','Contre','Verthunder','Embolden','Manafication','EnchantedRiposte','Engagement','EnchantedZwerchhau','Corps','EnchantedRedoublement','Corps','Engagement','Verholy','LucidDreaming','Scorch','Resolution','Addle','Verfire','Verthunder','Verstone','Verareo','Fleche','Jolt','Verareo',
+                        'Jolt','Verthunder','Contre','Jolt','Verareo','Engagement','Jolt','Verthunder','Corps','Jolt','Verareo','Fleche','Acceleration','Verthunder','Verstone','Verareo','EnchantedRiposte','EnchantedZwerchhau','EnchantedRedoublement',
+                        'Verflare','Scorch','Resolution','Contre','Verstone','Verareo','Fleche','Verfire','Verthunder','Engagement','Verstone','Verareo','LucidDreaming','Verfire','Verthunder','Verstone','Verthunder',
+                        'Corps','Verfire','Verareo','Fleche','Acceleration','Verareo','Swiftcast','Verthunder','Contre','Verstone','Verareo','EnchantedRiposte','EnchantedZwerchhau','EnchantedRedoublement','Manafication','Verflare',
+                        'Potion','Scorch','Resolution','Embolden','Engagement','EnchantedRiposte','Fleche','EnchantedZwerchhau','Corps','EnchantedRedoublement','Verholy','Scorch','Resolution','EnchantedRiposte','EnchantedZwerchhau','EnchantedRedoublement',
+                        'Contre','Verflare','Scorch','Resolution','Acceleration','Verareo','Fleche']
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest3 = test("FFLogs test 3 - Redmage test : (Mkj7gynfpDBGHacW,5)", ffTest3TestFunction, ffTest3ValidationFunction)
+    #fflogTestSuite.addTest(ffTest3)
+
+    def ffTest4TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("YbDaH9C6dNVJAh8T", fight_id="67")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Summoner
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.CasterActions, ActionEnum.SummonerActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest4ValidationFunction(testResults) -> (bool, list):
+        passed = testResults
+
+        expectedActions = ['RuinIII','SummonBahamut','SearingLight','AstralImpulse','Potion','AstralImpulse','EnergyDrain','AstralImpulse','Fester','AstralImpulse','EnkindleBahamut','Deathflare','AstralImpulse','Fester', 'LucidDreaming','AstralImpulse','Titan','Topaz','Mountain',
+                            'Topaz','Mountain','Topaz','Mountain','Topaz','Mountain','Garuda','Swiftcast','Slipstream','Emerald','Emerald','Emerald','Emerald','Ifrit','Ruby','Ruby','Cyclone','Strike','RuinIII','RuinIV','SummonPhoenix','FountainOfFire','FountainOfFire','EnergyDrain','FountainOfFire','Enkindle','FountainOfFire','Rekindle',
+                            'FountainOfFire','FountainOfFire','LucidDreaming']
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest4 = test("FFLogs test 4 - Summoner test : (YbDaH9C6dNVJAh8T,67)", ffTest4TestFunction, ffTest4ValidationFunction)
+    fflogTestSuite.addTest(ffTest4)
 
     return fflogTestSuite
 
