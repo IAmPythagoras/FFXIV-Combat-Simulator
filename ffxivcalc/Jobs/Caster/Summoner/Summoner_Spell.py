@@ -277,6 +277,7 @@ PainFlare = SummonerSpell(3578, False, 0, 0, 150, 0, ApplyFester, [FesterRequire
 SearingLight = SummonerSpell(25801, False, Lock, 0, 0, 0, ApplySearingLight, [SearingLightRequirement])
 PhysickSMN = SummonerSpell(16230, True, 1.5, 2.5, 0, 0, empty, [ManaRequirement])
 Resurrection = SummonerSpell(173, True, 8, 2.5, 0, 2400, empty, [ManaRequirement])
+RadiantAegis = SummonerSpell(25799, True, 0, 0, 0, 0, empty, [])
 #buff
 SearingLightbuff = buff(1.03,name="SL")
 
@@ -315,7 +316,7 @@ SummonerAbility = {
 16510 : EnergyDrainSMN, #Energy Syphon
 181 : Fester,
 3578 : PainFlare,
-#25799 : RadiantAegis,
+25799 : RadiantAegis,
 16230 : PhysickSMN,
 173 : Resurrection
 }

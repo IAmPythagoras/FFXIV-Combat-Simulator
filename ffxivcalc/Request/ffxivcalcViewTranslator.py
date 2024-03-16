@@ -148,7 +148,8 @@ _IGNORE_IDS = {
     7, # Autos
     8, # Autos
     33218, # Techbuff event
-    27524 # Pneuma heal
+    27524, # Pneuma heal
+    1000048 # Well fed
     }
 
 _WAIT_OGCD = {
@@ -236,12 +237,18 @@ def safe_check_ability_name(
         }
     )
 
+_NAME_IGNORE = [
+    "Well fed"
+]
+
 
 @functools.cache
 def _get_ffxiv_calc_ability_name(
     ability_id: int, ability_name: str, job_name: str
 ) -> Union[Dict[str, str], str]:
     """Inner helper to handle all the edge-cases."""
+    if ability_name in _NAME_IGNORE:
+        return None
     if ability_name in _NAME_REPLACEMENTS:
         return _NAME_REPLACEMENTS[ability_name]
     if ability_id in _ID_REPLACEMENTS:
@@ -252,9 +259,6 @@ def _get_ffxiv_calc_ability_name(
         cls=cls_enum,
         job_cls=job_enum,
     )
-
-    if name_from_id == "SummonPhoenix" or name_from_id == "SummonBahamut":
-        pass
 
     if name_from_id != "Unknown":
         return name_from_id

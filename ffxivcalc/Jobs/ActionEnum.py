@@ -151,6 +151,7 @@ class SummonerActions(ActionEnum):
     Physick = 16230
     Resurrection = 173
     Summon = 7427
+    RadiantAegis = 25799
 
     # Pet action
     SummonEnkindle = -17
