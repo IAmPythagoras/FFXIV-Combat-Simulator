@@ -20953,6 +20953,7 @@ def generateFFLogsTestSuite():
     import os
     os.environ["FFLOGS_CLIENT_ID"] = "9b8e6c18-39d6-4ae0-91c7-e9221e699769"
     os.environ["FFLOGS_CLIENT_SECRET"] = "u0j8e1aIygCejB6HiBJFJcr0RB1MSIkVkLdgxDox"
+    # TODO Check new name for enkindle/summon phoenix doesn't fuck with anything in app (icon name)
 
     logging.getLogger("urllib3").level = logging.ERROR
     def ffTest1TestFunction() -> None:
@@ -20987,7 +20988,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest1 = test("FFLogs test 1 - Blackmage test : (RQwfx3vATFWGahJc,8)", ffTest1TestFunction, ffTest1ValidationFunction)
-    #fflogTestSuite.addTest(ffTest1)
+    fflogTestSuite.addTest(ffTest1)
 
     def ffTest2TestFunction() -> None:
         client = FFLogClientV2()
@@ -21028,7 +21029,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest2 = test("FFLogs test 2 - Blackmage test : (bzfjTDV7gBGx1Y3m,10)", ffTest2TestFunction, ffTest2ValidationFunction)
-    #fflogTestSuite.addTest(ffTest2)
+    fflogTestSuite.addTest(ffTest2)
 
     def ffTest3TestFunction() -> None:
         client = FFLogClientV2()
@@ -21070,7 +21071,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest3 = test("FFLogs test 3 - Redmage test : (Mkj7gynfpDBGHacW,5)", ffTest3TestFunction, ffTest3ValidationFunction)
-    #fflogTestSuite.addTest(ffTest3)
+    fflogTestSuite.addTest(ffTest3)
 
     def ffTest4TestFunction() -> None:
         client = FFLogClientV2()
@@ -21098,7 +21099,7 @@ def generateFFLogsTestSuite():
         passed = testResults
 
         expectedActions = ['RuinIII','SummonBahamut','SearingLight','AstralImpulse','Potion','AstralImpulse','EnergyDrain','AstralImpulse','Fester','AstralImpulse','EnkindleBahamut','Deathflare','AstralImpulse','Fester', 'LucidDreaming','AstralImpulse','Titan','Topaz','Mountain',
-                            'Topaz','Mountain','Topaz','Mountain','Topaz','Mountain','Garuda','Swiftcast','Slipstream','Emerald','Emerald','Emerald','Emerald','Ifrit','Ruby','Ruby','Cyclone','Strike','RuinIII','RuinIV','SummonPhoenix','FountainOfFire','FountainOfFire','EnergyDrain','FountainOfFire','Enkindle','FountainOfFire','Rekindle',
+                            'Topaz','Mountain','Topaz','Mountain','Topaz','Mountain','Garuda','Swiftcast','Slipstream','Emerald','Emerald','Emerald','Emerald','Ifrit','Ruby','Ruby','Cyclone','Strike','RuinIII','RuinIV','SummonPhoenix','FountainOfFire','FountainOfFire','EnergyDrain','FountainOfFire','EnkindlePhoenix','FountainOfFire','Rekindle',
                             'FountainOfFire','FountainOfFire','LucidDreaming']
         failedTest = []
         for i in range(0,len(expectedActions)): 
