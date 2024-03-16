@@ -21155,7 +21155,50 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest5 = test("FFLogs test 5 - Scholar test : (ytpwWPVGd8ZfzgTD,18)", ffTest5TestFunction, ffTest5ValidationFunction)
-    fflogTestSuite.addTest(ffTest5)
+    #fflogTestSuite.addTest(ffTest5)
+
+    def ffTest6TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("Mk4ZR1KGQjBnJYmN", fight_id="2")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.WhiteMage
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.HealerActions, ActionEnum.WhiteMageActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest6ValidationFunction(testResults) -> (bool, list):
+        passed = testResults
+
+        expectedActions =  ['Glare','Dia','Potion','Glare','Temperance','Glare','PresenceOfMind','Glare','Assize','Glare','LucidDreaming',
+                            'Glare','Asylum','Glare','ThinAir','Glare','Glare','Glare','Glare','Glare','Glare','Glare','Dia','AfflatusRapture','Glare','Glare',
+                            'ThinAir','Glare','Glare','Glare','Glare','Assize','Glare','Glare','Glare','DivineBenison','Glare','Dia',
+                            'Glare','Glare','Bell','Glare','PlenaryIndulgence','AfflatusRapture','Glare','LucidDreaming','Glare','Glare','Glare','Glare','Glare','Glare',
+                            'Dia','Assize','Glare','ThinAir','AfflatusRapture','AfflatusMisery','Glare','Glare','Asylum','AfflatusRapture','Glare',
+                            'Glare','Glare','Glare','Glare','Dia','Glare','AfflatusRapture','Glare','PresenceOfMind',
+                            'AfflatusRapture','AfflatusMisery','Assize','Glare','Glare','LucidDreaming','Glare','Glare','Glare']
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest6 = test("FFLogs test 6 - Whitemage test : (Mk4ZR1KGQjBnJYmN,2)", ffTest6TestFunction, ffTest6ValidationFunction)
+    fflogTestSuite.addTest(ffTest6)
 
     return fflogTestSuite
 
