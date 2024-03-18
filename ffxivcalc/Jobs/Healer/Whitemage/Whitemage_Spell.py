@@ -169,7 +169,7 @@ PresenceOfMind = WhitemageSpell(136, False, 0, 0, 0, 0, ApplyPresenceOfMind, [Pr
 Bell = WhitemageSpell(25862, False, 0, 0, 0, 0, ApplyBell, [BellRequirement]) #Litturgy of the bell
 Aquaveil = WhitemageSpell(25861, False, 0, 0, 0, 0, ApplyAquaveil, [AquaveilRequirement])
 Temperance = WhitemageSpell(16536, False, 0, 0, 0, 0, ApplyTemperance, [TemperanceRequirement])
-PlenaryIndulgence = WhitemageSpell(19, False, 0, 0, 0, 0, ApplyPlenaryIndulgence, [PlenaryIndulgenceRequirement])
+PlenaryIndulgence = WhitemageSpell(7433, False, 0, 0, 0, 0, ApplyPlenaryIndulgence, [PlenaryIndulgenceRequirement])
 DivineBenison =WhitemageSpell(7432, False, 0, 0, 0, 0, ApplyDivineBenison, [DivineBenisonRequirement])
 Tetragrammaton = WhitemageSpell(3570, False, 0, 0, 0, 0, ApplyTetragrammaton, [TetragrammatonRequirement])
 Asylum = WhitemageSpell(3569, False, 0, 0, 0, 0, ApplyAsylum, [AsylumRequirement])
@@ -198,6 +198,6 @@ WhiteMageAbility = {
 16536 : Temperance,
 25861 : Aquaveil,
 25862 : Bell,
-19 : PlenaryIndulgence,
+7433 : PlenaryIndulgence,
 125 : Raise
 }

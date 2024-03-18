@@ -321,7 +321,7 @@ class WhiteMageActions(ActionEnum):
     Temperance = 16536
     Aquaveil = 25861
     Bell = 25862
-    PlenaryIndulgence = 19
+    PlenaryIndulgence = 7433
     Raise = 125
 
     # DOT

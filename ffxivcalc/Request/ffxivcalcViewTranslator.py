@@ -52,6 +52,17 @@ from ffxivcalc.Request import prepull
 
 LOG = logging.getLogger(__name__)
 
+_KEEP_TARGET_ACTION = [
+    "Oblation",
+    "TheBlackestNight",
+    "HeartOfCorundum",
+    "Bole",
+    "Arrow",
+    "Ewer",
+    "Spear",
+    "Spire",
+    "Balance"
+]
 
 def ffxiv_sim_view(event_data: pd.DataFrame) -> Iterator:
     casts_by_players_view = event_data[
@@ -94,6 +105,12 @@ def ffxiv_sim_view(event_data: pd.DataFrame) -> Iterator:
             job_name=job_name,
             player_ids=player_ids,
         )
+
+        # Removing target : 0
+        for event in actions:
+            if not (event['actionName'] in _KEEP_TARGET_ACTION) and (event['targetID'] == 0 or event['targetID'] == player_id):
+                del event['targetID']
+
         # TODO: prepull_casts
         auras = build_aura_list(
             player_auras=prepull_auras[

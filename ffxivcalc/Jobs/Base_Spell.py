@@ -296,6 +296,9 @@ class Spell:
         self.TargetHeal = TargetHeal
         self.conditionalAction = False
 
+    def __repr__(self):
+        return f'Spell id : {self.id} - Class : {self.__class__}'
+
     def Cast(self, player, Enemy):
         """
         This function is called by the simulator when an action is ready to begin its casting. It checks for the requirement and apply all effect
