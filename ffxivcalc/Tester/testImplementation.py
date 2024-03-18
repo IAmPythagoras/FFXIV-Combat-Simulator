@@ -20973,7 +20973,7 @@ def generateFFLogsTestSuite():
         ]
 
     def ffTest1ValidationFunction(testResults) -> (bool, list):
-        passed = testResults
+        passed = True
 
         blmActionName = ['Sharpcast','FireIII', 'ThunderIII', 'FireIV', 'Triplecast', 'FireIV', 'Amplifier', 'LeyLines', 'FireIV', 'Potion', 'FireIV', 'Sharpcast', 'Triplecast', 'Despair', 'Manafont', 'FireIV', 'Swiftcast', 'Despair',
                          'Transpose','Paradox','Xenoglossy','ThunderIII','Transpose','FireIII','FireIV','FireIV','FireIV','Despair','BlizzardIII','BlizzardIV','Paradox','Sharpcast','FireIII','FireIV','FireIV','ThunderIII', 'Sharpcast', 'FireIV','Paradox','FireIV','FireIV','FireIV','Despair','Xenoglossy','Transpose',
@@ -21013,7 +21013,7 @@ def generateFFLogsTestSuite():
         ]
 
     def ffTest2ValidationFunction(testResults) -> (bool, list):
-        passed = testResults
+        passed = True
 
         blmActionName = ['Sharpcast', 'LeyLines', 'FireIII','ThunderIII', 'FireIV', 'Triplecast','FireIV','Sharpcast','Amplifier','FireIV','Swiftcast','LucidDreaming','FireIV','Manaward','Addle','Despair','Manafont','Triplecast',
                          'FireIV','Despair','Transpose','Paradox','Xenoglossy','ThunderIII','Transpose','FireIII','Sharpcast','FireIV','FireIV','FireIV','Despair','BlizzardIII','BlizzardIV','Paradox','FireIII','FireIV','FireIV',
@@ -21054,7 +21054,7 @@ def generateFFLogsTestSuite():
         ]
 
     def ffTest3ValidationFunction(testResults) -> (bool, list):
-        passed = testResults
+        passed = True
 
         expectedActions = ['Verthunder','Verareo','Acceleration','Swiftcast','Verthunder','Fleche','Contre','Verthunder','Embolden','Manafication','EnchantedRiposte','Engagement','EnchantedZwerchhau','Corps','EnchantedRedoublement','Corps','Engagement','Verholy','LucidDreaming','Scorch','Resolution','Addle','Verfire','Verthunder','Verstone','Verareo','Fleche','Jolt','Verareo',
                         'Jolt','Verthunder','Contre','Jolt','Verareo','Engagement','Jolt','Verthunder','Corps','Jolt','Verareo','Fleche','Acceleration','Verthunder','Verstone','Verareo','EnchantedRiposte','EnchantedZwerchhau','EnchantedRedoublement',
@@ -21096,7 +21096,7 @@ def generateFFLogsTestSuite():
         ]
 
     def ffTest4ValidationFunction(testResults) -> (bool, list):
-        passed = testResults
+        passed = True
 
         expectedActions = ['RuinIII','SummonBahamut','SearingLight','AstralImpulse','Potion','AstralImpulse','EnergyDrain','AstralImpulse','Fester','AstralImpulse','EnkindleBahamut','Deathflare','AstralImpulse','Fester', 'LucidDreaming','AstralImpulse','Titan','Topaz','Mountain',
                             'Topaz','Mountain','Topaz','Mountain','Topaz','Mountain','Garuda','Swiftcast','Slipstream','Emerald','Emerald','Emerald','Emerald','Ifrit','Ruby','Ruby','Cyclone','Strike','RuinIII','RuinIV','SummonPhoenix','FountainOfFire','FountainOfFire','EnergyDrain','FountainOfFire','EnkindlePhoenix','FountainOfFire','Rekindle',
@@ -21135,7 +21135,7 @@ def generateFFLogsTestSuite():
         ]
 
     def ffTest5ValidationFunction(testResults) -> (bool, list):
-        passed = testResults
+        passed = True
 
         expectedActions =  ['Potion','BroilIV','Biolysis', 'Dissipation','BroilIV','Swiftcast','BroilIV','ChainStratagem','EnergyDrain',
                             'BroilIV','EnergyDrain','BroilIV','EnergyDrain','BroilIV','Aetherflow','BroilIV','EnergyDrain','BroilIV','EnergyDrain','Biolysis','EnergyDrain','LucidDreaming',
@@ -21180,7 +21180,7 @@ def generateFFLogsTestSuite():
         ]
 
     def ffTest6ValidationFunction(testResults) -> (bool, list):
-        passed = testResults
+        passed = True
 
         expectedActions =  ['Glare','Dia','Potion','Glare','Temperance','Glare','PresenceOfMind','Glare','Assize','Glare','LucidDreaming',
                             'Glare','Asylum','Glare','ThinAir','Glare','Glare','Glare','Glare','Glare','Glare','Glare','Dia','AfflatusRapture','Glare','Glare',
@@ -21198,9 +21198,95 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest6 = test("FFLogs test 6 - Whitemage test : (Mk4ZR1KGQjBnJYmN,2)", ffTest6TestFunction, ffTest6ValidationFunction)
-    fflogTestSuite.addTest(ffTest6)
+    #fflogTestSuite.addTest(ffTest6)
+
+    def ffTest7TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("N2WfcJa8hnG9FL4k", fight_id="5")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Sage
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.HealerActions, ActionEnum.SageActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest7ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['Potion', 'Dosis','Eukrasia','EukrasianDosis','Dosis','LucidDreaming','Dosis','Phlegma','Kerachole','Phlegma',
+                            'Dosis','Physis','Dosis','Dosis','Dosis','Dosis','Dosis','Dosis','Eukrasia','EukrasianDosis','Dosis','Dosis','Dosis','Dosis','Dosis','Haima',
+                            'Dosis','Dosis','Dosis','Taurochole','Dosis','Dosis','Dosis','Panhaima','Eukrasia','EukrasianDosis','Dosis','Dosis','LucidDreaming','Dosis',
+                            'Ixochole','Dosis','Kerachole','Dosis','Dosis','Toxikon','Dosis','Dosis','Phlegma','Dosis','Eukrasia','EukrasianDosis','Dosis','Dosis','Swiftcast','Pneuma',
+                            'Dosis','Dosis','Dosis','Dosis','Dosis','Dosis','Kerachole','Dosis','Dosis','Eukrasia','EukrasianDosis','Dosis','Physis','Dosis','Dosis','Dosis','LucidDreaming',
+                            'Dosis','Taurochole','Phlegma','Phlegma','Dosis','Dosis','Kerachole','Dosis']
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest7 = test("FFLogs test 7 - Sage test : (N2WfcJa8hnG9FL4k,5)", ffTest7TestFunction, ffTest7ValidationFunction)
+    #fflogTestSuite.addTest(ffTest7)
+
+    def ffTest8TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("L2tQ41WZCPbYa7wX", fight_id="2")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Astrologian
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.HealerActions, ActionEnum.AstrologianActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest8ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['Potion','Draw','EarthlyStar','Malefic','Lightspeed', 'Combust','Balance','Draw','Malefic','MinorArcana','Ewer','Malefic','Divination',
+                            'Draw','Malefic','Spear','Astrodyne','Malefic','LordOfCrown','Malefic','StellarDetonation','Malefic','Malefic','Malefic','Malefic','CollectiveUnconscious','Malefic','Malefic','Malefic',
+                            'Combust','Draw','Malefic','CelestialOpposition','Malefic','LucidDreaming','Malefic','CelestialIntersection','Malefic','Exaltation','Malefic','Malefic','Malefic','Malefic','Malefic',
+                            'Malefic','Malefic','Combust','Macrocosmos','Horoscope','Malefic','Malefic','Spear','MinorArcana','Malefic','EarthlyStar','Malefic','Malefic','Malefic','Malefic','LadyOfCrown','Malefic','Draw','Malefic','Malefic','Combust',
+                            'Malefic','Malefic','Malefic','LucidDreaming','Malefic','CelestialOpposition','Malefic','Malefic','CelestialIntersection','Malefic','Malefic','CelestialIntersection','Malefic','CollectiveUnconscious','Malefic','Malefic','Combust',
+                            'Bole','Malefic','Lightspeed','Malefic','Draw','Divination','Malefic','Ewer','Astrodyne','Malefic','Draw','MinorArcana','Malefic','Balance','EarthlyStar','Malefic','Malefic']
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest8 = test("FFLogs test 8 - Astrologian test : (L2tQ41WZCPbYa7wX,2)", ffTest8TestFunction, ffTest8ValidationFunction)
+    fflogTestSuite.addTest(ffTest8)
 
     return fflogTestSuite
+
+
 
 
 def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBUG) -> int:

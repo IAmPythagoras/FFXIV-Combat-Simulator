@@ -7,14 +7,24 @@ from pathlib import Path
 import math
 
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
-from ffxivcalc.Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton
-from ffxivcalc.Jobs.Melee.Samurai.Samurai_Spell import MeikyoCheck, MeikyoEffect, MeikyoStackCheck
+from ffxivcalc.Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton, Kassatsu
+from ffxivcalc.Jobs.Melee.Samurai.Samurai_Spell import Meikyo
 from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
-from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import SongEffect
-from ffxivcalc.Jobs.Tank.DarkKnight.DarkKnight_Spell import BloodWeaponCheck, BloodWeaponEffect
-from ffxivcalc.Jobs.Tank.Warrior.Warrior_Spell import SurgingTempestEffect
+from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import SongEffect, BattleVoice
+from ffxivcalc.Jobs.Tank.DarkKnight.DarkKnight_Spell import BloodWeaponCheck, BloodWeaponEffect, Delirium, BloodWeapon, TBN
+from ffxivcalc.Jobs.Tank.Warrior.Warrior_Spell import SurgingTempestEffect, InnerRelease
 from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
-from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, SharpCast, LeyLines
+from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, SharpCast, LeyLines, Triplecast
+from ffxivcalc.Jobs.Healer.Sage.Sage_Spell import Eukrasia
+from ffxivcalc.Jobs.Healer.Astrologian.Astrologian_Spell import EarthlyStar, Draw
+from ffxivcalc.Jobs.Tank.Paladin.Paladin_Spell import FightOrFlight
+from ffxivcalc.Jobs.Tank.Gunbreaker.Gunbreaker_Spell import NoMercy
+from ffxivcalc.Jobs.Melee.Reaper.Reaper_Spell import ArcaneCircle, Soulsow
+from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import RiddleOfFire, RiddleOfWind, Brotherhood
+from ffxivcalc.Jobs.Melee.Dragoon.Dragoon_Spell import LifeSurge, LanceCharge, BattleLitany, DragonSight
+from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import Acceleration, Embolden
+from ffxivcalc.Jobs.Caster.Summoner.Summoner_Spell import SearingLight
+from ffxivcalc.Jobs.Healer.Whitemage.Whitemage_Spell import PresenceOfMind
 
 from ffxivcalc.Fight import Fight
 from ffxivcalc.Enemy import Enemy
@@ -237,6 +247,11 @@ def RestoreFightObject(data : dict, name : str = ""):
     dance_partner = None
     dancer = None
 
+    foundRightEye = False
+    foundLeftEye = False
+    leftEyeTargetId = -1
+    rightEyeId = -1
+
     for player in data["data"]["PlayerList"]: #Going through all player in PlayerList and creating JobObject
         #Will check what job the player is so we can create a player object of the relevant job
         
@@ -315,24 +330,92 @@ def RestoreFightObject(data : dict, name : str = ""):
                 job_object.ActionSet.append(SharpCast)
             elif aura == "Ley Lines":
                 job_object.ActionSet.append(LeyLines)
-            elif aura == "Soulsow":
-                job_object.Soulsow = True
+            elif aura == "Triplecast":
+                job_object.ActionSet.append(Triplecast)
             elif aura == "Medicated":
                 job_object.ActionSet.append(Potion)
+            elif aura == "Inner Release":
+                job_object.ActionSet.append(InnerRelease)
+            elif aura == "Fight or Flight":
+                job_object.ActionSet.append(FightOrFlight)
+            elif aura == "Delirium":
+                job_object.ActionSet.append(Delirium)
+            elif aura == "Blood Weapon":
+                job_object.ActionSet.append(BloodWeapon)
+            elif aura == "Blackest Night":
+                if job_object.JobEnum == JobEnum.DarkKnight:
+                    job_object.ActionSet.append(TBN(job_object))
+                    # TODO Add code that makes the darkknight cast it. Now only casts if self cast from DRK
+            elif aura == "No Mercy":
+                job_object.ActionSet.append(NoMercy)
+            elif aura == "Arcane Circle":
+                if job_object.JobEnum == JobEnum.Reaper:
+                    job_object.ActionSet.append(ArcaneCircle)
+            elif aura == "Soulsow":
+                job_object.ActionSet.append(Soulsow)
+            elif aura == "Riddle of Fire":
+                job_object.ActionSet.append(RiddleOfFire)
+            elif aura == "Riddle of Wind":
+                job_object.ActionSet.append(RiddleOfWind)
+            elif aura == "Brotherhood":
+                job_object.ActionSet.append(Brotherhood)
+            elif aura == "Life Surge":
+                job_object.ActionSet.append(LifeSurge)
+            elif aura == "Lance Charge":
+                job_object.ActionSet.append(LanceCharge)
+            elif aura == "Battle Litany":
+                job_object.ActionSet.append(BattleLitany)
+            elif aura == "Right Eye":
+                if not foundRight:
+                    foundRight = True
+                    rightEyeId = job_object.playerID
+                else:
+                    job_object.ActionSet.append(DragonSight(PlayerActionList[str(leftEyeTargetId)]['job_object']))
+            elif aura == "Left Eye":
+                if not foundLeft:
+                    foundLeft = True
+                    leftEyeTargetId = job_object.playerID
+                else:
+                    PlayerActionList[str(rightEyeId)]['job_object'].ActionSet.append(DragonSight(job_object))
+            elif aura == "Kassatsu":
+                job_object.ActionSet.append(Kassatsu)
             elif aura == "Meikyo Shisui":
-                job_object.EffectCDList.append(MeikyoStackCheck)
-                job_object.MeikyoCD = 46
-                job_object.MeikyoStack -= 1
-                job_object.EffectList.append(MeikyoEffect)
-                job_object.EffectCDList.append(MeikyoCheck) #Could be a problem if do it before finishing 3 weaponskills
-                job_object.Meikyo = 3
+                job_object.ActionSet.append(Meikyo)
+            elif aura == "Battle Voice":
+                if job_object.JobEnum == JobEnum.Bard:
+                    job_object.ActionSet.append(BattleVoice)
+            elif aura == "Acceleration":
+                job_object.ActionSet.append(Acceleration)
+            elif aura == "Embolden":
+                if job_object.JobEnum == JobEnum.RedMage:
+                    job_object.ActionSet.append(Embolden)
+            elif aura == "Searing Light":
+                if job_object.JobEnum == JobEnum.Summoner:
+                    job_object.ActionSet.append(SearingLight)
+            elif aura == "Presence of Mind":
+                job_object.ActionSet.append(PresenceOfMind)
+            elif 'Drawn' in aura:
+                job_object.ActionSet.append(Draw)
+            elif aura == "Earthly Dominance":
+                job_object.ActionSet.append(EarthlyStar)
+            elif aura == "":
+                job_object.ActionSet.append(FightOrFlight)
+            elif aura == "":
+                job_object.ActionSet.append(FightOrFlight)
+            elif aura == "":
+                job_object.ActionSet.append(FightOrFlight)
+            elif aura == "":
+                job_object.ActionSet.append(FightOrFlight)
+            elif aura == "":
+                job_object.ActionSet.append(FightOrFlight)
+            
             elif aura == "Mudra":
                 #Will also assume huton has been done
                 ApplyHuton(job_object, None) #Giving Huton
                 #If mudra is detected, we will assume we have casted it for Suiton
                 job_object.CurrentRitual = [0,1,2]
             elif aura == "Eukrasia":
-                job_object.Eukrasia = True
+                job_object.ActionSet.append(Eukrasia)
             elif aura == "Standard Step":
                 #Assuming Dancer did 2 step
                 job_object.Emboite = True
