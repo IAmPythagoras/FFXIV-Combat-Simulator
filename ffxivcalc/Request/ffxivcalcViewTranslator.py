@@ -308,7 +308,31 @@ AURA_MAPPINGS = {
     "Eukrasia": "Eukrasia",
     "Standard Finish": "Standard Step",
     "Closed Position": "ClosedPosition",
-    "Dance Partner": "Dance partner"
+    "Dance Partner": "Dance partner",
+    "Triplecast" : "Triplecast",
+    "Inner Release" : "Inner Release",
+    "Fight or Flight" : "Fight or Flight",
+    "Delirium" : "Delirium",
+    "Blood Weapon" : "Blood Weapon",
+    "Blackest Night" : "Blackest Night",
+    "No Mercy" : "No Mercy",
+    "Arcane Circle" : "Arcane Circle",
+    "Riddle of Fire" : "Riddle of Fire",
+    "Riddle of Wind" : "Riddle of Wind",
+    "Life Surge" : "Life Surge",
+    "Lance Charge" : "Lance Charge",
+    "Battle Litany" : "Battle Litany",
+    "Right Eye" : "Right Eye",
+    "Left Eye" : "Left Eye",
+    "Kassatsu" : "Kassatsu",
+    "Battle Voice" : "Battle Voice",
+    "Acceleration" : "Acceleration",
+    "Embolden" : "Embolden",
+    "Searing Light" : "Searing Light",
+    "Presence of Mind" : "Presence of Mind",
+    "Earthly Dominance" : "Earthly Dominance",
+
+
 
 }
 
@@ -322,12 +346,12 @@ def build_aura_list(player_auras: pd.DataFrame) -> List[str]:
         for aura, job_name in zip(
             player_auras["name"], player_auras["source_subtype"]
         )
-        if aura in AURA_MAPPINGS
+        if (aura in AURA_MAPPINGS
         and not (
             # Ignore standard finish if job is not dancer
             aura == "Standard Finish"
             and job_name != "Dancer"
-        )
+        )) or 'Drawn' in aura
     ]
 
 
