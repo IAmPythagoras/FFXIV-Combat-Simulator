@@ -408,6 +408,7 @@ AstrologianAbility = {
 16553 : CelestialOpposition,
 16556 : CelestialIntersection,
 16558 : Horoscope,
+16557 : Horoscope,
 25873 : Exaltation,
 25874 : Macrocosmos,
 17 : Microcosmos,
