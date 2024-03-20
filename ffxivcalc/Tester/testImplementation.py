@@ -21277,7 +21277,7 @@ def generateFFLogsTestSuite():
         for i in range(0,len(expectedActions)): 
             if expectedActions[i] != testResults[i]:
                 passed = False
-                failedTest.append((i, expectedActions[i], testResults[i]))
+            failedTest.append((i, expectedActions[i], testResults[i]))
 
         return passed , failedTest
 
@@ -21316,7 +21316,7 @@ def generateFFLogsTestSuite():
         for i in range(0,len(expectedActions)): 
             if expectedActions[i] != testResults[i]:
                 passed = False
-            failedTest.append((i, expectedActions[i], testResults[i]))
+                failedTest.append((i, expectedActions[i], testResults[i]))
 
         return passed , failedTest
 
@@ -21799,7 +21799,7 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
     failedTestDict = {}
     if len(testSuiteName) == 0:
         # Execute all tests
-        pb = ProgressBar.init(26, "Initializing test suites")
+        pb = ProgressBar.init(27, "Initializing test suites")
 
         blmTestSuite = generateBLMTestSuite()
         rdmTestSuite = generateRDMTestSuite()
@@ -21826,7 +21826,7 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
         gcdTestSuite = generateGCDTestSuite(setSeed=setSeed)
         teTestSuite = generateTimerEstimateTestSuite()
         lbTestSuite = generateLimitBreakTestSuite()
-
+        fflogTestSuite = generateFFLogsTestSuite()
 
         pb.setName(blmTestSuite.testSuiteName)
         next(pb)
@@ -21903,7 +21903,9 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
         pb.setName(lbTestSuite.testSuiteName)
         next(pb)
         failedTestDict[lbTestSuite.testSuiteName] = lbTestSuite.executeTestSuite()
+        pb.setName(fflogTestSuite.testSuiteName)
         next(pb)
+        failedTestDict[fflogTestSuite.testSuiteName] = fflogTestSuite.executeTestSuite()
 
     else:
         match testSuiteName:
@@ -22007,6 +22009,10 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
                 lbTestSuite = generateLimitBreakTestSuite()
                 print(f"Executing {lbTestSuite.testSuiteName}")
                 failedTestDict[lbTestSuite.testSuiteName] = lbTestSuite.executeTestSuite()
+            case "FFLOG":
+                fflogTestSuite = generateFFLogsTestSuite()
+                print(f"Executing {fflogTestSuite.testSuiteName}")
+                failedTestDict[fflogTestSuite.testSuiteName] = fflogTestSuite.executeTestSuite()
 
     totalFailedTest = 0
 
@@ -22027,5 +22033,4 @@ if __name__ == "__main__":
     main_logging.setLevel(level=logging.ERROR) 
     test_logging.setLevel(level=level)
     logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
-    generateFFLogsTestSuite().executeTestSuite()
-    #executeTests()
+    executeTests()
