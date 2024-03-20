@@ -317,7 +317,7 @@ def QueenAACheck(Player, Enemy):
 
 
 
-Dismantle = MachinistSpell(111111, False, 0, 0, 0, 0, ApplyDismantle, [DismantleRequirement], False)
+Dismantle = MachinistSpell(2887, False, 0, 0, 0, 0, ApplyDismantle, [DismantleRequirement], False)
 Wildfire = MachinistSpell(2878, False, 0, Lock, 0, 0, ApplyWildFire, [WildFireRequirement], False)
 Detonator = MachinistSpell(1111111, False, 0, 0, 0, 0, ApplyDetonator, [DetonatorRequirement], False)
 AirAnchor = MachinistSpell(16500, True, 0, 2.5, 600, 0, ApplyAirAnchor, [AirAnchorRequirement], True, type = 2)
@@ -391,5 +391,6 @@ MachinistAbility = {
 1111111 : Detonator,
 2874 : GaussRound, 
 2890 : Ricochet,
-2876 : Reassemble
+2876 : Reassemble,
+2887 : Dismantle
 }

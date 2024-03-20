@@ -245,7 +245,7 @@ class FFLogClientV2:
     def _process_raw_event(self, data: Dict, code: str) -> Dict:
         if "abilityGameID" in data:
             data[custom_columns.ABILITY_NAME] = self._get_ability(
-                data["abilityGameID"], code=code
+                data["extraAbilityGameID"] if "extraAbilityGameID" in data.keys() else data["abilityGameID"], code=code
             )
 
         if "sourceID" in data:

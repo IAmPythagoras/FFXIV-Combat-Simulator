@@ -789,6 +789,7 @@ class MachinistActions(ActionEnum):
     GaussRound = 2874
     Ricochet = 2890
     Reassemble = 2876
+    Dismantle = 2887
 
     # Queen actions
     Bunker = 15
