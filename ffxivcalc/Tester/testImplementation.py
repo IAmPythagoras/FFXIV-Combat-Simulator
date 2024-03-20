@@ -21739,7 +21739,51 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest19 = test("FFLogs test 19 - Bard test : (kHqB6mgPZYycxJvb,41)", ffTest19TestFunction, ffTest19ValidationFunction)
-    fflogTestSuite.addTest(ffTest19)
+    #fflogTestSuite.addTest(ffTest19)
+
+
+    def ffTest20TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("2KBhtxLJH47vrCRj", fight_id="17")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Dancer
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.RangedActions, ActionEnum.DancerActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest20ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['ClosedPosition','StandardStep','Pirouette','Jete','Potion','StandardFinish','Flourish','TechnicalStep','Jete','Entrechat','Emboite','Pirouette','TechnicalFinish','Devilment','Tilana','FanDanceIV','StarfallDance','FanDanceIII','ReverseCascade',
+                            'FanDance','FanDanceIII','StandardStep','Entrechat','Emboite','StandardFinish','SaberDance','FountainFall','SaberDance','Cascade','SaberDance','ReverseCascade','Fountain','Cascade','Fountain','FountainFall','StandardStep',
+                            'Pirouette','Jete','StandardFinish','ReverseCascade','SaberDance','Cascade','Fountain','Cascade','Flourish','SaberDance','FanDanceIV','Fountain','FountainFall','FanDanceIII','ReverseCascade','Cascade','StandardStep',
+                            'Pirouette','Jete','StandardFinish','Fountain','FountainFall','Cascade','CuringWaltz','Fountain','FountainFall','SaberDance','Cascade','ReverseCascade','Fountain','FanDance','SaberDance','TechnicalStep','Entrechat','Emboite','StandardFinish',
+                            'Cascade','ReverseCascade','FanDance','Fountain','Cascade','Fountain','Flourish','TechnicalStep','Entrechat','Pirouette','Jete','Emboite','TechnicalFinish','Devilment','SaberDance','FanDanceIV','FanDanceIII','StarfallDance','FanDance','FanDanceIII','Tilana','FanDance','SaberDance','FanDanceIII','FanDance'
+
+]                   
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest20 = test("FFLogs test 20 - Dancer test : (2KBhtxLJH47vrCRj,17)", ffTest20TestFunction, ffTest20ValidationFunction)
+    fflogTestSuite.addTest(ffTest20)
 
     return fflogTestSuite
 

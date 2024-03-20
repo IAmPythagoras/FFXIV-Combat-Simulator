@@ -9,11 +9,11 @@ import math
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
 from ffxivcalc.Jobs.Melee.Ninja.Ninja_Spell import Huton, Kassatsu
 from ffxivcalc.Jobs.Melee.Samurai.Samurai_Spell import Meikyo
-from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
+from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect, ClosedPosition, StandardStep, Pirouette, Emboite, Entrechat, Jete, TechnicalStep
 from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import SongEffect, BattleVoice
 from ffxivcalc.Jobs.Ranged.Machinist.Machinist_Spell import Reassemble
 from ffxivcalc.Jobs.Tank.DarkKnight.DarkKnight_Spell import BloodWeaponCheck, BloodWeaponEffect, Delirium, BloodWeapon, TBN
-from ffxivcalc.Jobs.Tank.Warrior.Warrior_Spell import SurgingTempestEffect, InnerRelease
+from ffxivcalc.Jobs.Tank.Warrior.Warrior_Spell import InnerRelease
 from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
 from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, SharpCast, LeyLines, Triplecast
 from ffxivcalc.Jobs.Healer.Sage.Sage_Spell import Eukrasia
@@ -244,15 +244,17 @@ def RestoreFightObject(data : dict, name : str = ""):
     
     PlayerActionList = {} #Dictionnary containing all player with their action
 
-    closed_position = False
-    dance_partner_flag = False
-    dance_partner = None
-    dancer = None
+    foundDancePartner = False
+    foundClosedPosition = False
+    dancerId = None
+    partnerId = None
 
     foundRightEye = False
     foundLeftEye = False
     leftEyeTargetId = -1
     rightEyeId = -1
+
+
 
     for player in data["data"]["PlayerList"]: #Going through all player in PlayerList and creating JobObject
         #Will check what job the player is so we can create a player object of the relevant job
@@ -368,14 +370,14 @@ def RestoreFightObject(data : dict, name : str = ""):
             elif aura == "Battle Litany":
                 job_object.ActionSet.append(BattleLitany)
             elif aura == "Right Eye":
-                if not foundRight:
-                    foundRight = True
+                if not foundLeftEye:
+                    foundRightEye = True
                     rightEyeId = job_object.playerID
                 else:
                     job_object.ActionSet.append(DragonSight(PlayerActionList[str(leftEyeTargetId)]['job_object']))
             elif aura == "Left Eye":
-                if not foundLeft:
-                    foundLeft = True
+                if not foundRightEye:
+                    foundLeftEye = True
                     leftEyeTargetId = job_object.playerID
                 else:
                     PlayerActionList[str(rightEyeId)]['job_object'].ActionSet.append(DragonSight(job_object))
@@ -415,24 +417,34 @@ def RestoreFightObject(data : dict, name : str = ""):
             elif aura == "Eukrasia":
                 job_object.ActionSet.append(Eukrasia)
             elif aura == "Standard Step":
-                #Assuming Dancer did 2 step
-                job_object.Emboite = True
-                job_object.Entrechat = True
-                job_object.StandardFinish = True
-            elif aura == "ClosedPosition":
-                if dance_partner_flag:
-                    job_object.DancePartner = dance_partner
+                # Assume 2 steps
+                job_object.ActionSet.append(StandardStep)
+                job_object.ActionSet.append(Pirouette)
+                job_object.ActionSet.append(Jete)
+            elif aura == "Technical Step":
+                # Assume 4 steps
+                job_object.ActionSet.append(TechnicalStep)
+                job_object.ActionSet.append(Pirouette)
+                job_object.ActionSet.append(Jete)
+                job_object.ActionSet.append(Entrechat)
+                job_object.ActionSet.append(Emboite)
+            elif aura == "Closed Position":
+                if not foundDancePartner:
+                    foundClosedPosition = True
+                    dancerId = job_object.playerID
                 else:
-                    closed_position = True
-                    dancer = job_object
-            elif aura == "Dance partner":
-                if closed_position:
-                    dancer.DancePartner = job_object
+                    job_object.ActionSet.insert(0, ClosedPosition(PlayerActionList[str(partnerId)]['job_object']))
+            elif aura == "Dance Partner":
+                if not foundClosedPosition:
+                    foundDancePartner = True
+                    partnerId = job_object.playerID
                 else:
-                    dance_partner_flag = True
-                    dance_partner = job_object
+                    PlayerActionList[str(dancerId)]['job_object'].ActionSet.insert(0, ClosedPosition(job_object))
 
-
+    foundDancePartner = False
+    foundClosedPosition = False
+    dancerId = None
+    partnerId = None
     #Will now go through every player and give them an ActionList
 
 
