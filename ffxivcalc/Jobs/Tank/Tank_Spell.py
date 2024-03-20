@@ -208,6 +208,7 @@ TankAbility = {
 28 : IronWill, #Paladin Tank Stance
 34590541 : Potion,
 34592395 : Potion,
+34594159 : Potion, 
 -2 : Potion,
 1111 : TankLB1,
 1112 : TankLB2,
