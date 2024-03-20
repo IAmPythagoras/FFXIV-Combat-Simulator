@@ -100,6 +100,7 @@ RangedAbility = {
 7548 : ArmLength,
 34590542 : Potion,
 34592396 : Potion,
+34594160 : Potion, # DEX pot ?
 -2 : Potion,
 1111 : RangedLB1,
 1112 : RangedLB2,

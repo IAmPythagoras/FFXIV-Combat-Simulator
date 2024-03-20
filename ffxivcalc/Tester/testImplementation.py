@@ -21510,7 +21510,7 @@ def generateFFLogsTestSuite():
     def ffTest14ValidationFunction(testResults) -> (bool, list):
         passed = True
 
-        expectedActions =  ['Huton','Suiton','Kassatsu','SpinningEdge','Potion','GustSlash','Mug','Bunshin','PhantomKamaitachi','TrickAttack','AeolianEdge','DreamWithinADream','Ten','Jin','HyoshoRanryu','Ten','Chi','Raiton','TenChiJin','Ten','Chi','Jin','Meisui','FleetingRaiju','Bhavacakra','FleetingRaiju','Bhavacakra',
+        expectedActions =  ['Huton','Suiton','Kassatsu','SpinningEdge','Potion','GustSlash','Mug','Bunshin','PhantomKamaitachi','TrickAttack','AeolianEdge','DreamWithinADream','Ten','Jin','HyoshoRanryu','Ten','Chi','Raiton','TenChiJin','Ten2','Chi2','Jin2','Meisui','FleetingRaiju','Bhavacakra','FleetingRaiju','Bhavacakra',
                             'Ten','Chi','Raiton','FleetingRaiju','SpinningEdge','GustSlash','AeolianEdge','SpinningEdge','GustSlash','AeolianEdge','SpinningEdge','GustSlash','ArmorCrush','SpinningEdge','Bhavacakra','GustSlash','Ten','Chi','Jin',
                             'Suiton','AeolianEdge','SpinningEdge','GustSlash','AeolianEdge','Kassatsu','SpinningEdge','Bhavacakra','GustSlash','TrueNorth','AeolianEdge','TrickAttack','Ten','Jin','HyoshoRanryu','DreamWithinADream','Ten','Chi','Raiton',
                             'Bhavacakra','FleetingRaiju','Ten','Chi','Raiton','FleetingRaiju','SpinningEdge','GustSlash','ArmorCrush'
@@ -21526,7 +21526,51 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest14 = test("FFLogs test 14 - Ninja test : (8vPCHArRBWkQ6Gdb,5)", ffTest14TestFunction, ffTest14ValidationFunction)
-    fflogTestSuite.addTest(ffTest14)
+    #fflogTestSuite.addTest(ffTest14)
+
+    def ffTest15TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("j4WazfhqMvgd1LJY", fight_id="10")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Monk
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.MeleeActions, ActionEnum.MonkActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest15ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['Thunderclap','DragonKick','Potion','TwinSnakes','RiddleOfFire','Demolish','TheForbiddenChakra','Bootshine','Brotherhood','PerfectBalance','DragonKick','RiddleOfWind','Bootshine','TheForbiddenChakra','DragonKick','ElixirField',
+                            'TheForbiddenChakra','Bootshine','PerfectBalance','TwinSnakes','TheForbiddenChakra','DragonKick','Demolish','TheForbiddenChakra','RisingPhoenix','Bootshine','Feint','TrueStrike','SnapPunch','DragonKick','TwinSnakes','SnapPunch',
+                            'Bootshine','TrueStrike','Demolish','DragonKick','TwinSnakes','SnapPunch','Bootshine','TheForbiddenChakra','TrueStrike','SnapPunch','DragonKick','TwinSnakes','Demolish','Bootshine','PerfectBalance','DragonKick','RiddleOfFire',
+                            'Bootshine','RiddleOfEarth','DragonKick','PhantomRush','Bootshine','TheForbiddenChakra','TwinSnakes','Demolish','Bloodbath','DragonKick','Mantra','TrueStrike','TrueNorth','SnapPunch','Bootshine','TwinSnakes','SnapPunch',
+                            'DragonKick','TrueStrike','Demolish','Bootshine','TrueStrike','SnapPunch','DragonKick','TheForbiddenChakra','TwinSnakes','RiddleOfWind','SnapPunch','Bootshine','TrueStrike','Demolish','DragonKick','TwinSnakes','SnapPunch',
+                            'Bootshine','TrueStrike','SnapPunch','DragonKick','PerfectBalance','RiddleOfFire','DragonKick','Demolish','Brotherhood','TwinSnakes','RisingPhoenix','TheForbiddenChakra','DragonKick','PerfectBalance','Bootshine','TheForbiddenChakra','DragonKick','Bootshine','TheForbiddenChakra',
+                            'ElixirField','DragonKick'
+]                   
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest15 = test("FFLogs test 15 - Dhedge test : (j4WazfhqMvgd1LJY,10)", ffTest15TestFunction, ffTest15ValidationFunction)
+    fflogTestSuite.addTest(ffTest15)
 
     return fflogTestSuite
 

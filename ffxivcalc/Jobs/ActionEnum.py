@@ -645,7 +645,7 @@ class NinjaActions(ActionEnum):
 # Monk
 
 class MonkActions(ActionEnum):
-    BootShine = 53
+    Bootshine = 53
     TrueStrike = 54
     Demolish = 66
     DragonKick = 74
