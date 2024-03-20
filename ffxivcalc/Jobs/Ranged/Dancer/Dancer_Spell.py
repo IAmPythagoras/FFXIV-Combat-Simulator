@@ -347,7 +347,7 @@ Bladeshower = DancerSpell(15994, True, 2.5, 100, empty, [], True, type = 2)
 Bloodshower = DancerSpell(15996, True, 2.5, 180, ApplyFountainFall, [FountainFallRequirement], True, type = 2)
 #Dance
 StandardStep = DancerSpell(15997, True, 1.5, 0, ApplyStandardStep, [StandardStepRequirement], True, type = 2)
-StandardFinish = DancerSpell(16003, True, 1.5, 360, ApplyStandardFinish, [StandardFinishRequirement], True, type = 2)
+StandardFinish = DancerSpell(16192, True, 1.5, 360, ApplyStandardFinish, [StandardFinishRequirement], True, type = 2)
 TechnicalStep = DancerSpell(15998, True, 1.5, 0, ApplyTechnicalStep, [TechnicalStepRequirement], True, type = 2)
 TechnicalFinish = DancerSpell(16004, True, 1.5, 350, ApplyTechnicalFinish, [TechnicalFinishRequirement], True, type = 2)
 
@@ -439,7 +439,7 @@ DancerAbility = {
 16194 : TechnicalFinish, 
 16195 : TechnicalFinish,
 16196 : TechnicalFinish,
-16003 : StandardFinish, 
+16192 : StandardFinish, 
 25789 : ImprovisedFinish , 
 18073 : Ending, 
 25790 : Tillana, 
