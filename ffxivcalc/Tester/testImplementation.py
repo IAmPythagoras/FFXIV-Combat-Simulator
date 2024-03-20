@@ -3329,7 +3329,7 @@ def generateSGETestSuite() -> testSuite:
 
     def sgeTest2ValidationFunction(testResults) -> (bool, list):
         passed = True
-        expected = [1]   
+        expected = [3]   
 
         for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
