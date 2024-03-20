@@ -21906,6 +21906,7 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
         pb.setName(fflogTestSuite.testSuiteName)
         next(pb)
         failedTestDict[fflogTestSuite.testSuiteName] = fflogTestSuite.executeTestSuite()
+        next(pb)
 
     else:
         match testSuiteName:
@@ -22025,7 +22026,6 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
         print("Completed without errors. See logs for info.")
     else:
         print("Completed. See logs for info.")
-
     return 0
 
 if __name__ == "__main__":
