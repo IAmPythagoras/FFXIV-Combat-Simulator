@@ -208,7 +208,7 @@ class FFLogClientV2:
         return data["data"]["reportData"]["report"]["masterData"]["abilities"]
 
     def stream_fight_events(
-        self, code: str, fight_type: str = "Kills", fight_id : str = ""
+        self, code: str, fight_type: str = "Kills", fight_id : str = "", show_progress : bool = False
     ) -> Iterator:
         """Streams fight event data
 
@@ -230,6 +230,7 @@ class FFLogClientV2:
                         code=code,
                         fight=fight,
                         fight_type=fight_type,
+                        show_progress=show_progress
                     ),
                     code=code,
                 ),
@@ -376,7 +377,7 @@ class FFLogClientV2:
         game_data.update_ability_ids_to_names(updates)
 
     def get_raw_events_from_fight(
-        self, code: str, fight: Dict, fight_type: str = "Kills"
+        self, code: str, fight: Dict, fight_type: str = "Kills", show_progress : bool = False
     ) -> Iterator:
         """Gets the raw events from fight."""
         next_timestamp = start_time = fight["startTime"]
@@ -401,7 +402,7 @@ class FFLogClientV2:
             end_time
         ):
             # Pretty animation
-            print(animation, end="\r")
+            if show_progress: print(animation, end="\r")
             page_data, next_timestamp = self._get_events_from_fight(
                 code=code,
                 start_time=next_timestamp,
@@ -418,7 +419,7 @@ class FFLogClientV2:
                 * 100.0
             )
             animation: str = f"Loading {fight['name']} ({percent_complete})"
-        print(f"{animation}: DONE")
+        if show_progress: print(f"{animation}: DONE")
 
     def _get_events_from_fight(
         self,

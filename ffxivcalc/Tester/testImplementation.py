@@ -20988,7 +20988,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest1 = test("FFLogs test 1 - Blackmage test : (RQwfx3vATFWGahJc,8)", ffTest1TestFunction, ffTest1ValidationFunction)
-    #fflogTestSuite.addTest(ffTest1)
+    fflogTestSuite.addTest(ffTest1)
 
     def ffTest2TestFunction() -> None:
         client = FFLogClientV2()
@@ -21029,7 +21029,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest2 = test("FFLogs test 2 - Blackmage test : (bzfjTDV7gBGx1Y3m,10)", ffTest2TestFunction, ffTest2ValidationFunction)
-    #fflogTestSuite.addTest(ffTest2)
+    fflogTestSuite.addTest(ffTest2)
 
     def ffTest3TestFunction() -> None:
         client = FFLogClientV2()
@@ -21071,7 +21071,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest3 = test("FFLogs test 3 - Redmage test : (Mkj7gynfpDBGHacW,5)", ffTest3TestFunction, ffTest3ValidationFunction)
-    #fflogTestSuite.addTest(ffTest3)
+    fflogTestSuite.addTest(ffTest3)
 
     def ffTest4TestFunction() -> None:
         client = FFLogClientV2()
@@ -21110,7 +21110,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest4 = test("FFLogs test 4 - Summoner test : (YbDaH9C6dNVJAh8T,67)", ffTest4TestFunction, ffTest4ValidationFunction)
-    #fflogTestSuite.addTest(ffTest4)
+    fflogTestSuite.addTest(ffTest4)
 
     def ffTest5TestFunction() -> None:
         client = FFLogClientV2()
@@ -21155,7 +21155,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest5 = test("FFLogs test 5 - Scholar test : (ytpwWPVGd8ZfzgTD,18)", ffTest5TestFunction, ffTest5ValidationFunction)
-    #fflogTestSuite.addTest(ffTest5)
+    fflogTestSuite.addTest(ffTest5)
 
     def ffTest6TestFunction() -> None:
         client = FFLogClientV2()
@@ -21198,7 +21198,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest6 = test("FFLogs test 6 - Whitemage test : (Mk4ZR1KGQjBnJYmN,2)", ffTest6TestFunction, ffTest6ValidationFunction)
-    #fflogTestSuite.addTest(ffTest6)
+    fflogTestSuite.addTest(ffTest6)
 
     def ffTest7TestFunction() -> None:
         client = FFLogClientV2()
@@ -21240,7 +21240,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest7 = test("FFLogs test 7 - Sage test : (N2WfcJa8hnG9FL4k,5)", ffTest7TestFunction, ffTest7ValidationFunction)
-    #fflogTestSuite.addTest(ffTest7)
+    fflogTestSuite.addTest(ffTest7)
 
     def ffTest8TestFunction() -> None:
         client = FFLogClientV2()
@@ -21270,19 +21270,19 @@ def generateFFLogsTestSuite():
         expectedActions =  ['Draw','EarthlyStar','Potion','Malefic','Lightspeed', 'Combust','Balance','Draw','Malefic','MinorArcana','Ewer','Malefic','Divination',
                             'Draw','Malefic','Spear','Astrodyne','Malefic','LordOfCrown','Malefic','StellarDetonation','Malefic','Malefic','Malefic','Malefic','CollectiveUnconscious','Malefic','Malefic','Malefic',
                             'Combust','Draw','Malefic','CelestialOpposition','Malefic','LucidDreaming','Malefic','CelestialIntersection','Malefic','Exaltation','Malefic','Malefic','Malefic','Malefic','Malefic',
-                            'Malefic','Malefic','Combust','Macrocosmos','Malefic','Malefic','Spear','MinorArcana','Malefic','EarthlyStar','Malefic','Malefic','Malefic','Malefic','LadyOfCrown','Malefic','Draw','Malefic','Malefic','Combust',
+                            'Malefic','Malefic','Combust','Macrocosmos','Horoscope','Malefic','Malefic','Spear','MinorArcana','Malefic','EarthlyStar','Malefic','Malefic','Malefic','Malefic','LadyOfCrown','Malefic','Draw','Malefic','Malefic','Combust',
                             'Malefic','Malefic','Malefic','LucidDreaming','Malefic','CelestialOpposition','Malefic','Malefic','CelestialIntersection','Malefic','Malefic','CelestialIntersection','Malefic','CollectiveUnconscious','Malefic','Malefic','Combust',
                             'Bole','Malefic','Lightspeed','Malefic','Draw','Divination','Malefic','Ewer','Astrodyne','Malefic','Draw','MinorArcana','Malefic','Balance','EarthlyStar','Malefic','Malefic']
         failedTest = []
         for i in range(0,len(expectedActions)): 
             if expectedActions[i] != testResults[i]:
                 passed = False
-            failedTest.append((i, expectedActions[i], testResults[i]))
+                failedTest.append((i, expectedActions[i], testResults[i]))
 
         return passed , failedTest
 
     ffTest8 = test("FFLogs test 8 - Astrologian test : (L2tQ41WZCPbYa7wX,2)", ffTest8TestFunction, ffTest8ValidationFunction)
-    #fflogTestSuite.addTest(ffTest8)
+    fflogTestSuite.addTest(ffTest8)
 
     def ffTest9TestFunction() -> None:
         client = FFLogClientV2()
@@ -21321,7 +21321,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest9 = test("FFLogs test 9 - Gunbreaker test : (ZDamRAJ7dqzCW816,1)", ffTest9TestFunction, ffTest9ValidationFunction)
-    #fflogTestSuite.addTest(ffTest9)
+    fflogTestSuite.addTest(ffTest9)
 
     def ffTest10TestFunction() -> None:
         client = FFLogClientV2()
@@ -21361,7 +21361,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest10 = test("FFLogs test 10 - Warrior test : (ZDamRAJ7dqzCW816,1)", ffTest10TestFunction, ffTest10ValidationFunction)
-    #fflogTestSuite.addTest(ffTest10)
+    fflogTestSuite.addTest(ffTest10)
 
     def ffTest11TestFunction() -> None:
         client = FFLogClientV2()
@@ -21402,7 +21402,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest11 = test("FFLogs test 11 - Paladin test : (c8Y7D6GZ1r9fbjaT,1)", ffTest11TestFunction, ffTest11ValidationFunction)
-    #fflogTestSuite.addTest(ffTest11)
+    fflogTestSuite.addTest(ffTest11)
 
     def ffTest12TestFunction() -> None:
         client = FFLogClientV2()
@@ -21442,7 +21442,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest12 = test("FFLogs test 12 - DarkKnight test : (c8Y7D6GZ1r9fbjaT,1)", ffTest12TestFunction, ffTest12ValidationFunction)
-    #fflogTestSuite.addTest(ffTest12)
+    fflogTestSuite.addTest(ffTest12)
 
     def ffTest13TestFunction() -> None:
         client = FFLogClientV2()
@@ -21483,7 +21483,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest13 = test("FFLogs test 13 - Reaper test : (8vPCHArRBWkQ6Gdb,5)", ffTest13TestFunction, ffTest13ValidationFunction)
-    #fflogTestSuite.addTest(ffTest13)
+    fflogTestSuite.addTest(ffTest13)
 
     def ffTest14TestFunction() -> None:
         client = FFLogClientV2()
@@ -21521,12 +21521,12 @@ def generateFFLogsTestSuite():
         for i in range(0,len(expectedActions)): 
             if expectedActions[i] != testResults[i]:
                 passed = False
-                failedTest.append((i, expectedActions[i], testResults[i]))
+            failedTest.append((i, expectedActions[i], testResults[i]))
 
         return passed , failedTest
 
     ffTest14 = test("FFLogs test 14 - Ninja test : (8vPCHArRBWkQ6Gdb,5)", ffTest14TestFunction, ffTest14ValidationFunction)
-    #fflogTestSuite.addTest(ffTest14)
+    fflogTestSuite.addTest(ffTest14)
 
     def ffTest15TestFunction() -> None:
         client = FFLogClientV2()
@@ -21570,7 +21570,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest15 = test("FFLogs test 15 - Dhedge test : (j4WazfhqMvgd1LJY,10)", ffTest15TestFunction, ffTest15ValidationFunction)
-    #fflogTestSuite.addTest(ffTest15)
+    fflogTestSuite.addTest(ffTest15)
 
     def ffTest16TestFunction() -> None:
         client = FFLogClientV2()
@@ -21611,7 +21611,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest16 = test("FFLogs test 16 - Samurai test : (j4WazfhqMvgd1LJY,10)", ffTest16TestFunction, ffTest16ValidationFunction)
-    #fflogTestSuite.addTest(ffTest16)
+    fflogTestSuite.addTest(ffTest16)
 
     def ffTest17TestFunction() -> None:
         client = FFLogClientV2()
@@ -21654,7 +21654,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest17 = test("FFLogs test 17 - Dragoon test : (C176W2JQNqKYd4FR,15)", ffTest17TestFunction, ffTest17ValidationFunction)
-    #fflogTestSuite.addTest(ffTest17)
+    fflogTestSuite.addTest(ffTest17)
 
     def ffTest18TestFunction() -> None:
         client = FFLogClientV2()
@@ -21695,7 +21695,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest18 = test("FFLogs test 18 - Machinist test : (wxZFthf69kj8KpqB,8)", ffTest18TestFunction, ffTest18ValidationFunction)
-    #fflogTestSuite.addTest(ffTest18)
+    fflogTestSuite.addTest(ffTest18)
 
     def ffTest19TestFunction() -> None:
         client = FFLogClientV2()
@@ -21739,7 +21739,7 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest19 = test("FFLogs test 19 - Bard test : (kHqB6mgPZYycxJvb,41)", ffTest19TestFunction, ffTest19ValidationFunction)
-    #fflogTestSuite.addTest(ffTest19)
+    fflogTestSuite.addTest(ffTest19)
 
 
     def ffTest20TestFunction() -> None:
@@ -21767,12 +21767,11 @@ def generateFFLogsTestSuite():
     def ffTest20ValidationFunction(testResults) -> (bool, list):
         passed = True
 
-        expectedActions =  ['ClosedPosition','StandardStep','Pirouette','Jete','Potion','StandardFinish','Flourish','TechnicalStep','Jete','Entrechat','Emboite','Pirouette','TechnicalFinish','Devilment','Tilana','FanDanceIV','StarfallDance','FanDanceIII','ReverseCascade',
-                            'FanDance','FanDanceIII','StandardStep','Entrechat','Emboite','StandardFinish','SaberDance','FountainFall','SaberDance','Cascade','SaberDance','ReverseCascade','Fountain','Cascade','Fountain','FountainFall','StandardStep',
+        expectedActions =  ['ClosedPosition','StandardStep','Pirouette','Jete','Potion','StandardFinish','Flourish','TechnicalStep','Jete','Entrechat','Emboite','Pirouette','TechnicalFinish','Devilment','Tillana','FanDanceIV','StarfallDance','FanDanceIII','ReverseCascade',
+                            'FanDanceI','FanDanceIII','StandardStep','Entrechat','Emboite','StandardFinish','SaberDance','FountainFall','SaberDance','Cascade','SaberDance','ReverseCascade','Fountain','Cascade','Fountain','FountainFall','StandardStep',
                             'Pirouette','Jete','StandardFinish','ReverseCascade','SaberDance','Cascade','Fountain','Cascade','Flourish','SaberDance','FanDanceIV','Fountain','FountainFall','FanDanceIII','ReverseCascade','Cascade','StandardStep',
-                            'Pirouette','Jete','StandardFinish','Fountain','FountainFall','Cascade','CuringWaltz','Fountain','FountainFall','SaberDance','Cascade','ReverseCascade','Fountain','FanDance','SaberDance','TechnicalStep','Entrechat','Emboite','StandardFinish',
-                            'Cascade','ReverseCascade','FanDance','Fountain','Cascade','Fountain','Flourish','TechnicalStep','Entrechat','Pirouette','Jete','Emboite','TechnicalFinish','Devilment','SaberDance','FanDanceIV','FanDanceIII','StarfallDance','FanDance','FanDanceIII','Tilana','FanDance','SaberDance','FanDanceIII','FanDance'
-
+                            'Pirouette','Jete','StandardFinish','Fountain','FountainFall','Cascade','CuringWaltz','Fountain','FountainFall','SaberDance','Cascade','ReverseCascade','Fountain','FanDanceI','SaberDance','StandardStep','Entrechat','Emboite','StandardFinish',
+                            'Cascade','ReverseCascade','FanDanceI','Fountain','Cascade','Fountain','Flourish','TechnicalStep','Entrechat','Pirouette','Jete','Emboite','TechnicalFinish','Devilment','SaberDance','FanDanceIV','FanDanceIII','StarfallDance','FanDanceI','FanDanceIII','Tillana','FanDanceI','SaberDance','FanDanceIII','FanDanceI'
 ]                   
         failedTest = []
         for i in range(0,len(expectedActions)): 
