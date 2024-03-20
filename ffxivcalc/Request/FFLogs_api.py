@@ -243,9 +243,10 @@ class FFLogClientV2:
         ]
 
     def _process_raw_event(self, data: Dict, code: str) -> Dict:
-        if "extraAbilityGameID" in data:
+        
+        if "extraAbilityGameID" in data: # Sometime early potions appear as a weird ID with the correct value in'extraAbilityGameID'. So we copy this value if it happens here.
             data["abilityGameID"] = data["extraAbilityGameID"]
-            
+
         if "abilityGameID" in data:
             data[custom_columns.ABILITY_NAME] = self._get_ability(
                 data["abilityGameID"], code=code

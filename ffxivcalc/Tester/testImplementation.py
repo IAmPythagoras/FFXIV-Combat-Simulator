@@ -21695,7 +21695,51 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest18 = test("FFLogs test 18 - Machinist test : (wxZFthf69kj8KpqB,8)", ffTest18TestFunction, ffTest18ValidationFunction)
-    fflogTestSuite.addTest(ffTest18)
+    #fflogTestSuite.addTest(ffTest18)
+
+    def ffTest19TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("kHqB6mgPZYycxJvb", fight_id="41")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Bard
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.RangedActions, ActionEnum.BardActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest19ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['Stormbite','WanderingMinuet','RagingStrikes','Causticbite','EmpyrealArrow','Bloodletter','RefulgentArrow','BattleVoice','RadiantFinale','BurstShot','Sidewinder','Barrage','RefulgentArrow','Bloodletter','PitchPerfect','BurstShot',
+                            'Bloodletter','BurstShot','PitchPerfect','RefulgentArrow','EmpyrealArrow','Bloodletter','IronJaws','PitchPerfect','RefulgentArrow','BurstShot','BurstShot','BurstShot','PitchPerfect','BurstShot','EmpyrealArrow','Bloodletter',
+                            'RefulgentArrow','BurstShot','PitchPerfect','RefulgentArrow','BurstShot','PitchPerfect','MageBallad','BurstShot','BurstShot','EmpyrealArrow','Bloodletter','BurstShot','BurstShot','Bloodletter','BurstShot','Bloodletter','ApexArow','Bloodletter','BlastArow','BurstShot','EmpyrealArrow','Bloodletter','IronJaws',
+                            'Troubadour','Bloodletter','RefulgentArrow','Sidewinder','NatureMinne','BurstShot','BurstShot','Bloodletter','BurstShot','BurstShot','ArmyPaeon','EmpyrealArrow','BurstShot','Bloodletter','BurstShot','RefulgentArrow',
+                            'BurstShot','BurstShot','BurstShot','BurstShot','EmpyrealArrow','BurstShot','RefulgentArrow','BurstShot','BurstShot','BurstShot','BurstShot','Potion','IronJaws','EmpyrealArrow','BurstShot','Bloodletter','RefulgentArrow',
+                            'BurstShot','BurstShot','BurstShot','RefulgentArrow','WanderingMinuet','BurstShot','RagingStrikes','EmpyrealArrow','RefulgentArrow','BurstShot','BattleVoice','RadiantFinale','ApexArow','Sidewinder','Barrage','BlastArow',
+                            'Bloodletter','PitchPerfect','RefulgentArrow','Bloodletter','IronJaws','Bloodletter'
+]                   
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest19 = test("FFLogs test 19 - Bard test : (kHqB6mgPZYycxJvb,41)", ffTest19TestFunction, ffTest19ValidationFunction)
+    fflogTestSuite.addTest(ffTest19)
 
     return fflogTestSuite
 

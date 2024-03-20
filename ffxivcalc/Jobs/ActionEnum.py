@@ -734,7 +734,7 @@ class RangedActions(ActionEnum):
 # Bard
 
 class BardActions(ActionEnum):
-    RagingStrike = 101
+    RagingStrikes = 101
     Barrage = 107
     MageBallad = 114
     ArmyPaeon = 116
@@ -753,12 +753,12 @@ class BardActions(ActionEnum):
     RefulgentArrow = 7409
     Shadowbite = 16494
     BurstShot = 16495
-    ApexArrow = 16496 # Assumed to be 80 gauge
+    ApexArow = 16496 # Assumed to be 80 gauge
     Ladonsbite = 25783
     RadiantFinale = 25785
     RepellingShot = 112
-    BloodLetter = 110
-    BlastArrow = 25784
+    Bloodletter = 110
+    BlastArow = 25784
 
     # DOT
     CausticbiteDOT = -21
