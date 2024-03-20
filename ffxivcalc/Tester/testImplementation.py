@@ -21510,7 +21510,7 @@ def generateFFLogsTestSuite():
     def ffTest14ValidationFunction(testResults) -> (bool, list):
         passed = True
 
-        expectedActions =  ['Huton','Kassatsu','SpinningEdge','Potion','GustSlash','Mug','Bunshin','PhantomKamaitachi','TrickAttack','AeolianEdge','DreamWithinADream','Ten','Jin','HyoshoRanryu','Ten','Chi','Raiton','TenChiJin','Ten','Chi','Jin','Meisui','FleetingRaiju','Bhavacakra','FleetingRaiju','Bhavacakra',
+        expectedActions =  ['Huton','Suiton','Kassatsu','SpinningEdge','Potion','GustSlash','Mug','Bunshin','PhantomKamaitachi','TrickAttack','AeolianEdge','DreamWithinADream','Ten','Jin','HyoshoRanryu','Ten','Chi','Raiton','TenChiJin','Ten','Chi','Jin','Meisui','FleetingRaiju','Bhavacakra','FleetingRaiju','Bhavacakra',
                             'Ten','Chi','Raiton','FleetingRaiju','SpinningEdge','GustSlash','AeolianEdge','SpinningEdge','GustSlash','AeolianEdge','SpinningEdge','GustSlash','ArmorCrush','SpinningEdge','Bhavacakra','GustSlash','Ten','Chi','Jin',
                             'Suiton','AeolianEdge','SpinningEdge','GustSlash','AeolianEdge','Kassatsu','SpinningEdge','Bhavacakra','GustSlash','TrueNorth','AeolianEdge','TrickAttack','Ten','Jin','HyoshoRanryu','DreamWithinADream','Ten','Chi','Raiton',
                             'Bhavacakra','FleetingRaiju','Ten','Chi','Raiton','FleetingRaiju','SpinningEdge','GustSlash','ArmorCrush'
