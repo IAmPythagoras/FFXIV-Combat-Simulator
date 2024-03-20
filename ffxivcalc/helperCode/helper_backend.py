@@ -7,7 +7,7 @@ from pathlib import Path
 import math
 
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
-from ffxivcalc.Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton, Kassatsu
+from ffxivcalc.Jobs.Melee.Ninja.Ninja_Spell import Huton, Kassatsu
 from ffxivcalc.Jobs.Melee.Samurai.Samurai_Spell import Meikyo
 from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
 from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import SongEffect, BattleVoice
@@ -407,14 +407,10 @@ def RestoreFightObject(data : dict, name : str = ""):
                 job_object.ActionSet.append(Grit)
             elif aura == "Iron Will":
                 job_object.ActionSet.append(IronWill)
+            elif aura == "Mudra": # This has nothing to do with Huton but if we see that aura we will give it.
+                job_object.ActionSet.append(Huton)
             elif aura == "":
                 job_object.ActionSet.append(FightOrFlight)
-            
-            elif aura == "Mudra":
-                #Will also assume huton has been done
-                ApplyHuton(job_object, None) #Giving Huton
-                #If mudra is detected, we will assume we have casted it for Suiton
-                job_object.CurrentRitual = [0,1,2]
             elif aura == "Eukrasia":
                 job_object.ActionSet.append(Eukrasia)
             elif aura == "Standard Step":
