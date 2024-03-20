@@ -215,7 +215,6 @@ class AstrologianActions(ActionEnum):
     CelestialOpposition = 16553
     CelestialIntersection = 16556
     Horoscope = 16558
-    Horoscope = 16557
     Exaltation = 25873
     Macrocosmos = 25874
     Microcosmos = 17

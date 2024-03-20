@@ -21270,7 +21270,7 @@ def generateFFLogsTestSuite():
         expectedActions =  ['Draw','EarthlyStar','Potion','Malefic','Lightspeed', 'Combust','Balance','Draw','Malefic','MinorArcana','Ewer','Malefic','Divination',
                             'Draw','Malefic','Spear','Astrodyne','Malefic','LordOfCrown','Malefic','StellarDetonation','Malefic','Malefic','Malefic','Malefic','CollectiveUnconscious','Malefic','Malefic','Malefic',
                             'Combust','Draw','Malefic','CelestialOpposition','Malefic','LucidDreaming','Malefic','CelestialIntersection','Malefic','Exaltation','Malefic','Malefic','Malefic','Malefic','Malefic',
-                            'Malefic','Malefic','Combust','Macrocosmos','Horoscope','Malefic','Malefic','Spear','MinorArcana','Malefic','EarthlyStar','Malefic','Malefic','Malefic','Malefic','LadyOfCrown','Malefic','Draw','Malefic','Malefic','Combust',
+                            'Malefic','Malefic','Combust','Macrocosmos','Malefic','Malefic','Spear','MinorArcana','Malefic','EarthlyStar','Malefic','Malefic','Malefic','Malefic','LadyOfCrown','Malefic','Draw','Malefic','Malefic','Combust',
                             'Malefic','Malefic','Malefic','LucidDreaming','Malefic','CelestialOpposition','Malefic','Malefic','CelestialIntersection','Malefic','Malefic','CelestialIntersection','Malefic','CollectiveUnconscious','Malefic','Malefic','Combust',
                             'Bole','Malefic','Lightspeed','Malefic','Draw','Divination','Malefic','Ewer','Astrodyne','Malefic','Draw','MinorArcana','Malefic','Balance','EarthlyStar','Malefic','Malefic']
         failedTest = []
@@ -21282,7 +21282,86 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest8 = test("FFLogs test 8 - Astrologian test : (L2tQ41WZCPbYa7wX,2)", ffTest8TestFunction, ffTest8ValidationFunction)
-    fflogTestSuite.addTest(ffTest8)
+    #fflogTestSuite.addTest(ffTest8)
+
+    def ffTest9TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("ZDamRAJ7dqzCW816", fight_id="1")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Gunbreaker
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.TankActions, ActionEnum.GunbreakerActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest9ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['KeenEdge','NoMercy','Bloodfest','GnashingFang','JugularRip','BlastingZone','SonicBreak','RoughDivide','BowShock','DoubleDown','RoughDivide','SavageClaw','AbdomenTear','RoyalGuard','WickedTalon','EyeGouge','BrutalShell','SolidBarrel','BurstStrike','Hypervelocity','Reprisal','KeenEdge','BrutalShell','SolidBarrel','KeenEdge','Rampart','Camouflage',
+                            'GnashingFang','JugularRip','BlastingZone','SavageClaw','AbdomenTear','WickedTalon','EyeGouge','BrutalShell','Provoke','SolidBarrel','HeartOfCorundum','KeenEdge','BrutalShell','SolidBarrel','Shirk','KeenEdge','BrutalShell',
+                            'SolidBarrel','KeenEdge','NoMercy','GnashingFang','JugularRip','BlastingZone','SonicBreak','RoughDivide','BowShock','DoubleDown','RoughDivide','SavageClaw','AbdomenTear','WickedTalon','EyeGouge']
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+            failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest9 = test("FFLogs test 9 - Gunbreaker test : (ZDamRAJ7dqzCW816,1)", ffTest9TestFunction, ffTest9ValidationFunction)
+    #fflogTestSuite.addTest(ffTest9)
+
+    def ffTest10TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("ZDamRAJ7dqzCW816", fight_id="1")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Warrior
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.TankActions, ActionEnum.WarriorActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest10ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['Defiance','Tomahawk','Infuriate','Vengeance','HeavySwing','Maim','Potion','StormEye','InnerRelease','Reprisal','InnerChaos','Infuriate','InnerChaos','Upheaval','Onslaught','PrimalRend','Onslaught','FellCleave','FellCleave',
+                            'Onslaught','FellCleave','HeavySwing','Maim','StormPath','FellCleave','Infuriate','InnerChaos','Rampart','HeavySwing','ThrillOfBattle','Maim','StormEye','Upheaval','HeavySwing','NascentFlash','Maim','StormPath','Provoke',
+                            'FellCleave','HeavySwing','Maim','StormPath','HeavySwing','Maim','StormEye','InnerRelease','FellCleave','Onslaught','PrimalRend','Upheaval','FellCleave','Infuriate','InnerChaos','FellCleave','FellCleave'
+]
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+            failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest10 = test("FFLogs test 10 - Warrior test : (ZDamRAJ7dqzCW816,1)", ffTest10TestFunction, ffTest10ValidationFunction)
+    fflogTestSuite.addTest(ffTest10)
 
     return fflogTestSuite
 

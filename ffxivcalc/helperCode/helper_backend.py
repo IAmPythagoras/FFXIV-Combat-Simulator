@@ -25,6 +25,7 @@ from ffxivcalc.Jobs.Melee.Dragoon.Dragoon_Spell import LifeSurge, LanceCharge, B
 from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import Acceleration, Embolden
 from ffxivcalc.Jobs.Caster.Summoner.Summoner_Spell import SearingLight
 from ffxivcalc.Jobs.Healer.Whitemage.Whitemage_Spell import PresenceOfMind
+from ffxivcalc.Jobs.Tank.Tank_Spell import Defiance, Grit, IronWill, RoyalGuard
 
 from ffxivcalc.Fight import Fight
 from ffxivcalc.Enemy import Enemy
@@ -398,14 +399,14 @@ def RestoreFightObject(data : dict, name : str = ""):
                 job_object.ActionSet.append(Draw)
             elif aura == "Earthly Dominance":
                 job_object.ActionSet.append(EarthlyStar)
-            elif aura == "":
-                job_object.ActionSet.append(FightOrFlight)
-            elif aura == "":
-                job_object.ActionSet.append(FightOrFlight)
-            elif aura == "":
-                job_object.ActionSet.append(FightOrFlight)
-            elif aura == "":
-                job_object.ActionSet.append(FightOrFlight)
+            elif aura == "Defiance":
+                job_object.ActionSet.append(Defiance)
+            elif aura == "Royal Guard":
+                job_object.ActionSet.append(RoyalGuard)
+            elif aura == "Grit":
+                job_object.ActionSet.append(Grit)
+            elif aura == "Iron Will":
+                job_object.ActionSet.append(IronWill)
             elif aura == "":
                 job_object.ActionSet.append(FightOrFlight)
             

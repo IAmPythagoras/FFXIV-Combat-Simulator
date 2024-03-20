@@ -336,7 +336,11 @@ AURA_MAPPINGS = {
     "Ewer Drawn": "Ewer Drawn",
     "Spire Drawn": "Spire Drawn",
     "Spear Drawn": "Spear Drawn",
-    "Bole Drawn": "Bole Drawn"
+    "Bole Drawn": "Bole Drawn",
+    "Royal Guard" : "Royal Guard",
+    "Grit" : "Grit",
+    "Iron Will" : "Iron Will",
+    "Defiance" : "Defiance"
 }
 
 
