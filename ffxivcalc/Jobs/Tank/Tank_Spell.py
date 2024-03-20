@@ -209,6 +209,7 @@ TankAbility = {
 34590541 : Potion,
 34592395 : Potion,
 34594159 : Potion, 
+34594248 : Potion, # Idk what potion this is.
 -2 : Potion,
 1111 : TankLB1,
 1112 : TankLB2,

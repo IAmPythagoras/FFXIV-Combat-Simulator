@@ -21349,7 +21349,7 @@ def generateFFLogsTestSuite():
         passed = True
 
         expectedActions =  ['Defiance','Tomahawk','Infuriate','Vengeance','HeavySwing','Maim','Potion','StormEye','InnerRelease','Reprisal','InnerChaos','Infuriate','InnerChaos','Upheaval','Onslaught','PrimalRend','Onslaught','FellCleave','FellCleave',
-                            'Onslaught','FellCleave','HeavySwing','Maim','StormPath','FellCleave','Infuriate','InnerChaos','Rampart','HeavySwing','ThrillOfBattle','Maim','StormEye','Upheaval','HeavySwing','NascentFlash','Maim','StormPath','Provoke',
+                            'Onslaught','FellCleave','HeavySwing','Maim','StormPath','FellCleave','Infuriate','InnerChaos','Rampart','HeavySwing','ThrillOfBattle','Maim','StormEye','Upheaval','HeavySwing','Bloodwhetting','Maim','StormPath','Provoke',
                             'FellCleave','HeavySwing','Maim','StormPath','HeavySwing','Maim','StormEye','InnerRelease','FellCleave','Onslaught','PrimalRend','Upheaval','FellCleave','Infuriate','InnerChaos','FellCleave','FellCleave'
 ]
         failedTest = []
@@ -21361,7 +21361,48 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest10 = test("FFLogs test 10 - Warrior test : (ZDamRAJ7dqzCW816,1)", ffTest10TestFunction, ffTest10ValidationFunction)
-    fflogTestSuite.addTest(ffTest10)
+    #fflogTestSuite.addTest(ffTest10)
+
+    def ffTest11TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("c8Y7D6GZ1r9fbjaT", fight_id="1")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Paladin
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.TankActions, ActionEnum.PaladinActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest11ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['HolySpirit','FastBlade','Potion','RiotBlade','FightOrFlight','Requiescat','GoringBlade','Expiacion','CircleOfScorn','RoyalAuthority','Intervene','IronWill','Confiteor','Intervene','BladeOfFaith','BladeOfTruth','BladeOfValor',
+                            'HolySpirit','Reprisal','Atonement','Atonement','Atonement','FastBlade','RiotBlade','Rampart','Sentinel','RoyalAuthority','Expiacion','CircleOfScorn','FastBlade','RiotBlade','Provoke','HolySheltron','Atonement','Atonement',
+                            'Atonement','HolySpirit','Shirk','RoyalAuthority','FastBlade','RiotBlade','Atonement','Atonement','FightOrFlight','Requiescat','GoringBlade','Expiacion','Intervene','Confiteor','CircleOfScorn','Intervene','BladeOfFaith',
+                            'BladeOfTruth','BladeOfValor','HolySpirit','Intervention'
+]
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+            failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest11 = test("FFLogs test 11 - Paladin test : (c8Y7D6GZ1r9fbjaT,1)", ffTest11TestFunction, ffTest11ValidationFunction)
+    fflogTestSuite.addTest(ffTest11)
 
     return fflogTestSuite
 

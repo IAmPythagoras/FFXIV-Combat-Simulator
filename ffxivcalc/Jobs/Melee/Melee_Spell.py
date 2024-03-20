@@ -151,6 +151,7 @@ MeleeAbility = {
 34590542 : Potion,   #DEX,
 34592395 : Potion, # STR 7
 34592396 : Potion, # DEX 7
+34594159 : Potion, # STR 8
 -2 : Potion,
 1111 : MeleeLB1,
 1112 : MeleeLB2,
