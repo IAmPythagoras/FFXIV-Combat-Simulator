@@ -69,7 +69,7 @@ def ffxiv_sim_view(event_data: pd.DataFrame) -> Iterator:
         (event_data["type"] == "cast")
         & (event_data[custom_columns.SOURCE_TYPE] == "Player")
         | (event_data.index == event_data['abilityGameID'].dropna().index[0])
-        | (event_data.index == event_data[event_data['type'] == 'applybuff'].index[0])
+        | ((event_data.index == event_data[event_data['type'] == 'applybuff'].index[0]) & (event_data.index < event_data[event_data['type'] == 'cast'].index[0]))
     ]
     
     # If first damage event then cast is not present and only calculated damage is.
