@@ -374,7 +374,7 @@ class FFLogClientV2:
                     for ability in ids_to_abilities.values()
                 },
             }
-        game_data.update_ability_ids_to_names(updates)
+        #game_data.update_ability_ids_to_names(updates)
 
     def get_raw_events_from_fight(
         self, code: str, fight: Dict, fight_type: str = "Kills", show_progress : bool = False
