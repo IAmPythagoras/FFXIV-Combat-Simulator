@@ -11,6 +11,7 @@ from ffxivcalc.Jobs.Melee.Ninja.Ninja_Spell import Huton, Kassatsu
 from ffxivcalc.Jobs.Melee.Samurai.Samurai_Spell import Meikyo
 from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
 from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import SongEffect, BattleVoice
+from ffxivcalc.Jobs.Ranged.Machinist.Machinist_Spell import Reassemble
 from ffxivcalc.Jobs.Tank.DarkKnight.DarkKnight_Spell import BloodWeaponCheck, BloodWeaponEffect, Delirium, BloodWeapon, TBN
 from ffxivcalc.Jobs.Tank.Warrior.Warrior_Spell import SurgingTempestEffect, InnerRelease
 from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
@@ -409,8 +410,8 @@ def RestoreFightObject(data : dict, name : str = ""):
                 job_object.ActionSet.append(IronWill)
             elif aura == "Mudra": # This has nothing to do with Huton but if we see that aura we will give it.
                 job_object.ActionSet.append(Huton)
-            elif aura == "":
-                job_object.ActionSet.append(FightOrFlight)
+            elif aura == "Reassembled":
+                job_object.ActionSet.append(Reassemble)
             elif aura == "Eukrasia":
                 job_object.ActionSet.append(Eukrasia)
             elif aura == "Standard Step":

@@ -21570,7 +21570,132 @@ def generateFFLogsTestSuite():
         return passed , failedTest
 
     ffTest15 = test("FFLogs test 15 - Dhedge test : (j4WazfhqMvgd1LJY,10)", ffTest15TestFunction, ffTest15ValidationFunction)
-    fflogTestSuite.addTest(ffTest15)
+    #fflogTestSuite.addTest(ffTest15)
+
+    def ffTest16TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("j4WazfhqMvgd1LJY", fight_id="10")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Samurai
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.MeleeActions, ActionEnum.SamuraiActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest16ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['Meikyo','Gekko','Potion','Kasha','Ikishoten','Yukikaze','Feint','Midare','Senei','KaeshiSetsugekka','ThirdEye','Meikyo','Kasha','Gyoten','Shinten','Higanbana','Shinten','OgiNamikiri','Shoha','KaeshiNamikiri','Gekko','Shinten',
+                            'Kasha','Gyoten','Hakaze','Yukikaze','ThirdEye','Shinten','Midare','KaeshiSetsugekka','Hakaze','Yukikaze','Hakaze','Shifu','Kasha','Hakaze','Shinten','Jinpu','Shinten','Gekko','Midare','Hakaze','Yukikaze','Hakaze','Shinten','Shifu',
+                            'Kasha','ThirdEye','Hakaze','Jinpu','Shinten','Gekko','Shinten','Midare','Meikyo','Kasha','Shoha','Higanbana','Gekko','ThirdEye','Kasha','Hakaze','Shinten','Yukikaze','Shinten','Midare','Shinten','KaeshiSetsugekka'
+
+]                   
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest16 = test("FFLogs test 16 - Samurai test : (j4WazfhqMvgd1LJY,10)", ffTest16TestFunction, ffTest16ValidationFunction)
+    #fflogTestSuite.addTest(ffTest16)
+
+    def ffTest17TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("C176W2JQNqKYd4FR", fight_id="15")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Dragoon
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.MeleeActions, ActionEnum.DragoonActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest17ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['ElusiveJump','TrueThrust','Disembowel','LanceCharge','DragonSight','ChaoticSpring','BattleLitany','Geirskogul','WheelingThrust','HighJump','LifeSurge','FangAndClaw','SpineshatterDive','DragonFireDive','RaidenThrust',
+                            'SpineshatterDive','MirageDive','VorpalThrust','LifeSurge','HeavenThrust','FangAndClaw','Feint','WheelingThrust','RaidenThrust','WyrmwindThrust','Disembowel','ChaoticSpring','WheelingThrust','FangAndClaw','Geirskogul',
+                            'RaidenThrust','HighJump','MirageDive','VorpalThrust','HeavenThrust','FangAndClaw','WheelingThrust','RaidenThrust','WyrmwindThrust','Disembowel','ChaoticSpring','WheelingThrust','FangAndClaw','RaidenThrust','LanceCharge',
+                            'VorpalThrust','LifeSurge','Geirskogul','HeavenThrust','Nastrond','HighJump','FangAndClaw','MirageDive','WheelingThrust','Stardiver','RaidenThrust','WyrmwindThrust','Disembowel','Nastrond','TrueNorth','ChaoticSpring',
+                            'WheelingThrust','FangAndClaw','RaidenThrust','Nastrond','VorpalThrust','HeavenThrust'
+
+]                   
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+            failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest17 = test("FFLogs test 17 - Dragoon test : (C176W2JQNqKYd4FR,15)", ffTest17TestFunction, ffTest17ValidationFunction)
+    #fflogTestSuite.addTest(ffTest17)
+
+    def ffTest18TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("wxZFthf69kj8KpqB", fight_id="8")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Machinist
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.RangedActions, ActionEnum.MachinistActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest18ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['Reassemble','Potion','AirAnchor','Ricochet','GaussRound','Drill','BarrelStabilizer','SplitShot','Dismantle','SlugShot','Ricochet','GaussRound','CleanShot','Reassemble','Wildfire','ChainSaw','Automaton','Hypercharge',
+                            'HeatBlast','Ricochet','HeatBlast','GaussRound','HeatBlast','Ricochet','HeatBlast','GaussRound','HeatBlast','Ricochet','Drill','GaussRound','Ricochet','SplitShot','GaussRound','SlugShot','CleanShot','SplitShot','SlugShot',
+                            'CleanShot','AirAnchor','Drill','SplitShot','SlugShot','CleanShot','SplitShot','SlugShot','Automaton','CleanShot','SplitShot','Ricochet','Tactician','Drill','GaussRound','Hypercharge','HeatBlast','Ricochet','HeatBlast','GaussRound',
+                            'HeatBlast','Ricochet','HeatBlast','GaussRound','HeatBlast','Reassemble','ChainSaw','Ricochet','GaussRound'
+]                   
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+            failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest18 = test("FFLogs test 18 - Machinist test : (wxZFthf69kj8KpqB,8)", ffTest18TestFunction, ffTest18ValidationFunction)
+    fflogTestSuite.addTest(ffTest18)
 
     return fflogTestSuite
 

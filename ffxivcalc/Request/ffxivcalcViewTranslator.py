@@ -340,7 +340,8 @@ AURA_MAPPINGS = {
     "Royal Guard" : "Royal Guard",
     "Grit" : "Grit",
     "Iron Will" : "Iron Will",
-    "Defiance" : "Defiance"
+    "Defiance" : "Defiance",
+    "Reassembled" : "Reassembled"
 }
 
 
