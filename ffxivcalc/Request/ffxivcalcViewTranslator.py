@@ -42,7 +42,7 @@ import os.path
 from typing import Iterator, Dict, Union, Set, List
 
 import pandas as pd
-import yaml
+#import yaml
 from ffxivcalc.Jobs import ActionEnum
 
 from ffxivcalc.Request.etro_request import get_gearset_data
@@ -388,14 +388,14 @@ SOURCE_SUBTYPE_TO_ENUMS = {
 }
 
 
-@functools.cache
-def get_yaml_schema(file_name: str) -> Dict:
-    with open(file_name, "r") as file:
-        return yaml.safe_load(file)
+#@functools.cache
+#def get_yaml_schema(file_name: str) -> Dict:
+#    with open(file_name, "r") as file:
+#        return yaml.safe_load(file)
 
 
-def get_default_etro_url(job_name: str) -> str:
-    """Inner helper to handle all the edge-cases."""
-    return get_yaml_schema(
-        os.path.join("main", "calc", "comps", "default.yaml")
-    )["6.4"][custom_columns.TARGET_SUBTYPE_TO_JOB[job_name]]
+#def get_default_etro_url(job_name: str) -> str:
+#    """Inner helper to handle all the edge-cases."""
+#    return get_yaml_schema(
+#        os.path.join("main", "calc", "comps", "default.yaml")
+#    )["6.4"][custom_columns.TARGET_SUBTYPE_TO_JOB[job_name]]
