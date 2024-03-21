@@ -301,6 +301,14 @@ if findBiS:
     optimal, random, text = BiSSolver(Event, GearSpace,materiaSpace, foodSpace,PercentileToOpt=["exp"], randomIteration=100, mendSpellSpeed=True,minSPDValue=800,maxSPDValue=900, useNewAlgo=True, 
                                 oversaturationIterationsPreGear=1, oversaturationIterationsPostGear=1,findOptMateriaGearBF=True,swapDHDetBeforeSpeed=True, minPiety=0)
     
+# Sample code for importing fight from FFlogs
+if False:
+    from ffxivcalc.helperCode.helper_backend import RestoreFightObject
+    from ffxivcalc.Request.FFLogs_api import getSingleFightData
+
+    data = getSingleFightData("", "", "YbDaH9C6dNVJAh8T",
+                          "67", showProgress=True)
+    RestoreFightObject(data)
 
 #if False:
 #    from ffxivcalc.GearSolver.Gear import GearSet
