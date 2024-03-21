@@ -1,3 +1,8 @@
+"""
+This code was written by Apollo (apollo.van.waddleburg on discord) and adapted to fit the needs of the sim.
+"""
+
+
 """Defines and documents all custom columns in the data."""
 
 # Not custom, but used a lot so recorded

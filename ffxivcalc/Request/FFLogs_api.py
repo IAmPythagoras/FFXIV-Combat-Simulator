@@ -1,3 +1,7 @@
+"""
+This code was written by Apollo (apollo.van.waddleburg on discord) and adapted to fit the needs of the sim.
+"""
+
 """Fetches log data from a fflogs URL."""
 import logging
 import os
@@ -9,10 +13,29 @@ import python_graphql_client
 import pandas as pd
 
 from ffxivcalc.Request import custom_columns
-from ffxivcalc.Request import game_data
 from ffxivcalc.helperCode.exceptions import invalidFFLogsFightId, invalidFFLogsQuery
-
+from ffxivcalc.Request.ffxivcalcViewTranslator import ffxiv_sim_view
 LOG = logging.getLogger(__name__)
+
+def getSingleFightData(clientId : str, clientSecret : str, code : str, id : str, showProgress : bool = False) -> Dict:
+    """Gets a fight data from fflog and returns the data corresponding to that fight in a format ffxivcalc can use.
+
+    clientId : str - Your client Id from fflogs.
+    clientSecret : str - Your client secret from fflogs.
+    code : str - Code of the fights record.
+    id : str - Id of the fight.
+    showProgress : bool = False - If true a progress bar will be shown.
+    """
+
+    os.environ["FFLOGS_CLIENT_ID"] = clientId
+    os.environ["FFLOGS_CLIENT_SECRET"] = clientSecret
+    client = FFLogClientV2()
+
+    for rawFight in client.stream_fight_events(code, fight_id=id, show_progress=showProgress):
+        df = get_fflog_events_dataframe(rawFight[1])
+        view = ffxiv_sim_view(df)
+        for fight in view:
+            return fight[1]
 
 
 def get_auth_token() -> str:

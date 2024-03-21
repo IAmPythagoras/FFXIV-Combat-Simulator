@@ -1,3 +1,7 @@
+"""
+This code was written by Apollo (apollo.van.waddleburg on discord) and adapted to fit the needs of the sim.
+"""
+
 """Defines utilities for determining important prepull buffs from fflogs."""
 import logging
 from typing import List

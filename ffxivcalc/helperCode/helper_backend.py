@@ -30,7 +30,7 @@ from ffxivcalc.Jobs.Tank.Tank_Spell import Defiance, Grit, IronWill, RoyalGuard
 
 from ffxivcalc.Fight import Fight
 from ffxivcalc.Enemy import Enemy
-from ffxivcalc.Request.FFLogsAPIRequest import getAbilityList, lookup_abilityID
+from ffxivcalc.helperCode.lookUpAbilityID import lookup_abilityID
 from ffxivcalc.Jobs.Base_Spell import Potion, WaitAbility
 from ffxivcalc.Jobs.Player import Player
 from ffxivcalc.Jobs.PlayerEnum import *
@@ -79,7 +79,8 @@ GNBStat = {"MainStat": 2891, "WD":126, "Det" : 1883, "Ten" : 631, "SS": 400, "Sk
 # ============================================================================================
 
 def ImportFightBackend(fightID,fightNumber):
-
+    """This function is to no longer be used."""
+    return 
     Event = Fight(Enemy(), False) #Creating event
     helper_logging.debug("Constructing Event object from FFLogs link.")
     action_dict, player_dict = getAbilityList(fightID, fightNumber) #getting ability List

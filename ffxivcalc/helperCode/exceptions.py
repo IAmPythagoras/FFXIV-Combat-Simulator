@@ -190,3 +190,13 @@ class invalidFFLogsQuery(Exception):
 
     def __str__(self) -> str:
         return f'{self.message}'
+    
+class outDatedFFLogsCode(Exception):
+    # Exception is raised when the user imports the FFLogsAPIRequest module.
+    def __init__(self):
+
+        self.message = "The module 'FFLogsAPIRequest' is no longer up to date. Use 'FFLogs_api' instead."
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'
