@@ -19,7 +19,8 @@ LOG = logging.getLogger(__name__)
 
 def getSingleFightData(clientId : str, clientSecret : str, code : str, id : str, showProgress : bool = False) -> Dict:
     """Gets a fight data from fflog and returns the data corresponding to that fight in a format ffxivcalc can use.
-
+       Errors will be diplayed.
+       
     clientId : str - Your client Id from fflogs.
     clientSecret : str - Your client secret from fflogs.
     code : str - Code of the fights record.

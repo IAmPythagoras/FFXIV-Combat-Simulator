@@ -1,5 +1,6 @@
 # -- coding: utf-8 --
 """
+THIS CODE IS OUT OF DATE. USE FFLogs_api.py INSTEAD. IMPORTING THIS MODULE WILL RESULT IN AN ERROR.
 
 @author: Bri
 

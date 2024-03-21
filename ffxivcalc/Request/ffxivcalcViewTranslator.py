@@ -166,6 +166,7 @@ def ffxiv_sim_view(event_data: pd.DataFrame) -> Iterator:
 
 # Hard ignore on these events.
 _IGNORE_IDS = {
+    3, # Sprint
     7, # Autos
     8, # Autos
     33218, # Techbuff event
