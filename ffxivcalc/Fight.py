@@ -154,6 +154,8 @@ class Fight:
         self.ExtractInfo = DefaultExtractInfo
 
     def AddPlayer(self, Players):
+        """This function adds the given player list to the fight's playerList.
+        """
         for player in Players:
             player.CurrentFight = self
             self.PlayerList.append(player)
@@ -263,8 +265,6 @@ class Fight:
         TimeUnit : float -> unit at which the simulator will advance through time in the simulation
         TimeLimit : float -> time limit at which the simulator will stop
         vocal : bool -> True if we want to print out the results
-        verbose (bool) -> True if we want the fight to record logs. The log file will be saved in the same folder the python script was executed from
-        loglevel (str) -> level at which we want the logging to record.
         PPSGraph (bool) = True -> If we want the PPS graph to be next to the DPS graph
         MaaxTeamBonus (bool) = False -> If true, gives the 5% bonus regardless of team comp
         showProgress (bool) = True -> If true show fight progress bar. Still computes the Pb even if false.
@@ -506,6 +506,8 @@ class Fight:
 
         # Post fight computations
 
+        if self.TimeStamp == 0 : self.TimeStamp = 1 # This is to fix any divide by zero error.
+
         remove = []
 
         for i in range(len(self.PlayerList)):  
@@ -523,11 +525,12 @@ class Fight:
 
         if self.wipe:
             # If the simulation ran into a problem caused by a failed requirement.
-            result_str = "The simulation ran into a problem. You can disable requirements by setting its value to 'False' in the JSON file.\n" + "=================\n"
+            result_str = "The simulation ran into a problem. You can disable requirements by setting 'Fight.RequirementOn' to 'False'.\n" + "=================\nList of failed fatal requirements : \n"
+
             for t in self.failedRequirementList: # Printing the failed requirement if it was fatal
                 if t.fatal : 
                     result_str += (
-                        "Failed Fatal Requirement : " + t.requirementName + " Timestamp : " + str(t.timeStamp)
+                        "Failed Fatal Requirement : " + t.requirementName + " Timestamp : " + str(t.timeStamp) + "\n"
                         )
                              # Recording final HP value of players
         for gamer in self.PlayerList:
@@ -542,7 +545,7 @@ class Fight:
         if computeGraph : result, fig = PrintResult(self, self.TimeStamp, self.timeValue, PPSGraph=PPSGraph)
         else : result, fig = "", None
         if vocal:
-            print(result) 
+            print(result_str + ("\n" if len(result_str) > 0 else "") + result) 
             if self.ShowGraph : 
                 if fig != None:
                     try:

@@ -144,6 +144,7 @@ CasterAbility = {
 25880 : Sleep,
 34590544 : Potion, #Grade 6
 34592398 : Potion, # Grade 7
+34594162 : Potion, # Grade 8
 -2 : Potion,
 1111 : CasterLB1,
 1112 : CasterLB2,

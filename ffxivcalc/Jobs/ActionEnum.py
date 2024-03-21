@@ -130,6 +130,7 @@ class SummonerActions(ActionEnum):
     FountainOfFire = 16514
     BrandOfPurgatory = 16515
     EnkindlePhoenix = 16516
+    Rekindle = 25830
     Ifrit = 25838
     Ruby = 25823
     RubyCatastrophe = 25832
@@ -150,6 +151,7 @@ class SummonerActions(ActionEnum):
     Physick = 16230
     Resurrection = 173
     Summon = 7427
+    RadiantAegis = 25799
 
     # Pet action
     SummonEnkindle = -17
@@ -319,7 +321,7 @@ class WhiteMageActions(ActionEnum):
     Temperance = 16536
     Aquaveil = 25861
     Bell = 25862
-    PlenaryIndulgence = 19
+    PlenaryIndulgence = 7433
     Raise = 125
 
     # DOT
@@ -643,7 +645,7 @@ class NinjaActions(ActionEnum):
 # Monk
 
 class MonkActions(ActionEnum):
-    BootShine = 53
+    Bootshine = 53
     TrueStrike = 54
     Demolish = 66
     DragonKick = 74
@@ -732,7 +734,7 @@ class RangedActions(ActionEnum):
 # Bard
 
 class BardActions(ActionEnum):
-    RagingStrike = 101
+    RagingStrikes = 101
     Barrage = 107
     MageBallad = 114
     ArmyPaeon = 116
@@ -751,12 +753,12 @@ class BardActions(ActionEnum):
     RefulgentArrow = 7409
     Shadowbite = 16494
     BurstShot = 16495
-    ApexArrow = 16496 # Assumed to be 80 gauge
+    ApexArow = 16496 # Assumed to be 80 gauge
     Ladonsbite = 25783
     RadiantFinale = 25785
     RepellingShot = 112
-    BloodLetter = 110
-    BlastArrow = 25784
+    Bloodletter = 110
+    BlastArow = 25784
 
     # DOT
     CausticbiteDOT = -21
@@ -787,6 +789,7 @@ class MachinistActions(ActionEnum):
     GaussRound = 2874
     Ricochet = 2890
     Reassemble = 2876
+    Dismantle = 2887
 
     # Queen actions
     Bunker = 15
@@ -821,7 +824,7 @@ class DancerActions(ActionEnum):
     Fountain = 15990
     Cascade = 15989
     TechnicalFinish = 16004
-    StandardFinish = 16003
+    StandardFinish = 16192
     ImprovisedFinish = 25789
     Ending = 18073
     Tillana = 25790

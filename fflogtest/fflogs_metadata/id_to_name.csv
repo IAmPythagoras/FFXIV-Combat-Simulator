@@ -1,0 +1,955 @@
+,abilityGameID,ability_name
+0,0,Unknown Ability
+1,3,Sprint
+2,4,Mount
+3,5,Teleport
+4,6,Return
+5,7,attack
+6,8,Shot
+7,9,Fast Blade
+8,15,Riot Blade
+9,17,Sentinel
+10,20,Fight or Flight
+11,23,Circle of Scorn
+12,24,Shield Lob
+13,28,Iron Will
+14,31,Heavy Swing
+15,37,Maim
+16,40,Thrill of Battle
+17,41,Overpower
+18,42,Storm's Path
+19,43,Holmgang
+20,44,Vengeance
+21,45,Storm's Eye
+22,46,Tomahawk
+23,48,Defiance
+24,52,Infuriate
+25,53,Bootshine
+26,54,True Strike
+27,56,Snap Punch
+28,61,Twin Snakes
+29,66,Demolish
+30,69,Perfect Balance
+31,70,Rockbreaker
+32,74,Dragon Kick
+33,101,Raging Strikes
+34,107,Barrage
+35,110,Bloodletter
+36,114,Mage's Ballad
+37,116,Army's Paeon
+38,117,Rain of Death
+39,118,Battle Voice
+40,125,Raise
+41,131,Cure III
+42,133,Medica II
+43,135,Cure II
+44,136,Presence of Mind
+45,137,Regen
+46,140,Benediction
+47,141,Fire
+48,149,Transpose
+49,152,Fire III
+50,153,Thunder III
+51,154,Blizzard III
+52,157,Manaward
+53,158,Manafont
+54,173,Resurrection
+55,181,Fester
+56,197,Shield Wall
+57,819,Choco Kick
+58,820,Choco Drop
+59,822,Choco Rush
+60,823,Choco Beak
+61,826,Choco Surge
+62,827,Choco Cure
+63,828,Choco Regen
+64,870,attack
+65,871,attack
+66,872,attack
+67,972,Scathe
+68,1302,Regeneration
+69,2240,Spinning Edge
+70,2241,Shade Shift
+71,2242,Gust Slash
+72,2245,Hide
+73,2248,Mug
+74,2254,Death Blossom
+75,2255,Aeolian Edge
+76,2258,Trick Attack
+77,2259,Ten
+78,2261,Chi
+79,2262,Shukuchi
+80,2264,Kassatsu
+81,2265,Fuma Shuriken
+82,2267,Raiton
+83,2269,Huton
+84,2271,Suiton
+85,2469,unknown_9a5
+86,2470,unknown_9a6
+87,3538,Goring Blade
+88,3539,Royal Authority
+89,3540,Divine Veil
+90,3545,Elixir Field
+91,3546,Meditation
+92,3547,the Forbidden Chakra
+93,3549,Fell Cleave
+94,3552,Equilibrium
+95,3558,Empyreal Arrow
+96,3559,the Wanderer's Minuet
+97,3560,Iron Jaws
+98,3562,Sidewinder
+99,3563,Armor Crush
+100,3566,Dream Within a Dream
+101,3569,Asylum
+102,3570,Tetragrammaton
+103,3571,Assize
+104,3573,Ley Lines
+105,3574,Sharpcast
+106,3576,Blizzard IV
+107,3577,Fire IV
+108,3579,Ruin III
+109,3582,Deathflare
+110,3590,Draw
+111,3593,Redraw
+112,3601,Aspected Helios
+113,3603,Ascend
+114,3606,Lightspeed
+115,3613,Collective Unconscious
+116,3614,Essential Dignity
+117,3617,Hard Slash
+118,3623,Syphon Strike
+119,3624,Unmend
+120,3625,Blood Weapon
+121,3629,Grit
+122,3632,Souleater
+123,3634,Dark Mind
+124,3636,Shadow Wall
+125,3638,Living Dead
+126,3639,Salted Earth
+127,3640,Plunge
+128,3643,Carve and Spit
+129,4262,Form Shift
+130,4401,the Balance
+131,4402,the Arrow
+132,4403,the Spear
+133,4404,the Bole
+134,4405,the Ewer
+135,4406,the Spire
+136,7382,Intervention
+137,7383,Requiescat
+138,7384,Holy Spirit
+139,7385,Passage of Arms
+140,7386,Onslaught
+141,7387,Upheaval
+142,7388,Shake It Off
+143,7389,Inner Release
+144,7390,Delirium
+145,7392,Bloodspiller
+146,7393,The Blackest Night
+147,7394,Riddle of Earth
+148,7395,Riddle of Fire
+149,7396,Brotherhood
+150,7402,Bhavacakra
+151,7403,Ten Chi Jin
+152,7404,Pitch Perfect
+153,7405,Troubadour
+154,7406,Caustic Bite
+155,7407,Stormbite
+156,7408,Nature's Minne
+157,7409,Refulgent Arrow
+158,7421,Triplecast
+159,7426,Ruin IV
+160,7427,Summon Bahamut
+161,7428,Wyrmwave
+162,7429,Enkindle Bahamut
+163,7430,Thin Air
+164,7432,Divine Benison
+165,7433,Plenary Indulgence
+166,7439,Earthly Star
+167,7440,Stellar Burst
+168,7441,Stellar Explosion
+169,7443,Minor Arcana
+170,7444,Lord of Crowns
+171,7445,Lady of Crowns
+172,7449,Akh Morn
+173,7477,Hakaze
+174,7478,Jinpu
+175,7479,Shifu
+176,7480,Yukikaze
+177,7481,Gekko
+178,7482,Kasha
+179,7486,Enpi
+180,7487,Midare Setsugekka
+181,7489,Higanbana
+182,7490,Hissatsu: Shinten
+183,7492,Hissatsu: Gyoten
+184,7493,Hissatsu: Yaten
+185,7495,Hagakure
+186,7497,Meditate
+187,7498,Third Eye
+188,7499,Meikyo Shisui
+189,7506,Corps-a-corps
+190,7510,Verfire
+191,7511,Verstone
+192,7514,Vercure
+193,7516,Redoublement
+194,7517,Fleche
+195,7518,Acceleration
+196,7519,Contre Sixte
+197,7520,Embolden
+198,7521,Manafication
+199,7523,Verraise
+200,7524,Jolt II
+201,7525,Verflare
+202,7526,Verholy
+203,7527,Enchanted Riposte
+204,7528,Enchanted Zwerchhau
+205,7529,Enchanted Redoublement
+206,7531,Rampart
+207,7533,Provoke
+208,7535,Reprisal
+209,7537,Shirk
+210,7538,Interject
+211,7541,Second Wind
+212,7542,Bloodbath
+213,7546,True North
+214,7548,Arm's Length
+215,7549,Feint
+216,7557,Peloton
+217,7559,Surecast
+218,7560,Addle
+219,7561,Swiftcast
+220,7562,Lucid Dreaming
+221,7861,Doom of the Living
+222,8324,Stellar Detonation
+223,15989,Cascade
+224,15990,Fountain
+225,15991,Reverse Cascade
+226,15992,Fountainfall
+227,15993,Windmill
+228,15994,Bladeshower
+229,15995,Rising Windmill
+230,15996,Bloodshower
+231,15997,Standard Step
+232,15998,Technical Step
+233,15999,Emboite
+234,16000,Entrechat
+235,16001,Jete
+236,16002,Pirouette
+237,16003,Standard Finish
+238,16005,Saber Dance
+239,16006,Closed Position
+240,16007,Fan Dance
+241,16009,Fan Dance III
+242,16010,En Avant
+243,16011,Devilment
+244,16012,Shield Samba
+245,16013,Flourish
+246,16014,Improvisation
+247,16015,Curing Waltz
+248,16137,Keen Edge
+249,16138,No Mercy
+250,16139,Brutal Shell
+251,16140,Camouflage
+252,16143,Lightning Shot
+253,16145,Solid Barrel
+254,16146,Gnashing Fang
+255,16147,Savage Claw
+256,16148,Nebula
+257,16150,Wicked Talon
+258,16151,Aurora
+259,16152,Superbolide
+260,16153,Sonic Break
+261,16154,Rough Divide
+262,16156,Jugular Rip
+263,16157,Abdomen Tear
+264,16158,Eye Gouge
+265,16159,Bow Shock
+266,16160,Heart of Light
+267,16162,Burst Strike
+268,16164,Bloodfest
+269,16165,Blasting Zone
+270,16192,Double Standard Finish
+271,16196,Quadruple Technical Finish
+272,16459,Confiteor
+273,16460,Atonement
+274,16461,Intervene
+275,16462,Mythril Tempest
+276,16464,Nascent Flash
+277,16465,Inner Chaos
+278,16468,Stalwart Soul
+279,16470,Edge of Shadow
+280,16471,Dark Missionary
+281,16472,Living Shadow
+282,16473,Four-point Fury
+283,16474,Enlightenment
+284,16476,Six-sided Star
+285,16481,Hissatsu: Senei
+286,16482,Ikishoten
+287,16486,Kaeshi: Setsugekka
+288,16487,Shoha
+289,16489,Meisui
+290,16492,Hyosho Ranryu
+291,16493,Bunshin
+292,16494,Shadowbite
+293,16495,Burst Shot
+294,16496,Apex Arrow
+295,16505,Despair
+296,16506,Umbral Soul
+297,16507,Xenoglossy
+298,16508,Energy Drain
+299,16514,Fountain of Fire
+300,16516,Enkindle Phoenix
+301,16517,Everlasting Flight
+302,16518,Revelation
+303,16519,Scarlet Flame
+304,16527,Engagement
+305,16530,Scorch
+306,16531,Afflatus Solace
+307,16532,Dia
+308,16534,Afflatus Rapture
+309,16535,Afflatus Misery
+310,16536,Temperance
+311,16552,Divination
+312,16553,Celestial Opposition
+313,16554,Combust III
+314,16556,Celestial Intersection
+315,16557,Horoscope
+316,16558,Horoscope
+317,16559,Neutral Sect
+318,17413,Spinning Edge
+319,17414,Gust Slash
+320,17415,Aeolian Edge
+321,17417,Armor Crush
+322,17904,Abyssal Drain
+323,17905,Plunge
+324,17906,Quietus
+325,17908,Edge of Shadow
+326,17909,Bloodspiller
+327,17915,Carve and Spit
+328,18073,Ending
+329,18805,Ten
+330,18806,Chi
+331,18807,Jin
+332,18873,Fuma Shuriken
+333,18874,Fuma Shuriken
+334,18877,Raiton
+335,18878,Hyoton
+336,18881,Suiton
+337,24285,Kardia
+338,24286,Prognosis
+339,24287,Egeiro
+340,24290,Eukrasia
+341,24291,Eukrasian Diagnosis
+342,24292,Eukrasian Prognosis
+343,24294,Soteria
+344,24295,Icarus
+345,24296,Druochole
+346,24298,Kerachole
+347,24299,Ixochole
+348,24300,Zoe
+349,24301,Pepsis
+350,24302,Physis II
+351,24303,Taurochole
+352,24305,Haima
+353,24309,Rhizomata
+354,24310,Holos
+355,24311,Panhaima
+356,24312,Dosis III
+357,24313,Phlegma III
+358,24314,Eukrasian Dosis III
+359,24316,Toxikon II
+360,24317,Krasis
+361,24318,Pneuma
+362,24373,Slice
+363,24374,Waxing Slice
+364,24375,Infernal Slice
+365,24378,Shadow of Death
+366,24380,Soul Slice
+367,24382,Gibbet
+368,24383,Gallows
+369,24385,Plentiful Harvest
+370,24386,Harpe
+371,24387,Soulsow
+372,24388,Harvest Moon
+373,24389,Blood Stalk
+374,24390,Unveiled Gibbet
+375,24391,Unveiled Gallows
+376,24393,Gluttony
+377,24394,Enshroud
+378,24395,Void Reaping
+379,24396,Cross Reaping
+380,24398,Communio
+381,24399,Lemure's Slice
+382,24401,Hell's Ingress
+383,24402,Hell's Egress
+384,24403,Regress
+385,24404,Arcane Crest
+386,24405,Arcane Circle
+387,24858,the End
+388,25746,Holy Sheltron
+389,25747,Expiacion
+390,25748,Blade of Faith
+391,25749,Blade of Truth
+392,25750,Blade of Valor
+393,25751,Bloodwhetting
+394,25753,Primal Rend
+395,25754,Oblation
+396,25755,Salt and Darkness
+397,25756,Salt and Darkness
+398,25757,Shadowbringer
+399,25758,Heart of Corundum
+400,25759,Hypervelocity
+401,25760,Double Down
+402,25762,Thunderclap
+403,25766,Riddle of Wind
+404,25767,Shadow of the Destroyer
+405,25768,Rising Phoenix
+406,25769,Phantom Rush
+407,25774,Phantom Kamaitachi
+408,25775,Phantom Kamaitachi
+409,25777,Forked Raiju
+410,25778,Fleeting Raiju
+411,25781,Ogi Namikiri
+412,25782,Kaeshi: Namikiri
+413,25783,Ladonsbite
+414,25784,Blast Arrow
+415,25785,Radiant Finale
+416,25789,Improvised Finish
+417,25790,Tillana
+418,25791,Fan Dance IV
+419,25792,Starfall Dance
+420,25796,Amplifier
+421,25797,Paradox
+422,25798,Summon Carbuncle
+423,25799,Radiant Aegis
+424,25801,Searing Light
+425,25805,Summon Ifrit
+426,25806,Summon Titan
+427,25807,Summon Garuda
+428,25820,Astral Impulse
+429,25823,Ruby Rite
+430,25824,Topaz Rite
+431,25825,Emerald Rite
+432,25830,Rekindle
+433,25831,Summon Phoenix
+434,25835,Crimson Cyclone
+435,25836,Mountain Buster
+436,25837,Slipstream
+437,25838,Summon Ifrit II
+438,25839,Summon Titan II
+439,25840,Summon Garuda II
+440,25841,Radiant Aegis
+441,25850,Earthen Fury
+442,25851,Aerial Blast
+443,25852,Inferno
+444,25853,Earthen Fury
+445,25854,Aerial Blast
+446,25855,Verthunder III
+447,25856,Veraero III
+448,25857,Magick Barrier
+449,25858,Resolution
+450,25859,Glare III
+451,25861,Aquaveil
+452,25862,Liturgy of the Bell
+453,25863,Liturgy of the Bell
+454,25864,Liturgy of the Bell
+455,25870,Astrodyne
+456,25871,Fall Malefic
+457,25873,Exaltation
+458,25874,Macrocosmos
+459,25875,Microcosmos
+460,25876,Huraijin
+461,25878,Forked Raiju
+462,25879,Fleeting Raiju
+463,25881,Shadowbringer
+464,25885,Crimson Strike
+465,25995,Regorge
+466,25996,Catching Claws
+467,26640,Sewage Deluge
+468,26641,Spoken Cataract
+469,26642,Spoken Cataract
+470,26643,Spoken Cataract
+471,26644,Winged Cataract
+472,26646,Winged Cataract
+473,26647,Spoken Cataract
+474,26648,Winged Cataract
+475,26649,Elegant Evisceration
+476,26650,Coherence
+477,26651,Coherence
+478,26652,Coherence
+479,26653,unknown_681d
+480,26654,Channeling Flow
+481,26656,Great Typhoon
+482,26657,Crash
+483,26658,unknown_6822
+484,26659,Kampeos Harma
+485,26660,Kampeos Harma
+486,26661,Kampeos Harma
+487,26662,Kampeos Harma
+488,26663,Predatory Avarice
+489,26664,Hard Water
+490,26665,Deadly Current
+491,26666,Ominous Bubbling
+492,26667,Ominous Bubbling
+493,26668,Dissociation
+494,26669,unknown_682d
+495,26670,Dissociation
+496,26671,Shockwave
+497,26672,Sewage Eruption
+498,26673,Sewage Eruption
+499,26674,Doubled Impact
+500,26675,Murky Depths
+501,26678,unknown_6836
+502,26679,Tainted Flood
+503,26680,Tainted Flood
+504,27082,unknown_69ca
+505,27083,Setting the Scene
+506,27084,unknown_69cc
+507,27085,unknown_69cd
+508,27086,unknown_69ce
+509,27087,Pinax
+510,27088,Acid Mekhane
+511,27089,Lava Mekhane
+512,27090,Well Mekhane
+513,27091,Levinstrike Mekhane
+514,27092,Acid Pinax
+515,27093,Lava Pinax
+516,27094,Well Pinax
+517,27095,Levinstrike Pinax
+518,27096,Bloodrake
+519,27097,Belone Bursts
+520,27098,Burst
+521,27099,Burst
+522,27100,Burst
+523,27101,Belone Coils
+524,27102,Burst
+525,27103,Burst
+526,27110,Director's Belone
+527,27111,unknown_69e7
+528,27112,Cursed Casting
+529,27113,Cursed Casting
+530,27116,Aetheric Chlamys
+531,27117,Inversive Chlamys
+532,27118,Inversive Chlamys
+533,27119,Inversive Chlamys
+534,27122,Elemental Belone
+535,27123,unknown_69f3
+536,27124,Periaktoi
+537,27125,Acid Pinax
+538,27126,Lava Pinax
+539,27127,Well Pinax
+540,27128,Levinstrike Pinax
+541,27129,Acid Pinax
+542,27130,Lava Pinax
+543,27131,Well Pinax
+544,27132,Levinstrike Pinax
+545,27134,Southerly Shift
+546,27135,Easterly Shift
+547,27136,Westerly Shift
+548,27137,Shifting Strike
+549,27138,Northerly Shift
+550,27139,Southerly Shift
+551,27140,Easterly Shift
+552,27142,Shifting Strike
+553,27144,Elegant Evisceration
+554,27145,Decollation
+555,27147,Decollation
+556,27148,Akanthai: Act 1
+557,27149,Hemitheos's Fire IV
+558,27150,Hemitheos's Thunder III
+559,27151,Hemitheos's Thunder III
+560,27152,Hemitheos's Water IV
+561,27153,unknown_6a11
+562,27154,unknown_6a12
+563,27155,unknown_6a13
+564,27156,Hemitheos's Water III
+565,27158,Hemitheos's Dark IV
+566,27160,Hemitheos's Fire III
+567,27161,Hemitheos's Fire III
+568,27162,Hemitheos's Aero III
+569,27163,Hemitheos's Aero III
+570,27170,Kothornos Kick
+571,27171,Kothornos Kick
+572,27172,Kothornos Quake
+573,27173,Kothornos Quake
+574,27174,Nearsight
+575,27175,Farsight
+576,27176,Nearsight
+577,27177,Dark Design
+578,27178,Dark Design
+579,27179,Heart Stake
+580,27180,Ultimate Impulse
+581,27181,Searing Stream
+582,27183,Wreath of Thorns
+583,27184,Wreath of Thorns
+584,27185,Wreath of Thorns
+585,27186,Wreath of Thorns
+586,27524,Pneuma
+587,27862,Hemitheos's Water III
+588,27863,Hemitheos's Fire III
+589,27978,attack
+590,28098,Channeling Overflow
+591,28123,Farsight
+592,28194,Vengeful Belone
+593,28195,unknown_6e23
+594,28276,Kothornos Quake
+595,28279,Heart Stake
+596,28280,Demigod Double
+597,28340,Akanthai: Act 2
+598,28341,Akanthai: Act 3
+599,28342,Akanthai: Act 4
+600,28437,Inversive Chlamys
+601,28509,Liturgy of the Bell
+602,500000,Combined DoTs
+603,500001,Combined HoTs
+604,1000009,Slow
+605,1000018,Poison
+606,1000019,Pollen
+607,1000043,Weakness
+608,1000044,Brink of Death
+609,1000047,Sneak
+610,1000048,Well Fed
+611,1000049,Medicated
+612,1000050,Sprint
+613,1000074,Sentinel
+614,1000076,Fight or Flight
+615,1000079,Iron Will
+616,1000084,Bloodbath
+617,1000087,Thrill of Battle
+618,1000089,Vengeance
+619,1000091,Defiance
+620,1000107,Opo-opo Form
+621,1000108,Raptor Form
+622,1000109,Coeurl Form
+623,1000110,Perfect Balance
+624,1000122,Straight Shot Ready
+625,1000125,Raging Strikes
+626,1000128,Barrage
+627,1000141,Battle Voice
+628,1000148,Raise
+629,1000150,Medica II
+630,1000157,Presence of Mind
+631,1000158,Regen
+632,1000160,Surecast
+633,1000163,Thunder III
+634,1000164,Thundercloud
+635,1000165,Firestarter
+636,1000167,Swiftcast
+637,1000168,Manaward
+638,1000194,Shield Wall
+639,1000217,Triangulate
+640,1000221,Truth of Forests
+641,1000236,Choco Beak
+642,1000237,Choco Regen
+643,1000238,Choco Surge
+644,1000246,Demolish
+645,1000248,Circle of Scorn
+646,1000304,Aetherflow
+647,1000409,Holmgang
+648,1000418,Transcendent
+649,1000488,Shade Shift
+650,1000496,Mudra
+651,1000497,Kassatsu
+652,1000507,Suiton
+653,1000614,Hidden
+654,1000638,Vulnerability Up
+655,1000725,Goring Blade
+656,1000726,Divine Veil
+657,1000727,Divine Veil
+658,1000737,Ley Lines
+659,1000738,Circle of Power
+660,1000742,Blood Weapon
+661,1000743,Grit
+662,1000746,Dark Mind
+663,1000747,Shadow Wall
+664,1000749,Salted Earth
+665,1000802,Fang and Claw Bared
+666,1000810,Living Dead
+667,1000811,Walking Dead
+668,1000836,Aspected Helios
+669,1000841,Lightspeed
+670,1000848,Collective Unconscious
+671,1000849,Collective Unconscious
+672,1000867,Sharpcast
+673,1000912,Vulnerability Down
+674,1000913,Balance Drawn
+675,1000914,Bole Drawn
+676,1000915,Arrow Drawn
+677,1000916,Spear Drawn
+678,1000917,Ewer Drawn
+679,1000918,Spire Drawn
+680,1000956,Wheel of Fortune
+681,1001084,Rationing
+682,1001166,Fathom
+683,1001173,Truth of Oceans
+684,1001174,Intervention
+685,1001175,Passage of Arms
+686,1001176,Arms Up
+687,1001177,Inner Release
+688,1001178,Blackest Night
+689,1001179,Riddle of Earth
+690,1001181,Riddle of Fire
+691,1001182,Meditative Brotherhood
+692,1001185,Brotherhood
+693,1001186,Ten Chi Jin
+694,1001191,Rampart
+695,1001193,Reprisal
+696,1001195,Feint
+697,1001199,Peloton
+698,1001200,Caustic Bite
+699,1001201,Stormbite
+700,1001202,Nature's Minne
+701,1001203,Addle
+702,1001204,Lucid Dreaming
+703,1001209,Arm's Length
+704,1001211,Triplecast
+705,1001217,Thin Air
+706,1001218,Divine Benison
+707,1001219,Confession
+708,1001224,Earthly Dominance
+709,1001228,Higanbana
+710,1001231,Meditate
+711,1001232,Third Eye
+712,1001233,Meikyo Shisui
+713,1001234,Verfire Ready
+714,1001235,Verstone Ready
+715,1001236,Enhanced Enpi
+716,1001238,Acceleration
+717,1001239,Embolden
+718,1001248,Giant Dominance
+719,1001249,Dualcast
+720,1001250,True North
+721,1001288,Twist of Fate
+722,1001297,Embolden
+723,1001298,Fugetsu
+724,1001299,Fuka
+725,1001368,Requiescat
+726,1001457,Shake It Off
+727,1001818,Standard Step
+728,1001819,Technical Step
+729,1001820,Threefold Fan Dance
+730,1001821,Standard Finish
+731,1001822,Technical Finish
+732,1001823,Closed Position
+733,1001824,Dance Partner
+734,1001825,Devilment
+735,1001826,Shield Samba
+736,1001827,Improvisation
+737,1001831,No Mercy
+738,1001832,Camouflage
+739,1001833,Royal Guard
+740,1001834,Nebula
+741,1001835,Aurora
+742,1001836,Superbolide
+743,1001837,Sonic Break
+744,1001838,Bow Shock
+745,1001839,Heart of Light
+746,1001842,Ready to Rip
+747,1001843,Ready to Tear
+748,1001844,Ready to Gouge
+749,1001847,Esprit
+750,1001848,Esprit
+751,1001857,Nascent Flash
+752,1001858,Nascent Glint
+753,1001861,Leaden Fist
+754,1001863,Draconian Fire
+755,1001868,Everlasting Flight
+756,1001871,Dia
+757,1001872,Temperance
+758,1001873,Temperance
+759,1001878,Divination
+760,1001879,Opposition
+761,1001881,Combust III
+762,1001882,The Balance
+763,1001883,The Bole
+764,1001884,The Arrow
+765,1001885,The Spear
+766,1001886,The Ewer
+767,1001887,The Spire
+768,1001889,Intersection
+769,1001890,Horoscope
+770,1001891,Horoscope Helios
+771,1001892,Neutral Sect
+772,1001894,Dark Missionary
+773,1001897,Nascent Chaos
+774,1001898,Brutal Shell
+775,1001902,Sword Oath
+776,1001911,Asylum
+777,1001912,Asylum
+778,1001915,Summon Order
+779,1001921,Neutral Sect
+780,1001932,Army's Muse
+781,1001933,Army's Ethos
+782,1001934,Troubadour
+783,1001954,Bunshin
+784,1001965,Summon Order III
+785,1001966,Summon Order IV
+786,1001971,Manafication
+787,1001972,Delirium
+788,1002054,Lord of Crowns Drawn
+789,1002055,Lady of Crowns Drawn
+790,1002056,Unknown_808
+791,1002088,Bleeding
+792,1002090,Physical Vulnerability Up
+793,1002094,Water Resistance Down II
+794,1002095,Lightning Resistance Down II
+795,1002105,Standard Finish
+796,1002216,The Wanderer's Minuet
+797,1002217,Mage's Ballad
+798,1002218,Army's Paeon
+799,1002513,Formless Fist
+800,1002514,Six-sided Star
+801,1002530,Thrice-come Ruin
+802,1002586,Death's Design
+803,1002587,Soul Reaver
+804,1002588,Enhanced Gibbet
+805,1002589,Enhanced Gallows
+806,1002590,Enhanced Void Reaping
+807,1002591,Enhanced Cross Reaping
+808,1002592,Immortal Sacrifice
+809,1002593,Enshrouded
+810,1002594,Soulsow
+811,1002595,Threshold
+812,1002597,Crest of Time Borrowed
+813,1002598,Crest of Time Returned
+814,1002599,Arcane Circle
+815,1002600,Circle of Sacrifice
+816,1002604,Kardia
+817,1002605,Kardion
+818,1002606,Eukrasia
+819,1002607,Eukrasian Diagnosis
+820,1002608,Differential Diagnosis
+821,1002609,Eukrasian Prognosis
+822,1002610,Soteria
+823,1002611,Zoe
+824,1002612,Haima
+825,1002613,Panhaima
+826,1002616,Eukrasian Dosis III
+827,1002618,Kerachole
+828,1002619,Taurochole
+829,1002620,Physis II
+830,1002621,Autophysis
+831,1002622,Krasis
+832,1002624,Primal Rend Ready
+833,1002642,Haimatinon
+834,1002643,Panhaimatinon
+835,1002656,Stun
+836,1002663,Inner Strength
+837,1002674,Holy Sheltron
+838,1002675,Knight's Resolve
+839,1002676,Knight's Benediction
+840,1002677,Surging Tempest
+841,1002678,Bloodwhetting
+842,1002679,Stem the Flow
+843,1002680,Stem the Tide
+844,1002681,Equilibrium
+845,1002682,Oblation
+846,1002683,Heart of Corundum
+847,1002684,Clarity of Corundum
+848,1002685,Catharsis of Corundum
+849,1002686,Ready to Blast
+850,1002687,Riddle of Wind
+851,1002689,Meisui
+852,1002690,Raiju Ready
+853,1002692,Blast Arrow Ready
+854,1002693,Silken Symmetry
+855,1002694,Silken Flow
+856,1002695,Improvisation
+857,1002697,Improvised Finish
+858,1002698,Flourishing Finish
+859,1002699,Fourfold Fan Dance
+860,1002700,Flourishing Starfall
+861,1002701,Further Ruin
+862,1002702,Radiant Aegis
+863,1002703,Searing Light
+864,1002704,Rekindle
+865,1002705,Undying Flame
+866,1002706,Slipstream
+867,1002707,Magick Barrier
+868,1002708,Aquaveil
+869,1002709,Liturgy of the Bell
+870,1002713,Clarifying Draw
+871,1002714,Harmony of Spirit
+872,1002715,Harmony of Body
+873,1002716,Harmony of Mind
+874,1002717,Exaltation
+875,1002718,Macrocosmos
+876,1002720,Power Surge
+877,1002721,Blade of Valor
+878,1002722,Radiant Finale
+879,1002723,Phantom Kamaitachi Ready
+880,1002724,Ifrit's Favor
+881,1002725,Garuda's Favor
+882,1002768,Mark of the Tides
+883,1002769,Mark of the Depths
+884,1002770,Fore Mark of the Tides
+885,1002771,Rear Mark of the Tides
+886,1002772,Left Mark of the Tides
+887,1002773,Right Mark of the Tides
+888,1002799,Aethersucker
+889,1002800,Casting Chlamys
+890,1002801,Elemental Resistance Down
+891,1002802,Role Call
+892,1002803,Miscast
+893,1002804,Thornpricked
+894,1002845,Enhanced Harpe
+895,1002853,Titan's Favor
+896,1002911,Damage Down
+897,1002916,Burns
+898,1002920,Electrocution
+899,1002921,Dropsy
+900,1002925,Acting DPS
+901,1002926,Acting Healer
+902,1002927,Acting Tank
+903,1002938,Kerakeia
+904,1002941,Magic Vulnerability Up
+905,1002950,Dropsy
+906,1002959,Ogi Namikiri Ready
+907,1002964,Radiant Finale
+908,1002970,Unknown_B9A
+909,1002972,Bloodsown Circle
+910,1002999,In Event
+911,1003001,Disciplined Fist
+912,1003002,Shadowbite Ready
+913,1003003,Holos
+914,1003017,Flourishing Symmetry
+915,1003018,Flourishing Flow
+916,1003019,Confiteor Ready
+917,1003254,Trick Attack
+918,1003255,Undead Rebirth
+919,33567101,Medicated
+920,33590542,Medicated
+921,34571343,Medicated
+922,34577600,Medicated
+923,34582222,Medicated
+924,34590501,Medicated
+925,34590502,Medicated
+926,34590506,Medicated
+927,34590541,Medicated
+928,34590542,Medicated
+929,34590544,Medicated
+930,34590545,Medicated
+931,218103809,Medicated
+932,218103827,Medicated
+933,218103839,Medicated
+934,218103842,Medicated
+935,218103853,Medicated
+936,218103855,Medicated
+937,218103858,Medicated
+938,218103860,Medicated
+939,218103889,Medicated
+940,218103904,Medicated
+941,218103910,Medicated
+942,218103944,Medicated
+943,218103946,Medicated
+944,218103964,Medicated
+945,218103974,Medicated
+946,218103978,Medicated
+947,218103999,Medicated
+948,218104003,Medicated
+949,218104030,Medicated
+950,218104043,Medicated
+951,218104053,Medicated
+952,218104055,Medicated
+953,218104081,Medicated

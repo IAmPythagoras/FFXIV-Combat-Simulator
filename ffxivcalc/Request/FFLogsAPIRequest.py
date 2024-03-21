@@ -1,5 +1,7 @@
 # -- coding: utf-8 --
 """
+THIS CODE IS OUT OF DATE. USE FFLogs_api.py INSTEAD. IMPORTING THIS MODULE WILL RESULT IN AN ERROR.
+
 @author: Bri
 
 The network/API request part of this code was made by a friend of mine called Brian.
@@ -7,6 +9,10 @@ I only did the code relevant to how we used the data, he did everything regardin
 how to get the data. You can DM him on discord if you have questions : Bri-kun#6539
 
 """
+from ffxivcalc.helperCode.exceptions import outDatedFFLogsCode
+raise(outDatedFFLogsCode)
+
+
 from ffxivcalc.Jobs.Base_Spell import PrepullPotion, WaitAbility
 from ffxivcalc.Jobs.Player import Player
 from ffxivcalc.Jobs.PlayerEnum import *

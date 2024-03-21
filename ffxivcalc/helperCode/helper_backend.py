@@ -7,19 +7,31 @@ from pathlib import Path
 import math
 
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import ComboEffect
-from ffxivcalc.Jobs.Melee.Ninja.Ninja_Spell import ApplyHuton
-from ffxivcalc.Jobs.Melee.Samurai.Samurai_Spell import MeikyoCheck, MeikyoEffect, MeikyoStackCheck
-from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect
-from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import SongEffect
-from ffxivcalc.Jobs.Tank.DarkKnight.DarkKnight_Spell import BloodWeaponCheck, BloodWeaponEffect
-from ffxivcalc.Jobs.Tank.Warrior.Warrior_Spell import SurgingTempestEffect
+from ffxivcalc.Jobs.Melee.Ninja.Ninja_Spell import Huton, Kassatsu
+from ffxivcalc.Jobs.Melee.Samurai.Samurai_Spell import Meikyo
+from ffxivcalc.Jobs.Ranged.Dancer.Dancer_Spell import EspritEffect, ClosedPosition, StandardStep, Pirouette, Emboite, Entrechat, Jete, TechnicalStep
+from ffxivcalc.Jobs.Ranged.Bard.Bard_Spell import SongEffect, BattleVoice
+from ffxivcalc.Jobs.Ranged.Machinist.Machinist_Spell import Reassemble
+from ffxivcalc.Jobs.Tank.DarkKnight.DarkKnight_Spell import BloodWeaponCheck, BloodWeaponEffect, Delirium, BloodWeapon, TBN
+from ffxivcalc.Jobs.Tank.Warrior.Warrior_Spell import InnerRelease
 from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import DualCastEffect
-from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect
+from ffxivcalc.Jobs.Caster.Blackmage.BlackMage_Spell import ElementalEffect, SharpCast, LeyLines, Triplecast
+from ffxivcalc.Jobs.Healer.Sage.Sage_Spell import Eukrasia
+from ffxivcalc.Jobs.Healer.Astrologian.Astrologian_Spell import EarthlyStar, Draw
+from ffxivcalc.Jobs.Tank.Paladin.Paladin_Spell import FightOrFlight
+from ffxivcalc.Jobs.Tank.Gunbreaker.Gunbreaker_Spell import NoMercy
+from ffxivcalc.Jobs.Melee.Reaper.Reaper_Spell import ArcaneCircle, Soulsow
+from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import RiddleOfFire, RiddleOfWind, Brotherhood
+from ffxivcalc.Jobs.Melee.Dragoon.Dragoon_Spell import LifeSurge, LanceCharge, BattleLitany, DragonSight
+from ffxivcalc.Jobs.Caster.Redmage.Redmage_Spell import Acceleration, Embolden
+from ffxivcalc.Jobs.Caster.Summoner.Summoner_Spell import SearingLight
+from ffxivcalc.Jobs.Healer.Whitemage.Whitemage_Spell import PresenceOfMind
+from ffxivcalc.Jobs.Tank.Tank_Spell import Defiance, Grit, IronWill, RoyalGuard
 
 from ffxivcalc.Fight import Fight
 from ffxivcalc.Enemy import Enemy
-from ffxivcalc.Request.FFLogsAPIRequest import getAbilityList, lookup_abilityID
-from ffxivcalc.Jobs.Base_Spell import PrepullPotion, WaitAbility
+from ffxivcalc.helperCode.lookUpAbilityID import lookup_abilityID
+from ffxivcalc.Jobs.Base_Spell import Potion, WaitAbility
 from ffxivcalc.Jobs.Player import Player
 from ffxivcalc.Jobs.PlayerEnum import *
 
@@ -67,7 +79,8 @@ GNBStat = {"MainStat": 2891, "WD":126, "Det" : 1883, "Ten" : 631, "SS": 400, "Sk
 # ============================================================================================
 
 def ImportFightBackend(fightID,fightNumber):
-
+    """This function is to no longer be used."""
+    return 
     Event = Fight(Enemy(), False) #Creating event
     helper_logging.debug("Constructing Event object from FFLogs link.")
     action_dict, player_dict = getAbilityList(fightID, fightNumber) #getting ability List
@@ -232,10 +245,17 @@ def RestoreFightObject(data : dict, name : str = ""):
     
     PlayerActionList = {} #Dictionnary containing all player with their action
 
-    closed_position = False
-    dance_partner_flag = False
-    dance_partner = None
-    dancer = None
+    foundDancePartner = False
+    foundClosedPosition = False
+    dancerId = None
+    partnerId = None
+
+    foundRightEye = False
+    foundLeftEye = False
+    leftEyeTargetId = -1
+    rightEyeId = -1
+
+
 
     for player in data["data"]["PlayerList"]: #Going through all player in PlayerList and creating JobObject
         #Will check what job the player is so we can create a player object of the relevant job
@@ -312,48 +332,120 @@ def RestoreFightObject(data : dict, name : str = ""):
             job_object.auras += [aura] #Adding aura. Used for when restoring a fight using a saved file.
             
             if aura == "SharpCast":
-                #SharpCast for BLM.
-                job_object.SharpCast = True
-            elif aura == "Soulsow":
-                job_object.Soulsow = True
+                job_object.ActionSet.append(SharpCast)
+            elif aura == "Ley Lines":
+                job_object.ActionSet.append(LeyLines)
+            elif aura == "Triplecast":
+                job_object.ActionSet.append(Triplecast)
             elif aura == "Medicated":
-                #Potion
-                job_object.EffectCDList.append(PrepullPotion) #Adding this effect that will automatically apply the potion
-                #on the first go through of the sim
+                job_object.ActionSet.append(Potion)
+            elif aura == "Inner Release":
+                job_object.ActionSet.append(InnerRelease)
+            elif aura == "Fight or Flight":
+                job_object.ActionSet.append(FightOrFlight)
+            elif aura == "Delirium":
+                job_object.ActionSet.append(Delirium)
+            elif aura == "Blood Weapon":
+                job_object.ActionSet.append(BloodWeapon)
+            elif aura == "Blackest Night":
+                if job_object.JobEnum == JobEnum.DarkKnight:
+                    job_object.ActionSet.append(TBN(job_object))
+                    # TODO Add code that makes the darkknight cast it. Now only casts if self cast from DRK
+            elif aura == "No Mercy":
+                job_object.ActionSet.append(NoMercy)
+            elif aura == "Arcane Circle":
+                if job_object.JobEnum == JobEnum.Reaper:
+                    job_object.ActionSet.append(ArcaneCircle)
+            elif aura == "Soulsow":
+                job_object.ActionSet.append(Soulsow)
+            elif aura == "Riddle of Fire":
+                job_object.ActionSet.append(RiddleOfFire)
+            elif aura == "Riddle of Wind":
+                job_object.ActionSet.append(RiddleOfWind)
+            elif aura == "Brotherhood":
+                job_object.ActionSet.append(Brotherhood)
+            elif aura == "Life Surge":
+                job_object.ActionSet.append(LifeSurge)
+            elif aura == "Lance Charge":
+                job_object.ActionSet.append(LanceCharge)
+            elif aura == "Battle Litany":
+                job_object.ActionSet.append(BattleLitany)
+            elif aura == "Right Eye":
+                if not foundLeftEye:
+                    foundRightEye = True
+                    rightEyeId = job_object.playerID
+                else:
+                    job_object.ActionSet.append(DragonSight(PlayerActionList[str(leftEyeTargetId)]['job_object']))
+            elif aura == "Left Eye":
+                if not foundRightEye:
+                    foundLeftEye = True
+                    leftEyeTargetId = job_object.playerID
+                else:
+                    PlayerActionList[str(rightEyeId)]['job_object'].ActionSet.append(DragonSight(job_object))
+            elif aura == "Kassatsu":
+                job_object.ActionSet.append(Kassatsu)
             elif aura == "Meikyo Shisui":
-                job_object.EffectCDList.append(MeikyoStackCheck)
-                job_object.MeikyoCD = 46
-                job_object.MeikyoStack -= 1
-                job_object.EffectList.append(MeikyoEffect)
-                job_object.EffectCDList.append(MeikyoCheck) #Could be a problem if do it before finishing 3 weaponskills
-                job_object.Meikyo = 3
-            elif aura == "Mudra":
-                #Will also assume huton has been done
-                ApplyHuton(job_object, None) #Giving Huton
-                job_object.HutonTimer = 53 #Assuming some loss
-                #If mudra is detected, we will assume we have casted it for Suiton
-                job_object.CurrentRitual = [0,1,2]
+                job_object.ActionSet.append(Meikyo)
+            elif aura == "Battle Voice":
+                if job_object.JobEnum == JobEnum.Bard:
+                    job_object.ActionSet.append(BattleVoice)
+            elif aura == "Acceleration":
+                job_object.ActionSet.append(Acceleration)
+            elif aura == "Embolden":
+                if job_object.JobEnum == JobEnum.RedMage:
+                    job_object.ActionSet.append(Embolden)
+            elif aura == "Searing Light":
+                if job_object.JobEnum == JobEnum.Summoner:
+                    job_object.ActionSet.append(SearingLight)
+            elif aura == "Presence of Mind":
+                job_object.ActionSet.append(PresenceOfMind)
+            elif 'Drawn' in aura:
+                job_object.ActionSet.append(Draw)
+            elif aura == "Earthly Dominance":
+                job_object.ActionSet.append(EarthlyStar)
+            elif aura == "Defiance":
+                job_object.ActionSet.append(Defiance)
+            elif aura == "Royal Guard":
+                job_object.ActionSet.append(RoyalGuard)
+            elif aura == "Grit":
+                job_object.ActionSet.append(Grit)
+            elif aura == "Iron Will":
+                job_object.ActionSet.append(IronWill)
+            elif aura == "Mudra": # This has nothing to do with Huton but if we see that aura we will give it.
+                job_object.ActionSet.append(Huton)
+            elif aura == "Reassembled":
+                job_object.ActionSet.append(Reassemble)
             elif aura == "Eukrasia":
-                job_object.Eukrasia = True
+                job_object.ActionSet.append(Eukrasia)
             elif aura == "Standard Step":
-                #Assuming Dancer did 2 step
-                job_object.Emboite = True
-                job_object.Entrechat = True
-                job_object.StandardFinish = True
-            elif aura == "ClosedPosition":
-                if dance_partner_flag:
-                    job_object.DancePartner = dance_partner
+                # Assume 2 steps
+                job_object.ActionSet.append(StandardStep)
+                job_object.ActionSet.append(Pirouette)
+                job_object.ActionSet.append(Jete)
+            elif aura == "Technical Step":
+                # Assume 4 steps
+                job_object.ActionSet.append(TechnicalStep)
+                job_object.ActionSet.append(Pirouette)
+                job_object.ActionSet.append(Jete)
+                job_object.ActionSet.append(Entrechat)
+                job_object.ActionSet.append(Emboite)
+            elif aura == "Closed Position":
+                if not foundDancePartner:
+                    foundClosedPosition = True
+                    dancerId = job_object.playerID
                 else:
-                    closed_position = True
-                    dancer = job_object
-            elif aura == "Dance partner":
-                if closed_position:
-                    dancer.DancePartner = job_object
+                    job_object.ActionSet.insert(0, ClosedPosition(PlayerActionList[str(partnerId)]['job_object']))
+            elif aura == "Dance Partner":
+                if not foundClosedPosition:
+                    foundDancePartner = True
+                    partnerId = job_object.playerID
                 else:
-                    dance_partner_flag = True
-                    dance_partner = job_object
+                    PlayerActionList[str(dancerId)]['job_object'].ActionSet.insert(0, ClosedPosition(job_object))
 
-
+    foundDancePartner = False
+    foundClosedPosition = False
+    dancerId = None
+    partnerId = None
     #Will now go through every player and give them an ActionList
 
 
@@ -362,7 +454,10 @@ def RestoreFightObject(data : dict, name : str = ""):
         player_obj = PlayerActionList[playerID]["job_object"] # Getting job object so we can have access to the ActionEnum of the class
 
         for action in PlayerActionList[playerID]["actionList"]:
-            actionID = id_for_name(action["actionName"], player_obj.ClassAction, player_obj.JobAction) # Getting id from name
+
+            actionID = (action["abilityGameID"] 
+                       if 'abilityGameID' in action.keys() else 
+                       id_for_name(action["actionName"], player_obj.ClassAction, player_obj.JobAction)) # Getting id from name
 
             if int(actionID) == 212 : 
                 #WaitAbility. WaitAbility has a special field where the waited time is specified
@@ -381,8 +476,10 @@ def RestoreFightObject(data : dict, name : str = ""):
     Event = Fight(Dummy, False)
 
     for playerID in PlayerActionList:
-        PlayerActionList[playerID]["job_object"].ActionSet = PlayerActionList[playerID]["actionObject"] #Linking player object and action list
+        PlayerActionList[playerID]["job_object"].ActionSet += PlayerActionList[playerID]["actionObject"] #Linking player object and action list
         Event.AddPlayer([PlayerActionList[playerID]["job_object"]]) #Adding job_object to Event
+
+
 
 
     return Event

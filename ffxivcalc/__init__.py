@@ -1,7 +1,13 @@
-__version__ = '0.8.911'
+__version__ = '0.8.920'
 
 """
 Update history :
+
+0.8.920:
+    - Added code to import fights from FFlogs (big thanks to Apollo for the base code).
+    - Added FFLogs test suite.
+    - Discontinued FFLogsAPIRequest
+    - Some bug fixes and other smaller improvements.
 
 0.8.911:
     - Fixed Bard's Mine issues
@@ -9,8 +15,6 @@ Update history :
     - Fixed technical finish issue where a double cast would make the simulation crash
     - Fixed GivenHealBuff issue
     - Graph from the simulation now save as png instead of opening up.
-
-
 
 0.8.910:
     - Fixed some 'computeActionTimer()' issues

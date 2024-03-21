@@ -1,8 +1,8 @@
 
 from copy import deepcopy
 from ffxivcalc.helperCode.helper_math import roundDown
-
-# Exceptions
+from ffxivcalc.helperCode.exceptions import emptyEventList
+# Exception
 from ffxivcalc.helperCode.exceptions import InvalidTankBusterTargetNumber
 
 class EnemyEvent:
@@ -34,7 +34,6 @@ class EnemyEvent:
         self.nTBTarget = nTBTarget
         self.IsPhysical = IsPhysical
         self.target = [] # Empty list. The targets will be computed in begin_cast()
-
 
 
     def begin_cast(self, Enemy) -> None:
@@ -92,8 +91,6 @@ class EnemyEvent:
             # If the enemy has reached the end of its action list
             Enemy.hasEventList = False
 
-
-
 class EnemyDOT(EnemyEvent):
     """
     This class is any DOT applied by the enemy on the players. It will do damage over time on the players.
@@ -131,7 +128,6 @@ class EnemyDOT(EnemyEvent):
         if self.DOTDuration <= 0:
             # DOT is finished
             player.EnemyDOT.remove(self)
-
 
 class Enemy:
 
@@ -186,10 +182,11 @@ class Enemy:
             newEventList (List[EnemyEvent]): List of the Events to perform
         """
 
+        if len(newEventList) == 0 : raise emptyEventList
+
         self.hasEventList = True # Let the Fight know this Enemy has an EventList
-
+        
         self.EventList = deepcopy(newEventList)
-
 
     def UpdateTimer(self, time : float) -> None:
         """This function updates the Timer values of the Enemy object
@@ -214,7 +211,6 @@ class Enemy:
             if self.CastingTimer <= 0 : # If reaches the end of the cast
                 self.CastingAction.cast(self) # Cast the action
                 self.IsCasting = False
-
 
 def WaitEvent(time : float) -> EnemyEvent:
     """

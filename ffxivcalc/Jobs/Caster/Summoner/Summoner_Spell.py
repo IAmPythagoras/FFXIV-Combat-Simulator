@@ -8,6 +8,9 @@ Lock = 0
 
 #Requirement
 
+def RekindleRequirement(Player, Spell):
+    return True, -1
+
 def Ruin4Requirement(Player, Spell):
     return Player.FurtherRuin, -1
 
@@ -174,6 +177,9 @@ def ApplySearingLight(Player, Enemy):
     Enemy.buffList.append(SearingLightbuff)
     Player.EffectCDList.append(SearingLightCheck)
 
+def ApplyRekindle(Player, Enemy):
+    pass
+
                                      # Only doing this if SavePreBakedAction is true
     #if Player.CurrentFight.SavePreBakedAction:
     #    fight = Player.CurrentFight
@@ -251,6 +257,7 @@ SlipstreamDOT = DOTSpell(100, 30, False, isGround=True)
 
 #Summon
 Summon = SummonerSpell(7427, True, Lock, 2.5, 0, 0, ApplySummon, [SummonRequirement], type = 1)
+SummonPhoenix = SummonerSpell(25831, True, Lock, 2.5, 0, 0, ApplySummon, [SummonRequirement], type = 1)
 #Bahamut and Phoenix damage will simply be a dot
 BahamutAA = SummonerSpell(-115, False, 0, 0, 0, 0, ApplyBahamutAA, [])
 PhoenixAA = SummonerSpell(-115, False, 0, 0, 0, 0, ApplyPhoenixAA, [])
@@ -261,13 +268,16 @@ EnkindleSummon = SummonerSpell(-17, False, 0, 0, 1300, 0, empty, []) #Enkindle d
 
 #oGCD
 Enkindle = SummonerSpell(7429, False, 0, 0, 0, 0, ApplyEnkindle, [EnkindleRequirement]) #Smaller lock since executed by pet, might have to reconsider... >.>
+EnkindlePhoenix = SummonerSpell(16516, False, 0, 0, 0, 0, ApplyEnkindle, [EnkindleRequirement])
 Deathflare = SummonerSpell(3582, False, Lock, 0, 500, 0, ApplyDeathflare, [DeathflareRequirement])
+Rekindle = SummonerSpell(25830, False, 0, 0 ,0, 0, ApplyRekindle, [RekindleRequirement])
 EnergyDrainSMN = SummonerSpell(16508, False, Lock, 0, 200, 0, ApplyEnergyDrain, [EnergyDrainRequirement])
 Fester = SummonerSpell(181, False, Lock, 0, 340, 0, ApplyFester, [FesterRequirement])
 PainFlare = SummonerSpell(3578, False, 0, 0, 150, 0, ApplyFester, [FesterRequirement]) #AOE version of Fester
 SearingLight = SummonerSpell(25801, False, Lock, 0, 0, 0, ApplySearingLight, [SearingLightRequirement])
 PhysickSMN = SummonerSpell(16230, True, 1.5, 2.5, 0, 0, empty, [ManaRequirement])
 Resurrection = SummonerSpell(173, True, 8, 2.5, 0, 2400, empty, [ManaRequirement])
+RadiantAegis = SummonerSpell(25799, True, 0, 0, 0, 0, empty, [])
 #buff
 SearingLightbuff = buff(1.03,name="SL")
 
@@ -283,10 +293,11 @@ SummonerAbility = {
 3582 : Deathflare,
 7429 : Enkindle, #Enkindle Bahamut
 #7428 : Wyrmwave, #Bahamut Autos
-25831 : Summon, #Summon Phoenix
+25831 : SummonPhoenix, #Summon Phoenix
 16514 : FountainOfFire, #Fountain Of Fire
 16515 : BrandOfPurgatory, #AOE of FoF
-16516 : Enkindle, #Phoenix Enkindle
+16516 : EnkindlePhoenix, #Phoenix Enkindle
+25830 : Rekindle,
 #16519 : ScarletFlame, #Pheonix AA
 25838 : Ifrit,
 25823 : Ruby,
@@ -305,7 +316,7 @@ SummonerAbility = {
 16510 : EnergyDrainSMN, #Energy Syphon
 181 : Fester,
 3578 : PainFlare,
-#25799 : RadiantAegis,
+25799 : RadiantAegis,
 16230 : PhysickSMN,
 173 : Resurrection
 }

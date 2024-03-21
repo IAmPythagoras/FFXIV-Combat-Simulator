@@ -166,3 +166,37 @@ class JobNotFound(Exception):#Exception called if a Job isn't found
 
 class playerIDNotFound(Exception):#Exception called if the player isn't found with the ID given by using the Fight.playerForID function.
     pass
+
+class emptyEventList(Exception):
+    # Exception is called if trying to give an enemy an empty event list.
+    pass
+
+class invalidFFLogsFightId(Exception):
+    # Exception is called when the users asks to retrieve a fight from a fight list with a wrong id.
+    def __init__(self, fight_id : str):
+
+        self.message = "The provided fight id is invalid. Provided id : " + fight_id
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'
+    
+class invalidFFLogsQuery(Exception):
+    # Exception is called when the users does an invalid query to fflogs
+    def __init__(self, message : str):
+
+        self.message = "Invalid FFLogs query. The query returned with this error message : " + message
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'
+    
+class outDatedFFLogsCode(Exception):
+    # Exception is raised when the user imports the FFLogsAPIRequest module.
+    def __init__(self):
+
+        self.message = "The module 'ffxivcalc.Request.FFLogsAPIRequest' is no longer up to date. Use 'ffxivcalc.Request.FFLogs_api' instead."
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'

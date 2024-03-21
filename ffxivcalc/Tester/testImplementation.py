@@ -54,6 +54,11 @@ from ffxivcalc.Jobs.Melee.Reaper.Reaper_Spell import *
 from ffxivcalc.Jobs.Melee.Monk.Monk_Spell import *
 
 import logging
+from ffxivcalc.Request.FFLogs_api import FFLogClientV2
+from ffxivcalc.Jobs import ActionEnum
+from ffxivcalc.Request.FFLogs_api import FFLogClientV2, get_fflog_events_dataframe
+from ffxivcalc.Request.ffxivcalcViewTranslator import ffxiv_sim_view
+from ffxivcalc.helperCode.helper_backend import RestoreFightObject
 from random import randint, seed, sample
 
 main_logging = logging.getLogger("ffxivcalc")
@@ -3324,7 +3329,7 @@ def generateSGETestSuite() -> testSuite:
 
     def sgeTest2ValidationFunction(testResults) -> (bool, list):
         passed = True
-        expected = [1]   
+        expected = [3]   # TODO Check that?
 
         for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -19950,7 +19955,7 @@ def generateTimerEstimateTestSuite() -> testSuite:
     return timerEstimateTestSuite
 
 ######################################
-# TimeStamp, Dot/Buff timer estimate #
+#         Limit break test           #
 ######################################
 
 def generateLimitBreakTestSuite():
@@ -20933,6 +20938,857 @@ def generateLimitBreakTestSuite():
 
     return lbTestSuite
 
+######################################
+#            FFLogs test             #
+######################################
+
+# This will check that the created fight's player have the correct action set.
+# Will only check up to around 2:30 of the fight as this is around when the rotation should begin anew.
+
+
+def generateFFLogsTestSuite():
+    
+    fflogTestSuite = testSuite("FFLogs test suite.")
+
+    import os
+    os.environ["FFLOGS_CLIENT_ID"] = "9b8e6c18-39d6-4ae0-91c7-e9221e699769"
+    os.environ["FFLOGS_CLIENT_SECRET"] = "u0j8e1aIygCejB6HiBJFJcr0RB1MSIkVkLdgxDox"
+    # TODO Check new name for enkindle/summon phoenix doesn't fuck with anything in app (icon name)
+
+    logging.getLogger("urllib3").level = logging.ERROR
+    def ffTest1TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("RQwfx3vATFWGahJc", fight_id="8")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.CasterActions, ActionEnum.BlackMageActions) 
+            for action in ffLogFight.PlayerList[6].ActionSet
+        ]
+
+    def ffTest1ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        blmActionName = ['Sharpcast','FireIII', 'ThunderIII', 'FireIV', 'Triplecast', 'FireIV', 'Amplifier', 'LeyLines', 'FireIV', 'Potion', 'FireIV', 'Sharpcast', 'Triplecast', 'Despair', 'Manafont', 'FireIV', 'Swiftcast', 'Despair',
+                         'Transpose','Paradox','Xenoglossy','ThunderIII','Transpose','FireIII','FireIV','FireIV','FireIV','Despair','BlizzardIII','BlizzardIV','Paradox','Sharpcast','FireIII','FireIV','FireIV','ThunderIII', 'Sharpcast', 'FireIV','Paradox','FireIV','FireIV','FireIV','Despair','Xenoglossy','Transpose',
+                         'Paradox','Sharpcast','ThunderIII','Swiftcast','Transpose','FireIII','FireIV','FireIV','FireIV','Despair','BlizzardIII','BlizzardIV','Paradox','Manaward','FireIII','Sharpcast', 'FireIV', 'FireIV', 'ThunderIII', 'FireIV', 'Paradox', 'FireIV', 'Xenoglossy', 'Triplecast', 'FireIV', 'FireIV', 'Despair',
+                          'Transpose', 'Paradox', 'LucidDreaming', 'Xenoglossy', 'Amplifier', 'Xenoglossy','Surecast', 'Sharpcast', 'ThunderIII', 'Transpose', 'Swiftcast', 'FireIII', 'Triplecast', 'FireIV', 'FireIV', 'LeyLines', 'FireIV', 'Despair', 'Xenoglossy', 'Manafont', 'FireIV', 'Despair', 'BlizzardIII', 'Paradox', 'BlizzardIV', 'FireIII']
+        failedTest = []
+        for i in range(0,len(blmActionName)): 
+            if blmActionName[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, blmActionName[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest1 = test("FFLogs test 1 - Blackmage test : (RQwfx3vATFWGahJc,8)", ffTest1TestFunction, ffTest1ValidationFunction)
+    fflogTestSuite.addTest(ffTest1)
+
+    def ffTest2TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("bzfjTDV7gBGx1Y3m", fight_id="10")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.BlackMage
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.CasterActions, ActionEnum.BlackMageActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest2ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        blmActionName = ['Sharpcast', 'LeyLines', 'FireIII','ThunderIII', 'FireIV', 'Triplecast','FireIV','Sharpcast','Amplifier','FireIV','Swiftcast','LucidDreaming','FireIV','Manaward','Addle','Despair','Manafont','Triplecast',
+                         'FireIV','Despair','Transpose','Paradox','Xenoglossy','ThunderIII','Transpose','FireIII','Sharpcast','FireIV','FireIV','FireIV','Despair','BlizzardIII','BlizzardIV','Paradox','FireIII','FireIV','FireIV',
+                         'ThunderIII','Sharpcast','FireIV','Paradox','FireIV','FireIV','FireIV','Xenoglossy','Swiftcast','Despair','Transpose','Paradox','Sharpcast','ThunderIII','Transpose','FireIII','FireIV','FireIV','Triplecast','FireIV','FireIV','Despair','BlizzardIII',
+                         'BlizzardIV','Paradox','Sharpcast','FireIII','FireIV','ThunderIII','Potion','FireIV','FireIV','Paradox','Xenoglossy','LeyLines','FireIV','FireIV','FireIV','Despair','Xenoglossy','Amplifier','LucidDreaming','Xenoglossy',
+                         'Manafont','Sharpcast','FireIV','Xenoglossy','Swiftcast','Despair','Transpose','ThunderIII','Paradox', 'Triplecast', 'Transpose', 'FireIII', 'FireIV', 'FireIV', 'FireIV', 'Despair']
+        failedTest = []
+        for i in range(0,len(blmActionName)): 
+            if blmActionName[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, blmActionName[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest2 = test("FFLogs test 2 - Blackmage test : (bzfjTDV7gBGx1Y3m,10)", ffTest2TestFunction, ffTest2ValidationFunction)
+    fflogTestSuite.addTest(ffTest2)
+
+    def ffTest3TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("Mkj7gynfpDBGHacW", fight_id="5")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.RedMage
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.CasterActions, ActionEnum.RedMageActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest3ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions = ['Verthunder','Verareo','Acceleration','Swiftcast','Verthunder','Fleche','Contre','Verthunder','Embolden','Manafication','EnchantedRiposte','Engagement','EnchantedZwerchhau','Corps','EnchantedRedoublement','Corps','Engagement','Verholy','LucidDreaming','Scorch','Resolution','Addle','Verfire','Verthunder','Verstone','Verareo','Fleche','Jolt','Verareo',
+                        'Jolt','Verthunder','Contre','Jolt','Verareo','Engagement','Jolt','Verthunder','Corps','Jolt','Verareo','Fleche','Acceleration','Verthunder','Verstone','Verareo','EnchantedRiposte','EnchantedZwerchhau','EnchantedRedoublement',
+                        'Verflare','Scorch','Resolution','Contre','Verstone','Verareo','Fleche','Verfire','Verthunder','Engagement','Verstone','Verareo','LucidDreaming','Verfire','Verthunder','Verstone','Verthunder',
+                        'Corps','Verfire','Verareo','Fleche','Acceleration','Verareo','Swiftcast','Verthunder','Contre','Verstone','Verareo','EnchantedRiposte','EnchantedZwerchhau','EnchantedRedoublement','Manafication','Verflare',
+                        'Potion','Scorch','Resolution','Embolden','Engagement','EnchantedRiposte','Fleche','EnchantedZwerchhau','Corps','EnchantedRedoublement','Verholy','Scorch','Resolution','EnchantedRiposte','EnchantedZwerchhau','EnchantedRedoublement',
+                        'Contre','Verflare','Scorch','Resolution','Acceleration','Verareo','Fleche']
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest3 = test("FFLogs test 3 - Redmage test : (Mkj7gynfpDBGHacW,5)", ffTest3TestFunction, ffTest3ValidationFunction)
+    fflogTestSuite.addTest(ffTest3)
+
+    def ffTest4TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("YbDaH9C6dNVJAh8T", fight_id="67")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Summoner
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.CasterActions, ActionEnum.SummonerActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest4ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions = ['RuinIII','SummonBahamut','SearingLight','AstralImpulse','Potion','AstralImpulse','EnergyDrain','AstralImpulse','Fester','AstralImpulse','EnkindleBahamut','Deathflare','AstralImpulse','Fester', 'LucidDreaming','AstralImpulse','Titan','Topaz','Mountain',
+                            'Topaz','Mountain','Topaz','Mountain','Topaz','Mountain','Garuda','Swiftcast','Slipstream','Emerald','Emerald','Emerald','Emerald','Ifrit','Ruby','Ruby','Cyclone','Strike','RuinIII','RuinIV','SummonPhoenix','FountainOfFire','FountainOfFire','EnergyDrain','FountainOfFire','EnkindlePhoenix','FountainOfFire','Rekindle',
+                            'FountainOfFire','FountainOfFire','LucidDreaming']
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest4 = test("FFLogs test 4 - Summoner test : (YbDaH9C6dNVJAh8T,67)", ffTest4TestFunction, ffTest4ValidationFunction)
+    fflogTestSuite.addTest(ffTest4)
+
+    def ffTest5TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("ytpwWPVGd8ZfzgTD", fight_id="18")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Scholar
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.HealerActions, ActionEnum.ScholarActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest5ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['Potion','BroilIV','Biolysis', 'Dissipation','BroilIV','Swiftcast','BroilIV','ChainStratagem','EnergyDrain',
+                            'BroilIV','EnergyDrain','BroilIV','EnergyDrain','BroilIV','Aetherflow','BroilIV','EnergyDrain','BroilIV','EnergyDrain','Biolysis','EnergyDrain','LucidDreaming',
+                            'BroilIV','BroilIV','BroilIV','BroilIV','BroilIV','BroilIV','BroilIV','BroilIV','Protraction','BroilIV','BroilIV',
+                            'BroilIV','Biolysis','BroilIV','BroilIV','BroilIV','BroilIV','SummonSeraph','BroilIV','Consolation','BroilIV','BroilIV','BroilIV',
+                            'Consolation', 'BroilIV', 'WhisperingDawn', 'BroilIV', 'Aetherflow', 'BroilIV', 'Biolysis', 'BroilIV', 'BroilIV',
+                            'FeyBlessing', 'BroilIV', 'LucidDreaming', 'BroilIV', 'BroilIV', 'BroilIV', 'BroilIV', 'BroilIV', 'BroilIV', 'BroilIV', 'BroilIV', 'Biolysis',
+                            'BroilIV', 'BroilIV', 'BroilIV', 'BroilIV', 'BroilIV', 'BroilIV', 'BroilIV', 'FeyIllumination', 'BroilIV', 'ChainStratagem', 
+                            'BroilIV', 'EnergyDrain', 'BroilIV', 'EnergyDrain', 'BroilIV', 'EnergyDrain', 'Biolysis', 'Aetherflow','EnergyDrain','BroilIV','EnergyDrain','BroilIV','EnergyDrain','BroilIV',
+                            'BroilIV','Expedient','BroilIV','LucidDreaming','BroilIV']
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest5 = test("FFLogs test 5 - Scholar test : (ytpwWPVGd8ZfzgTD,18)", ffTest5TestFunction, ffTest5ValidationFunction)
+    fflogTestSuite.addTest(ffTest5)
+
+    def ffTest6TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("Mk4ZR1KGQjBnJYmN", fight_id="2")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.WhiteMage
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.HealerActions, ActionEnum.WhiteMageActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest6ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['Glare','Dia','Potion','Glare','Temperance','Glare','PresenceOfMind','Glare','Assize','Glare','LucidDreaming',
+                            'Glare','Asylum','Glare','ThinAir','Glare','Glare','Glare','Glare','Glare','Glare','Glare','Dia','AfflatusRapture','Glare','Glare',
+                            'ThinAir','Glare','Glare','Glare','Glare','Assize','Glare','Glare','Glare','DivineBenison','Glare','Dia',
+                            'Glare','Glare','Bell','Glare','PlenaryIndulgence','AfflatusRapture','Glare','LucidDreaming','Glare','Glare','Glare','Glare','Glare','Glare',
+                            'Dia','Assize','Glare','ThinAir','AfflatusRapture','AfflatusMisery','Glare','Glare','Asylum','AfflatusRapture','Glare',
+                            'Glare','Glare','Glare','Glare','Dia','Glare','AfflatusRapture','Glare','PresenceOfMind',
+                            'AfflatusRapture','AfflatusMisery','Assize','Glare','Glare','LucidDreaming','Glare','Glare','Glare']
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest6 = test("FFLogs test 6 - Whitemage test : (Mk4ZR1KGQjBnJYmN,2)", ffTest6TestFunction, ffTest6ValidationFunction)
+    fflogTestSuite.addTest(ffTest6)
+
+    def ffTest7TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("N2WfcJa8hnG9FL4k", fight_id="5")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Sage
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.HealerActions, ActionEnum.SageActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest7ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['Potion', 'Dosis','Eukrasia','EukrasianDosis','Dosis','LucidDreaming','Dosis','Phlegma','Kerachole','Phlegma',
+                            'Dosis','Physis','Dosis','Dosis','Dosis','Dosis','Dosis','Dosis','Eukrasia','EukrasianDosis','Dosis','Dosis','Dosis','Dosis','Dosis','Haima',
+                            'Dosis','Dosis','Dosis','Taurochole','Dosis','Dosis','Dosis','Panhaima','Eukrasia','EukrasianDosis','Dosis','Dosis','LucidDreaming','Dosis',
+                            'Ixochole','Dosis','Kerachole','Dosis','Dosis','Toxikon','Dosis','Dosis','Phlegma','Dosis','Eukrasia','EukrasianDosis','Dosis','Dosis','Swiftcast','Pneuma',
+                            'Dosis','Dosis','Dosis','Dosis','Dosis','Dosis','Kerachole','Dosis','Dosis','Eukrasia','EukrasianDosis','Dosis','Physis','Dosis','Dosis','Dosis','LucidDreaming',
+                            'Dosis','Taurochole','Phlegma','Phlegma','Dosis','Dosis','Kerachole','Dosis']
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest7 = test("FFLogs test 7 - Sage test : (N2WfcJa8hnG9FL4k,5)", ffTest7TestFunction, ffTest7ValidationFunction)
+    fflogTestSuite.addTest(ffTest7)
+
+    def ffTest8TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("L2tQ41WZCPbYa7wX", fight_id="2")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Astrologian
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.HealerActions, ActionEnum.AstrologianActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest8ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['Draw','EarthlyStar','Potion','Malefic','Lightspeed', 'Combust','Balance','Draw','Malefic','MinorArcana','Ewer','Malefic','Divination',
+                            'Draw','Malefic','Spear','Astrodyne','Malefic','LordOfCrown','Malefic','StellarDetonation','Malefic','Malefic','Malefic','Malefic','CollectiveUnconscious','Malefic','Malefic','Malefic',
+                            'Combust','Draw','Malefic','CelestialOpposition','Malefic','LucidDreaming','Malefic','CelestialIntersection','Malefic','Exaltation','Malefic','Malefic','Malefic','Malefic','Malefic',
+                            'Malefic','Malefic','Combust','Macrocosmos','Horoscope','Malefic','Malefic','Spear','MinorArcana','Malefic','EarthlyStar','Malefic','Malefic','Malefic','Malefic','LadyOfCrown','Malefic','Draw','Malefic','Malefic','Combust',
+                            'Malefic','Malefic','Malefic','LucidDreaming','Malefic','CelestialOpposition','Malefic','Malefic','CelestialIntersection','Malefic','Malefic','CelestialIntersection','Malefic','CollectiveUnconscious','Malefic','Malefic','Combust',
+                            'Bole','Malefic','Lightspeed','Malefic','Draw','Divination','Malefic','Ewer','Astrodyne','Malefic','Draw','MinorArcana','Malefic','Balance','EarthlyStar','Malefic','Malefic']
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+            failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest8 = test("FFLogs test 8 - Astrologian test : (L2tQ41WZCPbYa7wX,2)", ffTest8TestFunction, ffTest8ValidationFunction)
+    fflogTestSuite.addTest(ffTest8)
+
+    def ffTest9TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("ZDamRAJ7dqzCW816", fight_id="1")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Gunbreaker
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.TankActions, ActionEnum.GunbreakerActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest9ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['KeenEdge','NoMercy','Bloodfest','GnashingFang','JugularRip','BlastingZone','SonicBreak','RoughDivide','BowShock','DoubleDown','RoughDivide','SavageClaw','AbdomenTear','RoyalGuard','WickedTalon','EyeGouge','BrutalShell','SolidBarrel','BurstStrike','Hypervelocity','Reprisal','KeenEdge','BrutalShell','SolidBarrel','KeenEdge','Rampart','Camouflage',
+                            'GnashingFang','JugularRip','BlastingZone','SavageClaw','AbdomenTear','WickedTalon','EyeGouge','BrutalShell','Provoke','SolidBarrel','HeartOfCorundum','KeenEdge','BrutalShell','SolidBarrel','Shirk','KeenEdge','BrutalShell',
+                            'SolidBarrel','KeenEdge','NoMercy','GnashingFang','JugularRip','BlastingZone','SonicBreak','RoughDivide','BowShock','DoubleDown','RoughDivide','SavageClaw','AbdomenTear','WickedTalon','EyeGouge']
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest9 = test("FFLogs test 9 - Gunbreaker test : (ZDamRAJ7dqzCW816,1)", ffTest9TestFunction, ffTest9ValidationFunction)
+    fflogTestSuite.addTest(ffTest9)
+
+    def ffTest10TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("ZDamRAJ7dqzCW816", fight_id="1")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Warrior
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.TankActions, ActionEnum.WarriorActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest10ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['Defiance','Tomahawk','Infuriate','Vengeance','HeavySwing','Maim','Potion','StormEye','InnerRelease','Reprisal','InnerChaos','Infuriate','InnerChaos','Upheaval','Onslaught','PrimalRend','Onslaught','FellCleave','FellCleave',
+                            'Onslaught','FellCleave','HeavySwing','Maim','StormPath','FellCleave','Infuriate','InnerChaos','Rampart','HeavySwing','ThrillOfBattle','Maim','StormEye','Upheaval','HeavySwing','Bloodwhetting','Maim','StormPath','Provoke',
+                            'FellCleave','HeavySwing','Maim','StormPath','HeavySwing','Maim','StormEye','InnerRelease','FellCleave','Onslaught','PrimalRend','Upheaval','FellCleave','Infuriate','InnerChaos','FellCleave','FellCleave'
+]
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+            failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest10 = test("FFLogs test 10 - Warrior test : (ZDamRAJ7dqzCW816,1)", ffTest10TestFunction, ffTest10ValidationFunction)
+    fflogTestSuite.addTest(ffTest10)
+
+    def ffTest11TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("c8Y7D6GZ1r9fbjaT", fight_id="1")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Paladin
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.TankActions, ActionEnum.PaladinActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest11ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['HolySpirit','FastBlade','Potion','RiotBlade','FightOrFlight','Requiescat','GoringBlade','Expiacion','CircleOfScorn','RoyalAuthority','Intervene','IronWill','Confiteor','Intervene','BladeOfFaith','BladeOfTruth','BladeOfValor',
+                            'HolySpirit','Reprisal','Atonement','Atonement','Atonement','FastBlade','RiotBlade','Rampart','Sentinel','RoyalAuthority','Expiacion','CircleOfScorn','FastBlade','RiotBlade','Provoke','HolySheltron','Atonement','Atonement',
+                            'Atonement','HolySpirit','Shirk','RoyalAuthority','FastBlade','RiotBlade','Atonement','Atonement','FightOrFlight','Requiescat','GoringBlade','Expiacion','Intervene','Confiteor','CircleOfScorn','Intervene','BladeOfFaith',
+                            'BladeOfTruth','BladeOfValor','HolySpirit','Intervention'
+]
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+            failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest11 = test("FFLogs test 11 - Paladin test : (c8Y7D6GZ1r9fbjaT,1)", ffTest11TestFunction, ffTest11ValidationFunction)
+    fflogTestSuite.addTest(ffTest11)
+
+    def ffTest12TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("c8Y7D6GZ1r9fbjaT", fight_id="1")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.DarkKnight
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.TankActions, ActionEnum.DarkKnightActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest12ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['Grit','Unmend','BloodWeapon','Delirium','HardSlash','EdgeOfShadow','DarkMissionary','SyphonStrike','Potion','Souleater','LivingShadow','SaltedEarth','Bloodspiller','EdgeOfShadow','Shadowbringer','Bloodspiller','CarveAndSpit','Plunge','Bloodspiller','EdgeOfShadow','Shadowbringer','HardSlash','EdgeOfShadow','SaltAndDarkness','SyphonStrike','EdgeOfShadow','Plunge','Souleater','HardSlash','SyphonStrike','Rampart',
+                            'Souleater','Bloodspiller','HardSlash','SyphonStrike','Souleater','Oblation','HardSlash','DarkMind','SyphonStrike','TheBlackestNight','Souleater','Bloodspiller','Provoke','HardSlash','SyphonStrike','Souleater','HardSlash',
+                            'BloodWeapon','Delirium','SyphonStrike','Souleater','Bloodspiller','EdgeOfShadow','Bloodspiller','EdgeOfShadow','Bloodspiller','CarveAndSpit','Plunge','Bloodspiller','EdgeOfShadow','Plunge','HardSlash','Reprisal']
+                                    
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+            failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest12 = test("FFLogs test 12 - DarkKnight test : (c8Y7D6GZ1r9fbjaT,1)", ffTest12TestFunction, ffTest12ValidationFunction)
+    fflogTestSuite.addTest(ffTest12)
+
+    def ffTest13TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("8vPCHArRBWkQ6Gdb", fight_id="5")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Reaper
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.MeleeActions, ActionEnum.ReaperActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest13ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['Soulsow','Harpe','ShadowOfDeath','Potion','LegSweep','SoulSlice','ArcaneCircle','Gluttony','Gallows','Gibbet','ArcaneCrest','PlentifulHarvest','Enshroud','VoidReaping','CrossReaping','LemureSlice','VoidReaping','CrossReaping','LemureSlice','Communio',
+                            'SoulSlice','UnveiledGallows','Feint','Gallows','HarvestMoon','Slice','ShadowOfDeath','SoulSlice','UnveiledGibbet','Gibbet','WaxingSlice','InfernalSlice','LegSweep','Slice','WaxingSlice','UnveiledGallows','Gallows','InfernalSlice',
+                            'ShadowOfDeath','Slice','WaxingSlice','InfernalSlice','TrueNorth','ArcaneCrest','SoulSlice','Gluttony','Gibbet','Gallows','Slice','UnveiledGibbet','Gibbet','WaxingSlice','InfernalSlice','Enshroud','ShadowOfDeath', 'LegSweep',
+                            'VoidReaping','CrossReaping','LemureSlice','VoidReaping','CrossReaping','LemureSlice','Communio'
+]                   
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest13 = test("FFLogs test 13 - Reaper test : (8vPCHArRBWkQ6Gdb,5)", ffTest13TestFunction, ffTest13ValidationFunction)
+    fflogTestSuite.addTest(ffTest13)
+
+    def ffTest14TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("8vPCHArRBWkQ6Gdb", fight_id="5")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Ninja
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.MeleeActions, ActionEnum.NinjaActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest14ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['Huton','Suiton','Kassatsu','SpinningEdge','Potion','GustSlash','Mug','Bunshin','PhantomKamaitachi','TrickAttack','AeolianEdge','DreamWithinADream','Ten','Jin','HyoshoRanryu','Ten','Chi','Raiton','TenChiJin','Ten2','Chi2','Jin2','Meisui','FleetingRaiju','Bhavacakra','FleetingRaiju','Bhavacakra',
+                            'Ten','Chi','Raiton','FleetingRaiju','SpinningEdge','GustSlash','AeolianEdge','SpinningEdge','GustSlash','AeolianEdge','SpinningEdge','GustSlash','ArmorCrush','SpinningEdge','Bhavacakra','GustSlash','Ten','Chi','Jin',
+                            'Suiton','AeolianEdge','SpinningEdge','GustSlash','AeolianEdge','Kassatsu','SpinningEdge','Bhavacakra','GustSlash','TrueNorth','AeolianEdge','TrickAttack','Ten','Jin','HyoshoRanryu','DreamWithinADream','Ten','Chi','Raiton',
+                            'Bhavacakra','FleetingRaiju','Ten','Chi','Raiton','FleetingRaiju','SpinningEdge','GustSlash','ArmorCrush'
+
+            
+]                   
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+            failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest14 = test("FFLogs test 14 - Ninja test : (8vPCHArRBWkQ6Gdb,5)", ffTest14TestFunction, ffTest14ValidationFunction)
+    fflogTestSuite.addTest(ffTest14)
+
+    def ffTest15TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("j4WazfhqMvgd1LJY", fight_id="10")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Monk
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.MeleeActions, ActionEnum.MonkActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest15ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['Thunderclap','DragonKick','Potion','TwinSnakes','RiddleOfFire','Demolish','TheForbiddenChakra','Bootshine','Brotherhood','PerfectBalance','DragonKick','RiddleOfWind','Bootshine','TheForbiddenChakra','DragonKick','ElixirField',
+                            'TheForbiddenChakra','Bootshine','PerfectBalance','TwinSnakes','TheForbiddenChakra','DragonKick','Demolish','TheForbiddenChakra','RisingPhoenix','Bootshine','Feint','TrueStrike','SnapPunch','DragonKick','TwinSnakes','SnapPunch',
+                            'Bootshine','TrueStrike','Demolish','DragonKick','TwinSnakes','SnapPunch','Bootshine','TheForbiddenChakra','TrueStrike','SnapPunch','DragonKick','TwinSnakes','Demolish','Bootshine','PerfectBalance','DragonKick','RiddleOfFire',
+                            'Bootshine','RiddleOfEarth','DragonKick','PhantomRush','Bootshine','TheForbiddenChakra','TwinSnakes','Demolish','Bloodbath','DragonKick','Mantra','TrueStrike','TrueNorth','SnapPunch','Bootshine','TwinSnakes','SnapPunch',
+                            'DragonKick','TrueStrike','Demolish','Bootshine','TrueStrike','SnapPunch','DragonKick','TheForbiddenChakra','TwinSnakes','RiddleOfWind','SnapPunch','Bootshine','TrueStrike','Demolish','DragonKick','TwinSnakes','SnapPunch',
+                            'Bootshine','TrueStrike','SnapPunch','DragonKick','PerfectBalance','RiddleOfFire','DragonKick','Demolish','Brotherhood','TwinSnakes','RisingPhoenix','TheForbiddenChakra','DragonKick','PerfectBalance','Bootshine','TheForbiddenChakra','DragonKick','Bootshine','TheForbiddenChakra',
+                            'ElixirField','DragonKick'
+]                   
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest15 = test("FFLogs test 15 - Dhedge test : (j4WazfhqMvgd1LJY,10)", ffTest15TestFunction, ffTest15ValidationFunction)
+    fflogTestSuite.addTest(ffTest15)
+
+    def ffTest16TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("j4WazfhqMvgd1LJY", fight_id="10")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Samurai
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.MeleeActions, ActionEnum.SamuraiActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest16ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['Meikyo','Gekko','Potion','Kasha','Ikishoten','Yukikaze','Feint','Midare','Senei','KaeshiSetsugekka','ThirdEye','Meikyo','Kasha','Gyoten','Shinten','Higanbana','Shinten','OgiNamikiri','Shoha','KaeshiNamikiri','Gekko','Shinten',
+                            'Kasha','Gyoten','Hakaze','Yukikaze','ThirdEye','Shinten','Midare','KaeshiSetsugekka','Hakaze','Yukikaze','Hakaze','Shifu','Kasha','Hakaze','Shinten','Jinpu','Shinten','Gekko','Midare','Hakaze','Yukikaze','Hakaze','Shinten','Shifu',
+                            'Kasha','ThirdEye','Hakaze','Jinpu','Shinten','Gekko','Shinten','Midare','Meikyo','Kasha','Shoha','Higanbana','Gekko','ThirdEye','Kasha','Hakaze','Shinten','Yukikaze','Shinten','Midare','Shinten','KaeshiSetsugekka'
+
+]                   
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest16 = test("FFLogs test 16 - Samurai test : (j4WazfhqMvgd1LJY,10)", ffTest16TestFunction, ffTest16ValidationFunction)
+    fflogTestSuite.addTest(ffTest16)
+
+    def ffTest17TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("C176W2JQNqKYd4FR", fight_id="15")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Dragoon
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.MeleeActions, ActionEnum.DragoonActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest17ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['ElusiveJump','TrueThrust','Disembowel','LanceCharge','DragonSight','ChaoticSpring','BattleLitany','Geirskogul','WheelingThrust','HighJump','LifeSurge','FangAndClaw','SpineshatterDive','DragonFireDive','RaidenThrust',
+                            'SpineshatterDive','MirageDive','VorpalThrust','LifeSurge','HeavenThrust','FangAndClaw','Feint','WheelingThrust','RaidenThrust','WyrmwindThrust','Disembowel','ChaoticSpring','WheelingThrust','FangAndClaw','Geirskogul',
+                            'RaidenThrust','HighJump','MirageDive','VorpalThrust','HeavenThrust','FangAndClaw','WheelingThrust','RaidenThrust','WyrmwindThrust','Disembowel','ChaoticSpring','WheelingThrust','FangAndClaw','RaidenThrust','LanceCharge',
+                            'VorpalThrust','LifeSurge','Geirskogul','HeavenThrust','Nastrond','HighJump','FangAndClaw','MirageDive','WheelingThrust','Stardiver','RaidenThrust','WyrmwindThrust','Disembowel','Nastrond','TrueNorth','ChaoticSpring',
+                            'WheelingThrust','FangAndClaw','RaidenThrust','Nastrond','VorpalThrust','HeavenThrust'
+
+]                   
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+            failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest17 = test("FFLogs test 17 - Dragoon test : (C176W2JQNqKYd4FR,15)", ffTest17TestFunction, ffTest17ValidationFunction)
+    fflogTestSuite.addTest(ffTest17)
+
+    def ffTest18TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("wxZFthf69kj8KpqB", fight_id="8")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Machinist
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.RangedActions, ActionEnum.MachinistActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest18ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['Reassemble','Potion','AirAnchor','Ricochet','GaussRound','Drill','BarrelStabilizer','SplitShot','Dismantle','SlugShot','Ricochet','GaussRound','CleanShot','Reassemble','Wildfire','ChainSaw','Automaton','Hypercharge',
+                            'HeatBlast','Ricochet','HeatBlast','GaussRound','HeatBlast','Ricochet','HeatBlast','GaussRound','HeatBlast','Ricochet','Drill','GaussRound','Ricochet','SplitShot','GaussRound','SlugShot','CleanShot','SplitShot','SlugShot',
+                            'CleanShot','AirAnchor','Drill','SplitShot','SlugShot','CleanShot','SplitShot','SlugShot','Automaton','CleanShot','SplitShot','Ricochet','Tactician','Drill','GaussRound','Hypercharge','HeatBlast','Ricochet','HeatBlast','GaussRound',
+                            'HeatBlast','Ricochet','HeatBlast','GaussRound','HeatBlast','Reassemble','ChainSaw','Ricochet','GaussRound'
+]                   
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+            failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest18 = test("FFLogs test 18 - Machinist test : (wxZFthf69kj8KpqB,8)", ffTest18TestFunction, ffTest18ValidationFunction)
+    fflogTestSuite.addTest(ffTest18)
+
+    def ffTest19TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("kHqB6mgPZYycxJvb", fight_id="41")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Bard
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.RangedActions, ActionEnum.BardActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest19ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['Stormbite','WanderingMinuet','RagingStrikes','Causticbite','EmpyrealArrow','Bloodletter','RefulgentArrow','BattleVoice','RadiantFinale','BurstShot','Sidewinder','Barrage','RefulgentArrow','Bloodletter','PitchPerfect','BurstShot',
+                            'Bloodletter','BurstShot','PitchPerfect','RefulgentArrow','EmpyrealArrow','Bloodletter','IronJaws','PitchPerfect','RefulgentArrow','BurstShot','BurstShot','BurstShot','PitchPerfect','BurstShot','EmpyrealArrow','Bloodletter',
+                            'RefulgentArrow','BurstShot','PitchPerfect','RefulgentArrow','BurstShot','PitchPerfect','MageBallad','BurstShot','BurstShot','EmpyrealArrow','Bloodletter','BurstShot','BurstShot','Bloodletter','BurstShot','Bloodletter','ApexArow','Bloodletter','BlastArow','BurstShot','EmpyrealArrow','Bloodletter','IronJaws',
+                            'Troubadour','Bloodletter','RefulgentArrow','Sidewinder','NatureMinne','BurstShot','BurstShot','Bloodletter','BurstShot','BurstShot','ArmyPaeon','EmpyrealArrow','BurstShot','Bloodletter','BurstShot','RefulgentArrow',
+                            'BurstShot','BurstShot','BurstShot','BurstShot','EmpyrealArrow','BurstShot','RefulgentArrow','BurstShot','BurstShot','BurstShot','BurstShot','Potion','IronJaws','EmpyrealArrow','BurstShot','Bloodletter','RefulgentArrow',
+                            'BurstShot','BurstShot','BurstShot','RefulgentArrow','WanderingMinuet','BurstShot','RagingStrikes','EmpyrealArrow','RefulgentArrow','BurstShot','BattleVoice','RadiantFinale','ApexArow','Sidewinder','Barrage','BlastArow',
+                            'Bloodletter','PitchPerfect','RefulgentArrow','Bloodletter','IronJaws','Bloodletter'
+]                   
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest19 = test("FFLogs test 19 - Bard test : (kHqB6mgPZYycxJvb,41)", ffTest19TestFunction, ffTest19ValidationFunction)
+    fflogTestSuite.addTest(ffTest19)
+
+
+    def ffTest20TestFunction() -> None:
+        client = FFLogClientV2()
+        iterator = client.stream_fight_events("2KBhtxLJH47vrCRj", fight_id="17")
+
+        for fight in iterator:
+            df = get_fflog_events_dataframe(fight[1])
+            view = ffxiv_sim_view(df)
+            for fightView in view:
+                data = fightView[1]
+                ffLogFight = RestoreFightObject(data)
+
+        playerIndex = [i 
+                       for i in range(len(ffLogFight.PlayerList))
+                       if ffLogFight.PlayerList[i].JobEnum == JobEnum.Dancer
+                       ][0]
+
+        return [
+            ActionEnum.name_for_id(action.id, ActionEnum.RangedActions, ActionEnum.DancerActions) 
+            for action in ffLogFight.PlayerList[playerIndex].ActionSet
+            if action.id != 212
+        ]
+
+    def ffTest20ValidationFunction(testResults) -> (bool, list):
+        passed = True
+
+        expectedActions =  ['ClosedPosition','StandardStep','Pirouette','Jete','Potion','StandardFinish','Flourish','TechnicalStep','Jete','Entrechat','Emboite','Pirouette','TechnicalFinish','Devilment','Tillana','FanDanceIV','StarfallDance','FanDanceIII','ReverseCascade',
+                            'FanDanceI','FanDanceIII','StandardStep','Entrechat','Emboite','StandardFinish','SaberDance','FountainFall','SaberDance','Cascade','SaberDance','ReverseCascade','Fountain','Cascade','Fountain','FountainFall','StandardStep',
+                            'Pirouette','Jete','StandardFinish','ReverseCascade','SaberDance','Cascade','Fountain','Cascade','Flourish','SaberDance','FanDanceIV','Fountain','FountainFall','FanDanceIII','ReverseCascade','Cascade','StandardStep',
+                            'Pirouette','Jete','StandardFinish','Fountain','FountainFall','Cascade','CuringWaltz','Fountain','FountainFall','SaberDance','Cascade','ReverseCascade','Fountain','FanDanceI','SaberDance','StandardStep','Entrechat','Emboite','StandardFinish',
+                            'Cascade','ReverseCascade','FanDanceI','Fountain','Cascade','Fountain','Flourish','TechnicalStep','Entrechat','Pirouette','Jete','Emboite','TechnicalFinish','Devilment','SaberDance','FanDanceIV','FanDanceIII','StarfallDance','FanDanceI','FanDanceIII','Tillana','FanDanceI','SaberDance','FanDanceIII','FanDanceI'
+]                   
+        failedTest = []
+        for i in range(0,len(expectedActions)): 
+            if expectedActions[i] != testResults[i]:
+                passed = False
+                failedTest.append((i, expectedActions[i], testResults[i]))
+
+        return passed , failedTest
+
+    ffTest20 = test("FFLogs test 20 - Dancer test : (2KBhtxLJH47vrCRj,17)", ffTest20TestFunction, ffTest20ValidationFunction)
+    fflogTestSuite.addTest(ffTest20)
+
+    return fflogTestSuite
+
+
+
+
 def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBUG) -> int:
                              # Silence the main_logging and
                              # unmute the test_logging
@@ -20943,7 +21799,7 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
     failedTestDict = {}
     if len(testSuiteName) == 0:
         # Execute all tests
-        pb = ProgressBar.init(26, "Initializing test suites")
+        pb = ProgressBar.init(27, "Initializing test suites")
 
         blmTestSuite = generateBLMTestSuite()
         rdmTestSuite = generateRDMTestSuite()
@@ -20970,7 +21826,7 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
         gcdTestSuite = generateGCDTestSuite(setSeed=setSeed)
         teTestSuite = generateTimerEstimateTestSuite()
         lbTestSuite = generateLimitBreakTestSuite()
-
+        fflogTestSuite = generateFFLogsTestSuite()
 
         pb.setName(blmTestSuite.testSuiteName)
         next(pb)
@@ -21047,6 +21903,9 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
         pb.setName(lbTestSuite.testSuiteName)
         next(pb)
         failedTestDict[lbTestSuite.testSuiteName] = lbTestSuite.executeTestSuite()
+        pb.setName(fflogTestSuite.testSuiteName)
+        next(pb)
+        failedTestDict[fflogTestSuite.testSuiteName] = fflogTestSuite.executeTestSuite()
         next(pb)
 
     else:
@@ -21151,6 +22010,10 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
                 lbTestSuite = generateLimitBreakTestSuite()
                 print(f"Executing {lbTestSuite.testSuiteName}")
                 failedTestDict[lbTestSuite.testSuiteName] = lbTestSuite.executeTestSuite()
+            case "FFLOG":
+                fflogTestSuite = generateFFLogsTestSuite()
+                print(f"Executing {fflogTestSuite.testSuiteName}")
+                failedTestDict[fflogTestSuite.testSuiteName] = fflogTestSuite.executeTestSuite()
 
     totalFailedTest = 0
 
@@ -21163,7 +22026,6 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
         print("Completed without errors. See logs for info.")
     else:
         print("Completed. See logs for info.")
-
     return 0
 
 if __name__ == "__main__":

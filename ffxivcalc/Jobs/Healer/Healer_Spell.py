@@ -81,6 +81,7 @@ HealerAbility = {
 7559 : Surecast,
 34590545 : Potion,
 34592399 : Potion, 
+34594163 : Potion,
 -2 : Potion,
 1111 : HealerLB1,
 1112 : HealerLB2,
