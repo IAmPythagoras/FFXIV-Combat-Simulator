@@ -70,7 +70,7 @@ def _aura_prepull_logic(fight):
             elif aura == "Blood Weapon":
                 player["actionList"].insert(0,{"actionName" : "BloodWeapon"})
             elif aura == "Blackest Night" and player["JobName"] == "DarkKnight":
-                player["actionList"].insert(0,{"actionName" : "TheBlackestNight"})
+                player["actionList"].insert(0,{"actionName" : "TheBlackestNight", "targetID" : player["playerID"]})
                 # TODO Add code that makes the darkknight cast it. Now only casts if self cast from DRK
             elif aura == "No Mercy":
                 player["actionList"].insert(0,{"actionName" : "NoMercy"})
