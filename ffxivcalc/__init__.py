@@ -8,7 +8,6 @@ Update history :
     - _aura_prepull_logic() is called in getSingleFightData() instead of RestoreFightObject. So prepull are now put directly into JSON file exported.
     - Fixed some other issues
 
-
 0.8.920:
     - Added code to import fights from FFlogs (big thanks to Apollo for the base code).
     - Added FFLogs test suite.
