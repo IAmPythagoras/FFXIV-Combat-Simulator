@@ -46,6 +46,11 @@ def _aura_prepull_logic(fight):
     rightEyeId = -1
     leftEyeTargetId = -1
 
+    foundDancePartner = False
+    foundClosedPosition = False
+    dancerId = -1
+    partnerId = -1
+
     for player in fight["data"]["PlayerList"]:
         for aura in player["Auras"]:
             if aura == "SharpCast":
