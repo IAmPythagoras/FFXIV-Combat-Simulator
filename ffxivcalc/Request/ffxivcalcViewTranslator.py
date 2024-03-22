@@ -68,13 +68,18 @@ _KEEP_TARGET_ACTION = [
     "Balance"
 ]
 
-def ffxiv_sim_view(event_data: pd.DataFrame) -> Iterator:
+def ffxiv_sim_view(event_data: pd.DataFrame, max_time : float = 0) -> Iterator:
     casts_by_players_view = event_data[
         (event_data["type"] == "cast")
         & (event_data[custom_columns.SOURCE_TYPE] == "Player")
         | (event_data.index == event_data['abilityGameID'].dropna().index[0])
         | ((event_data.index == event_data[event_data['type'] == 'applybuff'].index[0]) & (event_data['fight_time'] != event_data[event_data['type'] == 'cast'].iloc[0]['fight_time']) & (event_data['fight_time'] < 0) )
     ]
+
+    if max_time > 0:
+        casts_by_players_view = casts_by_players_view[
+            event_data["fight_time"] <= max_time
+        ]
     
     # If first damage event then cast is not present and only calculated damage is.
     # The first 'applybuff' event is also not casted. So we add the first.

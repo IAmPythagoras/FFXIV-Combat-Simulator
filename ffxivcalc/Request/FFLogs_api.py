@@ -17,7 +17,7 @@ from ffxivcalc.helperCode.exceptions import invalidFFLogsFightId, invalidFFLogsQ
 from ffxivcalc.Request.ffxivcalcViewTranslator import ffxiv_sim_view
 LOG = logging.getLogger(__name__)
 
-def getSingleFightData(clientId : str, clientSecret : str, code : str, id : str, showProgress : bool = False) -> Dict:
+def getSingleFightData(clientId : str, clientSecret : str, code : str, id : str, showProgress : bool = False, max_time : float = 0) -> Dict:
     """Gets a fight data from fflog and returns the data corresponding to that fight in a format ffxivcalc can use.
        Errors will be diplayed.
        
@@ -26,6 +26,7 @@ def getSingleFightData(clientId : str, clientSecret : str, code : str, id : str,
     code : str - Code of the fights record.
     id : str - Id of the fight.
     showProgress : bool = False - If true a progress bar will be shown.
+    max_time : float = 0 - Max time stamp to take from fflogs. If left as default (0) it does not limit time stamp.
     """
     if len(clientId) != 0 : os.environ["FFLOGS_CLIENT_ID"] = clientId
     if len(clientSecret) != 0 : os.environ["FFLOGS_CLIENT_SECRET"] = clientSecret
@@ -33,7 +34,7 @@ def getSingleFightData(clientId : str, clientSecret : str, code : str, id : str,
 
     for rawFight in client.stream_fight_events(code, fight_id=id, show_progress=showProgress):
         df = get_fflog_events_dataframe(rawFight[1])
-        view = ffxiv_sim_view(df)
+        view = ffxiv_sim_view(df, max_time=max_time)
         for fight in view:
             data = fight[1]
             _aura_prepull_logic(data)
