@@ -21003,7 +21003,7 @@ def generateFFLogsTestSuite():
     def ffTest2ValidationFunction(testResults) -> (bool, list):
         passed = True
 
-        blmActionName = ['Sharpcast', 'LeyLines', 'FireIII','ThunderIII', 'FireIV', 'Triplecast','FireIV','Sharpcast','Amplifier','FireIV','Swiftcast','LucidDreaming','FireIV','Manaward','Addle','Despair','Manafont','Triplecast',
+        blmActionName = ['LeyLines', 'Sharpcast', 'FireIII','ThunderIII', 'FireIV', 'Triplecast','FireIV','Sharpcast','Amplifier','FireIV','Swiftcast','LucidDreaming','FireIV','Manaward','Addle','Despair','Manafont','Triplecast',
                          'FireIV','Despair','Transpose','Paradox','Xenoglossy','ThunderIII','Transpose','FireIII','Sharpcast','FireIV','FireIV','FireIV','Despair','BlizzardIII','BlizzardIV','Paradox','FireIII','FireIV','FireIV',
                          'ThunderIII','Sharpcast','FireIV','Paradox','FireIV','FireIV','FireIV','Xenoglossy','Swiftcast','Despair','Transpose','Paradox','Sharpcast','ThunderIII','Transpose','FireIII','FireIV','FireIV','Triplecast','FireIV','FireIV','Despair','BlizzardIII',
                          'BlizzardIV','Paradox','Sharpcast','FireIII','FireIV','ThunderIII','Potion','FireIV','FireIV','Paradox','Xenoglossy','LeyLines','FireIV','FireIV','FireIV','Despair','Xenoglossy','Amplifier','LucidDreaming','Xenoglossy',
@@ -21647,7 +21647,7 @@ def generateFFLogsTestSuite():
     def ffTest20ValidationFunction(testResults) -> (bool, list):
         passed = True
 
-        expectedActions =  ['ClosedPosition','StandardStep','Pirouette','Jete','Potion','StandardFinish','Flourish','TechnicalStep','Jete','Entrechat','Emboite','Pirouette','TechnicalFinish','Devilment','Tillana','FanDanceIV','StarfallDance','FanDanceIII','ReverseCascade',
+        expectedActions =  ['ClosedPosition','StandardStep','Jete','Entrechat','Potion','StandardFinish','Flourish','TechnicalStep','Jete','Entrechat','Emboite','Pirouette','TechnicalFinish','Devilment','Tillana','FanDanceIV','StarfallDance','FanDanceIII','ReverseCascade',
                             'FanDanceI','FanDanceIII','StandardStep','Entrechat','Emboite','StandardFinish','SaberDance','FountainFall','SaberDance','Cascade','SaberDance','ReverseCascade','Fountain','Cascade','Fountain','FountainFall','StandardStep',
                             'Pirouette','Jete','StandardFinish','ReverseCascade','SaberDance','Cascade','Fountain','Cascade','Flourish','SaberDance','FanDanceIV','Fountain','FountainFall','FanDanceIII','ReverseCascade','Cascade','StandardStep',
                             'Pirouette','Jete','StandardFinish','Fountain','FountainFall','Cascade','CuringWaltz','Fountain','FountainFall','SaberDance','Cascade','ReverseCascade','Fountain','FanDanceI','SaberDance','StandardStep','Entrechat','Emboite','StandardFinish',
