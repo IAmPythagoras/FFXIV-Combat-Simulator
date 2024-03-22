@@ -21,149 +21,146 @@ def getSingleFightData(clientId : str, clientSecret : str, code : str, id : str,
     """Gets a fight data from fflog and returns the data corresponding to that fight in a format ffxivcalc can use.
        Errors will be diplayed.
        
-    clientId : str - Your client Id from fflogs.
-    clientSecret : str - Your client secret from fflogs.
+    clientId : str - Your client Id from fflogs. If left empty doesn't write to environ.
+    clientSecret : str - Your client secret from fflogs. If left empty doesn't write to environ.
     code : str - Code of the fights record.
     id : str - Id of the fight.
     showProgress : bool = False - If true a progress bar will be shown.
     """
-
-    os.environ["FFLOGS_CLIENT_ID"] = clientId
-    os.environ["FFLOGS_CLIENT_SECRET"] = clientSecret
+    if len(clientId) != 0 : os.environ["FFLOGS_CLIENT_ID"] = clientId
+    if len(clientSecret) != 0 : os.environ["FFLOGS_CLIENT_SECRET"] = clientSecret
     client = FFLogClientV2()
 
     for rawFight in client.stream_fight_events(code, fight_id=id, show_progress=showProgress):
         df = get_fflog_events_dataframe(rawFight[1])
         view = ffxiv_sim_view(df)
         for fight in view:
-
-            # Aura prepull logic.
-            foundLeftEye = False
-            foundRightEye = False
-            rightEyeId = -1
-            leftEyeTargetId = -1
-
-            for player in fight["data"]["PlayerList"]:
-                for aura in player["Auras"]:
-                    if aura == "SharpCast":
-                        player["actionList"].insert(0,{"actionName" : "Sharpcast"})
-                    elif aura == "Ley Lines":
-                        player["actionList"].insert(0,{"actionName" : "LeyLines"})
-                    elif aura == "Triplecast":
-                        player["actionList"].insert(0,{"actionName" : "Triplecast"})
-                    elif aura == "Medicated":
-                        player["actionList"].insert(0,{"actionName" : "Potion"})
-                    elif aura == "Inner Release":
-                        player["actionList"].insert(0,{"actionName" : "InnerRelease"})
-                    elif aura == "Fight or Flight":
-                        player["actionList"].insert(0,{"actionName" : "FightOrFlight"})
-                    elif aura == "Delirium":
-                        player["actionList"].insert(0,{"actionName" : "Delirium"})
-                    elif aura == "Blood Weapon":
-                        player["actionList"].insert(0,{"actionName" : "BloodWeapon"})
-                    elif aura == "Blackest Night":
-                        if job_object.JobEnum == JobEnum.DarkKnight:
-                            job_object.ActionSet.append(TBN(job_object))
-                            # TODO Add code that makes the darkknight cast it. Now only casts if self cast from DRK
-                    elif aura == "No Mercy":
-                        player["actionList"].insert(0,{"actionName" : "NoMercy"})
-                    elif aura == "Arcane Circle":
-                        if player["JobName"] == "Reaper":
-                            player["actionList"].insert(0,{"actionName" : "ArcaneCircle"})
-                    elif aura == "Soulsow":
-                        player["actionList"].insert(0,{"actionName" : "Soulsow"})
-                    elif aura == "Riddle of Fire":
-                        player["actionList"].insert(0,{"actionName" : "RiddleOfFire"})
-                    elif aura == "Riddle of Wind":
-                        player["actionList"].insert(0,{"actionName" : "RiddleOfWind"})
-                    elif aura == "Brotherhood":
-                        player["actionList"].insert(0,{"actionName" : "Brotherhood"})
-                    elif aura == "Life Surge":
-                        player["actionList"].insert(0,{"actionName" : "LifeSurge"})
-                    elif aura == "Lance Charge":
-                        player["actionList"].insert(0,{"actionName" : "LanceCharge"})
-                    elif aura == "Battle Litany" and player["JobName"] == "Dragoon":
-                        player["actionList"].insert(0,{"actionName" : "BattleLitany"})
-                    elif aura == "Right Eye":
-                        if not foundLeftEye:
-                            foundRightEye = True
-                            rightEyeId = player["playerID"]
-                        else:
-                            player["actionList"].insert(0,{"actionName" : "DragonSight", "targetID" : leftEyeTargetId})
-                    elif aura == "Left Eye":
-                        if not foundRightEye:
-                            foundLeftEye = True
-                            leftEyeTargetId = player["playerID"]
-                        else:
-                            # Looking for player
-                            for emitPlayer in fight["data"]["PlayerList"]:
-                                if emitPlayer["playerID"] == rightEyeId:
-                                    emitPlayer["actionList"].insert(0,{"actionName" : "DragonSight", "targetID" : player["playerID"]})
-                    elif aura == "Kassatsu":
-                        player["actionList"].insert(0,{"actionName" : "Kassatsu"})
-                    elif aura == "Meikyo Shisui":
-                        player["actionList"].insert(0,{"actionName" : "Meikyo"})
-                    elif aura == "Battle Voice" and player["JobName"] == "Bard":
-                        player["actionList"].insert(0,{"actionName" : "BattleVoice"})
-                    elif aura == "Acceleration":
-                        player["actionList"].insert(0,{"actionName" : "Acceleration"})
-                    elif aura == "Embolden" and player["JobName"] == "RedMage":
-                        player["actionList"].insert(0,{"actionName" : "Embolden"})
-                    elif aura == "Searing Light" and player["JobName"] == "Summoner":
-                        player["actionList"].insert(0,{"actionName" : "SearingLight"})
-                    elif aura == "Presence of Mind":
-                        player["actionList"].insert(0,{"actionName" : "PresenceOfMind"})
-                    elif 'Drawn' in aura:
-                        player["actionList"].insert(0,{"actionName" : "Draw"})
-                    elif aura == "Earthly Dominance":
-                        player["actionList"].insert(0,{"actionName" : "EarthlyStar"})
-                    elif aura == "Defiance":
-                        player["actionList"].insert(0,{"actionName" : "Defiance"})
-                    elif aura == "Royal Guard":
-                        player["actionList"].insert(0,{"actionName" : "RoyalGuard"})
-                    elif aura == "Grit":
-                        player["actionList"].insert(0,{"actionName" : "Grit"})
-                    elif aura == "Iron Will":
-                        player["actionList"].insert(0,{"actionName" : "IronWill"})
-                    elif aura == "Mudra": # This has nothing to do with Huton but if we see that aura we will give it.
-                        player["actionList"].insert(0,{"actionName" : "Huton"})
-                    elif aura == "Reassembled":
-                        player["actionList"].insert(0,{"actionName" : "Reassemble"})
-                    elif aura == "Eukrasia":
-                        player["actionList"].insert(0,{"actionName" : "Eukrasia"})
-                    elif aura == "Standard Step":
-                        # Assume 2 steps
-                        player["actionList"].insert(0,{"actionName" : "Entrechat"})
-                        player["actionList"].insert(0,{"actionName" : "Jete"})
-                        player["actionList"].insert(0,{"actionName" : "StandardStep"})
-                    elif aura == "Technical Step":
-                        # Assume 4 steps
-                        player["actionList"].insert(0,{"actionName" : "Emboite"})
-                        player["actionList"].insert(0,{"actionName" : "Pirouette"})
-                        player["actionList"].insert(0,{"actionName" : "Entrechat"})
-                        player["actionList"].insert(0,{"actionName" : "Jete"})
-                        player["actionList"].insert(0,{"actionName" : "TechnicalStep"})
-                    elif aura == "Closed Position":
-                        if not foundDancePartner:
-                            foundClosedPosition = True
-                            dancerId = player["playerID"]
-                        else:
-                            player["actionList"].insert(0,{"actionName" : "ClosedPosition", "targetID" : partnerId})
-                    elif aura == "Dance Partner":
-                        if not foundClosedPosition:
-                            foundDancePartner = True
-                            partnerId = player["playerID"]
-                        else:
-                            # Looking for player
-                            for emitPlayer in fight["data"]["PlayerList"]:
-                                if emitPlayer["playerID"] == dancerId:
-                                    emitPlayer["actionList"].insert(0,{"actionName" : "ClosedPosition", "targetID" : player["playerID"]})
-
-
-
-            return fight[1]
+            data = fight[1]
+            _aura_prepull_logic(data)
+            return data
         
+def _aura_prepull_logic(fight):
+        # Aura prepull logic.
+    foundLeftEye = False
+    foundRightEye = False
+    rightEyeId = -1
+    leftEyeTargetId = -1
 
+    for player in fight["data"]["PlayerList"]:
+        for aura in player["Auras"]:
+            if aura == "SharpCast":
+                player["actionList"].insert(0,{"actionName" : "Sharpcast"})
+            elif aura == "Ley Lines":
+                player["actionList"].insert(0,{"actionName" : "LeyLines"})
+            elif aura == "Triplecast":
+                player["actionList"].insert(0,{"actionName" : "Triplecast"})
+            elif aura == "Medicated":
+                player["actionList"].insert(0,{"actionName" : "Potion"})
+            elif aura == "Inner Release":
+                player["actionList"].insert(0,{"actionName" : "InnerRelease"})
+            elif aura == "Fight or Flight":
+                player["actionList"].insert(0,{"actionName" : "FightOrFlight"})
+            elif aura == "Delirium":
+                player["actionList"].insert(0,{"actionName" : "Delirium"})
+            elif aura == "Blood Weapon":
+                player["actionList"].insert(0,{"actionName" : "BloodWeapon"})
+            elif aura == "Blackest Night" and player["JobName"] == "DarkKnight":
+                player["actionList"].insert(0,{"actionName" : "TheBlackestNight"})
+                # TODO Add code that makes the darkknight cast it. Now only casts if self cast from DRK
+            elif aura == "No Mercy":
+                player["actionList"].insert(0,{"actionName" : "NoMercy"})
+            elif aura == "Arcane Circle":
+                if player["JobName"] == "Reaper":
+                    player["actionList"].insert(0,{"actionName" : "ArcaneCircle"})
+            elif aura == "Soulsow":
+                player["actionList"].insert(0,{"actionName" : "Soulsow"})
+            elif aura == "Riddle of Fire":
+                player["actionList"].insert(0,{"actionName" : "RiddleOfFire"})
+            elif aura == "Riddle of Wind":
+                player["actionList"].insert(0,{"actionName" : "RiddleOfWind"})
+            elif aura == "Brotherhood":
+                player["actionList"].insert(0,{"actionName" : "Brotherhood"})
+            elif aura == "Life Surge":
+                player["actionList"].insert(0,{"actionName" : "LifeSurge"})
+            elif aura == "Lance Charge":
+                player["actionList"].insert(0,{"actionName" : "LanceCharge"})
+            elif aura == "Battle Litany" and player["JobName"] == "Dragoon":
+                player["actionList"].insert(0,{"actionName" : "BattleLitany"})
+            elif aura == "Right Eye":
+                if not foundLeftEye:
+                    foundRightEye = True
+                    rightEyeId = player["playerID"]
+                else:
+                    player["actionList"].insert(0,{"actionName" : "DragonSight", "targetID" : leftEyeTargetId})
+            elif aura == "Left Eye":
+                if not foundRightEye:
+                    foundLeftEye = True
+                    leftEyeTargetId = player["playerID"]
+                else:
+                    # Looking for player
+                    for emitPlayer in fight["data"]["PlayerList"]:
+                        if emitPlayer["playerID"] == rightEyeId:
+                            emitPlayer["actionList"].insert(0,{"actionName" : "DragonSight", "targetID" : player["playerID"]})
+            elif aura == "Kassatsu":
+                player["actionList"].insert(0,{"actionName" : "Kassatsu"})
+            elif aura == "Meikyo Shisui":
+                player["actionList"].insert(0,{"actionName" : "Meikyo"})
+            elif aura == "Battle Voice" and player["JobName"] == "Bard":
+                player["actionList"].insert(0,{"actionName" : "BattleVoice"})
+            elif aura == "Acceleration":
+                player["actionList"].insert(0,{"actionName" : "Acceleration"})
+            elif aura == "Embolden" and player["JobName"] == "RedMage":
+                player["actionList"].insert(0,{"actionName" : "Embolden"})
+            elif aura == "Searing Light" and player["JobName"] == "Summoner":
+                player["actionList"].insert(0,{"actionName" : "SearingLight"})
+            elif aura == "Presence of Mind":
+                player["actionList"].insert(0,{"actionName" : "PresenceOfMind"})
+            elif 'Drawn' in aura:
+                player["actionList"].insert(0,{"actionName" : "Draw"})
+            elif aura == "Earthly Dominance":
+                player["actionList"].insert(0,{"actionName" : "EarthlyStar"})
+            elif aura == "Defiance":
+                player["actionList"].insert(0,{"actionName" : "Defiance"})
+            elif aura == "Royal Guard":
+                player["actionList"].insert(0,{"actionName" : "RoyalGuard"})
+            elif aura == "Grit":
+                player["actionList"].insert(0,{"actionName" : "Grit"})
+            elif aura == "Iron Will":
+                player["actionList"].insert(0,{"actionName" : "IronWill"})
+            elif aura == "Mudra": # This has nothing to do with Huton but if we see that aura we will give it.
+                player["actionList"].insert(0,{"actionName" : "Huton"})
+            elif aura == "Reassembled":
+                player["actionList"].insert(0,{"actionName" : "Reassemble"})
+            elif aura == "Eukrasia":
+                player["actionList"].insert(0,{"actionName" : "Eukrasia"})
+            elif aura == "Standard Step":
+                # Assume 2 steps
+                player["actionList"].insert(0,{"actionName" : "Entrechat"})
+                player["actionList"].insert(0,{"actionName" : "Jete"})
+                player["actionList"].insert(0,{"actionName" : "StandardStep"})
+            elif aura == "Technical Step":
+                # Assume 4 steps
+                player["actionList"].insert(0,{"actionName" : "Emboite"})
+                player["actionList"].insert(0,{"actionName" : "Pirouette"})
+                player["actionList"].insert(0,{"actionName" : "Entrechat"})
+                player["actionList"].insert(0,{"actionName" : "Jete"})
+                player["actionList"].insert(0,{"actionName" : "TechnicalStep"})
+            elif aura == "Closed Position":
+                if not foundDancePartner:
+                    foundClosedPosition = True
+                    dancerId = player["playerID"]
+                else:
+                    player["actionList"].insert(0,{"actionName" : "ClosedPosition", "targetID" : partnerId})
+            elif aura == "Dance Partner":
+                if not foundClosedPosition:
+                    foundDancePartner = True
+                    partnerId = player["playerID"]
+                else:
+                    # Looking for player
+                    for emitPlayer in fight["data"]["PlayerList"]:
+                        if emitPlayer["playerID"] == dancerId:
+                            emitPlayer["actionList"].insert(0,{"actionName" : "ClosedPosition", "targetID" : player["playerID"]})
+        player["Auras"] = [] # Wiping auras.
 
 
 def get_auth_token() -> str:

@@ -20949,7 +20949,7 @@ def generateLimitBreakTestSuite():
 def generateFFLogsTestSuite():
     
     fflogTestSuite = testSuite("FFLogs test suite.")
-
+    from ffxivcalc.Request.FFLogs_api import getSingleFightData
     import os
     os.environ["FFLOGS_CLIENT_ID"] = "9b8e6c18-39d6-4ae0-91c7-e9221e699769"
     os.environ["FFLOGS_CLIENT_SECRET"] = "u0j8e1aIygCejB6HiBJFJcr0RB1MSIkVkLdgxDox"
@@ -20957,15 +20957,9 @@ def generateFFLogsTestSuite():
 
     logging.getLogger("urllib3").level = logging.ERROR
     def ffTest1TestFunction() -> None:
-        client = FFLogClientV2()
-        iterator = client.stream_fight_events("RQwfx3vATFWGahJc", fight_id="8")
 
-        for fight in iterator:
-            df = get_fflog_events_dataframe(fight[1])
-            view = ffxiv_sim_view(df)
-            for fightView in view:
-                data = fightView[1]
-                ffLogFight = RestoreFightObject(data)
+        data = getSingleFightData("", "", "RQwfx3vATFWGahJc", "8")
+        ffLogFight = RestoreFightObject(data)
 
         return [
             ActionEnum.name_for_id(action.id, ActionEnum.CasterActions, ActionEnum.BlackMageActions) 
@@ -20991,15 +20985,9 @@ def generateFFLogsTestSuite():
     fflogTestSuite.addTest(ffTest1)
 
     def ffTest2TestFunction() -> None:
-        client = FFLogClientV2()
-        iterator = client.stream_fight_events("bzfjTDV7gBGx1Y3m", fight_id="10")
 
-        for fight in iterator:
-            df = get_fflog_events_dataframe(fight[1])
-            view = ffxiv_sim_view(df)
-            for fightView in view:
-                data = fightView[1]
-                ffLogFight = RestoreFightObject(data)
+        data = getSingleFightData("", "", "bzfjTDV7gBGx1Y3m", "10")
+        ffLogFight = RestoreFightObject(data)
 
         playerIndex = [i 
                        for i in range(len(ffLogFight.PlayerList))
@@ -21032,15 +21020,9 @@ def generateFFLogsTestSuite():
     fflogTestSuite.addTest(ffTest2)
 
     def ffTest3TestFunction() -> None:
-        client = FFLogClientV2()
-        iterator = client.stream_fight_events("Mkj7gynfpDBGHacW", fight_id="5")
 
-        for fight in iterator:
-            df = get_fflog_events_dataframe(fight[1])
-            view = ffxiv_sim_view(df)
-            for fightView in view:
-                data = fightView[1]
-                ffLogFight = RestoreFightObject(data)
+        data = getSingleFightData("", "", "Mkj7gynfpDBGHacW", "5")
+        ffLogFight = RestoreFightObject(data)
 
         playerIndex = [i 
                        for i in range(len(ffLogFight.PlayerList))
@@ -21074,15 +21056,9 @@ def generateFFLogsTestSuite():
     fflogTestSuite.addTest(ffTest3)
 
     def ffTest4TestFunction() -> None:
-        client = FFLogClientV2()
-        iterator = client.stream_fight_events("YbDaH9C6dNVJAh8T", fight_id="67")
 
-        for fight in iterator:
-            df = get_fflog_events_dataframe(fight[1])
-            view = ffxiv_sim_view(df)
-            for fightView in view:
-                data = fightView[1]
-                ffLogFight = RestoreFightObject(data)
+        data = getSingleFightData("", "", "YbDaH9C6dNVJAh8T", "67")
+        ffLogFight = RestoreFightObject(data)
 
         playerIndex = [i 
                        for i in range(len(ffLogFight.PlayerList))
@@ -21113,15 +21089,9 @@ def generateFFLogsTestSuite():
     fflogTestSuite.addTest(ffTest4)
 
     def ffTest5TestFunction() -> None:
-        client = FFLogClientV2()
-        iterator = client.stream_fight_events("ytpwWPVGd8ZfzgTD", fight_id="18")
 
-        for fight in iterator:
-            df = get_fflog_events_dataframe(fight[1])
-            view = ffxiv_sim_view(df)
-            for fightView in view:
-                data = fightView[1]
-                ffLogFight = RestoreFightObject(data)
+        data = getSingleFightData("", "", "ytpwWPVGd8ZfzgTD", "18")
+        ffLogFight = RestoreFightObject(data)
 
         playerIndex = [i 
                        for i in range(len(ffLogFight.PlayerList))
@@ -21158,15 +21128,9 @@ def generateFFLogsTestSuite():
     fflogTestSuite.addTest(ffTest5)
 
     def ffTest6TestFunction() -> None:
-        client = FFLogClientV2()
-        iterator = client.stream_fight_events("Mk4ZR1KGQjBnJYmN", fight_id="2")
 
-        for fight in iterator:
-            df = get_fflog_events_dataframe(fight[1])
-            view = ffxiv_sim_view(df)
-            for fightView in view:
-                data = fightView[1]
-                ffLogFight = RestoreFightObject(data)
+        data = getSingleFightData("", "", "Mk4ZR1KGQjBnJYmN", "2")
+        ffLogFight = RestoreFightObject(data)
 
         playerIndex = [i 
                        for i in range(len(ffLogFight.PlayerList))
@@ -21201,15 +21165,9 @@ def generateFFLogsTestSuite():
     fflogTestSuite.addTest(ffTest6)
 
     def ffTest7TestFunction() -> None:
-        client = FFLogClientV2()
-        iterator = client.stream_fight_events("N2WfcJa8hnG9FL4k", fight_id="5")
 
-        for fight in iterator:
-            df = get_fflog_events_dataframe(fight[1])
-            view = ffxiv_sim_view(df)
-            for fightView in view:
-                data = fightView[1]
-                ffLogFight = RestoreFightObject(data)
+        data = getSingleFightData("", "", "N2WfcJa8hnG9FL4k", "5")
+        ffLogFight = RestoreFightObject(data)
 
         playerIndex = [i 
                        for i in range(len(ffLogFight.PlayerList))
@@ -21243,15 +21201,9 @@ def generateFFLogsTestSuite():
     fflogTestSuite.addTest(ffTest7)
 
     def ffTest8TestFunction() -> None:
-        client = FFLogClientV2()
-        iterator = client.stream_fight_events("L2tQ41WZCPbYa7wX", fight_id="2")
 
-        for fight in iterator:
-            df = get_fflog_events_dataframe(fight[1])
-            view = ffxiv_sim_view(df)
-            for fightView in view:
-                data = fightView[1]
-                ffLogFight = RestoreFightObject(data)
+        data = getSingleFightData("", "", "L2tQ41WZCPbYa7wX", "2")
+        ffLogFight = RestoreFightObject(data)
 
         playerIndex = [i 
                        for i in range(len(ffLogFight.PlayerList))
@@ -21285,15 +21237,9 @@ def generateFFLogsTestSuite():
     fflogTestSuite.addTest(ffTest8)
 
     def ffTest9TestFunction() -> None:
-        client = FFLogClientV2()
-        iterator = client.stream_fight_events("ZDamRAJ7dqzCW816", fight_id="1")
 
-        for fight in iterator:
-            df = get_fflog_events_dataframe(fight[1])
-            view = ffxiv_sim_view(df)
-            for fightView in view:
-                data = fightView[1]
-                ffLogFight = RestoreFightObject(data)
+        data = getSingleFightData("", "", "ZDamRAJ7dqzCW816", "1")
+        ffLogFight = RestoreFightObject(data)
 
         playerIndex = [i 
                        for i in range(len(ffLogFight.PlayerList))
@@ -21324,15 +21270,9 @@ def generateFFLogsTestSuite():
     fflogTestSuite.addTest(ffTest9)
 
     def ffTest10TestFunction() -> None:
-        client = FFLogClientV2()
-        iterator = client.stream_fight_events("ZDamRAJ7dqzCW816", fight_id="1")
 
-        for fight in iterator:
-            df = get_fflog_events_dataframe(fight[1])
-            view = ffxiv_sim_view(df)
-            for fightView in view:
-                data = fightView[1]
-                ffLogFight = RestoreFightObject(data)
+        data = getSingleFightData("", "", "ZDamRAJ7dqzCW816", "1")
+        ffLogFight = RestoreFightObject(data)
 
         playerIndex = [i 
                        for i in range(len(ffLogFight.PlayerList))
@@ -21364,15 +21304,9 @@ def generateFFLogsTestSuite():
     fflogTestSuite.addTest(ffTest10)
 
     def ffTest11TestFunction() -> None:
-        client = FFLogClientV2()
-        iterator = client.stream_fight_events("c8Y7D6GZ1r9fbjaT", fight_id="1")
 
-        for fight in iterator:
-            df = get_fflog_events_dataframe(fight[1])
-            view = ffxiv_sim_view(df)
-            for fightView in view:
-                data = fightView[1]
-                ffLogFight = RestoreFightObject(data)
+        data = getSingleFightData("", "", "c8Y7D6GZ1r9fbjaT", "1")
+        ffLogFight = RestoreFightObject(data)
 
         playerIndex = [i 
                        for i in range(len(ffLogFight.PlayerList))
@@ -21405,15 +21339,9 @@ def generateFFLogsTestSuite():
     fflogTestSuite.addTest(ffTest11)
 
     def ffTest12TestFunction() -> None:
-        client = FFLogClientV2()
-        iterator = client.stream_fight_events("c8Y7D6GZ1r9fbjaT", fight_id="1")
 
-        for fight in iterator:
-            df = get_fflog_events_dataframe(fight[1])
-            view = ffxiv_sim_view(df)
-            for fightView in view:
-                data = fightView[1]
-                ffLogFight = RestoreFightObject(data)
+        data = getSingleFightData("", "", "c8Y7D6GZ1r9fbjaT", "1")
+        ffLogFight = RestoreFightObject(data)
 
         playerIndex = [i 
                        for i in range(len(ffLogFight.PlayerList))
@@ -21445,15 +21373,9 @@ def generateFFLogsTestSuite():
     fflogTestSuite.addTest(ffTest12)
 
     def ffTest13TestFunction() -> None:
-        client = FFLogClientV2()
-        iterator = client.stream_fight_events("8vPCHArRBWkQ6Gdb", fight_id="5")
 
-        for fight in iterator:
-            df = get_fflog_events_dataframe(fight[1])
-            view = ffxiv_sim_view(df)
-            for fightView in view:
-                data = fightView[1]
-                ffLogFight = RestoreFightObject(data)
+        data = getSingleFightData("", "", "8vPCHArRBWkQ6Gdb", "5")
+        ffLogFight = RestoreFightObject(data)
 
         playerIndex = [i 
                        for i in range(len(ffLogFight.PlayerList))
@@ -21486,15 +21408,9 @@ def generateFFLogsTestSuite():
     fflogTestSuite.addTest(ffTest13)
 
     def ffTest14TestFunction() -> None:
-        client = FFLogClientV2()
-        iterator = client.stream_fight_events("8vPCHArRBWkQ6Gdb", fight_id="5")
 
-        for fight in iterator:
-            df = get_fflog_events_dataframe(fight[1])
-            view = ffxiv_sim_view(df)
-            for fightView in view:
-                data = fightView[1]
-                ffLogFight = RestoreFightObject(data)
+        data = getSingleFightData("", "", "8vPCHArRBWkQ6Gdb", "5")
+        ffLogFight = RestoreFightObject(data)
 
         playerIndex = [i 
                        for i in range(len(ffLogFight.PlayerList))
@@ -21529,15 +21445,9 @@ def generateFFLogsTestSuite():
     fflogTestSuite.addTest(ffTest14)
 
     def ffTest15TestFunction() -> None:
-        client = FFLogClientV2()
-        iterator = client.stream_fight_events("j4WazfhqMvgd1LJY", fight_id="10")
 
-        for fight in iterator:
-            df = get_fflog_events_dataframe(fight[1])
-            view = ffxiv_sim_view(df)
-            for fightView in view:
-                data = fightView[1]
-                ffLogFight = RestoreFightObject(data)
+        data = getSingleFightData("", "", "j4WazfhqMvgd1LJY", "10")
+        ffLogFight = RestoreFightObject(data)
 
         playerIndex = [i 
                        for i in range(len(ffLogFight.PlayerList))
@@ -21573,15 +21483,9 @@ def generateFFLogsTestSuite():
     fflogTestSuite.addTest(ffTest15)
 
     def ffTest16TestFunction() -> None:
-        client = FFLogClientV2()
-        iterator = client.stream_fight_events("j4WazfhqMvgd1LJY", fight_id="10")
 
-        for fight in iterator:
-            df = get_fflog_events_dataframe(fight[1])
-            view = ffxiv_sim_view(df)
-            for fightView in view:
-                data = fightView[1]
-                ffLogFight = RestoreFightObject(data)
+        data = getSingleFightData("", "", "j4WazfhqMvgd1LJY", "10")
+        ffLogFight = RestoreFightObject(data)
 
         playerIndex = [i 
                        for i in range(len(ffLogFight.PlayerList))
@@ -21614,15 +21518,9 @@ def generateFFLogsTestSuite():
     fflogTestSuite.addTest(ffTest16)
 
     def ffTest17TestFunction() -> None:
-        client = FFLogClientV2()
-        iterator = client.stream_fight_events("C176W2JQNqKYd4FR", fight_id="15")
 
-        for fight in iterator:
-            df = get_fflog_events_dataframe(fight[1])
-            view = ffxiv_sim_view(df)
-            for fightView in view:
-                data = fightView[1]
-                ffLogFight = RestoreFightObject(data)
+        data = getSingleFightData("", "", "C176W2JQNqKYd4FR", "15")
+        ffLogFight = RestoreFightObject(data)
 
         playerIndex = [i 
                        for i in range(len(ffLogFight.PlayerList))
@@ -21657,15 +21555,9 @@ def generateFFLogsTestSuite():
     fflogTestSuite.addTest(ffTest17)
 
     def ffTest18TestFunction() -> None:
-        client = FFLogClientV2()
-        iterator = client.stream_fight_events("wxZFthf69kj8KpqB", fight_id="8")
 
-        for fight in iterator:
-            df = get_fflog_events_dataframe(fight[1])
-            view = ffxiv_sim_view(df)
-            for fightView in view:
-                data = fightView[1]
-                ffLogFight = RestoreFightObject(data)
+        data = getSingleFightData("", "", "wxZFthf69kj8KpqB", "8")
+        ffLogFight = RestoreFightObject(data)
 
         playerIndex = [i 
                        for i in range(len(ffLogFight.PlayerList))
@@ -21698,15 +21590,9 @@ def generateFFLogsTestSuite():
     fflogTestSuite.addTest(ffTest18)
 
     def ffTest19TestFunction() -> None:
-        client = FFLogClientV2()
-        iterator = client.stream_fight_events("kHqB6mgPZYycxJvb", fight_id="41")
 
-        for fight in iterator:
-            df = get_fflog_events_dataframe(fight[1])
-            view = ffxiv_sim_view(df)
-            for fightView in view:
-                data = fightView[1]
-                ffLogFight = RestoreFightObject(data)
+        data = getSingleFightData("", "", "kHqB6mgPZYycxJvb", "41")
+        ffLogFight = RestoreFightObject(data)
 
         playerIndex = [i 
                        for i in range(len(ffLogFight.PlayerList))
@@ -21743,15 +21629,9 @@ def generateFFLogsTestSuite():
 
 
     def ffTest20TestFunction() -> None:
-        client = FFLogClientV2()
-        iterator = client.stream_fight_events("2KBhtxLJH47vrCRj", fight_id="17")
 
-        for fight in iterator:
-            df = get_fflog_events_dataframe(fight[1])
-            view = ffxiv_sim_view(df)
-            for fightView in view:
-                data = fightView[1]
-                ffLogFight = RestoreFightObject(data)
+        data = getSingleFightData("", "", "2KBhtxLJH47vrCRj", "17")
+        ffLogFight = RestoreFightObject(data)
 
         playerIndex = [i 
                        for i in range(len(ffLogFight.PlayerList))
