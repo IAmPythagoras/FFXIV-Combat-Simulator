@@ -200,3 +200,23 @@ class outDatedFFLogsCode(Exception):
 
     def __str__(self) -> str:
         return f'{self.message}'
+    
+class outDatedAPICode(Exception):
+    # Expcetion is raised when the user tries to import the API module.
+    def __init__(self):
+
+        self.message = "The module 'ffxivcalc.API' is outdated and has been deactivated, please do not import it. If you still want to use it add a try/except block (not recommend)."
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'
+    
+class deactivatedModuleCodeParser(Exception):
+    # Expcetion is raised when the user tries to import the codeParser module.
+    def __init__(self):
+
+        self.message = "The module 'ffxivcalc.codeParser' is outdated and has been deactivated, please do not import it. If you still want to use it add a try/except block (not recommend)."
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'
