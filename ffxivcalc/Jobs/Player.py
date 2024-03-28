@@ -995,7 +995,11 @@ class Player:
             SummonerActions.Summon,
             SummonerActions.SummonPhoenix,
             MonkActions.Thunderclap,
-            GunbreakerActions.Bloodfest
+            GunbreakerActions.Bloodfest,
+            ScholarActions.Biolysis,
+            AstrologianActions.Combust,
+            WhiteMageActions.Dia,
+            SageActions.EukrasianDosis
         ]
         sumUntilDamage = 0
 
