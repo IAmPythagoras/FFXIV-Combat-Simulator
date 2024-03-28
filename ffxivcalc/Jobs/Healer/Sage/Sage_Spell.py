@@ -177,26 +177,26 @@ Toxikon = SageSpell(24316, True, 0, 2.5, 330, 0, ApplyToxikon, [ToxikonRequireme
 Dyskrasia = SageSpell(24315, True, 0, 2.5, 170, 400, empty, [ManaRequirement], type = 1)
 #Healing GCD
 Egeiro = SageSpell(24287, True, 8, 2.5, 0, 2400, empty, [ManaRequirement], type = 1)
-Prognosis = SageSpell(24286, True, 2, 2.5, 0, 800, empty, [ManaRequirement], type = 1)
-EukrasianPrognosis = SageSpell(24292, True, 0, 1.5, 0, 900, empty, [ManaRequirement], type = 1)
+Prognosis = SageSpell(24286, True, 2, 2.5, 0, 800, empty, [ManaRequirement], type = 1, AOEHeal=True)
+EukrasianPrognosis = SageSpell(24292, True, 0, 1.5, 0, 900, empty, [ManaRequirement], type = 1, AOEHeal=True)
 Diagnosis = SageSpell(24284, True, 1.5, 2.5, 0, 400, ApplyDiagnosis, [ManaRequirement], type = 1)
-EukrasianDiagnosis = SageSpell(24291, True, 1.5, 1.5, 0, 900, ApplyEukrasianDiagnosis, [ManaRequirement], type = 1)
+EukrasianDiagnosis = SageSpell(24291, True, 1.5, 1.5, 0, 900, ApplyEukrasianDiagnosis, [ManaRequirement], type = 1, TargetHeal=True)
 
 Eukrasia = SageSpell(24290, True, 1, 1, 0, 0, ApplyEukrasia, [], type = 1) #Since only 1 sec CD, no real need to put a requirement
 #Healing oGCD
 Krasis = SageSpell(24317, False, 0, 0, 0, 0, ApplyKrasis, [KrasisRequirement])
-Panhaima = SageSpell(24311, False, 0, 0, 0, 0, ApplyPanhaima, [PanhaimaRequirement])
-Holos = SageSpell(24310, False, 0, 0, 0, 0, ApplyHolos, [HolosRequirement])
+Panhaima = SageSpell(24311, False, 0, 0, 0, 0, ApplyPanhaima, [PanhaimaRequirement], AOEHeal=True)
+Holos = SageSpell(24310, False, 0, 0, 0, 0, ApplyHolos, [HolosRequirement], AOEHeal=True)
 Rhizomata = SageSpell(24309, False, 0, 0, 0, 0, ApplyRhizomata, [RhizomataRequirement])
 Haima = SageSpell(24305, False, 0, 0, 0, 0, ApplyHaima, [HaimaRequirement])
-Taurochole = SageSpell(24303, False, 0, 0, 0, 0, ApplyTaurochole, [TaurocholeRequirement,AddersgallRequirement])
+Taurochole = SageSpell(24303, False, 0, 0, 0, 0, ApplyTaurochole, [TaurocholeRequirement,AddersgallRequirement], TargetHeal=True)
 Pepsi = SageSpell(24301, False, 0, 0, 0, 0, ApplyPepsi, [PepsiRequirement])
 Zoe = SageSpell(24300, False, 0, 0, 0, 0, ApplyZoe, [ZoeRequirement]) #https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.leagueoflegends.com%2Fen-pl%2Fchampions%2Fzoe%2F&psig=AOvVaw2X9QcnXQ_CGp3xMY8MLua9&ust=1654295724885000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCJjl4oPqj_gCFQAAAAAdAAAAABAD
-Ixochole = SageSpell(24299, False, 0, 0, 0, 0, ApplyIxochole, [IxocholeRequirement,AddersgallRequirement])
+Ixochole = SageSpell(24299, False, 0, 0, 0, 0, ApplyIxochole, [IxocholeRequirement,AddersgallRequirement], AOEHeal=True)
 Kerachole = SageSpell(24298, False, 0, 0, 0, 0, ApplyKerachole, [KeracholeRequirement,AddersgallRequirement])
 Icarus = SageSpell(24295, False, 0, 0, 0, 0, ApplyIcarus, [IcarusRequirement])
 Soteria = SageSpell(24294, False, 0, 0, 0, 0, ApplySoteria, [SoteriaRequirement])
-Druochole = SageSpell(24296, False, 0, 0, 0, 0, ApplyDruochole, [AddersgallRequirement])
+Druochole = SageSpell(24296, False, 0, 0, 0, 0, ApplyDruochole, [AddersgallRequirement], TargetHeal=True)
 Kardia = SageSpell(24285, False, 0, 0, 0, 0, empty, [])
 Physis = SageSpell(24302, False, 0, 0, 0, 0, ApplyPhysis, [PhysisRequirement])
 

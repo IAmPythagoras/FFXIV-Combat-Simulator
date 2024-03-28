@@ -201,9 +201,9 @@ BiolysisDOT = DOTSpell(-4, 70, False)
 ArtOfWar = ScholarSpell(25866, True, 0, 2.5, 165, 400, empty, [ManaRequirement], type = 1)#AOE
 
 #HealGCD
-Succor = ScholarSpell(186, True, 2, 2.5, 200, 1000, ApplyAdloquium, [AdloquiumRequirement], type = 1) ##This action has apply and requirement because of recitation. 160% shield
-Adloquium = ScholarSpell(185, True, 2, 2.5, 300, 1000, ApplyAdloquium, [AdloquiumRequirement], type = 1) #This action has apply and requirement because of recitation. 180% shield
-Physick = ScholarSpell(190, True, 1.5, 2.5, 450, 400, empty, [ManaRequirement], type = 1)
+Succor = ScholarSpell(186, True, 2, 2.5, 200, 1000, ApplyAdloquium, [AdloquiumRequirement], type = 1, AOEHeal=True) ##This action has apply and requirement because of recitation. 160% shield
+Adloquium = ScholarSpell(185, True, 2, 2.5, 300, 1000, ApplyAdloquium, [AdloquiumRequirement], type = 1, TargetHeal=True) #This action has apply and requirement because of recitation. 180% shield
+Physick = ScholarSpell(190, True, 1.5, 2.5, 450, 400, empty, [ManaRequirement], type = 1, TargetHeal=True)
 SummonEos = ScholarSpell(29, True, 1.5, 2.5, 0, 200, empty, [ManaRequirement], type = 1)
 Resurrection = ScholarSpell(173, True, 8, 2.5, 0, 2400, empty, [ManaRequirement])
 #Damage oGCD
@@ -221,7 +221,7 @@ DeploymentTactic = ScholarSpell(3585, False, 0, 0, 0, 0, ApplyDeploymentTactic, 
 #AetherFlow Heal spell
 Excogitation = ScholarSpell(7434, False, 0, 0, 0, 0, ApplyExcogitation, [ExcogitationRequirement,AetherHealRequirement]) #Can be used by recitation
 SacredSoil = ScholarSpell(188, False, 0, 0, 0, 0, ApplySacredSoil, [SacredSoilRequirement,AetherflowRequirement])
-Lustrate = ScholarSpell(189, False, 0, 0, 600, 0, ApplyLustrate, [LustrateRequirement,AetherflowRequirement])
+Lustrate = ScholarSpell(189, False, 0, 0, 600, 0, ApplyLustrate, [LustrateRequirement,AetherflowRequirement], TargetHeal=True)
 Indomitability = ScholarSpell(3583, False, 0, 0, 400, 0, ApplyIndomitability, [IndomitabilityRequirement,AetherHealRequirement], AOEHeal=True)#Can be used by recitation
 
 #Fey Healing
