@@ -1015,7 +1015,7 @@ class Player:
             actionCopy = deepcopy(action) if action.GCD else action
             if action.GCD and actionCopy.id != CasterActions.WaitAbility : self.computeActionTimer(actionCopy)
 
-            if actionCopy.Potency == 0 and not (actionCopy.id in OTHER_IDS_TO_CONSIDER):
+            if actionCopy.Potency == 0 and not (actionCopy.id in OTHER_IDS_TO_CONSIDER) or (actionCopy.AOEHeal or actionCopy.TargetHeal):
                 sumUntilDamage += actionCopy.RecastTime
             elif isBLM and actionCopy.id == BlackMageActions.LeyLines:
                 self.Haste = 15

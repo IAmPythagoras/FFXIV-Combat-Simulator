@@ -200,7 +200,7 @@ class Fight:
         self.NextActionFunction = DefaultNextActionFunction
         self.ExtractInfo = DefaultExtractInfo
 
-    def AddPlayer(self, Players):
+    def AddPlayer(self, Players : list):
         """This function adds the given player list to the fight's playerList.
         """
         for player in Players:
