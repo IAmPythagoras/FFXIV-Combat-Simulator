@@ -8,6 +8,8 @@ from ffxivcalc.helperCode.Progress import ProgressBar
 from ffxivcalc.SimulationRecord.record import SimulationRecord, page
 from ffxivcalc.helperCode.exceptions import playerIDNotFound
 
+from ffxivcalc.Jobs.Base_Spell import WaitAbility
+
 import matplotlib.pyplot as plt
 import logging
 from ffxivcalc.helperCode.helper_math import roundDown, isclose, roundUp
@@ -25,6 +27,51 @@ class Fight:
     It will be called upon for when we want to start the simulation
 
     """
+
+    def getPlayerPrepullLength(self) -> dict[int : float]:
+        """
+        Computes and returns the length of the prepull of all players. Returns a dictionnary that maps playerID to prepull length.
+        """
+
+        prepullLengthDict = {}
+
+        for player in self.PlayerList:
+            prepullLengthDict[player.playerID] = player.getPlayerPrePullTime()
+
+        return prepullLengthDict
+    
+    def syncPlayerPrePull(self, editActionSet : bool = True) -> dict[int : float]:
+        """
+        Computes the time difference between all player's prepull and makes sure they all match and all players start doing damage at the same time.
+        
+        Returns a dictionnary that maps playerID to the added waitTime to sync all players.
+
+        editActionSet : bool - If set to true will insert at index 0 a waitAbility of the needed time.
+        """
+
+
+        prepullLengthDict = self.getPlayerPrepullLength()
+
+        fight_logging.debug(f'Synchronising player prepull length. \nCurrent prepull length : {prepullLengthDict}')
+
+        maxPrepullPlayerID = max(prepullLengthDict.keys(), key=lambda x : prepullLengthDict[x])
+
+        fight_logging.debug(f'Detected max length : {maxPrepullPlayerID}')
+
+        addedAmountDict = {}
+
+        for player in self.PlayerList:
+            if maxPrepullPlayerID == player.playerID : continue
+
+            amountToAdd = prepullLengthDict[maxPrepullPlayerID] - prepullLengthDict[player.playerID]
+            addedAmountDict[player.playerID] = amountToAdd
+            fight_logging.debug(f'Adding waitAbility({amountToAdd}) to player {player.playerID}')
+
+            if editActionSet: player.ActionSet.insert(0, WaitAbility(amountToAdd))
+
+        fight_logging.debug(f'Synchronising done. {self.getPlayerPrepullLength()}')
+
+        return addedAmountDict
 
     def GetEnemityList(self, range : int):
         """Returns a list of players in order of greather enemity to lowest enemity. The length of the

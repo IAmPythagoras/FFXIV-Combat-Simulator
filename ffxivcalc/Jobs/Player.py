@@ -370,8 +370,15 @@ class Player:
         This function computes SpellReduction and WeaponSkillReduction ratio and sets those values at the
         appropriate fields.
         """
-        self.SpellReduction = (1000 - floor(130 * (self.Stat["SS"]-400) / 1900))/1000
-        self.WeaponskillReduction = (1000 - floor(130 * (self.Stat["SkS"]-400) / 1900))/1000
+        self.SpellReduction, self.WeaponskillReduction = self._computeMultReduction(self.Stat["SS"], self.Stat["SkS"])
+
+    def _computeMultReduction(self, SS : int, SkS : int):
+        """
+        Computes and returns the f_SPD for SS and SkS
+        SS : int - Value of SpellSpeed stat.
+        SkS : int - Value of Skill Speed stat.
+        """
+        return (1000 - floor(130 * (SS-400) / 1900))/1000, (1000 - floor(130 * (SkS-400) / 1900))/1000
 
     def computeActionTimer(self, Spell) -> None:
 
@@ -972,6 +979,55 @@ class Player:
 
         return {"currentTimeStamp" : round(curTimeStamp,2), "untilNextGCD" : max(0,round(finalGCDLockTimer,2)), "dotTimer" : round(curDOTTimer,2), "buffTimer" : round(curBuffTimer,2),
                 "detectedInFire" : inAstralFire, "detectedInIce" : inUmbralIce, "dualCast" : hasDualCast}
+
+    def getPlayerPrePullTime(self, ignoreFirstStandardFinish : bool = False, ignoreFirstTechnicalFinish : bool = False) -> float:
+        """
+        Computes and returns the length of the actions taken before the first action with non zero potency. This 
+        determines the length in seconds of the prepull.
+
+        ignoreFirstStandardFinish : bool - If true assumes first standard finish was done out of range (so didn't start fight).
+        ignoreFirstTechnicalFinish : bool - If true assumes first technical finish was done out of range (so didn't start fight).
+        """
+                             # Zero potency actions that will start the fight.
+        OTHER_IDS_TO_CONSIDER = [
+            ScholarActions.ChainStratagem,
+            DarkKnightActions.LivingShadow,
+            SummonerActions.Summon,
+            SummonerActions.SummonPhoenix,
+            MonkActions.Thunderclap,
+            GunbreakerActions.Bloodfest
+        ]
+        sumUntilDamage = 0
+
+        isBLM = self.JobEnum = JobEnum.BlackMage
+        isDNC = self.JobEnum == JobEnum.Dancer
+        standardFinishFlag = False
+        technicalFinishFlag = False
+
+        self.computeActionReduction()
+
+        for action in self.ActionSet:
+                             # Using CasterActions since all same value for WaitAbility
+            actionCopy = deepcopy(action) if action.GCD else action
+            if action.GCD and actionCopy.id != CasterActions.WaitAbility : self.computeActionTimer(actionCopy)
+
+            if actionCopy.Potency == 0 and not (actionCopy.id in OTHER_IDS_TO_CONSIDER):
+                sumUntilDamage += actionCopy.RecastTime
+            elif isBLM and actionCopy.id == BlackMageActions.LeyLines:
+                self.Haste = 15
+            elif isDNC and ignoreFirstStandardFinish and actionCopy.id == DancerActions.StandardFinish and not standardFinishFlag:
+                standardFinishFlag = True
+                sumUntilDamage += actionCopy.RecastTime
+            elif isDNC and ignoreFirstTechnicalFinish and actionCopy.id == DancerActions.TechnicalFinish and not technicalFinishFlag:
+                technicalFinishFlag = True
+                sumUntilDamage += actionCopy.RecastTime
+            else:
+                sumUntilDamage += actionCopy.CastTime
+                break
+        
+        self.Haste = 0
+
+        return sumUntilDamage
 
 
     def __init__(self, ActionSet, EffectList, Stat,Job : JobEnum):
