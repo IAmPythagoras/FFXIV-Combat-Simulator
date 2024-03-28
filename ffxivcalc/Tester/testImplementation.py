@@ -21898,7 +21898,7 @@ def generatePrepullLengthTestSuite():
         Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
         player = Player([], [], Stat, JobEnum.Scholar)
 
-        player.ActionSet = [Succor, Broil]
+        player.ActionSet = [Succor,  Broil]
 
         fight.AddPlayer([player])
 
@@ -21917,7 +21917,115 @@ def generatePrepullLengthTestSuite():
         return passed , expected
 
     plTest9 = test("Prepull length test 9.", plTest9TestFunction, plTest9ValidationFunction)
-    pLTestSuite.addTest(plTest9)
+    #pLTestSuite.addTest(plTest9)
+
+    def plTest10TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.Scholar)
+
+        player.ActionSet = [Succor, Adloquium,  Biolysis, WaitAbility(5), Broil]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest10ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [5.00]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest10 = test("Prepull length test 10.", plTest10TestFunction, plTest10ValidationFunction)
+    #pLTestSuite.addTest(plTest10)
+
+    def plTest11TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.Monk)
+
+        player.ActionSet = [PerfectBalance, WaitAbility(10), Bootshine, Bootshine]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest11ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [10]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest11 = test("Prepull length test 11.", plTest11TestFunction, plTest11ValidationFunction)
+    #pLTestSuite.addTest(plTest11)
+
+    def plTest12TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.Monk)
+
+        player.ActionSet = [PerfectBalance, WaitAbility(10), Thunderclap, WaitAbility(5), Bootshine]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest12ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [10]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest12 = test("Prepull length test 12.", plTest12TestFunction, plTest12ValidationFunction)
+    #pLTestSuite.addTest(plTest12)
+
+    def plTest13TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.DarkKnight)
+
+        player.ActionSet = [WaitAbility(6.2), HardSlash, HardSlash]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest13ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [6.2]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest13 = test("Prepull length test 13.", plTest13TestFunction, plTest13ValidationFunction)
+    pLTestSuite.addTest(plTest13)
 
     return pLTestSuite
 

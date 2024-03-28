@@ -403,7 +403,7 @@ class Spell:
             if self.AOEHeal:
                              # Affects all players
                 for gamer in player.CurrentFight.PlayerList:
-                    Heal = player.CurrentFight.ComputeHealingFunction(player, self.Potency, gamer, 1, type, self)[0]
+                    Heal = 0 # player.CurrentFight.ComputeHealingFunction(player, self.Potency, gamer, 1, type, self)[0]
                     #base_spell_logging.debug(
                     #    "Timestamp : " + str(player.CurrentFight.TimeStamp) + " Player " + str(gamer.playerID) + "received a healing of min value : " + str(heal[0])
                     #)
