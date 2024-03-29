@@ -22025,7 +22025,61 @@ def generatePrepullLengthTestSuite():
         return passed , expected
 
     plTest13 = test("Prepull length test 13.", plTest13TestFunction, plTest13ValidationFunction)
-    pLTestSuite.addTest(plTest13)
+    #pLTestSuite.addTest(plTest13)
+
+    def plTest14TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.DarkKnight)
+
+        player.ActionSet = [WaitAbility(6.2), LivingShadow, HardSlash]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest14ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [6.2]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest14 = test("Prepull length test 14.", plTest14TestFunction, plTest14ValidationFunction)
+    #pLTestSuite.addTest(plTest14)
+
+    def plTest15TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.DarkKnight)
+
+        player.ActionSet = [WaitAbility(6.2), LivingShadow, HardSlash]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest15ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [6.2]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest15 = test("Prepull length test 15.", plTest15TestFunction, plTest15ValidationFunction)
+    pLTestSuite.addTest(plTest15)
 
     return pLTestSuite
 

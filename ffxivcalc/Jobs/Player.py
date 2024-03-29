@@ -1001,12 +1001,22 @@ class Player:
             WhiteMageActions.Dia,
             SageActions.EukrasianDosis
         ]
+
+        ACTION_MAKE_INSTACAST = [
+            CasterActions.Swiftcast,
+            HealerActions.Swiftcast,
+            BlackMageActions.Triplecast,
+            RedMageActions.Acceleration
+        ]
+
         sumUntilDamage = 0
 
         isBLM = self.JobEnum = JobEnum.BlackMage
         isDNC = self.JobEnum == JobEnum.Dancer
         standardFinishFlag = False
         technicalFinishFlag = False
+
+        instaCast = False
 
         self.computeActionReduction()
 
@@ -1017,6 +1027,8 @@ class Player:
 
             if actionCopy.Potency == 0 and not (actionCopy.id in OTHER_IDS_TO_CONSIDER) or (actionCopy.AOEHeal or actionCopy.TargetHeal):
                 sumUntilDamage += actionCopy.RecastTime
+            elif actionCopy.id in ACTION_MAKE_INSTACAST:
+                instaCast = True
             elif isBLM and actionCopy.id == BlackMageActions.LeyLines:
                 self.Haste = 15
             elif isDNC and ignoreFirstStandardFinish and actionCopy.id == DancerActions.StandardFinish and not standardFinishFlag:
@@ -1026,7 +1038,7 @@ class Player:
                 technicalFinishFlag = True
                 sumUntilDamage += actionCopy.RecastTime
             else:
-                sumUntilDamage += actionCopy.CastTime
+                sumUntilDamage += actionCopy.CastTime if not instaCast else 0
                 break
         
         self.Haste = 0
