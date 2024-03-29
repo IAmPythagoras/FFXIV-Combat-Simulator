@@ -22195,18 +22195,18 @@ def generatePrepullLengthTestSuite():
         Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 5000, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
         player = Player([], [], Stat, JobEnum.Dancer)
 
-        player.ActionSet = [TechnicalStep, Jete, Pirouette, WaitAbility(10), TechnicalFinish]
+        player.ActionSet = [TechnicalStep, Jete, Pirouette, WaitAbility(10), TechnicalFinish, StandardStep, Pirouette, StandardFinish]
 
         fight.AddPlayer([player])
 
-        result = list(fight.getPlayerPrepullLength(ignore).values())
+        result = list(fight.getPlayerPrepullLength(ignoreFirstTechnicalFinish=True).values())
 
         return result
 
 
     def plTest20ValidationFunction(testResults) -> (bool, list):
         passed = True
-        expected = [13.5]
+        expected = [17.5]
 
         for i, test in enumerate(expected):
             passed = passed and test == testResults[i]
