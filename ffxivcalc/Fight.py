@@ -28,15 +28,19 @@ class Fight:
 
     """
 
-    def getPlayerPrepullLength(self) -> dict[int : float]:
+    def getPlayerPrepullLength(self, ignoreFirstStandardFinish : bool = False, ignoreFirstTechnicalFinish : bool = False) -> dict[int : float]:
         """
         Computes and returns the length of the prepull of all players. Returns a dictionnary that maps playerID to prepull length.
+
+        ignoreFirstStandardFinish : bool - If true assumes first standard finish was done out of range (so didn't start fight).
+        ignoreFirstTechnicalFinish : bool - If true assumes first technical finish was done out of range (so didn't start fight).
+
         """
 
         prepullLengthDict = {}
 
         for player in self.PlayerList:
-            prepullLengthDict[player.playerID] = player.getPlayerPrePullTime()
+            prepullLengthDict[player.playerID] = player.getPlayerPrePullTime(ignoreFirstStandardFinish=ignoreFirstStandardFinish, ignoreFirstTechnicalFinish=ignoreFirstTechnicalFinish)
 
         return prepullLengthDict
     
