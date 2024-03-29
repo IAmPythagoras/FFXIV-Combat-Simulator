@@ -1025,12 +1025,12 @@ class Player:
             actionCopy = deepcopy(action) if action.GCD else action
             if action.GCD and actionCopy.id != CasterActions.WaitAbility : self.computeActionTimer(actionCopy)
 
-            if actionCopy.Potency == 0 and not (actionCopy.id in OTHER_IDS_TO_CONSIDER) or (actionCopy.AOEHeal or actionCopy.TargetHeal):
-                sumUntilDamage += actionCopy.RecastTime
-            elif actionCopy.id in ACTION_MAKE_INSTACAST:
+            if actionCopy.id in ACTION_MAKE_INSTACAST:
                 instaCast = True
             elif isBLM and actionCopy.id == BlackMageActions.LeyLines:
                 self.Haste = 15
+            elif actionCopy.Potency == 0 and not (actionCopy.id in OTHER_IDS_TO_CONSIDER) or (actionCopy.AOEHeal or actionCopy.TargetHeal):
+                sumUntilDamage += actionCopy.RecastTime
             elif isDNC and ignoreFirstStandardFinish and actionCopy.id == DancerActions.StandardFinish and not standardFinishFlag:
                 standardFinishFlag = True
                 sumUntilDamage += actionCopy.RecastTime
