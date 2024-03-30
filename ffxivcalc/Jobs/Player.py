@@ -1042,7 +1042,7 @@ class Player:
                 self.Haste = 15
             elif actionCopy.Potency == 0 and not (actionCopy.id in OTHER_IDS_TO_CONSIDER) or (actionCopy.AOEHeal or actionCopy.TargetHeal):
                 
-                if isDNC and lastIsDanceMove and not actionCopy.GCD: lastIsDanceMove = False
+                if isDNC and lastIsDanceMove and not actionCopy.GCD and actionCopy.id != CasterActions.WaitAbility: lastIsDanceMove = False
                 else : sumUntilDamage += actionCopy.RecastTime
                 if actionCopy.id in DANCER_MOVES: lastIsDanceMove = True
 
