@@ -1018,7 +1018,7 @@ class Player:
 
         sumUntilDamage = 0
 
-        isBLM = self.JobEnum = JobEnum.BlackMage
+        isBLM = self.JobEnum == JobEnum.BlackMage
         isDNC = self.JobEnum == JobEnum.Dancer
 
         lastIsDanceMove = False
