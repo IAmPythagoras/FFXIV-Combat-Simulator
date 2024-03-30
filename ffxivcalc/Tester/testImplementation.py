@@ -21666,9 +21666,614 @@ def generateFFLogsTestSuite():
 
     return fflogTestSuite
 
+######################################
+#         Prepull length test        #
+######################################
+
+# This will check the found prepull length.
+
+def generatePrepullLengthTestSuite():
+
+    pLTestSuite = testSuite("Prepull length test suite.")
+
+    def plTest1TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.BlackMage)
+
+        player.ActionSet = [SharpCast, WaitAbility(15), Fire3]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
 
 
+    def plTest1ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [18.5]
 
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest1 = test("Prepull length test 1", plTest1TestFunction, plTest1ValidationFunction)
+    pLTestSuite.addTest(plTest1)
+
+    def plTest2TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.BlackMage)
+
+        player.ActionSet = [SharpCast, WaitAbility(15), Fire3]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest2ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [18.5]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest2 = test("Prepull length test 2", plTest2TestFunction, plTest2ValidationFunction)
+    pLTestSuite.addTest(plTest2)
+
+    def plTest3TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 3000, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.BlackMage)
+
+        player.ActionSet = [SharpCast, WaitAbility(15), Fire3]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest3ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [17.88]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest3 = test("Prepull length test 3", plTest3TestFunction, plTest3ValidationFunction)
+    pLTestSuite.addTest(plTest3)
+
+    def plTest4TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 3000, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.BlackMage)
+
+        player.ActionSet = [SharpCast, WaitAbility(15), Fire1]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest4ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [17.05]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest4 = test("Prepull length test 4", plTest4TestFunction, plTest4ValidationFunction)
+    pLTestSuite.addTest(plTest4)
+
+    def plTest5TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 3000, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.BlackMage)
+
+        player.ActionSet = [SharpCast, WaitAbility(15), Xenoglossy]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest5ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [15]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest5 = test("Prepull length test 5", plTest5TestFunction, plTest5ValidationFunction)
+    pLTestSuite.addTest(plTest5)
+
+    def plTest6TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1000, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.BlackMage)
+
+        player.ActionSet = [SharpCast, Thunder3,  WaitAbility(15), Xenoglossy]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest6ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [2.39]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest6 = test("Prepull length test 6", plTest6TestFunction, plTest6ValidationFunction)
+    pLTestSuite.addTest(plTest6)
+
+    def plTest7TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1000, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.BlackMage)
+
+        player.ActionSet = [Thunder3,  WaitAbility(15), Xenoglossy]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest7ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [2.39]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest7 = test("Prepull length test 7", plTest7TestFunction, plTest7ValidationFunction)
+    pLTestSuite.addTest(plTest7)
+
+    def plTest8TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 1000, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.RedMage)
+
+        player.ActionSet = [Verthunder, Verareo]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest8ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [4.79]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest8 = test("Prepull length test 8.", plTest8TestFunction, plTest8ValidationFunction)
+    pLTestSuite.addTest(plTest8)
+
+    def plTest9TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.Scholar)
+
+        player.ActionSet = [Succor,  Broil]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest9ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [4.00]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest9 = test("Prepull length test 9.", plTest9TestFunction, plTest9ValidationFunction)
+    pLTestSuite.addTest(plTest9)
+
+    def plTest10TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.Scholar)
+
+        player.ActionSet = [Succor, Adloquium,  Biolysis, WaitAbility(5), Broil]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest10ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [5.00]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest10 = test("Prepull length test 10.", plTest10TestFunction, plTest10ValidationFunction)
+    pLTestSuite.addTest(plTest10)
+
+    def plTest11TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.Monk)
+
+        player.ActionSet = [PerfectBalance, WaitAbility(10), Bootshine, Bootshine]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest11ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [10]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest11 = test("Prepull length test 11.", plTest11TestFunction, plTest11ValidationFunction)
+    pLTestSuite.addTest(plTest11)
+
+    def plTest12TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.Monk)
+
+        player.ActionSet = [PerfectBalance, WaitAbility(10), Thunderclap, WaitAbility(5), Bootshine]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest12ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [10]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest12 = test("Prepull length test 12.", plTest12TestFunction, plTest12ValidationFunction)
+    pLTestSuite.addTest(plTest12)
+
+    def plTest13TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.DarkKnight)
+
+        player.ActionSet = [WaitAbility(6.2), HardSlash, HardSlash]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest13ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [6.2]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest13 = test("Prepull length test 13.", plTest13TestFunction, plTest13ValidationFunction)
+    pLTestSuite.addTest(plTest13)
+
+    def plTest14TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.DarkKnight)
+
+        player.ActionSet = [WaitAbility(6.2), LivingShadow, HardSlash]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest14ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [6.2]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest14 = test("Prepull length test 14.", plTest14TestFunction, plTest14ValidationFunction)
+    pLTestSuite.addTest(plTest14)
+
+    def plTest15TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.Scholar)
+
+        player.ActionSet = [Indomitability, Lustrate, Excogitation, WaitAbility(5), Swiftcast, Broil]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest15ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [5]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest15 = test("Prepull length test 15.", plTest15TestFunction, plTest15ValidationFunction)
+    pLTestSuite.addTest(plTest15)
+
+    def plTest16TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.RedMage)
+
+        player.ActionSet = [Acceleration, WaitAbility(10), Verthunder]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest16ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [10]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest16 = test("Prepull length test 16.", plTest16TestFunction, plTest16ValidationFunction)
+    pLTestSuite.addTest(plTest16)
+
+    def plTest17TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 5000, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.BlackMage)
+
+        player.ActionSet = [Triplecast, WaitAbility(8), Fire3]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest17ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [8]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest17 = test("Prepull length test 17.", plTest17TestFunction, plTest17ValidationFunction)
+    pLTestSuite.addTest(plTest17)
+
+    def plTest18TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 5000, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.RedMage)
+
+        player.ActionSet = [Acceleration, WaitAbility(8), Fleche]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest18ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [8]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest18 = test("Prepull length test 18.", plTest18TestFunction, plTest18ValidationFunction)
+    #pLTestSuite.addTest(plTest18)
+
+    def plTest19TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 5000, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.Dancer)
+
+        player.ActionSet = [TechnicalStep, Jete, Pirouette, WaitAbility(10), TechnicalFinish]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength().values())
+
+        return result
+
+
+    def plTest19ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [13.5]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest19 = test("Prepull length test 19.", plTest19TestFunction, plTest19ValidationFunction)
+    pLTestSuite.addTest(plTest19)
+
+    def plTest20TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 5000, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.Dancer)
+
+        player.ActionSet = [TechnicalStep, Jete, Pirouette, WaitAbility(10), TechnicalFinish, StandardStep, Pirouette, StandardFinish]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength(ignoreFirstTechnicalFinish=True).values())
+
+        return result
+
+
+    def plTest20ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [17.5]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest20 = test("Prepull length test 20.", plTest20TestFunction, plTest20ValidationFunction)
+    pLTestSuite.addTest(plTest20)
+
+    def plTest21TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 5000, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.Dancer)
+
+        player.ActionSet = [TechnicalStep, Jete, Pirouette, WaitAbility(10), TechnicalFinish, StandardStep, Pirouette, StandardFinish, WaitAbility(10), Cascade]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength(ignoreFirstTechnicalFinish=True, ignoreFirstStandardFinish=True).values())
+
+        return result
+
+
+    def plTest21ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [29]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest21 = test("Prepull length test 21.", plTest21TestFunction, plTest21ValidationFunction)
+    pLTestSuite.addTest(plTest21)
+
+    def plTest22TestFunction() -> None:
+
+        fight = Fight(Enemy(), False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 5000, 'SkS': 2000, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+        player = Player([], [], Stat, JobEnum.Dancer)
+
+        player.ActionSet = [StandardStep, Pirouette, StandardFinish, WaitAbility(10),TechnicalStep, Jete, Pirouette, WaitAbility(10), TechnicalFinish]
+
+        fight.AddPlayer([player])
+
+        result = list(fight.getPlayerPrepullLength(ignoreFirstTechnicalFinish=False, ignoreFirstStandardFinish=True).values())
+
+        return result
+
+
+    def plTest22ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [27.5]
+
+        for i, test in enumerate(expected):
+            passed = passed and test == testResults[i]
+
+        return passed , expected
+
+    plTest22 = test("Prepull length test 22.", plTest22TestFunction, plTest22ValidationFunction)
+    pLTestSuite.addTest(plTest22)
+
+    return pLTestSuite
+
+
+    
 def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBUG) -> int:
                              # Silence the main_logging and
                              # unmute the test_logging
@@ -21679,7 +22284,7 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
     failedTestDict = {}
     if len(testSuiteName) == 0:
         # Execute all tests
-        pb = ProgressBar.init(27, "Initializing test suites")
+        pb = ProgressBar.init(28, "Initializing test suites")
 
         blmTestSuite = generateBLMTestSuite()
         rdmTestSuite = generateRDMTestSuite()
@@ -21707,6 +22312,7 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
         teTestSuite = generateTimerEstimateTestSuite()
         lbTestSuite = generateLimitBreakTestSuite()
         fflogTestSuite = generateFFLogsTestSuite()
+        plTestSuite = generatePrepullLengthTestSuite()
 
         pb.setName(blmTestSuite.testSuiteName)
         next(pb)
@@ -21786,6 +22392,9 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
         pb.setName(fflogTestSuite.testSuiteName)
         next(pb)
         failedTestDict[fflogTestSuite.testSuiteName] = fflogTestSuite.executeTestSuite()
+        pb.setName(plTestSuite.testSuiteName)
+        next(pb)
+        failedTestDict[plTestSuite.testSuiteName] = plTestSuite.executeTestSuite()
         next(pb)
 
     else:
@@ -21894,6 +22503,10 @@ def executeTests(setSeed : int = 0, testSuiteName : str = "", level=logging.DEBU
                 fflogTestSuite = generateFFLogsTestSuite()
                 print(f"Executing {fflogTestSuite.testSuiteName}")
                 failedTestDict[fflogTestSuite.testSuiteName] = fflogTestSuite.executeTestSuite()
+            case "PLT":
+                plTestSuite = generateFFLogsTestSuite()
+                print(f"Executing {plTestSuite.testSuiteName}")
+                failedTestDict[plTestSuite.testSuiteName] = plTestSuite.executeTestSuite()
 
     totalFailedTest = 0
 
@@ -21913,4 +22526,4 @@ if __name__ == "__main__":
     main_logging.setLevel(level=logging.ERROR) 
     test_logging.setLevel(level=level)
     logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
-    executeTests()
+    generatePrepullLengthTestSuite().executeTestSuite()

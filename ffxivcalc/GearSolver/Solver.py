@@ -78,7 +78,6 @@ def getGearDPSValue(Fight, gearSet : GearSet, PlayerIndex : int,PlayerID : int, 
 
     return ExpectedDamage, randomDamageDict
 
-
 def computeDamageValue(GearStat : dict, JobMod : int, IsTank : bool, IsCaster : bool):
     """
     this function computes all the damage values given a stat dict.
@@ -523,7 +522,6 @@ def BiSSolver(Fight, GearSpace : dict, MateriaSpace : list, FoodSpace : list, Pe
 
     return optimalGearSet, optimalRandomGearSetMateria, text
     
-
 def materiaBisSolverV3(Set : GearSet, matGen : MateriaGenerator, matSpace : list[int], gcdTimerTierFight, hasteAmount : int,  JobMod : int, IsTank : bool, IsCaster : bool,PlayerIndex : int, 
                        percentile : str, randomIteration : int, mendSpellSpeed : bool,minSPDValue : int = 0, maxSPDValue : int = 5000, oversaturationIterationsPostGear : int = 0, 
                        findOptMateriaGearBF : bool = False, swapDHDetBeforeSpeed : bool = False, minPiety : int = 390):   

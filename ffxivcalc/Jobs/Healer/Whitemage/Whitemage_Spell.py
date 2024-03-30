@@ -150,14 +150,14 @@ DiaDOT = DOTSpell(-5, 60, False)
 AfflatusMisery = WhitemageSpell(16535, True, 0, 2.5, 1240, 0, ApplyAfflatusMisery, [BloomLilyRequirement], type = 1)
 Holy = WhitemageSpell(25860, True, 2.5, 2.5, 150, 400, empty, [ManaRequirement], type = 1)
 #Healing GCD
-AfflatusRapture = WhitemageSpell(16534, True, 0, 2.5, 0, 0, ApplyLily, [BloodLilyRequirement], type = 1)
-AfflatusSolace = WhitemageSpell(16531, True, 0, 0, 0, 0, ApplyLily, [BloodLilyRequirement], type = 1)
+AfflatusRapture = WhitemageSpell(16534, True, 0, 2.5, 0, 0, ApplyLily, [BloodLilyRequirement], type = 1, AOEHeal=True)
+AfflatusSolace = WhitemageSpell(16531, True, 0, 0, 0, 0, ApplyLily, [BloodLilyRequirement], type = 1, TargetHeal=True)
 Regen = WhitemageSpell(137, True, 0, 2.5, 0, 400, empty, [ManaRequirement], type = 1)
-Cure = WhitemageSpell(120, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement], type = 1)
-Cure2 = WhitemageSpell(135, True, 2, 2.5, 0, 1000, empty, [ManaRequirement], type = 1)
-Cure3 = WhitemageSpell(131, True, 2, 2.5, 0, 1500, empty, [ManaRequirement], type = 1)
-Medica = WhitemageSpell(124, True, 2, 2.5, 0, 900, empty, [ManaRequirement], type = 1)
-Medica2 = WhitemageSpell(133, True, 2, 2.5, 0, 1000, empty, [ManaRequirement], type = 1)
+Cure = WhitemageSpell(120, True, 1.5, 2.5, 0, 400, empty, [ManaRequirement], type = 1, TargetHeal=True)
+Cure2 = WhitemageSpell(135, True, 2, 2.5, 0, 1000, empty, [ManaRequirement], type = 1, TargetHeal=True)
+Cure3 = WhitemageSpell(131, True, 2, 2.5, 0, 1500, empty, [ManaRequirement], type = 1, AOEHeal=True)
+Medica = WhitemageSpell(124, True, 2, 2.5, 0, 900, empty, [ManaRequirement], type = 1, AOEHeal=True)
+Medica2 = WhitemageSpell(133, True, 2, 2.5, 0, 1000, empty, [ManaRequirement], type = 1, AOEHeal=True)
 Raise = WhitemageSpell(125, True, 8, 2.5, 0, 2400, empty, [ManaRequirement])
 
 #Damage oGCD
@@ -171,9 +171,9 @@ Aquaveil = WhitemageSpell(25861, False, 0, 0, 0, 0, ApplyAquaveil, [AquaveilRequ
 Temperance = WhitemageSpell(16536, False, 0, 0, 0, 0, ApplyTemperance, [TemperanceRequirement])
 PlenaryIndulgence = WhitemageSpell(7433, False, 0, 0, 0, 0, ApplyPlenaryIndulgence, [PlenaryIndulgenceRequirement])
 DivineBenison =WhitemageSpell(7432, False, 0, 0, 0, 0, ApplyDivineBenison, [DivineBenisonRequirement])
-Tetragrammaton = WhitemageSpell(3570, False, 0, 0, 0, 0, ApplyTetragrammaton, [TetragrammatonRequirement])
+Tetragrammaton = WhitemageSpell(3570, False, 0, 0, 0, 0, ApplyTetragrammaton, [TetragrammatonRequirement], TargetHeal=True)
 Asylum = WhitemageSpell(3569, False, 0, 0, 0, 0, ApplyAsylum, [AsylumRequirement])
-Benediction = WhitemageSpell(140, False, 0, 0, 0, 0, ApplyBenediction, [BenedictionRequirement])
+Benediction = WhitemageSpell(140, False, 0, 0, 0, 0, ApplyBenediction, [BenedictionRequirement], TargetHeal=True)
 
 WhiteMageAbility = {
 25859 : Glare,

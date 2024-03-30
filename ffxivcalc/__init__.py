@@ -1,7 +1,15 @@
-__version__ = '0.8.925'
+__version__ = '0.8.930'
 
 """
 Update history :
+
+0.8.930:
+    - Added Player.getPlayerPrePullTime() which returns the length of the prepull (time before first damage action).
+    - Added Fight.getPlayerPrepullLength() which returns the prepull length of all players
+    - added Fight.syncPlayerPrePull() which syncs all player's prepull so they all do damage at the same time.
+    - Added test suite 'Prepull length test suite' that tests the Player.GetPlayerPrePullTime() function.
+    - Removed access to ffxvivcalc.API, ffxivcalc.codeParser and ffxivcalc.Request.FFLogsAPIRequest modules (outdated modules).
+    - Other minor bug fix.
 
 0.8.925:
     - getSingleFightData() can take 'max_time' input.

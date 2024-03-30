@@ -8,6 +8,8 @@ from ffxivcalc.helperCode.Progress import ProgressBar
 from ffxivcalc.SimulationRecord.record import SimulationRecord, page
 from ffxivcalc.helperCode.exceptions import playerIDNotFound
 
+from ffxivcalc.Jobs.Base_Spell import WaitAbility
+
 import matplotlib.pyplot as plt
 import logging
 from ffxivcalc.helperCode.helper_math import roundDown, isclose, roundUp
@@ -25,6 +27,56 @@ class Fight:
     It will be called upon for when we want to start the simulation
 
     """
+
+    def getPlayerPrepullLength(self, ignoreFirstStandardFinish : bool = False, ignoreFirstTechnicalFinish : bool = False) -> dict[int : float]:
+        """
+        Computes and returns the length of the prepull of all players. Returns a dictionnary that maps playerID to prepull length.
+
+        ignoreFirstStandardFinish : bool - If true assumes first standard finish was done out of range (so didn't start fight).
+        ignoreFirstTechnicalFinish : bool - If true assumes first technical finish was done out of range (so didn't start fight).
+
+        """
+
+        prepullLengthDict = {}
+
+        for player in self.PlayerList:
+            prepullLengthDict[player.playerID] = player.getPlayerPrePullTime(ignoreFirstStandardFinish=ignoreFirstStandardFinish, ignoreFirstTechnicalFinish=ignoreFirstTechnicalFinish)
+
+        return prepullLengthDict
+    
+    def syncPlayerPrePull(self, editActionSet : bool = True) -> dict[int : float]:
+        """
+        Computes the time difference between all player's prepull and makes sure they all match and all players start doing damage at the same time.
+        
+        Returns a dictionnary that maps playerID to the added waitTime to sync all players.
+
+        editActionSet : bool - If set to true will insert at index 0 a waitAbility of the needed time.
+        """
+
+
+        prepullLengthDict = self.getPlayerPrepullLength()
+
+        fight_logging.debug(f'Synchronising player prepull length. \nCurrent prepull length : {prepullLengthDict}')
+
+        maxPrepullPlayerID = max(prepullLengthDict.keys(), key=lambda x : prepullLengthDict[x])
+
+        fight_logging.debug(f'Detected max length : {maxPrepullPlayerID}')
+
+        addedAmountDict = {}
+
+        for player in self.PlayerList:
+            if maxPrepullPlayerID == player.playerID : continue
+
+            amountToAdd = prepullLengthDict[maxPrepullPlayerID] - prepullLengthDict[player.playerID]
+            addedAmountDict[player.playerID] = round(amountToAdd,2)
+            fight_logging.debug(f'Adding waitAbility({amountToAdd}) to player {player.playerID}')
+
+            if editActionSet: player.ActionSet.insert(0, WaitAbility(amountToAdd))
+
+        verifDict = self.getPlayerPrepullLength()
+        fight_logging.debug(f'Synchronising done. {verifDict}')
+
+        return addedAmountDict
 
     def GetEnemityList(self, range : int):
         """Returns a list of players in order of greather enemity to lowest enemity. The length of the
@@ -153,14 +205,16 @@ class Fight:
         self.NextActionFunction = DefaultNextActionFunction
         self.ExtractInfo = DefaultExtractInfo
 
-    def AddPlayer(self, Players):
+    def AddPlayer(self, Players : list, giveNewID : bool = True):
         """This function adds the given player list to the fight's playerList.
+        giveNewID : bool - If true will give a new ID
         """
         for player in Players:
             player.CurrentFight = self
             self.PlayerList.append(player)
-            player.playerID = self.nextID
-            self.nextID += 1
+            if giveNewID:
+                player.playerID = self.nextID
+                self.nextID += 1
 
     def SimulateZIPFight(self):
         """
