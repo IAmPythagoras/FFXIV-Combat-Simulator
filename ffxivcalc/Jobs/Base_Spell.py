@@ -777,7 +777,7 @@ Monk_Auto = Monk_AA()
 Melee_AADOT = Melee_Auto(-22, False)
 Ranged_AADOT = Ranged_Auto(-23, True)
 Queen_AADOT = Queen_Auto(-24, False)
-Potion = Spell(-2, False, 1, 1, 0, 0, ApplyPotion, [])
+Potion = Spell(-2, False, 0.5, 0.5, 0, 0, ApplyPotion, [])
 
 def conditionalAction(action : Spell, conditionFn) -> Spell:
     """

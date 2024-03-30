@@ -68,12 +68,13 @@ class Fight:
             if maxPrepullPlayerID == player.playerID : continue
 
             amountToAdd = prepullLengthDict[maxPrepullPlayerID] - prepullLengthDict[player.playerID]
-            addedAmountDict[player.playerID] = amountToAdd
+            addedAmountDict[player.playerID] = round(amountToAdd,2)
             fight_logging.debug(f'Adding waitAbility({amountToAdd}) to player {player.playerID}')
 
             if editActionSet: player.ActionSet.insert(0, WaitAbility(amountToAdd))
 
-        fight_logging.debug(f'Synchronising done. {self.getPlayerPrepullLength()}')
+        verifDict = self.getPlayerPrepullLength()
+        fight_logging.debug(f'Synchronising done. {verifDict}')
 
         return addedAmountDict
 
