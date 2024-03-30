@@ -204,14 +204,16 @@ class Fight:
         self.NextActionFunction = DefaultNextActionFunction
         self.ExtractInfo = DefaultExtractInfo
 
-    def AddPlayer(self, Players : list):
+    def AddPlayer(self, Players : list, giveNewID : bool = True):
         """This function adds the given player list to the fight's playerList.
+        giveNewID : bool - If true will give a new ID
         """
         for player in Players:
             player.CurrentFight = self
             self.PlayerList.append(player)
-            player.playerID = self.nextID
-            self.nextID += 1
+            if giveNewID:
+                player.playerID = self.nextID
+                self.nextID += 1
 
     def SimulateZIPFight(self):
         """

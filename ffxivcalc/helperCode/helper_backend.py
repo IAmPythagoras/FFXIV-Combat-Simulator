@@ -477,10 +477,7 @@ def RestoreFightObject(data : dict, name : str = ""):
 
     for playerID in PlayerActionList:
         PlayerActionList[playerID]["job_object"].ActionSet += PlayerActionList[playerID]["actionObject"] #Linking player object and action list
-        Event.AddPlayer([PlayerActionList[playerID]["job_object"]]) #Adding job_object to Event
-
-
-
+        Event.AddPlayer([PlayerActionList[playerID]["job_object"]], giveNewID=False) #Adding job_object to Event
 
     return Event
 
