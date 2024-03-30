@@ -1009,10 +1009,21 @@ class Player:
             RedMageActions.Acceleration
         ]
 
+        DANCER_MOVES = [
+            DancerActions.Jete,
+            DancerActions.Pirouette,
+            DancerActions.Entrechat,
+            DancerActions.Emboite
+        ]
+
         sumUntilDamage = 0
 
         isBLM = self.JobEnum = JobEnum.BlackMage
         isDNC = self.JobEnum == JobEnum.Dancer
+
+        lastIsDanceMove = False
+
+
         standardFinishFlag = False
         technicalFinishFlag = False
 
@@ -1030,7 +1041,11 @@ class Player:
             elif isBLM and actionCopy.id == BlackMageActions.LeyLines:
                 self.Haste = 15
             elif actionCopy.Potency == 0 and not (actionCopy.id in OTHER_IDS_TO_CONSIDER) or (actionCopy.AOEHeal or actionCopy.TargetHeal):
-                sumUntilDamage += actionCopy.RecastTime
+                
+                if isDNC and lastIsDanceMove and not actionCopy.GCD: lastIsDanceMove = False
+                else : sumUntilDamage += actionCopy.RecastTime
+                if actionCopy.id in DANCER_MOVES: lastIsDanceMove = True
+
             elif isDNC and ignoreFirstStandardFinish and actionCopy.id == DancerActions.StandardFinish and not standardFinishFlag:
                 standardFinishFlag = True
                 sumUntilDamage += actionCopy.RecastTime
