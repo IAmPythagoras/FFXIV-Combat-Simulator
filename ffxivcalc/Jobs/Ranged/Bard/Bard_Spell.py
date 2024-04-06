@@ -218,7 +218,14 @@ def ApplyBloodLetter(Player, Enemy):
         Player.BloodLetterCD = 15
     Player.BloodLetterStack -= 1
 
+def armyMuseCheck(Player, Enemy):
+    if Player.ArmyMuseTimer <= 0:
+        
+
 def _apply_army_muse(Player, Enemy):
+
+    Player.ArmyMuseTimer = 10
+
     hasteBuff : int = 0
     repValue : int = int(Player.Repertoire)
     assert repValue >= 0 and repValue <= 4, "Player Repertoire value is lower than 0 or higher than 4"
@@ -230,11 +237,13 @@ def _apply_army_muse(Player, Enemy):
         case 3 : hasteBuff = 4
         case 4 : hasteBuff = 12
 
+    Player.hasteGainedFromArmyMuse = hasteBuff    
     Player.hasteChangeValue += hasteBuff
     Player.Haste = hasteBuff
     Player.hasteHasChanged = int(Player.hasteChangeValue) != 0 # Should never happend (not zero) but just in case.
 
     if _apply_army_muse in Player.EffectCDList : Player.EffectToRemove.append(_apply_army_muse)
+    Player.EffectCDList.append(armyMuseCheck)
 
 def checkArmyEthos(Player, Enemy):
     if Player.ArmyEthosTimer <= 0:
@@ -264,6 +273,8 @@ def ApplyWanderingMinuet(Player, Enemy):
 
 def ApplyArmyPaeon(Player, Enemy):
     Player.Repertoire = 0 # Reseting ArmyPaeon repertoire count.
+    Player.ArmyEthosTimer = 0 
+    Player.hasteGainedFromArmyMuse = 0
     if _check_army_muse in Player.EffectCDList: Player.EffectCDList.remove(_check_army_muse)
 
     Player.ArmyCoda = True #Adding Coda
@@ -418,6 +429,7 @@ def ArmyPaeonCheck(Player, Enemy):
         Player.hasteChangeValue = 3.2
         Player.Haste += 3.2
         Player.hasteHasChanged = True
+        Player.hasteGainedFromArmyMuse += 3.2
 
     if Player.SongTimer <= 0 or not (Player.ArmyPaeon):
         Enemy.ArmyPaeon = False
@@ -426,8 +438,8 @@ def ArmyPaeonCheck(Player, Enemy):
         Player.EffectList.remove(ArmyPaeonEffect)
         if _apply_army_muse not in Player.EffectCDList : Player.EffectCDList.append(checkArmyEthos)
         Player.ArmyEthosTimer = 30
-        Player.hasteChangeValue = -Player.Haste # Bard only has Haste from Army Paeon, so we simply look what value it was at when it ended.
-        Player.Haste = 0 # Reseting Haste value since there is no other haste buff from Bard
+        Player.hasteChangeValue = -Player.hasteGainedFromArmyMuse
+        Player.Haste -= Player.hasteGainedFromArmyMuse 
         Player.hasteHasChanged = True
 
                              # Giving 
