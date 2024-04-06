@@ -424,7 +424,7 @@ def ArmyPaeonCheck(Player, Enemy):
         Player.ArmyPaeon = False
         Player.EffectToRemove.append(ArmyPaeonCheck)
         Player.EffectList.remove(ArmyPaeonEffect)
-        Player.EffectCDList.append(checkArmyEthos)
+        if _apply_army_muse not in Player.EffectCDList : Player.EffectCDList.append(checkArmyEthos)
         Player.ArmyEthosTimer = 30
         Player.hasteChangeValue = -Player.Haste # Bard only has Haste from Army Paeon, so we simply look what value it was at when it ended.
         Player.Haste = 0 # Reseting Haste value since there is no other haste buff from Bard
