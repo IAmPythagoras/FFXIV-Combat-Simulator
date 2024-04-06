@@ -218,24 +218,54 @@ def ApplyBloodLetter(Player, Enemy):
         Player.BloodLetterCD = 15
     Player.BloodLetterStack -= 1
 
+def _apply_army_muse(Player, Enemy):
+    hasteBuff : int = 0
+    repValue : int = int(Player.Repertoire)
+    assert repValue >= 0 and repValue <= 4, "Player Repertoire value is lower than 0 or higher than 4"
+
+    match repValue:
+        case 0: hasteBuff = 0
+        case 1 : hasteBuff = 1
+        case 2 : hasteBuff = 2
+        case 3 : hasteBuff = 4
+        case 4 : hasteBuff = 12
+
+    Player.hasteChangeValue += hasteBuff
+    Player.Haste = hasteBuff
+    Player.hasteHasChanged = int(Player.hasteChangeValue) != 0 # Should never happend (not zero) but just in case.
+
+    if _apply_army_muse in Player.EffectCDList : Player.EffectToRemove.append(_apply_army_muse)
+
+def checkArmyEthos(Player, Enemy):
+    if Player.ArmyEthosTimer <= 0:
+        Player.EffectToRemove.append(checkArmyEthos)
+        
+def _check_army_muse(Player):
+    if Player.ArmyPaeon:
+                             # Adding end of EffectCDList since ArmyPaeonCheck will remove its effect before it goes through this function.
+        Player.EffectCDList.append(_apply_army_muse)
+    elif checkArmyEthos in Player.EffectCDList:
+        _apply_army_muse(Player, None)
+
+        Player.ArmyEthosTimer = 0
+
+
 def ApplyWanderingMinuet(Player, Enemy):
     Player.WandererCoda = True #Adding Coda
     Player.WanderingMinuetCD = 120
     Player.SongTimer = 45
     Enemy.WanderingMinuet = True
     Player.EffectCDList.append(WandererCheck)
+    _check_army_muse(Player)
     #Removing Current song
     Player.MageBallad = False
     Player.ArmyPaeon = False
     Player.WanderingMinuet = True
 
-                                     # Only doing this if SavePreBakedAction is true
-    #if Player.CurrentFight.SavePreBakedAction:
-    #    fight = Player.CurrentFight
-    #    history = buffHistory(fight.TimeStamp, fight.TimeStamp + 45)
-    #    fight.PlayerList[fight.PlayerIDSavePreBakedAction].WanderingMinuetHistory.append(history)
-
 def ApplyArmyPaeon(Player, Enemy):
+    Player.Repertoire = 0 # Reseting ArmyPaeon repertoire count.
+    if _check_army_muse in Player.EffectCDList: Player.EffectCDList.remove(_check_army_muse)
+
     Player.ArmyCoda = True #Adding Coda
     Enemy.ArmyPaeon = True # 3% DH
     Player.ArmyPaeonCD = 120
@@ -253,6 +283,7 @@ def ApplyMageBallad(Player, Enemy):
     Player.SongTimer = 45
     Player.MageBalladCD = 120
     Player.EffectCDList.append(MageBalladCheck)
+    _check_army_muse(Player)
     #Have to remove current song
     Player.MageBallad = True
     Player.ArmyPaeon = False
@@ -393,9 +424,13 @@ def ArmyPaeonCheck(Player, Enemy):
         Player.ArmyPaeon = False
         Player.EffectToRemove.append(ArmyPaeonCheck)
         Player.EffectList.remove(ArmyPaeonEffect)
-        Player.Haste = 0 # Reseting Haste value since there is no other haste buff from Bard
+        Player.EffectCDList.append(checkArmyEthos)
+        Player.ArmyEthosTimer = 30
         Player.hasteChangeValue = -Player.Haste # Bard only has Haste from Army Paeon, so we simply look what value it was at when it ended.
+        Player.Haste = 0 # Reseting Haste value since there is no other haste buff from Bard
         Player.hasteHasChanged = True
+
+                             # Giving 
 
 def MageBalladCheck(Player, Enemy):
 
