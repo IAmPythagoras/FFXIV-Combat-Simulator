@@ -190,7 +190,7 @@ WAROpener = [Tomahawk, Infuriate, HeavySwing, Upheaval ,Maim, WaitAbility(1), Po
 PLDOpener = [HolySpirit, FastBlade, RiotBlade, WaitAbility(1), Potion, RoyalAuthority, FightOrFlight, RequestACat, GoringBlade, CircleScorn, Expiacion, Confetti, Intervene, BladeFaith, Intervene, BladeTruth, BladeValor, HolySpirit, Atonement, Atonement, Atonement, FastBlade, RiotBlade, RoyalAuthority, Atonement, CircleScorn, Expiacion, Atonement, Atonement, FastBlade, RiotBlade, HolySpirit, RoyalAuthority, Atonement, Atonement, Atonement, FastBlade, RiotBlade, FightOrFlight, RequestACat, GoringBlade, Expiacion, Confetti, BladeFaith, Intervene, BladeTruth, Intervene, BladeValor, HolySpirit, RoyalAuthority, HolySpirit, Atonement ]
 GNBOpener = [KeenEdge, Potion, BrutalShell, NoMercy, Bloodfest, GnashingFang, JugularRip, SonicBreak, BowShock, BlastingZone, DoubleDown, RoughDivide, SavageClaw, AbdomenTear, WickedTalon, EyeGouge, RoughDivide, SolidBarrel, BurstStrike, Hypervelocity, KeenEdge, BrutalShell, SolidBarrel, KeenEdge, BrutalShell, GnashingFang, JugularRip,SavageClaw, AbdomenTear, BlastingZone, WickedTalon, EyeGouge, SolidBarrel, KeenEdge, BrutalShell, SolidBarrel, KeenEdge, BrutalShell, SolidBarrel,KeenEdge, BrutalShell, NoMercy, RoughDivide, GnashingFang, JugularRip, DoubleDown, BlastingZone, RoughDivide, SavageClaw, AbdomenTear, WickedTalon, EyeGouge, SolidBarrel, BurstStrike, Hypervelocity, KeenEdge, BrutalShell, SolidBarrel]
 # ===============================================================================================
-
+BRDOpener = [WanderingMinuet, WaitAbility(42), MageBallad, WaitAbility(33), ArmyPaeon, WaitAbility(40), WanderingMinuet]
 # Here we are linking the earlier created action list to the player object. You should not have to change anything here except if you are trying to simulate
 # with more than 1 player per job. In which case you will need to link the earlier created object and the earlier created action list.
 
@@ -257,18 +257,7 @@ level = logging.DEBUG if not findBiS else logging.WARNING
 logging.basicConfig(format='[%(levelname)s] %(name)s : %(message)s',filename='ffxivcalc_log.log', encoding='utf-8',level=level)
 __logger__.setLevel(level=level) 
 
-if True:
-    from ffxivcalc.helperCode.helper_backend import RestoreFightObject
-    from save import save
-    Event = RestoreFightObject(save)
-    Event.RequirementOn = False
-    Event.ShowGraph = False
-    Event.IgnoreMana = True
-    Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False, MaxTeamBonus=False)
-
-if False:#not findBiS:
-    from ffxivcalc.helperCode.helper_backend import SaveFight
-    print(Event.PlayerList[0].computeTimeStamp())
+if not findBiS:
     Event.SimulateFight(time_unit, TimeLimit, vocal, n=0, PPSGraph=False, MaxTeamBonus=False) # Simulating fight
     if False : Event.simulationRecord.saveRecord()
     pass

@@ -1,7 +1,11 @@
-__version__ = '0.8.930'
+__version__ = '0.8.940'
 
 """
 Update history :
+
+0.9.940:
+    - Oups, forgot to ever implement Army Ethos/Army Muse effect on Bard. This is now fixed.
+    - Other bug fixes.
 
 0.8.930:
     - Added Player.getPlayerPrePullTime() which returns the length of the prepull (time before first damage action).

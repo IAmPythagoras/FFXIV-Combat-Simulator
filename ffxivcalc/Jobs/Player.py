@@ -2228,7 +2228,10 @@ class Player:
         self.UsedTotalWandererRepertoire = 0
         self.UsedShadowbite = 0
 
-
+        # Haste Gained
+        self.hasteGainedFromArmyMuse = 0
+        self.hasteGainedFromArmyPaeon = 0
+        
         #Gauge
         self.SoulVoiceGauge = 0
         self.Repertoire = 0
@@ -2277,6 +2280,8 @@ class Player:
         self.BattleVoiceTimer = 0
         self.RagingStrikeTimer = 0
         self.RadiantFinaleTimer = 0
+        self.ArmyEthosTimer = 0
+        self.ArmyMuseTimer = 0
 
         #DOT
         self.StormbiteDOT = None
@@ -2312,6 +2317,10 @@ class Player:
             if (self.BattleVoiceTimer > 0) : self.BattleVoiceTimer = max(0,self.BattleVoiceTimer - time)
             if (self.RagingStrikeTimer > 0) : self.RagingStrikeTimer = max(0,self.RagingStrikeTimer - time)
             if (self.RadiantFinaleTimer > 0) : self.RadiantFinaleTimer = max(0,self.RadiantFinaleTimer - time)
+            if (self.ArmyEthosTimer > 0) : self.ArmyEthosTimer = max(0,self.ArmyEthosTimer - time)
+            if (self.ArmyMuseTimer > 0) : self.ArmyMuseTimer = max(0,self.ArmyMuseTimer - time)
+
+            
 
         # update functions
         self.updateJobTimer = updateTimer

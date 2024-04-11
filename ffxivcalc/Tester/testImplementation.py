@@ -4895,7 +4895,7 @@ def generateBRDTestSuite() -> testSuite:
 
     def brdTest15ValidationFunction(testResults) -> (bool, list):
         passed = True
-        expected = [False,44.99, 0, True,False]   
+        expected = [False,44.99, 1, True,False]   
 
         for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -4929,7 +4929,7 @@ def generateBRDTestSuite() -> testSuite:
 
     def brdTest16ValidationFunction(testResults) -> (bool, list):
         passed = True
-        expected = [True,44.99, 0, False, False]   
+        expected = [True,44.99, 1, False, False]   
 
         for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -4961,7 +4961,7 @@ def generateBRDTestSuite() -> testSuite:
 
     def brdTest17ValidationFunction(testResults) -> (bool, list):
         passed = True
-        expected = [True,44.99, 0, False]   
+        expected = [True,44.99, 2, False]   
 
         for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
 
@@ -5321,6 +5321,230 @@ def generateBRDTestSuite() -> testSuite:
 
     brdtest26 = test("Battle Voice test 2", brdTest26TestFunction, brdTest26ValidationFunction)
     brdTestSuite.addTest(brdtest26)
+
+    def brdTest27TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+        actionSet = [MageBallad, WanderingMinuet, WaitAbility(5)]
+        player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [checkArmyEthos in player.EffectCDList, armyMuseCheck in player.EffectCDList]
+
+    def brdTest27ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [False, False]   
+
+        for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+        return passed , expected
+
+    brdtest27 = test("Army Muse test 1", brdTest27TestFunction, brdTest27ValidationFunction)
+    brdTestSuite.addTest(brdtest27)
+
+    def brdTest28TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+        actionSet = [ArmyPaeon, WaitAbility(45),MageBallad, WaitAbility(5)]
+        player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [checkArmyEthos in player.EffectCDList, armyMuseCheck in player.EffectCDList, player.Haste]
+
+    def brdTest28ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [False, True, 12]   
+
+        for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+        return passed , expected
+
+    brdtest28 = test("Army Muse test 2", brdTest28TestFunction, brdTest28ValidationFunction)
+    brdTestSuite.addTest(brdtest28)
+
+    def brdTest29TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+        actionSet = [ArmyPaeon, WaitAbility(45),MageBallad, WaitAbility(11)]
+        player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [checkArmyEthos in player.EffectCDList, armyMuseCheck in player.EffectCDList, player.Haste]
+
+    def brdTest29ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [False, False, 0]   
+
+        for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+        return passed , expected
+
+    brdtest29 = test("Army Muse test 3", brdTest29TestFunction, brdTest29ValidationFunction)
+    brdTestSuite.addTest(brdtest29)
+
+    def brdTest30TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+        actionSet = [ArmyPaeon, WaitAbility(45),WanderingMinuet, WaitAbility(5)]
+        player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [checkArmyEthos in player.EffectCDList, armyMuseCheck in player.EffectCDList, player.Haste]
+
+    def brdTest30ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [False, True, 12]   
+
+        for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+        return passed , expected
+
+    brdtest30 = test("Army Muse test 4", brdTest30TestFunction, brdTest30ValidationFunction)
+    brdTestSuite.addTest(brdtest30)
+
+    def brdTest31TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+        actionSet = [ArmyPaeon, WaitAbility(45),WanderingMinuet, WaitAbility(11)]
+        player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [checkArmyEthos in player.EffectCDList, armyMuseCheck in player.EffectCDList, player.Haste]
+
+    def brdTest31ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [False, False, 0]   
+
+        for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+        return passed , expected
+
+    brdtest31 = test("Army Muse test 5", brdTest31TestFunction, brdTest31ValidationFunction)
+    brdTestSuite.addTest(brdtest31)
+
+    def brdTest32TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+        actionSet = [ArmyPaeon, WaitAbility(46)]
+        player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [checkArmyEthos in player.EffectCDList, armyMuseCheck in player.EffectCDList, player.Haste]
+
+    def brdTest32ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [True, False, 0]   
+
+        for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+        return passed , expected
+
+    brdtest32 = test("Army Muse test 6", brdTest32TestFunction, brdTest32ValidationFunction)
+    brdTestSuite.addTest(brdtest32)
+
+    def brdTest33TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+        actionSet = [ArmyPaeon, WaitAbility(46), WaitAbility(30), MageBallad, WaitAbility(0.1)]
+        player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [checkArmyEthos in player.EffectCDList, armyMuseCheck in player.EffectCDList, player.Haste]
+
+    def brdTest33ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [False, False, 0]   
+
+        for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+        return passed , expected
+
+    brdtest33 = test("Army Muse test 7", brdTest33TestFunction, brdTest33ValidationFunction)
+    brdTestSuite.addTest(brdtest33)
 
     return brdTestSuite
 
