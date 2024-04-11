@@ -235,6 +235,8 @@ class Fight:
         Index : int -> Index of the player with the PreBakedActions.
         n : int -> number of trial for random DPS simulation
         """
+        fight_logging.debug("Starting prebaked simulation.")
+
         player = self.PlayerList[Index]
         ExpectedDamage = 0
         baseMain = 390
@@ -246,9 +248,6 @@ class Fight:
         timeStamp = 0
         totalPotency = 0
         countGCD = 0
-        #for history in player.PercentBuffHistory:
-        #    fight_logging.warning(str(history))
-
                              # Will compute DPS
         for PreBakedAction in player.PreBakedActionSet:
                                                      # Count every GCD
@@ -301,9 +300,6 @@ class Fight:
 
         for preBakedAction in player.PreBakedActionSet: preBakedAction.resetPercentageBonus()
 
-
-        fight_logging.debug("counted GCD  : " + str(countGCD))
-        fight_logging.debug("previous GCD : " + str(player.GCDCounter))
         if getInfo : return round(ExpectedDamage/timeStamp,2), ExpectedDamage, timeStamp, totalPotency
         return round(ExpectedDamage/timeStamp if True else ExpectedDamage,2), {}
 
@@ -406,13 +402,6 @@ class Fight:
                             player.GCDLock = True
                             player.GCDLockTimer = player.CastingSpell.RecastTime
                             player.CastingTarget = self.Enemy
-                            if player.CastingSpell.id > 0 and player.JobEnum != JobEnum.Pet:
-                                log_str = ( "Timestamp : " + str(self.TimeStamp)
-                                + " , Event : begin_cast_GCD"
-                                + " , playerID : " + str(player.playerID)
-                                + " , Ability : " + name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction) )
-
-                                fight_logging.debug(log_str)
 
                         # Else we do nothing since doing the nextspell is not currently possible
 
@@ -430,14 +419,6 @@ class Fight:
                             player.CastingTarget = self.Enemy
                             player.oGCDLock = True
                             player.oGCDLockTimer = player.CastingSpell.CastTime
-
-                            if player.CastingSpell.id > 0 and player.JobEnum != JobEnum.Pet:
-                                log_str = ( "Timestamp : " + str(self.TimeStamp)
-                                + " , Event : begin_cast_oGCD"
-                                + " , playerID : " + str(player.playerID)
-                                + " , Ability : " + name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction) )
-                                
-                                fight_logging.debug(log_str)
                 
 
             if self.Enemy.hasEventList and start :
@@ -472,7 +453,7 @@ class Fight:
                 for remove in player.EffectToRemove:
                     # Loops through all effect that have been classified as terminated and removes them from the EffectCDList
                     player.EffectCDList.remove(remove) # Removing relevant spell
-                    fight_logging.debug("Removing Check function : " + remove.__name__ + " TimeStamp : " + str(self.TimeStamp))
+                    #fight_logging.debug("Removing Check function : " + remove.__name__ + " TimeStamp : " + str(self.TimeStamp))
                 for add in player.EffectToAdd:
                     # Adds any function to EffectCDList that should be added
                     player.EffectCDList.append(add)
@@ -644,7 +625,7 @@ class Fight:
                              # I was using baseMain for DHAuto, but I think that might be wrong based on what
                              # is in the tankcalc gear sheet. I have not yet confirmed which is the correct one to use.
             
-            log_str = ("ID : " + str(Player.playerID) + " , Job : " + JobEnum.name_for_id(Player.JobEnum) 
+            log_str = ("ID : " + str(Player.playerID) + (f"Name : {Player.PlayerName}" if Player.PlayerName != "" else "") + " , Job : " + JobEnum.name_for_id(Player.JobEnum) 
             + " , f_WD : " + str(Player.f_WD) 
             + " , f_DET : " + str(Player.f_DET) 
             + " , f_TEN : " + str(Player.f_TEN) 
@@ -808,7 +789,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
                 auto_crit = True
                 auto_DH = True   
         elif Player.JobEnum == JobEnum.Warrior:
-            fight_logging.debug("Inner Release Stack : " + str(Player.InnerReleaseStack))        # Primal Rend                                     # Fell Cleave                                    # Inner Chaos
+            #fight_logging.debug("Inner Release Stack : " + str(Player.InnerReleaseStack))        # Primal Rend                                     # Fell Cleave                                    # Inner Chaos
             if (Player.NextSpell < len(Player.ActionSet)) and (Player.ActionSet[Player.NextSpell].id == 25753 or (Player.ActionSet[Player.NextSpell].id == 3549 and Player.InnerReleaseStack > 0) or Player.ActionSet[Player.NextSpell].id == 16465):
                 CritRate = 1# If inner release weaponskill
                 DHRate = 1
@@ -841,7 +822,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
                 Player.GuaranteedCrit = False
                 auto_crit = True
 
-    if type == 0: fight_logging.debug(str((Player.Stat["MainStat"],f_MAIN_DMG, f_WD, f_DET, f_TEN, f_SPD, CritRate, CritMult, DHRate)))
+    #if type == 0: fight_logging.debug(str((Player.Stat["MainStat"],f_MAIN_DMG, f_WD, f_DET, f_TEN, f_SPD, CritRate, CritMult, DHRate)))
 
 
     if type == 0: # Type 0 is direct damage
@@ -960,8 +941,8 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
             potActive = spellObj.potSnapshot
 
-        if auto_crit and auto_DH : fight_logging.debug("Auto Crit/DH prebaked")
-        elif auto_crit : fight_logging.debug("Auto Crit prebaked")
+        #if auto_crit and auto_DH : fight_logging.debug("Auto Crit/DH prebaked")
+        #elif auto_crit : fight_logging.debug("Auto Crit prebaked")
 
         nonReducableStamp = 0 if not Player.CurrentFight.FightStart else Player.totalTimeNoFaster
         reducableStamp = 0 if not Player.CurrentFight.FightStart else Player.CurrentFight.TimeStamp - Player.totalTimeNoFaster
@@ -992,11 +973,11 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
 
     
     if auto_crit and auto_DH: # If both 
-        fight_logging.debug("Auto Crit/DH")
+        #fight_logging.debug("Auto Crit/DH")
         auto_crit_bonus = (1 + CritRateBonus * CritMult) # Auto_crit bonus if buffed
-        fight_logging.debug("CritRate : " + str(CritRateBonus) + " autocritbonus : " + str(auto_crit_bonus))
+        #fight_logging.debug("CritRate : " + str(CritRateBonus) + " autocritbonus : " + str(auto_crit_bonus))
         auto_dh_bonus = (1 + DHRateBonus * 0.25) # Auto_DH bonus if buffed
-        fight_logging.debug("DHRateBonus : " + str(DHRateBonus) + " autodhbonus : " + str(auto_dh_bonus))
+        #fight_logging.debug("DHRateBonus : " + str(DHRateBonus) + " autodhbonus : " + str(auto_dh_bonus))
         non_crit_dh_expected, dh_crit_expected =  0, math.floor(math.floor(Damage * (1 + CritMult) ) * (1.25)) 
         (Player if Player.JobEnum != JobEnum.Pet else Player.Master).ZIPActionSet.append(ZIPAction(Damage, 1, CritMult, 1, auto_crit=True, auto_dh=True, AutoCritBonus=auto_crit_bonus, AutoDHBonus=auto_dh_bonus))
         Damage = math.floor(math.floor(dh_crit_expected * auto_crit_bonus) * auto_dh_bonus)
@@ -1005,7 +986,7 @@ def ComputeDamage(Player, Potency, Enemy, SpellBonus, type, spellObj, SavePreBak
         thisPage.setAutoDH(True)
         return 0, Damage
     elif auto_crit: # If sure to crit, add crit to min expected damage
-        fight_logging.debug("Auto Crit")
+        #fight_logging.debug("Auto Crit")
         auto_crit_bonus = (1 + CritRateBonus * CritMult) # Auto_crit bonus if buffed
         non_crit_dh_expected, dh_crit_expected = ( 0, 
                                                    math.floor(math.floor(Damage * (1 + CritMult) ) * (1 + (DHRate * 0.25))) )# If we have auto crit, we return full damage

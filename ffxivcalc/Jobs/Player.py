@@ -90,7 +90,7 @@ class HealingBuff:
         self.Timer -= time
 
         if self.Timer <= 0: # Remove itself if time is 0
-            player_logging.debug("TimeStamp : " + str(self.Player.CurrentFight.TimeStamp) + "Removing " + self.BuffName + " from player " + str(self.Player.playerID))
+            #player_logging.debug("TimeStamp : " + str(self.Player.CurrentFight.TimeStamp) + "Removing " + self.BuffName + " from player " + str(self.Player.playerID))
             if self.GivenHealBuff : self.Player.GivenHealBuffList.remove(self) # Removes from GivenHeal list
             else : self.Player.ReceivedHealBuffList.remove(self) # Remves from received heal list
 
@@ -174,7 +174,7 @@ class Player:
                              # creates issues with floating points. Ex : 2.01 * 1000 = 2009.9999... which when
                              # int() = 2009
             self.currentDelay = floor(floor(int(round(self.baseDelay * 1000,0)) * (aaMultHaste)/100)/10)/100
-            player_logging.debug("Haste change detected. New delay : " + str(self.currentDelay) + " aaMultHaste : " + str(aaMultHaste))
+            #player_logging.debug("Haste change detected. New delay : " + str(self.currentDelay) + " aaMultHaste : " + str(aaMultHaste))
                              # Updating the AA Timer
             #self.autoPointer.DOTTimer = floor(floor(int(self.autoPointer.DOTTimer * 1000 ) * (100 - self.hasteChangeValue)/100)/10)/100
 
@@ -3164,7 +3164,7 @@ class Pet(Player):
         self.Stat["MainStat"] = Master.baseMainStat
         if Master.PotionTimer > 0 : self.Stat["MainStat"] += min(int(self.Stat["MainStat"] * 0.1), 262)
 
-        player_logging.debug("New Pet Created : " + str(self.Stat))
+        #player_logging.debug("New Pet Created : " + str(self.Stat))
 
         super().__init__([], [], deepcopy(Master.Stat), JobEnum.Pet)
         self.Stat["MainStat"] = Master.baseMainStat + (min(floor(Master.baseMainStat * 0.1),262) if Master.PotionTimer > 0 else 0)

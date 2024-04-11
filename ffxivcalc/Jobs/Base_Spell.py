@@ -379,6 +379,21 @@ class Spell:
                 return tempSpell
         #Will make sure CastTime is at least Lock
         if tempSpell.id > 0 and tempSpell.id != 212 and tempSpell.CastTime < Lock : tempSpell.CastTime = 0 #id < 0 are special abilities like DOT, so we do not want them to be affected by that
+        
+        if tempSpell.id > 0:
+            log_str = ("Event : " + ("begin_cast_GCD" if self.GCD else "begin_cast_oGCD")
+                    +f", Timestamp : {player.CurrentFight.TimeStamp}"
+                    +f", Action : {name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction)}"
+                    +(f", Potency : {tempSpell.Potency}" if tempSpell.Potency > 0 else "")
+                    +f", id : {player.playerID}"
+                    +(f", Master id : {player.Master.playerID}" if player.RoleEnum == RoleEnum.Pet else "")
+                    +(f", Name : {player.PlayerName}" if player.PlayerName != "" else "")
+                    +(f", targetID : {tempSpell.TargetPlayerObject.playerID}, Target name : {tempSpell.TargetPlayerObject.PlayerName}" if tempSpell.TargetID != 0 else "")
+                    +f", Casting time : {tempSpell.CastTime}, Recast time : {tempSpell.RecastTime}"
+            )
+            base_spell_logging.debug(log_str)
+        
+        
         return tempSpell
         #Will put casting spell in player, and do damage/effect once the casting time is over
 
@@ -526,15 +541,18 @@ class Spell:
         if self.GCD: player.GCDCounter += 1 # If action was a GCD, increase the counter
 
         if self.id > 0 or player.RoleEnum == RoleEnum.Pet or type==3: # Only logs if is a player action and not a DOT
-            log_str = ( "Timestamp : " + str(player.CurrentFight.TimeStamp)
-            + " , Event : end_cast"
-            + (" , playerID : " + str(player.playerID) if player.JobEnum != JobEnum.Pet else " , MasterID : " + str(player.Master.playerID))
-            + " , CastTime : " + str(self.CastTime) + " RecastTime : " + str(self.RecastTime)
-            + " , Ability : " + name_for_id(self.id,player.ClassAction, player.JobAction)
-            + " , SpellBonus : " + str(self.DPSBonus)
-            + " , Potency : " + str(self.Potency)
-            + (" , Damage : " + str(Damage) if not (self.AOEHeal or self.TargetHeal) else " , Healing : " + str(Heal)))
-            
+            log_str = ("Event : " + ("end_cast_GCD" if self.GCD else "end_cast_oGCD")
+                    +f", Timestamp : {player.CurrentFight.TimeStamp}"
+                    +f", Action : {name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction)}"
+                    +(f", Potency : {self.Potency}, Damage : {Damage}" if self.Potency > 0 else "")
+                    +f", id : {player.playerID}"
+                    +(f", Master id : {player.Master.playerID}" if player.RoleEnum == RoleEnum.Pet else "")
+                    +(f", Name : {player.PlayerName}" if player.PlayerName != "" else "")
+                    +(f", targetID : {self.TargetPlayerObject.playerID}, Target name : {self.TargetPlayerObject.PlayerName}" if self.TargetID != 0 else "")
+                    +f", Casting time : {self.CastTime}, Recast time : {self.RecastTime}"
+            )
+            # TODO 
+            # Add buff clipping
             base_spell_logging.debug(log_str)
 
         if self.Potency > 0: player.DamageInstanceList.append(Damage)
@@ -574,7 +592,7 @@ def ApplyPotion(Player, Enemy):
     Player.Stat["MainStat"] += Player.mainStatBonus
     Player.PotionTimer = 30
 
-    base_spell_logging.debug("Using Potion at " + str(Player.CurrentFight.TimeStamp))
+    #base_spell_logging.debug("Using Potion at " + str(Player.CurrentFight.TimeStamp))
 
     Player.EffectCDList.append(PotionCheck)
 
@@ -593,7 +611,7 @@ def PotionCheck(Player, Enemy):
     if Player.PotionTimer <= 0:
         Player.Stat["MainStat"] -= Player.mainStatBonus #Assuming we are capped
         Player.EffectCDList.remove(PotionCheck)
-        base_spell_logging.debug("removing Potion at " + str(Player.CurrentFight.TimeStamp))
+        #base_spell_logging.debug("removing Potion at " + str(Player.CurrentFight.TimeStamp))
 
 
 class DOTSpell(Spell):
