@@ -383,7 +383,7 @@ class Spell:
         if tempSpell.id > 0:
             log_str = ("Event : " + ("begin_cast_GCD" if self.GCD else "begin_cast_oGCD")
                     +f", Timestamp : {player.CurrentFight.TimeStamp}"
-                    +f", Action : {name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction)}"
+                    +f", Action : {name_for_id(tempSpell.id,player.ClassAction, player.JobAction)}"
                     +(f", Potency : {tempSpell.Potency}" if tempSpell.Potency > 0 else "")
                     +f", id : {player.playerID}"
                     +(f", Master id : {player.Master.playerID}" if player.RoleEnum == RoleEnum.Pet else "")
@@ -543,7 +543,7 @@ class Spell:
         if self.id > 0 or player.RoleEnum == RoleEnum.Pet or type==3: # Only logs if is a player action and not a DOT
             log_str = ("Event : " + ("end_cast_GCD" if self.GCD else "end_cast_oGCD")
                     +f", Timestamp : {player.CurrentFight.TimeStamp}"
-                    +f", Action : {name_for_id(player.CastingSpell.id,player.ClassAction, player.JobAction)}"
+                    +f", Action : {name_for_id(self.id,player.ClassAction, player.JobAction)}"
                     +(f", Potency : {self.Potency}, Damage : {Damage}" if self.Potency > 0 else "")
                     +f", id : {player.playerID}"
                     +(f", Master id : {player.Master.playerID}" if player.RoleEnum == RoleEnum.Pet else "")
