@@ -5546,8 +5546,6 @@ def generateBRDTestSuite() -> testSuite:
     brdtest33 = test("Army Muse test 7", brdTest33TestFunction, brdTest33ValidationFunction)
     brdTestSuite.addTest(brdtest33)
 
-
-
     return brdTestSuite
 
 ######################################
