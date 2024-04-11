@@ -220,7 +220,10 @@ def ApplyBloodLetter(Player, Enemy):
 
 def armyMuseCheck(Player, Enemy):
     if Player.ArmyMuseTimer <= 0:
-        
+        Player.hasteChangeValue = -Player.hasteGainedFromArmyMuse
+        Player.Haste -= Player.hasteGainedFromArmyMuse 
+        Player.hasteHasChanged = True
+        Player.EffectToRemove.append(armyMuseCheck)
 
 def _apply_army_muse(Player, Enemy):
 
@@ -438,8 +441,8 @@ def ArmyPaeonCheck(Player, Enemy):
         Player.EffectList.remove(ArmyPaeonEffect)
         if _apply_army_muse not in Player.EffectCDList : Player.EffectCDList.append(checkArmyEthos)
         Player.ArmyEthosTimer = 30
-        Player.hasteChangeValue = -Player.hasteGainedFromArmyMuse
-        Player.Haste -= Player.hasteGainedFromArmyMuse 
+        Player.hasteChangeValue = -Player.hasteGainedFromArmyPaeon
+        Player.Haste -= Player.hasteGainedFromArmyPaeon 
         Player.hasteHasChanged = True
 
                              # Giving 

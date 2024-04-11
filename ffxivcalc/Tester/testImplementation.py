@@ -5322,6 +5322,40 @@ def generateBRDTestSuite() -> testSuite:
     brdtest26 = test("Battle Voice test 2", brdTest26TestFunction, brdTest26ValidationFunction)
     brdTestSuite.addTest(brdtest26)
 
+    def brdTest27TestFunction() -> None:
+        """
+        """
+
+        Dummy = Enemy()
+        Event = Fight(Dummy, False)
+        Stat = {'MainStat': 3378, 'WD': 132, 'Det': 1601, 'Ten': 400, 'SS': 400, 'SkS': 400, 'Crit': 2514, 'DH': 1402, 'Piety': 390}
+
+        actionSet = [MageBallad, WanderingMinuet]
+        player = Player(actionSet, [], Stat, JobEnum.Bard)
+
+        Event.AddPlayer([player])
+
+        Event.RequirementOn = False
+        Event.ShowGraph = False
+        Event.IgnoreMana = True
+
+        Event.SimulateFight(0.01, 500, False, PPSGraph=False, showProgress=False,computeGraph=False)
+
+        return [_apply_army_muse in player.EffectCDList, checkArmyEthos in player.EffectCDList]
+
+    def brdTest27ValidationFunction(testResults) -> (bool, list):
+        passed = True
+        expected = [False, False]   
+
+        for i in range(len(testResults)): passed = passed and (expected[i] == testResults[i])
+
+        return passed , expected
+
+    brdtest27 = test("Army Muse test 1", brdTest27TestFunction, brdTest27ValidationFunction)
+    brdTestSuite.addTest(brdtest27)
+
+
+
     return brdTestSuite
 
 ######################################
