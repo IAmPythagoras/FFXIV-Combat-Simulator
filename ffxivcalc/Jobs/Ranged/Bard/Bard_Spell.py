@@ -432,7 +432,7 @@ def ArmyPaeonCheck(Player, Enemy):
         Player.hasteChangeValue = 3.2
         Player.Haste += 3.2
         Player.hasteHasChanged = True
-        Player.hasteGainedFromArmyMuse += 3.2
+        Player.hasteGainedFromArmyPaeon += 3.2
 
     if Player.SongTimer <= 0 or not (Player.ArmyPaeon):
         Enemy.ArmyPaeon = False
