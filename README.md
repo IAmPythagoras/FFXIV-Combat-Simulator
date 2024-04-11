@@ -22,6 +22,11 @@ pip install ffxiv-combat-simulator@git+https://github.com/IAmPythagoras/FFXIV-Co
 
 You can find the documentation here : https://iampythagoras.github.io/index.html or join the discord linked above if you have any questions.
 
+*The unstable version can be removed using
+```
+pip uninstall ffxiv-combat-simulator
+```
+
 # FFXIV-Combat-Simulator (ffxivcalc)
 
 This Python library lets you simulate combat from the game Final Fantasy XIV. It allows for as many players as possible and will simulate the fight in "real time". It
@@ -68,8 +73,7 @@ You can read about the experimental results of this solver here : https://docs.g
 
 # Validity of simulator
 
-As of version 0.8.30 I have started adding in depth testing of the simulator. The simulator will still have some flaws, but it is currently being checked by around 430 individual tests. More tests
-will be added with time.
+As of version 0.8.940 I have started adding in depth testing of the simulator. The simulator will still have some flaws, but it is currently being checked by around 800 individual tests. More tests will be added with time.
 
 # Other simulators
 
@@ -78,3 +82,19 @@ Make sure to check out this alternative FFXIV simulator [Amas-FF14-Combat-Sim](h
 # If you want to help
 
 If you want to help or want to ask questions to me directly, feel free to join the discord linked above:)
+
+# Update log
+
+(Recent only read __init__.py for all update logs)
+
+0.9.940:
+    - Oups, forgot to ever implement Army Ethos/Army Muse effect on Bard. This is now fixed.
+    - Other bug fixes.
+
+0.8.930:
+    - Added Player.getPlayerPrePullTime() which returns the length of the prepull (time before first damage action).
+    - Added Fight.getPlayerPrepullLength() which returns the prepull length of all players
+    - added Fight.syncPlayerPrePull() which syncs all player's prepull so they all do damage at the same time.
+    - Added test suite 'Prepull length test suite' that tests the Player.GetPlayerPrePullTime() function.
+    - Removed access to ffxvivcalc.API, ffxivcalc.codeParser and ffxivcalc.Request.FFLogsAPIRequest modules (outdated modules).
+    - Other minor bug fix.
