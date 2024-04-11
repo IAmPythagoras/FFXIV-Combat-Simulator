@@ -53,6 +53,7 @@ class Fight:
         editActionSet : bool - If set to true will insert at index 0 a waitAbility of the needed time.
         """
 
+        if len(self.PlayerList) == 0 : return {}
 
         prepullLengthDict = self.getPlayerPrepullLength()
 
