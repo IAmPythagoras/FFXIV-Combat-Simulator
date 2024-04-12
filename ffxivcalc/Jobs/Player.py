@@ -136,7 +136,7 @@ class Player:
     """
 
     def __repr__(self):
-        return f"{JobEnum.name_for_id(self.JobEnum)} {super().__repr__()}"
+        return f"{JobEnum.name_for_id(self.JobEnum)}-{super().__repr__()}"
 
     def setStat(self, newStat : dict):
         """

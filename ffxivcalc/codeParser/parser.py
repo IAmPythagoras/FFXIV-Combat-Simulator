@@ -12,7 +12,7 @@ Every command must be delimited by a ; . Invalid text within ; will be ignored.
 """
 
 from copy import deepcopy
-from ffxivcalc.helperCode.exceptions import commandNotFound, fieldNotFound
+from ffxivcalc.helperCode.exceptions import commandNotFound, fieldNotFound, invalidFieldType
 
 
 commandList = ["SET", "FORCESET"]
@@ -78,8 +78,14 @@ class parser:
 
         return commandListCompiled
     
-
 mainParser = parser()
+
+def is_integer(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
 
 def executeCode(sourceCode : str, targetObject):
     """
@@ -103,11 +109,13 @@ def executeCode(sourceCode : str, targetObject):
             case "SET":
                 fieldName = command["SET"][0]
                 if fieldName in possibleFieldName: 
-                    match targetObject.__dict__[fieldName]:
-                        case int() : targetObject.__dict__[fieldName] = int(command["SET"][1])
-                        case float() : targetObject.__dict__[fieldName] = float(command["SET"][1])
-                        case str() : targetObject.__dict__[fieldName] = str(command["SET"][1])
-                        case bool() : targetObject.__dict__[fieldName] = bool(command["SET"][1])
+                    try:
+                        match targetObject.__dict__[fieldName]:
+                            case bool() : targetObject.__dict__[fieldName] = command["SET"][1].lower() == "true"
+                            case str() : targetObject.__dict__[fieldName] = str(command["SET"][1])
+                            case int() : targetObject.__dict__[fieldName] = int(command["SET"][1]) if is_integer(command["SET"][1]) else float(command["SET"][1])
+                    except ValueError:
+                        raise invalidFieldType(type(command["SET"][1]), type(targetObject.__dict__[fieldName]), fieldName)
                 else : raise fieldNotFound(fieldName, str(targetObject))
 
             

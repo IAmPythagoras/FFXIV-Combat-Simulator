@@ -235,7 +235,17 @@ class fieldNotFound(Exception):
     # Expcetion is raised when the user tries to modify an invalid or nonexistant field on an object.
     def __init__(self, field : str, str_obj : str):
 
-        self.message = f"The field '{field}' is invalid or not recognized for the object {str_obj}."
+        self.message = f"The field '{field}' is invalid or not recognized for the object '{str_obj}'."
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'
+    
+class invalidFieldType(Exception):
+    # Expcetion is raised when the user tries to modify a field on an object with the wrong type.
+    def __init__(self, typeInput : str, typeField : str,fieldName : str):
+
+        self.message = f"The given type '{typeInput}' is not valid with the type of the field '{typeField}' for the field '{fieldName}'"
         super().__init__(self.message)
 
     def __str__(self) -> str:
