@@ -13,6 +13,27 @@ Every command must be delimited by a ; . Invalid text within ; will be ignored.
 
 from copy import deepcopy
 
+
+class commandNotFound(Exception):
+    # Expcetion is raised when the user tries to use an invalid command
+    def __init__(self, cmd : str):
+
+        self.message = f"The command '{cmd}' is invalid or not recognized."
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'
+
+class fieldNotFound(Exception):
+    # Expcetion is raised when the user tries to modify an invalid or nonexistant field on an object.
+    def __init__(self, field : str, str_obj : str):
+
+        self.message = f"The field '{field}' is invalid or not recognized for the object {str_obj}."
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'
+
 commandList = ["SET", "FORCESET"]
 
 commandExpectedInputAmount = {"SET" : 2, "FORCESET" : 2}
@@ -30,7 +51,7 @@ class parser:
         commandComponent = self.filterEmpty(commandComponent)
 
                              # Check if initial entry is a valid command in commandList
-        if not (commandComponent[0] in commandList) : return [],False
+        if not (commandComponent[0] in commandList) : return commandComponent,False
 
         return commandComponent, len(commandComponent[1:]) == commandExpectedInputAmount[commandComponent[0]]
 
@@ -64,7 +85,7 @@ class parser:
         for command in commandList:
             commandComponent = command.split(" ")
             commandComponent, valid = self.cleanCommandComponent(commandComponent)
-            if not valid: continue
+            if not valid: raise commandNotFound(commandComponent[0])
 
                              # This is a list containing all information of the command in order.
             commandListFormat = []
@@ -106,6 +127,10 @@ def executeCode(sourceCode : str, targetObject):
                         case float() : targetObject.__dict__[fieldName] = float(command["SET"][1])
                         case str() : targetObject.__dict__[fieldName] = str(command["SET"][1])
                         case bool() : targetObject.__dict__[fieldName] = bool(command["SET"][1])
+                else : raise fieldNotFound(fieldName, str(targetObject))
+
+            
+
 
 
 

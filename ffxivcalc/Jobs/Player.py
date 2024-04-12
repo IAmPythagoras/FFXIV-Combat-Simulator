@@ -135,6 +135,9 @@ class Player:
         Job : JobEnum -> Specific job of the player
     """
 
+    def __repr__(self):
+        return RoleEnum.name_for_id(self.RoleEnum) + str(super().__repr__())
+
     def setStat(self, newStat : dict):
         """
         This function sets the given stat dict as the stat of the player. It does a deepcopy if the newStat

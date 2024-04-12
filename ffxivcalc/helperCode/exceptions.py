@@ -220,3 +220,23 @@ class deactivatedModuleCodeParser(Exception):
 
     def __str__(self) -> str:
         return f'{self.message}'
+
+class commandNotFound(Exception):
+    # Expcetion is raised when the user tries to use an invalid command
+    def __init__(self, cmd : str):
+
+        self.message = f"The command '{cmd}' is invalid or not recognized."
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'
+    
+class fieldNotFound(Exception):
+    # Expcetion is raised when the user tries to modify an invalid or nonexistant field on an object.
+    def __init__(self, field : str, str_obj : str):
+
+        self.message = f"The field '{field}' is invalid or not recognized for the object {str_obj}."
+        super().__init__(self.message)
+
+    def __str__(self) -> str:
+        return f'{self.message}'
