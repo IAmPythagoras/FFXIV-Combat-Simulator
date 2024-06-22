@@ -1,5 +1,8 @@
 [![Discord](https://img.shields.io/discord/970724799464738977?color=7289da&label=Discord&logo=discord)](https://discord.gg/mZXKUNy2sw)
 
+Hi! I have stopped working on this project. If you are interested in ffxiv simulation/opti/parsing please visit my friend's website that offers xiv simulation (http://www.xivraider.com/). I am sure you will find what you might have been looking for here:)!
+
+
 # Desktop app
 
 You can download the desktop app to use the simulator without having to code : https://github.com/IAmPythagoras/ffxivcalcWebApp .
